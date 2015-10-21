@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Styleguide Components - TransferWise</title>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+	<script src="../components/angular/angular.min.js"></script>
+
+	<link type="text/css" rel="stylesheet"
+		href="../components/bootstrap/dist/css/bootstrap.min.css" />
+
+	<!-- jQuery -->
+	<script src="../components/jquery/dist/jquery.min.js"></script>
+
+	<script src="../angular/app.module.js"></script>
+	<script src="../dist/js/styleguide-components.min.js"></script>
+	<style>
+	body {
+		background-color: #F2F5F7;
+	}
+	</style>
+</head>
+<body ng-app="tw.styleguide-components">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<div class="panel m-t-lg">
+					<div class="panel-heading">
+						<h3>Simple Form</form>
+					</div>
+					<form class="panel-body">
+						<div class="form-group">
+							<label class="control-label">
+								Required text input
+							</label>
+							<input type="text" class="form-control" required
+								placeholder="placeholder" />
+						</div>
+						<div class="form-group">
+							<label class="control-label">
+								Required select
+							</label>
+							<select class="form-control">
+								<option>Option 1</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label class="control-label">
+								Checkboxes
+							</label>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox">
+									Checkbox 1
+								</label>
+							</div>
+							<div class="checkbox disabled">
+								<label>
+									<input type="checkbox" disabled>
+									Disabled checkbox 1
+								</label>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label">
+								Radio buttons
+							</label>
+							<div class="radio">
+								<label>
+									<input type="radio" name="simple-radio">
+									Radio 1
+								</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="simple-radio">
+									Radio 2
+								</label>
+							</div>
+							<div class="radio disabled">
+								<label>
+									<input type="radio" name="simple-radio" disabled>
+									Disabled radio 1
+								</label>
+							</div>
+						</div>
+
+						<button type="submit" class="btn btn-primary btn-block">
+							Submit form
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

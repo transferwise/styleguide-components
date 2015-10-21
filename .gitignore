@@ -1,0 +1,14 @@
+/nbproject/private/
+/nbproject/
+/node_modules/
+/public/
+/build/
+/components/
+npm-debug.log
+.env
+.DS_Store
+newrelic_agent.log
+
+.idea/
+*.iml
+.gradle/
