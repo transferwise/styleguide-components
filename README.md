@@ -1,6 +1,24 @@
 # styleguide-components
 AngularJS components for TransferWise Bootstrap.  Currently these components focus on forms and form behaviour, they enable you to use standard Boostrap markup, but gain additional visuals and behaviour.
 
+### Installation
+It is recommended to use bower to import the latest version
+```
+dependencies: {
+    "styleguide-components": "https://github.com/transferwise/styleguide-components.git",
+}
+```
+
+Include the distribution file (exact path depends on your bower directory).
+```
+<script src="bower_components/styleguide-components/dist/js/styleguide-components.min.js"></script>
+```
+
+Within your angular application, simply add the module as a dependency for your application definition.
+```
+angular.module('my-app', ['tw.styleguide-components']);
+```
+
 ### Forms
 ##### Validation
 In the simplest possible case you will need to use Bootstrap's `form-group` and `form-control` classes to gain validation.  Validation will only work if you have bound a value with `ngModel`.  If you were to focus this input and exit without entering a valid value, the control would show a validation error.
