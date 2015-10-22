@@ -42,3 +42,6 @@ Using the standard bootstrap form structure, your radio and checkboxes will also
 	</div>
 </div>
 ```
+
+### Examples
+To try a live example clone this project, run `npm install` and open index.html in the examples folder.
