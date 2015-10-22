@@ -5,9 +5,9 @@
 		.module('tw.styleguide-components')
 		.directive('twInputSortCode', TwSortCodeDirective);
 
-	TwSortCodeDirective.$inject = ['FileUrlService'];
+	TwSortCodeDirective.$inject = [];
 
-	function TwSortCodeDirective(FileUrlService) {
+	function TwSortCodeDirective() {
 		var directive = {
 			bindToController: true,
 			controller: "TwSortCodeController",
@@ -19,7 +19,7 @@
 				disabled: '@',
 				required: '@'
 			},
-			templateUrl: FileUrlService.get('html', 'tw-sort-code.html'),
+			templateUrl: '../dist/templates/tw-sort-code.html',
 			link: TwSortCodeLink
 		};
 

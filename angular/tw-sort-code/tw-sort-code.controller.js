@@ -54,6 +54,11 @@
 			});
 
 			vm.explodeSortCode(vm.sortCode);
+
+			// If attribute has no value make it evaluate to true
+			if (vm.required === "") {
+				vm.required = true;
+			}
 		}
 
 		vm.init();

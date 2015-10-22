@@ -25,25 +25,32 @@
 <body ng-app="tw.styleguide-components">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-8 col-md-offset-2">
-				<div class="panel m-t-lg">
+			<div class="col-md-8">
+				<form class="panel m-t-lg"
+
+					ng-submit="vm.submit()"
+					novalidate>
 					<div class="panel-heading">
-						<h3>Simple Form</form>
+						<h3>Simple Form</h3>
 					</div>
-					<form class="panel-body">
+					<div class="panel-body">
 						<div class="form-group">
 							<label class="control-label">
 								Required text input
 							</label>
-							<input type="text" class="form-control" required
-								placeholder="placeholder" />
+							<input type="text" required
+								class="form-control"
+								placeholder="Placeholder"
+								ng-model="vm.model.textRequired" />
 						</div>
 						<div class="form-group">
 							<label class="control-label">
 								Required select
 							</label>
-							<select class="form-control">
-								<option>Option 1</option>
+							<select class="form-control" required
+								ng-model="vm.model.selectRequired">
+								<option>Please choose..</option>
+								<option value="1">Option 1</option>
 							</select>
 						</div>
 						<div class="form-group">
@@ -52,14 +59,16 @@
 							</label>
 							<div class="checkbox">
 								<label>
-									<input type="checkbox">
+									<input type="checkbox" required
+										ng-model="vm.model.checkbox1" />
 									Checkbox 1
 								</label>
 							</div>
 							<div class="checkbox disabled">
 								<label>
-									<input type="checkbox" disabled>
-									Disabled checkbox 1
+									<input type="checkbox" disabled
+										ng-model="vm.model.checkbox2" >
+									Checkbox 2 - disabled
 								</label>
 							</div>
 						</div>
@@ -70,29 +79,52 @@
 							</label>
 							<div class="radio">
 								<label>
-									<input type="radio" name="simple-radio">
+									<input type="radio" name="simple-radio"
+										value="1"
+										ng-model="vm.model.simpleRadio" />
 									Radio 1
 								</label>
 							</div>
 							<div class="radio">
 								<label>
-									<input type="radio" name="simple-radio">
+									<input type="radio" name="simple-radio"
+										value="2"
+										ng-model="vm.model.simpleRadio" />
 									Radio 2
 								</label>
 							</div>
 							<div class="radio disabled">
 								<label>
-									<input type="radio" name="simple-radio" disabled>
-									Disabled radio 1
+									<input type="radio" name="simple-radio" disabled
+										value="3"
+										ng-model="vm.model.simpleRadio">
+									Radio 3 - disabled
 								</label>
 							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label">
+								Sort code
+							</label>
+							<tw-input-sort-code ng-model="vm.model.sortCode" required />
+						</div>
+
+						<div class="form-group">
+							<label class="control-label">
+								Date
+							</label>
+							<tw-input-date ng-model="vm.model.date" required />
 						</div>
 
 						<button type="submit" class="btn btn-primary btn-block">
 							Submit form
 						</button>
-					</form>
-				</div>
+					</div>
+				</form>
+			</div>
+			<div class="col-md-4">
+				<pre>{{vm.model | json}}</pre>
 			</div>
 		</div>
 	</div>

@@ -55,27 +55,21 @@
 					return;
 				}
 
+				var replacement;
+
 				if (type === "radio") {
-					var radioReplace = $(radioTemplate)
-						.keypress(onKeypress)
-						.click(onClick)
-						.focus(onFocus)
-						.blur(onBlur);
-
-					$(element).hide().after(radioReplace);
-					radioReplace.after(disabledReplacement);
+					replacement = $(radioTemplate);
+				} else {
+					replacement = $(checkboxTemplate);
 				}
 
-				if (type === "checkbox") {
-					var checkReplace = $(checkboxTemplate)
-						.keypress(onKeypress)
-						.click(onClick)
-						.focus(onFocus)
-						.blur(onBlur);
+				replacement.keypress(onKeypress)
+					.click(onClick)
+					.focus(onFocus)
+					.blur(onBlur);
 
-					$(element).hide().after(checkReplace);
-					checkReplace.after(disabledReplacement);
-				}
+				$(element).hide().after(replacement);
+				replacement.after(disabledReplacement);
 			}
 		};
 	}

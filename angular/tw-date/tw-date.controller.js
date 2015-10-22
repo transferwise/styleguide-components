@@ -43,6 +43,11 @@
 				{id: 11, name: "November"},
 				{id: 12, name: "December"}
 			];
+
+			// If attribute has no value make it evaluate to true
+			if (vm.required === "") {
+				vm.required = true;
+			}
 		}
 
 		function explodeDate(date) {

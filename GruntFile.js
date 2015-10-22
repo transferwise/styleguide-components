@@ -10,6 +10,10 @@ module.exports = function(grunt) {
             components: {
                 files: ['angular/**/*.js'],
                 tasks: ['uglify:components', 'jshint']
+            },
+            templates: {
+                files: ['angular/**/*.html'],
+                tasks: ['copy:templates']
             }
         },
         uglify: {
@@ -42,8 +46,15 @@ module.exports = function(grunt) {
                 }
             }
         },
-        copy: {},
-
+        copy: {
+            templates: {
+                expand: true,
+                flatten: true,  // flattens results to a single level
+                src: ['angular/**/*.html'],
+                dest: 'dist/templates/',
+                filter: 'isFile'
+            }
+        },
         jshint: {
             options: {
                 curly: true,
@@ -93,5 +104,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-htmllint');
 
     // === REGISTER TASKS ===
-    grunt.registerTask('default', ['jshint', 'htmllint', 'karma', 'uglify', 'less', 'watch']);
+    grunt.registerTask('default', ['jshint', 'htmllint', 'karma', 'uglify', 'less', 'copy', 'watch']);
 };

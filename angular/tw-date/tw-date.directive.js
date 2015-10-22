@@ -5,9 +5,9 @@
 		.module('tw.styleguide-components')
 		.directive('twInputDate', TwDateDirective);
 
-	TwDateDirective.$inject = ['FileUrlService'];
+	TwDateDirective.$inject = [];
 
-	function TwDateDirective(FileUrlService) {
+	function TwDateDirective() {
 		var directive = {
 			bindToController: true,
 			controller: "TwDateController",
@@ -19,7 +19,7 @@
 				disabled: '@',
 				required: '@'
 			},
-			templateUrl: FileUrlService.get('html', 'tw-date.html'),
+			templateUrl: '../dist/templates/tw-date.html',
 			link: TwDateLink
 		};
 
@@ -37,10 +37,6 @@
 			scope.$parent.$watch(attrs.ngRequired, function(isRequired) {
 				scope.required = isRequired;
 			});
-		}
-
-		if (attrs.required) {
-			scope.required = true;
 		}
 	}
 })(window.angular);
