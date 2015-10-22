@@ -10,7 +10,6 @@ module.exports = function(config) {
             'components/angular-mocks/angular-mocks.js',
 
             // include js files
-            'angular/app.module.js',
             'angular/**/*.controller.js',
             'angular/**/*.directive.js',
 

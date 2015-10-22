@@ -104,5 +104,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-htmllint');
 
     // === REGISTER TASKS ===
-    grunt.registerTask('default', ['jshint', 'htmllint', 'karma', 'uglify', 'less', 'copy', 'watch']);
+    grunt.registerTask('default', ['jshint', 'htmllint', 'uglify', 'less', 'copy', 'watch']);
 };
