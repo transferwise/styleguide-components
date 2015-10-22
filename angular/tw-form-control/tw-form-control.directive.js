@@ -47,20 +47,14 @@
 						event.preventDefault();
 					});
 
-				/*
-				$(element).focus(function() {
-					$(this)
-						.parents('.form-group, .checkbox > label, .radio > label')
-						.addClass('focus');
-				}).blur(function() {
-					$(this)
-						.parents('.form-group, .checkbox > label, .radio > label')
-						.removeClass('focus');
-				}).on("invalid", function(event) {
-					// Prevent default validation tooltips
-					event.preventDefault();
-				});
-				*/
+				formControls.filter("select")
+					.on("change", function() {
+						var formControl = $(this);
+						// Allow time for angular to apply ng-invalid
+						setTimeout(function() {
+							checkValid(formControl, formGroup);
+						});
+					});
 			}
 		};
 	}
