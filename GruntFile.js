@@ -18,12 +18,23 @@ module.exports = function(grunt) {
         },
         uglify: {
             options: {
-                mangle: false,
-                beautify: true
+                banner: 'angular.module("tw.styleguide-components", []);\n'
             },
             components: {
                 src: ['angular/**/*.controller.js', 'angular/**/*.directive.js'],
-                dest: 'dist/js/styleguide-components.min.js'
+                dest: 'dist/js/styleguide-components.js',
+                options: {
+                    mangle: false,
+                    beautify: true
+                }
+            },
+            min: {
+                src: ['angular/**/*.controller.js', 'angular/**/*.directive.js'],
+                dest: 'dist/js/styleguide-components.min.js',
+                options: {
+                    mangle: true,
+                    beautify: false
+                }
             }
         },
 
