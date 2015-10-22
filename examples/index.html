@@ -14,15 +14,20 @@
 	<!-- jQuery -->
 	<script src="../components/jquery/dist/jquery.min.js"></script>
 
-	<script src="../angular/app.module.js"></script>
+	<script>
+	angular.module('tw.styleguide-components', []);
+	angular.module('my-app', ['tw.styleguide-components']);
+	</script>
+
 	<script src="../dist/js/styleguide-components.min.js"></script>
+
 	<style>
 	body {
 		background-color: #F2F5F7;
 	}
 	</style>
 </head>
-<body ng-app="tw.styleguide-components">
+<body ng-app="my-app">
 	<div class="container">
 		<div class="row m-t-lg">
 			<div class="col-md-8">
@@ -101,20 +106,6 @@
 									Radio 3 - disabled
 								</label>
 							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="control-label">
-								Sort code
-							</label>
-							<tw-input-sort-code ng-model="vm.model.sortCode" required />
-						</div>
-
-						<div class="form-group">
-							<label class="control-label">
-								Date
-							</label>
-							<tw-input-date ng-model="vm.model.date" required />
 						</div>
 
 						<button type="submit" class="btn btn-primary btn-block">
