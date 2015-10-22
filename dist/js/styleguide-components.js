@@ -2,7 +2,9 @@ angular.module("tw.styleguide-components", []);
 !function(angular) {
     "use strict";
     function checkValid(formControl, formGroup) {
-        formControl.hasClass("ng-invalid") && formControl.hasClass("ng-touched") ? formGroup.addClass("has-error") : formGroup.removeClass("has-error");
+        setTimeout(function() {
+            formControl.hasClass("ng-invalid") && formControl.hasClass("ng-touched") ? formGroup.addClass("has-error") : formGroup.removeClass("has-error");
+        });
     }
     function TwActiveFormControl() {
         return {
@@ -10,23 +12,15 @@ angular.module("tw.styleguide-components", []);
             link: function(scope, element) {
                 var potentialParents = ".form-group, .checkbox > label, .radio > label", formControls = $(element), formGroup = formControls.parents(".form-group");
                 formControls.on("focus", function() {
-                    var formControl = $(this);
-                    formControl.parents(potentialParents).addClass("focus");
+                    $(this).parents(potentialParents).addClass("focus");
                 }).on("blur", function() {
-                    var formControl = $(this);
-                    formControl.parents(potentialParents).removeClass("focus"), checkValid(formControl, formGroup);
+                    $(this).parents(potentialParents).removeClass("focus"), checkValid(formControl, formGroup);
                 }).on("keyup", function() {
-                    var formControl = $(this);
-                    setTimeout(function() {
-                        checkValid(formControl, formGroup);
-                    });
+                    checkValid($(this), formGroup);
                 }).on("invalid", function(event) {
                     event.preventDefault();
                 }), formControls.filter("select").on("change", function() {
-                    var formControl = $(this);
-                    setTimeout(function() {
-                        checkValid(formControl, formGroup);
-                    });
+                    checkValid($(this), formGroup);
                 });
             }
         };

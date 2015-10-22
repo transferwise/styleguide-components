@@ -6,12 +6,15 @@
 		.directive('formControl', TwActiveFormControl);
 
 	function checkValid(formControl, formGroup) {
-		if (formControl.hasClass("ng-invalid") &&
-			formControl.hasClass("ng-touched")) {
-			formGroup.addClass("has-error");
-		} else {
-			formGroup.removeClass("has-error");
-		}
+		// Allow time for angular to apply ng-invalid
+		setTimeout(function() {
+			if (formControl.hasClass("ng-invalid") &&
+				formControl.hasClass("ng-touched")) {
+				formGroup.addClass("has-error");
+			} else {
+				formGroup.removeClass("has-error");
+			}
+		});
 	}
 
 	function TwActiveFormControl(FileUrlService) {
@@ -24,23 +27,17 @@
 
 				formControls
 					.on('focus', function() {
-						var formControl = $(this);
-						formControl.parents(potentialParents).addClass('focus');
+						$(this).parents(potentialParents).addClass('focus');
 					})
 					.on('blur', function() {
-						var formControl = $(this);
-						formControl.parents(potentialParents).removeClass('focus');
+						$(this).parents(potentialParents).removeClass('focus');
 
-						// Check on blur as well, ng-touched will not be present
-						// during first change events
+						// Check on blur as well, 
+						// ng-touched not present during first change events
 						checkValid(formControl, formGroup);
 					})
 					.on("keyup", function() {
-						var formControl = $(this);
-						// Allow time for angular to apply ng-invalid
-						setTimeout(function() {
-							checkValid(formControl, formGroup);
-						});
+						checkValid($(this), formGroup);
 					})
 					.on("invalid", function(event) {
 						// Prevent default validation tooltips
@@ -49,11 +46,7 @@
 
 				formControls.filter("select")
 					.on("change", function() {
-						var formControl = $(this);
-						// Allow time for angular to apply ng-invalid
-						setTimeout(function() {
-							checkValid(formControl, formGroup);
-						});
+						checkValid($(this), formGroup);
 					});
 			}
 		};
