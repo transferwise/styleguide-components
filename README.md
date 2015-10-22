@@ -31,6 +31,8 @@ If the controls are inside a `form`, validation will also occur on form submit. 
 
 ##### Radio and checkboxes
 Using the standard bootstrap form structure, your radio and checkboxes will also be upgraded to much prettier versions supporting all standard functionality.
+
+You will need to use the [TransferWise Bootstrap](http://bootstrap.transferwise.com) project to take advantage of  these styles.
 ```
 <div class="form-group">
     <label class="control-label">Label</label>

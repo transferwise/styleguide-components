@@ -7,12 +7,13 @@
 		.directive('input', TwInput);
 
 	function TwInput() {
+		var parents = '.form-group, .checkbox > label, .radio > label';
 
 		function onFocus() {
-			$(this).parents('.form-group, .checkbox > label, .radio > label').addClass('focus');
+			$(this).parents(parents).addClass('focus');
 		}
 		function onBlur() {
-			$(this).parents('.form-group, .checkbox > label, .radio > label').removeClass('focus');
+			$(this).parents(parents).removeClass('focus');
 		}
 		function onClick(event) {
 			fakeClick(this);
@@ -52,6 +53,11 @@
 
 				var type = attrs.type.toLowerCase();
 				if (type !== "radio" && type !== "checkbox") {
+					return;
+				}
+
+				// don't affect non-bootstrap controls
+				if ($(element).parents(parents).length === 0) {
 					return;
 				}
 
