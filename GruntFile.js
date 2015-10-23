@@ -5,15 +5,15 @@ module.exports = function(grunt) {
         watch: {
             less: {
                 files: ['app/**/*.css', 'app/**/*.less'],
-                tasks: ['less:development', 'less:production']
+                tasks: ['less']
             },
             components: {
                 files: ['angular/**/*.js'],
-                tasks: ['uglify:components', 'jshint']
+                tasks: ['uglify', 'jshint']
             },
             templates: {
                 files: ['angular/**/*.html'],
-                tasks: ['copy:templates']
+                tasks: ['copy']
             }
         },
         uglify: {

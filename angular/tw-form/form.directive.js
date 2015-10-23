@@ -4,9 +4,9 @@
 
 	angular
 		.module('tw.styleguide-components')
-		.directive('form', TwInvalid);
+		.directive('form', TwFormValidation);
 
-	function TwInvalid() {
+	function TwFormValidation() {
 		return {
 			restrict: 'E',
 			link: function(scope, element, attrs, ctrl) {
@@ -14,6 +14,15 @@
 					// Submitting the form won't trigger form controls own validation
 					var invalid = $(element).find(".form-control.ng-invalid");
 					invalid.parents(".form-group").addClass("has-error");
+
+					var invalidCheckbox = $(element).find(
+						"input[type=checkbox].ng-invalid, input[type=radio].ng-invalid"
+					);
+
+					invalidCheckbox
+						.parents(".form-group, .checkbox, .radio")
+						.addClass("has-error");
+
 					return true;
 				});
 			}

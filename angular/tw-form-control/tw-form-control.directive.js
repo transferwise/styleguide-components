@@ -3,50 +3,54 @@
 
 	angular
 		.module('tw.styleguide-components')
-		.directive('formControl', TwActiveFormControl);
+		.directive('formControl', TwFormControlValidation);
 
 	function checkValid(formControl, formGroup) {
 		// Allow time for angular to apply ng-invalid
 		setTimeout(function() {
-			if (formControl.hasClass("ng-invalid") &&
-				formControl.hasClass("ng-touched")) {
-				formGroup.addClass("has-error");
+			if (formControl.hasClass("ng-invalid")) {
+				if (formControl.hasClass("ng-touched")) {
+					formGroup.addClass("has-error");
+				}
+				// don't remove class until touched, so don't fall into 'else'
 			} else {
 				formGroup.removeClass("has-error");
 			}
 		});
 	}
 
-	function TwActiveFormControl(FileUrlService) {
+	function TwFormControlValidation(FileUrlService) {
 		return {
 			restrict: 'C',
 			link: function(scope, element, attrs, ctrl) {
 				var potentialParents = '.form-group, .checkbox > label, .radio > label';
-				var formControls = $(element);
-				var formGroup = formControls.parents('.form-group');
+				var formControl = $(element);
+				var formGroup = formControl.closest('.form-group');
+				var label = formControl.closest('.checkbox > label, .radio > label');
 
-				formControls
+				formControl
 					.on('focus', function() {
-						$(this).parents(potentialParents).addClass('focus');
+						formControl.parents(potentialParents).addClass('focus');
 					})
 					.on('blur', function() {
-						$(this).parents(potentialParents).removeClass('focus');
+						formControl.parents(potentialParents).removeClass('focus');
 
-						// Check on blur as well, 
+						// Check on blur as well,
 						// ng-touched not present during first change events
 						checkValid(formControl, formGroup);
 					})
 					.on("keyup", function() {
-						checkValid($(this), formGroup);
+						checkValid(formControl, formGroup);
 					})
 					.on("invalid", function(event) {
 						// Prevent default validation tooltips
 						event.preventDefault();
 					});
 
-				formControls.filter("select")
+				// Change handler only needed for select.
+				formControl.filter("select")
 					.on("change", function() {
-						checkValid($(this), formGroup);
+						checkValid(formControl, formGroup);
 					});
 			}
 		};

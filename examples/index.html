@@ -8,12 +8,12 @@
 
 	<script src="../components/angular/angular.min.js"></script>
 	<script src="../components/jquery/dist/jquery.min.js"></script>
-	<script src="../dist/js/styleguide-components.min.js"></script>
+	<script src="../dist/js/styleguide-components.js"></script>
 
 	<script>
 	angular.module('my-app', ['tw.styleguide-components']);
 	</script>
-
+	
 	<link type="text/css" rel="stylesheet"
 		href="../components/bootstrap/dist/css/bootstrap.min.css" />
 
@@ -37,7 +37,7 @@
 					<div class="panel-body">
 						<div class="form-group">
 							<label class="control-label">
-								Required text input
+								Text input - required
 							</label>
 							<input type="text" required
 								class="form-control"
@@ -46,7 +46,7 @@
 						</div>
 						<div class="form-group">
 							<label class="control-label">
-								Required select
+								Select - required
 							</label>
 							<select class="form-control" required
 								ng-model="vm.model.selectRequired">
@@ -62,26 +62,40 @@
 								<label>
 									<input type="checkbox" required
 										ng-model="vm.model.checkbox1" />
-									Checkbox 1
+									Checkbox 1 - required
+								</label>
+							</div>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" required
+										ng-model="vm.model.checkbox2" />
+									Checkbox 2 - required
+								</label>
+							</div>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox"
+										ng-model="vm.model.checkbox3" />
+									Checkbox 3
 								</label>
 							</div>
 							<div class="checkbox disabled">
 								<label>
 									<input type="checkbox" disabled
-										ng-model="vm.model.checkbox2" >
-									Checkbox 2 - disabled
+										ng-model="vm.model.checkbox4" >
+									Checkbox 4 - disabled
 								</label>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="control-label">
-								Radio buttons
+								Radio buttons - required
 							</label>
 							<div class="radio">
 								<label>
 									<input type="radio" name="simple-radio"
-										value="1"
+										value="1" required
 										ng-model="vm.model.simpleRadio" />
 									Radio 1
 								</label>
@@ -89,7 +103,7 @@
 							<div class="radio">
 								<label>
 									<input type="radio" name="simple-radio"
-										value="2"
+										value="2" required
 										ng-model="vm.model.simpleRadio" />
 									Radio 2
 								</label>
@@ -106,21 +120,41 @@
 
 						<div class="form-group">
 							<label class="control-label">
-								Complex text validation
+								Textarea - required
+							</label>
+							<textarea required
+								name="textareaSimple"
+								class="form-control"
+								placeholder="Required"
+								ng-model="vm.model.textareaSimple"
+								></textarea>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label">
+								Text - complex validation
 							</label>
 							<input type="text" required
 								name="textComplex"
 								class="form-control"
-								placeholder="a-z, 2 to 6 chars"
+								placeholder="a-z only, 2 to 6 chars"
 								ng-model="vm.model.textComplex"
 								ng-pattern="/^[a-z]+$/"
-								minlength="2"
-								maxlength="6" />
-							<div ng-if="
-								(exampleForm.$submitted || exampleForm.textComplex.$touched ) &&
-								exampleForm.textComplex.$invalid"
-								class="text-danger">
-								Error message
+								ng-minlength="2"
+								ng-maxlength="6" />
+							<!--
+							exampleForm.$submitted: {{exampleForm.$submitted}}<br />
+							exampleForm.textComplex.$touched: {{exampleForm.textComplex.$touched}}<br />
+							exampleForm.textComplex.$error.minlength: {{exampleForm.textComplex.$error.minlength}}<br />
+							exampleForm.textComplex.$error.maxlength: {{exampleForm.textComplex.$error.maxlength}}<br />
+							exampleForm.textComplex.$error.pattern: {{exampleForm.textComplex.$error.pattern}}<br />
+							-->
+							<div class="text-danger"
+								ng-if="exampleForm.$submitted || exampleForm.textComplex.$touched">
+								<div ng-if="exampleForm.textComplex.$error.required">Required</div>
+								<div ng-if="exampleForm.textComplex.$error.minlength">Too short</div>
+								<div ng-if="exampleForm.textComplex.$error.maxlength">Too long</div>
+								<div ng-if="exampleForm.textComplex.$error.pattern">Invalid characters</div>
 							</div>
 						</div>
 
