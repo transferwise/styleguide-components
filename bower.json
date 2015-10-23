@@ -4,7 +4,7 @@
   "componentsDirectory": "components/",
   "directory": "components",
   "dependencies": {
-    "bootstrap": "https://github.com/transferwise/bootstrap.git#v3.3.12",
+    "bootstrap": "https://github.com/transferwise/bootstrap.git",
     "angular": "<2.0.0",
     "angular-mocks": "<2.0.0"
   },
