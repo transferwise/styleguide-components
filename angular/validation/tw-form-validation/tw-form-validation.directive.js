@@ -3,24 +3,30 @@
 	'use strict';
 
 	angular
-		.module('tw.styleguide-components')
+		.module('tw.form-validation')
 		.directive('form', TwFormValidation);
 
 	function TwFormValidation() {
 		return {
 			restrict: 'E',
-			link: function(scope, element, attrs, ctrl) {
+			link: function(scope, element) {
 				$(element).on('submit', function() {
 					// Submitting the form won't trigger form controls own validation
-					var invalid = $(element).find(".form-control.ng-invalid");
-					invalid.parents(".form-group").addClass("has-error");
+					$(element)
+						.find(".form-control.ng-invalid")
+						.closest(".form-group")
+						.addClass("has-error");
 
-					var invalidCheckbox = $(element).find(
+					var invalidControl = $(element).find(
 						"input[type=checkbox].ng-invalid, input[type=radio].ng-invalid"
 					);
 
-					invalidCheckbox
-						.parents(".form-group, .checkbox, .radio")
+					invalidControl
+						.closest(".checkbox, .radio")
+						.addClass("has-error");
+
+					invalidControl
+						.parents(".form-group")
 						.addClass("has-error");
 
 					return true;

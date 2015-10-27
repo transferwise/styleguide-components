@@ -17,21 +17,59 @@ module.exports = function(grunt) {
             }
         },
         uglify: {
-            options: {
-                banner: 'angular.module("tw.styleguide-components", []);\n'
-            },
             components: {
                 src: ['angular/**/*.controller.js', 'angular/**/*.directive.js'],
                 dest: 'dist/js/styleguide-components.js',
                 options: {
+                    banner: 'angular.module("tw.form-validation", []);\n' +
+                        'angular.module("tw.form-styling", []);\n' +
+                        'angular.module("tw.styleguide-components", [\'tw.form-validation\', \'tw.form-styling\']);\n',
                     mangle: false,
                     beautify: true
                 }
             },
-            min: {
+            componentsMin: {
                 src: ['angular/**/*.controller.js', 'angular/**/*.directive.js'],
                 dest: 'dist/js/styleguide-components.min.js',
                 options: {
+                    banner: 'angular.module("tw.styleguide-components", []);\n' +
+                        'angular.module("tw.form-styling", []);\n',
+                    mangle: true,
+                    beautify: false
+                }
+            },
+            validation: {
+                src: ['angular/validation/**/*.controller.js', 'angular/validation/**/*.directive.js'],
+                dest: 'dist/js/form-validation.js',
+                options: {
+                    banner: 'angular.module("tw.form-validation", []);\n',
+                    mangle: false,
+                    beautify: true
+                }
+            },
+            validationMin: {
+                src: ['angular/validation/**/*.controller.js', 'angular/validation/**/*.directive.js'],
+                dest: 'dist/js/form-validation.min.js',
+                options: {
+                    banner: 'angular.module("tw.form-validation", []);\n',
+                    mangle: true,
+                    beautify: false
+                }
+            },
+            styling: {
+                src: ['angular/styling/**/*.controller.js', 'angular/styling/**/*.directive.js'],
+                dest: 'dist/js/form-styling.js',
+                options: {
+                    banner: 'angular.module("tw.form-styling", []);\n',
+                    mangle: false,
+                    beautify: true
+                }
+            },
+            stylingMin: {
+                src: ['angular/styling/**/*.controller.js', 'angular/styling/**/*.directive.js'],
+                dest: 'dist/js/form-styling.min.js',
+                options: {
+                    banner: 'angular.module("tw.form-styling", []);\n',
                     mangle: true,
                     beautify: false
                 }

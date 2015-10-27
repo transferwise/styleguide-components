@@ -10,16 +10,23 @@
 	<script src="../components/jquery/dist/jquery.min.js"></script>
 	<script src="../dist/js/styleguide-components.js"></script>
 
+	<script src="../components/bootstrap/dist/js/bootstrap.min.js"></script>
+
 	<script>
 	angular.module('my-app', ['tw.styleguide-components']);
 	</script>
-	
+
 	<link type="text/css" rel="stylesheet"
 		href="../components/bootstrap/dist/css/bootstrap.min.css" />
 
 	<style>
 	body {
 		background-color: #F2F5F7;
+	}
+	pre {
+		border: 0;
+		background-color: transparent;
+		padding: 0;
 	}
 	</style>
 </head>
@@ -165,7 +172,7 @@
 				</form>
 			</div>
 			<div class="col-md-4">
-				<pre>{{vm.model | json}}</pre>
+				<pre data-spy="affix" data-offset-top="0">{{vm.model | json}}</pre>
 			</div>
 		</div>
 	</div>
