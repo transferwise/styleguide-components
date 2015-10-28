@@ -149,19 +149,11 @@
 								ng-pattern="/^[a-z]+$/"
 								ng-minlength="2"
 								ng-maxlength="6" />
-							<!--
-							exampleForm.$submitted: {{exampleForm.$submitted}}<br />
-							exampleForm.textComplex.$touched: {{exampleForm.textComplex.$touched}}<br />
-							exampleForm.textComplex.$error.minlength: {{exampleForm.textComplex.$error.minlength}}<br />
-							exampleForm.textComplex.$error.maxlength: {{exampleForm.textComplex.$error.maxlength}}<br />
-							exampleForm.textComplex.$error.pattern: {{exampleForm.textComplex.$error.pattern}}<br />
-							-->
-							<div class="text-danger"
-								ng-if="exampleForm.$submitted || exampleForm.textComplex.$touched">
-								<div ng-if="exampleForm.textComplex.$error.required">Required</div>
-								<div ng-if="exampleForm.textComplex.$error.minlength">Too short</div>
-								<div ng-if="exampleForm.textComplex.$error.maxlength">Too long</div>
-								<div ng-if="exampleForm.textComplex.$error.pattern">Invalid characters</div>
+							<div class="error-messages">
+								<div class="error-required">Required</div>
+								<div class="error-minlength">Too short</div>
+								<div class="error-maxlength">Too long</div>
+								<div class="error-pattern">Invalid characters</div>
 							</div>
 						</div>
 
