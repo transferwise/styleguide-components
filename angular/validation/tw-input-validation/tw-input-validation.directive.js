@@ -58,7 +58,6 @@
 
 			// Clicks on label do not trigger input.change
 			label.on('click', function() {
-				console.log("click!");
 				checkValid(
 					formControl,
 					formControl.closest('.checkbox, .radio'),

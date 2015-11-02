@@ -24,11 +24,16 @@
 		function fakeClick(buttonReplacement) {
 			var formControl = $(buttonReplacement).closest('label').find('input');
 			if (typeof formControl[0] !== 'undefined') {
-				formControl[0].dispatchEvent(new MouseEvent('click', {
-					'view': window,
-					'bubbles': true,
-					'cancelable': true
-				}));
+				if (MouseEvent) {
+					formControl[0].dispatchEvent(new MouseEvent('click', {
+						'view': window,
+						'bubbles': true,
+						'cancelable': true
+					}));
+				} else {
+					// Fallback on jquery click if MouseEvent not defined
+					formControl.click();
+				}
 			}
 		}
 		function onKeypress(event) {
