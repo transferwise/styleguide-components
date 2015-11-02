@@ -58,7 +58,7 @@ angular.module("tw.form-validation", []);
                 if (("radio" === type || "checkbox" === type) && 0 !== $(element).closest(labelSelector).length) {
                     var formControl = $(element), label = formControl.closest("label");
                     label.on("click", function() {
-                        console.log("click!"), checkValid(formControl, formControl.closest(".checkbox, .radio"), formControl.closest(".form-group"));
+                        checkValid(formControl, formControl.closest(".checkbox, .radio"), formControl.closest(".form-group"));
                     });
                 }
             }

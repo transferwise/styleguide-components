@@ -30,7 +30,11 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         }
         function fakeClick(buttonReplacement) {
             var formControl = $(buttonReplacement).closest("label").find("input");
-            formControl.click();
+            "undefined" != typeof formControl[0] && (MouseEvent ? formControl[0].dispatchEvent(new MouseEvent("click", {
+                view: window,
+                bubbles: !0,
+                cancelable: !0
+            })) : formControl.click());
         }
         function onKeypress(event) {
             13 === (event.keyCode ? event.keyCode : event.which) && fakeClick(this);
@@ -111,7 +115,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 if (("radio" === type || "checkbox" === type) && 0 !== $(element).closest(labelSelector).length) {
                     var formControl = $(element), label = formControl.closest("label");
                     label.on("click", function() {
-                        console.log("click!"), checkValid(formControl, formControl.closest(".checkbox, .radio"), formControl.closest(".form-group"));
+                        checkValid(formControl, formControl.closest(".checkbox, .radio"), formControl.closest(".form-group"));
                     });
                 }
             }
