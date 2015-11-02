@@ -23,7 +23,13 @@
 		}
 		function fakeClick(buttonReplacement) {
 			var formControl = $(buttonReplacement).closest('label').find('input');
-			formControl.click();
+			if (typeof formControl[0] !== 'undefined') {
+				formControl[0].dispatchEvent(new MouseEvent('click', {
+					'view': window,
+					'bubbles': true,
+					'cancelable': true
+				}));
+			}
 		}
 		function onKeypress(event) {
 			if ((event.keyCode ? event.keyCode : event.which) === 13) { // Space
