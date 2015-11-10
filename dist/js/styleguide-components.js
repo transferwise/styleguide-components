@@ -1,6 +1,7 @@
 angular.module("tw.form-validation", []);
 angular.module("tw.form-styling", []);
-angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styling']);
+angular.module("tw.form-components", []);
+angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styling', 'tw.form-components']);
 !function(angular) {
     "use strict";
     function TwFormControlStyling() {
@@ -60,7 +61,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     "use strict";
     function checkValid(formControl, formGroup) {
         setTimeout(function() {
-            return formControl.hasClass("ng-invalid") ? void (formControl.hasClass("ng-touched") && formGroup.addClass("has-error")) : void formGroup.removeClass("has-error");
+            return formControl.hasClass("ng-invalid") ? void (formControl.hasClass("ng-touched") && !formControl.hasClass("ng-pristine") && formGroup.addClass("has-error")) : void formGroup.removeClass("has-error");
         }, 10);
     }
     function TwFormControlValidation() {

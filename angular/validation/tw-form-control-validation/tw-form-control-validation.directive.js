@@ -12,7 +12,8 @@
 				formGroup.removeClass("has-error");
 				return;
 			}
-			if (formControl.hasClass("ng-touched")) {
+			if (formControl.hasClass("ng-touched") &&
+				!formControl.hasClass("ng-pristine")) {
 				formGroup.addClass("has-error");
 			}
 		},10);

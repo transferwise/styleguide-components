@@ -3,7 +3,7 @@ angular.module("tw.form-validation", []);
     "use strict";
     function checkValid(formControl, formGroup) {
         setTimeout(function() {
-            return formControl.hasClass("ng-invalid") ? void (formControl.hasClass("ng-touched") && formGroup.addClass("has-error")) : void formGroup.removeClass("has-error");
+            return formControl.hasClass("ng-invalid") ? void (formControl.hasClass("ng-touched") && !formControl.hasClass("ng-pristine") && formGroup.addClass("has-error")) : void formGroup.removeClass("has-error");
         }, 10);
     }
     function TwFormControlValidation() {

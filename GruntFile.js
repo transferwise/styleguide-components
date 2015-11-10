@@ -23,7 +23,8 @@ module.exports = function(grunt) {
                 options: {
                     banner: 'angular.module("tw.form-validation", []);\n' +
                         'angular.module("tw.form-styling", []);\n' +
-                        'angular.module("tw.styleguide-components", [\'tw.form-validation\', \'tw.form-styling\']);\n',
+                        'angular.module("tw.form-components", []);\n' +
+                        'angular.module("tw.styleguide-components", [\'tw.form-validation\', \'tw.form-styling\', \'tw.form-components\']);\n',
                     mangle: false,
                     beautify: true
                 }
@@ -32,8 +33,10 @@ module.exports = function(grunt) {
                 src: ['angular/**/*.controller.js', 'angular/**/*.directive.js'],
                 dest: 'dist/js/styleguide-components.min.js',
                 options: {
-                    banner: 'angular.module("tw.styleguide-components", []);\n' +
-                        'angular.module("tw.form-styling", []);\n',
+                    banner: 'angular.module("tw.form-validation", []);\n' +
+                        'angular.module("tw.form-styling", []);\n' +
+                        'angular.module("tw.form-components", []);\n' +
+                        'angular.module("tw.styleguide-components", [\'tw.form-validation\', \'tw.form-styling\', \'tw.form-components\']);\n',
                     mangle: true,
                     beautify: false
                 }
