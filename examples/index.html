@@ -214,10 +214,10 @@
 										Example dynamic form control
 									</label>
 									<tw-dynamic-form-control
-										type="vm.dynamic.type"
-										options="vm.dynamic.options"
-										placeholder="vm.dynamic.placeholder"
 										name="dynamic"
+										type="{{vm.dynamic.type}}"
+										placeholder="{{vm.dynamic.placeholder}}"
+										options="vm.dynamic.options"
 										ng-model="vm.model.dynamicFormControl"
 										ng-required="vm.dynamic.required"
 										ng-disabled="vm.dynamic.disabled"
@@ -279,20 +279,21 @@
 									</div>
 
 									<div class="form-group"
-										ng-if="vm.dynamic.type !== 'text'">
-										<label class="control-label">
-											Options
-										</label>
-										<div ng-init="vm.dynamic.options = {
+										ng-if="vm.dynamic.type !== 'text'"
+										ng-init="vm.dynamic.options = {
 											'one': 'One',
 											'two': 'Two',
 											'three': 'Three'
 										}">
-											<input type="text"
-												class="form-control m-b"
-												ng-model="label"
-												ng-repeat="(value, label) in vm.dynamic.options" />
-										</div>
+										<!--
+										<label class="control-label">
+											Options
+										</label>
+										<input type="text"
+											class="form-control m-b"
+											ng-repeat="(value, label) in vm.dynamic.options"
+											ng-model="label" />
+										-->
 									</div>
 
 									<div class="form-group">

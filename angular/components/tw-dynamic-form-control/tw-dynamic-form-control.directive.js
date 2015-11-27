@@ -12,10 +12,10 @@
 			bindToController: true,
 			controller: function() { },
 			scope: {
-				type: "=",
+				name: "@",
+				type: "@",
+				placeholder: "@",
 				options: "=",
-				placeholder: "=",
-				name: "=",
 				ngModel: "=",
 				ngRequired: "=",
 				ngDisabled: "=",
@@ -70,7 +70,7 @@
 					name='{{vm.name}}' \
 					id='{{vm.name}}' \
 					class='form-control' \
-					ng-options='value as label for (value, label) in vm.options track by $index' \
+					ng-options='value as label for (value, label) in vm.options' \
 					ng-model='vm.ngModel' \
 					ng-required='vm.ngRequired' \
 					ng-disabled='vm.ngDisabled'> \
