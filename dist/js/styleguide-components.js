@@ -82,28 +82,6 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     }
     angular.module("tw.form-styling").directive("input", TwInputStyling);
 }(window.angular), function(angular) {
-    function TwSelectStyling($timeout) {
-        function compile(tElm, tAttrs) {
-            {
-                var watch, repeatOption, repeatAttr;
-                tElm.is("select"), void 0 !== tAttrs.multiple;
-            }
-            return tElm.is("select") && (repeatOption = tElm.find("option[ng-repeat], option[data-ng-repeat]"), 
-            repeatOption.length && (repeatAttr = repeatOption.attr("ng-repeat") || repeatOption.attr("data-ng-repeat"), 
-            watch = jQuery.trim(repeatAttr.split("|")[0]).split(" ").pop())), function(scope, elm, attrs, controller) {
-                controller && watch && scope.$watch(watch, function(newVal) {
-                    newVal && $timeout(function() {});
-                }), attrs.$observe("disabled", function() {}), attrs.$observe("readonly", function() {}), 
-                attrs.ngMultiple && scope.$watch(attrs.ngMultiple, function() {}), $timeout(function() {});
-            };
-        }
-        return {
-            restrict: "E",
-            compile: compile
-        };
-    }
-    angular.module("tw.form-styling").directive("select", [ "$timeout", TwSelectStyling ]);
-}(window.angular), function(angular) {
     "use strict";
     function checkValid(formControl, formGroup) {
         setTimeout(function() {

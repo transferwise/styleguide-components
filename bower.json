@@ -6,7 +6,11 @@
   "dependencies": {
     "bootstrap": "https://github.com/transferwise/bootstrap.git",
     "angular": "<2.0.0",
-    "angular-mocks": "<2.0.0"
+    "angular-mocks": "<2.0.0",
+    "bootstrap-select": "~1.7.5"
   },
-  "private": true
+  "private": true,
+  "resolutions": {
+    "bootstrap-select": "~1.7.5"
+  }
 }
