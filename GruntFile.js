@@ -17,7 +17,7 @@ module.exports = function(grunt) {
             }
         },
         uglify: {
-            components: {
+            combined: {
                 src: ['angular/**/*.controller.js', 'angular/**/*.directive.js'],
                 dest: 'dist/js/styleguide-components.js',
                 options: {
@@ -29,7 +29,7 @@ module.exports = function(grunt) {
                     beautify: true
                 }
             },
-            componentsMin: {
+            combinedMin: {
                 src: ['angular/**/*.controller.js', 'angular/**/*.directive.js'],
                 dest: 'dist/js/styleguide-components.min.js',
                 options: {
@@ -73,6 +73,24 @@ module.exports = function(grunt) {
                 dest: 'dist/js/form-styling.min.js',
                 options: {
                     banner: 'angular.module("tw.form-styling", []);\n',
+                    mangle: true,
+                    beautify: false
+                }
+            },
+            components: {
+                src: ['angular/components/**/*.controller.js', 'angular/components/**/*.directive.js'],
+                dest: 'dist/js/form-components.js',
+                options: {
+                    banner: 'angular.module("tw.form-components", []);\n',
+                    mangle: false,
+                    beautify: true
+                }
+            },
+            componentsMin: {
+                src: ['angular/components/**/*.controller.js', 'angular/components/**/*.directive.js'],
+                dest: 'dist/js/form-components.min.js',
+                options: {
+                    banner: 'angular.module("tw.form-components", []);\n',
                     mangle: true,
                     beautify: false
                 }
@@ -156,5 +174,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-htmllint');
 
     // === REGISTER TASKS ===
-    grunt.registerTask('default', ['jshint', 'htmllint', 'uglify', 'less', 'copy', 'watch']);
+    grunt.registerTask('default', ['jshint', 'uglify', 'less', 'copy', 'watch']); //'htmllint',
 };

@@ -3,6 +3,30 @@ angular.module("tw.form-styling", []);
 angular.module("tw.form-components", []);
 angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styling', 'tw.form-components']);
 !function(angular) {
+    function TwDynamicFormControl() {
+        return {
+            restrict: "E",
+            controllerAs: "vm",
+            bindToController: !0,
+            controller: function() {},
+            scope: {
+                type: "=",
+                options: "=",
+                placeholder: "=",
+                name: "=",
+                ngModel: "=",
+                ngRequired: "=",
+                ngDisabled: "=",
+                ngMinlength: "=",
+                ngMaxlength: "=",
+                ngPattern: "="
+            },
+            link: function() {},
+            template: "<div ng-switch='vm.type'> 				<input ng-switch-when='text'  					name='{{vm.name}}'  					id='{{vm.name}}' 					type='text' 					class='form-control' 					placeholder='{{vm.placeholder}}' 					ng-model='vm.ngModel' 					ng-required='vm.ngRequired' 					ng-disabled='vm.ngDisabled' 					ng-minlength='vm.ngMinlength' 					ng-maxlength='vm.ngMaxlength' 					ng-pattern='vm.ngPattern' />  				<div ng-switch-when='radio' 					class='radio' 					ng-class='{disabled: vm.ngDisabled}' 					ng-repeat='(value, label) in vm.options'> 					<label> 						<input type='radio' 							name='{{vm.name}}' 							value='{{value}}' 							ng-model='vm.ngModel' 							ng-required='vm.ngRequired' 							ng-disabled='vm.ngDisabled' /> 						{{label}} 					</label> 				</div> 				<div ng-switch-when='checkbox' 					class='checkbox' 					ng-class='{disabled: vm.ngDisabled}'> 					<label> 						<input type='checkbox' 							name='{{vm.name}}' 							ng-model='vm.ngModel' 							ng-required='vm.ngRequired' 							ng-disabled='vm.ngDisabled' /> 						{{vm.placeholder}} 					</label> 				</div> 				<select ng-switch-when='select' 					name='{{vm.name}}' 					id='{{vm.name}}' 					class='form-control' 					ng-options='value as label for (value, label) in vm.options track by $index' 					ng-model='vm.ngModel' 					ng-required='vm.ngRequired' 					ng-disabled='vm.ngDisabled'> 					<option ng-if='vm.placeholder' value=''> 						{{vm.placeholder}} 					</option> 				</select> 			</div>"
+        };
+    }
+    angular.module("tw.form-components").directive("twDynamicFormControl", TwDynamicFormControl);
+}(window.angular), function(angular) {
     "use strict";
     function TwFormControlStyling() {
         return {
@@ -57,6 +81,28 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         };
     }
     angular.module("tw.form-styling").directive("input", TwInputStyling);
+}(window.angular), function(angular) {
+    function TwSelectStyling($timeout) {
+        function compile(tElm, tAttrs) {
+            {
+                var watch, repeatOption, repeatAttr;
+                tElm.is("select"), void 0 !== tAttrs.multiple;
+            }
+            return tElm.is("select") && (repeatOption = tElm.find("option[ng-repeat], option[data-ng-repeat]"), 
+            repeatOption.length && (repeatAttr = repeatOption.attr("ng-repeat") || repeatOption.attr("data-ng-repeat"), 
+            watch = jQuery.trim(repeatAttr.split("|")[0]).split(" ").pop())), function(scope, elm, attrs, controller) {
+                controller && watch && scope.$watch(watch, function(newVal) {
+                    newVal && $timeout(function() {});
+                }), attrs.$observe("disabled", function() {}), attrs.$observe("readonly", function() {}), 
+                attrs.ngMultiple && scope.$watch(attrs.ngMultiple, function() {}), $timeout(function() {});
+            };
+        }
+        return {
+            restrict: "E",
+            compile: compile
+        };
+    }
+    angular.module("tw.form-styling").directive("select", [ "$timeout", TwSelectStyling ]);
 }(window.angular), function(angular) {
     "use strict";
     function checkValid(formControl, formGroup) {
