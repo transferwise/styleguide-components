@@ -12,15 +12,19 @@
 			bindToController: true,
 			controller: function() { },
 			scope: {
-				name: "@",
 				type: "@",
+				name: "@",
+				id: "@",
 				placeholder: "@",
+				step: "@",
 				options: "=",
 				ngModel: "=",
 				ngRequired: "=",
 				ngDisabled: "=",
 				ngMinlength: "=",
 				ngMaxlength: "=",
+				ngMin: "=",
+				ngMax: "=",
 				ngPattern: "="
 			},
 			link: function(scope, element) {
@@ -30,7 +34,7 @@
 			"<div ng-switch='vm.type'> \
 				<input ng-switch-when='text'  \
 					name='{{vm.name}}'  \
-					id='{{vm.name}}' \
+					id='{{vm.id}}' \
 					type='text' \
 					class='form-control' \
 					placeholder='{{vm.placeholder}}' \
@@ -40,10 +44,22 @@
 					ng-minlength='vm.ngMinlength' \
 					ng-maxlength='vm.ngMaxlength' \
 					ng-pattern='vm.ngPattern' />  \
+				<input ng-switch-when='number'  \
+					name='{{vm.name}}'  \
+					id='{{vm.id}}' \
+					type='number' \
+					step='{{vm.step}}' \
+					class='form-control' \
+					placeholder='{{vm.placeholder}}' \
+					ng-model='vm.ngModel' \
+					ng-required='vm.ngRequired' \
+					ng-disabled='vm.ngDisabled' \
+					ng-min='vm.ngMin' \
+					ng-max='vm.ngMax' />  \
 				<div ng-switch-when='radio' \
 					class='radio' \
 					ng-class='{disabled: vm.ngDisabled}' \
-					ng-repeat='(value, label) in vm.options'> \
+					ng-repeat='(value, label) in vm.options track by $index'> \
 					<label> \
 						<input type='radio' \
 							name='{{vm.name}}' \
@@ -60,6 +76,7 @@
 					<label> \
 						<input type='checkbox' \
 							name='{{vm.name}}' \
+							id='{{vm.id}}' \
 							ng-model='vm.ngModel' \
 							ng-required='vm.ngRequired' \
 							ng-disabled='vm.ngDisabled' /> \
@@ -68,9 +85,9 @@
 				</div> \
 				<select ng-switch-when='select' \
 					name='{{vm.name}}' \
-					id='{{vm.name}}' \
+					id='{{vm.id}}' \
 					class='form-control' \
-					ng-options='value as label for (value, label) in vm.options' \
+					ng-options='value as label for (value, label) in vm.options track by $index' \
 					ng-model='vm.ngModel' \
 					ng-required='vm.ngRequired' \
 					ng-disabled='vm.ngDisabled'> \

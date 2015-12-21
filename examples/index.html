@@ -208,7 +208,7 @@
 							dynamic form based on an external specification.</p>
 						<hr />
 						<div class="row">
-							<div class="col-md-5">
+							<div class="col-md-6">
 								<div class="form-group">
 									<label class="control-label" for="dynamic">
 										Example dynamic form control
@@ -223,14 +223,39 @@
 										ng-disabled="vm.dynamic.disabled"
 										ng-minlength="vm.dynamic.minlength"
 										ng-maxlength="vm.dynamic.maxlength"
-										ng-pattern="vm.dynamic.pattern">
+										ng-pattern="vm.dynamic.pattern"
+										ng-min="vm.dynamic.min"
+										ng-max="vm.dynamic.max">
 									</tw-dynamic-form-control>
+									<div class="error-messages">
+										<div class="error-required">Required</div>
+										<div class="error-minlength">Too short</div>
+										<div class="error-maxlength">Too long</div>
+										<div class="error-min">Too low</div>
+										<div class="error-max">Too high</div>
+										<div class="error-pattern">Invalid characters</div>
+									</div>
 								</div>
 
-								<h5>Configuration model</h5>
-								<pre>{{vm.dynamic | json}}</pre>
+								<h5>Configuration</h5>
+								<pre>
+&lt;tw-dynamic-form-control
+  type="{{vm.dynamic.type}}"
+  placeholder="{{vm.dynamic.placeholder}}"<span ng-if="vm.dynamic.type == 'radio' || vm.dynamic.type == 'select'">
+  options="{'one': 'One', ...}"</span>
+  ng-model="..."<span ng-if="vm.dynamic.required">
+  ng-required="{{vm.dynamic.required}}"</span><span ng-if="vm.dynamic.disabled">
+  ng-disabled="{{vm.dynamic.disabled}}"</span><span ng-if="vm.dynamic.type === 'text'"><span ng-if="vm.dynamic.minlength">
+  ng-minlength="{{vm.dynamic.minlength}}"</span><span ng-if="vm.dynamic.maxlength">
+  ng-maxlength="{{vm.dynamic.maxlength}}"</span><span ng-if="vm.dynamic.pattern">
+  ng-pattern="{{vm.dynamic.pattern}}"</span></span><span ng-if="vm.dynamic.type === 'number'"><span ng-if="vm.dynamic.min">
+  ng-min="{{vm.dynamic.min}}"</span><span ng-if="vm.dynamic.max">
+  ng-max="{{vm.dynamic.max}}"</span></span>&gt;
+&lt;/tw-dynamic-form-control&gt;
+								</pre>
+								<!--<pre>{{vm.dynamic | json}}</pre>-->
 							</div>
-							<div class="col-md-7">
+							<div class="col-md-6">
 								<div class="well">
 									<h5 class="page-header">
 										Edit configuration
@@ -246,6 +271,7 @@
 											ng-init="vm.dynamic.type = 'text'"
 											required>
 											<option value="text">Text</option>
+											<option value="number">Number</option>
 											<option value="select">Select</option>
 											<option value="radio">Radio</option>
 											<option value="checkbox">Checkbox</option>
@@ -260,7 +286,7 @@
 											<label>
 												<input type="checkbox"
 													ng-model="vm.dynamic.required" />
-												Is this dynamic control required?
+												Is the control required?
 											</label>
 										</div>
 									</div>
@@ -273,8 +299,50 @@
 											<label>
 												<input type="checkbox"
 													ng-model="vm.dynamic.disabled" />
-												Is this dynamic control disabled?
+												Is the control disabled?
 											</label>
+										</div>
+									</div>
+
+									<div class="form-group"
+										ng-if="vm.dynamic.type === 'text'">
+										<label class="control-label">
+											Min/Max length
+										</label>
+										<div class="row">
+											<div class="col-xs-6">
+												<input type="number"
+													class="form-control"
+													placeholder="Minlength"
+													ng-model="vm.dynamic.minlength" />
+											</div>
+											<div class="col-xs-6">
+												<input type="number"
+													class="form-control"
+													placeholder="Maxlength"
+													ng-model="vm.dynamic.maxlength" />
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group"
+										ng-if="vm.dynamic.type === 'number'">
+										<label class="control-label">
+											Min/Max
+										</label>
+										<div class="row">
+											<div class="col-xs-6">
+												<input type="number"
+													class="form-control"
+													placeholder="Min"
+													ng-model="vm.dynamic.min" />
+											</div>
+											<div class="col-xs-6">
+												<input type="number"
+													class="form-control"
+													placeholder="Max"
+													ng-model="vm.dynamic.max" />
+											</div>
 										</div>
 									</div>
 
