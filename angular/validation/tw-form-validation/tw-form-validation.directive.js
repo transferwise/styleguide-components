@@ -13,7 +13,7 @@
 				$(element).on('submit', function() {
 					// Submitting the form won't trigger form controls own validation
 					$(element)
-						.find(".form-control.ng-invalid")
+						.find("[tw-validation].ng-invalid")
 						.closest(".form-group")
 						.addClass("has-error");
 

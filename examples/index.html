@@ -14,7 +14,22 @@
 	<script src="../components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 
 	<script>
-	angular.module('my-app', ['tw.styleguide-components']);
+	angular.module('my-app', ['tw.styleguide-components'])
+	.directive('validateRegexp', function($q) {
+		return {
+			require: 'ngModel',
+			link: function(scope, element, attrs, ngModel) {
+				ngModel.$asyncValidators.async = function(modelValue, viewValue) {
+					try {
+						var reg = new RegExp(viewValue);
+						return $q.when(true);
+					} catch(error) {
+						return $q.reject(false);
+					}
+				};
+			}
+		};
+	});
 	</script>
 
 	<link type="text/css" rel="stylesheet"
@@ -31,6 +46,32 @@
 		background-color: transparent;
 		padding: 0;
 	}
+
+	.error-async,
+	.error-number,
+	.error-date,
+	.error-time,
+	.error-datetime,
+	.error-email,
+	.error-url,
+	.error-week,
+	.error-month,
+	.error-datetimelocal {
+		display: none;
+	}
+	.ng-invalid-number ~ .error-messages > .error-number,
+	.ng-invalid-async ~ .error-messages > .error-async,
+	.ng-invalid-date ~ .error-messages > .error-date,
+	.ng-invalid-time ~ .error-messages > .error-time,
+	.ng-invalid-datetime ~ .error-messages > .error-datetime,
+	.ng-invalid-email ~ .error-messages > .error-email,
+	.ng-invalid-url ~ .error-messages > .error-url,
+	.ng-invalid-week ~ .error-messages > .error-week,
+	.ng-invalid-month ~ .error-messages > .error-month,
+	.ng-invalid-datetimelocal ~ .error-messages > .error-datetimelocal {
+		display: block;
+	}
+
 	</style>
 </head>
 <body ng-app="my-app">
@@ -42,14 +83,14 @@
 					ng-submit="vm.submit()"
 					novalidate>
 					<div class="panel-heading">
-						<h3>Simple Form</h3>
+						<h3 class="panel-title">Simple Form</h3>
 					</div>
 					<div class="panel-body">
 						<div class="form-group">
 							<label class="control-label">
 								Text input - required
 							</label>
-							<input type="text" required
+							<input type="text" required tw-validation
 								class="form-control"
 								placeholder="Placeholder"
 								ng-model="vm.model.textRequired" />
@@ -58,7 +99,7 @@
 							<label class="control-label">
 								Select - required
 							</label>
-							<select class="form-control" required
+							<select class="form-control" required tw-validation
 								ng-model="vm.model.selectRequired">
 								<option value="">Please choose..</option>
 								<option value="1">Option 1</option>
@@ -132,7 +173,7 @@
 							<label class="control-label">
 								Textarea - required
 							</label>
-							<textarea required
+							<textarea required tw-validation
 								name="textareaSimple"
 								class="form-control"
 								placeholder="Required"
@@ -144,7 +185,7 @@
 							<label class="control-label">
 								Text - complex validation
 							</label>
-							<input type="text" required
+							<input type="text" required tw-validation
 								name="textComplex"
 								class="form-control"
 								placeholder="a-z only, 2 to 6 chars"
@@ -157,6 +198,63 @@
 								<div class="error-minlength">Too short</div>
 								<div class="error-maxlength">Too long</div>
 								<div class="error-pattern">Invalid characters</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label">
+								Number - complex validation
+							</label>
+							<input type="number" required tw-validation
+								name="numberComplex"
+								class="form-control"
+								placeholder="min 5, max 10"
+								ng-model="vm.model.numberComplex"
+								ng-min="5"
+								ng-max="10" />
+							<div class="error-messages">
+								<div class="error-required">Required</div>
+								<div class="error-min">Number must be at least 5</div>
+								<div class="error-max">Number must be at most 10</div>
+								<div class="error-number">Must be a number</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label">
+								Date - complex validation
+							</label>
+							<input type="date" required tw-validation
+								name="dateComplex"
+								class="form-control"
+								placeholder="YYYY-MM-DD, dates in 2016 only"
+								ng-model="vm.model.dateComplex"
+								min="2016-01-01"
+								max="2016-12-31" />
+							<div class="error-messages">
+								<div class="error-required">Required</div>
+								<div class="error-min">Date must be after 2015-12-31</div>
+								<div class="error-max">Date must be before 2017-01-01</div>
+								<div class="error-date">Must be a valid YYYY-MM-DD date</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label">
+								Time - complex validation
+							</label>
+							<input type="time" required tw-validation
+								name="timeComplex"
+								class="form-control"
+								placeholder="HH:MM:SS, time between 9am and 5pm"
+								ng-model="vm.model.timeComplex"
+								min="09:00:00"
+								max="17:00:00" />
+							<div class="error-messages">
+								<div class="error-required">Required</div>
+								<div class="error-min">Time must be after 09:00:00</div>
+								<div class="error-max">Time must be before 17:00:00</div>
+								<div class="error-time">Must be a valid HH:MM:SS time</div>
 							</div>
 						</div>
 
@@ -182,7 +280,7 @@
 					name="componentsForm"
 					novalidate>
 					<div class="panel-heading">
-						<h3>Form components</h3>
+						<h3 class="panel-title">Form components</h3>
 					</div>
 					<div class="panel-body">
 						<!--
@@ -213,7 +311,7 @@
 									<label class="control-label" for="dynamic">
 										Example dynamic form control
 									</label>
-									<tw-dynamic-form-control
+									<tw-dynamic-form-control tw-validation
 										name="dynamic"
 										type="{{vm.dynamic.type}}"
 										placeholder="{{vm.dynamic.placeholder}}"
@@ -228,12 +326,27 @@
 										ng-max="vm.dynamic.max">
 									</tw-dynamic-form-control>
 									<div class="error-messages">
-										<div class="error-required">Required</div>
-										<div class="error-minlength">Too short</div>
-										<div class="error-maxlength">Too long</div>
-										<div class="error-min">Too low</div>
-										<div class="error-max">Too high</div>
-										<div class="error-pattern">Invalid characters</div>
+										<div class="error-required">
+											Required
+										</div>
+										<div class="error-minlength">
+											Must be at least {{vm.dynamic.minlength}} characters
+										</div>
+										<div class="error-maxlength">
+											Must not be longer than {{vm.dynamic.maxlength}} characters
+										</div>
+										<div class="error-min">
+											Must be at least {{vm.dynamic.min}}
+										</div>
+										<div class="error-max">
+											Must not be higher than {{vm.dynamic.max}}
+										</div>
+										<div class="error-pattern">
+											Invalid characters
+										</div>
+										<div class="error-number">
+											Must be a number
+										</div>
 									</div>
 								</div>
 
@@ -250,10 +363,10 @@
   ng-maxlength="{{vm.dynamic.maxlength}}"</span><span ng-if="vm.dynamic.pattern">
   ng-pattern="{{vm.dynamic.pattern}}"</span></span><span ng-if="vm.dynamic.type === 'number'"><span ng-if="vm.dynamic.min">
   ng-min="{{vm.dynamic.min}}"</span><span ng-if="vm.dynamic.max">
-  ng-max="{{vm.dynamic.max}}"</span></span>&gt;
+  ng-max="{{vm.dynamic.max}}"</span></span>
+  tw-validation&gt;
 &lt;/tw-dynamic-form-control&gt;
 								</pre>
-								<!--<pre>{{vm.dynamic | json}}</pre>-->
 							</div>
 							<div class="col-md-6">
 								<div class="well">
@@ -265,17 +378,17 @@
 										<label class="control-label">
 											Type
 										</label>
-										<select class="form-control"
+										<select required
+											class="form-control"
 											ng-model="vm.dynamic.type"
 											ng-change="vm.model.dynamicFormControl = null"
-											ng-init="vm.dynamic.type = 'text'"
-											required>
+											ng-init="vm.dynamic.type = 'text'">
 											<option value="text">Text</option>
-											<option value="number">Number</option>
 											<option value="select">Select</option>
 											<option value="radio">Radio</option>
 											<option value="checkbox">Checkbox</option>
 										</select>
+										<!-- <option value="number">Number</option> -->
 									</div>
 
 									<div class="form-group">
@@ -326,6 +439,21 @@
 									</div>
 
 									<div class="form-group"
+										ng-if="vm.dynamic.type === 'text'">
+										<label class="control-label">
+											Pattern
+										</label>
+										<input type="text"
+											class="form-control"
+											placeholder="e.g. [a-z]+"
+											ng-model="vm.dynamic.pattern"
+											validate-regexp tw-validation />
+										<div class="error-messages">
+											<div class="error-async">Invalid regex</div>
+										</div>
+									</div>
+
+									<div class="form-group"
 										ng-if="vm.dynamic.type === 'number'">
 										<label class="control-label">
 											Min/Max
@@ -364,7 +492,8 @@
 										-->
 									</div>
 
-									<div class="form-group">
+									<div class="form-group"
+										ng-if="vm.dynamic.type !== 'radio'">
 										<label class="control-label">
 											Placeholder
 										</label>

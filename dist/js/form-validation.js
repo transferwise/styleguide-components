@@ -1,27 +1,29 @@
 angular.module("tw.form-validation", []);
 !function(angular) {
     "use strict";
+    function TwFormControlValidation() {
+        return {
+            restrict: "AC",
+            require: "ngModel",
+            link: validationLink
+        };
+    }
+    function validationLink(scope, element) {
+        var formControl = $(element), formGroup = formControl.closest(".form-group");
+        formControl.on("blur keyup", function() {
+            checkValid(formControl, formGroup);
+        }).on("invalid", function(event) {
+            event.preventDefault();
+        }), formControl.filter("select").on("change", function() {
+            checkValid(formControl, formGroup);
+        });
+    }
     function checkValid(formControl, formGroup) {
         setTimeout(function() {
             return formControl.hasClass("ng-invalid") ? void (formControl.hasClass("ng-touched") && !formControl.hasClass("ng-pristine") && formGroup.addClass("has-error")) : void formGroup.removeClass("has-error");
         }, 10);
     }
-    function TwFormControlValidation() {
-        return {
-            restrict: "C",
-            link: function(scope, element) {
-                var formControl = $(element), formGroup = formControl.closest(".form-group");
-                formControl.on("blur keyup", function() {
-                    checkValid(formControl, formGroup);
-                }).on("invalid", function(event) {
-                    event.preventDefault();
-                }), formControl.filter("select").on("change", function() {
-                    checkValid(formControl, formGroup);
-                });
-            }
-        };
-    }
-    angular.module("tw.form-validation").directive("formControl", TwFormControlValidation);
+    angular.module("tw.form-validation").directive("twValidation", TwFormControlValidation);
 }(window.angular), function(angular) {
     "use strict";
     function TwFormValidation() {
@@ -29,7 +31,7 @@ angular.module("tw.form-validation", []);
             restrict: "E",
             link: function(scope, element) {
                 $(element).on("submit", function() {
-                    $(element).find(".form-control.ng-invalid").closest(".form-group").addClass("has-error");
+                    $(element).find("[tw-validation].ng-invalid").closest(".form-group").addClass("has-error");
                     var invalidControl = $(element).find("input[type=checkbox].ng-invalid, input[type=radio].ng-invalid");
                     return invalidControl.closest(".checkbox, .radio").addClass("has-error"), invalidControl.parents(".form-group").addClass("has-error"), 
                     !0;

@@ -8,10 +8,12 @@ module.exports = function(config) {
             // include relevant Angular files and libs
             'components/angular/angular.js',
             'components/angular-mocks/angular-mocks.js',
+            'components/jquery/dist/jquery.js',
 
             // include js files
-            'angular/**/*.controller.js',
-            'angular/**/*.directive.js',
+            //'angular/**/*.controller.js',
+            //'angular/**/*.directive.js',
+            'dist/js/styleguide-components.js',
 
             // include unit test specs
             'angular/**/*.spec.js'

@@ -8,7 +8,12 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             restrict: "E",
             controllerAs: "vm",
             bindToController: !0,
-            controller: function() {},
+            controller: function($element) {
+                var vm = this;
+                this.change = function() {
+                    change(vm.type, $element);
+                };
+            },
             scope: {
                 type: "@",
                 name: "@",
@@ -26,8 +31,22 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 ngPattern: "="
             },
             link: function() {},
-            template: "<div ng-switch='vm.type'> 				<input ng-switch-when='text'  					name='{{vm.name}}'  					id='{{vm.id}}' 					type='text' 					class='form-control' 					placeholder='{{vm.placeholder}}' 					ng-model='vm.ngModel' 					ng-required='vm.ngRequired' 					ng-disabled='vm.ngDisabled' 					ng-minlength='vm.ngMinlength' 					ng-maxlength='vm.ngMaxlength' 					ng-pattern='vm.ngPattern' />  				<input ng-switch-when='number'  					name='{{vm.name}}'  					id='{{vm.id}}' 					type='number' 					step='{{vm.step}}' 					class='form-control' 					placeholder='{{vm.placeholder}}' 					ng-model='vm.ngModel' 					ng-required='vm.ngRequired' 					ng-disabled='vm.ngDisabled' 					ng-min='vm.ngMin' 					ng-max='vm.ngMax' />  				<div ng-switch-when='radio' 					class='radio' 					ng-class='{disabled: vm.ngDisabled}' 					ng-repeat='(value, label) in vm.options track by $index'> 					<label> 						<input type='radio' 							name='{{vm.name}}' 							value='{{value}}' 							ng-model='vm.ngModel' 							ng-required='vm.ngRequired' 							ng-disabled='vm.ngDisabled' /> 						{{label}} 					</label> 				</div> 				<div ng-switch-when='checkbox' 					class='checkbox' 					ng-class='{disabled: vm.ngDisabled}'> 					<label> 						<input type='checkbox' 							name='{{vm.name}}' 							id='{{vm.id}}' 							ng-model='vm.ngModel' 							ng-required='vm.ngRequired' 							ng-disabled='vm.ngDisabled' /> 						{{vm.placeholder}} 					</label> 				</div> 				<select ng-switch-when='select' 					name='{{vm.name}}' 					id='{{vm.id}}' 					class='form-control' 					ng-options='value as label for (value, label) in vm.options track by $index' 					ng-model='vm.ngModel' 					ng-required='vm.ngRequired' 					ng-disabled='vm.ngDisabled'> 					<option ng-if='vm.placeholder' value=''> 						{{vm.placeholder}} 					</option> 				</select> 			</div>"
+            template: "<div ng-switch='vm.type'> 				<input ng-switch-when='text'  					name='{{vm.name}}'  					id='{{vm.id}}' 					type='text' 					class='form-control' 					placeholder='{{vm.placeholder}}' 					ng-model='vm.ngModel' 					ng-disabled='vm.ngDisabled' 					ng-change='vm.change()' />  				<input ng-switch-when='number'  					name='{{vm.name}}'  					id='{{vm.id}}' 					type='number' 					step='{{vm.step}}' 					class='form-control' 					placeholder='{{vm.placeholder}}' 					ng-model='vm.ngModel' 					ng-required='vm.ngRequired' 					ng-disabled='vm.ngDisabled' 					ng-change='vm.change()' 					ng-min='vm.ngMin' 					ng-max='vm.ngMax' />  				<div ng-switch-when='radio' 					class='radio' 					ng-class='{disabled: vm.ngDisabled}' 					ng-repeat='(value, label) in vm.options track by $index'> 					<label> 						<input type='radio' 							name='{{vm.name}}' 							value='{{value}}' 							ng-model='vm.ngModel' 							ng-required='vm.ngRequired' 							ng-disabled='vm.ngDisabled' /> 						{{label}} 					</label> 				</div> 				<div ng-switch-when='checkbox' 					class='checkbox' 					ng-class='{disabled: vm.ngDisabled}'> 					<label> 						<input type='checkbox' 							name='{{vm.name}}' 							id='{{vm.id}}' 							ng-model='vm.ngModel' 							ng-required='vm.ngRequired' 							ng-disabled='vm.ngDisabled' /> 						{{vm.placeholder}} 					</label> 				</div> 				<select ng-switch-when='select' 					name='{{vm.name}}' 					id='{{vm.id}}' 					class='form-control' 					ng-options='value as label for (value, label) in vm.options track by $index' 					ng-model='vm.ngModel' 					ng-required='vm.ngRequired' 					ng-disabled='vm.ngDisabled' 					ng-change='vm.change()'> 					<option ng-if='vm.placeholder' value=''> 						{{vm.placeholder}} 					</option> 				</select> 			</div>"
         };
+    }
+    function change(type, $element) {
+        var formGroup = $element.closest(".form-group");
+        console.log("change"), setTimeout(function() {
+            if ($element.removeClass("ng-untouched"), "number" === type) {
+                var input = $element.find("input");
+                console.log(input), input.hasClass("ng-invalid") ? formGroup.addClass("has-error") : formGroup.removeClass("has-error"), 
+                $element.removeClass("ng-invalid"), input.hasClass("ng-invalid-required") ? ($element.addClass("ng-invalid-required"), 
+                $element.addClass("ng-invalid")) : $element.removeClass("ng-invalid-required"), 
+                input.hasClass("ng-invalid-min") ? ($element.addClass("ng-invalid-min"), $element.addClass("ng-invalid")) : $element.removeClass("ng-invalid-min"), 
+                input.hasClass("ng-invalid-max") ? ($element.addClass("ng-invalid-max"), $element.addClass("ng-invalid")) : $element.removeClass("ng-invalid-max"), 
+                input.hasClass("ng-invalid-number") ? ($element.addClass("ng-invalid-number"), $element.addClass("ng-invalid")) : $element.removeClass("ng-invalid-number");
+            } else console.log("type not number"), $element.hasClass("ng-invalid") ? formGroup.addClass("has-error") : formGroup.removeClass("has-error");
+        }, 10);
     }
     angular.module("tw.form-components").directive("twDynamicFormControl", TwDynamicFormControl);
 }(window.angular), function(angular) {
@@ -87,27 +106,29 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     angular.module("tw.form-styling").directive("input", TwInputStyling);
 }(window.angular), function(angular) {
     "use strict";
+    function TwFormControlValidation() {
+        return {
+            restrict: "AC",
+            require: "ngModel",
+            link: validationLink
+        };
+    }
+    function validationLink(scope, element) {
+        var formControl = $(element), formGroup = formControl.closest(".form-group");
+        formControl.on("blur keyup", function() {
+            checkValid(formControl, formGroup);
+        }).on("invalid", function(event) {
+            event.preventDefault();
+        }), formControl.filter("select").on("change", function() {
+            checkValid(formControl, formGroup);
+        });
+    }
     function checkValid(formControl, formGroup) {
         setTimeout(function() {
             return formControl.hasClass("ng-invalid") ? void (formControl.hasClass("ng-touched") && !formControl.hasClass("ng-pristine") && formGroup.addClass("has-error")) : void formGroup.removeClass("has-error");
         }, 10);
     }
-    function TwFormControlValidation() {
-        return {
-            restrict: "C",
-            link: function(scope, element) {
-                var formControl = $(element), formGroup = formControl.closest(".form-group");
-                formControl.on("blur keyup", function() {
-                    checkValid(formControl, formGroup);
-                }).on("invalid", function(event) {
-                    event.preventDefault();
-                }), formControl.filter("select").on("change", function() {
-                    checkValid(formControl, formGroup);
-                });
-            }
-        };
-    }
-    angular.module("tw.form-validation").directive("formControl", TwFormControlValidation);
+    angular.module("tw.form-validation").directive("twValidation", TwFormControlValidation);
 }(window.angular), function(angular) {
     "use strict";
     function TwFormValidation() {
@@ -115,7 +136,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             restrict: "E",
             link: function(scope, element) {
                 $(element).on("submit", function() {
-                    $(element).find(".form-control.ng-invalid").closest(".form-group").addClass("has-error");
+                    $(element).find("[tw-validation].ng-invalid").closest(".form-group").addClass("has-error");
                     var invalidControl = $(element).find("input[type=checkbox].ng-invalid, input[type=radio].ng-invalid");
                     return invalidControl.closest(".checkbox, .radio").addClass("has-error"), invalidControl.parents(".form-group").addClass("has-error"), 
                     !0;
