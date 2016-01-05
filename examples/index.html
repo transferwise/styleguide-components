@@ -311,7 +311,7 @@
 									<label class="control-label" for="dynamic">
 										Example dynamic form control
 									</label>
-									<tw-dynamic-form-control tw-validation
+									<tw-dynamic-form-control
 										name="dynamic"
 										type="{{vm.dynamic.type}}"
 										placeholder="{{vm.dynamic.placeholder}}"
@@ -324,8 +324,7 @@
 										ng-pattern="vm.dynamic.pattern"
 										ng-min="vm.dynamic.min"
 										ng-max="vm.dynamic.max">
-									</tw-dynamic-form-control>
-									<div class="error-messages">
+
 										<div class="error-required">
 											Required
 										</div>
@@ -347,7 +346,7 @@
 										<div class="error-number">
 											Must be a number
 										</div>
-									</div>
+									</tw-dynamic-form-control>
 								</div>
 
 								<h5>Configuration</h5>
@@ -384,11 +383,11 @@
 											ng-change="vm.model.dynamicFormControl = null"
 											ng-init="vm.dynamic.type = 'text'">
 											<option value="text">Text</option>
+											<option value="number">Number</option>
 											<option value="select">Select</option>
 											<option value="radio">Radio</option>
 											<option value="checkbox">Checkbox</option>
 										</select>
-										<!-- <option value="number">Number</option> -->
 									</div>
 
 									<div class="form-group">

@@ -8,13 +8,12 @@
 	function TwDynamicFormControl() {
 		return {
 			restrict: 'E',
+			transclude: true,
 			controllerAs: "vm",
 			bindToController: true,
 			controller: function($element) {
-				var vm = this;
-
 				this.change = function() {
-					change(vm.type, $element);
+					change($element);
 				};
 			},
 			scope: {
@@ -34,7 +33,7 @@
 				ngPattern: "="
 			},
 			link: function(scope, element) {
-				
+
 			},
 			template:
 			"<div ng-switch='vm.type'> \
@@ -45,8 +44,13 @@
 					class='form-control' \
 					placeholder='{{vm.placeholder}}' \
 					ng-model='vm.ngModel' \
+					ng-required='vm.ngRequired' \
 					ng-disabled='vm.ngDisabled' \
-					ng-change='vm.change()' />  \
+					ng-pattern='vm.ngPattern' \
+					ng-change='vm.change()' \
+					ng-minlength='vm.ngMinlength' \
+					ng-maxlength='vm.ngMaxlength' \
+					tw-validation />  \
 				<input ng-switch-when='number'  \
 					name='{{vm.name}}'  \
 					id='{{vm.id}}' \
@@ -59,7 +63,8 @@
 					ng-disabled='vm.ngDisabled' \
 					ng-change='vm.change()' \
 					ng-min='vm.ngMin' \
-					ng-max='vm.ngMax' />  \
+					ng-max='vm.ngMax' \
+					tw-validation />  \
 				<div ng-switch-when='radio' \
 					class='radio' \
 					ng-class='{disabled: vm.ngDisabled}' \
@@ -95,73 +100,25 @@
 					ng-model='vm.ngModel' \
 					ng-required='vm.ngRequired' \
 					ng-disabled='vm.ngDisabled' \
-					ng-change='vm.change()'> \
+					ng-change='vm.change()' \
+					tw-validation> \
 					<option ng-if='vm.placeholder' value=''> \
 						{{vm.placeholder}} \
 					</option> \
 				</select> \
+				<ng-transclude class='error-messages'></ng-transclude> \
 			</div>"
 		};
 	}
 
-	function change(type, $element) {
+	function change($element) {
 		var formGroup = $element.closest(".form-group");
-		console.log("change");
 		setTimeout(function() {
-			$element.removeClass("ng-untouched");
-
-			if (type === "number") {
-
-				// Types other than test don't work without extra effort
-				var input = $element.find("input");
-				console.log(input);
-
-				if (input.hasClass("ng-invalid")) {
-					formGroup.addClass("has-error");
-				} else {
-					formGroup.removeClass("has-error");
-				}
-
-				$element.removeClass("ng-invalid");
-				//$element.removeClass("ng-invalid-minlength");
-				//$element.removeClass("ng-invalid-maxlength");
-
-				if (input.hasClass("ng-invalid-required")) {
-					$element.addClass("ng-invalid-required");
-					$element.addClass("ng-invalid");
-				} else {
-					$element.removeClass("ng-invalid-required");
-				}
-
-				if (input.hasClass("ng-invalid-min")) {
-					$element.addClass("ng-invalid-min");
-					$element.addClass("ng-invalid");
-				} else {
-					$element.removeClass("ng-invalid-min");
-				}
-
-				if (input.hasClass("ng-invalid-max")) {
-					$element.addClass("ng-invalid-max");
-					$element.addClass("ng-invalid");
-				} else {
-					$element.removeClass("ng-invalid-max");
-				}
-
-				if (input.hasClass("ng-invalid-number")) {
-					$element.addClass("ng-invalid-number");
-					$element.addClass("ng-invalid");
-				} else {
-					$element.removeClass("ng-invalid-number");
-				}
-
+			if ($element.hasClass("ng-invalid")) {
+				formGroup.addClass("has-error");
 			} else {
-				console.log("type not number");
-				if ($element.hasClass("ng-invalid")) {
-					formGroup.addClass("has-error");
-				} else {
-					formGroup.removeClass("has-error");
-				}
+				formGroup.removeClass("has-error");
 			}
-		},10);
+		});
 	}
 })(window.angular);
