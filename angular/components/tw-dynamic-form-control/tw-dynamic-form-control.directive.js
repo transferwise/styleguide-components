@@ -11,11 +11,11 @@
 			transclude: true,
 			controllerAs: "vm",
 			bindToController: true,
-			controller: function($element) {
+			controller: ["$element", function($element) {
 				this.change = function() {
 					change($element);
 				};
-			},
+			}],
 			scope: {
 				type: "@",
 				name: "@",
