@@ -9,11 +9,11 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             transclude: !0,
             controllerAs: "vm",
             bindToController: !0,
-            controller: function($element) {
+            controller: [ "$element", function($element) {
                 this.change = function() {
                     change($element);
                 };
-            },
+            } ],
             scope: {
                 type: "@",
                 name: "@",
