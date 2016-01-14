@@ -4,7 +4,7 @@
 
 	angular
 		.module('tw.form-styling')
-		.directive('input', TwInputStyling);
+		.directive('twInput', TwInputStyling);
 
 	function TwInputStyling() {
 		var labelSelector = '.checkbox > label, .radio > label';
@@ -54,7 +54,7 @@
 
 		var disabledReplacement =
 			"<span class='disabled-replacement input-replacement'>" +
-				"<span><span>" +
+				"<span></span>" +
 			"</span>";
 
 		function link(scope, element, attrs, ctrl) {
@@ -91,7 +91,7 @@
 		}
 
 		return {
-			restrict: 'E',
+			restrict: 'EA',
 			link: link
 		};
 	}

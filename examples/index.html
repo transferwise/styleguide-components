@@ -7,7 +7,7 @@
 		content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 	<script src="../components/jquery/dist/jquery.min.js"></script>
-	<script src="../components/angular/angular.min.js"></script>
+	<script src="../components/angular/angular.js"></script>
 	<script src="../dist/js/styleguide-components.js"></script>
 
 	<script src="../components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -87,6 +87,23 @@
 							<label class="control-label">
 								Text input - required
 							</label>
+							<tw-input-date required tw-validation
+								ng-model="vm.model.dateRequired"
+								ng-min="'2015-01-01T00:00:00Z'"
+								ng-max="'2015-12-31T23:59:59Z'">
+							</tw-input-date>
+							<div class="error-messages">
+								<div class="error-required">Required</div>
+								<div class="error-pattern">Invalid format</div>
+								<div class="error-min">Date must not before 2015</div>
+								<div class="error-max">Number must not be after 2015</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label">
+								Text input - required
+							</label>
 							<input type="text" required tw-validation
 								class="form-control"
 								placeholder="Placeholder"
@@ -109,28 +126,28 @@
 							<div class="checkbox">
 								<label>
 									<input type="checkbox" required
-										ng-model="vm.model.checkbox1" />
+										ng-model="vm.model.checkbox1" tw-input />
 									Checkbox 1 - required
 								</label>
 							</div>
 							<div class="checkbox">
 								<label>
 									<input type="checkbox" required
-										ng-model="vm.model.checkbox2" />
+										ng-model="vm.model.checkbox2" tw-input />
 									Checkbox 2 - required
 								</label>
 							</div>
 							<div class="checkbox">
 								<label>
 									<input type="checkbox"
-										ng-model="vm.model.checkbox3" />
+										ng-model="vm.model.checkbox3" tw-input />
 									Checkbox 3
 								</label>
 							</div>
 							<div class="checkbox disabled">
 								<label>
 									<input type="checkbox" disabled
-										ng-model="vm.model.checkbox4" >
+										ng-model="vm.model.checkbox4" tw-input >
 									Checkbox 4 - disabled
 								</label>
 							</div>
@@ -144,7 +161,7 @@
 								<label>
 									<input type="radio" name="simple-radio"
 										value="1" required
-										ng-model="vm.model.simpleRadio" />
+										ng-model="vm.model.simpleRadio" tw-input />
 									Radio 1
 								</label>
 							</div>
@@ -152,7 +169,7 @@
 								<label>
 									<input type="radio" name="simple-radio"
 										value="2" required
-										ng-model="vm.model.simpleRadio" />
+										ng-model="vm.model.simpleRadio" tw-input />
 									Radio 2
 								</label>
 							</div>
@@ -160,7 +177,7 @@
 								<label>
 									<input type="radio" name="simple-radio" disabled
 										value="3"
-										ng-model="vm.model.simpleRadio">
+										ng-model="vm.model.simpleRadio" tw-input>
 									Radio 3 - disabled
 								</label>
 							</div>
@@ -322,6 +339,9 @@
 										ng-min="vm.dynamic.min"
 										ng-max="vm.dynamic.max">
 
+									</tw-dynamic-form-control>
+
+									<div class="error-messages">
 										<div class="error-required">
 											Required
 										</div>
@@ -343,7 +363,7 @@
 										<div class="error-number">
 											Must be a number
 										</div>
-									</tw-dynamic-form-control>
+									</div>
 								</div>
 
 								<h5>Configuration</h5>
@@ -393,7 +413,7 @@
 										</label>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox"
+												<input type="checkbox" tw-input
 													ng-model="vm.dynamic.required" />
 												Is the control required?
 											</label>
@@ -406,7 +426,7 @@
 										</label>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox"
+												<input type="checkbox" tw-input
 													ng-model="vm.dynamic.disabled" />
 												Is the control disabled?
 											</label>

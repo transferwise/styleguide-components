@@ -44,6 +44,7 @@
 					class='form-control' \
 					placeholder='{{vm.placeholder}}' \
 					ng-model='vm.ngModel' \
+					ng-model-options='{ allowInvalid: true }' \
 					ng-required='vm.ngRequired' \
 					ng-disabled='vm.ngDisabled' \
 					ng-pattern='vm.ngPattern' \
@@ -59,6 +60,7 @@
 					class='form-control' \
 					placeholder='{{vm.placeholder}}' \
 					ng-model='vm.ngModel' \
+					ng-model-options='{ allowInvalid: true }' \
 					ng-required='vm.ngRequired' \
 					ng-disabled='vm.ngDisabled' \
 					ng-change='vm.change()' \
@@ -70,7 +72,7 @@
 					ng-class='{disabled: vm.ngDisabled}' \
 					ng-repeat='(value, label) in vm.options track by $index'> \
 					<label> \
-						<input type='radio' \
+						<input type='radio' tw-input \
 							name='{{vm.name}}' \
 							value='{{value}}' \
 							ng-model='vm.ngModel' \
@@ -83,7 +85,7 @@
 					class='checkbox' \
 					ng-class='{disabled: vm.ngDisabled}'> \
 					<label> \
-						<input type='checkbox' \
+						<input type='checkbox' tw-input \
 							name='{{vm.name}}' \
 							id='{{vm.id}}' \
 							ng-model='vm.ngModel' \

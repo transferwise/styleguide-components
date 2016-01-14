@@ -64,10 +64,15 @@ describe('Directive: TwDynamicFormControlDirective', function() {
 			$(input).trigger('input');
 			$(input).trigger('change');
 			$scope.$apply();
+			*
+			angular
+				.element(input)
+				.val("1")
+				.triggerHandler('input');
 
 			expect(directiveElem.hasClass("ng-invalid")).toBe(true);
 			expect(directiveElem.hasClass("ng-invalid-min")).toBe(true);
-			*/
+			/**/
 		});
 	});
 
