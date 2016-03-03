@@ -63,5 +63,14 @@ You will need to use the [TransferWise Bootstrap](http://bootstrap.transferwise.
 </div>
 ```
 
+### Components
+#### tw-date
+Usage:
+2 way binding via ng-model, with either a javascript `Date` object or an ISO8601 `String` date: `1994-11-05T08:15:30-05:00`
+```
+<tw-date ng-model="vm.profile.dateOfBirth" required="true"></tw-date>
+```
+<img width="488" alt="transferwise_ _pay" src="https://cloud.githubusercontent.com/assets/6596835/13503866/568d1a82-e17a-11e5-8ac2-449b59f0b087.png">
+
 ### Examples
 To try a live example clone this project, run `npm install` and open index.html in the examples folder.
