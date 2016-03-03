@@ -3,7 +3,7 @@
 
 	angular
 		.module('tw.form-components')
-		.directive('twInputDate', TwDateDirective);
+		.directive('twDate', TwDateDirective);
 
 	function TwDateDirective() {
 		var directive = {

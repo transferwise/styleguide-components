@@ -1,5 +1,140 @@
 angular.module("tw.form-components", []);
 !function(angular) {
+    "use strict";
+    function TwDateController($scope, $element) {
+        function init() {
+            vm.month = 1, vm.dateMode = typeof vm.date, $scope.$watch("vm.date", function(date) {
+                vm.explodeDate(date);
+            }), vm.explodeDate(vm.date), vm.months = getMonths(vm.locale), "" === vm.required && (vm.required = !0);
+        }
+        function getMonths(locale) {
+            var monthName, date = new Date();
+            if (!date.toLocaleDateString) return getEnglishMonths();
+            locale || (locale = "en-GB");
+            try {
+                date.toLocaleDateString(locale, {
+                    month: "long"
+                });
+            } catch (ex) {
+                return getEnglishMonths();
+            }
+            for (var monthNameRegex = /^[a-zA-Z ]+$/, months = [], i = 0; 12 > i; i++) date.setMonth(i), 
+            monthName = date.toLocaleDateString(locale, {
+                month: "long"
+            }), monthName = monthNameRegex.test(monthName) ? monthName.charAt(0).toUpperCase() + monthName.slice(1) : monthName.replace(/\d+/g, "").replace(/\W+/g, ""), 
+            months.push({
+                id: i + 1,
+                name: monthName
+            });
+            return months;
+        }
+        function getEnglishMonths() {
+            return [ {
+                id: 1,
+                name: "January"
+            }, {
+                id: 2,
+                name: "February"
+            }, {
+                id: 3,
+                name: "March"
+            }, {
+                id: 4,
+                name: "April"
+            }, {
+                id: 5,
+                name: "May"
+            }, {
+                id: 6,
+                name: "June"
+            }, {
+                id: 7,
+                name: "July"
+            }, {
+                id: 8,
+                name: "August"
+            }, {
+                id: 9,
+                name: "September"
+            }, {
+                id: 10,
+                name: "October"
+            }, {
+                id: 11,
+                name: "November"
+            }, {
+                id: 12,
+                name: "December"
+            } ];
+        }
+        function explodeDate(date) {
+            var dateObj;
+            if (date) {
+                if (dateObj = "string" == typeof date ? new Date(date) : date, !validDate(dateObj)) return vm.day = null, 
+                vm.month = 1, void (vm.year = null);
+                vm.day = dateObj.getUTCDate(), vm.month = dateObj.getUTCMonth() + 1, vm.year = dateObj.getUTCFullYear();
+            }
+        }
+        function updateDate() {
+            var dateObj;
+            if (!vm.day || null === vm.month || void 0 === vm.month || !vm.year) return vm.date = null, 
+            void $element.addClass("ng-invalid-pattern");
+            vm.day = vm.correctHighDay(vm.day, vm.month, vm.year), dateObj = new Date(Date.UTC(Number(vm.year), Number(vm.month) - 1, Number(vm.day)));
+            var minObj = new Date(vm.ngMin), maxObj = new Date(vm.ngMax);
+            return minObj > dateObj ? void $element.addClass("ng-invalid-min") : dateObj > maxObj ? void $element.addClass("ng-invalid-max") : ($element.removeClass("ng-invalid-min"), 
+            $element.removeClass("ng-invalid-max"), $element.removeClass("ng-invalid-pattern"), 
+            void (vm.date = "string" === vm.dateMode ? dateObj.getUTCFullYear() + "-" + pad(dateObj.getUTCMonth() + 1) + "-" + pad(dateObj.getUTCDate()) : dateObj));
+        }
+        function pad(n) {
+            return 10 > n ? "0" + n : n;
+        }
+        function validDate(dateObj) {
+            return "[object Date]" === Object.prototype.toString.call(dateObj) && !isNaN(dateObj.getTime());
+        }
+        function correctHighDay(day, month, year) {
+            var dateObj = new Date(0);
+            return dateObj.setUTCFullYear(year), dateObj.setUTCMonth(month), dateObj.setUTCDate(0), 
+            day > dateObj.getUTCDate() ? dateObj.getUTCDate() : day;
+        }
+        var vm = this;
+        vm.init = init, vm.explodeDate = explodeDate, vm.updateDate = updateDate, vm.correctHighDay = correctHighDay, 
+        vm.pad = pad, vm.validDate = validDate, init();
+    }
+    angular.module("tw.form-components").controller("TwDateController", TwDateController), 
+    TwDateController.$inject = [ "$scope", "$element" ];
+}(window.angular), function(angular) {
+    "use strict";
+    function TwDateDirective() {
+        var directive = {
+            bindToController: !0,
+            controller: "TwDateController",
+            controllerAs: "vm",
+            replace: !0,
+            restrict: "E",
+            scope: {
+                date: "=ngModel",
+                ngMin: "=ngMin",
+                ngMax: "=ngMax",
+                disabled: "@",
+                required: "@",
+                locale: "@"
+            },
+            templateUrl: "tw-date.html",
+            link: TwDateLink
+        };
+        return directive;
+    }
+    function TwDateLink(scope, element, attrs) {
+        attrs.ngDisabled && scope.$parent.$watch(attrs.ngDisabled, function(isDisabled) {
+            scope.disabled = isDisabled;
+        }), attrs.ngRequired && scope.$parent.$watch(attrs.ngRequired, function(isRequired) {
+            scope.required = isRequired;
+        }), element.find("[name=month]").change(function() {
+            element.find("[name=day]").focus().blur();
+        });
+    }
+    angular.module("tw.form-components").directive("twDate", TwDateDirective);
+}(window.angular), function(angular) {
     function TwDynamicFormControl() {
         return {
             restrict: "E",
