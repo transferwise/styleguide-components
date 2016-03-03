@@ -3,8 +3,6 @@ describe('Controller: TwDateController', function() {
 		$scope;
 
 	beforeEach(function() {
-		// Load the necessary modules
-		module('tw.transfer-request.services');
 		module('tw.form-components');
 	});
 
