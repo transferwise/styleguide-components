@@ -280,80 +280,119 @@
 						<h3 class="panel-title">Form components</h3>
 					</div>
 					<div class="panel-body">
-						<h5>tw-date</h5>
-						<p>Usage: 2 way binding via ng-model, with either a javascript Date object or
-							an ISO8601 String date: 1994-11-05T08:15:30-05:00</p>
-						<div class="form-group">
-							<label class="control-label">
-								Date control
-							</label>
-							<tw-date required
-								ng-model="vm.components.date"></tw-date>
-						</div>
-						<h5 class="m-t-2">
-							<code class="m-t-3">vm.components.date</code>
-						</h5>
-						<pre>{{ vm.components.date }}</pre>
-						<!--<div class="form-group">-->
-							<!--<label class="control-label">-->
-								<!--Sort code control-->
-							<!--</label>-->
-							<!--<tw-sort-code required-->
-								<!--ng-model="vm.components.sortCode" />-->
-						<!--</div>-->
-
-						<h5>Dynamic form control</h5>
-						<p>The dynamic form control is a form control that can
-							be fully configured based on a set of parameters.</p>
-						<p>This control can be used as the basis for a fully
-							dynamic form based on an external specification.</p>
-						<hr />
 						<div class="row">
-							<div class="col-md-6">
-								<div class="form-group">
-									<label class="control-label" for="dynamic">
-										Example dynamic form control
-									</label>
-									<tw-dynamic-form-control
-										name="dynamic"
-										type="{{vm.dynamic.type}}"
-										placeholder="{{vm.dynamic.placeholder}}"
-										options="vm.dynamic.options"
-										ng-model="vm.model.dynamicFormControl"
-										ng-required="vm.dynamic.required"
-										ng-disabled="vm.dynamic.disabled"
-										ng-minlength="vm.dynamic.minlength"
-										ng-maxlength="vm.dynamic.maxlength"
-										ng-pattern="vm.dynamic.pattern"
-										ng-min="vm.dynamic.min"
-										ng-max="vm.dynamic.max">
-
-										<div class="error-required">
-											Required
-										</div>
-										<div class="error-minlength">
-											Must be at least {{vm.dynamic.minlength}} characters
-										</div>
-										<div class="error-maxlength">
-											Must not be longer than {{vm.dynamic.maxlength}} characters
-										</div>
-										<div class="error-min">
-											Must be at least {{vm.dynamic.min}}
-										</div>
-										<div class="error-max">
-											Must not be higher than {{vm.dynamic.max}}
-										</div>
-										<div class="error-pattern">
-											Invalid characters
-										</div>
-										<div class="error-number">
-											Must be a number
-										</div>
-									</tw-dynamic-form-control>
+							<h5>Date form control</h5>
+							<p>Two way data binding via ng-model, with either a javascript Date object or
+								an ISO8601 String date: 1994-11-05T08:15:30-05:00</p>
+							<hr/>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label" for="date">
+											Example date control
+										</label>
+										<tw-date name="date"
+												 disabled
+												 ng-required="vm.model.components.dateRequired"
+												 ng-model="vm.model.components.date"></tw-date>
+									</div>
+									<h5>Configuration</h5>
+									<pre>
+&lt;tw-date
+  ng-model={{vm.model.components.date}}
+  ng-required={{vm.model.components.dateRequired}}
+  ng-disabled={{vm.model.components.dateDisabled}}
+&lt;/tw-date&gt;
+									</pre>
 								</div>
+								<div class="col-md-6">
+									<div class="row">
+										<div class="well">
+											<h5 class="page-header">
+												Edit configuration
+											</h5>
+											<div class="form-group">
+												<label class="control-label">
+													Required?
+												</label>
+												<div class="checkbox">
+													<label>
+														<input type="checkbox"
+															   ng-model="vm.model.components.dateRequired" />
+														Is the control required?
+													</label>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label">
+													Disabled?
+												</label>
+												<div class="checkbox">
+													<label>
+														<input type="checkbox"
+															   ng-model="vm.model.components.dateDisabled" />
+														Is the control disabled?
+													</label>
+												</div>
+											</div>
+										</div>
+									</div>
+									</div>
+								</div>
+							</div>
+						<div class="row">
+							<h5>Dynamic form control</h5>
+							<p>The dynamic form control is a form control that can
+								be fully configured based on a set of parameters.</p>
+							<p>This control can be used as the basis for a fully
+								dynamic form based on an external specification.</p>
+							<hr />
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label" for="dynamic">
+											Example dynamic form control
+										</label>
+										<tw-dynamic-form-control
+											name="dynamic"
+											type="{{vm.dynamic.type}}"
+											placeholder="{{vm.dynamic.placeholder}}"
+											options="vm.dynamic.options"
+											ng-model="vm.model.dynamicFormControl"
+											ng-required="vm.dynamic.required"
+											ng-disabled="vm.dynamic.disabled"
+											ng-minlength="vm.dynamic.minlength"
+											ng-maxlength="vm.dynamic.maxlength"
+											ng-pattern="vm.dynamic.pattern"
+											ng-min="vm.dynamic.min"
+											ng-max="vm.dynamic.max">
 
-								<h5>Configuration</h5>
-								<pre>
+											<div class="error-required">
+												Required
+											</div>
+											<div class="error-minlength">
+												Must be at least {{vm.dynamic.minlength}} characters
+											</div>
+											<div class="error-maxlength">
+												Must not be longer than {{vm.dynamic.maxlength}} characters
+											</div>
+											<div class="error-min">
+												Must be at least {{vm.dynamic.min}}
+											</div>
+											<div class="error-max">
+												Must not be higher than {{vm.dynamic.max}}
+											</div>
+											<div class="error-pattern">
+												Invalid characters
+											</div>
+											<div class="error-number">
+												Must be a number
+											</div>
+										</tw-dynamic-form-control>
+									</div>
+
+									<h5>Configuration</h5>
+									<pre>
 &lt;tw-dynamic-form-control
   type="{{vm.dynamic.type}}"
   placeholder="{{vm.dynamic.placeholder}}"<span ng-if="vm.dynamic.type == 'radio' || vm.dynamic.type == 'select'">
@@ -368,141 +407,142 @@
   ng-max="{{vm.dynamic.max}}"</span></span>
   tw-validation&gt;
 &lt;/tw-dynamic-form-control&gt;
-								</pre>
-							</div>
-							<div class="col-md-6">
-								<div class="well">
-									<h5 class="page-header">
-										Edit configuration
-									</h5>
+									</pre>
+								</div>
+								<div class="col-md-6">
+									<div class="well">
+										<h5 class="page-header">
+											Edit configuration
+										</h5>
 
-									<div class="form-group">
-										<label class="control-label">
-											Type
-										</label>
-										<select required
-											class="form-control"
-											ng-model="vm.dynamic.type"
-											ng-change="vm.model.dynamicFormControl = null"
-											ng-init="vm.dynamic.type = 'text'">
-											<option value="text">Text</option>
-											<option value="number">Number</option>
-											<option value="select">Select</option>
-											<option value="radio">Radio</option>
-											<option value="checkbox">Checkbox</option>
-										</select>
-									</div>
-
-									<div class="form-group">
-										<label class="control-label">
-											Required?
-										</label>
-										<div class="checkbox">
-											<label>
-												<input type="checkbox"
-													ng-model="vm.dynamic.required" />
-												Is the control required?
+										<div class="form-group">
+											<label class="control-label">
+												Type
 											</label>
+											<select required
+												class="form-control"
+												ng-model="vm.dynamic.type"
+												ng-change="vm.model.dynamicFormControl = null"
+												ng-init="vm.dynamic.type = 'text'">
+												<option value="text">Text</option>
+												<option value="number">Number</option>
+												<option value="select">Select</option>
+												<option value="radio">Radio</option>
+												<option value="checkbox">Checkbox</option>
+											</select>
 										</div>
-									</div>
 
-									<div class="form-group">
-										<label class="control-label">
-											Disabled?
-										</label>
-										<div class="checkbox">
-											<label>
-												<input type="checkbox"
-													ng-model="vm.dynamic.disabled" />
-												Is the control disabled?
+										<div class="form-group">
+											<label class="control-label">
+												Required?
 											</label>
-										</div>
-									</div>
-
-									<div class="form-group"
-										ng-if="vm.dynamic.type === 'text'">
-										<label class="control-label">
-											Min/Max length
-										</label>
-										<div class="row">
-											<div class="col-xs-6">
-												<input type="number"
-													class="form-control"
-													placeholder="Minlength"
-													ng-model="vm.dynamic.minlength" />
-											</div>
-											<div class="col-xs-6">
-												<input type="number"
-													class="form-control"
-													placeholder="Maxlength"
-													ng-model="vm.dynamic.maxlength" />
+											<div class="checkbox">
+												<label>
+													<input type="checkbox"
+														ng-model="vm.dynamic.required" />
+													Is the control required?
+												</label>
 											</div>
 										</div>
-									</div>
 
-									<div class="form-group"
-										ng-if="vm.dynamic.type === 'text'">
-										<label class="control-label">
-											Pattern
-										</label>
-										<input type="text"
-											class="form-control"
-											placeholder="e.g. [a-z]+"
-											ng-model="vm.dynamic.pattern"
-											validate-regexp tw-validation />
-										<div class="error-messages">
-											<div class="error-async">Invalid regex</div>
-										</div>
-									</div>
-
-									<div class="form-group"
-										ng-if="vm.dynamic.type === 'number'">
-										<label class="control-label">
-											Min/Max
-										</label>
-										<div class="row">
-											<div class="col-xs-6">
-												<input type="number"
-													class="form-control"
-													placeholder="Min"
-													ng-model="vm.dynamic.min" />
-											</div>
-											<div class="col-xs-6">
-												<input type="number"
-													class="form-control"
-													placeholder="Max"
-													ng-model="vm.dynamic.max" />
+										<div class="form-group">
+											<label class="control-label">
+												Disabled?
+											</label>
+											<div class="checkbox">
+												<label>
+													<input type="checkbox"
+														ng-model="vm.dynamic.disabled" />
+													Is the control disabled?
+												</label>
 											</div>
 										</div>
-									</div>
 
-									<div class="form-group"
-										ng-if="vm.dynamic.type !== 'text'"
-										ng-init="vm.dynamic.options = {
-											'one': 'One',
-											'two': 'Two',
-											'three': 'Three'
-										}">
-										<!--
-										<label class="control-label">
-											Options
-										</label>
-										<input type="text"
-											class="form-control m-b"
-											ng-repeat="(value, label) in vm.dynamic.options"
-											ng-model="label" />
-										-->
-									</div>
+										<div class="form-group"
+											ng-if="vm.dynamic.type === 'text'">
+											<label class="control-label">
+												Min/Max length
+											</label>
+											<div class="row">
+												<div class="col-xs-6">
+													<input type="number"
+														class="form-control"
+														placeholder="Minlength"
+														ng-model="vm.dynamic.minlength" />
+												</div>
+												<div class="col-xs-6">
+													<input type="number"
+														class="form-control"
+														placeholder="Maxlength"
+														ng-model="vm.dynamic.maxlength" />
+												</div>
+											</div>
+										</div>
 
-									<div class="form-group"
-										ng-if="vm.dynamic.type !== 'radio'">
-										<label class="control-label">
-											Placeholder
-										</label>
-										<input type="text"
-											class="form-control"
-											ng-model="vm.dynamic.placeholder"
-											ng-init="vm.dynamic.placeholder = 'Example'" />
+										<div class="form-group"
+											ng-if="vm.dynamic.type === 'text'">
+											<label class="control-label">
+												Pattern
+											</label>
+											<input type="text"
+												class="form-control"
+												placeholder="e.g. [a-z]+"
+												ng-model="vm.dynamic.pattern"
+												validate-regexp tw-validation />
+											<div class="error-messages">
+												<div class="error-async">Invalid regex</div>
+											</div>
+										</div>
+
+										<div class="form-group"
+											ng-if="vm.dynamic.type === 'number'">
+											<label class="control-label">
+												Min/Max
+											</label>
+											<div class="row">
+												<div class="col-xs-6">
+													<input type="number"
+														class="form-control"
+														placeholder="Min"
+														ng-model="vm.dynamic.min" />
+												</div>
+												<div class="col-xs-6">
+													<input type="number"
+														class="form-control"
+														placeholder="Max"
+														ng-model="vm.dynamic.max" />
+												</div>
+											</div>
+										</div>
+
+										<div class="form-group"
+											ng-if="vm.dynamic.type !== 'text'"
+											ng-init="vm.dynamic.options = {
+												'one': 'One',
+												'two': 'Two',
+												'three': 'Three'
+											}">
+											<!--
+											<label class="control-label">
+												Options
+											</label>
+											<input type="text"
+												class="form-control m-b"
+												ng-repeat="(value, label) in vm.dynamic.options"
+												ng-model="label" />
+											-->
+										</div>
+
+										<div class="form-group"
+											ng-if="vm.dynamic.type !== 'radio'">
+											<label class="control-label">
+												Placeholder
+											</label>
+											<input type="text"
+												class="form-control"
+												ng-model="vm.dynamic.placeholder"
+												ng-init="vm.dynamic.placeholder = 'Example'" />
+										</div>
 									</div>
 								</div>
 							</div>

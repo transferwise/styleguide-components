@@ -14,35 +14,18 @@
 			restrict: 'E',
 			scope: {
 				date: '=ngModel',
-				ngMin: '=ngMin',
-				ngMax: '=ngMax',
 				disabled: '@',
+				ngDisabled: '=',
 				required: '@',
-				locale: '@'
+				ngRequired: '=',
+				locale: '@',
+				ngMin: '=',
+				ngMax: '='
 			},
-			template: templateAsString,
-			link: TwDateLink
+			template: templateAsString
 		};
 
 		return directive;
-	}
-
-	function TwDateLink(scope, element, attrs, ctrl) {
-		if (attrs.ngDisabled) {
-			scope.$parent.$watch(attrs.ngDisabled, function(isDisabled) {
-				scope.disabled = isDisabled;
-			});
-		}
-
-		if (attrs.ngRequired) {
-			scope.$parent.$watch(attrs.ngRequired, function(isRequired) {
-				scope.required = isRequired;
-			});
-		}
-
-		element.find("[name=month]").change(function() {
-			element.find("[name=day]").focus().blur();
-		});
 	}
 
 	var templateAsString = "<div class='row'> \
@@ -51,9 +34,9 @@
 					<input type='number' \
 						name='day' \
 						id='day-{{::uniqueId}}' \
-						class='form-control' \
+						class='form-control tw-date-day' \
 						ng-model='vm.day' \
-						ng-change='vm.updateDate()' \
+						ng-change='vm.updateDateModel()' \
 						placeholder='DD' \
 						min='1' \
 						max='31' \
@@ -61,8 +44,8 @@
 						ng-min='1' \
 						ng-max='31' \
 						ng-maxlength='2' \
-						ng-disabled='vm.disabled' \
-						ng-required='vm.required' \
+						ng-disabled='vm.ngDisabled' \
+						ng-required='vm.ngRequired' \
 						tw-validation /> \
 				</div> \
 				<div class='col-sm-5'> \
@@ -71,10 +54,10 @@
 						id='month-{{::uniqueId}}' \
 						class='form-control' \
 						ng-model='vm.month' \
-						ng-change='vm.updateDate()' \
+						ng-change='vm.updateDateModel()' \
 						ng-options='month.id as month.name for month in vm.months' \
-						ng-disabled='vm.disabled' \
-						required \
+						ng-required='vm.ngRequired' \
+						ng-disabled='vm.ngDisabled' \
 						autocomplete='off' \
 						tw-validation> \
 					</select> \
@@ -87,13 +70,13 @@
 						class='form-control' \
 						placeholder='YYYY' \
 						ng-model='vm.year' \
-						ng-change='vm.updateDate()' \
+						ng-change='vm.updateDateModel()' \
 						min='1900' \
 						max='2015' \
 						maxlength='4' \
 						ng-maxlength='4' \
-						ng-disabled='vm.disabled' \
-						ng-required='vm.required' \
+						ng-disabled='vm.ngDisabled' \
+						ng-required='vm.ngRequired' \
 						tw-validation /> \
 				</div> \
 			</div>";

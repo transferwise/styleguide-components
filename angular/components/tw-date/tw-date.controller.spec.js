@@ -1,5 +1,6 @@
 describe('Controller: TwDateController', function() {
 	var TwDateController,
+		_$controller,
 		$scope;
 
 	beforeEach(function() {
@@ -9,45 +10,37 @@ describe('Controller: TwDateController', function() {
 	beforeEach(inject(function($injector, $controller) {
 		$rootScope = $injector.get('$rootScope');
 		$scope = $rootScope.$new();
-
-		TwDateController = $controller('TwDateController',
-			{
-				'$scope': $scope, '$element': angular.element('<div></div>')
-			});
+		_$controller = $controller;
 	}));
 
-	describe('init()', function() {
-		beforeEach(function() {
-			spyOn(TwDateController, 'explodeDate');
-			TwDateController.date = "2000-02-03";
-		});
-
-		it("should explode initial date", function() {
-			TwDateController.init();
-
-			expect(TwDateController.explodeDate).toHaveBeenCalledWith("2000-02-03");
-		});
-	});
-
-	describe('explodeDate()', function() {
+	describe('explodeDateModel()', function() {
 		it("should split a valid string date into parts", function() {
-			TwDateController.explodeDate("2000-02-03");
+			var inputDate = "2000-02-03";
+			initController({date: inputDate});
+
+			TwDateController.explodeDateModel();
 
 			expect(TwDateController.day).toBe(3);
 			expect(TwDateController.month).toBe(2);
 			expect(TwDateController.year).toBe(2000);
 		});
 
-		it("should split invalid string date into nulls", function() {
-			TwDateController.explodeDate("2000-02-03T");
+		it("should split invalid string date into NaN", function() {
+			var inputDate = "2000-02-03T";
+			initController({date: inputDate});
 
-			expect(TwDateController.day).toBe(null);
-			expect(TwDateController.month).toBe(1);
-			expect(TwDateController.year).toBe(null);
+			TwDateController.explodeDateModel();
+
+			expect(TwDateController.day).toBeNaN();
+			expect(TwDateController.month).toBeNaN();
+			expect(TwDateController.year).toBeNaN();
 		});
 
 		it("should split a valid date object into parts", function() {
-			TwDateController.explodeDate(new Date("2000-02-03"));
+			var inputDate = new Date("2000-02-03");
+			initController({date: inputDate});
+
+			TwDateController.explodeDateModel();
 
 			expect(TwDateController.day).toBe(3);
 			expect(TwDateController.month).toBe(2);
@@ -56,11 +49,13 @@ describe('Controller: TwDateController', function() {
 
 	});
 
-	describe('updateDate()', function() {
+	describe('updateDateModel()', function() {
 
 		describe('when string mode', function() {
+			var inputDate;
 			beforeEach(function() {
-				TwDateController.dateMode = "string";
+				inputDate = "2000-02-03";
+				initController({date: inputDate});
 			});
 
 			it("should join valid parts into a string date", function() {
@@ -68,18 +63,17 @@ describe('Controller: TwDateController', function() {
 				TwDateController.month = 12;
 				TwDateController.year = 2000;
 
-				TwDateController.updateDate();
+				TwDateController.updateDateModel();
 
 				expect(TwDateController.date).toBe("2000-12-31");
 			});
-
 
 			it("should set date=null when invalid parts", function() {
 				TwDateController.day = null;
 				TwDateController.month = 13;
 				TwDateController.year = 2000;
 
-				TwDateController.updateDate();
+				TwDateController.updateDateModel();
 
 				expect(TwDateController.date).toBe(null);
 			});
@@ -89,7 +83,7 @@ describe('Controller: TwDateController', function() {
 				TwDateController.month = 13;
 				TwDateController.year = 2000;
 
-				TwDateController.updateDate();
+				TwDateController.updateDateModel();
 
 				expect(TwDateController.date).toBe(null);
 			});
@@ -99,43 +93,61 @@ describe('Controller: TwDateController', function() {
 				TwDateController.month = 2;
 				TwDateController.year = 2015;
 
-				TwDateController.updateDate();
+				TwDateController.updateDateModel();
 
 				expect(TwDateController.date).toBe("2015-02-28");
 			});
 		});
 
 		describe('when object mode', function() {
+			var inputDate;
 			beforeEach(function() {
-				TwDateController.dateMode = "object";
+				inputDate = new Date("2000-12-31");
+				initController({date: inputDate});
 			});
 
 			it("should join valid parts into an object date", function() {
 				TwDateController.day = 31;
 				TwDateController.month = 12;
-				TwDateController.year = 2000;
+				TwDateController.year = 2001;
 
-				TwDateController.updateDate();
+				TwDateController.updateDateModel();
 
-				expect(TwDateController.date).toEqual(new Date("2000-12-31"));
+				expect(TwDateController.date).toEqual(new Date("2001-12-31"));
 			});
 		});
 
 	});
 
-	describe('validDate()', function() {
-		it("should return true for valid sort codes", function() {
-			expect(TwDateController.validDate(new Date("2000-01-01"))).toBe(true);
-			expect(TwDateController.validDate(new Date("2000-12-31"))).toBe(true);
+	fdescribe('validDateModel()', function() {
+		beforeEach(function() {
+			initController();
+		});
+		it("should return true for valid Date date", function() {
+			TwDateController.date = new Date("2000-01-01");
+			expect(TwDateController.validDateModel()).toBe(true);
 		});
 
-		it("should return false for invalid sort codes", function() {
-			expect(TwDateController.validDate(new Date("2000-01-01T"))).toBe(false);
-			expect(TwDateController.validDate(new Date("2000-13-01"))).toBe(false);
+		it("should return false for invalid Date date", function() {
+			TwDateController.date = new Date("2000-01-01T");
+			expect(TwDateController.validDateModel()).toBe(false);
+		});
+
+		it("should return true for valid ISO8601 date", function() {
+			TwDateController.date = "1990-02-28T00:00:00.000Z";
+			expect(TwDateController.validDateModel()).toBe(true);
+		});
+
+		it("should return false for invalid ISO8601 date", function() {
+			TwDateController.date = "1990-02-28T";
+			expect(TwDateController.validDateModel()).toBe(false);
 		});
 	});
 
 	describe('correctHighDay()', function() {
+		beforeEach(function() {
+			initController();
+		});
 		it("should set last day in Feb to 28 if higher", function() {
 			expect(TwDateController.correctHighDay(29,2,2015)).toBe(28);
 		});
@@ -151,4 +163,17 @@ describe('Controller: TwDateController', function() {
 			expect(TwDateController.correctHighDay(32,12,2015)).toBe(31);
 		});
 	});
+
+	function initController(inputModel) {
+		TwDateController = _$controller(
+			'TwDateController',
+			{
+				'$scope': $scope,
+				'$element': angular.element('<div></div>')
+			},
+			inputModel
+		);
+		$scope.vm = TwDateController;
+		$rootScope.$apply();
+	}
 });

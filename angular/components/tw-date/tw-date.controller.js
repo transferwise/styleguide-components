@@ -5,60 +5,118 @@
 		.module('tw.form-components')
 		.controller('TwDateController', TwDateController);
 
-	TwDateController.$inject = ['$scope', '$element'];
+	TwDateController.$inject = ['$element', '$scope'];
 
-	function TwDateController($scope, $element) {
+	function TwDateController($element, $scope) {
 		var vm = this;
 
-		vm.init = init;
-		vm.explodeDate = explodeDate;
-		vm.updateDate = updateDate;
-		vm.correctHighDay = correctHighDay;
+		vm.updateDateModel = updateDateModel;
 
-		vm.pad = pad;
-		vm.validDate = validDate;
+		vm.explodeDateModel = explodeDateModel;
+		vm.correctHighDay = correctHighDay;
+		vm.validDateModel = validDateModel;
 
 		function init() {
-			vm.month = 1;
-
-			vm.dateMode = typeof vm.date;
-
-			$scope.$watch('vm.date', function(date) {
-				vm.explodeDate(date);
-			});
-
-			vm.explodeDate(vm.date);
+			if (validDateModel()) {
+				vm.explodeDateModel();
+			} else {
+				explodeDefaultDate();
+			}
 
 			vm.months = getMonths(vm.locale);
 
-			// If attribute has no value make it evaluate to true
-			if (vm.required === "") {
-				vm.required = true;
+			if (vm.ngRequired === undefined) {
+				vm.ngRequired = vm.required !== undefined;
+			}
+			if (vm.ngDisabled === undefined) {
+				vm.ngDisabled = vm.disabled !== undefined;
+			}
+
+			registerWatchers();
+		}
+
+		function explodeDateModel() {
+			if (typeof vm.date === "string") {
+				explodeDateString(vm.date);
+			} else {
+				explodeDateObject(vm.date);
+			}
+		}
+		
+		function explodeDateString(dateString) {
+			explodeDateObject(new Date(dateString));
+		}
+
+		function explodeDateObject(dateObj) {
+			vm.day = dateObj.getUTCDate();
+			vm.month = dateObj.getUTCMonth() + 1;
+			vm.year = dateObj.getUTCFullYear();
+		}
+
+		function explodeDateModelIfValid() {
+			if (validDateModel()) {
+				vm.explodeDateModel();
 			}
 		}
 
+		function explodeDefaultDate() {
+			vm.day = null;
+			vm.month = 1;
+			vm.year = null;
+		}
+
+		function validDateModel() {
+			return validDateObject(vm.date) || validDateString(vm.date);
+		}
+
+		function validDateObject(dateObj) {
+			return Object.prototype.toString.call(dateObj) === "[object Date]"
+				&& !isNaN(dateObj.getTime());
+		}
+
+		function validDateString(dateString) {
+			return typeof dateString === 'string' && validDateObject(new Date(dateString));
+		}
+
+		function registerWatchers() {
+			$scope.$watch('vm.date', function() {
+				explodeDateModelIfValid();
+			});
+
+			$scope.$watch('vm.month', function(newValue, oldValue) {
+				if (newValue !== oldValue) {
+					vm.day = vm.correctHighDay(vm.day, vm.month, vm.year);
+				}
+			});
+		}
+
 		function getMonths(locale) {
-			var date = new Date(), monthName;
-
-			if (!date.toLocaleDateString) {
-				// Browser doesn't support toLocaleDateString, use English
-				return getEnglishMonths();
-			}
-
 			if (!locale) {
 				locale = 'en-GB';
 			}
 
-			// Some local strings can throw error
-			try {
-				date.toLocaleDateString(locale, {month: "long"});
-
-			} catch(ex) {
+			if (isLocalDateStringSupported(locale)) {
+				return getWellFormattedMonths(locale);
+			} else {
 				return getEnglishMonths();
 			}
+		}
 
+		function isLocalDateStringSupported(locale) {
+			try {
+				var date = new Date();
+				var monthName = date.toLocaleDateString(locale, {month: "long"});
+				return monthName !== date.toLocaleDateString(locale);
+			} catch (ex) {
+				return false;
+			}
+		}
+
+		function getWellFormattedMonths(locale) {
 			var monthNameRegex = /^[a-zA-Z ]+$/;
 			var months = [];
+
+			var date = new Date(), monthName;
 			for(var i = 0; i < 12; i++) {
 				date.setMonth(i);
 				monthName = date.toLocaleDateString(locale, {month: "long"});
@@ -94,32 +152,8 @@
 			];
 		}
 
-		function explodeDate(date) {
+		function updateDateModel() {
 			var dateObj;
-			if (!date) {
-				return;
-			}
-
-			if (typeof date === "string") {
-				dateObj = new Date(date);
-			} else {
-				dateObj = date;
-			}
-
-			if (!validDate(dateObj)) {
-				vm.day = null;
-				vm.month = 1;
-				vm.year = null;
-				return;
-			}
-
-			vm.day = dateObj.getUTCDate();
-			vm.month = dateObj.getUTCMonth() + 1;
-			vm.year = dateObj.getUTCFullYear();
-		}
-
-		function updateDate() {
-			var dateObj, dateFormatted;
 
 			if (!vm.day ||
 				vm.month === null ||
@@ -158,22 +192,21 @@
 			$element.removeClass("ng-invalid-max");
 			$element.removeClass("ng-invalid-pattern");
 
-			if (vm.dateMode === "string") {
-				vm.date = dateObj.getUTCFullYear()
-					+ '-' + pad(dateObj.getUTCMonth() + 1)
-					+ '-' + pad(dateObj.getUTCDate());
+			if (typeof vm.date === "string") {
+				vm.date = stringifyDateObject(dateObj);
 			} else {
 				vm.date = dateObj;
 			}
 		}
 
-		function pad(n) {
-			return (n < 10) ? '0' + n : n;
+		function stringifyDateObject(dateObj) {
+			return dateObj.getUTCFullYear()
+				+ '-' + pad(dateObj.getUTCMonth() + 1)
+				+ '-' + pad(dateObj.getUTCDate());
 		}
 
-		function validDate(dateObj) {
-			return Object.prototype.toString.call(dateObj) === "[object Date]"
-				&& !isNaN(dateObj.getTime());
+		function pad(n) {
+			return (n < 10) ? '0' + n : n;
 		}
 
 		function correctHighDay(day, month, year) {
