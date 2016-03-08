@@ -14,11 +14,11 @@
 			restrict: 'E',
 			scope: {
 				date: '=ngModel',
-				disabled: '@',
-				ngDisabled: '=',
-				required: '@',
 				ngRequired: '=',
-				locale: '@',
+				required: '@',
+				ngDisabled: '=',
+				disabled: '@',
+				locale: '=',
 				ngMin: '=',
 				ngMax: '='
 			},

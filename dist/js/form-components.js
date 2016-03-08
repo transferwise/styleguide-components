@@ -1,11 +1,18 @@
 angular.module("tw.form-components", []);
 !function(angular) {
     "use strict";
-    function TwDateController($element, $scope) {
+    function TwDateController($element, $log, $scope) {
         function init() {
-            validDateModel() ? vm.explodeDateModel() : explodeDefaultDate(), vm.months = getMonths(vm.locale), 
-            void 0 === vm.ngRequired && (vm.ngRequired = void 0 !== vm.required), void 0 === vm.ngDisabled && (vm.ngDisabled = void 0 !== vm.disabled), 
-            registerWatchers();
+            validDateModel() ? vm.explodeDateModel() : explodeDefaultDate(), setDefaultLocaleIfNeeded(), 
+            setYearRange(), vm.months = getMonthsBasedOnIntlSupportForLocale(), void 0 === vm.ngRequired && (vm.ngRequired = void 0 !== vm.required), 
+            void 0 === vm.ngDisabled && (vm.ngDisabled = void 0 !== vm.disabled), registerWatchers();
+        }
+        function setYearRange() {}
+        function setDefaultLocaleIfNeeded() {
+            vm.locale || setDefaultLocale();
+        }
+        function setDefaultLocale() {
+            vm.locale = DEFAULT_LOCALE_EN;
         }
         function explodeDateModel() {
             "string" == typeof vm.date ? explodeDateString(vm.date) : explodeDateObject(vm.date);
@@ -14,13 +21,13 @@ angular.module("tw.form-components", []);
             explodeDateObject(new Date(dateString));
         }
         function explodeDateObject(dateObj) {
-            vm.day = dateObj.getUTCDate(), vm.month = dateObj.getUTCMonth() + 1, vm.year = dateObj.getUTCFullYear();
+            vm.day = dateObj.getUTCDate(), vm.month = dateObj.getUTCMonth(), vm.year = dateObj.getUTCFullYear();
         }
         function explodeDateModelIfValid() {
             validDateModel() && vm.explodeDateModel();
         }
         function explodeDefaultDate() {
-            vm.day = null, vm.month = 1, vm.year = null;
+            vm.day = null, vm.month = 0, vm.year = null;
         }
         function validDateModel() {
             return validDateObject(vm.date) || validDateString(vm.date);
@@ -35,81 +42,50 @@ angular.module("tw.form-components", []);
             $scope.$watch("vm.date", function() {
                 explodeDateModelIfValid();
             }), $scope.$watch("vm.month", function(newValue, oldValue) {
-                newValue !== oldValue && (vm.day = vm.correctHighDay(vm.day, vm.month, vm.year));
+                newValue !== oldValue && vm.adjustLastDay();
+            }), $scope.$watch("vm.locale", function(newValue, oldValue) {
+                newValue !== oldValue && (vm.months = getMonthsBasedOnIntlSupportForLocale(vm.locale));
             });
         }
-        function getMonths(locale) {
-            return locale || (locale = "en-GB"), isLocalDateStringSupported(locale) ? getWellFormattedMonths(locale) : getEnglishMonths();
+        function getMonthsBasedOnIntlSupportForLocale() {
+            var monthNames;
+            return isIntlSupportedForLocale(vm.locale) ? monthNames = getMonthNamesForLocale() : ($log.warn('i18n not supported for locale "' + vm.locale + '"'), 
+            monthNames = DEFAULT_MONTHS_EN), extendMonthsWithIds(monthNames);
         }
-        function isLocalDateStringSupported(locale) {
-            try {
-                var date = new Date(), monthName = date.toLocaleDateString(locale, {
-                    month: "long"
-                });
-                return monthName !== date.toLocaleDateString(locale);
-            } catch (ex) {
-                return !1;
-            }
+        function isIntlSupportedForLocale(locale) {
+            return isIntlSupported() && window.Intl.DateTimeFormat.supportedLocalesOf([ locale ]).length > 0;
         }
-        function getWellFormattedMonths(locale) {
-            for (var monthName, monthNameRegex = /^[a-zA-Z ]+$/, months = [], date = new Date(), i = 0; 12 > i; i++) date.setMonth(i), 
-            monthName = date.toLocaleDateString(locale, {
+        function isIntlSupported() {
+            return window.Intl && "object" == typeof window.Intl;
+        }
+        function getMonthNamesForLocale() {
+            for (var months = [], date = new Date(), i = 0; 12 > i; i++) date.setMonth(i), months.push(date.toLocaleDateString(vm.locale, {
                 month: "long"
-            }), monthName = monthNameRegex.test(monthName) ? monthName.charAt(0).toUpperCase() + monthName.slice(1) : monthName.replace(/\d+/g, "").replace(/\W+/g, ""), 
-            months.push({
-                id: i + 1,
-                name: monthName
-            });
+            }));
             return months;
         }
-        function getEnglishMonths() {
-            return [ {
-                id: 1,
-                name: "January"
-            }, {
-                id: 2,
-                name: "February"
-            }, {
-                id: 3,
-                name: "March"
-            }, {
-                id: 4,
-                name: "April"
-            }, {
-                id: 5,
-                name: "May"
-            }, {
-                id: 6,
-                name: "June"
-            }, {
-                id: 7,
-                name: "July"
-            }, {
-                id: 8,
-                name: "August"
-            }, {
-                id: 9,
-                name: "September"
-            }, {
-                id: 10,
-                name: "October"
-            }, {
-                id: 11,
-                name: "November"
-            }, {
-                id: 12,
-                name: "December"
-            } ];
+        function extendMonthsWithIds(monthNames) {
+            return monthNames.map(function(monthName, index) {
+                return {
+                    id: index,
+                    name: monthName
+                };
+            });
+        }
+        function isExplodedDatePatternCorrect() {
+            return isNumber(vm.day) && isNumber(vm.month) && isNumber(vm.year);
+        }
+        function isNumber(value) {
+            return "number" == typeof value;
         }
         function updateDateModel() {
             var dateObj;
-            if (!vm.day || null === vm.month || void 0 === vm.month || !vm.year) return vm.date = null, 
-            void $element.addClass("ng-invalid-pattern");
-            vm.day = vm.correctHighDay(vm.day, vm.month, vm.year), dateObj = new Date(Date.UTC(Number(vm.year), Number(vm.month) - 1, Number(vm.day)));
+            if (!isExplodedDatePatternCorrect()) return vm.date = null, void $element.addClass("ng-invalid-pattern");
+            vm.adjustLastDay(), dateObj = new Date(Date.UTC(Number(vm.year), Number(vm.month), Number(vm.day)));
             var minObj = new Date(vm.ngMin), maxObj = new Date(vm.ngMax);
             return minObj > dateObj ? void $element.addClass("ng-invalid-min") : dateObj > maxObj ? void $element.addClass("ng-invalid-max") : ($element.removeClass("ng-invalid-min"), 
             $element.removeClass("ng-invalid-max"), $element.removeClass("ng-invalid-pattern"), 
-            void (vm.date = "string" == typeof vm.date ? stringifyDateObject(dateObj) : dateObj));
+            void ("string" == typeof vm.date ? vm.date = stringifyDateObject(dateObj) : vm.date = dateObj));
         }
         function stringifyDateObject(dateObj) {
             return dateObj.getUTCFullYear() + "-" + pad(dateObj.getUTCMonth() + 1) + "-" + pad(dateObj.getUTCDate());
@@ -117,17 +93,18 @@ angular.module("tw.form-components", []);
         function pad(n) {
             return 10 > n ? "0" + n : n;
         }
-        function correctHighDay(day, month, year) {
-            var dateObj = new Date(0);
-            return dateObj.setUTCFullYear(year), dateObj.setUTCMonth(month), dateObj.setUTCDate(0), 
-            day > dateObj.getUTCDate() ? dateObj.getUTCDate() : day;
+        function adjustLastDay() {
+            var lastUTCDateForMonthAndYear = new Date(Date.UTC(vm.year, vm.month + 1, 0)), lastUTCDayForMonthAndYear = lastUTCDateForMonthAndYear.getUTCDate();
+            vm.day > lastUTCDayForMonthAndYear && (vm.day = lastUTCDayForMonthAndYear);
         }
         var vm = this;
-        vm.updateDateModel = updateDateModel, vm.explodeDateModel = explodeDateModel, vm.correctHighDay = correctHighDay, 
-        vm.validDateModel = validDateModel, init();
+        vm.updateDateModel = updateDateModel, vm.explodeDateModel = explodeDateModel, vm.adjustLastDay = adjustLastDay, 
+        vm.validDateModel = validDateModel;
+        var DEFAULT_LOCALE_EN = "en-GB", DEFAULT_MONTHS_EN = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+        init();
     }
     angular.module("tw.form-components").controller("TwDateController", TwDateController), 
-    TwDateController.$inject = [ "$element", "$scope" ];
+    TwDateController.$inject = [ "$element", "$log", "$scope" ];
 }(window.angular), function(angular) {
     "use strict";
     function TwDateDirective() {
@@ -139,11 +116,11 @@ angular.module("tw.form-components", []);
             restrict: "E",
             scope: {
                 date: "=ngModel",
-                disabled: "@",
-                ngDisabled: "=",
-                required: "@",
                 ngRequired: "=",
-                locale: "@",
+                required: "@",
+                ngDisabled: "=",
+                disabled: "@",
+                locale: "=",
                 ngMin: "=",
                 ngMax: "="
             },
@@ -181,7 +158,7 @@ angular.module("tw.form-components", []);
                 ngMax: "=",
                 ngPattern: "="
             },
-            link: function() {},
+            link: function(scope, element) {},
             template: "<div ng-switch='vm.type'> 				<input ng-switch-when='text'  					name='{{vm.name}}'  					id='{{vm.id}}' 					type='text' 					class='form-control' 					placeholder='{{vm.placeholder}}' 					ng-model='vm.ngModel' 					ng-required='vm.ngRequired' 					ng-disabled='vm.ngDisabled' 					ng-pattern='vm.ngPattern' 					ng-change='vm.change()' 					ng-minlength='vm.ngMinlength' 					ng-maxlength='vm.ngMaxlength' 					tw-validation />  				<input ng-switch-when='number'  					name='{{vm.name}}'  					id='{{vm.id}}' 					type='number' 					step='{{vm.step}}' 					class='form-control' 					placeholder='{{vm.placeholder}}' 					ng-model='vm.ngModel' 					ng-required='vm.ngRequired' 					ng-disabled='vm.ngDisabled' 					ng-change='vm.change()' 					ng-min='vm.ngMin' 					ng-max='vm.ngMax' 					tw-validation />  				<div ng-switch-when='radio' 					class='radio' 					ng-class='{disabled: vm.ngDisabled}' 					ng-repeat='(value, label) in vm.options track by $index'> 					<label> 						<input type='radio' 							name='{{vm.name}}' 							value='{{value}}' 							ng-model='vm.ngModel' 							ng-required='vm.ngRequired' 							ng-disabled='vm.ngDisabled' /> 						{{label}} 					</label> 				</div> 				<div ng-switch-when='checkbox' 					class='checkbox' 					ng-class='{disabled: vm.ngDisabled}'> 					<label> 						<input type='checkbox' 							name='{{vm.name}}' 							id='{{vm.id}}' 							ng-model='vm.ngModel' 							ng-required='vm.ngRequired' 							ng-disabled='vm.ngDisabled' /> 						{{vm.placeholder}} 					</label> 				</div> 				<select ng-switch-when='select' 					name='{{vm.name}}' 					id='{{vm.id}}' 					class='form-control' 					ng-options='value as label for (value, label) in vm.options track by $index' 					ng-model='vm.ngModel' 					ng-required='vm.ngRequired' 					ng-disabled='vm.ngDisabled' 					ng-change='vm.change()' 					tw-validation> 					<option ng-if='vm.placeholder' value=''> 						{{vm.placeholder}} 					</option> 				</select> 				<ng-transclude class='error-messages'></ng-transclude> 			</div>"
         };
     }

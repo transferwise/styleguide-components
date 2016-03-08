@@ -5,16 +5,32 @@
 		.module('tw.form-components')
 		.controller('TwDateController', TwDateController);
 
-	TwDateController.$inject = ['$element', '$scope'];
+	TwDateController.$inject = ['$element', '$log', '$scope'];
 
-	function TwDateController($element, $scope) {
+	function TwDateController($element, $log, $scope) {
 		var vm = this;
 
 		vm.updateDateModel = updateDateModel;
 
 		vm.explodeDateModel = explodeDateModel;
-		vm.correctHighDay = correctHighDay;
+		vm.adjustLastDay = adjustLastDay;
 		vm.validDateModel = validDateModel;
+
+		var DEFAULT_LOCALE_EN = 'en-GB';
+		var DEFAULT_MONTHS_EN = [
+			'January',
+			'February',
+			'March',
+			'April',
+			'May',
+			'June',
+			'July',
+			'August',
+			'September',
+			'October',
+			'November',
+			'December'
+		];
 
 		function init() {
 			if (validDateModel()) {
@@ -23,7 +39,11 @@
 				explodeDefaultDate();
 			}
 
-			vm.months = getMonths(vm.locale);
+			setDefaultLocaleIfNeeded();
+
+			setYearRange();
+
+			vm.months = getMonthsBasedOnIntlSupportForLocale();
 
 			if (vm.ngRequired === undefined) {
 				vm.ngRequired = vm.required !== undefined;
@@ -33,6 +53,20 @@
 			}
 
 			registerWatchers();
+		}
+
+		function setYearRange() {
+			//vm.maxUTCYear = new Date(Date.UTC(vm.ngMin))
+		}
+
+		function setDefaultLocaleIfNeeded() {
+			if (!vm.locale) {
+				setDefaultLocale();
+			}
+		}
+
+		function setDefaultLocale() {
+			vm.locale = DEFAULT_LOCALE_EN;
 		}
 
 		function explodeDateModel() {
@@ -49,7 +83,7 @@
 
 		function explodeDateObject(dateObj) {
 			vm.day = dateObj.getUTCDate();
-			vm.month = dateObj.getUTCMonth() + 1;
+			vm.month = dateObj.getUTCMonth();
 			vm.year = dateObj.getUTCFullYear();
 		}
 
@@ -61,7 +95,7 @@
 
 		function explodeDefaultDate() {
 			vm.day = null;
-			vm.month = 1;
+			vm.month = 0;
 			vm.year = null;
 		}
 
@@ -85,92 +119,81 @@
 
 			$scope.$watch('vm.month', function(newValue, oldValue) {
 				if (newValue !== oldValue) {
-					vm.day = vm.correctHighDay(vm.day, vm.month, vm.year);
+					vm.adjustLastDay();
+				}
+			});
+
+			$scope.$watch('vm.locale', function(newValue, oldValue) {
+				if (newValue !== oldValue) {
+					vm.months = getMonthsBasedOnIntlSupportForLocale(vm.locale);
 				}
 			});
 		}
 
-		function getMonths(locale) {
-			if (!locale) {
-				locale = 'en-GB';
-			}
+		function getMonthsBasedOnIntlSupportForLocale() {
+			var monthNames;
 
-			if (isLocalDateStringSupported(locale)) {
-				return getWellFormattedMonths(locale);
+			if (isIntlSupportedForLocale(vm.locale)) {
+				monthNames = getMonthNamesForLocale();
 			} else {
-				return getEnglishMonths();
+				$log.warn('i18n not supported for locale "' + vm.locale + '"');
+				monthNames = DEFAULT_MONTHS_EN;
 			}
+
+			return extendMonthsWithIds(monthNames);
 		}
 
-		function isLocalDateStringSupported(locale) {
-			try {
-				var date = new Date();
-				var monthName = date.toLocaleDateString(locale, {month: "long"});
-				return monthName !== date.toLocaleDateString(locale);
-			} catch (ex) {
-				return false;
-			}
+		function isIntlSupportedForLocale(locale) {
+			return isIntlSupported() && window.Intl.DateTimeFormat.supportedLocalesOf([locale]).length > 0;
 		}
 
-		function getWellFormattedMonths(locale) {
-			var monthNameRegex = /^[a-zA-Z ]+$/;
+		function isIntlSupported() {
+			return window.Intl && typeof window.Intl === 'object';
+		}
+
+		function getMonthNamesForLocale() {
 			var months = [];
-
-			var date = new Date(), monthName;
+			var date = new Date();
 			for(var i = 0; i < 12; i++) {
 				date.setMonth(i);
-				monthName = date.toLocaleDateString(locale, {month: "long"});
-
-				if (!monthNameRegex.test(monthName)) {
-					monthName = monthName.replace(/\d+/g,'').replace(/\W+/g,'');
-				} else {
-					monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-				}
-
-				months.push({
-					id: i + 1,
-					name: monthName
-				});
+				months.push(
+					date.toLocaleDateString(vm.locale, {month: "long"})
+				);
 			}
 			return months;
 		}
 
-		function getEnglishMonths() {
-			return [
-				{id: 1, name: "January"},
-				{id: 2, name: "February"},
-				{id: 3, name: "March"},
-				{id: 4, name: "April"},
-				{id: 5, name: "May"},
-				{id: 6, name: "June"},
-				{id: 7, name: "July"},
-				{id: 8, name: "August"},
-				{id: 9, name: "September"},
-				{id: 10, name: "October"},
-				{id: 11, name: "November"},
-				{id: 12, name: "December"}
-			];
+		function extendMonthsWithIds(monthNames) {
+			return monthNames.map(function(monthName, index) {
+				return {
+					id: index,
+					name: monthName
+				};
+			});
+		}
+
+		function isExplodedDatePatternCorrect() {
+			return isNumber(vm.day) && isNumber(vm.month) && isNumber(vm.year);
+		}
+
+		function isNumber(value) {
+			return typeof value === 'number';
 		}
 
 		function updateDateModel() {
 			var dateObj;
 
-			if (!vm.day ||
-				vm.month === null ||
-				vm.month === undefined ||
-				!vm.year) {
+			if (!isExplodedDatePatternCorrect()) {
 				vm.date = null;
-
 				$element.addClass("ng-invalid-pattern");
-
 				return;
 			}
 
-			vm.day = vm.correctHighDay(vm.day, vm.month, vm.year);
+			vm.adjustLastDay();
 
 			dateObj = new Date(Date.UTC(
 				Number(vm.year),
-				Number(vm.month) - 1,
+				Number(vm.month),
 				Number(vm.day)
 			));
 
@@ -209,15 +232,13 @@
 			return (n < 10) ? '0' + n : n;
 		}
 
-		function correctHighDay(day, month, year) {
-			var dateObj = new Date(0);
-			dateObj.setUTCFullYear(year);
-			dateObj.setUTCMonth(month); // for month, 0=Jan
-			dateObj.setUTCDate(0);
-			if (day > dateObj.getUTCDate()) {
-				return dateObj.getUTCDate();
+		function adjustLastDay() {
+			var lastUTCDateForMonthAndYear = new Date(Date.UTC(vm.year, vm.month + 1, 0)); // to get last day of month
+			var lastUTCDayForMonthAndYear = lastUTCDateForMonthAndYear.getUTCDate();
+
+			if (vm.day > lastUTCDayForMonthAndYear) {
+				vm.day = lastUTCDayForMonthAndYear;
 			}
-			return day;
 		}
 
 		init();

@@ -37,12 +37,12 @@ angular.module("tw.form-styling", []);
         function onKeypress(event) {
             13 === (event.keyCode ? event.keyCode : event.which) && fakeClick(this);
         }
-        function link(scope, element, attrs) {
+        function link(scope, element, attrs, ctrl) {
             if (attrs.type) {
                 var type = attrs.type.toLowerCase();
                 if (("radio" === type || "checkbox" === type) && 0 !== $(element).closest(labelSelector).length) {
                     var replacement;
-                    replacement = $("radio" === type ? radioTemplate : checkboxTemplate), replacement.keypress(onKeypress).click(onClick).focus(onFocus).blur(onBlur), 
+                    replacement = "radio" === type ? $(radioTemplate) : $(checkboxTemplate), replacement.keypress(onKeypress).click(onClick).focus(onFocus).blur(onBlur), 
                     $(element).hide().after(replacement), replacement.after(disabledReplacement);
                 }
             }

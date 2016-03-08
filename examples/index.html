@@ -292,16 +292,19 @@
 											Example date control
 										</label>
 										<tw-date name="date"
-												 disabled
 												 ng-required="vm.model.components.dateRequired"
-												 ng-model="vm.model.components.date"></tw-date>
+												 ng-disabled="vm.model.components.dateDisabled"
+												 ng-model="vm.model.components.date"
+												 locale="vm.model.components.dateLocale"
+										></tw-date>
 									</div>
 									<h5>Configuration</h5>
 									<pre>
 &lt;tw-date
-  ng-model={{vm.model.components.date}}
-  ng-required={{vm.model.components.dateRequired}}
-  ng-disabled={{vm.model.components.dateDisabled}}
+	ng-model={{vm.model.components.date}}
+	ng-required={{vm.model.components.dateRequired}}
+	ng-disabled={{vm.model.components.dateDisabled}}
+	locale={{vm.model.components.dateLocale}}
 &lt;/tw-date&gt;
 									</pre>
 								</div>
@@ -334,6 +337,20 @@
 														Is the control disabled?
 													</label>
 												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label">
+													Locale
+												</label>
+												<select required
+														class="form-control"
+														ng-model="vm.model.components.dateLocale"
+														ng-init="vm.model.components.dateLocale = 'en-GB'">
+													<option value="en-GB">English UK</option>
+													<option value="fr-FR">French</option>
+													<option value="es-ES">Spanish</option>
+													<option value="ss-SS">Unknown locale</option>
+												</select>
 											</div>
 										</div>
 									</div>
