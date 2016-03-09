@@ -10,7 +10,7 @@
 	function TwDateController($element, $log, $scope) {
 		var vm = this;
 
-		vm.updateDateModel = updateDateModelAndValidationClasses;
+		vm.updateDateModelAndValidationClasses = updateDateModelAndValidationClasses;
 
 		vm.explodeDateModel = explodeDateModel;
 		vm.adjustLastDay = adjustLastDay;
@@ -266,13 +266,11 @@
 
 
 		function isExplodedDateAboveMin() {
-			var dateObj = getExplodedDateAsDate();
-			return dateObj >= vm.dateRange.min;
+			return vm.dateRange.min ? getExplodedDateAsDate() >= vm.dateRange.min : true;
 		}
 
 		function isExplodedDateBewlowMax() {
-			var dateObj = getExplodedDateAsDate();
-			return dateObj <= vm.dateRange.max;
+			return vm.dateRange.max ? getExplodedDateAsDate() <= vm.dateRange.max : true;
 		}
 
 		function getExplodedDateAsDate() {
@@ -289,6 +287,7 @@
 			var validationClasses = updateValidationClassesAndReturnList(VALIDATORS);
 
 			if (containsInvalidClass(validationClasses)) {
+				console.log(validationClasses);
 				vm.date = null;
 				return;
 			}
@@ -296,10 +295,14 @@
 			var dateObj = getExplodedDateAsDate();
 
 			if (vm.dateModelType === STRING_TYPE) {
-				vm.date = dateObj.toISOString();
+				vm.date = getIsoDateWithoutTime(dateObj.toISOString());
 			} else {
 				vm.date = dateObj;
 			}
+		}
+
+		function getIsoDateWithoutTime(dateAsISOString) {
+			return dateAsISOString.substr(0, dateAsISOString.indexOf('T'));
 		}
 
 		function updateValidationClassesAndReturnList(validators) {

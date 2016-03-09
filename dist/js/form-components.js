@@ -113,12 +113,10 @@ angular.module("tw.form-components", []);
             return "number" == typeof value;
         }
         function isExplodedDateAboveMin() {
-            var dateObj = getExplodedDateAsDate();
-            return dateObj >= vm.dateRange.min;
+            return vm.dateRange.min ? getExplodedDateAsDate() >= vm.dateRange.min : !0;
         }
         function isExplodedDateBewlowMax() {
-            var dateObj = getExplodedDateAsDate();
-            return dateObj <= vm.dateRange.max;
+            return vm.dateRange.max ? getExplodedDateAsDate() <= vm.dateRange.max : !0;
         }
         function getExplodedDateAsDate() {
             return new Date(Number(vm.year), Number(vm.month), Number(vm.day));
@@ -126,9 +124,13 @@ angular.module("tw.form-components", []);
         function updateDateModelAndValidationClasses() {
             vm.adjustLastDay();
             var validationClasses = updateValidationClassesAndReturnList(VALIDATORS);
-            if (containsInvalidClass(validationClasses)) return void (vm.date = null);
+            if (containsInvalidClass(validationClasses)) return console.log(validationClasses), 
+            void (vm.date = null);
             var dateObj = getExplodedDateAsDate();
-            vm.dateModelType === STRING_TYPE ? vm.date = dateObj.toISOString() : vm.date = dateObj;
+            vm.dateModelType === STRING_TYPE ? vm.date = getIsoDateWithoutTime(dateObj.toISOString()) : vm.date = dateObj;
+        }
+        function getIsoDateWithoutTime(dateAsISOString) {
+            return dateAsISOString.substr(0, dateAsISOString.indexOf("T"));
         }
         function updateValidationClassesAndReturnList(validators) {
             var newClasses = [];
@@ -151,7 +153,7 @@ angular.module("tw.form-components", []);
             vm.day > lastUTCDayForMonthAndYear && (vm.day = lastUTCDayForMonthAndYear);
         }
         var vm = this;
-        vm.updateDateModel = updateDateModelAndValidationClasses, vm.explodeDateModel = explodeDateModel, 
+        vm.updateDateModelAndValidationClasses = updateDateModelAndValidationClasses, vm.explodeDateModel = explodeDateModel, 
         vm.adjustLastDay = adjustLastDay, vm.validDateModel = isValidDateModel;
         var DEFAULT_LOCALE_EN = "en", DEFAULT_MONTHS_EN = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ], STRING_TYPE = "string", OBJECT_TYPE = "object", VALIDATORS = {
             pattern: isExplodedDatePatternCorrect,

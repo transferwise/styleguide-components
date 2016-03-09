@@ -50,7 +50,7 @@ describe('Controller: TwDateController', function() {
 
 	});
 
-	describe('updateDateModel()', function() {
+	fdescribe('updateDateModelAndValidationClasses()', function() {
 
 		describe('when string mode', function() {
 			var inputDate;
@@ -64,7 +64,7 @@ describe('Controller: TwDateController', function() {
 				TwDateController.month = 11;
 				TwDateController.year = 2000;
 
-				TwDateController.updateDateModel();
+				TwDateController.updateDateModelAndValidationClasses();
 
 				expect(TwDateController.date).toBe("2000-12-31");
 			});
@@ -74,7 +74,7 @@ describe('Controller: TwDateController', function() {
 				TwDateController.month = 12;
 				TwDateController.year = 2000;
 
-				TwDateController.updateDateModel();
+				TwDateController.updateDateModelAndValidationClasses();
 
 				expect(TwDateController.date).toBe(null);
 			});
@@ -84,7 +84,7 @@ describe('Controller: TwDateController', function() {
 				TwDateController.month = 1;
 				TwDateController.year = 2015;
 
-				TwDateController.updateDateModel();
+				TwDateController.updateDateModelAndValidationClasses();
 
 				expect(TwDateController.date).toBe("2015-02-28");
 			});
@@ -102,7 +102,7 @@ describe('Controller: TwDateController', function() {
 				TwDateController.month = 11;
 				TwDateController.year = 2001;
 
-				TwDateController.updateDateModel();
+				TwDateController.updateDateModelAndValidationClasses();
 
 				expect(TwDateController.date).toEqual(new Date("2001-12-31"));
 			});
