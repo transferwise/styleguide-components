@@ -106,7 +106,6 @@
 		}
 
 		function setDateRangeWithStringInputs() {
-			console.log(vm.minDateString, vm.maxDateString);
 			if (validDateString(vm.minDateString)) {
 				vm.dateRange.min = new Date(vm.minDateString);
 			}
@@ -287,7 +286,6 @@
 			var validationClasses = updateValidationClassesAndReturnList(VALIDATORS);
 
 			if (containsInvalidClass(validationClasses)) {
-				console.log(validationClasses);
 				vm.date = null;
 				return;
 			}

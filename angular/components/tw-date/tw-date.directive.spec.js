@@ -399,7 +399,7 @@ describe('Directive: TwDate', function() {
             beforeEach(function() {
                 oldDate = new Date("1989-01-31");
                 directiveElement = getCompiledDirectiveElement({model: oldDate});
-                isolatedScope = getCompiledDirectiveElement().isolateScope();
+                isolatedScope = directiveElement.isolateScope();
             });
             it('should update highest day if month is different', function() {
                 isolatedScope.vm.month = 1;
@@ -415,6 +415,22 @@ describe('Directive: TwDate', function() {
 
                 expect(isolatedScope.vm.adjustLastDay).not.toHaveBeenCalled();
             });
+        });
+    });
+
+    fdescribe('vm.updateDateModelAndValidationClasses()', function() {
+        var directiveElement, isolatedScope;
+        beforeEach(function() {
+            directiveElement = getCompiledDirectiveElement();
+            isolatedScope = directiveElement.isolateScope();
+        });
+        it('should be triggered when vm.day changes', function() {
+            var vm = isolatedScope.vm;
+            spyOn(vm, 'updateDateModelAndValidationClasses');
+            vm.day = 12;
+            isolatedScope.$apply();
+
+            expect(vm.updateDateModelAndValidationClasses).toHaveBeenCalled();
         });
     });
 

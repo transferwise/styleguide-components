@@ -34,7 +34,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             vm.dateRange = {}, setDateRangeWithStringInputs(), setDateRangeWithNgInputs();
         }
         function setDateRangeWithStringInputs() {
-            console.log(vm.minDateString, vm.maxDateString), validDateString(vm.minDateString) && (vm.dateRange.min = new Date(vm.minDateString)), 
+            validDateString(vm.minDateString) && (vm.dateRange.min = new Date(vm.minDateString)), 
             validDateString(vm.maxDateString) && (vm.dateRange.max = new Date(vm.maxDateString));
         }
         function setDateRangeWithNgInputs() {
@@ -127,8 +127,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         function updateDateModelAndValidationClasses() {
             vm.adjustLastDay();
             var validationClasses = updateValidationClassesAndReturnList(VALIDATORS);
-            if (containsInvalidClass(validationClasses)) return console.log(validationClasses), 
-            void (vm.date = null);
+            if (containsInvalidClass(validationClasses)) return void (vm.date = null);
             var dateObj = getExplodedDateAsDate();
             vm.dateModelType === STRING_TYPE ? vm.date = getIsoDateWithoutTime(dateObj.toISOString()) : vm.date = dateObj;
         }

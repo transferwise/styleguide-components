@@ -50,8 +50,7 @@ describe('Controller: TwDateController', function() {
 
 	});
 
-	fdescribe('updateDateModelAndValidationClasses()', function() {
-
+	describe('updateDateModelAndValidationClasses()', function() {
 		describe('when string mode', function() {
 			var inputDate;
 			beforeEach(function() {
