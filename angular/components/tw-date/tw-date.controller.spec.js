@@ -27,8 +27,9 @@ describe('Controller: TwDateController', function() {
 
 		it("should split invalid string date into NaN", function() {
 			var inputDate = "2000-02-03T";
-			initController({date: inputDate});
+			initController();
 
+			TwDateController.date = inputDate;
 			TwDateController.explodeDateModel();
 
 			expect(TwDateController.day).toBeNaN();

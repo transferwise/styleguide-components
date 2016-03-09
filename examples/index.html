@@ -295,7 +295,9 @@
 												 ng-required="vm.model.components.dateRequired"
 												 ng-disabled="vm.model.components.dateDisabled"
 												 ng-model="vm.model.components.date"
-												 locale="vm.model.components.dateLocale"
+												 min="1990-01-01"
+												 max="2015-12-31"
+												 ng-locale="vm.model.components.dateLocale"
 										></tw-date>
 									</div>
 									<h5>Configuration</h5>
@@ -304,7 +306,9 @@
 	ng-model={{vm.model.components.date}}
 	ng-required={{vm.model.components.dateRequired}}
 	ng-disabled={{vm.model.components.dateDisabled}}
-	locale={{vm.model.components.dateLocale}}
+	ng-locale={{vm.model.components.dateLocale}}
+	min="1990-01-01"
+	max="2015-12-31"
 &lt;/tw-date&gt;
 									</pre>
 								</div>

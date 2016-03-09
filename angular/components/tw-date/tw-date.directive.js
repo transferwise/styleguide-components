@@ -14,12 +14,15 @@
 			restrict: 'E',
 			scope: {
 				date: '=ngModel',
-				ngRequired: '=',
 				required: '@',
-				ngDisabled: '=',
+				ngRequired: '=',
 				disabled: '@',
-				locale: '=',
+				ngDisabled: '=',
+				locale: '@',
+				ngLocale: '=',
+				minDateString: '@min',
 				ngMin: '=',
+				maxDateString: '@max',
 				ngMax: '='
 			},
 			template: templateAsString
@@ -44,8 +47,8 @@
 						ng-min='1' \
 						ng-max='31' \
 						ng-maxlength='2' \
-						ng-disabled='vm.ngDisabled' \
-						ng-required='vm.ngRequired' \
+						ng-disabled='vm.dateDisabled' \
+						ng-required='vm.dateRequired' \
 						tw-validation /> \
 				</div> \
 				<div class='col-sm-5'> \
@@ -55,9 +58,9 @@
 						class='form-control' \
 						ng-model='vm.month' \
 						ng-change='vm.updateDateModel()' \
-						ng-options='month.id as month.name for month in vm.months' \
-						ng-required='vm.ngRequired' \
-						ng-disabled='vm.ngDisabled' \
+						ng-options='month.id as month.name for month in vm.dateMonths' \
+						ng-disabled='vm.dateDisabled' \
+						ng-required='vm.dateRequired' \
 						autocomplete='off' \
 						tw-validation> \
 					</select> \
@@ -71,12 +74,12 @@
 						placeholder='YYYY' \
 						ng-model='vm.year' \
 						ng-change='vm.updateDateModel()' \
-						min='1900' \
-						max='2015' \
+						ng-min='vm.dateRange.min.getFullYear()' \
+						ng-max='vm.dateRange.max.getFullYear()' \
 						maxlength='4' \
 						ng-maxlength='4' \
-						ng-disabled='vm.ngDisabled' \
-						ng-required='vm.ngRequired' \
+						ng-disabled='vm.dateDisabled' \
+						ng-required='vm.dateRequired' \
 						tw-validation /> \
 				</div> \
 			</div>";

@@ -3,16 +3,39 @@ angular.module("tw.form-components", []);
     "use strict";
     function TwDateController($element, $log, $scope) {
         function init() {
-            validDateModel() ? vm.explodeDateModel() : explodeDefaultDate(), setDefaultLocaleIfNeeded(), 
-            setYearRange(), vm.months = getMonthsBasedOnIntlSupportForLocale(), void 0 === vm.ngRequired && (vm.ngRequired = void 0 !== vm.required), 
-            void 0 === vm.ngDisabled && (vm.ngDisabled = void 0 !== vm.disabled), registerWatchers();
+            vm.date ? applyDateModelIfValidOrThrowError() : (vm.dateModelType = OBJECT_TYPE, 
+            explodeDefaultDate()), setDateRequired(), setDateDisabled(), setDateLocale(), setDateRange(), 
+            setMonths(), registerWatchers();
         }
-        function setYearRange() {}
-        function setDefaultLocaleIfNeeded() {
-            vm.locale || setDefaultLocale();
+        function applyDateModelIfValidOrThrowError() {
+            if (!isValidDateModel()) throw new Error("date model passed should either be instance of Date or valid ISO8601 string");
+            vm.dateModelType = "string" == typeof vm.date ? STRING_TYPE : OBJECT_TYPE, vm.explodeDateModel();
         }
-        function setDefaultLocale() {
-            vm.locale = DEFAULT_LOCALE_EN;
+        function setMonths() {
+            Array.isArray(vm.months) && 12 === vm.months.length ? vm.dateMonths = extendMonthsWithIds(vm.months) : vm.dateMonths = getMonthsBasedOnIntlSupportForLocale();
+        }
+        function setDateRequired() {
+            vm.dateRequired = void 0 !== vm.ngRequired ? vm.ngRequired : void 0 !== vm.required;
+        }
+        function setDateDisabled() {
+            vm.dateDisabled = void 0 !== vm.ngDisabled ? vm.ngDisabled : void 0 !== vm.disabled;
+        }
+        function setDateLocale() {
+            vm.locale && (vm.dateLocale = vm.locale), vm.ngLocale && (vm.dateLocale = vm.ngLocale), 
+            vm.dateLocale || setDefaultDateLocale();
+        }
+        function setDefaultDateLocale() {
+            vm.dateLocale = DEFAULT_LOCALE_EN;
+        }
+        function setDateRange() {
+            vm.dateRange = {}, setDateRangeWithStringInputs(), setDateRangeWithNgInputs();
+        }
+        function setDateRangeWithStringInputs() {
+            console.log(vm.minDateString, vm.maxDateString), validDateString(vm.minDateString) && (vm.dateRange.min = new Date(vm.minDateString)), 
+            validDateString(vm.maxDateString) && (vm.dateRange.max = new Date(vm.maxDateString));
+        }
+        function setDateRangeWithNgInputs() {
+            validDate(vm.ngMin) && (vm.dateRange.min = new Date(vm.ngMin)), validDate(vm.ngMax) && (vm.dateRange.max = new Date(vm.ngMax));
         }
         function explodeDateModel() {
             "string" == typeof vm.date ? explodeDateString(vm.date) : explodeDateObject(vm.date);
@@ -21,16 +44,19 @@ angular.module("tw.form-components", []);
             explodeDateObject(new Date(dateString));
         }
         function explodeDateObject(dateObj) {
-            vm.day = dateObj.getUTCDate(), vm.month = dateObj.getUTCMonth(), vm.year = dateObj.getUTCFullYear();
+            vm.day = dateObj.getDate(), vm.month = dateObj.getMonth(), vm.year = dateObj.getFullYear();
         }
         function explodeDateModelIfValid() {
-            validDateModel() && vm.explodeDateModel();
+            isValidDateModel() && vm.explodeDateModel();
         }
         function explodeDefaultDate() {
             vm.day = null, vm.month = 0, vm.year = null;
         }
-        function validDateModel() {
-            return validDateObject(vm.date) || validDateString(vm.date);
+        function isValidDateModel() {
+            return validDate(vm.date);
+        }
+        function validDate(date) {
+            return validDateObject(date) || validDateString(date);
         }
         function validDateObject(dateObj) {
             return "[object Date]" === Object.prototype.toString.call(dateObj) && !isNaN(dateObj.getTime());
@@ -41,15 +67,23 @@ angular.module("tw.form-components", []);
         function registerWatchers() {
             $scope.$watch("vm.date", function() {
                 explodeDateModelIfValid();
+            }), $scope.$watch("vm.ngRequired", function(newValue, oldValue) {
+                newValue !== oldValue && setDateRequired();
+            }), $scope.$watch("vm.ngDisabled", function(newValue, oldValue) {
+                newValue !== oldValue && setDateDisabled();
+            }), $scope.$watch("vm.ngMin", function(newValue, oldValue) {
+                newValue !== oldValue && setDateRange();
+            }), $scope.$watch("vm.ngMax", function(newValue, oldValue) {
+                newValue !== oldValue && setDateRange();
+            }), $scope.$watch("vm.ngLocale", function(newValue, oldValue) {
+                newValue !== oldValue && (setDateLocale(), setMonths());
             }), $scope.$watch("vm.month", function(newValue, oldValue) {
                 newValue !== oldValue && vm.adjustLastDay();
-            }), $scope.$watch("vm.locale", function(newValue, oldValue) {
-                newValue !== oldValue && (vm.months = getMonthsBasedOnIntlSupportForLocale(vm.locale));
             });
         }
         function getMonthsBasedOnIntlSupportForLocale() {
             var monthNames;
-            return isIntlSupportedForLocale(vm.locale) ? monthNames = getMonthNamesForLocale() : ($log.warn('i18n not supported for locale "' + vm.locale + '"'), 
+            return isIntlSupportedForLocale(vm.dateLocale) ? monthNames = getMonthNamesForLocale() : ($log.warn('i18n not supported for locale "' + vm.dateLocale + '"'), 
             monthNames = DEFAULT_MONTHS_EN), extendMonthsWithIds(monthNames);
         }
         function isIntlSupportedForLocale(locale) {
@@ -59,7 +93,7 @@ angular.module("tw.form-components", []);
             return window.Intl && "object" == typeof window.Intl;
         }
         function getMonthNamesForLocale() {
-            for (var months = [], date = new Date(), i = 0; 12 > i; i++) date.setMonth(i), months.push(date.toLocaleDateString(vm.locale, {
+            for (var months = [], date = new Date(), i = 0; 12 > i; i++) date.setMonth(i), months.push(date.toLocaleDateString(vm.dateLocale, {
                 month: "long"
             }));
             return months;
@@ -78,29 +112,52 @@ angular.module("tw.form-components", []);
         function isNumber(value) {
             return "number" == typeof value;
         }
-        function updateDateModel() {
-            var dateObj;
-            if (!isExplodedDatePatternCorrect()) return vm.date = null, void $element.addClass("ng-invalid-pattern");
-            vm.adjustLastDay(), dateObj = new Date(Date.UTC(Number(vm.year), Number(vm.month), Number(vm.day)));
-            var minObj = new Date(vm.ngMin), maxObj = new Date(vm.ngMax);
-            return minObj > dateObj ? void $element.addClass("ng-invalid-min") : dateObj > maxObj ? void $element.addClass("ng-invalid-max") : ($element.removeClass("ng-invalid-min"), 
-            $element.removeClass("ng-invalid-max"), $element.removeClass("ng-invalid-pattern"), 
-            void ("string" == typeof vm.date ? vm.date = stringifyDateObject(dateObj) : vm.date = dateObj));
+        function isExplodedDateAboveMin() {
+            var dateObj = getExplodedDateAsDate();
+            return dateObj >= vm.dateRange.min;
         }
-        function stringifyDateObject(dateObj) {
-            return dateObj.getUTCFullYear() + "-" + pad(dateObj.getUTCMonth() + 1) + "-" + pad(dateObj.getUTCDate());
+        function isExplodedDateBewlowMax() {
+            var dateObj = getExplodedDateAsDate();
+            return dateObj <= vm.dateRange.max;
         }
-        function pad(n) {
-            return 10 > n ? "0" + n : n;
+        function getExplodedDateAsDate() {
+            return new Date(Number(vm.year), Number(vm.month), Number(vm.day));
+        }
+        function updateDateModelAndValidationClasses() {
+            vm.adjustLastDay();
+            var validationClasses = updateValidationClassesAndReturnList(VALIDATORS);
+            if (containsInvalidClass(validationClasses)) return void (vm.date = null);
+            var dateObj = getExplodedDateAsDate();
+            vm.dateModelType === STRING_TYPE ? vm.date = dateObj.toISOString() : vm.date = dateObj;
+        }
+        function updateValidationClassesAndReturnList(validators) {
+            var newClasses = [];
+            return angular.forEach(validators, function(validator, validatorName) {
+                var validClassName = "ng-valid-" + validatorName, inValidClassName = "ng-invalid-" + validatorName;
+                validator() ? ($element.addClass(validClassName), newClasses.push(validClassName), 
+                $element.removeClass(inValidClassName)) : ($element.addClass(inValidClassName), 
+                newClasses.push(inValidClassName), $element.removeClass(validClassName));
+            }), newClasses;
+        }
+        function containsInvalidClass(validationClasses) {
+            for (var i = 0; i < validationClasses.length; i++) {
+                var className = validationClasses[i];
+                if (className.indexOf("-invalid-") > 0) return !0;
+            }
+            return !1;
         }
         function adjustLastDay() {
             var lastUTCDateForMonthAndYear = new Date(Date.UTC(vm.year, vm.month + 1, 0)), lastUTCDayForMonthAndYear = lastUTCDateForMonthAndYear.getUTCDate();
             vm.day > lastUTCDayForMonthAndYear && (vm.day = lastUTCDayForMonthAndYear);
         }
         var vm = this;
-        vm.updateDateModel = updateDateModel, vm.explodeDateModel = explodeDateModel, vm.adjustLastDay = adjustLastDay, 
-        vm.validDateModel = validDateModel;
-        var DEFAULT_LOCALE_EN = "en-GB", DEFAULT_MONTHS_EN = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+        vm.updateDateModel = updateDateModelAndValidationClasses, vm.explodeDateModel = explodeDateModel, 
+        vm.adjustLastDay = adjustLastDay, vm.validDateModel = isValidDateModel;
+        var DEFAULT_LOCALE_EN = "en", DEFAULT_MONTHS_EN = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ], STRING_TYPE = "string", OBJECT_TYPE = "object", VALIDATORS = {
+            pattern: isExplodedDatePatternCorrect,
+            min: isExplodedDateAboveMin,
+            max: isExplodedDateBewlowMax
+        };
         init();
     }
     angular.module("tw.form-components").controller("TwDateController", TwDateController), 
@@ -116,12 +173,15 @@ angular.module("tw.form-components", []);
             restrict: "E",
             scope: {
                 date: "=ngModel",
-                ngRequired: "=",
                 required: "@",
-                ngDisabled: "=",
+                ngRequired: "=",
                 disabled: "@",
-                locale: "=",
+                ngDisabled: "=",
+                locale: "@",
+                ngLocale: "=",
+                minDateString: "@min",
                 ngMin: "=",
+                maxDateString: "@max",
                 ngMax: "="
             },
             template: templateAsString
@@ -129,7 +189,7 @@ angular.module("tw.form-components", []);
         return directive;
     }
     angular.module("tw.form-components").directive("twDate", TwDateDirective);
-    var templateAsString = "<div class='row'> 				<div class='col-sm-3'> 					<label class='sr-only' for='day-{{::uniqueId}}'>Day</label> 					<input type='number' 						name='day' 						id='day-{{::uniqueId}}' 						class='form-control tw-date-day' 						ng-model='vm.day' 						ng-change='vm.updateDateModel()' 						placeholder='DD' 						min='1' 						max='31' 						maxlength='2' 						ng-min='1' 						ng-max='31' 						ng-maxlength='2' 						ng-disabled='vm.ngDisabled' 						ng-required='vm.ngRequired' 						tw-validation /> 				</div> 				<div class='col-sm-5'> 					<label class='sr-only' for='month-{{::uniqueId}}'>Month</label> 					<select name='month' 						id='month-{{::uniqueId}}' 						class='form-control' 						ng-model='vm.month' 						ng-change='vm.updateDateModel()' 						ng-options='month.id as month.name for month in vm.months' 						ng-required='vm.ngRequired' 						ng-disabled='vm.ngDisabled' 						autocomplete='off' 						tw-validation> 					</select> 				</div> 				<div class='col-sm-4'> 					<label class='sr-only' for='year-{{::uniqueId}}'>Year</label> 					<input type='number' 						id='year-{{::uniqueId}}' 						name='year' 						class='form-control' 						placeholder='YYYY' 						ng-model='vm.year' 						ng-change='vm.updateDateModel()' 						min='1900' 						max='2015' 						maxlength='4' 						ng-maxlength='4' 						ng-disabled='vm.ngDisabled' 						ng-required='vm.ngRequired' 						tw-validation /> 				</div> 			</div>";
+    var templateAsString = "<div class='row'> 				<div class='col-sm-3'> 					<label class='sr-only' for='day-{{::uniqueId}}'>Day</label> 					<input type='number' 						name='day' 						id='day-{{::uniqueId}}' 						class='form-control tw-date-day' 						ng-model='vm.day' 						ng-change='vm.updateDateModel()' 						placeholder='DD' 						min='1' 						max='31' 						maxlength='2' 						ng-min='1' 						ng-max='31' 						ng-maxlength='2' 						ng-disabled='vm.dateDisabled' 						ng-required='vm.dateRequired' 						tw-validation /> 				</div> 				<div class='col-sm-5'> 					<label class='sr-only' for='month-{{::uniqueId}}'>Month</label> 					<select name='month' 						id='month-{{::uniqueId}}' 						class='form-control' 						ng-model='vm.month' 						ng-change='vm.updateDateModel()' 						ng-options='month.id as month.name for month in vm.dateMonths' 						ng-disabled='vm.dateDisabled' 						ng-required='vm.dateRequired' 						autocomplete='off' 						tw-validation> 					</select> 				</div> 				<div class='col-sm-4'> 					<label class='sr-only' for='year-{{::uniqueId}}'>Year</label> 					<input type='number' 						id='year-{{::uniqueId}}' 						name='year' 						class='form-control' 						placeholder='YYYY' 						ng-model='vm.year' 						ng-change='vm.updateDateModel()' 						ng-min='vm.dateRange.min.getFullYear()' 						ng-max='vm.dateRange.max.getFullYear()' 						maxlength='4' 						ng-maxlength='4' 						ng-disabled='vm.dateDisabled' 						ng-required='vm.dateRequired' 						tw-validation /> 				</div> 			</div>";
 }(window.angular), function(angular) {
     function TwDynamicFormControl() {
         return {

@@ -52,205 +52,353 @@ describe('Directive: TwDate', function() {
     };
 
     describe('init', function() {
-        describe('date model', function() {
-            it('should stay undefined when no date model is passed', function() {
-                var directiveElement = getCompiledDirectiveElement();
-
+        describe('when empty input scope is passed', function () {
+            var directiveElement, viewModel;
+            beforeEach(function () {
+                directiveElement = getCompiledDirectiveElement();
+                viewModel = getViewModel(directiveElement);
+            });
+            it('should leave date model undefined', function () {
                 expectDateModelToBe(directiveElement, undefined);
             });
-            it('should stay untouched when incorrect string date model is passed', function() {
-                var date = 'snake';
-                var directiveElement = getCompiledDirectiveElement({date: date});
-
-                expectDateModelToBe(directiveElement, date);
+            it('should set vm.dateModelType to "object"', function () {
+                expect(viewModel.dateModelType).toBe('object');
             });
-            it('should stay untouched when incorrect Date date model is passed', function() {
-                var date = new Date('snake');
-                var directiveElement = getCompiledDirectiveElement({date: date});
-
-                expectDateModelToBe(directiveElement, date);
-            });
-            it('should stay untouched when correct ISO8601 date model is passed', function() {
-                var iso8601Date = "1990-02-12T00:00:00.000Z";
-                var directiveElement = getCompiledDirectiveElement({date: iso8601Date});
-
-                expectDateModelToBe(directiveElement, iso8601Date);
-            });
-            it('should stay untouched when correct Date date model is passed', function() {
-                var date = new Date(1995, 10, 30);
-                var directiveElement = getCompiledDirectiveElement({date: date});
-
-                expectDateModelToBe(directiveElement, date);
-            });
-        });
-        describe('exploded date', function() {
-            it('should be default when no date model is passed', function() {
-                var directiveElement = getCompiledDirectiveElement();
-
+            it('should set exploded date to default', function () {
                 expectExplodedDateToBeDefault(directiveElement);
             });
-            it('should be default when incorrect string date model is passed', function() {
-                var date = 'snake';
-                var directiveElement = getCompiledDirectiveElement({date: date});
+            it('should set vm.dateRequired to false', function () {
+                expect(viewModel.dateRequired).toBe(false);
+            });
+            it('should set vm.dateDisabled to false', function () {
+                expect(viewModel.dateDisabled).toBe(false);
+            });
+            it('should not set vm.dateRange', function () {
+                expect(viewModel.dateRange).toEqual({});
+            });
+            it('should set vm.dateLocale to "en"', function () {
+                expect(viewModel.dateLocale).toBe('en');
+            });
 
-                expectExplodedDateToBeDefault(directiveElement);
-            });
-            it('should be default when incorrect Date date model is passed', function() {
-                var date = new Date('snake');
-                var directiveElement = getCompiledDirectiveElement({date: date});
-
-                expectExplodedDateToBeDefault(directiveElement);
-            });
-            it('should be correct when correct ISO8601 date model is passed', function() {
-                var iso8601Date = "1990-02-12T00:00:00.000Z";
-                var directiveElement = getCompiledDirectiveElement({date: iso8601Date});
-
-                expectExplodedDateToBe(directiveElement, 1990, 1, 12);
-            });
-            it('should be correct when correct Date date model is passed', function() {
-                var date = new Date(1995, 10, 30);
-                var directiveElement = getCompiledDirectiveElement({date: date});
-
-                expectExplodedDateToBe(directiveElement, 1995, 10, 30);
-            });
-        });
-        describe('vm.ngRequired', function() {
-            it('should be set to false if no vm.ngRequired nor vm.required are passed', function() {
-                var directiveElement = getCompiledDirectiveElement();
-                var vm = getViewModel(directiveElement);
-
-                expect(vm.ngRequired).toBe(false);
-            });
-            it('should be set to true if vm.ngRequired not passed but vm.required passed', function() {
-                var directiveElement = getCompiledDirectiveElement({}, ['required']);
-                var vm = getViewModel(directiveElement);
-
-                expect(vm.ngRequired).toBe(true);
-            });
-            it('should be set to value passed and ignore vm.required passed', function() {
-                var directiveElement = getCompiledDirectiveElement({ngRequired: false}, ['required']);
-                var vm = getViewModel(directiveElement);
-
-                expect(vm.ngRequired).toBe(false);
-            });
-        });
-        describe('vm.ngDisabled', function() {
-            it('should be set to false if no vm.ngDisabled nor vm.disabled are passed', function() {
-                var directiveElement = getCompiledDirectiveElement();
-                var vm = getViewModel(directiveElement);
-
-                expect(vm.ngDisabled).toBe(false);
-            });
-            it('should be set to true if vm.ngDisabled not passed but vm.disabled passed', function() {
-                var directiveElement = getCompiledDirectiveElement({}, ['disabled']);
-                var vm = getViewModel(directiveElement);
-
-                expect(vm.ngDisabled).toBe(true);
-            });
-            it('should be set to value passed and ignore vm.disabled passed', function() {
-                var directiveElement = getCompiledDirectiveElement({ngDisabled: false}, ['disabled']);
-                var vm = getViewModel(directiveElement);
-
-                expect(vm.ngDisabled).toBe(false);
-            });
-        });
-        describe('vm.required & vm.disabled', function() {
-            it('should set vm.ngDisabled and vm.ngDisabled if both present', function() {
-                var directiveElement = getCompiledDirectiveElement({}, ['required', 'disabled']);
-                var vm = getViewModel(directiveElement);
-
-                expect(vm.ngRequired).toBe(true);
-                expect(vm.ngDisabled).toBe(true);
-            });
-        });
-        describe('vm.locale', function() {
-            it('should be set to en-GB by default if no vm.locale passed', function() {
-                var directiveElement = getCompiledDirectiveElement();
-                var vm = getViewModel(directiveElement);
-
-                expect(vm.locale).toBe(LOCALES.en);
-            });
-            it('should be set with value passed', function() {
-                var directiveElement = getCompiledDirectiveElement({locale: LOCALES.fr});
-                var vm = getViewModel(directiveElement);
-
-                expect(vm.locale).toBe(LOCALES.fr);
-            });
-        });
-        describe('vm.months', function() {
-            var frenchLocale = 'fr-FR';
-            var directiveElement, vm;
-            beforeEach(function() {
-                directiveElement = getCompiledDirectiveElement({locale: frenchLocale});
-                vm = getViewModel(directiveElement);
-            });
-            if (isIntlSupportedForLocale(frenchLocale)) {
+            if (isIntlSupportedForLocale('en')) {
                 it('should populate vm.months based on vm.locale', function () {
-                    FRENCH_MONTHS.forEach(function(monthName, index) {
-                        expect(vm.months[index].id).toBe(index);
-                        expect(vm.months[index].name).toBe(monthName);
-                    });
+                    expectDateMonthsToBeLocalized(directiveElement, 'en');
                 });
             } else {
                 it('should populate vm.months with default English months', function () {
-                    ENGLISH_MONTHS.forEach(function(monthName, index) {
-                        expect(vm.months[index].id).toBe(index);
-                        expect(vm.months[index].name).toBe(monthName);
-                    });
+                    expectDateMonthsToBeDefault(directiveElement);
                 });
             }
+        });
+        describe('when date model input scope is passed', function () {
+            describe('as valid ISO8601 string', function () {
+                var directiveElement, viewModel, dateModel;
+                beforeEach(function () {
+                    dateModel = '1990-08-21';
+                    directiveElement = getCompiledDirectiveElement({model: dateModel});
+                    viewModel = getViewModel(directiveElement);
+                });
+                it('should set vm.dateModelType to "string"', function () {
+                    expect(viewModel.dateModelType).toBe('string');
+                });
+                it('should set exploded date correctly', function () {
+                    expectExplodedDateToBe(directiveElement, 1990, 7, 21);
+                });
+                it('should leave date model as it was defined', function () {
+                    expectDateModelToBe(directiveElement, dateModel);
+                });
+            });
+            describe('as valid Date instance', function () {
+                var directiveElement, viewModel, dateModel;
+                beforeEach(function () {
+                    dateModel = new Date(1990, 7, 21);
+                    directiveElement = getCompiledDirectiveElement({model: dateModel});
+                    viewModel = getViewModel(directiveElement);
+                });
+                it('should set vm.dateModelType to "string"', function () {
+                    expect(viewModel.dateModelType).toBe('object');
+                });
+                it('should set exploded date correctly', function () {
+                    expectExplodedDateToBe(directiveElement, 1990, 7, 21);
+                });
+                it('should leave date model as it was defined', function () {
+                    expectDateModelToBe(directiveElement, dateModel);
+                });
+            });
+            describe('as invalid ISO8601 string', function () {
+                it('should throw error', function () {
+                    expect(function () {
+                        getCompiledDirectiveElement({model: 'snake'});
+                    })
+                        .toThrow();
+                });
+            });
+            describe('as invalid Date instance', function () {
+                it('should throw error', function () {
+                    expect(function () {
+                        getCompiledDirectiveElement({model: new Date('snake')});
+                    })
+                        .toThrow();
+                });
+            });
+        });
+        describe('when ngRequired input scope is passed', function () {
+            var directiveElement, viewModel;
+            it('should set vm.dateRequired to true', function () {
+                directiveElement = getCompiledDirectiveElement({required: true});
+                viewModel = getViewModel(directiveElement);
+
+                expect(viewModel.dateRequired).toBe(true);
+            });
+            it('should set vm.dateRequired to false', function () {
+                directiveElement = getCompiledDirectiveElement({required: false});
+                viewModel = getViewModel(directiveElement);
+
+                expect(viewModel.dateRequired).toBe(false);
+            });
+        });
+        describe('when required attribute is passed', function () {
+            var directiveElement, viewModel;
+            it('should set vm.dateRequired to true', function () {
+                directiveElement = getCompiledDirectiveElement({}, [['required']]);
+                viewModel = getViewModel(directiveElement);
+
+                expect(viewModel.dateRequired).toBe(true);
+            });
+        });
+        describe('when ngDisabled input scope is passed', function () {
+            var directiveElement, viewModel;
+            it('should set vm.dateRequired to true', function () {
+                directiveElement = getCompiledDirectiveElement({disabled: true});
+                viewModel = getViewModel(directiveElement);
+
+                expect(viewModel.dateDisabled).toBe(true);
+            });
+            it('should set vm.dateRequired to false', function () {
+                directiveElement = getCompiledDirectiveElement({disabled: false});
+                viewModel = getViewModel(directiveElement);
+
+                expect(viewModel.dateDisabled).toBe(false);
+            });
+        });
+        describe('when disabled attribute is passed', function () {
+            var directiveElement, viewModel;
+            it('should set vm.dateRequired to true', function () {
+                directiveElement = getCompiledDirectiveElement({}, [['disabled']]);
+                viewModel = getViewModel(directiveElement);
+
+                expect(viewModel.dateDisabled).toBe(true);
+            });
+        });
+
+        describe('when ngLocale input scope is passed', function () {
+            var ngLocale = 'fr';
+            var directiveElement, viewModel;
+            beforeEach(function () {
+                directiveElement = getCompiledDirectiveElement({locale: ngLocale});
+                viewModel = getViewModel(directiveElement);
+            });
+
+            if (isIntlSupportedForLocale(ngLocale)) {
+                it('should populate vm.months based on vm.locale', function () {
+                    expectDateMonthsToBeLocalized(directiveElement, ngLocale);
+                });
+            } else {
+                it('should populate vm.months with default English months', function () {
+                    expectDateMonthsToBeDefault(directiveElement);
+                });
+            }
+        });
+        describe('when locale attribute is passed', function () {
+            var ngLocale = 'fr';
+            var directiveElement, viewModel;
+            beforeEach(function () {
+                directiveElement = getCompiledDirectiveElement({}, [['locale', ngLocale]]);
+                viewModel = getViewModel(directiveElement);
+            });
+
+            if (isIntlSupportedForLocale(ngLocale)) {
+                it('should populate vm.months based on vm.locale', function () {
+                    expectDateMonthsToBeLocalized(directiveElement, ngLocale);
+                });
+            } else {
+                it('should populate vm.months with default English months', function () {
+                    expectDateMonthsToBeDefault(directiveElement);
+                });
+            }
+        });
+
+        describe('when ngMin, ngMax input scope are passed', function () {
+            var directiveElement, viewModel;
+            describe('as valid strings', function () {
+                it('should set vm.dateRange correctly', function () {
+                    var dateMin = '1990-01-01', dateMax = '2015-12-31';
+                    directiveElement = getCompiledDirectiveElement({min: dateMin, max: dateMax});
+                    viewModel = getViewModel(directiveElement);
+
+                    expect(viewModel.dateRange.min).toEqual(new Date(dateMin));
+                    expect(viewModel.dateRange.max).toEqual(new Date(dateMax));
+                });
+            });
+            describe('as invalid strings', function () {
+                it('should not set vm.dateRange', function () {
+                    directiveElement = getCompiledDirectiveElement({min: 'snake', max: 'snake2'});
+                    viewModel = getViewModel(directiveElement);
+
+                    expect(viewModel.dateRange.min).toBeUndefined();
+                    expect(viewModel.dateRange.max).toBeUndefined();
+                });
+            });
+            describe('as valid dates', function () {
+                it('should set vm.dateRange correctly', function () {
+                    var dateMin = new Date(1990, 0, 1), dateMax = new Date(2015, 11, 31);
+                    directiveElement = getCompiledDirectiveElement({min: dateMin, max: dateMax});
+                    viewModel = getViewModel(directiveElement);
+
+                    expect(viewModel.dateRange.min).toEqual(new Date(dateMin));
+                    expect(viewModel.dateRange.max).toEqual(new Date(dateMax));
+                });
+            });
+            describe('as invalid strings', function () {
+                it('should not set vm.dateRange', function () {
+                    directiveElement = getCompiledDirectiveElement({
+                        ngMin: new Date('snake'),
+                        ngMax: new Date('snake2')
+                    });
+                    viewModel = getViewModel(directiveElement);
+
+                    expect(viewModel.dateRange.min).toBeUndefined();
+                    expect(viewModel.dateRange.max).toBeUndefined();
+                });
+            });
+        });
+        describe('when min, max attributes are passed', function () {
+            var directiveElement, viewModel;
+            describe('as valid strings', function () {
+                it('should set vm.dateRange correctly', function () {
+                    var dateMin = '1990-01-01', dateMax = '2015-12-31';
+                    directiveElement = getCompiledDirectiveElement({}, [['min', dateMin], ['max', dateMax]]);
+                    viewModel = getViewModel(directiveElement);
+
+                    expect(viewModel.dateRange.min).toEqual(new Date(dateMin));
+                    expect(viewModel.dateRange.max).toEqual(new Date(dateMax));
+                });
+            });
+            describe('as invalid strings', function () {
+                it('should not set vm.dateRange', function () {
+                    directiveElement = getCompiledDirectiveElement({}, [['min', 'bla'], ['max', 'sss']]);
+                    viewModel = getViewModel(directiveElement);
+
+                    expect(viewModel.dateRange.min).toBeUndefined();
+                    expect(viewModel.dateRange.max).toBeUndefined();
+                });
+            });
+        });
+        describe('when both ngMmin and min attributes are passed', function () {
+            var directiveElement, viewModel;
+            it('ngMin should override min', function () {
+                var ngMin = 'invalid', min = '2015-12-31';
+                directiveElement = getCompiledDirectiveElement({min: ngMin}, [['min', ngMin]]);
+                viewModel = getViewModel(directiveElement);
+
+                expect(viewModel.dateRange.min).toBeUndefined();
+            });
         });
     });
 
     describe('watchers on shared scope', function() {
-        describe('vm.date', function() {
+        describe('ngModel', function() {
             var oldDate, directiveElement;
             beforeEach(function() {
                 oldDate = new Date("1989-02-20");
-                directiveElement = getCompiledDirectiveElement({date: oldDate});
+                directiveElement = getCompiledDirectiveElement({model: oldDate});
             });
             it('should re-explode date correctly if new date is valid', function() {
                 var newDate = new Date("1990-01-12");
-                inputScope.date = newDate;
+                inputScope.model = newDate;
                 inputScope.$digest();
 
-                expectExplodedDateToBe(directiveElement, newDate.getUTCFullYear(), newDate.getUTCMonth(), newDate.getUTCDate());
+                expectExplodedDateToBe(directiveElement, newDate.getFullYear(), newDate.getMonth(), newDate.getDate());
             });
             it('should not re-explode date if new date is not valid', function() {
-                inputScope.date = new Date('snake');
+                inputScope.model = new Date('snake');
                 inputScope.$digest();
 
-                expectExplodedDateToBe(directiveElement, oldDate.getUTCFullYear(), oldDate.getUTCMonth(), oldDate.getUTCDate());
+                expectExplodedDateToBe(directiveElement, oldDate.getFullYear(), oldDate.getMonth(), oldDate.getDate());
             });
         });
-        describe('vm.locale', function() {
-            var oldLocale, directiveElement;
-            beforeEach(function() {
-                oldLocale = LOCALES.es;
-                directiveElement = getCompiledDirectiveElement({locale: oldLocale});
+        describe('ngRequired', function() {
+            it('should update vm.dateRequired correctly', function() {
+                var directiveElement = getCompiledDirectiveElement({required: true});
+                inputScope.required = false;
+                inputScope.$digest();
+
+                var vm = getViewModel(directiveElement);
+                expect(vm.dateRequired).toBe(false);
             });
-            it('should update months correctly based on Intl support', function() {
-                var newLocale = LOCALES.fr;
+        });
+        describe('ngDisabled', function() {
+            it('should update vm.dateDisabled correctly', function() {
+                var directiveElement = getCompiledDirectiveElement({disabled: true});
+                inputScope.disabled = false;
+                inputScope.$digest();
+
+                var vm = getViewModel(directiveElement);
+                expect(vm.dateDisabled).toBe(false);
+            });
+        });
+        describe('ngMin', function() {
+            it('should update vm.dateRange correctly', function() {
+                var directiveElement = getCompiledDirectiveElement({min: '1990-08-12'});
+                var newDateString = '2000-01-01';
+                inputScope.min = newDateString;
+                inputScope.$digest();
+
+                var vm = getViewModel(directiveElement);
+                expect(vm.dateRange.min).toEqual(new Date(newDateString));
+            });
+        });
+        describe('ngMax', function() {
+            it('should update vm.dateRange correctly', function() {
+                var directiveElement = getCompiledDirectiveElement({max: '1990-08-12'});
+                var newDateString = '2000-01-01';
+                inputScope.max = newDateString;
+                inputScope.$digest();
+
+                var vm = getViewModel(directiveElement);
+                expect(vm.dateRange.max).toEqual(new Date(newDateString));
+            });
+        });
+        describe('ngLocale', function() {
+            var directiveElement;
+            var oldLocale = LOCALES.es;
+            var newLocale = LOCALES.fr;
+            beforeEach(function() {
+                directiveElement = getCompiledDirectiveElement({locale: oldLocale});
                 inputScope.locale = newLocale;
                 inputScope.$digest();
-
-                var isolatedScope = directiveElement.isolateScope();
-                expect(isolatedScope.vm.locale).toBe(newLocale);
-
-                if (isIntlSupportedForLocale(newLocale)) {
-                    expect(isolatedScope.vm.months[0].name).toBe('Janvier');
-                } else {
-                    expect(isolatedScope.vm.months[0].name).toBe('January');
-                }
             });
+            it('should update vm.dateLocale correctly', function() {
+                var vm = getViewModel(directiveElement);
+                expect(vm.dateLocale).toBe(newLocale);
+            });
+            if (isIntlSupportedForLocale(newLocale)) {
+                it('should update vm.dateMonths based on vm.locale', function () {
+                    expectDateMonthsToBeLocalized(directiveElement, newLocale);
+                });
+            } else {
+                it('should populate vm.dateMonths with default English months', function () {
+                    expectDateMonthsToBeDefault(directiveElement);
+                });
+            }
         });
     });
-    describe('watchers on isolated scope', function() {
+    describe('watchers on inner scope', function() {
         describe('vm.month', function() {
             var oldDate, directiveElement, isolatedScope;
             beforeEach(function() {
                 oldDate = new Date("1989-01-31");
-                directiveElement = getCompiledDirectiveElement({date: oldDate});
+                directiveElement = getCompiledDirectiveElement({model: oldDate});
                 isolatedScope = getCompiledDirectiveElement().isolateScope();
             });
             it('should update highest day if month is different', function() {
@@ -270,20 +418,56 @@ describe('Directive: TwDate', function() {
         });
     });
 
+    function expectDateMonthsToBeLocalized(directiveElement, locale) {
+        var vm = getViewModel(directiveElement);
+        var localizedMonthNames = getMonthNamesForLocale(locale);
+        localizedMonthNames.forEach(function(monthName, index) {
+            expect(vm.dateMonths[index].id).toBe(index);
+            expect(vm.dateMonths[index].name).toBe(monthName);
+        });
+    }
+    function expectDateMonthsToBeDefault(directiveElement) {
+        var vm = getViewModel(directiveElement);
+        ENGLISH_MONTHS.forEach(function(monthName, index) {
+            expect(vm.dateMonths[index].id).toBe(index);
+            expect(vm.dateMonths[index].name).toBe(monthName);
+        });
+    }
+
     function isIntlSupportedForLocale(locale) {
         return window.Intl &&
             typeof window.Intl === 'object' &&
             window.Intl.DateTimeFormat.supportedLocalesOf([locale]).length > 0;
     }
 
+    function getMonthNamesForLocale(locale) {
+        var monthNames = [], date = new Date();
+        if (isIntlSupportedForLocale(locale)) {
+            for (var i=0; i<12; i++) {
+                date.setMonth(i);
+                monthNames.push(date.toLocaleDateString(locale, {month: "long"}));
+            }
+        }
+        return monthNames;
+    }
+
     function getCompiledDirectiveElement(injectedViewModel, attributes) {
+        // if both ng-min and min are present on element, ng-min's value is used to override min's value by angular
+        // which results into attribute values passed to min not being used
+        var elementAsString = '<tw-date';
+
         angular.forEach(injectedViewModel, function(value, key) {
-           inputScope[key] = value;
+            inputScope[key] = value;
+            elementAsString += ' ng-' + key + '="' + key +'"';
         });
 
-        var elementAsString = '<tw-date ng-model="date" locale="locale" ng-required="ngRequired" ng-disabled="ngDisabled"';
         if (Array.isArray(attributes)) {
-            elementAsString += attributes.join(' ');
+            attributes.forEach(function(nameValuePair) {
+                elementAsString += ' ' + nameValuePair[0];
+                if (nameValuePair.length > 1) {
+                    elementAsString += '=' + nameValuePair[1]
+                }
+            });
         }
         elementAsString += '></tw-date>';
 

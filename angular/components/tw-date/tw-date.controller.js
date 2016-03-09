@@ -10,13 +10,13 @@
 	function TwDateController($element, $log, $scope) {
 		var vm = this;
 
-		vm.updateDateModel = updateDateModel;
+		vm.updateDateModel = updateDateModelAndValidationClasses;
 
 		vm.explodeDateModel = explodeDateModel;
 		vm.adjustLastDay = adjustLastDay;
-		vm.validDateModel = validDateModel;
+		vm.validDateModel = isValidDateModel;
 
-		var DEFAULT_LOCALE_EN = 'en-GB';
+		var DEFAULT_LOCALE_EN = 'en';
 		var DEFAULT_MONTHS_EN = [
 			'January',
 			'February',
@@ -32,41 +32,96 @@
 			'December'
 		];
 
+		var STRING_TYPE = 'string';
+		var OBJECT_TYPE = 'object';
+
+		var VALIDATORS = {
+			pattern: isExplodedDatePatternCorrect,
+			min: isExplodedDateAboveMin,
+			max: isExplodedDateBewlowMax
+		};
+
 		function init() {
-			if (validDateModel()) {
-				vm.explodeDateModel();
+			if (vm.date) {
+				applyDateModelIfValidOrThrowError();
 			} else {
+				vm.dateModelType = OBJECT_TYPE;
 				explodeDefaultDate();
 			}
 
-			setDefaultLocaleIfNeeded();
+			setDateRequired();
+			setDateDisabled();
+			setDateLocale();
+			setDateRange();
 
-			setYearRange();
-
-			vm.months = getMonthsBasedOnIntlSupportForLocale();
-
-			if (vm.ngRequired === undefined) {
-				vm.ngRequired = vm.required !== undefined;
-			}
-			if (vm.ngDisabled === undefined) {
-				vm.ngDisabled = vm.disabled !== undefined;
-			}
+			setMonths();
 
 			registerWatchers();
 		}
 
-		function setYearRange() {
-			//vm.maxUTCYear = new Date(Date.UTC(vm.ngMin))
-		}
-
-		function setDefaultLocaleIfNeeded() {
-			if (!vm.locale) {
-				setDefaultLocale();
+		function applyDateModelIfValidOrThrowError() {
+			if (isValidDateModel()) {
+				vm.dateModelType = typeof vm.date === 'string' ? STRING_TYPE : OBJECT_TYPE;
+				vm.explodeDateModel();
+			} else {
+				throw new Error('date model passed should either be instance of Date or valid ISO8601 string');
 			}
 		}
 
-		function setDefaultLocale() {
-			vm.locale = DEFAULT_LOCALE_EN;
+		function setMonths() {
+			if (Array.isArray(vm.months) && vm.months.length === 12) {
+				vm.dateMonths =  extendMonthsWithIds(vm.months);
+			} else {
+				vm.dateMonths = getMonthsBasedOnIntlSupportForLocale();
+			}
+		}
+
+		function setDateRequired() {
+			vm.dateRequired = vm.ngRequired !== undefined ? vm.ngRequired : vm.required !== undefined;
+		}
+		function setDateDisabled() {
+			vm.dateDisabled = vm.ngDisabled !== undefined ? vm.ngDisabled : vm.disabled !== undefined;
+		}
+
+		function setDateLocale() {
+			if (vm.locale) {
+				vm.dateLocale = vm.locale;
+			}
+			if (vm.ngLocale) {
+				vm.dateLocale = vm.ngLocale;
+			}
+			if (!vm.dateLocale) {
+				setDefaultDateLocale();
+			}
+		}
+
+		function setDefaultDateLocale() {
+			vm.dateLocale = DEFAULT_LOCALE_EN;
+		}
+
+		function setDateRange() {
+			vm.dateRange = {};
+			setDateRangeWithStringInputs();
+			setDateRangeWithNgInputs();
+		}
+
+		function setDateRangeWithStringInputs() {
+			console.log(vm.minDateString, vm.maxDateString);
+			if (validDateString(vm.minDateString)) {
+				vm.dateRange.min = new Date(vm.minDateString);
+			}
+			if (validDateString(vm.maxDateString)) {
+				vm.dateRange.max = new Date(vm.maxDateString);
+			}
+		}
+
+		function setDateRangeWithNgInputs() {
+			if (validDate(vm.ngMin)) {
+				vm.dateRange.min = new Date(vm.ngMin);
+			}
+			if (validDate(vm.ngMax)) {
+				vm.dateRange.max = new Date(vm.ngMax);
+			}
 		}
 
 		function explodeDateModel() {
@@ -76,19 +131,19 @@
 				explodeDateObject(vm.date);
 			}
 		}
-		
+
 		function explodeDateString(dateString) {
 			explodeDateObject(new Date(dateString));
 		}
 
 		function explodeDateObject(dateObj) {
-			vm.day = dateObj.getUTCDate();
-			vm.month = dateObj.getUTCMonth();
-			vm.year = dateObj.getUTCFullYear();
+			vm.day = dateObj.getDate();
+			vm.month = dateObj.getMonth();
+			vm.year = dateObj.getFullYear();
 		}
 
 		function explodeDateModelIfValid() {
-			if (validDateModel()) {
+			if (isValidDateModel()) {
 				vm.explodeDateModel();
 			}
 		}
@@ -99,8 +154,12 @@
 			vm.year = null;
 		}
 
-		function validDateModel() {
-			return validDateObject(vm.date) || validDateString(vm.date);
+		function isValidDateModel() {
+			return validDate(vm.date);
+		}
+
+		function validDate(date) {
+			return validDateObject(date) || validDateString(date);
 		}
 
 		function validDateObject(dateObj) {
@@ -117,15 +176,40 @@
 				explodeDateModelIfValid();
 			});
 
-			$scope.$watch('vm.month', function(newValue, oldValue) {
+			$scope.$watch('vm.ngRequired', function(newValue, oldValue) {
 				if (newValue !== oldValue) {
-					vm.adjustLastDay();
+					setDateRequired();
 				}
 			});
 
-			$scope.$watch('vm.locale', function(newValue, oldValue) {
+			$scope.$watch('vm.ngDisabled', function(newValue, oldValue) {
 				if (newValue !== oldValue) {
-					vm.months = getMonthsBasedOnIntlSupportForLocale(vm.locale);
+					setDateDisabled();
+				}
+			});
+
+			$scope.$watch('vm.ngMin', function(newValue, oldValue) {
+				if (newValue !== oldValue) {
+					setDateRange();
+				}
+			});
+
+			$scope.$watch('vm.ngMax', function(newValue, oldValue) {
+				if (newValue !== oldValue) {
+					setDateRange();
+				}
+			});
+
+			$scope.$watch('vm.ngLocale', function(newValue, oldValue) {
+				if (newValue !== oldValue) {
+					setDateLocale();
+					setMonths();
+				}
+			});
+
+			$scope.$watch('vm.month', function(newValue, oldValue) {
+				if (newValue !== oldValue) {
+					vm.adjustLastDay();
 				}
 			});
 		}
@@ -133,10 +217,10 @@
 		function getMonthsBasedOnIntlSupportForLocale() {
 			var monthNames;
 
-			if (isIntlSupportedForLocale(vm.locale)) {
+			if (isIntlSupportedForLocale(vm.dateLocale)) {
 				monthNames = getMonthNamesForLocale();
 			} else {
-				$log.warn('i18n not supported for locale "' + vm.locale + '"');
+				$log.warn('i18n not supported for locale "' + vm.dateLocale + '"');
 				monthNames = DEFAULT_MONTHS_EN;
 			}
 
@@ -157,7 +241,7 @@
 			for(var i = 0; i < 12; i++) {
 				date.setMonth(i);
 				months.push(
-					date.toLocaleDateString(vm.locale, {month: "long"})
+					date.toLocaleDateString(vm.dateLocale, {month: "long"})
 				);
 			}
 			return months;
@@ -180,52 +264,76 @@
 			return typeof value === 'number';
 		}
 
-		function updateDateModel() {
-			var dateObj;
 
-			if (!isExplodedDatePatternCorrect()) {
-				vm.date = null;
-				$element.addClass("ng-invalid-pattern");
-				return;
-			}
+		function isExplodedDateAboveMin() {
+			var dateObj = getExplodedDateAsDate();
+			return dateObj >= vm.dateRange.min;
+		}
 
-			vm.adjustLastDay();
+		function isExplodedDateBewlowMax() {
+			var dateObj = getExplodedDateAsDate();
+			return dateObj <= vm.dateRange.max;
+		}
 
-			dateObj = new Date(Date.UTC(
+		function getExplodedDateAsDate() {
+			return new Date(
 				Number(vm.year),
 				Number(vm.month),
 				Number(vm.day)
-			));
+			);
+		}
 
-			/**/
-			var minObj = new Date(vm.ngMin);
-			var maxObj = new Date(vm.ngMax);
+		function updateDateModelAndValidationClasses() {
+			vm.adjustLastDay();
 
-			if (dateObj < minObj) {
-				$element.addClass("ng-invalid-min");
+			var validationClasses = updateValidationClassesAndReturnList(VALIDATORS);
+
+			if (containsInvalidClass(validationClasses)) {
+				vm.date = null;
 				return;
 			}
-			if (dateObj > maxObj) {
-				$element.addClass("ng-invalid-max");
-				return;
-			}
-			/**/
 
-			$element.removeClass("ng-invalid-min");
-			$element.removeClass("ng-invalid-max");
-			$element.removeClass("ng-invalid-pattern");
+			var dateObj = getExplodedDateAsDate();
 
-			if (typeof vm.date === "string") {
-				vm.date = stringifyDateObject(dateObj);
+			if (vm.dateModelType === STRING_TYPE) {
+				vm.date = dateObj.toISOString();
 			} else {
 				vm.date = dateObj;
 			}
 		}
 
+		function updateValidationClassesAndReturnList(validators) {
+			var newClasses = [];
+			angular.forEach(validators, function(validator, validatorName) {
+				var validClassName = 'ng-valid-' + validatorName;
+				var inValidClassName = 'ng-invalid-' + validatorName;
+				if (validator()) {
+					$element.addClass(validClassName);
+					newClasses.push(validClassName);
+					$element.removeClass(inValidClassName);
+				} else {
+					$element.addClass(inValidClassName);
+					newClasses.push(inValidClassName);
+					$element.removeClass(validClassName);
+				}
+			});
+			return newClasses;
+		}
+
+		function containsInvalidClass(validationClasses) {
+			for (var i=0; i<validationClasses.length; i++) {
+				var className = validationClasses[i];
+				if (className.indexOf('-invalid-') > 0) {
+					return true;
+				}
+			}
+			return false;
+		}
+
 		function stringifyDateObject(dateObj) {
-			return dateObj.getUTCFullYear()
-				+ '-' + pad(dateObj.getUTCMonth() + 1)
-				+ '-' + pad(dateObj.getUTCDate());
+			return dateObj.getFullYear()
+				+ '-' + pad(dateObj.getMonth() + 1)
+				+ '-' + pad(dateObj.getDate());
 		}
 
 		function pad(n) {
