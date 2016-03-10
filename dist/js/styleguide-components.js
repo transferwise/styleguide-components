@@ -8,7 +8,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         function init() {
             vm.date ? applyDateModelIfValidOrThrowError() : (vm.dateModelType = OBJECT_TYPE, 
             explodeDefaultDate()), setDateRequired(), setDateDisabled(), setDateLocale(), setDateRange(), 
-            setMonths(), $log.error("vm.dateMonths", vm.dateMonths), registerWatchers();
+            setMonths(), registerWatchers();
         }
         function applyDateModelIfValidOrThrowError() {
             if (!isValidDateModel()) throw new Error("date model passed should either be instance of Date or valid ISO8601 string");
