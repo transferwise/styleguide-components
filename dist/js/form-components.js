@@ -21,7 +21,7 @@ angular.module("tw.form-components", []);
             vm.dateDisabled = void 0 !== vm.ngDisabled ? vm.ngDisabled : void 0 !== vm.disabled;
         }
         function setDateLocale() {
-            vm.locale && (vm.dateLocale = vm.locale), vm.ngLocale && (vm.dateLocale = vm.ngLocale), 
+            vm.locale && (vm.dateLocale = vm.locale), vm.twLocale && (vm.dateLocale = vm.twLocale), 
             vm.dateLocale || setDefaultDateLocale();
         }
         function setDefaultDateLocale() {
@@ -75,7 +75,7 @@ angular.module("tw.form-components", []);
                 newValue !== oldValue && setDateRange();
             }), $scope.$watch("vm.ngMax", function(newValue, oldValue) {
                 newValue !== oldValue && setDateRange();
-            }), $scope.$watch("vm.ngLocale", function(newValue, oldValue) {
+            }), $scope.$watch("vm.twLocale", function(newValue, oldValue) {
                 newValue !== oldValue && (setDateLocale(), setMonths());
             }), $scope.$watch("vm.month", function(newValue, oldValue) {
                 newValue !== oldValue && vm.adjustLastDay();
@@ -179,7 +179,7 @@ angular.module("tw.form-components", []);
                 disabled: "@",
                 ngDisabled: "=",
                 locale: "@",
-                ngLocale: "=",
+                twLocale: "=",
                 minDateString: "@min",
                 ngMin: "=",
                 maxDateString: "@max",

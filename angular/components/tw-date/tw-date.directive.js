@@ -19,7 +19,7 @@
 				disabled: '@',
 				ngDisabled: '=',
 				locale: '@',
-				ngLocale: '=',
+				twLocale: '=',
 				minDateString: '@min',
 				ngMin: '=',
 				maxDateString: '@max',

@@ -83,8 +83,8 @@
 			if (vm.locale) {
 				vm.dateLocale = vm.locale;
 			}
-			if (vm.ngLocale) {
-				vm.dateLocale = vm.ngLocale;
+			if (vm.twLocale) {
+				vm.dateLocale = vm.twLocale;
 			}
 			if (!vm.dateLocale) {
 				setDefaultDateLocale();
@@ -195,7 +195,7 @@
 				}
 			});
 
-			$scope.$watch('vm.ngLocale', function(newValue, oldValue) {
+			$scope.$watch('vm.twLocale', function(newValue, oldValue) {
 				if (newValue !== oldValue) {
 					setDateLocale();
 					setMonths();

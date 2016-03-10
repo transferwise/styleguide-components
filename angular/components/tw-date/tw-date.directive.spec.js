@@ -175,17 +175,17 @@ describe('Directive: TwDate', function() {
             });
         });
 
-        describe('when ngLocale input scope is passed', function () {
-            var ngLocale = 'fr';
+        describe('when twLocale input scope is passed', function () {
+            var twLocale = 'fr';
             var directiveElement, viewModel;
             beforeEach(function () {
-                directiveElement = getCompiledDirectiveElement({locale: ngLocale});
+                directiveElement = getCompiledDirectiveElement({locale: twLocale});
                 viewModel = getViewModel(directiveElement);
             });
 
-            if (isIntlSupportedForLocale(ngLocale)) {
+            if (isIntlSupportedForLocale(twLocale)) {
                 it('should populate vm.months based on vm.locale', function () {
-                    expectDateMonthsToBeLocalized(directiveElement, ngLocale);
+                    expectDateMonthsToBeLocalized(directiveElement, twLocale);
                 });
             } else {
                 it('should populate vm.months with default English months', function () {
@@ -194,16 +194,16 @@ describe('Directive: TwDate', function() {
             }
         });
         describe('when locale attribute is passed', function () {
-            var ngLocale = 'fr';
+            var twLocale = 'fr';
             var directiveElement, viewModel;
             beforeEach(function () {
-                directiveElement = getCompiledDirectiveElement({}, [['locale', ngLocale]]);
+                directiveElement = getCompiledDirectiveElement({}, [['locale', twLocale]]);
                 viewModel = getViewModel(directiveElement);
             });
 
-            if (isIntlSupportedForLocale(ngLocale)) {
+            if (isIntlSupportedForLocale(twLocale)) {
                 it('should populate vm.months based on vm.locale', function () {
-                    expectDateMonthsToBeLocalized(directiveElement, ngLocale);
+                    expectDateMonthsToBeLocalized(directiveElement, twLocale);
                 });
             } else {
                 it('should populate vm.months with default English months', function () {
@@ -367,7 +367,7 @@ describe('Directive: TwDate', function() {
                 expect(vm.dateRange.max).toEqual(new Date(newDateString));
             });
         });
-        describe('ngLocale', function() {
+        describe('twLocale', function() {
             var directiveElement;
             var oldLocale = LOCALES.es;
             var newLocale = LOCALES.fr;
@@ -515,13 +515,18 @@ describe('Directive: TwDate', function() {
     }
 
     function getCompiledDirectiveElement(injectedViewModel, attributes) {
+        var nonAngularSpecific = ['locale'];
         // if both ng-min and min are present on element, ng-min's value is used to override min's value by angular
         // which results into attribute values passed to min not being used
         var elementAsString = '<tw-date';
 
         angular.forEach(injectedViewModel, function(value, key) {
             inputScope[key] = value;
-            elementAsString += ' ng-' + key + '="' + key +'"';
+            if (nonAngularSpecific.indexOf(key) > -1) {
+                elementAsString += ' tw-' + key + '="' + key +'"';
+            } else {
+                elementAsString += ' ng-' + key + '="' + key +'"';
+            }
         });
 
         if (Array.isArray(attributes)) {
