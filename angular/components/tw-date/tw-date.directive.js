@@ -39,7 +39,7 @@
 						id='day-{{::uniqueId}}' \
 						class='form-control tw-date-day' \
 						ng-model='vm.day' \
-						ng-change='vm.updateDateModel()' \
+						ng-change='vm.updateDateModelAndValidationClasses()' \
 						placeholder='DD' \
 						min='1' \
 						max='31' \
@@ -57,7 +57,7 @@
 						id='month-{{::uniqueId}}' \
 						class='form-control' \
 						ng-model='vm.month' \
-						ng-change='vm.updateDateModel()' \
+						ng-change='vm.updateDateModelAndValidationClasses()' \
 						ng-options='month.id as month.name for month in vm.dateMonths' \
 						ng-disabled='vm.dateDisabled' \
 						ng-required='vm.dateRequired' \
@@ -73,7 +73,7 @@
 						class='form-control' \
 						placeholder='YYYY' \
 						ng-model='vm.year' \
-						ng-change='vm.updateDateModel()' \
+						ng-change='vm.updateDateModelAndValidationClasses()' \
 						ng-min='vm.dateRange.min.getFullYear()' \
 						ng-max='vm.dateRange.max.getFullYear()' \
 						maxlength='4' \

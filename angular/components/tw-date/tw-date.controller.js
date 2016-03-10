@@ -256,7 +256,7 @@
 		}
 
 		function isExplodedDatePatternCorrect() {
-			return isNumber(vm.day) && isNumber(vm.month) && isNumber(vm.year);
+			return isNumber(vm.year) && isNumber(vm.day) && isNumber(vm.month);
 		}
 
 		function isNumber(value) {
