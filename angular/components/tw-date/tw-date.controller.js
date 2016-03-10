@@ -55,6 +55,7 @@
 			setDateRange();
 
 			setMonths();
+			$log.error('vm.dateMonths', vm.dateMonths);
 
 			registerWatchers();
 		}

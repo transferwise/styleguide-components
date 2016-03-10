@@ -5,7 +5,7 @@ angular.module("tw.form-components", []);
         function init() {
             vm.date ? applyDateModelIfValidOrThrowError() : (vm.dateModelType = OBJECT_TYPE, 
             explodeDefaultDate()), setDateRequired(), setDateDisabled(), setDateLocale(), setDateRange(), 
-            setMonths(), registerWatchers();
+            setMonths(), $log.error("vm.dateMonths", vm.dateMonths), registerWatchers();
         }
         function applyDateModelIfValidOrThrowError() {
             if (!isValidDateModel()) throw new Error("date model passed should either be instance of Date or valid ISO8601 string");
