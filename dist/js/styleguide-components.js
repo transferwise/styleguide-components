@@ -15,7 +15,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             vm.dateModelType = "string" == typeof vm.date ? STRING_TYPE : OBJECT_TYPE, vm.explodeDateModel();
         }
         function setMonths() {
-            Array.isArray(vm.months) && 12 === vm.months.length ? vm.dateMonths = extendMonthsWithIds(vm.months) : vm.dateMonths = getMonthsBasedOnIntlSupportForLocale();
+            vm.dateMonths = getMonthsBasedOnIntlSupportForLocale();
         }
         function setDateRequired() {
             vm.dateRequired = void 0 !== vm.ngRequired ? vm.ngRequired : void 0 !== vm.required;

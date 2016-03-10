@@ -69,11 +69,7 @@
 		}
 
 		function setMonths() {
-			if (Array.isArray(vm.months) && vm.months.length === 12) {
-				vm.dateMonths =  extendMonthsWithIds(vm.months);
-			} else {
-				vm.dateMonths = getMonthsBasedOnIntlSupportForLocale();
-			}
+			vm.dateMonths = getMonthsBasedOnIntlSupportForLocale();
 		}
 
 		function setDateRequired() {
