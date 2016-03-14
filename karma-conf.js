@@ -28,10 +28,10 @@ module.exports = function(config) {
         frameworks: ['jasmine'],
 
         // browsers to test against, be sure to install the correct karma browser launcher plugin
-        browsers : ['PhantomJS'], // , 'Firefox', 'Chrome'
+        browsers : ['PhantomJS', 'Chrome'], // npm install karma-chrome-launcher --save-dev
 
-        // progress is the default reporter
-        reporters: ['progress', 'coverage'],
+        // 'progress' is the default reporter
+        reporters: ['coverage', 'mocha'],
 
         // map of preprocessors that is used mostly for plugins
         preprocessors: {
@@ -40,12 +40,11 @@ module.exports = function(config) {
 
         // list of karma plugins
         plugins : [
-            //'karma-junit-reporter',
-            //'karma-chrome-launcher',
-            //'karma-firefox-launcher',
-            'karma-jasmine',
             'karma-phantomjs-launcher',
-            'karma-coverage'
+            'karma-chrome-launcher',
+            'karma-jasmine',
+            'karma-coverage',
+            'karma-mocha-reporter'
         ],
         // add plugin settings
         coverageReporter: {
@@ -60,6 +59,10 @@ module.exports = function(config) {
                 dir: 'build/coverage/',
                 file: 'coverage.xml'
             }]
+        },
+
+        mochaReporter: {
+            output: 'minimal'
         }
     });
 };

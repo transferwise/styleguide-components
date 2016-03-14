@@ -54,7 +54,7 @@ angular.module("tw.form-validation", []);
                 formGroupValidInputsContainers.removeClass("has-error"), 0 === formGroupInvalidInputs.length && formGroup.removeClass("has-error");
             });
         }
-        function link(scope, element, attrs) {
+        function link(scope, element, attrs, ctrl) {
             if (attrs.type) {
                 var type = attrs.type.toLowerCase();
                 if (("radio" === type || "checkbox" === type) && 0 !== $(element).closest(labelSelector).length) {

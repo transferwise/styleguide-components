@@ -148,10 +148,12 @@ module.exports = function(grunt) {
         htmllint: {
             options: {
                 "attr-name-style": false,
-                "id-class-style": false
+                "id-class-style": false,
+                "ignore": ['indenting spaces must be used in groups of 4']
             },
             files: [
                 'angular/**/*.html',
+                'examples/**/*.html'
             ]
         },
         karma: {
@@ -174,5 +176,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-htmllint');
 
     // === REGISTER TASKS ===
-    grunt.registerTask('default', ['jshint', 'uglify', 'less', 'copy', 'watch']); //'htmllint',
+    grunt.registerTask('default', ['jshint', 'uglify', 'less', 'copy', 'watch', 'htmllint']);
 };
