@@ -179,7 +179,8 @@
 		}
 
 		function registerWatchers() {
-			$scope.$watch('vm.date', function() {
+			$scope.$watch('vm.date', function(newValue, oldValue) {
+				console.log('date model changed', newValue, oldValue);
 				explodeDateModelIfValid();
 			});
 
@@ -281,11 +282,14 @@
 		}
 
 		function getExplodedDateAsDate() {
-			return new Date(
+			var date = new Date(
 				Number(vm.year),
 				Number(vm.month),
 				Number(vm.day)
 			);
+			// otherwise if year is <100, e.g 99 it becomes 1999
+			date.setFullYear(vm.year);
+			return date;
 		}
 
 		function updateDateModelAndValidationClasses() {
@@ -299,6 +303,8 @@
 			}
 
 			var dateObj = getExplodedDateAsDate();
+			console.log('exploded date in update', vm.year, vm.month, vm.day);
+			console.log('new date object given the exploded date', dateObj);
 
 			if (vm.dateModelType === STRING_TYPE) {
 				vm.date = getIsoDateWithoutTime(dateObj.toISOString());

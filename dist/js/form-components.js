@@ -74,8 +74,8 @@ angular.module("tw.form-components", []);
             return "string" == typeof dateString && validDateObject(new Date(dateString));
         }
         function registerWatchers() {
-            $scope.$watch("vm.date", function() {
-                explodeDateModelIfValid();
+            $scope.$watch("vm.date", function(newValue, oldValue) {
+                console.log("date model changed", newValue, oldValue), explodeDateModelIfValid();
             }), $scope.$watch("vm.ngRequired", function(newValue, oldValue) {
                 newValue !== oldValue && setDateRequired();
             }), $scope.$watch("vm.ngDisabled", function(newValue, oldValue) {
@@ -128,13 +128,15 @@ angular.module("tw.form-components", []);
             return vm.dateRange.max ? getExplodedDateAsDate() <= vm.dateRange.max : !0;
         }
         function getExplodedDateAsDate() {
-            return new Date(Number(vm.year), Number(vm.month), Number(vm.day));
+            var date = new Date(Number(vm.year), Number(vm.month), Number(vm.day));
+            return date.setFullYear(vm.year), date;
         }
         function updateDateModelAndValidationClasses() {
             vm.adjustLastDay();
             var validationClasses = updateValidationClassesAndReturnList(VALIDATORS);
             if (containsInvalidClass(validationClasses)) return void (vm.date = null);
             var dateObj = getExplodedDateAsDate();
+            console.log("exploded date in update", vm.year, vm.month, vm.day), console.log("new date object given the exploded date", dateObj), 
             vm.dateModelType === STRING_TYPE ? vm.date = getIsoDateWithoutTime(dateObj.toISOString()) : vm.date = dateObj;
         }
         function getIsoDateWithoutTime(dateAsISOString) {
