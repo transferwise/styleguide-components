@@ -23,7 +23,8 @@
 				minDateString: '@min',
 				ngMin: '=',
 				maxDateString: '@max',
-				ngMax: '='
+				ngMax: '=',
+				modelType: '@'
 			},
 			template: templateAsString
 		};

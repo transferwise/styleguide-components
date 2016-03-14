@@ -45,7 +45,15 @@
 			if (vm.date) {
 				applyDateModelIfValidOrThrowError();
 			} else {
-				vm.dateModelType = OBJECT_TYPE;
+				if (vm.modelType) {
+					if (isValidDateModelType(vm.modelType)) {
+						vm.dateModelType = vm.modelType;
+					} else {
+						throw new Error ('Invalid modelType, should be ' + STRING_TYPE + ' or ' + OBJECT_TYPE);
+					}
+				} else {
+					vm.dateModelType = OBJECT_TYPE;
+				}
 				explodeDefaultDate();
 			}
 
@@ -57,6 +65,10 @@
 			setMonths();
 
 			registerWatchers();
+		}
+
+		function isValidDateModelType(modelType) {
+			return modelType === STRING_TYPE || modelType === OBJECT_TYPE;
 		}
 
 		function applyDateModelIfValidOrThrowError() {

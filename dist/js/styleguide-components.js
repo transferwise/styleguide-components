@@ -6,9 +6,18 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     "use strict";
     function TwDateController($element, $log, $scope) {
         function init() {
-            vm.date ? applyDateModelIfValidOrThrowError() : (vm.dateModelType = OBJECT_TYPE, 
-            explodeDefaultDate()), setDateRequired(), setDateDisabled(), setDateLocale(), setDateRange(), 
-            setMonths(), registerWatchers();
+            if (vm.date) applyDateModelIfValidOrThrowError(); else {
+                if (vm.modelType) {
+                    if (!isValidDateModelType(vm.modelType)) throw new Error("Invalid modelType, should be " + STRING_TYPE + " or " + OBJECT_TYPE);
+                    vm.dateModelType = vm.modelType;
+                } else vm.dateModelType = OBJECT_TYPE;
+                explodeDefaultDate();
+            }
+            setDateRequired(), setDateDisabled(), setDateLocale(), setDateRange(), setMonths(), 
+            registerWatchers();
+        }
+        function isValidDateModelType(modelType) {
+            return modelType === STRING_TYPE || modelType === OBJECT_TYPE;
         }
         function applyDateModelIfValidOrThrowError() {
             if (!isValidDateModel()) throw new Error("date model passed should either be instance of Date or valid ISO8601 string");
@@ -186,7 +195,8 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 minDateString: "@min",
                 ngMin: "=",
                 maxDateString: "@max",
-                ngMax: "="
+                ngMax: "=",
+                modelType: "@"
             },
             template: templateAsString
         };

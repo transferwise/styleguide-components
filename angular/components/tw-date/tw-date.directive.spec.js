@@ -126,6 +126,52 @@ describe('Directive: TwDate', function() {
                 });
             });
         });
+        describe('when modelType attribute is passed', function () {
+            var directiveElement, viewModel;
+            describe('as "string"', function () {
+                beforeEach(function() {
+                    directiveElement = getCompiledDirectiveElement({}, [['model-type', 'string']]);
+                    viewModel = getViewModel(directiveElement);
+                });
+                it('should set vm.dateModelType to "string"', function () {
+                    expect(viewModel.dateModelType).toBe('string');
+                });
+                it('should return updated date model correctly', function () {
+                    viewModel.year = 1990;
+                    viewModel.month = 1;
+                    simulateUserActionOnDayInput(directiveElement, 15);
+
+                    var expectedUpdatedDateModel = '1990-02-15';
+
+                    expect(viewModel.date).toBe(expectedUpdatedDateModel);
+                });
+            });
+            describe('as "object"', function () {
+                beforeEach(function() {
+                    directiveElement = getCompiledDirectiveElement({}, [['model-type', 'object']]);
+                    viewModel = getViewModel(directiveElement);
+                });
+                it('should set vm.dateModelType to "object"', function () {
+                    expect(viewModel.dateModelType).toBe('object');
+                });
+                it('should return updated date model correctly', function () {
+                    viewModel.year = 1990;
+                    viewModel.month = 1;
+                    simulateUserActionOnDayInput(directiveElement, 15);
+
+                    var expectedUpdatedDateModel = new Date(1990, 1, 15);
+
+                    expect(viewModel.date).toEqual(expectedUpdatedDateModel);
+                });
+            });
+            describe('as invalid model type', function () {
+                it('should throw error', function () {
+                    expect(function() {
+                        directiveElement = getCompiledDirectiveElement({}, [['model-type', 'pokemon']]);
+                    }).toThrow();
+                });
+            });
+        });
         describe('when ngRequired input scope is passed', function () {
             var directiveElement, viewModel;
             it('should set vm.dateRequired to true', function () {
@@ -460,19 +506,13 @@ describe('Directive: TwDate', function() {
                 isolatedScope = directiveElement.isolateScope();
             });
             it('should update pattern validation class correctly if new day is valid', function() {
-                var dayInput = angular.element(directiveElement.find('input')[0]);
-
-                dayInput.val(12);
-                dayInput.triggerHandler('input');
+                simulateUserActionOnDayInput(directiveElement, 12);
 
                 expect(directiveElement.hasClass('ng-valid-pattern')).toBe(true);
                 expect(directiveElement.hasClass('ng-invalid-pattern')).toBe(false);
             });
             it('should update day if new day is too high for new month and update pattern validation class correctly', function() {
-                var dayInput = angular.element(directiveElement.find('input')[0]);
-
-                dayInput.val(30);
-                dayInput.triggerHandler('input');
+                simulateUserActionOnDayInput(directiveElement, 30);
 
                 expect(isolatedScope.vm.day).toBe(28);
                 expect(directiveElement.hasClass('ng-valid-pattern')).toBe(true);
@@ -480,6 +520,12 @@ describe('Directive: TwDate', function() {
             });
         });
     });
+
+    function simulateUserActionOnDayInput(directiveElement, newValue) {
+        var dayInput = angular.element(directiveElement.find('input')[0]);
+        dayInput.val(newValue ? newValue : 1);
+        dayInput.triggerHandler('input');
+    }
 
     function expectDateMonthsToBeLocalized(directiveElement, locale) {
         var vm = getViewModel(directiveElement);
