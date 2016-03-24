@@ -96,7 +96,7 @@
 					name='{{vm.name}}' \
 					id='{{vm.id}}' \
 					class='form-control' \
-					ng-options='value as label for (value, label) in vm.options track by $index' \
+					ng-options='option.value as option.label for option in vm.options' \
 					ng-model='vm.ngModel' \
 					ng-required='vm.ngRequired' \
 					ng-disabled='vm.ngDisabled' \

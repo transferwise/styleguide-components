@@ -415,8 +415,8 @@
 &lt;tw-dynamic-form-control
   type="{{vm.dynamic.type}}"
   placeholder="{{vm.dynamic.placeholder}}"<span ng-if="vm.dynamic.type == 'radio' || vm.dynamic.type == 'select'">
-  options="{'one': 'One', ...}"</span>
-  ng-model="..."<span ng-if="vm.dynamic.required">
+  options="{{vm.dynamic.options}}"</span>
+  ng-model="{{vm.model.dynamicFormControl}}"<span ng-if="vm.dynamic.required">
   ng-required="{{vm.dynamic.required}}"</span><span ng-if="vm.dynamic.disabled">
   ng-disabled="{{vm.dynamic.disabled}}"</span><span ng-if="vm.dynamic.type === 'text'"><span ng-if="vm.dynamic.minlength">
   ng-minlength="{{vm.dynamic.minlength}}"</span><span ng-if="vm.dynamic.maxlength">
@@ -536,11 +536,11 @@
 
 										<div class="form-group"
 											ng-if="vm.dynamic.type !== 'text'"
-											ng-init="vm.dynamic.options = {
-												'one': 'One',
-												'two': 'Two',
-												'three': 'Three'
-											}">
+											ng-init="vm.dynamic.options = [
+												{'value': '1', 'label': 'One'},
+												{'value': '2', 'label': 'Two'},
+												{'value': '3', 'label': 'Three'}
+											]">
 											<!--
 											<label class="control-label">
 												Options
