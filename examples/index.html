@@ -297,22 +297,84 @@
 						<h3 class="panel-title">Form components</h3>
 					</div>
 					<div class="panel-body">
-						<!--
-						<div class="form-group">
-							<label class="control-label">
-								Date control
-							</label>
-							<tw-input-date required
-								ng-model="vm.components.date" />
+						<h5>Date form control</h5>
+						<p>Two way data binding via ng-model, with either a javascript Date object or
+							an ISO8601 String date: 1994-11-05T08:15:30-05:00</p>
+						<hr/>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="control-label" for="date">
+										Example date control
+									</label>
+									<tw-date name="date"
+											 ng-required="vm.model.components.dateRequired"
+											 ng-disabled="vm.model.components.dateDisabled"
+											 ng-model="vm.model.components.date"
+											 tw-locale="vm.model.components.dateLocale"
+									></tw-date>
+								</div>
+								<h5>Configuration</h5>
+								<pre>
+&lt;tw-date
+	ng-model={{vm.model.components.date}}
+	ng-required={{vm.model.components.dateRequired}}
+	ng-disabled={{vm.model.components.dateDisabled}}
+	tw-locale={{vm.model.components.dateLocale}}
+	min="1990-01-01"
+	max="2015-12-31"
+&lt;/tw-date&gt;
+								</pre>
+							</div>
+							<div class="col-md-6">
+								<div class="row">
+									<div class="well">
+										<h5 class="page-header">
+											Edit configuration
+										</h5>
+										<div class="form-group">
+											<label class="control-label">
+												Required?
+											</label>
+											<div class="checkbox">
+												<label>
+													<input type="checkbox"
+														   ng-model="vm.model.components.dateRequired" />
+													Is the control required?
+												</label>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label">
+												Disabled?
+											</label>
+											<div class="checkbox">
+												<label>
+													<input type="checkbox"
+														   ng-model="vm.model.components.dateDisabled" />
+													Is the control disabled?
+												</label>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label">
+												Locale
+											</label>
+											<select required
+													class="form-control"
+													ng-model="vm.model.components.dateLocale"
+													ng-init="vm.model.components.dateLocale = 'en-GB'">
+												<option value="en-GB">English UK</option>
+												<option value="fr-FR">French</option>
+												<option value="es-ES">Spanish</option>
+												<option value="ss-SS">Unknown locale</option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="form-group">
-							<label class="control-label">
-								Sort code control
-							</label>
-							<tw-sort-code required
-								ng-model="vm.components.sortCode" />
-						</div>
-						-->
+
 						<h5>Dynamic form control</h5>
 						<p>The dynamic form control is a form control that can
 							be fully configured based on a set of parameters.</p>
@@ -339,9 +401,6 @@
 										ng-min="vm.dynamic.min"
 										ng-max="vm.dynamic.max">
 
-									</tw-dynamic-form-control>
-
-									<div class="error-messages">
 										<div class="error-required">
 											Required
 										</div>
@@ -363,7 +422,7 @@
 										<div class="error-number">
 											Must be a number
 										</div>
-									</div>
+									</tw-dynamic-form-control>
 								</div>
 
 								<h5>Configuration</h5>
@@ -371,8 +430,8 @@
 &lt;tw-dynamic-form-control
   type="{{vm.dynamic.type}}"
   placeholder="{{vm.dynamic.placeholder}}"<span ng-if="vm.dynamic.type == 'radio' || vm.dynamic.type == 'select'">
-  options="{'one': 'One', ...}"</span>
-  ng-model="..."<span ng-if="vm.dynamic.required">
+  options="{{vm.dynamic.options}}"</span>
+  ng-model="{{vm.model.dynamicFormControl}}"<span ng-if="vm.dynamic.required">
   ng-required="{{vm.dynamic.required}}"</span><span ng-if="vm.dynamic.disabled">
   ng-disabled="{{vm.dynamic.disabled}}"</span><span ng-if="vm.dynamic.type === 'text'"><span ng-if="vm.dynamic.minlength">
   ng-minlength="{{vm.dynamic.minlength}}"</span><span ng-if="vm.dynamic.maxlength">
@@ -413,7 +472,7 @@
 										</label>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" tw-input
+												<input type="checkbox"
 													ng-model="vm.dynamic.required" />
 												Is the control required?
 											</label>
@@ -426,7 +485,7 @@
 										</label>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" tw-input
+												<input type="checkbox"
 													ng-model="vm.dynamic.disabled" />
 												Is the control disabled?
 											</label>
@@ -492,11 +551,11 @@
 
 									<div class="form-group"
 										ng-if="vm.dynamic.type !== 'text'"
-										ng-init="vm.dynamic.options = {
-											'one': 'One',
-											'two': 'Two',
-											'three': 'Three'
-										}">
+										ng-init="vm.dynamic.options = [
+											{'value': '1', 'label': 'One'},
+											{'value': '2', 'label': 'Two'},
+											{'value': '3', 'label': 'Three'}
+										]">
 										<!--
 										<label class="control-label">
 											Options
@@ -523,6 +582,25 @@
 						</div>
 					</div>
 				</form>
+			</div>
+		</div>
+		<div class="row m-t-lg">
+			<div class="col-md-8">
+				<div class="panel">
+					<div class="panel-heading">
+						<h3 class="panel-title">Loader</h3>
+					</div>
+					<div class="panel-body">
+						<p>A directive to add the HTML necessary for our
+							loading indicator.  Simply use:</p>
+<pre>
+&lt;tw-loader /&gt;
+</pre>
+						<div class="m-b-lg m-t-lg text-center">
+							<tw-loader />
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
