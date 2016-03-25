@@ -85,7 +85,7 @@
 					<div class="panel-body">
 						<div class="form-group">
 							<label class="control-label">
-								Text input - required
+								Date component - required, min, max
 							</label>
 							<tw-input-date required tw-validation
 								ng-model="vm.model.dateRequired"
@@ -307,23 +307,23 @@
 									<label class="control-label" for="date">
 										Example date control
 									</label>
-									<tw-date name="date"
-											 ng-required="vm.model.components.dateRequired"
-											 ng-disabled="vm.model.components.dateDisabled"
-											 ng-model="vm.model.components.date"
-											 tw-locale="vm.model.components.dateLocale"
-									></tw-date>
+									<tw-input-date name="date"
+										ng-model="vm.model.components.date"
+										ng-required="vm.model.components.dateRequired"
+										ng-disabled="vm.model.components.dateDisabled"
+										tw-locale="vm.model.components.dateLocale"
+									></tw-input-date>
 								</div>
 								<h5>Configuration</h5>
 								<pre>
-&lt;tw-date
-	ng-model={{vm.model.components.date}}
-	ng-required={{vm.model.components.dateRequired}}
-	ng-disabled={{vm.model.components.dateDisabled}}
-	tw-locale={{vm.model.components.dateLocale}}
+&lt;tw-input-date
+	ng-model="{{vm.model.components.date}}"
+	ng-required="{{vm.model.components.dateRequired}}"
+	ng-disabled="{{vm.model.components.dateDisabled}}"
+	tw-locale="{{vm.model.components.dateLocale}}"
 	min="1990-01-01"
 	max="2015-12-31"
-&lt;/tw-date&gt;
+&lt;/tw-input-date&gt;
 								</pre>
 							</div>
 							<div class="col-md-6">
