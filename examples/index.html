@@ -74,7 +74,7 @@
 <body ng-app="my-app">
 	<div class="container">
 		<div class="row m-t-lg">
-			<div class="col-md-8">
+			<div class="col-lg-8">
 				<form class="panel"
 					name="exampleForm"
 					ng-submit="vm.submit()"
@@ -85,23 +85,6 @@
 					<div class="panel-body">
 						<div class="form-group">
 							<label class="control-label">
-								Date component - required, min, max
-							</label>
-							<tw-input-date required tw-validation
-								ng-model="vm.model.dateRequired"
-								ng-min="'2015-01-01T00:00:00Z'"
-								ng-max="'2015-12-31T23:59:59Z'">
-							</tw-input-date>
-							<div class="error-messages">
-								<div class="error-required">Required</div>
-								<div class="error-pattern">Invalid format</div>
-								<div class="error-min">Date must not before 2015</div>
-								<div class="error-max">Number must not be after 2015</div>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="control-label">
 								Text input - required
 							</label>
 							<input type="text" required tw-validation
@@ -109,6 +92,7 @@
 								placeholder="Placeholder"
 								ng-model="vm.model.textRequired" />
 						</div>
+
 						<div class="form-group">
 							<label class="control-label">
 								Select - required
@@ -117,8 +101,29 @@
 								ng-model="vm.model.selectRequired">
 								<option value="">Please choose..</option>
 								<option value="1">Option 1</option>
+								<option value="2">Option 2</option>
+								<option value="3">Option 3</option>
 							</select>
 						</div>
+
+						<div class="form-group"
+							ng-init="vm.select.options = [
+								{'value': '1', 'label': 'One'},
+								{'value': '2', 'label': 'Two'},
+								{'value': '3', 'label': 'Three'}
+							]">
+							<label class="control-label">
+								twSelect - required
+							</label>
+							<tw-select class="form-contro" required tw-validation
+								ng-model="vm.model.selectRequired"
+								tw-initial="Empty value"
+								tw-options="vm.select.options"
+								ng-disabled="vm.model.checkbox1">
+								<option value="">Please choose...</option>
+							</tw-select>
+						</div>
+
 						<div class="form-group">
 							<label class="control-label">
 								Checkboxes
@@ -278,7 +283,7 @@
 					</div>
 				</form>
 			</div>
-			<div class="col-md-4">
+			<div class="col-lg-4">
 				<div data-spy="affix" data-offset-top="0">
 					<h5>
 						Data Model
@@ -289,7 +294,7 @@
 		</div>
 
 		<div class="row m-t-lg">
-			<div class="col-md-8">
+			<div class="col-lg-8">
 				<form class="panel"
 					name="componentsForm"
 					novalidate>
@@ -297,6 +302,81 @@
 						<h3 class="panel-title">Form components</h3>
 					</div>
 					<div class="panel-body">
+
+						<h5>TW Select</h5>
+						<p></p>
+						<hr/>
+						<div class="row" ng-init="vm.selectOptions = [
+							{'value': '1', 'label': 'One'},
+							{'value': '2', 'label': 'Two'},
+							{'value': '3', 'label': 'Three'}
+						]">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="control-label" for="date">
+										Example select
+									</label>
+									<tw-select class="form-contro" required tw-validation
+										ng-model="vm.model.components.select"
+										tw-initial="Empty value"
+										tw-options="vm.selectOptions"
+										ng-disabled="vm.model.select.disabled">
+										<option value="">Please choose...</option>
+									</tw-select>
+								</div>
+								<h5>Configuration</h5>
+								<pre>
+&lt;tw-select
+  ng-model="vm.components.select"
+  ng-required="{{vm.model.select.required}}"
+  ng-disabled="{{vm.model.select.disabled}}"
+  tw-options="vm.options"
+  tw-initial="{{vm.model.select.empty}}"&gt;
+&lt;/tw-select&gt;
+								</pre>
+							</div>
+							<div class="col-md-6">
+								<div class="row">
+									<div class="well">
+										<h5 class="page-header">
+											Edit configuration
+										</h5>
+										<div class="form-group">
+											<label class="control-label">
+												Required?
+											</label>
+											<div class="checkbox">
+												<label>
+													<input type="checkbox"
+														   ng-model="vm.model.select.required" />
+													Is the control required?
+												</label>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label">
+												Disabled?
+											</label>
+											<div class="checkbox">
+												<label>
+													<input type="checkbox"
+														   ng-model="vm.model.select.disabled" />
+													Is the control disabled?
+												</label>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label">
+												Empty Value
+											</label>
+											<input class="form-control"
+												ng-model="vm.model.select.empty" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
 						<h5>Date form control</h5>
 						<p>Two way data binding via ng-model, with either a javascript Date object or
 							an ISO8601 String date: 1994-11-05T08:15:30-05:00</p>
@@ -317,12 +397,12 @@
 								<h5>Configuration</h5>
 								<pre>
 &lt;tw-input-date
-	ng-model="{{vm.model.components.date}}"
-	ng-required="{{vm.model.components.dateRequired}}"
-	ng-disabled="{{vm.model.components.dateDisabled}}"
-	tw-locale="{{vm.model.components.dateLocale}}"
-	min="1990-01-01"
-	max="2015-12-31"
+  ng-model="vm.components.date"
+  ng-required="{{vm.date.required}}"
+  ng-disabled="{{vm.date.disabled}}"
+  tw-locale="{{vm.date.locale}}"
+  min="1990-01-01"
+  max="2015-12-31"
 &lt;/tw-input-date&gt;
 								</pre>
 							</div>
@@ -339,7 +419,7 @@
 											<div class="checkbox">
 												<label>
 													<input type="checkbox"
-														   ng-model="vm.model.components.dateRequired" />
+														   ng-model="vm.date.required" />
 													Is the control required?
 												</label>
 											</div>
@@ -351,7 +431,7 @@
 											<div class="checkbox">
 												<label>
 													<input type="checkbox"
-														   ng-model="vm.model.components.dateDisabled" />
+														   ng-model="vm.date.disabled" />
 													Is the control disabled?
 												</label>
 											</div>
@@ -362,8 +442,8 @@
 											</label>
 											<select required
 													class="form-control"
-													ng-model="vm.model.components.dateLocale"
-													ng-init="vm.model.components.dateLocale = 'en-GB'">
+													ng-model="vm.date.locale"
+													ng-init="vm.date.locale = 'en-GB'">
 												<option value="en-GB">English UK</option>
 												<option value="fr-FR">French</option>
 												<option value="es-ES">Spanish</option>
@@ -585,7 +665,7 @@
 			</div>
 		</div>
 		<div class="row m-t-lg">
-			<div class="col-md-8">
+			<div class="col-lg-8">
 				<div class="panel">
 					<div class="panel-heading">
 						<h3 class="panel-title">Loader</h3>
