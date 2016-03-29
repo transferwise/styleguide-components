@@ -75,7 +75,7 @@ angular.module("tw.form-components", []);
         }
         function registerWatchers() {
             $scope.$watch("vm.date", function(newValue, oldValue) {
-                console.log("date model changed", newValue, oldValue), explodeDateModelIfValid();
+                explodeDateModelIfValid();
             }), $scope.$watch("vm.ngRequired", function(newValue, oldValue) {
                 newValue !== oldValue && setDateRequired();
             }), $scope.$watch("vm.ngDisabled", function(newValue, oldValue) {
@@ -102,9 +102,13 @@ angular.module("tw.form-components", []);
             return window.Intl && "object" == typeof window.Intl;
         }
         function getMonthNamesForLocale() {
-            for (var months = [], date = new Date(), i = 0; 12 > i; i++) date.setMonth(i), months.push(date.toLocaleDateString(vm.dateLocale, {
-                month: "long"
-            }));
+            for (var months = [], date = new Date(), i = 0; 12 > i; i++) {
+                date.setMonth(i);
+                var monthName = date.toLocaleDateString(vm.dateLocale, {
+                    month: "long"
+                });
+                monthName = monthName[0].toUpperCase() + monthName.substring(1), months.push(monthName);
+            }
             return months;
         }
         function extendMonthsWithIds(monthNames) {
@@ -136,11 +140,10 @@ angular.module("tw.form-components", []);
             var validationClasses = updateValidationClassesAndReturnList(VALIDATORS);
             if (containsInvalidClass(validationClasses)) return void (vm.date = null);
             var dateObj = getExplodedDateAsDate();
-            console.log("exploded date in update", vm.year, vm.month, vm.day), console.log("new date object given the exploded date", dateObj), 
             vm.dateModelType === STRING_TYPE ? vm.date = getIsoDateWithoutTime(dateObj.toISOString()) : vm.date = dateObj;
         }
         function getIsoDateWithoutTime(dateAsISOString) {
-            return dateAsISOString.substr(0, dateAsISOString.indexOf("T"));
+            return dateAsISOString.substring(0, dateAsISOString.indexOf("T"));
         }
         function updateValidationClassesAndReturnList(validators) {
             var newClasses = [];

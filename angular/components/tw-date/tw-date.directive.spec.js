@@ -473,6 +473,7 @@ describe('Directive: TwDate', function() {
             });
         });
         describe('with month select', function() {
+            // TODO: Fix for Firefox
             it('should trigger vm.updateDateModelAndValidationClasses()', function () {
                 spyOn(isolatedScope.vm, 'updateDateModelAndValidationClasses');
 
@@ -532,7 +533,9 @@ describe('Directive: TwDate', function() {
         var localizedMonthNames = getMonthNamesForLocale(locale);
         localizedMonthNames.forEach(function(monthName, index) {
             expect(vm.dateMonths[index].id).toBe(index);
-            expect(vm.dateMonths[index].name).toBe(monthName);
+
+            var upperCaseMonthName = monthName[0].toUpperCase() + monthName.substring(1);
+            expect(vm.dateMonths[index].name).toBe(upperCaseMonthName);
         });
     }
     function expectDateMonthsToBeDefault(directiveElement) {
