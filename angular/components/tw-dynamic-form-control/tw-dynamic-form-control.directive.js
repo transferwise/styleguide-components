@@ -70,15 +70,15 @@
 				<div ng-switch-when='radio' \
 					class='radio' \
 					ng-class='{disabled: vm.ngDisabled}' \
-					ng-repeat='(value, label) in vm.options track by $index'> \
+					ng-repeat='option in vm.options'> \
 					<label> \
 						<input type='radio' tw-input \
 							name='{{vm.name}}' \
-							value='{{value}}' \
+							value='{{option.value}}' \
 							ng-model='vm.ngModel' \
 							ng-required='vm.ngRequired' \
 							ng-disabled='vm.ngDisabled' /> \
-						{{label}} \
+						{{option.label}} \
 					</label> \
 				</div> \
 				<div ng-switch-when='checkbox' \
