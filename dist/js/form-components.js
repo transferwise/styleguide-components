@@ -102,7 +102,7 @@ angular.module("tw.form-components", []);
             return window.Intl && "object" == typeof window.Intl;
         }
         function getMonthNamesForLocale() {
-            for (var months = [], date = new Date(), i = 0; 12 > i; i++) {
+            for (var months = [], date = new Date(2e3, 0, 15), i = 0; 12 > i; i++) {
                 date.setMonth(i);
                 var monthName = date.toLocaleDateString(vm.dateLocale, {
                     month: "long"

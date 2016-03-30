@@ -553,7 +553,7 @@ describe('Directive: TwDate', function() {
     }
 
     function getMonthNamesForLocale(locale) {
-        var monthNames = [], date = new Date();
+        var monthNames = [], date = new Date(1990, 0, 14);
         if (isIntlSupportedForLocale(locale)) {
             for (var i=0; i<12; i++) {
                 date.setMonth(i);

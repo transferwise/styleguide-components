@@ -244,7 +244,7 @@
 
 		function getMonthNamesForLocale() {
 			var months = [];
-			var date = new Date();
+			var date = new Date(2000, 0, 15);
 			for(var i = 0; i < 12; i++) {
 				date.setMonth(i);
 				var monthName = date.toLocaleDateString(vm.dateLocale, {month: "long"});
