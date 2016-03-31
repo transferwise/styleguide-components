@@ -473,6 +473,8 @@ describe('Directive: TwDate', function() {
             });
         });
         describe('with month select', function() {
+            // TODO: Fix for karma-firefox-launcher (does not affect real Firefox)
+            // suspect that monthSelect.triggerHandler('change'); does not work
             it('should trigger vm.updateDateModelAndValidationClasses()', function () {
                 spyOn(isolatedScope.vm, 'updateDateModelAndValidationClasses');
 
@@ -532,7 +534,9 @@ describe('Directive: TwDate', function() {
         var localizedMonthNames = getMonthNamesForLocale(locale);
         localizedMonthNames.forEach(function(monthName, index) {
             expect(vm.dateMonths[index].id).toBe(index);
-            expect(vm.dateMonths[index].name).toBe(monthName);
+
+            var upperCaseMonthName = monthName[0].toUpperCase() + monthName.substring(1);
+            expect(vm.dateMonths[index].name).toBe(upperCaseMonthName);
         });
     }
     function expectDateMonthsToBeDefault(directiveElement) {
@@ -550,7 +554,7 @@ describe('Directive: TwDate', function() {
     }
 
     function getMonthNamesForLocale(locale) {
-        var monthNames = [], date = new Date();
+        var monthNames = [], date = new Date(1990, 0, 14);
         if (isIntlSupportedForLocale(locale)) {
             for (var i=0; i<12; i++) {
                 date.setMonth(i);

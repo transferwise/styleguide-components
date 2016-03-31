@@ -180,7 +180,6 @@
 
 		function registerWatchers() {
 			$scope.$watch('vm.date', function(newValue, oldValue) {
-				console.log('date model changed', newValue, oldValue);
 				explodeDateModelIfValid();
 			});
 
@@ -245,12 +244,12 @@
 
 		function getMonthNamesForLocale() {
 			var months = [];
-			var date = new Date();
+			var date = new Date(2000, 0, 15);
 			for(var i = 0; i < 12; i++) {
 				date.setMonth(i);
-				months.push(
-					date.toLocaleDateString(vm.dateLocale, {month: "long"})
-				);
+				var monthName = date.toLocaleDateString(vm.dateLocale, {month: "long"});
+				monthName = monthName[0].toUpperCase() + monthName.substring(1);
+				months.push(monthName);
 			}
 			return months;
 		}
@@ -303,9 +302,6 @@
 			}
 
 			var dateObj = getExplodedDateAsDate();
-			console.log('exploded date in update', vm.year, vm.month, vm.day);
-			console.log('new date object given the exploded date', dateObj);
-
 			if (vm.dateModelType === STRING_TYPE) {
 				vm.date = getIsoDateWithoutTime(dateObj.toISOString());
 			} else {
@@ -314,7 +310,7 @@
 		}
 
 		function getIsoDateWithoutTime(dateAsISOString) {
-			return dateAsISOString.substr(0, dateAsISOString.indexOf('T'));
+			return dateAsISOString.substring(0, dateAsISOString.indexOf('T'));
 		}
 
 		function updateValidationClassesAndReturnList(validators) {
