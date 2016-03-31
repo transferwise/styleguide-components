@@ -473,7 +473,8 @@ describe('Directive: TwDate', function() {
             });
         });
         describe('with month select', function() {
-            // TODO: Fix for Firefox
+            // TODO: Fix for karma-firefox-launcher (does not affect real Firefox)
+            // suspect that monthSelect.triggerHandler('change'); does not work
             it('should trigger vm.updateDateModelAndValidationClasses()', function () {
                 spyOn(isolatedScope.vm, 'updateDateModelAndValidationClasses');
 
