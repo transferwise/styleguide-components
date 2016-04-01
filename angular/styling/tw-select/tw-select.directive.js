@@ -15,36 +15,35 @@
 			restrict: 'EA',
 			scope: {
 				ngModel: '=',
-				twInitial: "@",
-				twOptions: '=',
 				ngRequired: '=',
 				ngDisabled: '=',
+				ngChange: '&',
+				twOptions: '=',
 				name: "@",
 				disabled: '@',
-				required: '@'
+				required: '@',
+				placeholder: '@'
 			},
 			template: "<div class='btn-group btn-block'> \
 					<button type='button' class='btn btn-input dropdown-toggle' \
 						data-toggle='dropdown' aria-expanded='false' \
-						ng-disabled='vm.ngDisabled'> \
-						{{vm.selectedText}} <span class='caret'></span> \
+						ng-disabled='vm.ngDisabled' \
+						tw-focusable> \
+						<span class='form-control-placeholder' ng-if='!vm.selectedText'>{{vm.placeholder}}</span> \
+						<span ng-if='vm.selectedText'>{{vm.selectedText}}</span> <span class='caret'></span> \
 					</button> \
 					<ul class='dropdown-menu' role='menu'> \
-						<li ng-if='!vm.ngRequired'> \
-							<a href='' ng-click='vm.unset()'>{{vm.twInitial}}</a> \
-						</li> \
-						<li ng-repeat='option in vm.twOptions'> \
+						<li ng-repeat='option in vm.twOptions' \
+							ng-class='{active: vm.ngModel === option.value}'> \
 							<a href='' ng-click='vm.clickOption(option)'>{{option.label}}</a> \
 						</li> \
 					</ul> \
 					<select class='hidden' \
 						ng-options='option.value as option.label for option in vm.twOptions' \
-						ng-model='vm.ngModel' ng-transclude> \
+						ng-model='vm.ngModel'> \
 					</select> \
 					<input type='hidden' name='{{vm.name}}' value='{{vm.ngModel}}' /> \
 				</div>"
-			//,compile: TwSelectCompile
-			//<option value='' ng-if='vm.twInitial'>{{vm.twInitial}}</option> \
 		};
 	}
 
@@ -52,60 +51,78 @@
 		.module('tw.form-components')
 		.controller('TwSelectController', TwSelectController);
 
-	function TwSelectController() {
-		var vm = this;
+	TwSelectController.$inject = ['$scope', '$element'];
+
+	function TwSelectController($scope, $element) {
+		var vm = this,
+			formGroup;
 
 		vm.clickOption = clickOption;
 		vm.unset = unset;
 
 		function init() {
-			vm.selectedText = vm.twInitial;
+			formGroup = $element.closest('.form-group');
+
+			$scope.$watch('vm.ngModel', modelChange);
+
+			modelChange(vm.ngModel);
+
+			$element.find(".btn").on("blur", function() {
+				checkValid($element, formGroup);
+			});
+			$element.find(".btn").on("keypress", function(event) {
+				console.log(event.key);
+				// Select first option beginning with this key code
+			});
+		}
+
+		function modelChange(newVal, oldVal) {
+			if (newVal === oldVal) {
+				return;
+			}
+
+			var option = findOptionFromValue(newVal);
+			if (option) {
+				vm.selectedText = option.label;
+			} else {
+				vm.selectedText = null;
+			}
+
+			if (vm.ngChange) {
+				console.log("change");
+				vm.ngChange();
+			} else {
+				console.log("no chnage");
+			}
+
+			checkValid($element, formGroup);
+		}
+
+		function findOptionFromValue(value) {
+			return vm.twOptions.find(function(option) {
+				return option.value === value;
+			});
 		}
 
 		function clickOption(option) {
 			vm.ngModel = option.value;
-			vm.selectedText = option.label;
 		}
 
 		function unset() {
 			vm.ngModel = null;
-			vm.selectedText = vm.twInitial;
+		}
+
+		function checkValid(select, formGroup) {
+			setTimeout(function() {
+				if (select.hasClass("ng-invalid")) {
+					formGroup.addClass("has-error");
+				} else {
+					formGroup.removeClass("has-error");
+				}
+			});
 		}
 
 		init();
 	}
-	/*
-
-	function TwSelectCompile(tElm, tAttrs) {
-		var watch;
-
-		// Enable watching of the options dataset if in use
-		if (tElm.is('select')) {
-			repeatOption = tElm.find('option[ng-repeat], option[data-ng-repeat]');
-
-			if (repeatOption.length) {
-				repeatAttr = repeatOption.attr('ng-repeat') || repeatOption.attr('data-ng-repeat');
-				watch = jQuery.trim(repeatAttr.split('|')[0]).split(' ').pop();
-			}
-		}
-
-		return function (scope, elm, attrs, controller) {
-			// Watch the options dataset for changes
-			if (watch) {
-				scope.$watch(watch, function (newVal, oldVal, scope) {
-					if (!newVal) {
-						return;
-					}
-					// Delayed so that the options have time to be rendered
-					$timeout(function () {
-						elm.select2('val', controller.$viewValue);
-						// Refresh angular to remove the superfluous option
-						elm.trigger('change');
-					});
-				});
-			}
-		};
-	}
-	*/
 
 })(window.angular);

@@ -44,6 +44,7 @@
 		padding: 0;
 	}
 
+	/* Remove after Bootstrap update */
 	.error-async,
 	.error-number,
 	.error-date,
@@ -117,10 +118,8 @@
 							</label>
 							<tw-select class="form-contro" required tw-validation
 								ng-model="vm.model.selectRequired"
-								tw-initial="Empty value"
 								tw-options="vm.select.options"
-								ng-disabled="vm.model.checkbox1">
-								<option value="">Please choose...</option>
+								placeholder="Select an option...">
 							</tw-select>
 						</div>
 
@@ -302,36 +301,50 @@
 						<h3 class="panel-title">Form components</h3>
 					</div>
 					<div class="panel-body">
-
 						<h5>TW Select</h5>
-						<p></p>
+						<p>Styled select box replacement, supporting the majority of the
+							standard HTML interface for a select.</p>
+						<p>The select box also maintains a hidden form input with the
+							given name to be compatible with HTML form posts.</p>
 						<hr/>
-						<div class="row" ng-init="vm.selectOptions = [
-							{'value': '1', 'label': 'One'},
-							{'value': '2', 'label': 'Two'},
-							{'value': '3', 'label': 'Three'}
-						]">
+						<div class="row" ng-init="vm.select.options = [
+							{'value': '', 'label': 'None selected'},
+							{'value': '1', 'label': 'Option one'},
+							{'value': '2', 'label': 'Option two'},
+							{'value': '3', 'label': 'Option three'}
+						]; vm.select.empty = 'Select an option...';">
 							<div class="col-md-6">
 								<div class="form-group">
 									<label class="control-label" for="date">
 										Example select
 									</label>
-									<tw-select class="form-contro" required tw-validation
+									<tw-select tw-validation
+										name="mySelect"
+										placeholder="{{vm.select.empty}}"
 										ng-model="vm.model.components.select"
-										tw-initial="Empty value"
-										tw-options="vm.selectOptions"
-										ng-disabled="vm.model.select.disabled">
-										<option value="">Please choose...</option>
+										ng-change="alert('test')"
+										ng-required="vm.select.required"
+										ng-disabled="vm.select.disabled"
+										tw-options="vm.select.options">
 									</tw-select>
+									<div class="error-messages">
+										<div class="error-required">Required</div>
+									</div>
 								</div>
 								<h5>Configuration</h5>
 								<pre>
 &lt;tw-select
+  name="mySelect"
+  placeholder="{{vm.select.empty}}"
   ng-model="vm.components.select"
-  ng-required="{{vm.model.select.required}}"
-  ng-disabled="{{vm.model.select.disabled}}"
-  tw-options="vm.options"
-  tw-initial="{{vm.model.select.empty}}"&gt;
+  ng-required="{{vm.select.required}}"
+  ng-disabled="{{vm.select.disabled}}"
+  tw-options="[
+    {'value': '', 'label': 'None selected'},
+    {'value': '1', 'label': 'Option one'},
+    {'value': '2', 'label': 'Option two'},
+    {'value': '3', 'label': 'Option three'}
+  ]"&gt;
 &lt;/tw-select&gt;
 								</pre>
 							</div>
@@ -347,8 +360,8 @@
 											</label>
 											<div class="checkbox">
 												<label>
-													<input type="checkbox"
-														   ng-model="vm.model.select.required" />
+													<input type="checkbox" tw-input
+														ng-model="vm.select.required" />
 													Is the control required?
 												</label>
 											</div>
@@ -359,18 +372,18 @@
 											</label>
 											<div class="checkbox">
 												<label>
-													<input type="checkbox"
-														   ng-model="vm.model.select.disabled" />
+													<input type="checkbox" tw-input
+														ng-model="vm.select.disabled" />
 													Is the control disabled?
 												</label>
 											</div>
 										</div>
 										<div class="form-group">
 											<label class="control-label">
-												Empty Value
+												Empty value
 											</label>
 											<input class="form-control"
-												ng-model="vm.model.select.empty" />
+												ng-model="vm.select.empty" />
 										</div>
 									</div>
 								</div>
@@ -389,12 +402,11 @@
 									</label>
 									<tw-date name="date"
 										ng-model="vm.model.components.date"
-										ng-required="vm.model.components.dateRequired"
-										ng-disabled="vm.model.components.dateDisabled"
-										tw-locale="vm.model.components.dateLocale"
+										ng-required="vm.date.required"
+										ng-disabled="vm.date.disabled"
+										tw-locale="vm.date.locale"
 										min="1990-01-01"
-										max="2015-12-31"
-									></tw-date>
+										max="2015-12-31"></tw-date>
 								</div>
 								<h5>Configuration</h5>
 								<pre>
@@ -420,7 +432,7 @@
 											</label>
 											<div class="checkbox">
 												<label>
-													<input type="checkbox"
+													<input type="checkbox" tw-input
 														   ng-model="vm.date.required" />
 													Is the control required?
 												</label>
@@ -432,7 +444,7 @@
 											</label>
 											<div class="checkbox">
 												<label>
-													<input type="checkbox"
+													<input type="checkbox" tw-input
 														   ng-model="vm.date.disabled" />
 													Is the control disabled?
 												</label>
@@ -554,7 +566,7 @@
 										</label>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox"
+												<input type="checkbox" tw-input
 													ng-model="vm.dynamic.required" />
 												Is the control required?
 											</label>
@@ -567,7 +579,7 @@
 										</label>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox"
+												<input type="checkbox" tw-input
 													ng-model="vm.dynamic.disabled" />
 												Is the control disabled?
 											</label>
