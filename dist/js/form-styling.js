@@ -4,17 +4,25 @@ angular.module("tw.form-styling", []);
     function TwFormControlStyling() {
         return {
             restrict: "C",
-            link: function(scope, element) {
-                var formGroup = $(element).closest(".form-group");
-                $(element).on("focus", function() {
-                    formGroup.addClass("focus");
-                }).on("blur", function() {
-                    formGroup.removeClass("focus");
-                });
-            }
+            link: FocusableLink
         };
     }
-    angular.module("tw.form-styling").directive("formControl", TwFormControlStyling);
+    function TwFocusable() {
+        return {
+            restrict: "A",
+            link: FocusableLink
+        };
+    }
+    function FocusableLink(scope, element) {
+        var formGroup = $(element).closest(".form-group");
+        $(element).on("focus", function() {
+            formGroup.addClass("focus");
+        }).on("blur", function() {
+            formGroup.removeClass("focus");
+        });
+    }
+    angular.module("tw.form-styling").directive("formControl", TwFormControlStyling), 
+    angular.module("tw.form-styling").directive("twFocusable", TwFocusable);
 }(window.angular), function(angular) {
     function TwInputStyling() {
         function onFocus() {
@@ -54,4 +62,65 @@ angular.module("tw.form-styling", []);
         };
     }
     angular.module("tw.form-styling").directive("twInput", TwInputStyling);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwSelectDirective() {
+        return {
+            require: "ngModel",
+            bindToController: !0,
+            controller: "TwSelectController",
+            controllerAs: "vm",
+            replace: !1,
+            restrict: "EA",
+            scope: {
+                ngModel: "=",
+                ngRequired: "=",
+                ngDisabled: "=",
+                ngChange: "&",
+                twOptions: "=",
+                name: "@",
+                disabled: "@",
+                required: "@",
+                placeholder: "@"
+            },
+            template: "<div class='btn-group btn-block'> 					<button type='button' class='btn btn-input dropdown-toggle' 						data-toggle='dropdown' aria-expanded='false' 						ng-disabled='vm.ngDisabled' 						tw-focusable> 						<span class='form-control-placeholder' ng-if='!vm.selectedText'>{{vm.placeholder}}</span> 						<span ng-if='vm.selectedText'>{{vm.selectedText}}</span> <span class='caret'></span> 					</button> 					<ul class='dropdown-menu' role='menu'> 						<li ng-repeat='option in vm.twOptions' 							ng-class='{active: vm.ngModel === option.value}'> 							<a href='' ng-click='vm.clickOption(option)'>{{option.label}}</a> 						</li> 					</ul> 					<select class='hidden' 						ng-options='option.value as option.label for option in vm.twOptions' 						ng-model='vm.ngModel'> 					</select> 					<input type='hidden' name='{{vm.name}}' value='{{vm.ngModel}}' /> 				</div>"
+        };
+    }
+    function TwSelectController($scope, $element) {
+        function init() {
+            formGroup = $element.closest(".form-group"), $scope.$watch("vm.ngModel", modelChange), 
+            modelChange(vm.ngModel), $element.find(".btn").on("blur", function() {
+                checkValid($element, formGroup);
+            }), $element.find(".btn").on("keypress", function(event) {
+                console.log(event.key);
+            });
+        }
+        function modelChange(newVal, oldVal) {
+            if (newVal !== oldVal) {
+                var option = findOptionFromValue(newVal);
+                vm.selectedText = option ? option.label : null, vm.ngChange ? (console.log("change"), 
+                vm.ngChange()) : console.log("no chnage"), checkValid($element, formGroup);
+            }
+        }
+        function findOptionFromValue(value) {
+            return vm.twOptions.find(function(option) {
+                return option.value === value;
+            });
+        }
+        function clickOption(option) {
+            vm.ngModel = option.value;
+        }
+        function unset() {
+            vm.ngModel = null;
+        }
+        function checkValid(select, formGroup) {
+            setTimeout(function() {
+                select.hasClass("ng-invalid") ? formGroup.addClass("has-error") : formGroup.removeClass("has-error");
+            });
+        }
+        var formGroup, vm = this;
+        vm.clickOption = clickOption, vm.unset = unset, init();
+    }
+    angular.module("tw.form-components").directive("twSelect", TwSelectDirective), angular.module("tw.form-components").controller("TwSelectController", TwSelectController), 
+    TwSelectController.$inject = [ "$scope", "$element" ];
 }(window.angular);

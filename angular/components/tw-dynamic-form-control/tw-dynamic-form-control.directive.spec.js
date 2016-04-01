@@ -105,9 +105,9 @@ describe('Directive: TwDynamicFormControlDirective', function() {
 
 	describe('type: radio', function() {
 		beforeEach(function() {
-			$scope.options = {
-				val: "label"
-			};
+			$scope.options = [
+				{value: 1, label: 'One'}
+			];
 			directiveElem = compileTemplate(
 				"<tw-dynamic-form-control type='radio' options='options'></tw-dynamic-form-control>"
 			);
@@ -117,9 +117,13 @@ describe('Directive: TwDynamicFormControlDirective', function() {
 			var input = directiveElem.find('input');
 			expect(input.length).toBe(1);
 		});
-		it('should use the options key as the radio value', function() {
+		it('should use the options correctly for the input value', function() {
 			var input = directiveElem.find('input');
-			expect(input.attr('value')).toBe("val");
+			expect(input.attr('value')).toBe('1');
+		});
+		it('should use the options correctly for the label', function() {
+			var label = directiveElem.find('label');
+			expect(label.text()).toContain('One');
 		});
 	});
 
