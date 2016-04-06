@@ -109,7 +109,7 @@
 
 						<div class="form-group"
 							ng-init="vm.select.options = [
-								{'value': '1', 'label': 'One'},
+								{'value': '1', 'label': 'One', 'icon': 'icon-profile'},
 								{'value': '2', 'label': 'Two'},
 								{'value': '3', 'label': 'Three'}
 							]">
@@ -303,15 +303,16 @@
 					<div class="panel-body">
 						<h5>TW Select</h5>
 						<p>Styled select box replacement, supporting the majority of the
-							standard HTML interface for a select.</p>
+							standard HTML interface for a select.  The select box 
+							has full keyboard support matching native behaviour.</p>
 						<p>The select box also maintains a hidden form input with the
 							given name to be compatible with HTML form posts.</p>
 						<hr/>
 						<div class="row" ng-init="vm.select.options = [
 							{'value': '', 'label': 'None selected'},
-							{'value': '1', 'label': 'Option one'},
-							{'value': '2', 'label': 'Option two'},
-							{'value': '3', 'label': 'Option three'}
+							{'value': '1', 'label': 'One', 'icon': 'icon-profile'},
+							{'value': '2', 'label': 'Two'},
+							{'value': '3', 'label': 'Three'}
 						]; vm.select.empty = 'Select an option...';">
 							<div class="col-md-6">
 								<div class="form-group">
@@ -349,42 +350,40 @@
 								</pre>
 							</div>
 							<div class="col-md-6">
-								<div class="row">
-									<div class="well">
-										<h5 class="page-header">
-											Edit configuration
-										</h5>
-										<div class="form-group">
-											<label class="control-label">
-												Required?
+								<div class="well">
+									<h5 class="page-header">
+										Edit configuration
+									</h5>
+									<div class="form-group">
+										<label class="control-label">
+											Required?
+										</label>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" tw-input
+													ng-model="vm.select.required" />
+												Is the control required?
 											</label>
-											<div class="checkbox">
-												<label>
-													<input type="checkbox" tw-input
-														ng-model="vm.select.required" />
-													Is the control required?
-												</label>
-											</div>
 										</div>
-										<div class="form-group">
-											<label class="control-label">
-												Disabled?
+									</div>
+									<div class="form-group">
+										<label class="control-label">
+											Disabled?
+										</label>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" tw-input
+													ng-model="vm.select.disabled" />
+												Is the control disabled?
 											</label>
-											<div class="checkbox">
-												<label>
-													<input type="checkbox" tw-input
-														ng-model="vm.select.disabled" />
-													Is the control disabled?
-												</label>
-											</div>
 										</div>
-										<div class="form-group">
-											<label class="control-label">
-												Empty value
-											</label>
-											<input class="form-control"
-												ng-model="vm.select.empty" />
-										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label">
+											Empty value
+										</label>
+										<input class="form-control"
+											ng-model="vm.select.empty" />
 									</div>
 								</div>
 							</div>
@@ -421,49 +420,47 @@
 								</pre>
 							</div>
 							<div class="col-md-6">
-								<div class="row">
-									<div class="well">
-										<h5 class="page-header">
-											Edit configuration
-										</h5>
-										<div class="form-group">
-											<label class="control-label">
-												Required?
+								<div class="well">
+									<h5 class="page-header">
+										Edit configuration
+									</h5>
+									<div class="form-group">
+										<label class="control-label">
+											Required?
+										</label>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" tw-input
+													   ng-model="vm.date.required" />
+												Is the control required?
 											</label>
-											<div class="checkbox">
-												<label>
-													<input type="checkbox" tw-input
-														   ng-model="vm.date.required" />
-													Is the control required?
-												</label>
-											</div>
 										</div>
-										<div class="form-group">
-											<label class="control-label">
-												Disabled?
+									</div>
+									<div class="form-group">
+										<label class="control-label">
+											Disabled?
+										</label>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" tw-input
+													   ng-model="vm.date.disabled" />
+												Is the control disabled?
 											</label>
-											<div class="checkbox">
-												<label>
-													<input type="checkbox" tw-input
-														   ng-model="vm.date.disabled" />
-													Is the control disabled?
-												</label>
-											</div>
 										</div>
-										<div class="form-group">
-											<label class="control-label">
-												Locale
-											</label>
-											<select required
-													class="form-control"
-													ng-model="vm.date.locale"
-													ng-init="vm.date.locale = 'en-GB'">
-												<option value="en-GB">English UK</option>
-												<option value="fr-FR">French</option>
-												<option value="es-ES">Spanish</option>
-												<option value="ss-SS">Unknown locale</option>
-											</select>
-										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label">
+											Locale
+										</label>
+										<select required
+												class="form-control"
+												ng-model="vm.date.locale"
+												ng-init="vm.date.locale = 'en-GB'">
+											<option value="en-GB">English UK</option>
+											<option value="fr-FR">French</option>
+											<option value="es-ES">Spanish</option>
+											<option value="ss-SS">Unknown locale</option>
+										</select>
 									</div>
 								</div>
 							</div>
