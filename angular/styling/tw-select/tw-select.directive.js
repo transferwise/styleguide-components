@@ -109,10 +109,18 @@
 		}
 
 		function modelChange(newVal, oldVal) {
-			//console.log("change: " + newVal + ", " + oldVal);
 			if (newVal === oldVal) {
 				return;
 			}
+
+			// TODO could be touched without model changing, but must not trigger on load
+			$element.removeClass('ng-untouched');
+			$element.addClass('ng-touched');
+			//ngModel.$setTouched();
+			//ngModel.$setDirty();
+
+			$element.removeClass('ng-pristine');
+			$element.addClass('ng-dirty');
 
 			var option = findOptionFromValue(newVal);
 			if (option) {
@@ -142,7 +150,7 @@
 
 		function clickButton() {
 			// TODO maybe this can be better achieved another way.
-			// Once dropdown is open, focus on active item for keyboard support
+			// Once dropdown is open, focus on active/selected item for keyboard support
 			$timeout(function() {
 				$element.find(".active a").focus();
 			});
@@ -167,6 +175,7 @@
 		}
 
 		function checkValid(select, formGroup) {
+			/*
 			$timeout(function() {
 				if (select.hasClass("ng-invalid")) {
 					formGroup.addClass("has-error");
@@ -174,9 +183,9 @@
 					formGroup.removeClass("has-error");
 				}
 			});
+			*/
 		}
 
 		init();
 	}
-
 })(window.angular);

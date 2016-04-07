@@ -9,11 +9,17 @@
 		return {
 			restrict: 'AC',
 			require: 'ngModel',
-			link: validationLink
+			link: validationLink,
+			//controllerAs: "vm",
+			//bindToController: true,
+			controller: ["$element", function($element) {
+				//console.log(this);
+				//console.log(this.ngModel);
+			}]
 		};
 	}
 
-	function validationLink(scope, element) {
+	function validationLink(scope, element, attrs, ngModel) {
 		var formControl = $(element);
 		var formGroup = formControl.closest('.form-group');
 
@@ -33,6 +39,22 @@
 			.on("change", function() {
 				checkValid(formControl, formGroup);
 			});
+
+		// TODO this only seems to fire for custom elements with ngModel?!?!
+		ngModel.$render = function() {
+			// Model value not updated immediately, defer processing
+			setTimeout(function() {
+				//console.log("trigger");
+				if (ngModel.$valid) {
+					formGroup.removeClass("has-error");
+					return;
+				}
+				if (formControl.hasClass("ng-touched") &&
+					!formControl.hasClass("ng-pristine")) {
+					formGroup.addClass("has-error");
+				}
+			});
+		};
 	}
 
 	function checkValid(formControl, formGroup) {
