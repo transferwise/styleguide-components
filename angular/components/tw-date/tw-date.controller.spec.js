@@ -114,23 +114,19 @@ describe('Controller: TwDateController', function() {
 			initController();
 		});
 		it("should return true for valid Date date", function() {
-			TwDateController.date = new Date("2000-01-01");
-			expect(TwDateController.validDateModel()).toBe(true);
+			expect(TwDateController.validDate(new Date("2000-01-01"))).toBe(true);
 		});
 
 		it("should return false for invalid Date date", function() {
-			TwDateController.date = new Date("2000-01-01T");
-			expect(TwDateController.validDateModel()).toBe(false);
+			expect(TwDateController.validDate(new Date("2000-01-01T"))).toBe(false);
 		});
 
 		it("should return true for valid ISO8601 date", function() {
-			TwDateController.date = "1990-02-28T00:00:00.000Z";
-			expect(TwDateController.validDateModel()).toBe(true);
+			expect(TwDateController.validDate("1990-02-28T00:00:00.000Z")).toBe(true);
 		});
 
 		it("should return false for invalid ISO8601 date", function() {
-			TwDateController.date = "1990-02-28T";
-			expect(TwDateController.validDateModel()).toBe(false);
+			expect(TwDateController.validDate("1990-02-28T")).toBe(false);
 		});
 	});
 

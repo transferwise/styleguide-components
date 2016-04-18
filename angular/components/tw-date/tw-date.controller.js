@@ -14,7 +14,7 @@
 
 		vm.explodeDateModel = explodeDateModel;
 		vm.adjustLastDay = adjustLastDay;
-		vm.validDateModel = isValidDateModel;
+		vm.validDate = validDate;
 
 		var DEFAULT_LOCALE_EN = 'en';
 		var DEFAULT_MONTHS_EN = [
@@ -46,7 +46,7 @@
 				applyDateModelIfValidOrThrowError();
 			} else {
 				if (vm.modelType) {
-					if (isValidDateModelType(vm.modelType)) {
+					if (vm.modelType === STRING_TYPE || vm.modelType === OBJECT_TYPE) {
 						vm.dateModelType = vm.modelType;
 					} else {
 						throw new Error ('Invalid modelType, should be ' + STRING_TYPE + ' or ' + OBJECT_TYPE);
@@ -67,12 +67,8 @@
 			registerWatchers();
 		}
 
-		function isValidDateModelType(modelType) {
-			return modelType === STRING_TYPE || modelType === OBJECT_TYPE;
-		}
-
 		function applyDateModelIfValidOrThrowError() {
-			if (isValidDateModel()) {
+			if (validDate(vm.date)) {
 				vm.dateModelType = typeof vm.date === 'string' ? STRING_TYPE : OBJECT_TYPE;
 				vm.explodeDateModel();
 			} else {
@@ -150,7 +146,7 @@
 		}
 
 		function explodeDateModelIfValid() {
-			if (isValidDateModel()) {
+			if (validDate(vm.date)) {
 				vm.explodeDateModel();
 			}
 		}
@@ -159,10 +155,6 @@
 			vm.day = null;
 			vm.month = 0;
 			vm.year = null;
-		}
-
-		function isValidDateModel() {
-			return validDate(vm.date);
 		}
 
 		function validDate(date) {
@@ -235,17 +227,15 @@
 		}
 
 		function isIntlSupportedForLocale(locale) {
-			return isIntlSupported() && window.Intl.DateTimeFormat.supportedLocalesOf([locale]).length > 0;
-		}
-
-		function isIntlSupported() {
-			return window.Intl && typeof window.Intl === 'object';
+			return window.Intl &&
+				typeof window.Intl === 'object' &&
+				window.Intl.DateTimeFormat.supportedLocalesOf([locale]).length > 0;
 		}
 
 		function getMonthNamesForLocale() {
-			var months = [];
-			var date = new Date(2000, 0, 15);
+			var months = [], date;
 			for(var i = 0; i < 12; i++) {
+				date = new Date();
 				date.setMonth(i);
 				var monthName = date.toLocaleDateString(vm.dateLocale, {month: "long"});
 				monthName = monthName[0].toUpperCase() + monthName.substring(1);
@@ -257,8 +247,8 @@
 		function extendMonthsWithIds(monthNames) {
 			return monthNames.map(function(monthName, index) {
 				return {
-					id: index,
-					name: monthName
+					value: index,
+					label: monthName
 				};
 			});
 		}
@@ -302,6 +292,7 @@
 			}
 
 			var dateObj = getExplodedDateAsDate();
+
 			if (vm.dateModelType === STRING_TYPE) {
 				vm.date = getIsoDateWithoutTime(dateObj.toISOString());
 			} else {

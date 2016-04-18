@@ -32,7 +32,31 @@
 		return directive;
 	}
 
-	var templateAsString = "<div class='row'> \
+	function TwDateLink(scope, element, attrs, ngModel) {
+		/*
+		ngModel.$formatters.push(function(value) {
+			// explode(value)
+			scope.vm.day =
+			scope.vm.month =
+			scope.vm.year =
+			return value;
+		});
+
+		element.find('input').on('change', function() {
+			var dateString = combine();
+			ngModel.$setViewValue(dateString);
+		})
+		ngModel.$validators.min = function(value) {
+			return
+		};
+		ngModel.$validators.max = function(value) {
+			return
+		};
+		*/
+	}
+
+	var templateAsString = " \
+			<div class='row'> \
 				<div class='col-sm-3'> \
 					<label class='sr-only' for='day-{{::uniqueId}}'>Day</label> \
 					<input type='number' \
@@ -56,10 +80,10 @@
 					<label class='sr-only' for='month-{{::uniqueId}}'>Month</label> \
 					<select name='month' \
 						id='month-{{::uniqueId}}' \
-						class='form-control' \
+						class='form-control tw-date-month' \
 						ng-model='vm.month' \
 						ng-change='vm.updateDateModelAndValidationClasses()' \
-						ng-options='month.id as month.name for month in vm.dateMonths' \
+						ng-options='month.value as month.label for month in vm.dateMonths' \
 						ng-disabled='vm.dateDisabled' \
 						ng-required='vm.dateRequired' \
 						autocomplete='off' \
@@ -71,7 +95,7 @@
 					<input type='number' \
 						id='year-{{::uniqueId}}' \
 						name='year' \
-						class='form-control' \
+						class='form-control tw-date-year' \
 						placeholder='YYYY' \
 						ng-model='vm.year' \
 						ng-change='vm.updateDateModelAndValidationClasses()' \
@@ -84,4 +108,18 @@
 						tw-validation /> \
 				</div> \
 			</div>";
+
+	/*
+
+<tw-select \
+	name='month' \
+	id='month-{{::uniqueId}}' \
+	ng-model='vm.month' \
+	ng-change='vm.updateDateModelAndValidationClasses()' \
+	ng-required='vm.dateRequired' \
+	ng-disabled='vm.dateDisabled' \
+	tw-options='vm.dateMonths'> \
+</tw-select> \
+
+	*/
 })(window.angular);

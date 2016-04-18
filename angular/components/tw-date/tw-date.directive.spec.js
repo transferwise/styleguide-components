@@ -43,13 +43,15 @@ describe('Directive: TwDate', function() {
                 viewModel = getViewModel(directiveElement);
             });
             it('should leave date model undefined', function () {
-                expectDateModelToBe(directiveElement, undefined);
+                expect(viewModel.date).toBe(undefined);
             });
             it('should set vm.dateModelType to "object"', function () {
                 expect(viewModel.dateModelType).toBe('object');
             });
             it('should set exploded date to default', function () {
-                expectExplodedDateToBeDefault(directiveElement);
+                expect(viewModel.year).toBe(null);
+                expect(viewModel.month).toBe(0);
+                expect(viewModel.day).toBe(null);
             });
             it('should set vm.dateRequired to false', function () {
                 expect(viewModel.dateRequired).toBe(false);
@@ -86,10 +88,12 @@ describe('Directive: TwDate', function() {
                     expect(viewModel.dateModelType).toBe('string');
                 });
                 it('should set exploded date correctly', function () {
-                    expectExplodedDateToBe(directiveElement, 1990, 7, 21);
+                    expect(viewModel.year).toBe(1990);
+                    expect(viewModel.month).toBe(7);
+                    expect(viewModel.day).toBe(21);
                 });
                 it('should leave date model as it was defined', function () {
-                    expectDateModelToBe(directiveElement, dateModel);
+                    expect(viewModel.date).toBe(dateModel);
                 });
             });
             describe('as valid Date instance', function () {
@@ -103,10 +107,12 @@ describe('Directive: TwDate', function() {
                     expect(viewModel.dateModelType).toBe('object');
                 });
                 it('should set exploded date correctly', function () {
-                    expectExplodedDateToBe(directiveElement, 1990, 7, 21);
+                    expect(viewModel.year).toBe(1990);
+                    expect(viewModel.month).toBe(7);
+                    expect(viewModel.day).toBe(21);
                 });
                 it('should leave date model as it was defined', function () {
-                    expectDateModelToBe(directiveElement, dateModel);
+                    expect(viewModel.date).toBe(dateModel);
                 });
             });
             describe('as invalid ISO8601 string', function () {
@@ -130,7 +136,7 @@ describe('Directive: TwDate', function() {
             var directiveElement, viewModel;
             describe('as "string"', function () {
                 beforeEach(function() {
-                    directiveElement = getCompiledDirectiveElement({}, [['model-type', 'string']]);
+                    directiveElement = getCompiledDirectiveElement({model: null}, [['model-type', 'string']]);
                     viewModel = getViewModel(directiveElement);
                 });
                 it('should set vm.dateModelType to "string"', function () {
@@ -139,16 +145,17 @@ describe('Directive: TwDate', function() {
                 it('should return updated date model correctly', function () {
                     viewModel.year = 1990;
                     viewModel.month = 1;
-                    simulateUserActionOnDayInput(directiveElement, 15);
 
-                    var expectedUpdatedDateModel = '1990-02-15';
+                    directiveElement.find('.tw-date-day')
+                        .val(15)
+                        .triggerHandler('input');
 
-                    expect(viewModel.date).toBe(expectedUpdatedDateModel);
+                    expect(viewModel.date).toBe('1990-02-15');
                 });
             });
             describe('as "object"', function () {
                 beforeEach(function() {
-                    directiveElement = getCompiledDirectiveElement({}, [['model-type', 'object']]);
+                    directiveElement = getCompiledDirectiveElement({model: null}, [['model-type', 'object']]);
                     viewModel = getViewModel(directiveElement);
                 });
                 it('should set vm.dateModelType to "object"', function () {
@@ -157,11 +164,12 @@ describe('Directive: TwDate', function() {
                 it('should return updated date model correctly', function () {
                     viewModel.year = 1990;
                     viewModel.month = 1;
-                    simulateUserActionOnDayInput(directiveElement, 15);
 
-                    var expectedUpdatedDateModel = new Date(1990, 1, 15);
+                    directiveElement.find('.tw-date-day')
+                        .val(15)
+                        .triggerHandler('input');
 
-                    expect(viewModel.date).toEqual(expectedUpdatedDateModel);
+                    expect(viewModel.date).toEqual(new Date(1990, 1, 15));
                 });
             });
             describe('as invalid model type', function () {
@@ -198,13 +206,13 @@ describe('Directive: TwDate', function() {
         });
         describe('when ngDisabled input scope is passed', function () {
             var directiveElement, viewModel;
-            it('should set vm.dateRequired to true', function () {
+            it('should set vm.dateDisabled to true', function () {
                 directiveElement = getCompiledDirectiveElement({disabled: true});
                 viewModel = getViewModel(directiveElement);
 
                 expect(viewModel.dateDisabled).toBe(true);
             });
-            it('should set vm.dateRequired to false', function () {
+            it('should set vm.dateDisabled to false', function () {
                 directiveElement = getCompiledDirectiveElement({disabled: false});
                 viewModel = getViewModel(directiveElement);
 
@@ -225,7 +233,7 @@ describe('Directive: TwDate', function() {
             var twLocale = 'fr';
             var directiveElement, viewModel;
             beforeEach(function () {
-                directiveElement = getCompiledDirectiveElement({locale: twLocale});
+                directiveElement = getCompiledDirectiveElement({'locale': twLocale});
                 viewModel = getViewModel(directiveElement);
             });
 
@@ -261,17 +269,19 @@ describe('Directive: TwDate', function() {
         describe('when ngMin, ngMax input scope are passed', function () {
             var directiveElement, viewModel;
             describe('as valid strings', function () {
-                var dateMin = '1990-01-01', dateMax = '2015-12-31';
+                var dateMin = '1990-01-01',
+                    dateMax = '2015-12-31';
+
                 beforeEach(function() {
-                        directiveElement = getCompiledDirectiveElement({min: dateMin, max: dateMax});
-                        viewModel = getViewModel(directiveElement);
+                    directiveElement = getCompiledDirectiveElement({min: dateMin, max: dateMax});
+                    viewModel = getViewModel(directiveElement);
                 });
                 it('should set vm.dateRange correctly', function () {
                     expect(viewModel.dateRange.min).toEqual(new Date(dateMin));
                     expect(viewModel.dateRange.max).toEqual(new Date(dateMax));
                 });
                 it('should set year input max and min correctly', function() {
-                    var yearInput = angular.element(directiveElement.find('input')[1]);
+                    var yearInput = directiveElement.find('.tw-date-year');
 
                     expect(yearInput.attr('ng-min')).toBe('1990');
                     expect(yearInput.attr('ng-max')).toBe('2015');
@@ -287,7 +297,9 @@ describe('Directive: TwDate', function() {
                 });
             });
             describe('as valid dates', function () {
-                var dateMin = new Date(1990, 0, 1), dateMax = new Date(2015, 11, 31);
+                var dateMin = new Date(1990, 0, 1),
+                    dateMax = new Date(2015, 11, 31);
+
                 beforeEach(function() {
                     directiveElement = getCompiledDirectiveElement({min: dateMin, max: dateMax});
                     viewModel = getViewModel(directiveElement);
@@ -297,7 +309,7 @@ describe('Directive: TwDate', function() {
                     expect(viewModel.dateRange.max).toEqual(new Date(dateMax));
                 });
                 it('should set year input max and min correctly', function() {
-                    var yearInput = angular.element(directiveElement.find('input')[1]);
+                    var yearInput = directiveElement.find('.tw-date-year');
 
                     expect(yearInput.attr('ng-min')).toBe('1990');
                     expect(yearInput.attr('ng-max')).toBe('2015');
@@ -320,7 +332,9 @@ describe('Directive: TwDate', function() {
             var directiveElement, viewModel;
             describe('as valid strings', function () {
                 it('should set vm.dateRange correctly', function () {
-                    var dateMin = '1990-01-01', dateMax = '2015-12-31';
+                    var dateMin = '1990-01-01',
+                        dateMax = '2015-12-31';
+
                     directiveElement = getCompiledDirectiveElement({}, [['min', dateMin], ['max', dateMax]]);
                     viewModel = getViewModel(directiveElement);
 
@@ -341,7 +355,9 @@ describe('Directive: TwDate', function() {
         describe('when both ngMmin and min attributes are passed', function () {
             var directiveElement, viewModel;
             it('ngMin should override min', function () {
-                var ngMin = 'invalid', min = '2015-12-31';
+                var ngMin = 'invalid',
+                    min = '2015-12-31';
+
                 directiveElement = getCompiledDirectiveElement({min: ngMin}, [['min', ngMin]]);
                 viewModel = getViewModel(directiveElement);
 
@@ -352,80 +368,94 @@ describe('Directive: TwDate', function() {
 
     describe('watchers on shared scope', function() {
         describe('ngModel', function() {
-            var oldDate, directiveElement;
+            var oldDate, directiveElement, viewModel;
             beforeEach(function() {
                 oldDate = new Date("1989-02-20");
                 directiveElement = getCompiledDirectiveElement({model: oldDate});
+                viewModel = getViewModel(directiveElement);
             });
             it('should re-explode date correctly if new date is valid', function() {
                 var newDate = new Date("1990-01-12");
                 inputScope.model = newDate;
                 inputScope.$digest();
 
-                expectExplodedDateToBe(directiveElement, newDate.getFullYear(), newDate.getMonth(), newDate.getDate());
+                expect(viewModel.year).toBe(newDate.getFullYear());
+                expect(viewModel.month).toBe(newDate.getMonth());
+                expect(viewModel.day).toBe(newDate.getDate());
             });
             it('should not re-explode date if new date is not valid', function() {
                 inputScope.model = new Date('snake');
                 inputScope.$digest();
 
-                expectExplodedDateToBe(directiveElement, oldDate.getFullYear(), oldDate.getMonth(), oldDate.getDate());
+                expect(viewModel.year).toBe(oldDate.getFullYear());
+                expect(viewModel.month).toBe(oldDate.getMonth());
+                expect(viewModel.day).toBe(oldDate.getDate());
             });
         });
         describe('ngRequired', function() {
             it('should update vm.dateRequired correctly', function() {
                 var directiveElement = getCompiledDirectiveElement({required: true});
+                var viewModel = getViewModel(directiveElement);
+
                 inputScope.required = false;
                 inputScope.$digest();
 
-                var vm = getViewModel(directiveElement);
-                expect(vm.dateRequired).toBe(false);
+                expect(viewModel.dateRequired).toBe(false);
             });
         });
         describe('ngDisabled', function() {
             it('should update vm.dateDisabled correctly', function() {
                 var directiveElement = getCompiledDirectiveElement({disabled: true});
+                var viewModel = getViewModel(directiveElement);
+
                 inputScope.disabled = false;
                 inputScope.$digest();
 
-                var vm = getViewModel(directiveElement);
-                expect(vm.dateDisabled).toBe(false);
+                expect(viewModel.dateDisabled).toBe(false);
             });
         });
         describe('ngMin', function() {
             it('should update vm.dateRange correctly', function() {
                 var directiveElement = getCompiledDirectiveElement({min: '1990-08-12'});
+                var viewModel = getViewModel(directiveElement);
+
                 var newDateString = '2000-01-01';
                 inputScope.min = newDateString;
                 inputScope.$digest();
 
-                var vm = getViewModel(directiveElement);
-                expect(vm.dateRange.min).toEqual(new Date(newDateString));
+                expect(viewModel.dateRange.min).toEqual(new Date(newDateString));
             });
         });
         describe('ngMax', function() {
             it('should update vm.dateRange correctly', function() {
                 var directiveElement = getCompiledDirectiveElement({max: '1990-08-12'});
+                var viewModel = getViewModel(directiveElement);
+
                 var newDateString = '2000-01-01';
                 inputScope.max = newDateString;
                 inputScope.$digest();
 
-                var vm = getViewModel(directiveElement);
-                expect(vm.dateRange.max).toEqual(new Date(newDateString));
+                expect(viewModel.dateRange.max).toEqual(new Date(newDateString));
             });
         });
         describe('twLocale', function() {
-            var directiveElement;
-            var oldLocale = LOCALES.es;
-            var newLocale = LOCALES.fr;
+            var directiveElement,
+                viewModel,
+                oldLocale = LOCALES.es,
+                newLocale = LOCALES.fr;
+
             beforeEach(function() {
-                directiveElement = getCompiledDirectiveElement({locale: oldLocale});
+                directiveElement = getCompiledDirectiveElement({'locale': oldLocale});
+                viewModel = getViewModel(directiveElement);
+
                 inputScope.locale = newLocale;
                 inputScope.$digest();
             });
+
             it('should update vm.dateLocale correctly', function() {
-                var vm = getViewModel(directiveElement);
-                expect(vm.dateLocale).toBe(newLocale);
+                expect(viewModel.dateLocale).toBe(newLocale);
             });
+
             if (isIntlSupportedForLocale(newLocale)) {
                 it('should update vm.dateMonths based on vm.locale', function () {
                     expectDateMonthsToBeLocalized(directiveElement, newLocale);
@@ -464,10 +494,9 @@ describe('Directive: TwDate', function() {
             it('should trigger vm.updateDateModelAndValidationClasses()', function () {
                 spyOn(isolatedScope.vm, 'updateDateModelAndValidationClasses');
 
-                var dayInput = angular.element(directiveElement.find('input')[0]);
-
-                dayInput.val(12);
-                dayInput.triggerHandler('input');
+                directiveElement.find('.tw-date-day')
+                    .val(12)
+                    .triggerHandler('input');
 
                 expect(isolatedScope.vm.updateDateModelAndValidationClasses).toHaveBeenCalled();
             });
@@ -490,10 +519,9 @@ describe('Directive: TwDate', function() {
             it('should trigger vm.updateDateModelAndValidationClasses()', function () {
                 spyOn(isolatedScope.vm, 'updateDateModelAndValidationClasses');
 
-                var yearInput = angular.element(directiveElement.find('input')[1]);
-
-                yearInput.val(1990);
-                yearInput.triggerHandler('input');
+                directiveElement.find('.tw-date-year')
+                    .val(1990)
+                    .triggerHandler('input');
 
                 expect(isolatedScope.vm.updateDateModelAndValidationClasses).toHaveBeenCalled();
             });
@@ -501,20 +529,26 @@ describe('Directive: TwDate', function() {
     });
     describe('vm.updateDateModelAndValidationClasses()', function() {
         describe('when no constraints are passed', function() {
-            var directiveElement, isolatedScope;
-            var dateModel = '1990-02-26';
+            var directiveElement,
+                isolatedScope,
+                dateModel = '1990-02-26';
+
             beforeEach(function() {
                 directiveElement = getCompiledDirectiveElement({model: dateModel});
                 isolatedScope = directiveElement.isolateScope();
             });
             it('should update pattern validation class correctly if new day is valid', function() {
-                simulateUserActionOnDayInput(directiveElement, 12);
+                directiveElement.find('.tw-date-day')
+                    .val(12)
+                    .triggerHandler('input');
 
                 expect(directiveElement.hasClass('ng-valid-pattern')).toBe(true);
                 expect(directiveElement.hasClass('ng-invalid-pattern')).toBe(false);
             });
             it('should update day if new day is too high for new month and update pattern validation class correctly', function() {
-                simulateUserActionOnDayInput(directiveElement, 30);
+                directiveElement.find('.tw-date-day')
+                    .val(30)
+                    .triggerHandler('input');
 
                 expect(isolatedScope.vm.day).toBe(28);
                 expect(directiveElement.hasClass('ng-valid-pattern')).toBe(true);
@@ -523,27 +557,21 @@ describe('Directive: TwDate', function() {
         });
     });
 
-    function simulateUserActionOnDayInput(directiveElement, newValue) {
-        var dayInput = angular.element(directiveElement.find('input')[0]);
-        dayInput.val(newValue ? newValue : 1);
-        dayInput.triggerHandler('input');
-    }
-
     function expectDateMonthsToBeLocalized(directiveElement, locale) {
         var vm = getViewModel(directiveElement);
         var localizedMonthNames = getMonthNamesForLocale(locale);
         localizedMonthNames.forEach(function(monthName, index) {
-            expect(vm.dateMonths[index].id).toBe(index);
+            expect(vm.dateMonths[index].value).toBe(index);
 
             var upperCaseMonthName = monthName[0].toUpperCase() + monthName.substring(1);
-            expect(vm.dateMonths[index].name).toBe(upperCaseMonthName);
+            expect(vm.dateMonths[index].label).toBe(upperCaseMonthName);
         });
     }
     function expectDateMonthsToBeDefault(directiveElement) {
         var vm = getViewModel(directiveElement);
         ENGLISH_MONTHS.forEach(function(monthName, index) {
-            expect(vm.dateMonths[index].id).toBe(index);
-            expect(vm.dateMonths[index].name).toBe(monthName);
+            expect(vm.dateMonths[index].value).toBe(index);
+            expect(vm.dateMonths[index].label).toBe(monthName);
         });
     }
 
@@ -566,8 +594,7 @@ describe('Directive: TwDate', function() {
 
     function getCompiledDirectiveElement(injectedViewModel, attributes) {
         var nonAngularSpecific = ['locale'];
-        // if both ng-min and min are present on element, ng-min's value is used to override min's value by angular
-        // which results into attribute values passed to min not being used
+
         var elementAsString = '<tw-date';
 
         angular.forEach(injectedViewModel, function(value, key) {
@@ -593,24 +620,6 @@ describe('Directive: TwDate', function() {
         var compiledElement = $compile(element)(inputScope);
         inputScope.$digest();
         return compiledElement;
-    }
-
-    function expectDateModelToBe(directiveElement, expectedDateModel) {
-        var viewModel = getViewModel(directiveElement);
-
-        expect(viewModel.date).toBe(expectedDateModel);
-    }
-
-    function expectExplodedDateToBe(directiveElement, year, month, day) {
-        var viewModel = getViewModel(directiveElement);
-
-        expect(viewModel.year).toBe(year);
-        expect(viewModel.month).toBe(month);
-        expect(viewModel.day).toBe(day);
-    }
-
-    function expectExplodedDateToBeDefault(directiveElement) {
-        expectExplodedDateToBe(directiveElement, null, 0, null);
     }
 
     function getViewModel(directiveElement) {
