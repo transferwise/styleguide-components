@@ -32,7 +32,7 @@
 						ng-disabled='$ctrl.ngDisabled' \
 						tw-focusable> \
 						<i class='icon {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> \
-						</i><span ng-if='$ctrl.selected'>{{$ctrl.selected.label}}</span> \
+						</i><span ng-if='$ctrl.selected' class='selected'>{{$ctrl.selected.label}}</span> \
 						<span class='form-control-placeholder' ng-if='!$ctrl.selected'>{{$ctrl.placeholder}}</span> \
 						<span class='caret'></span> \
 					</button> \
@@ -51,10 +51,11 @@
 	}
 
 	function TwSelectLink(scope, element, attrs, ngModel) {
-		setDefaultIfRequired(ngModel, scope.$ctrl, element);
+		preSelectModelValue(ngModel, scope.$ctrl, scope.$ctrl.twOptions);
+		setDefaultIfRequired(ngModel, scope.$ctrl, element, attrs);
 
 		// Update pristine/touched status of ngModel
-		element.find('.btn').on('keypress click', function() {
+		element.find('.btn').on('keypress click', function(event) {
 			// TODO blur would be slightly more aligned with HTML input
 			ngModel.$setTouched();
 		});
@@ -63,6 +64,7 @@
 			higlightFirstItemMatcingLetter(
 				ngModel, scope.$ctrl, element, scope.$ctrl.twOptions, event.key
 			);
+			element.find(".active a").focus();
 		});
 
 		scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
@@ -76,7 +78,7 @@
 		element.find('.btn').on('click', function() {
 			// Once dropdown is open, focus on active/selected option for keyboard support
 			setTimeout(function() {
-				element.find(".active a").focus();
+				element.find('.active a').focus();
 			});
 		});
 
@@ -85,18 +87,23 @@
 			selectOption(ngModel, scope.$ctrl, option);
 			element.find('.btn').focus();
 		});
-
 		element.find('ul').on('focus', 'a', function() {
 			var option = findOptionFromValue(scope.$ctrl.twOptions, this.getAttribute('value'));
 			selectOption(ngModel, scope.$ctrl, option);
 		});
-
 		element.find('ul').on('keypress', 'a', function(event) {
 			higlightFirstItemMatcingLetter(
 				ngModel, scope.$ctrl, element, scope.$ctrl.twOptions, event.key
 			);
 			element.find(".active a").focus();
 		});
+	}
+
+	function preSelectModelValue(ngModel, $ctrl, options) {
+		if ($ctrl.ngModel) {
+			var option = findOptionFromValue(options, $ctrl.ngModel);
+			selectOption(ngModel, $ctrl, option);
+		}
 	}
 
 	function modelChange(newVal, oldVal, $ctrl) {
@@ -118,9 +125,9 @@
 		});
 	}
 
-	function setDefaultIfRequired(ngModel, $ctrl, $element) {
+	function setDefaultIfRequired(ngModel, $ctrl, $element, $attrs) {
 		// If required and model empty, select first option
-		if (($ctrl.ngRequired || $element.context.attributes.required)
+		if (($ctrl.ngRequired || $attrs.required)
 			&& !$ctrl.ngModel
 			&& $ctrl.twOptions[0]) {
 
@@ -134,7 +141,7 @@
 	}
 
 	function higlightFirstItemMatcingLetter(ngModel, $ctrl, element, options, letter) {
-		var letterLower = letter.toLowerCase();
+		var letterLower = letter ? letter.toLowerCase() : "";
 
 		options.find(function(option, index) {
 			if (option.label.substring(0,1).toLowerCase() === letterLower) {
