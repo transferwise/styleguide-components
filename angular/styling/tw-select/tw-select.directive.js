@@ -9,8 +9,9 @@
 		return {
 			require: 'ngModel',
 			bindToController: true,
-			controller: 'TwSelectController',
-			controllerAs: 'vm',
+			controller: function() {},
+			controllerAs: '$ctrl',
+			link: TwSelectLink,
 			replace: false,
 			restrict: 'EA',
 			scope: {
@@ -24,168 +25,123 @@
 				required: '@',
 				placeholder: '@'
 			},
-			template: "<div class='btn-group btn-block'> \
+			template: " \
+				<div class='btn-group btn-block'> \
 					<button type='button' class='btn btn-input dropdown-toggle' \
 						data-toggle='dropdown' aria-expanded='false' \
-						ng-disabled='vm.ngDisabled' \
-						ng-click='vm.clickButton()' \
-						ng-keypress='vm.keyPress($event)' \
+						ng-disabled='$ctrl.ngDisabled' \
 						tw-focusable> \
-						<i class='icon {{vm.selected.icon}}' ng-if='vm.selected && vm.selected.icon'> \
-						</i><span ng-if='vm.selected'>{{vm.selected.label}}</span> \
-						<span class='form-control-placeholder' ng-if='!vm.selected'>{{vm.placeholder}}</span> \
+						<i class='icon {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> \
+						</i><span ng-if='$ctrl.selected'>{{$ctrl.selected.label}}</span> \
+						<span class='form-control-placeholder' ng-if='!$ctrl.selected'>{{$ctrl.placeholder}}</span> \
 						<span class='caret'></span> \
 					</button> \
 					<ul class='dropdown-menu' role='menu'> \
-						<li ng-repeat='option in vm.twOptions' \
-							ng-class='{active: vm.ngModel === option.value}'> \
-							<a href='' ng-click='vm.clickOption(option)' \
-								ng-focus='vm.focusOption(option)' \
-								ng-keypress='vm.keyPress($event)'> \
-								<i class='icon {{option.icon}}' ng-if='option.icon'></i>{{option.label}}</a> \
+						<li ng-repeat='option in $ctrl.twOptions' \
+							ng-class='{active: $ctrl.ngModel === option.value || !$ctrl.ngModel && option.value === \"\"}'> \
+							<a href='' value='{{option.value}}'> \
+								<i class='icon {{option.icon}}' ng-if='option.icon'></i>{{option.label}} \
+							</a> \
 						</li> \
 					</ul> \
-					<select class='hidden' \
-						ng-options='option.value as option.label for option in vm.twOptions' \
-						ng-model='vm.ngModel'> \
-					</select> \
-					<input type='hidden' name='{{vm.name}}' value='{{vm.ngModel}}' /> \
+					<input type='hidden' name='{{$ctrl.name}}' value='{{$ctrl.ngModel}}' \
+					 	ng-disabled='$ctrl.ngDisabled' /> \
 				</div>"
 		};
 	}
 
-	// <span class='form-control-placeholder' ng-if='!vm.selectedText'>{{vm.placeholder}}</span> \
-	// <span ng-if='vm.selectedText'>{{vm.selectedText}}</span> <span class='caret'></span> \
+	function TwSelectLink(scope, element, attrs, ngModel) {
+		setDefaultIfRequired(ngModel, scope.$ctrl, element);
 
-	angular
-		.module('tw.form-components')
-		.controller('TwSelectController', TwSelectController);
+		// Update pristine/touched status of ngModel
+		element.find('.btn').on('keypress click', function() {
+			// TODO blur would be slightly more aligned with HTML input
+			ngModel.$setTouched();
+		});
 
-	TwSelectController.$inject = ['$scope', '$element', '$timeout'];
+		element.find('.btn').on('keypress', function(event) {
+			higlightFirstItemMatcingLetter(
+				ngModel, scope.$ctrl, element, scope.$ctrl.twOptions, event.key
+			);
+		});
 
-	function TwSelectController($scope, $element, $timeout) {
-		var vm = this,
-			formGroup;
-
-		vm.clickButton = clickButton;
-		vm.clickOption = clickOption;
-		vm.focusOption = focusOption;
-		vm.keyPress = keyPress;
-		vm.unset = unset;
-
-		function init() {
-			formGroup = $element.closest('.form-group');
-
-			$scope.$watch('vm.ngModel', modelChange);
-		}
-
-		function getOptionByValue(options, value) {
-			return options.find(function(option) {
-				return option.value === value;
-			});
-		}
-
-		function higlightFirstItemMatcingLetter(list, letter) {
-			var letterLower = letter.toLowerCase(),
-				currentVal = vm.ngModel,
-				foundIndex, found, listElements;
-
-			list.find(function(item, index) {
-				if (item.label.substring(0,1).toLowerCase() === letterLower) {
-					// Timeout forces changes ot be applied
-					$timeout(function() {
-						clickOption(item);
-					});
-					foundIndex = index;
-					return true;
-				}
-			});
-
-			listElements = $element.find("li");
-			if (listElements[foundIndex]) {
-				listElements.removeClass("active");
-				$(listElements[foundIndex]).addClass("active").find("a").focus();
-			}
-		}
-
-		function modelChange(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
+		scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
+			if (newValue !== oldValue) {
+				ngModel.$setDirty();
 			}
 
-			// TODO could be touched without model changing, but must not trigger on load
-			$element.removeClass('ng-untouched');
-			$element.addClass('ng-touched');
-			//ngModel.$setTouched();
-			//ngModel.$setDirty();
+			modelChange(newValue, oldValue, scope.$ctrl);
+		});
 
-			$element.removeClass('ng-pristine');
-			$element.addClass('ng-dirty');
-
-			var option = findOptionFromValue(newVal);
-			if (option) {
-				vm.selectedText = option.label;
-				vm.selected = option;
-			} else {
-				vm.selectedText = null;
-				vm.selected = null;
-			}
-
-			// Manually trigger external change handler
-			if (vm.ngChange) {
-				vm.ngChange();
-			}
-
-			$element.find("li").removeClass("active");
-
-			// TODO move this to separate validation???
-			checkValid($element, formGroup);
-		}
-
-		function findOptionFromValue(value) {
-			return vm.twOptions.find(function(option) {
-				return option.value === value;
+		element.find('.btn').on('click', function() {
+			// Once dropdown is open, focus on active/selected option for keyboard support
+			setTimeout(function() {
+				element.find(".active a").focus();
 			});
-		}
+		});
 
-		function clickButton() {
-			// TODO maybe this can be better achieved another way.
-			// Once dropdown is open, focus on active/selected item for keyboard support
-			$timeout(function() {
-				$element.find(".active a").focus();
-			});
-		}
+		element.find('ul').on('click', 'a', function() {
+			var option = findOptionFromValue(scope.$ctrl.twOptions, this.getAttribute('value'));
+			selectOption(ngModel, scope.$ctrl, option);
+			element.find('.btn').focus();
+		});
 
-		function clickOption(option) {
-			vm.ngModel = option.value;
-			// Reset focus onto the button for continued keyboard support
-			$element.find(".btn").focus();
-		}
+		element.find('ul').on('focus', 'a', function() {
+			var option = findOptionFromValue(scope.$ctrl.twOptions, this.getAttribute('value'));
+			selectOption(ngModel, scope.$ctrl, option);
+		});
 
-		function focusOption(option) {
-			vm.ngModel = option.value;
-		}
-
-		function keyPress(event) {
-			higlightFirstItemMatcingLetter(vm.twOptions, event.key);
-		}
-
-		function unset() {
-			vm.ngModel = null;
-		}
-
-		function checkValid(select, formGroup) {
-			/*
-			$timeout(function() {
-				if (select.hasClass("ng-invalid")) {
-					formGroup.addClass("has-error");
-				} else {
-					formGroup.removeClass("has-error");
-				}
-			});
-			*/
-		}
-
-		init();
+		element.find('ul').on('keypress', 'a', function(event) {
+			higlightFirstItemMatcingLetter(
+				ngModel, scope.$ctrl, element, scope.$ctrl.twOptions, event.key
+			);
+			element.find(".active a").focus();
+		});
 	}
+
+	function modelChange(newVal, oldVal, $ctrl) {
+		if (newVal === oldVal) {
+			return;
+		}
+
+		var option = findOptionFromValue($ctrl.twOptions, newVal);
+		if (option) {
+			$ctrl.selected = option;
+		} else {
+			$ctrl.selected = null;
+		}
+	}
+
+	function findOptionFromValue(options, value) {
+		return options.find(function(option) {
+			return String(option.value) === String(value);
+		});
+	}
+
+	function setDefaultIfRequired(ngModel, $ctrl, $element) {
+		// If required and model empty, select first option
+		if (($ctrl.ngRequired || $element.context.attributes.required)
+			&& !$ctrl.ngModel
+			&& $ctrl.twOptions[0]) {
+
+			selectOption(ngModel, $ctrl, $ctrl.twOptions[0]);
+		}
+	}
+
+	function selectOption(ngModel, $ctrl, option) {
+		ngModel.$setViewValue(option.value);
+		$ctrl.selected = option;
+	}
+
+	function higlightFirstItemMatcingLetter(ngModel, $ctrl, element, options, letter) {
+		var letterLower = letter.toLowerCase();
+
+		options.find(function(option, index) {
+			if (option.label.substring(0,1).toLowerCase() === letterLower) {
+				selectOption(ngModel, $ctrl, option);
+				return true;
+			}
+		});
+	}
+
 })(window.angular);
