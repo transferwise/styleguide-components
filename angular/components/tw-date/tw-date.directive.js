@@ -7,52 +7,79 @@
 
 	function TwDateDirective() {
 		var directive = {
+			require: 'ngModel',
 			bindToController: true,
 			controller: "TwDateController",
 			controllerAs: 'vm',
-			replace: true,
+			replace: false,
 			restrict: 'E',
 			scope: {
-				date: '=ngModel',
+				ngModel: '=',
 				required: '@',
 				ngRequired: '=',
 				disabled: '@',
 				ngDisabled: '=',
 				locale: '@',
 				twLocale: '=',
-				minDateString: '@min',
+				min: '@',
 				ngMin: '=',
-				maxDateString: '@max',
+				max: '@',
 				ngMax: '=',
 				modelType: '@'
 			},
-			template: templateAsString
+			template: templateAsString,
+			link: TwDateLink
 		};
 
 		return directive;
 	}
 
 	function TwDateLink(scope, element, attrs, ngModel) {
-		/*
+		// Done in controller
+		//scope.$watch('vm.ngModel', function(newValue, oldValue) {
+		//	if (newValue !== oldValue) {
+		//		ngModel.$setDirty();
+		//	}
+		//});
+
+		element.find('input').on('blur', function() {
+			ngModel.$setTouched();
+		});
+		/**
 		ngModel.$formatters.push(function(value) {
-			// explode(value)
-			scope.vm.day =
-			scope.vm.month =
-			scope.vm.year =
+			if (scope.vm.validDate(value)) {
+			return null;
+		}
+			scope.vm.explodeDateModel(value);
 			return value;
 		});
 
 		element.find('input').on('change', function() {
-			var dateString = combine();
-			ngModel.$setViewValue(dateString);
-		})
+			var dateObject = scope.vm.combineDate();
+			if (!dateObject) {
+				return;
+			}
+			if (scope.vm.format === "string") {
+				// TODO cast to string
+				var dateString = dateObject;
+				ngModel.$setViewValue(dateString);
+			} else {
+				ngModel.$setViewValue(dateObject);
+			}
+		});
 		ngModel.$validators.min = function(value) {
-			return
+			var min = scope.vm.ngMin ? scope.vm.ngMin : scope.vm.min;
+			min = typeof min === 'string' ? new Date(min) : min;
+			var dateValue = typeof value === 'string' ? new Date(value) : value;
+			return !min || dateValue >= min;
 		};
 		ngModel.$validators.max = function(value) {
-			return
+			var max = scope.vm.ngMax ? scope.vm.ngMax : scope.vm.max;
+			max = typeof max === 'string' ? new Date(max) : max;
+			var dateValue = typeof value === 'string' ? new Date(value) : value;
+			return !max || dateValue >= max;
 		};
-		*/
+		/**/
 	}
 
 	var templateAsString = " \
@@ -74,7 +101,7 @@
 						ng-maxlength='2' \
 						ng-disabled='vm.dateDisabled' \
 						ng-required='vm.dateRequired' \
-						tw-validation /> \
+						tw-focusable /> \
 				</div> \
 				<div class='col-sm-5'> \
 					<label class='sr-only' for='month-{{::uniqueId}}'>Month</label> \
@@ -86,8 +113,7 @@
 						ng-options='month.value as month.label for month in vm.dateMonths' \
 						ng-disabled='vm.dateDisabled' \
 						ng-required='vm.dateRequired' \
-						autocomplete='off' \
-						tw-validation> \
+						autocomplete='off'> \
 					</select> \
 				</div> \
 				<div class='col-sm-4'> \
@@ -105,7 +131,7 @@
 						ng-maxlength='4' \
 						ng-disabled='vm.dateDisabled' \
 						ng-required='vm.dateRequired' \
-						tw-validation /> \
+						tw-focusable /> \
 				</div> \
 			</div>";
 
@@ -113,6 +139,7 @@
 
 <tw-select \
 	name='month' \
+	class='tw-date-month' \
 	id='month-{{::uniqueId}}' \
 	ng-model='vm.month' \
 	ng-change='vm.updateDateModelAndValidationClasses()' \
@@ -121,5 +148,15 @@
 	tw-options='vm.dateMonths'> \
 </tw-select> \
 
+<select name='month' \
+	id='month-{{::uniqueId}}' \
+	class='form-control tw-date-month' \
+	ng-model='vm.month' \
+	ng-change='vm.updateDateModelAndValidationClasses()' \
+	ng-options='month.value as month.label for month in vm.dateMonths' \
+	ng-disabled='vm.dateDisabled' \
+	ng-required='vm.dateRequired' \
+	autocomplete='off'> \
+</select> \
 	*/
 })(window.angular);

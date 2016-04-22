@@ -1,3 +1,4 @@
+/*
 describe('Controller: TwDateController', function() {
 	var TwDateController,
 		_$controller,
@@ -13,49 +14,12 @@ describe('Controller: TwDateController', function() {
 		_$controller = $controller;
 	}));
 
-	describe('explodeDateModel()', function() {
-		it("should split a valid string date into parts", function() {
-			var inputDate = "2000-02-03";
-			initController({date: inputDate});
-
-			TwDateController.explodeDateModel();
-
-			expect(TwDateController.day).toBe(3);
-			expect(TwDateController.month).toBe(1);
-			expect(TwDateController.year).toBe(2000);
-		});
-
-		it("should split invalid string date into NaN", function() {
-			var inputDate = "2000-02-03T";
-			initController();
-
-			TwDateController.date = inputDate;
-			TwDateController.explodeDateModel();
-
-			expect(TwDateController.day).toBeNaN();
-			expect(TwDateController.month).toBeNaN();
-			expect(TwDateController.year).toBeNaN();
-		});
-
-		it("should split a valid date object into parts", function() {
-			var inputDate = new Date("2000-02-03");
-			initController({date: inputDate});
-
-			TwDateController.explodeDateModel();
-
-			expect(TwDateController.day).toBe(3);
-			expect(TwDateController.month).toBe(1);
-			expect(TwDateController.year).toBe(2000);
-		});
-
-	});
-
 	describe('updateDateModelAndValidationClasses()', function() {
 		describe('when string mode', function() {
 			var inputDate;
 			beforeEach(function() {
 				inputDate = "2000-02-03";
-				initController({date: inputDate});
+				initController({ngModel: inputDate});
 			});
 
 			it("should join valid parts into a string date", function() {
@@ -65,9 +29,8 @@ describe('Controller: TwDateController', function() {
 
 				TwDateController.updateDateModelAndValidationClasses();
 
-				expect(TwDateController.date).toBe("2000-12-31");
+				expect(TwDateController.ngModel).toBe("2000-12-31");
 			});
-
 			it("should set date=null when invalid parts", function() {
 				TwDateController.day = null;
 				TwDateController.month = 12;
@@ -75,7 +38,7 @@ describe('Controller: TwDateController', function() {
 
 				TwDateController.updateDateModelAndValidationClasses();
 
-				expect(TwDateController.date).toBe(null);
+				expect(TwDateController.ngModel).toBe(null);
 			});
 
 			it("should correct a high day", function() {
@@ -85,7 +48,7 @@ describe('Controller: TwDateController', function() {
 
 				TwDateController.updateDateModelAndValidationClasses();
 
-				expect(TwDateController.date).toBe("2015-02-28");
+				expect(TwDateController.ngModel).toBe("2015-02-28");
 			});
 		});
 
@@ -93,7 +56,7 @@ describe('Controller: TwDateController', function() {
 			var inputDate;
 			beforeEach(function() {
 				inputDate = new Date("2000-12-31");
-				initController({date: inputDate});
+				initController({ngModel: inputDate});
 			});
 
 			it("should join valid parts into an object date", function() {
@@ -103,15 +66,14 @@ describe('Controller: TwDateController', function() {
 
 				TwDateController.updateDateModelAndValidationClasses();
 
-				expect(TwDateController.date).toEqual(new Date("2001-12-31"));
+				expect(TwDateController.ngModel).toEqual(new Date("2001-12-31"));
 			});
 		});
-
 	});
 
 	describe('validDateModel()', function() {
 		beforeEach(function() {
-			initController();
+			initController({ngModel: null});
 		});
 		it("should return true for valid Date date", function() {
 			expect(TwDateController.validDate(new Date("2000-01-01"))).toBe(true);
@@ -132,9 +94,8 @@ describe('Controller: TwDateController', function() {
 
 	describe('adjustLastDay()', function() {
 		beforeEach(function() {
-			initController({date: "2015-01-31"});
+			initController({ngModel: "2015-01-31"});
 		});
-
 		it('should adjust vm.day correctly for February', function () {
 			TwDateController.month = 1;
 
@@ -172,7 +133,7 @@ describe('Controller: TwDateController', function() {
 			'TwDateController',
 			{
 				'$scope': $scope,
-				'$element': angular.element('<div></div>')
+				'$element': angular.element('<tw-date ng-model="ngModel"></tw-date>')
 			},
 			inputModel
 		);
@@ -180,3 +141,4 @@ describe('Controller: TwDateController', function() {
 		$rootScope.$apply();
 	}
 });
+*/
