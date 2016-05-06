@@ -19,6 +19,7 @@
 				ngRequired: '=',
 				ngDisabled: '=',
 				ngChange: '&',
+				ngBlur: '&',
 				twOptions: '=',
 				name: "@",
 				disabled: '@',
@@ -48,6 +49,8 @@
 					 	ng-disabled='$ctrl.ngDisabled' /> \
 				</div>"
 		};
+		//
+		//data-toggle='dropdown'
 	}
 
 	function TwSelectLink(scope, element, attrs, ngModel) {
@@ -76,10 +79,18 @@
 		});
 
 		element.find('.btn').on('click', function() {
+			// This hack makes test pass., but should be handled by dropdown.js,
+			//$(this).closest('.btn-group').addClass('open');
+			
 			// Once dropdown is open, focus on active/selected option for keyboard support
 			setTimeout(function() {
 				element.find('.active a').focus();
 			});
+		});
+
+		element.find('.btn').on('blur', function() {
+			// TODO this should only blur when whole control loses focus...
+			//scope.$ctrl.ngBlur();
 		});
 
 		element.find('ul').on('click', 'a', function() {

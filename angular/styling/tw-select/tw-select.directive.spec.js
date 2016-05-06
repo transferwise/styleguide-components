@@ -89,10 +89,14 @@ describe('Directive: TwSelect', function() {
             directiveElement = getCompiledDirectiveElement($scope);
         });
         it('should open dropdown when button clicked', function() {
-            directiveElement.find('.btn').click();
+            directiveElement.find('.btn').trigger( "click" ); //.click();
             $scope.$digest();
-            var buttonGroupElement = directiveElement.find('.btn-group');
-            //expect(buttonGroupElement.hasClass('open')).toBe(true);
+            //setTimeout(function() {
+                var buttonGroupElement = directiveElement.find('.btn-group');
+                //console.log(buttonGroupElement.attr('class'));
+                //expect(buttonGroupElement.hasClass('open')).toBe(true);
+                //expect(false).toBe(true);
+            //});
         });
     });
 
@@ -140,6 +144,15 @@ describe('Directive: TwSelect', function() {
             expect(selectedTextElement.innerText.trim()).toBe("One");
         });
         /**/
+    });
+
+    describe('event handlers', function() {
+        it('should trigger ngChange when model changes', function() {
+            // TODO
+        });
+        it('should trigger ngBlur when control loses focus', function() {
+            // TODO
+        });
     });
 
     function getCompiledDirectiveElement($scope) {
