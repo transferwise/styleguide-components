@@ -14,6 +14,9 @@
 
 	<script>
 	angular.module('my-app', ['tw.styleguide-components'])
+	.config(['$compileProvider', function ($compileProvider) {
+	  $compileProvider.debugInfoEnabled(false);
+	}])
 	.directive('validateRegexp', function($q) {
 		return {
 			require: 'ngModel',
@@ -43,6 +46,9 @@
 		background-color: transparent;
 		padding: 0;
 	}
+	.error-messages {
+		display: none;
+	}
 
 	/* Remove after Bootstrap update */
 	.error-async,
@@ -70,6 +76,19 @@
 		display: block;
 	}
 
+	.status-messages {
+		display: none;
+	}
+	.touched, .untouched, .pristine, .dirty {
+		display: none;
+	}
+	.ng-touched ~ .status-messages > .touched,
+	.ng-untouched ~ .status-messages > .untouched,
+	.ng-pristine ~ .status-messages > .pristine,
+	.ng-dirty ~ .status-messages > .dirty {
+		display: block;
+	}
+
 	</style>
 </head>
 <body ng-app="my-app">
@@ -84,6 +103,73 @@
 						<h3 class="panel-title">Simple Form</h3>
 					</div>
 					<div class="panel-body">
+						<!--
+						<div class="form-group">
+							<label class="control-label">
+								Combiner
+							</label>
+							<tw-model-usage required tw-validation
+								placeholder="Placeholder"
+								ng-model="vm.model.combiner"
+								ng-min="5"
+								ng-max="vm.model.numberComplex"></tw-model-usage>
+							<div class="error-messages">
+								<div class="error-required">Required</div>
+								<div class="error-min">Number must be at least 5</div>
+								<div class="error-max">Number must be at most 10</div>
+								<div class="error-minlength">At least 2 long</div>
+								<div class="error-maxlength">At max 5 long</div>
+								<div class="error-number">Must be a number</div>
+							</div>
+							<div class="status-messages">
+								<div class="touched">Touched</div>
+								<div class="untouched">Untouched</div>
+								<div class="pristine">Pristine</div>
+								<div class="dirty">Dirty</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label">
+								Combiner Result
+							</label>
+							<input type="text" required tw-validation
+								ng-model="vm.model.combiner"
+								name="numberComplex"
+								class="form-control"
+								placeholder="min 5 max 10"
+								ng-min="5"
+								ng-max="10" />
+							<div class="error-messages">
+								<div class="error-required">Required</div>
+								<div class="error-min">Number must be at least 5</div>
+								<div class="error-max">Number must be at most 10</div>
+								<div class="error-number">Must be a number</div>
+							</div>
+							<div class="status-messages">
+								<div class="touched">Touched</div>
+								<div class="untouched">Untouched</div>
+								<div class="pristine">Pristine</div>
+								<div class="dirty">Dirty</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label">
+								Combiner Result
+							</label>
+							<input type="text" required tw-validation
+								ng-model="vm.model.combiner"
+								name="numberComplex"
+								class="form-control"
+								placeholder="min 5 max 10" />
+							<div class="error-messages">
+								<div class="error-required">Required</div>
+								<div class="error-min">Number must be at least 5</div>
+								<div class="error-max">Number must be at most 10</div>
+								<div class="error-number">Must be a number</div>
+							</div>
+						</div>
+					-->
+
 						<div class="form-group">
 							<label class="control-label">
 								Text input - required
@@ -94,33 +180,48 @@
 								ng-model="vm.model.textRequired" />
 						</div>
 
-						<div class="form-group">
+						<div class="form-group"
+							ng-init="vm.model.count2 = 0;">
 							<label class="control-label">
 								Select - required
 							</label>
 							<select class="form-control" required tw-validation
-								ng-model="vm.model.selectRequired">
+								ng-model="vm.model.selectRequired"
+								ng-change="vm.model.count2 = vm.model.count2 + 1">
 								<option value="">Please choose..</option>
 								<option value="1">Option 1</option>
 								<option value="2">Option 2</option>
 								<option value="3">Option 3</option>
 							</select>
+							<div class="error-messages">
+								<div class="error-required">Required</div>
+							</div>
+							<div class="status-messages">
+								<div class="touched">Touched</div>
+								<div class="untouched">Untouched</div>
+								<div class="pristine">Pristine</div>
+								<div class="dirty">Dirty</div>
+							</div>
 						</div>
 
 						<div class="form-group"
-							ng-init="vm.select.options = [
+							ng-init="vm.select.options2 = [
 								{'value': '1', 'label': 'One', 'icon': 'icon-profile'},
 								{'value': '2', 'label': 'Two'},
 								{'value': '3', 'label': 'Three'}
-							]">
+							]; vm.model.count = 0;">
 							<label class="control-label">
 								twSelect - required
 							</label>
 							<tw-select required tw-validation
 								ng-model="vm.model.selectRequired"
-								tw-options="vm.select.options"
+								ng-change="vm.model.count = vm.model.count + 1"
+								tw-options="vm.select.options2"
 								placeholder="Select an option...">
 							</tw-select>
+							<div class="error-messages">
+								<div class="error-required">Required</div>
+							</div>
 						</div>
 
 						<div class="form-group">
@@ -216,6 +317,12 @@
 								<div class="error-minlength">Too short</div>
 								<div class="error-maxlength">Too long</div>
 								<div class="error-pattern">Invalid characters</div>
+							</div>
+							<div class="status-messages">
+								<div class="touched">Touched</div>
+								<div class="untouched">Untouched</div>
+								<div class="pristine">Pristine</div>
+								<div class="dirty">Dirty</div>
 							</div>
 						</div>
 
@@ -331,6 +438,12 @@
 									<div class="error-messages">
 										<div class="error-required">Required</div>
 									</div>
+									<div class="status-messages">
+										<div class="touched">Touched</div>
+										<div class="untouched">Untouched</div>
+										<div class="pristine">Pristine</div>
+										<div class="dirty">Dirty</div>
+									</div>
 								</div>
 								<h5>Configuration</h5>
 								<pre>
@@ -340,12 +453,14 @@
   ng-model="vm.components.select"
   ng-required="{{vm.select.required}}"
   ng-disabled="{{vm.select.disabled}}"
+  ng-change="..."
   tw-options="[
     {'value': '', 'label': 'None selected'},
     {'value': '1', 'label': 'Option one'},
     {'value': '2', 'label': 'Option two'},
     {'value': '3', 'label': 'Option three'}
-  ]"&gt;
+  ]"
+  tw-validation&gt;
 &lt;/tw-select&gt;
 								</pre>
 							</div>
@@ -399,13 +514,25 @@
 									<label class="control-label" for="date">
 										Example date control
 									</label>
-									<tw-date name="date"
+									<tw-date name="date" tw-validation
 										ng-model="vm.model.components.date"
 										ng-required="vm.date.required"
 										ng-disabled="vm.date.disabled"
 										tw-locale="vm.date.locale"
 										min="1990-01-01"
-										max="2015-12-31"></tw-date>
+										max="2015-12-31">
+									</tw-date>
+									<div class="error-messages">
+										<div class="error-required">Required</div>
+										<div class="error-min">Too early</div>
+										<div class="error-max">Too late</div>
+									</div>
+									<div class="status-messages">
+										<div class="touched">Touched</div>
+										<div class="untouched">Untouched</div>
+										<div class="pristine">Pristine</div>
+										<div class="dirty">Dirty</div>
+									</div>
 								</div>
 								<h5>Configuration</h5>
 								<pre>
@@ -416,6 +543,7 @@
   tw-locale="{{vm.date.locale}}"
   min="1990-01-01"
   max="2015-12-31"
+  tw-validation
 &lt;/tw-date&gt;
 								</pre>
 							</div>
@@ -490,8 +618,10 @@
 										ng-maxlength="vm.dynamic.maxlength"
 										ng-pattern="vm.dynamic.pattern"
 										ng-min="vm.dynamic.min"
-										ng-max="vm.dynamic.max">
-
+										ng-max="vm.dynamic.max"
+										tw-validation>
+									</tw-dynamic-form-control>
+									<div class="error-messages">
 										<div class="error-required">
 											Required
 										</div>
@@ -513,7 +643,13 @@
 										<div class="error-number">
 											Must be a number
 										</div>
-									</tw-dynamic-form-control>
+									</div>
+									<div class="status-messages">
+										<div class="touched">Touched</div>
+										<div class="untouched">Untouched</div>
+										<div class="pristine">Pristine</div>
+										<div class="dirty">Dirty</div>
+									</div>
 								</div>
 
 								<h5>Configuration</h5>
