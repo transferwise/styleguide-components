@@ -45,6 +45,14 @@
 		element.find('input').on('blur', function() {
 			ngModel.$setTouched();
 		});
+		
+		/*
+		var dayModelController = element.find('.tw-date-day').controller('ngModel');
+		dayModelController.$parsers.push(function(value) {
+			return parseInt(value);
+		});
+		*/
+
 		/**
 		ngModel.$formatters.push(function(value) {
 			if (scope.vm.validDate(value)) {
@@ -53,6 +61,18 @@
 			scope.vm.explodeDateModel(value);
 			return value;
 		});
+		dayModelController = element.find('.tw-date-day').controller('ngModel');
+		monthModelController = element.find('.tw-date-month').controller('ngModel');
+		yearModelController = element.find('.tw-date-year').controller('ngModel');
+
+		function combiner(value) {
+			vm.combineDate();
+			return value;
+		}
+
+		dayModelController.$parsers.push(combiner);
+		monthModelController.$parsers.push(combiner);
+		yearModelController.$parsers.push(combiner);
 
 		element.find('input').on('change', function() {
 			var dateObject = scope.vm.combineDate();
@@ -67,18 +87,6 @@
 				ngModel.$setViewValue(dateObject);
 			}
 		});
-		ngModel.$validators.min = function(value) {
-			var min = scope.vm.ngMin ? scope.vm.ngMin : scope.vm.min;
-			min = typeof min === 'string' ? new Date(min) : min;
-			var dateValue = typeof value === 'string' ? new Date(value) : value;
-			return !min || dateValue >= min;
-		};
-		ngModel.$validators.max = function(value) {
-			var max = scope.vm.ngMax ? scope.vm.ngMax : scope.vm.max;
-			max = typeof max === 'string' ? new Date(max) : max;
-			var dateValue = typeof value === 'string' ? new Date(value) : value;
-			return !max || dateValue >= max;
-		};
 		/**/
 	}
 
@@ -94,11 +102,7 @@
 						ng-change='vm.updateDateModelAndValidationClasses()' \
 						placeholder='DD' \
 						min='1' \
-						max='31' \
-						maxlength='2' \
 						ng-min='1' \
-						ng-max='31' \
-						ng-maxlength='2' \
 						ng-disabled='vm.dateDisabled' \
 						ng-required='vm.dateRequired' \
 						tw-focusable /> \

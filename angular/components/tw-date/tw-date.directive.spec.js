@@ -230,6 +230,9 @@ describe('Directive: TwDate', function() {
                 ngModelController = directiveElement.controller('ngModel');
 
                 expect(ngModelController.$invalid).toBe(true);
+                expect(directiveElement.hasClass('ng-valid')).toBe(false);
+                expect(directiveElement.hasClass('ng-invalid')).toBe(true);
+                expect(directiveElement.hasClass('ng-invalid-required')).toBe(true);
             });
             it('should be $valid when model is valid date', function () {
                 directiveElement = getCompiledDirectiveElement({model: '2000-01-01', required: true});
@@ -237,6 +240,9 @@ describe('Directive: TwDate', function() {
                 ngModelController = directiveElement.controller('ngModel');
 
                 expect(ngModelController.$valid).toBe(true);
+                expect(directiveElement.hasClass('ng-valid')).toBe(true);
+                expect(directiveElement.hasClass('ng-invalid')).toBe(false);
+                expect(directiveElement.hasClass('ng-invalid-required')).toBe(false);
             });
         });
         describe('when required attribute is passed', function () {
@@ -246,12 +252,18 @@ describe('Directive: TwDate', function() {
                 ngModelController = directiveElement.controller('ngModel');
 
                 expect(ngModelController.$invalid).toBe(true);
+                expect(directiveElement.hasClass('ng-valid')).toBe(false);
+                expect(directiveElement.hasClass('ng-invalid')).toBe(true);
+                expect(directiveElement.hasClass('ng-invalid-required')).toBe(true);
             });
             it('should be $valid when model is valid date', function () {
                 directiveElement = getCompiledDirectiveElement({model: '2000-01-01'}, [['required']]);
                 ngModelController = directiveElement.controller('ngModel');
 
                 expect(ngModelController.$valid).toBe(true);
+                expect(directiveElement.hasClass('ng-valid')).toBe(true);
+                expect(directiveElement.hasClass('ng-invalid')).toBe(false);
+                expect(directiveElement.hasClass('ng-invalid-required')).toBe(false);
             });
         });
         describe('when ngDisabled=true', function () {
@@ -647,18 +659,16 @@ describe('Directive: TwDate', function() {
     });
 
     describe('user interactions', function() {
-        var directiveElement, isolatedScope, ngModelController;
+        var directiveElement, isolatedScope, ngModelController, dayInput;
         beforeEach(function() {
             directiveElement = getCompiledDirectiveElement({model: '2001-01-01'});
             isolatedScope = directiveElement.isolateScope();
             ngModelController = directiveElement.controller('ngModel');
+
+            dayInput = directiveElement.find('.tw-date-day');
         });
 
         describe('with day input', function() {
-            var dayInput;
-            beforeEach(function() {
-                dayInput = directiveElement.find('.tw-date-day');
-            });
             it('should update day and ngModel', function () {
                 dayInput.val(15).triggerHandler('input');
                 expect(isolatedScope.vm.day).toBe(15);
@@ -708,6 +718,7 @@ describe('Directive: TwDate', function() {
                 monthModelController.$setViewValue('1');
 
                 expect(isolatedScope.vm.day).toBe(28);
+                expect(dayInput.val()).toBe('28');
                 expect(isolatedScope.vm.month).toBe(1);
                 expect(inputScope.model).toBe('2001-02-28');
             });
@@ -724,6 +735,7 @@ describe('Directive: TwDate', function() {
                 monthModelController.$setViewValue('1');
 
                 expect(isolatedScope.vm.day).toBe(29);
+                expect(dayInput.val()).toBe('29');
                 expect(isolatedScope.vm.month).toBe(1);
                 expect(inputScope.model).toBe('2000-02-29');
             });
@@ -736,13 +748,19 @@ describe('Directive: TwDate', function() {
                 monthModelController.$setViewValue('3');
 
                 expect(isolatedScope.vm.day).toBe(30);
+                expect(dayInput.val()).toBe('30');
                 expect(isolatedScope.vm.month).toBe(3);
                 expect(inputScope.model).toBe('2001-04-30');
             });
 
-            it('should null ngModel if days too high', function() {
+            it('should lower days if value entered too high', function() {
                 directiveElement.find('.tw-date-day').val(32).triggerHandler('input');
-                expect(inputScope.model).toBe(null);
+                expect(isolatedScope.vm.day).toBe(31);
+                expect(dayInput.val()).toBe('31');
+
+                directiveElement.find('.tw-date-day').val(321).triggerHandler('input');
+                expect(isolatedScope.vm.day).toBe(31);
+                expect(dayInput.val()).toBe('31');
             });
         });
 
@@ -770,28 +788,7 @@ describe('Directive: TwDate', function() {
             });
         });
     });
-    describe('vm.updateDateModelAndValidationClasses()', function() {
-        describe('when no constraints are passed', function() {
-            var directiveElement,
-                isolatedScope,
-                dateModel = '1990-02-26';
 
-            beforeEach(function() {
-                directiveElement = getCompiledDirectiveElement({model: dateModel});
-                isolatedScope = directiveElement.isolateScope();
-            });
-            it('should update day if new day is too high for new month and update pattern validation class correctly', function() {
-                directiveElement.find('.tw-date-day')
-                    .val(30)
-                    .triggerHandler('input');
-
-                expect(isolatedScope.vm.day).toBe(28);
-            });
-        });
-    });
-
-    // TODO test min/max validation when model is null - shouldn't be true
-    // TODO test required validation
     // TODO test 'dirty' logic - should be dependent if we initialised with a value
 
     function expectDateMonthsToBeLocalized(directiveElement, locale) {

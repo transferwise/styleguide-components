@@ -77,6 +77,18 @@
 				var dateValue = typeof value === 'string' ? new Date(value) : value;
 				return !max || dateValue <= max;
 			};
+			//ngModel.$validators.date = function(value) {
+			//	return true;
+			//};
+			/*
+			ngModel.$formatters.push(function(value) {
+				if (vm.validDate(value)) {
+					return null;
+				}
+				vm.explodeDateModel(value);
+				return value;
+			});
+			*/
 
 			setDateRequired();
 			setDateDisabled();
@@ -152,6 +164,7 @@
 			});
 			$scope.$watch('vm.month', function(newValue, oldValue) {
 				if (newValue !== oldValue) {
+					vm.adjustLastDay();
 					ngModel.$setTouched();  // Input watcher doesn't work for month
 					if (initialisedWithDate) {
 						ngModel.$setDirty();
@@ -191,12 +204,6 @@
 				if (newValue !== oldValue) {
 					setDateLocale();
 					setMonths();
-				}
-			});
-
-			$scope.$watch('vm.month', function(newValue, oldValue) {
-				if (newValue !== oldValue) {
-					vm.adjustLastDay();
 				}
 			});
 		}
@@ -294,8 +301,8 @@
 			var lastUTCDayForMonthAndYear = lastUTCDateForMonthAndYear.getUTCDate();
 
 			if (day > lastUTCDayForMonthAndYear) {
-				// TODO $setViewValue would trigger day validation?
-				vm.day = lastUTCDayForMonthAndYear;
+				// Using setViewValue does not update DOM, only model.
+				vm.day = parseInt(lastUTCDayForMonthAndYear);
 			}
 		}
 
