@@ -21,30 +21,34 @@
 			event.preventDefault();
 		});
 
-		ngModel.$validators.twValidation = function() {
-			// Evaluate after ngModel updates
+		// We could do this in $validators but includes unnecessary DOM manipulation
+		ngModel.$validators.validation = function() {
+			// Evaluate after ngModel updates, we are still in validation chain
 			scope.$evalAsync(function() {
-				//console.log(ngModel);
-				checkModelAndUpdate(ngModel, formGroup);
+				checkModelAndUpdate(ngModel, formGroup, element);
 			});
 			return true;
 		};
 
 		// The first time we blur, still pristine when model validation occurs, so perform again.
 		element.on("blur", function() {
+			// TODO custom elements don't trigger blur
 			scope.$evalAsync(function() {
-				checkModelAndUpdate(ngModel, formGroup);
+				checkModelAndUpdate(ngModel, formGroup, element);
 			});
 		});
 	}
 
-	function checkModelAndUpdate(ngModel, formGroup) {
+	function checkModelAndUpdate(ngModel, formGroup, element) {
 		if (ngModel.$valid) {
 			formGroup.removeClass("has-error");
+			element.removeAttr("aria-invalid");
 			return;
 		}
 		if (ngModel.$touched && ngModel.$dirty) {
 			formGroup.addClass("has-error");
+			// Set aria invalid for screen readers
+			element.attr("aria-invalid", true);
 		}
 	}
 })(window.angular);

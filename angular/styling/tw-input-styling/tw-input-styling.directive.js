@@ -86,7 +86,7 @@
 				.focus(onFocus)
 				.blur(onBlur);
 
-			$(element).hide().after(replacement);
+			$(element).addClass('sr-only').after(replacement);
 			replacement.after(disabledReplacement);
 		}
 
