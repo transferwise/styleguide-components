@@ -1,31 +1,6 @@
 angular.module("tw.form-validation", []);
 !function(angular) {
     "use strict";
-    function TwFormControlValidation() {
-        return {
-            restrict: "AC",
-            require: "ngModel",
-            link: validationLink
-        };
-    }
-    function validationLink(scope, element) {
-        var formControl = $(element), formGroup = formControl.closest(".form-group");
-        formControl.on("blur keyup", function() {
-            checkValid(formControl, formGroup);
-        }).on("invalid", function(event) {
-            event.preventDefault();
-        }), formControl.filter("select").on("change", function() {
-            checkValid(formControl, formGroup);
-        });
-    }
-    function checkValid(formControl, formGroup) {
-        setTimeout(function() {
-            return formControl.hasClass("ng-invalid") ? void (formControl.hasClass("ng-touched") && !formControl.hasClass("ng-pristine") && formGroup.addClass("has-error")) : void formGroup.removeClass("has-error");
-        }, 10);
-    }
-    angular.module("tw.form-validation").directive("twValidation", TwFormControlValidation);
-}(window.angular), function(angular) {
-    "use strict";
     function TwFormValidation() {
         return {
             restrict: "E",
@@ -54,7 +29,7 @@ angular.module("tw.form-validation", []);
                 formGroupValidInputsContainers.removeClass("has-error"), 0 === formGroupInvalidInputs.length && formGroup.removeClass("has-error");
             });
         }
-        function link(scope, element, attrs) {
+        function link(scope, element, attrs, ctrl) {
             if (attrs.type) {
                 var type = attrs.type.toLowerCase();
                 if (("radio" === type || "checkbox" === type) && 0 !== $(element).closest(labelSelector).length) {
@@ -72,4 +47,32 @@ angular.module("tw.form-validation", []);
         };
     }
     angular.module("tw.form-validation").directive("input", TwInputValidation);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwValidation() {
+        return {
+            restrict: "AC",
+            require: "ngModel",
+            link: validationLink
+        };
+    }
+    function validationLink(scope, element, attrs, ngModel) {
+        var formGroup = element.closest(".form-group");
+        element.on("invalid", function(event) {
+            event.preventDefault();
+        }), ngModel.$validators.validation = function() {
+            return scope.$evalAsync(function() {
+                checkModelAndUpdate(ngModel, formGroup, element);
+            }), !0;
+        }, element.on("blur", function() {
+            scope.$evalAsync(function() {
+                checkModelAndUpdate(ngModel, formGroup, element);
+            });
+        });
+    }
+    function checkModelAndUpdate(ngModel, formGroup, element) {
+        return ngModel.$valid ? (formGroup.removeClass("has-error"), void element.removeAttr("aria-invalid")) : void (ngModel.$touched && ngModel.$dirty && (formGroup.addClass("has-error"), 
+        element.attr("aria-invalid", !0)));
+    }
+    angular.module("tw.form-validation").directive("twValidation", TwValidation);
 }(window.angular);

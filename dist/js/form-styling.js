@@ -45,13 +45,13 @@ angular.module("tw.form-styling", []);
         function onKeypress(event) {
             13 === (event.keyCode ? event.keyCode : event.which) && fakeClick(this);
         }
-        function link(scope, element, attrs) {
+        function link(scope, element, attrs, ctrl) {
             if (attrs.type) {
                 var type = attrs.type.toLowerCase();
                 if (("radio" === type || "checkbox" === type) && 0 !== $(element).closest(labelSelector).length) {
                     var replacement;
-                    replacement = $("radio" === type ? radioTemplate : checkboxTemplate), replacement.keypress(onKeypress).click(onClick).focus(onFocus).blur(onBlur), 
-                    $(element).hide().after(replacement), replacement.after(disabledReplacement);
+                    replacement = "radio" === type ? $(radioTemplate) : $(checkboxTemplate), replacement.keypress(onKeypress).click(onClick).focus(onFocus).blur(onBlur), 
+                    $(element).addClass("sr-only").after(replacement), replacement.after(disabledReplacement);
                 }
             }
         }
@@ -68,8 +68,9 @@ angular.module("tw.form-styling", []);
         return {
             require: "ngModel",
             bindToController: !0,
-            controller: "TwSelectController",
-            controllerAs: "vm",
+            controller: function() {},
+            controllerAs: "$ctrl",
+            link: TwSelectLink,
             replace: !1,
             restrict: "EA",
             scope: {
@@ -77,50 +78,88 @@ angular.module("tw.form-styling", []);
                 ngRequired: "=",
                 ngDisabled: "=",
                 ngChange: "&",
-                twOptions: "=",
+                ngBlur: "&",
+                options: "=",
                 name: "@",
                 disabled: "@",
                 required: "@",
                 placeholder: "@"
             },
-            template: "<div class='btn-group btn-block'> 					<button type='button' class='btn btn-input dropdown-toggle' 						data-toggle='dropdown' aria-expanded='false' 						ng-disabled='vm.ngDisabled' 						tw-focusable> 						<span class='form-control-placeholder' ng-if='!vm.selectedText'>{{vm.placeholder}}</span> 						<span ng-if='vm.selectedText'>{{vm.selectedText}}</span> <span class='caret'></span> 					</button> 					<ul class='dropdown-menu' role='menu'> 						<li ng-repeat='option in vm.twOptions' 							ng-class='{active: vm.ngModel === option.value}'> 							<a href='' ng-click='vm.clickOption(option)'>{{option.label}}</a> 						</li> 					</ul> 					<select class='hidden' 						ng-options='option.value as option.label for option in vm.twOptions' 						ng-model='vm.ngModel'> 					</select> 					<input type='hidden' name='{{vm.name}}' value='{{vm.ngModel}}' /> 				</div>"
+            template: " 				<div class='btn-group btn-block'> 					<button type='button' class='btn btn-input dropdown-toggle' 						data-toggle='dropdown' aria-expanded='false' 						ng-disabled='$ctrl.ngDisabled' 						tw-focusable> 						<i class='icon {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> 						</i><span class='selected' ng-if='$ctrl.ngModel'>{{$ctrl.selected.label}}</span> 						<span class='form-control-placeholder' ng-if='!$ctrl.ngModel'>{{$ctrl.placeholder}}</span> 						<span class='caret'></span> 					</button> 					<ul class='dropdown-menu' role='menu'> 						<li ng-class='{active: !$ctrl.ngModel}' 							ng-if='$ctrl.placeholder && !$ctrl.ngRequired'> 							<a href='' value='' tw-focusable> 								{{$ctrl.placeholder}} 							</a> 						</li> 						<li 							ng-repeat='option in $ctrl.options' 							ng-class='{active: $ctrl.ngModel === option.value}'> 							<a href='' value='{{option.value}}' class='tw-select-option' tw-focusable> 								<i class='icon {{option.icon}}' ng-if='option.icon'></i>{{option.label}} 							</a> 						</li> 					</ul> 					<input type='hidden' name='{{$ctrl.name}}' value='{{$ctrl.ngModel}}' 					 	ng-disabled='$ctrl.ngDisabled' /> 				</div>"
         };
     }
-    function TwSelectController($scope, $element) {
-        function init() {
-            formGroup = $element.closest(".form-group"), $scope.$watch("vm.ngModel", modelChange), 
-            modelChange(vm.ngModel), $element.find(".btn").on("blur", function() {
-                checkValid($element, formGroup);
-            }), $element.find(".btn").on("keypress", function(event) {
-                console.log(event.key);
-            });
-        }
-        function modelChange(newVal, oldVal) {
-            if (newVal !== oldVal) {
-                var option = findOptionFromValue(newVal);
-                vm.selectedText = option ? option.label : null, vm.ngChange ? (console.log("change"), 
-                vm.ngChange()) : console.log("no chnage"), checkValid($element, formGroup);
-            }
-        }
-        function findOptionFromValue(value) {
-            return vm.twOptions.find(function(option) {
-                return option.value === value;
-            });
-        }
-        function clickOption(option) {
-            vm.ngModel = option.value;
-        }
-        function unset() {
-            vm.ngModel = null;
-        }
-        function checkValid(select, formGroup) {
+    function TwSelectLink(scope, element, attrs, ngModel) {
+        var $ctrl = scope.$ctrl, options = scope.$ctrl.options;
+        preSelectModelValue(ngModel, $ctrl, options), setDefaultIfRequired(ngModel, $ctrl, element, attrs), 
+        element.find(".btn").on("keypress click", function(event) {
+            ngModel.$setTouched();
+        }), element.find(".btn").on("keypress", function(event) {
+            higlightFirstItemMatcingLetter(ngModel, $ctrl, element, options, event.key), element.find(".active a").focus();
+        }), scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+            newValue !== oldValue && ngModel.$setDirty(), modelChange(newValue, oldValue, $ctrl);
+        }), element.find(".btn").on("click", function() {
             setTimeout(function() {
-                select.hasClass("ng-invalid") ? formGroup.addClass("has-error") : formGroup.removeClass("has-error");
+                element.find(".active a").focus();
             });
-        }
-        var formGroup, vm = this;
-        vm.clickOption = clickOption, vm.unset = unset, init();
+        }), element.find(".btn").on("blur", function() {
+            scope.$evalAsync(function() {
+                element.find(".btn-group").hasClass("open") || blur(ngModel, element, $ctrl);
+            }, 100);
+        }), element.find("ul").on("click", "a", function(event) {
+            if ($(event.target).hasClass("tw-select-option")) {
+                var option = findOptionFromValue(options, this.getAttribute("value"));
+                selectOption(ngModel, $ctrl, option);
+            } else resetOption(ngModel, $ctrl);
+            element.find(".btn").focus();
+        }), element.find("ul").on("focus", "a", function(event) {
+            if ($(event.target).hasClass("tw-select-option")) {
+                var option = findOptionFromValue(options, this.getAttribute("value"));
+                selectOption(ngModel, $ctrl, option);
+            } else resetOption(ngModel, $ctrl);
+        }), element.find("ul").on("blur", "a", function(event) {
+            scope.$evalAsync(function() {
+                0 !== element.find(".btn:focus").length || element.find(".btn-group").hasClass("open") || blur(ngModel, element, $ctrl);
+            }, 100);
+        }), element.find("ul").on("keypress", "a", function(event) {
+            higlightFirstItemMatcingLetter(ngModel, $ctrl, element, options, event.key), element.find(".active a").focus();
+        });
     }
-    angular.module("tw.form-components").directive("twSelect", TwSelectDirective), angular.module("tw.form-components").controller("TwSelectController", TwSelectController), 
-    TwSelectController.$inject = [ "$scope", "$element" ];
+    function preSelectModelValue(ngModel, $ctrl, options) {
+        if ($ctrl.ngModel) {
+            var option = findOptionFromValue(options, $ctrl.ngModel);
+            selectOption(ngModel, $ctrl, option);
+        }
+    }
+    function modelChange(newVal, oldVal, $ctrl) {
+        if (newVal !== oldVal) {
+            var option = findOptionFromValue($ctrl.options, newVal);
+            option ? $ctrl.selected = option : $ctrl.selected = null;
+        }
+    }
+    function findOptionFromValue(options, value) {
+        var optionMatch = !1;
+        return options.forEach(function(option) {
+            String(option.value) === String(value) && (optionMatch = option);
+        }), optionMatch;
+    }
+    function setDefaultIfRequired(ngModel, $ctrl, $element, $attrs) {
+        ($ctrl.ngRequired || $attrs.required) && !$ctrl.ngModel && $ctrl.options[0] && selectOption(ngModel, $ctrl, $ctrl.options[0]);
+    }
+    function selectOption(ngModel, $ctrl, option) {
+        ngModel.$setViewValue(option.value), $ctrl.selected = option;
+    }
+    function resetOption(ngModel, $ctrl) {
+        ngModel.$setViewValue(""), $ctrl.selected = !1;
+    }
+    function higlightFirstItemMatcingLetter(ngModel, $ctrl, element, options, letter) {
+        var letterLower = letter ? letter.toLowerCase() : "", found = !1;
+        options.forEach(function(option) {
+            found || option.label.substring(0, 1).toLowerCase() === letterLower && (found = !0, 
+            selectOption(ngModel, $ctrl, option));
+        });
+    }
+    function blur(ngModel, $element, $ctrl) {
+        $ctrl.ngBlur();
+    }
+    angular.module("tw.form-components").directive("twSelect", TwSelectDirective);
 }(window.angular);
