@@ -178,8 +178,25 @@ describe('Directive: TwSelect', function() {
     });
 
     describe('event handlers', function() {
-        it('should trigger ngChange when model changes', function() {
-            // TODO
+        beforeEach(function() {
+            $scope.options = OPTIONS;
+            $scope.model = "1";
+            $scope.onChange = function() { console.log("change"); };
+            $scope.onBlur = function() {};
+            var template = " \
+                <tw-select \
+                    options='options' \
+                    ng-model='model' \
+                    ng-change='onChange()'\
+                    ng-blur='onBlur()'> \
+                </tw-select>";
+            directiveElement = getCompiledDirectiveElement($scope, template);
+        });
+        it('should trigger ngChange when internal model changes', function() {
+            spyOn($scope, 'onChange');
+            directiveElement.controller('ngModel').$setViewValue("2");
+            expect($scope.model).toBe("2");
+            expect($scope.onChange).toHaveBeenCalled();
         });
         it('should trigger ngBlur when control loses focus', function() {
             // TODO
