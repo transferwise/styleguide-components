@@ -206,7 +206,6 @@
 
 						<div class="form-group"
 							ng-init="vm.select.options2 = [
-								{'value': '', 'label': 'Please choose...'},
 								{'value': '1', 'label': 'One', 'icon': 'icon-profile'},
 								{'value': '2', 'label': 'Two'},
 								{'value': '3', 'label': 'Three'}
@@ -217,7 +216,7 @@
 							<tw-select required tw-validation
 								ng-model="vm.model.selectRequired"
 								ng-change="vm.model.count = vm.model.count + 1"
-								tw-options="vm.select.options2"
+								options="vm.select.options2"
 								placeholder="Select an option...">
 							</tw-select>
 							<div class="error-messages">
@@ -417,7 +416,6 @@
 							given name to be compatible with HTML form posts.</p>
 						<hr/>
 						<div class="row" ng-init="vm.select.options = [
-							{'value': '', 'label': 'None selected'},
 							{'value': '1', 'label': 'One', 'icon': 'icon-profile'},
 							{'value': '2', 'label': 'Two'},
 							{'value': '3', 'label': 'Three'}
@@ -434,7 +432,7 @@
 										ng-change="alert('test')"
 										ng-required="vm.select.required"
 										ng-disabled="vm.select.disabled"
-										tw-options="vm.select.options">
+										options="vm.select.options">
 									</tw-select>
 									<div class="error-messages">
 										<div class="error-required">Required</div>
@@ -455,8 +453,7 @@
   ng-required="{{vm.select.required}}"
   ng-disabled="{{vm.select.disabled}}"
   ng-change="..."
-  tw-options="[
-    {'value': '', 'label': 'None selected'},
+  options="[
     {'value': '1', 'label': 'Option one'},
     {'value': '2', 'label': 'Option two'},
     {'value': '3', 'label': 'Option three'}

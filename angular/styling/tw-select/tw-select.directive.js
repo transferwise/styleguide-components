@@ -20,7 +20,7 @@
 				ngDisabled: '=',
 				ngChange: '&',
 				ngBlur: '&',
-				twOptions: '=',
+				options: '=',
 				name: "@",
 				disabled: '@',
 				required: '@',
@@ -33,14 +33,21 @@
 						ng-disabled='$ctrl.ngDisabled' \
 						tw-focusable> \
 						<i class='icon {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> \
-						</i><span ng-if='$ctrl.selected' class='selected'>{{$ctrl.selected.label}}</span> \
-						<span class='form-control-placeholder' ng-if='!$ctrl.selected'>{{$ctrl.placeholder}}</span> \
+						</i><span class='selected' ng-if='$ctrl.ngModel'>{{$ctrl.selected.label}}</span> \
+						<span class='form-control-placeholder' ng-if='!$ctrl.ngModel'>{{$ctrl.placeholder}}</span> \
 						<span class='caret'></span> \
 					</button> \
 					<ul class='dropdown-menu' role='menu'> \
-						<li ng-repeat='option in $ctrl.twOptions' \
-							ng-class='{active: $ctrl.ngModel === option.value || !$ctrl.ngModel && option.value === \"\"}'> \
-							<a href='' value='{{option.value}}'> \
+						<li ng-class='{active: !$ctrl.ngModel}' \
+							ng-if='$ctrl.placeholder && !$ctrl.ngRequired'> \
+							<a href='' value=''> \
+								{{$ctrl.placeholder}} \
+							</a> \
+						</li> \
+						<li \
+							ng-repeat='option in $ctrl.options' \
+							ng-class='{active: $ctrl.ngModel === option.value}'> \
+							<a href='' value='{{option.value}}' class='tw-select-option'> \
 								<i class='icon {{option.icon}}' ng-if='option.icon'></i>{{option.label}} \
 							</a> \
 						</li> \
@@ -49,12 +56,10 @@
 					 	ng-disabled='$ctrl.ngDisabled' /> \
 				</div>"
 		};
-		//
-		//data-toggle='dropdown'
 	}
 
 	function TwSelectLink(scope, element, attrs, ngModel) {
-		preSelectModelValue(ngModel, scope.$ctrl, scope.$ctrl.twOptions);
+		preSelectModelValue(ngModel, scope.$ctrl, scope.$ctrl.options);
 		setDefaultIfRequired(ngModel, scope.$ctrl, element, attrs);
 
 		// Update pristine/touched status of ngModel
@@ -65,7 +70,7 @@
 
 		element.find('.btn').on('keypress', function(event) {
 			higlightFirstItemMatcingLetter(
-				ngModel, scope.$ctrl, element, scope.$ctrl.twOptions, event.key
+				ngModel, scope.$ctrl, element, scope.$ctrl.options, event.key
 			);
 			element.find(".active a").focus();
 		});
@@ -81,7 +86,7 @@
 		element.find('.btn').on('click', function() {
 			// This hack makes test pass., but should be handled by dropdown.js,
 			//$(this).closest('.btn-group').addClass('open');
-			
+
 			// Once dropdown is open, focus on active/selected option for keyboard support
 			setTimeout(function() {
 				element.find('.active a').focus();
@@ -93,18 +98,26 @@
 			//scope.$ctrl.ngBlur();
 		});
 
-		element.find('ul').on('click', 'a', function() {
-			var option = findOptionFromValue(scope.$ctrl.twOptions, this.getAttribute('value'));
-			selectOption(ngModel, scope.$ctrl, option);
+		element.find('ul').on('click', 'a', function(event) {
+			if ($(event.target).hasClass('tw-select-option')) {
+				var option = findOptionFromValue(scope.$ctrl.options, this.getAttribute('value'));
+				selectOption(ngModel, scope.$ctrl, option);
+			} else {
+				resetOption(ngModel, scope.$ctrl);
+			}
 			element.find('.btn').focus();
 		});
-		element.find('ul').on('focus', 'a', function() {
-			var option = findOptionFromValue(scope.$ctrl.twOptions, this.getAttribute('value'));
-			selectOption(ngModel, scope.$ctrl, option);
+		element.find('ul').on('focus', 'a', function(event) {
+			if ($(event.target).hasClass('tw-select-option')) {
+				var option = findOptionFromValue(scope.$ctrl.options, this.getAttribute('value'));
+				selectOption(ngModel, scope.$ctrl, option);
+			} else {
+				resetOption(ngModel, scope.$ctrl);
+			}
 		});
 		element.find('ul').on('keypress', 'a', function(event) {
 			higlightFirstItemMatcingLetter(
-				ngModel, scope.$ctrl, element, scope.$ctrl.twOptions, event.key
+				ngModel, scope.$ctrl, element, scope.$ctrl.options, event.key
 			);
 			element.find(".active a").focus();
 		});
@@ -122,7 +135,7 @@
 			return;
 		}
 
-		var option = findOptionFromValue($ctrl.twOptions, newVal);
+		var option = findOptionFromValue($ctrl.options, newVal);
 		if (option) {
 			$ctrl.selected = option;
 		} else {
@@ -131,18 +144,21 @@
 	}
 
 	function findOptionFromValue(options, value) {
-		return options.find(function(option) {
-			return String(option.value) === String(value);
+		var optionMatch = false;
+		options.forEach(function(option) {
+			if (String(option.value) === String(value)) {
+				optionMatch = option;
+			}
 		});
+		return optionMatch;
 	}
 
 	function setDefaultIfRequired(ngModel, $ctrl, $element, $attrs) {
 		// If required and model empty, select first option
 		if (($ctrl.ngRequired || $attrs.required)
 			&& !$ctrl.ngModel
-			&& $ctrl.twOptions[0]) {
-
-			selectOption(ngModel, $ctrl, $ctrl.twOptions[0]);
+			&& $ctrl.options[0]) {
+			selectOption(ngModel, $ctrl, $ctrl.options[0]);
 		}
 	}
 
@@ -151,13 +167,21 @@
 		$ctrl.selected = option;
 	}
 
+	function resetOption(ngModel, $ctrl) {
+		ngModel.$setViewValue('');
+		$ctrl.selected = false;
+	}
+
 	function higlightFirstItemMatcingLetter(ngModel, $ctrl, element, options, letter) {
 		var letterLower = letter ? letter.toLowerCase() : "";
-
-		options.find(function(option, index) {
+		var found = false;
+		options.forEach(function(option) {
+			if (found) {
+				return;
+			}
 			if (option.label.substring(0,1).toLowerCase() === letterLower) {
+				found = true;
 				selectOption(ngModel, $ctrl, option);
-				return true;
 			}
 		});
 	}
