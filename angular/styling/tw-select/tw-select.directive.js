@@ -177,8 +177,8 @@
 		// If required and model empty, select first option
 		if (($ctrl.ngRequired || $attrs.required)
 			&& !$ctrl.ngModel
-			&& options[0]) {
-			selectOption(ngModel, $ctrl, options[0]);
+			&& $ctrl.options[0]) {
+			selectOption(ngModel, $ctrl, $ctrl.options[0]);
 		}
 	}
 
