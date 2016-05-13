@@ -99,7 +99,7 @@
 		element.find('.btn').on('blur', function() {
 			// If user clicked button loses focus but btn-group is open
 			// If they keyed or clicked away it is closed and component blurred
-			setTimeout(function() {
+			scope.$evalAsync(function() {
 				if (!element.find('.btn-group').hasClass('open')) {
 					blur(ngModel, element, $ctrl);
 				}
@@ -126,7 +126,7 @@
 		});
 
 		element.find('ul').on('blur', 'a', function(event) {
-			setTimeout(function() {
+			scope.$evalAsync(function() {
 				// If drop down closed and btton not focussed we just blurred
 				if (element.find('.btn:focus').length === 0 &&
 					!element.find('.btn-group').hasClass("open")) {
@@ -134,7 +134,7 @@
 				}
 			}, 100); // Timeout required as werely on dropdown.js
 		});
-		
+
 		element.find('ul').on('keypress', 'a', function(event) {
 			higlightFirstItemMatcingLetter(
 				ngModel, $ctrl, element, options, event.key
