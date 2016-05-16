@@ -229,49 +229,6 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     angular.module("tw.form-components").directive("twLoader", TwLoader);
 }(window.angular), function(angular) {
     "use strict";
-    function TwModelUsage() {
-        var directive = {
-            bindToController: !0,
-            link: TwModelUsageLink,
-            controller: TwModelUsageController,
-            controllerAs: "vm",
-            require: "ngModel",
-            restrict: "E",
-            scope: {
-                ngModel: "=",
-                required: "@",
-                ngRequired: "=",
-                disabled: "@",
-                ngDisabled: "=",
-                ngMin: "=",
-                ngMax: "="
-            },
-            template: templateAsString
-        };
-        return directive;
-    }
-    function TwModelUsageLink(scope, element, attrs, ngModel) {
-        element.find(".first, .second").on("change keypress", function() {
-            scope.$evalAsync(function() {
-                ngModel.$setDirty(), updateModel(scope, ngModel);
-            });
-        }), element.find(".first, .second").on("blur", function() {
-            scope.$evalAsync(ngModel.$setTouched());
-        }), ngModel.$validators.min = function(modelValue, viewValue) {
-            return scope.vm.ngMin && viewValue >= scope.vm.ngMin;
-        }, ngModel.$validators.max = function(modelValue, viewValue) {
-            return scope.vm.ngMax && viewValue <= scope.vm.ngMax;
-        };
-    }
-    function updateModel(scope, ngModel) {
-        var value = scope.vm.first && scope.vm.second ? scope.vm.first + scope.vm.second : null;
-        ngModel.$setViewValue(value);
-    }
-    function TwModelUsageController() {}
-    angular.module("tw.form-components").directive("twModelUsage", TwModelUsage);
-    var templateAsString = " 	<div class='row'> 		<div class='col-xs-6'> 			<input type='number' 				ng-model='vm.first' 				name='first' 				class='first form-control' /> 		</div> 		<div class='col-xs-6'> 			<input type='number' 				ng-model='vm.second' 				name='second' 				class='second form-control' /> 		</div> 	</div>";
-}(window.angular), function(angular) {
-    "use strict";
     function TwFormControlStyling() {
         return {
             restrict: "C",
