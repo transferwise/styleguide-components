@@ -41,11 +41,22 @@
 		//		ngModel.$setDirty();
 		//	}
 		//});
+		var dayTouched, yearTouched;
 
-		element.find('input').on('blur', function() {
-			ngModel.$setTouched();
+		element.find('input[name=day]').on('blur', function() {
+			dayTouched = true;
+			if (dayTouched && yearTouched) {
+				ngModel.$setTouched();
+				element.trigger('blur');
+			}
 		});
-		
+		element.find('input[name=year]').on('blur', function() {
+			yearTouched = true;
+
+			ngModel.$setTouched();
+			element.trigger('blur');
+		});
+
 		/*
 		var dayModelController = element.find('.tw-date-day').controller('ngModel');
 		dayModelController.$parsers.push(function(value) {
@@ -109,16 +120,16 @@
 				</div> \
 				<div class='col-sm-5'> \
 					<label class='sr-only' for='month-{{::uniqueId}}'>Month</label> \
-					<select name='month' \
+					<tw-select \
+						name='month' \
+						class='tw-date-month' \
 						id='month-{{::uniqueId}}' \
-						class='form-control tw-date-month' \
 						ng-model='vm.month' \
 						ng-change='vm.updateDateModelAndValidationClasses()' \
-						ng-options='month.value as month.label for month in vm.dateMonths' \
-						ng-disabled='vm.dateDisabled' \
 						ng-required='vm.dateRequired' \
-						autocomplete='off'> \
-					</select> \
+						ng-disabled='vm.dateDisabled' \
+						options='vm.dateMonths'> \
+					</tw-select> \
 				</div> \
 				<div class='col-sm-4'> \
 					<label class='sr-only' for='year-{{::uniqueId}}'>Year</label> \
@@ -149,7 +160,7 @@
 	ng-change='vm.updateDateModelAndValidationClasses()' \
 	ng-required='vm.dateRequired' \
 	ng-disabled='vm.dateDisabled' \
-	tw-options='vm.dateMonths'> \
+	options='vm.dateMonths'> \
 </tw-select> \
 
 <select name='month' \

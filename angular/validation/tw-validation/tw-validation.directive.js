@@ -32,7 +32,7 @@
 
 		// The first time we blur, still pristine when model validation occurs, so perform again.
 		element.on("blur", function() {
-			// TODO custom elements don't trigger blur
+			// Custom elements must trigger blur manually for correct behaviour
 			scope.$evalAsync(function() {
 				checkModelAndUpdate(ngModel, formGroup, element);
 			});

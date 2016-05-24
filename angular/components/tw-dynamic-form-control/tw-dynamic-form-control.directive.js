@@ -113,7 +113,23 @@
 			</div>"
 		};
 	}
+/*
 
+
+<div ng-switch-when='select'> \
+	<tw-select  \
+		name='{{$ctrl.name}}' \
+		id='{{$ctrl.id}}' \
+		options='$ctrl.options' \
+		placeholder='{{$ctrl.placeholder}}' \
+		ng-model='$ctrl.ngModel' \
+		ng-required='$ctrl.ngRequired' \
+		ng-disabled='$ctrl.ngDisabled' \
+		ng-change='$ctrl.change(); $ctrl.blur();' \
+		ng-blur='$ctrl.blur()'> \
+	</tw-select> \
+</div> \
+*/
 	angular
 		.module('tw.form-components')
 		.controller('TwDynamicFormControlController', TwDynamicFormControlController);
@@ -128,6 +144,7 @@
 		};
 		$ctrl.blur = function() {
 			ngModelController.$setTouched();
+			$element.trigger('blur');
 		};
 	}
 

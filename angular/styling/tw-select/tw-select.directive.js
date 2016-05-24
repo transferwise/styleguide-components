@@ -13,6 +13,7 @@
 			controllerAs: '$ctrl',
 			link: TwSelectLink,
 			replace: false,
+			transclude: true,
 			restrict: 'EA',
 			scope: {
 				ngModel: '=',
@@ -33,24 +34,30 @@
 						ng-disabled='$ctrl.ngDisabled' \
 						tw-focusable> \
 						<i class='icon {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> \
-						</i><span class='selected' ng-if='$ctrl.ngModel'>{{$ctrl.selected.label}}</span> \
-						<span class='form-control-placeholder' ng-if='!$ctrl.ngModel'>{{$ctrl.placeholder}}</span> \
+						</i><i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}}' ng-if='$ctrl.selected && $ctrl.selected.currency'> \
+						</i><span class='selected-label' ng-if='$ctrl.ngModel != null'>{{$ctrl.selected.label}}</span> \
+						<span class='form-control-placeholder' ng-if='$ctrl.ngModel == null'>{{$ctrl.placeholder}}</span> \
 						<span class='caret'></span> \
 					</button> \
 					<ul class='dropdown-menu' role='menu'> \
 						<li ng-class='{active: !$ctrl.ngModel}' \
 							ng-if='$ctrl.placeholder && !$ctrl.ngRequired'> \
-							<a href='' value='' tw-focusable> \
+							<a href='' value='' class='tw-select-placeholder' tw-focusable> \
 								{{$ctrl.placeholder}} \
 							</a> \
 						</li> \
+						<li ng-if='$ctrl.placeholder && !$ctrl.ngRequired' class='divider'></li> \
 						<li \
 							ng-repeat='option in $ctrl.options' \
 							ng-class='{active: $ctrl.ngModel === option.value}'> \
 							<a href='' value='{{option.value}}' class='tw-select-option' tw-focusable> \
-								<i class='icon {{option.icon}}' ng-if='option.icon'></i>{{option.label}} \
+								<i class='icon {{option.icon}}' ng-if='option.icon'> \
+								</i><i class='currency-flag currency-flag-{{option.currency | lowercase}}' ng-if='option.currency'> \
+								</i>{{option.label}} \
 							</a> \
 						</li> \
+						<li ng-if='$ctrl.hasTranscluded' class='divider'></li> \
+						<li ng-transclude ng-if='$ctrl.hasTranscluded' class='transcluded'></li> \
 					</ul> \
 					<input type='hidden' name='{{$ctrl.name}}' value='{{$ctrl.ngModel}}' \
 					 	ng-disabled='$ctrl.ngDisabled' /> \
@@ -58,28 +65,42 @@
 		};
 	}
 
-	function TwSelectLink(scope, element, attrs, ngModel) {
+	function TwSelectLink(scope, element, attrs, ngModel, $transclude) {
 		var $ctrl = scope.$ctrl,
 			options = scope.$ctrl.options;
 
 		preSelectModelValue(ngModel, $ctrl, options);
 		setDefaultIfRequired(ngModel, $ctrl, element, attrs);
 
-		// Update pristine/touched status of ngModel
-		element.find('.btn').on('keypress click', function(event) {
-			// TODO better to do on blur like HTML select
+		$transclude(function(clone) {
+			if (clone.length) {
+				$ctrl.hasTranscluded = true;
+			}
+		});
+
+		element.find('.btn, .dropdown-menu').on('focusout', function() {
+			setTimeout(function() {
+				// If button isn't focused and dropdown not open, blur
+				if (element.find('.btn:focus').length === 0 &&
+					!element.find('.btn-group').hasClass("open")) {
+					element.trigger('blur');
+				}
+			}, 150); 	// need timeout because using dropdown.js,
+		});
+
+		element.on('blur', function(event) {
 			ngModel.$setTouched();
 		});
 
 		element.find('.btn').on('keypress', function(event) {
-			higlightFirstItemMatcingLetter(
-				ngModel, $ctrl, element, options, event.key
+			continueSearchAndSelectMatch(
+				ngModel, $ctrl, options, event.key
 			);
 			element.find(".active a").focus();
 		});
 
 		scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
-			if (newValue !== oldValue) {
+			if ((newValue || oldValue) && newValue !== oldValue) {
 				ngModel.$setDirty();
 			}
 
@@ -96,51 +117,29 @@
 			});
 		});
 
-		element.find('.btn').on('blur', function() {
-			// If user clicked button loses focus but btn-group is open
-			// If they keyed or clicked away it is closed and component blurred
-			scope.$evalAsync(function() {
-				if (!element.find('.btn-group').hasClass('open')) {
-					blur(ngModel, element, $ctrl);
-				}
-			}, 100); // Timeout required as werely on dropdown.js
-		});
-
 		element.find('ul').on('click', 'a', function(event) {
-			if ($(event.target).hasClass('tw-select-option')) {
-				var option = findOptionFromValue(options, this.getAttribute('value'));
-				selectOption(ngModel, $ctrl, option);
-			} else {
-				resetOption(ngModel, $ctrl);
-			}
 			element.find('.btn').focus();
 		});
 
 		element.find('ul').on('focus', 'a', function(event) {
-			if ($(event.target).hasClass('tw-select-option')) {
-				var option = findOptionFromValue(options, this.getAttribute('value'));
-				selectOption(ngModel, $ctrl, option);
-			} else {
-				resetOption(ngModel, $ctrl);
-			}
-		});
-
-		element.find('ul').on('blur', 'a', function(event) {
-			scope.$evalAsync(function() {
-				// If drop down closed and btton not focussed we just blurred
-				if (element.find('.btn:focus').length === 0 &&
-					!element.find('.btn-group').hasClass("open")) {
-					blur(ngModel, element, $ctrl);
-				}
-			}, 100); // Timeout required as werely on dropdown.js
+			optionFocus(event, options, ngModel, $ctrl, this);
 		});
 
 		element.find('ul').on('keypress', 'a', function(event) {
-			higlightFirstItemMatcingLetter(
-				ngModel, $ctrl, element, options, event.key
+			continueSearchAndSelectMatch(
+				ngModel, $ctrl, options, event.key
 			);
 			element.find(".active a").focus();
 		});
+	}
+
+	function optionFocus(event, options, ngModel, $ctrl, optionElement) {
+		if ($(event.target).hasClass('tw-select-option')) {
+			var option = findOptionFromValue(options, optionElement.getAttribute('value'));
+			selectOption(ngModel, $ctrl, option);
+		} else if ($(event.target).hasClass('tw-select-placeholder')) {
+			resetOption(ngModel, $ctrl);
+		}
 	}
 
 	function preSelectModelValue(ngModel, $ctrl, options) {
@@ -165,6 +164,7 @@
 
 	function findOptionFromValue(options, value) {
 		var optionMatch = false;
+
 		options.forEach(function(option) {
 			if (String(option.value) === String(value)) {
 				optionMatch = option;
@@ -188,29 +188,32 @@
 	}
 
 	function resetOption(ngModel, $ctrl) {
-		ngModel.$setViewValue('');
+		ngModel.$setViewValue(null);
 		$ctrl.selected = false;
 	}
 
-	function higlightFirstItemMatcingLetter(ngModel, $ctrl, element, options, letter) {
-		var letterLower = letter ? letter.toLowerCase() : "";
+	function continueSearchAndSelectMatch(ngModel, $ctrl, options, letter) {
+		var found = searchAndSelect(ngModel, $ctrl, options, $ctrl.search + letter);
+		if (found) {
+			$ctrl.search += letter;
+		} else {
+			$ctrl.search = letter;
+			found = searchAndSelect(ngModel, $ctrl, options, $ctrl.search);
+		}
+		return found;
+	}
+	function searchAndSelect(ngModel, $ctrl, options, term) {
 		var found = false;
+		var searchTerm = term.toLowerCase();
 		options.forEach(function(option) {
 			if (found) {
 				return;
 			}
-			if (option.label.substring(0,1).toLowerCase() === letterLower) {
-				found = true;
+			if (option.label.toLowerCase().indexOf(searchTerm) === 0) {
 				selectOption(ngModel, $ctrl, option);
+				found = true;
 			}
 		});
+		return found;
 	}
-
-	function blur(ngModel, $element, $ctrl) {
-		$ctrl.ngBlur();
-		// TODO would like to trigger touched here, but doesn't work because of
-		// timeout, need timeout because using dropdown.js,
-		//ngModel.$setTouched();
-	}
-
 })(window.angular);
