@@ -17,6 +17,14 @@
 	.config(['$compileProvider', function ($compileProvider) {
 	  $compileProvider.debugInfoEnabled(false);
 	}])
+	.controller('PageController', [function() {
+		this.blur = function() {
+			console.log('blur');
+		};
+		this.change = function() {
+			console.log('change');
+		};
+	}])
 	.directive('validateRegexp', function($q) {
 		return {
 			require: 'ngModel',
@@ -36,6 +44,8 @@
 
 	<link type="text/css" rel="stylesheet"
 		href="../components/bootstrap/dist/css/bootstrap.min.css" />
+	<link type="text/css" rel="stylesheet"
+		href="../components/currency-flags/dist/currency-flags.min.css" />
 
 	<style>
 	body {
@@ -89,10 +99,15 @@
 		display: block;
 	}
 
+	.currency-flag {
+		vertical-align: sub;
+		margin-right: 8px;
+	}
+
 	</style>
 </head>
 <body ng-app="my-app">
-	<div class="container">
+	<div class="container" ng-controller="PageController as vm">
 		<div class="row m-t-lg">
 			<div class="col-lg-8">
 				<form class="panel"
@@ -103,73 +118,6 @@
 						<h3 class="panel-title">Simple Form</h3>
 					</div>
 					<div class="panel-body">
-						<!--
-						<div class="form-group">
-							<label class="control-label">
-								Combiner
-							</label>
-							<tw-model-usage required tw-validation
-								placeholder="Placeholder"
-								ng-model="vm.model.combiner"
-								ng-min="5"
-								ng-max="vm.model.numberComplex"></tw-model-usage>
-							<div class="error-messages">
-								<div class="error-required">Required</div>
-								<div class="error-min">Number must be at least 5</div>
-								<div class="error-max">Number must be at most 10</div>
-								<div class="error-minlength">At least 2 long</div>
-								<div class="error-maxlength">At max 5 long</div>
-								<div class="error-number">Must be a number</div>
-							</div>
-							<div class="status-messages">
-								<div class="touched">Touched</div>
-								<div class="untouched">Untouched</div>
-								<div class="pristine">Pristine</div>
-								<div class="dirty">Dirty</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label">
-								Combiner Result
-							</label>
-							<input type="text" required tw-validation
-								ng-model="vm.model.combiner"
-								name="numberComplex"
-								class="form-control"
-								placeholder="min 5 max 10"
-								ng-min="5"
-								ng-max="10" />
-							<div class="error-messages">
-								<div class="error-required">Required</div>
-								<div class="error-min">Number must be at least 5</div>
-								<div class="error-max">Number must be at most 10</div>
-								<div class="error-number">Must be a number</div>
-							</div>
-							<div class="status-messages">
-								<div class="touched">Touched</div>
-								<div class="untouched">Untouched</div>
-								<div class="pristine">Pristine</div>
-								<div class="dirty">Dirty</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label">
-								Combiner Result
-							</label>
-							<input type="text" required tw-validation
-								ng-model="vm.model.combiner"
-								name="numberComplex"
-								class="form-control"
-								placeholder="min 5 max 10" />
-							<div class="error-messages">
-								<div class="error-required">Required</div>
-								<div class="error-min">Number must be at least 5</div>
-								<div class="error-max">Number must be at most 10</div>
-								<div class="error-number">Must be a number</div>
-							</div>
-						</div>
-					-->
-
 						<div class="form-group">
 							<label class="control-label">
 								Text input - required
@@ -180,14 +128,12 @@
 								ng-model="vm.model.textRequired" />
 						</div>
 
-						<div class="form-group"
-							ng-init="vm.model.count2 = 0;">
+						<div class="form-group">
 							<label class="control-label">
 								Select - required
 							</label>
 							<select class="form-control" required tw-validation
-								ng-model="vm.model.selectRequired"
-								ng-change="vm.model.count2 = vm.model.count2 + 1">
+								ng-model="vm.model.selectRequired">
 								<option value="">Please choose..</option>
 								<option value="1">Option 1</option>
 								<option value="2">Option 2</option>
@@ -206,17 +152,58 @@
 
 						<div class="form-group"
 							ng-init="vm.select.options2 = [
-								{'value': '1', 'label': 'One', 'icon': 'icon-profile'},
+								{'value': '1', 'label': 'One'},
 								{'value': '2', 'label': 'Two'},
 								{'value': '3', 'label': 'Three'}
-							]; vm.model.count = 0;">
+							];">
 							<label class="control-label">
 								twSelect - required
 							</label>
-							<tw-select required tw-validation
+							<tw-select tw-validation
 								ng-model="vm.model.selectRequired"
-								ng-change="vm.model.count = vm.model.count + 1"
+								ng-required="true"
 								options="vm.select.options2"
+								placeholder="Select an option...">
+							</tw-select>
+							<div class="error-messages">
+								<div class="error-required">Required</div>
+							</div>
+						</div>
+
+						<div class="form-group"
+							ng-init="vm.select.options3 = [
+								{'value': '1', 'label': 'Profile', 'icon': 'icon-profile'},
+								{'value': '2', 'label': 'Globe', 'icon': 'icon-globe'},
+								{'value': '3', 'label': 'Bank', 'icon': 'icon-bank'}
+							];">
+							<label class="control-label">
+								twSelect - with icons
+							</label>
+							<tw-select tw-validation
+								ng-model="vm.model.selectRequired"
+								ng-required="true"
+								options="vm.select.options3"
+								placeholder="Select an option...">
+								<a href="" ng-click="">Transcluded Link</a>
+							</tw-select>
+							<div class="error-messages">
+								<div class="error-required">Required</div>
+							</div>
+						</div>
+
+						<div class="form-group"
+							ng-init="vm.select.options4 = [
+								{'value': '1', 'label': 'Euro', 'currency': 'EUR'},
+								{'value': '2', 'label': 'British Pound', 'currency': 'GBP'},
+								{'value': '3', 'label': 'US Dollar', 'currency': 'USD'}
+							];">
+							<label class="control-label">
+								twSelect - with currency
+							</label>
+							<tw-select tw-validation
+								ng-model="vm.model.selectRequired"
+								ng-required="true"
+								options="vm.select.options4"
 								placeholder="Select an option...">
 							</tw-select>
 							<div class="error-messages">
@@ -256,6 +243,13 @@
 									Checkbox 4 - disabled
 								</label>
 							</div>
+							<div class="checkbox checkbox-lg">
+								<label>
+									<input type="checkbox" ng-model="vm.model.checkbox4" tw-input>
+									Checkbox 5
+									<small>Subsequent information</small>
+								</label>
+							</div>
 						</div>
 
 						<div class="form-group">
@@ -284,6 +278,16 @@
 										value="3"
 										ng-model="vm.model.simpleRadio" tw-input>
 									Radio 3 - disabled
+								</label>
+							</div>
+							<div class="radio radio-lg">
+								<label>
+									<input type="radio" name="simple-radio"
+										value="4"
+										ng-model="vm.model.checkbox4" tw-input>
+									Radio 4
+									<small>Subsequent information, subsequent
+										information, subsequent information.</small>
 								</label>
 							</div>
 						</div>
@@ -408,15 +412,18 @@
 						<h3 class="panel-title">Form components</h3>
 					</div>
 					<div class="panel-body">
-						<h5>TW Select</h5>
+						<h4>TW Select</h4>
 						<p>Styled select box replacement, supporting the majority of the
 							standard HTML interface for a select.  The select box
 							has full keyboard support matching native behaviour.</p>
 						<p>The select box also maintains a hidden form input with the
 							given name to be compatible with HTML form posts.</p>
+
+						<p class="alert alert-info">The select component depends
+							on dropwdown.js from Bootstrap.</p>
 						<hr/>
 						<div class="row" ng-init="vm.select.options = [
-							{'value': '1', 'label': 'One', 'icon': 'icon-profile'},
+							{'value': '1', 'label': 'One'},
 							{'value': '2', 'label': 'Two'},
 							{'value': '3', 'label': 'Three'}
 						]; vm.select.empty = 'Select an option...';">
@@ -429,9 +436,10 @@
 										name="mySelect"
 										placeholder="{{vm.select.empty}}"
 										ng-model="vm.model.components.select"
-										ng-change="alert('test')"
+										ng-change="vm.change()"
 										ng-required="vm.select.required"
 										ng-disabled="vm.select.disabled"
+										ng-blur="vm.blur()"
 										options="vm.select.options">
 									</tw-select>
 									<div class="error-messages">
@@ -445,8 +453,7 @@
 									</div>
 								</div>
 								<h5>Configuration</h5>
-								<pre>
-&lt;tw-select
+<pre>&lt;tw-select
   name="mySelect"
   placeholder="{{vm.select.empty}}"
   ng-model="vm.components.select"
@@ -454,13 +461,12 @@
   ng-disabled="{{vm.select.disabled}}"
   ng-change="..."
   options="[
-    {'value': '1', 'label': 'Option one'},
-    {'value': '2', 'label': 'Option two'},
-    {'value': '3', 'label': 'Option three'}
+    {'value': '1', 'label': 'One'},
+    {'value': '2', 'label': 'Two'},
+    {'value': '3', 'label': 'Three'}
   ]"
   tw-validation&gt;
-&lt;/tw-select&gt;
-								</pre>
+&lt;/tw-select&gt;</pre>
 							</div>
 							<div class="col-md-6">
 								<div class="well">
@@ -502,7 +508,7 @@
 							</div>
 						</div>
 
-						<h5>Date form control</h5>
+						<h4 class="m-t-3">Date form control</h4>
 						<p>Two way data binding via ng-model, with either a javascript Date object or
 							an ISO8601 String date: 1994-11-05T08:15:30-05:00</p>
 						<hr/>
@@ -516,7 +522,7 @@
 										ng-model="vm.model.components.date"
 										ng-required="vm.date.required"
 										ng-disabled="vm.date.disabled"
-										tw-locale="vm.date.locale"
+										locale="{{vm.date.locale}}"
 										min="1990-01-01"
 										max="2015-12-31">
 									</tw-date>
@@ -533,17 +539,15 @@
 									</div>
 								</div>
 								<h5>Configuration</h5>
-								<pre>
-&lt;tw-date
+<pre>&lt;tw-date
   ng-model="vm.components.date"
   ng-required="{{vm.date.required}}"
   ng-disabled="{{vm.date.disabled}}"
-  tw-locale="{{vm.date.locale}}"
+  locale="{{vm.date.locale}}"
   min="1990-01-01"
   max="2015-12-31"
   tw-validation
-&lt;/tw-date&gt;
-								</pre>
+&lt;/tw-date&gt;</pre>
 							</div>
 							<div class="col-md-6">
 								<div class="well">
@@ -557,7 +561,7 @@
 										<div class="checkbox">
 											<label>
 												<input type="checkbox" tw-input
-													   ng-model="vm.date.required" />
+													ng-model="vm.date.required" />
 												Is the control required?
 											</label>
 										</div>
@@ -569,7 +573,7 @@
 										<div class="checkbox">
 											<label>
 												<input type="checkbox" tw-input
-													   ng-model="vm.date.disabled" />
+													ng-model="vm.date.disabled" />
 												Is the control disabled?
 											</label>
 										</div>
@@ -579,9 +583,9 @@
 											Locale
 										</label>
 										<select required
-												class="form-control"
-												ng-model="vm.date.locale"
-												ng-init="vm.date.locale = 'en-GB'">
+											class="form-control"
+											ng-model="vm.date.locale"
+											ng-init="vm.date.locale = 'en-GB'">
 											<option value="en-GB">English UK</option>
 											<option value="fr-FR">French</option>
 											<option value="es-ES">Spanish</option>
@@ -592,7 +596,7 @@
 							</div>
 						</div>
 
-						<h5>Dynamic form control</h5>
+						<h4 class="m-t-3">Dynamic form control</h4>
 						<p>The dynamic form control is a form control that can
 							be fully configured based on a set of parameters.</p>
 						<p>This control can be used as the basis for a fully
@@ -651,8 +655,7 @@
 								</div>
 
 								<h5>Configuration</h5>
-								<pre>
-&lt;tw-dynamic-form-control
+<pre>&lt;tw-dynamic-form-control
   type="{{vm.dynamic.type}}"
   placeholder="{{vm.dynamic.placeholder}}"<span ng-if="vm.dynamic.type == 'radio' || vm.dynamic.type == 'select'">
   options="{{vm.dynamic.options}}"</span>
@@ -665,8 +668,7 @@
   ng-min="{{vm.dynamic.min}}"</span><span ng-if="vm.dynamic.max">
   ng-max="{{vm.dynamic.max}}"</span></span>
   tw-validation&gt;
-&lt;/tw-dynamic-form-control&gt;
-								</pre>
+&lt;/tw-dynamic-form-control&gt;</pre>
 							</div>
 							<div class="col-md-6">
 								<div class="well">
