@@ -98,7 +98,7 @@
 				<select ng-switch-when='select' \
 					name='{{$ctrl.name}}' \
 					id='{{$ctrl.id}}' \
-					class='form-control' \
+					class='form-control tw-dynamic-select' \
 					ng-options='option.value as option.label for option in $ctrl.options' \
 					ng-model='$ctrl.ngModel' \
 					ng-required='$ctrl.ngRequired' \
@@ -114,12 +114,11 @@
 		};
 	}
 /*
-
-
 <div ng-switch-when='select'> \
 	<tw-select  \
 		name='{{$ctrl.name}}' \
 		id='{{$ctrl.id}}' \
+		class='tw-dynamic-select' \
 		options='$ctrl.options' \
 		placeholder='{{$ctrl.placeholder}}' \
 		ng-model='$ctrl.ngModel' \
@@ -130,6 +129,7 @@
 	</tw-select> \
 </div> \
 */
+
 	angular
 		.module('tw.form-components')
 		.controller('TwDynamicFormControlController', TwDynamicFormControlController);

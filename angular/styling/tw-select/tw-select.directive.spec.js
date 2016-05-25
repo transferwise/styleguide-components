@@ -7,6 +7,8 @@ describe('Directive: TwSelect', function() {
         isolateScope,
         directiveElement;
 
+    var SELECT_SELECTOR = ".tw-select-hidden";
+
     beforeEach(module('tw.form-components'));
 
     beforeEach(inject(function($injector) {
@@ -29,46 +31,86 @@ describe('Directive: TwSelect', function() {
                 expect(listElements.length).toBe(OPTIONS.length);
             });
             it('should name hidden input like component', function() {
-                expect(directiveElement.find('input').attr("name")).toBe($scope.name);
+                expect(directiveElement.find(SELECT_SELECTOR).attr("name")).toBe($scope.name);
             });
         });
 
         describe('when ngModel supplied', function() {
-            beforeEach(function() {
-                $scope.options = OPTIONS;
-                $scope.ngModel = "2";
-                directiveElement = getCompiledDirectiveElement($scope);
-            });
-            it('should preselect ngModel option', function() {
-                var selectedTextElement = directiveElement.find('.selected-label')[0];
-                expect(selectedTextElement.innerText.trim()).toBe("Two");
-            });
-            it('should not change ngModel if set', function() {
-                expect($scope.ngModel).toBe("2");
-            });
-            it('should not show placeholder', function() {
-                $scope.ngRequired = true;
-                directiveElement = getCompiledDirectiveElement($scope);
-                var placeholerElement = directiveElement.find('.form-control-placeholder');
-                expect(placeholerElement.length).toBe(0);
-            });
+            describe('as string', function() {
+                beforeEach(function() {
+                    $scope.options = OPTIONS;
+                    $scope.ngModel = "2";
+                    directiveElement = getCompiledDirectiveElement($scope);
+                });
+                it('should preselect ngModel option', function() {
+                    var selectedTextElement = directiveElement.find('.selected-label')[0];
+                    expect(selectedTextElement.innerText.trim()).toBe("Two");
+                });
+                it('should not change ngModel if set', function() {
+                    expect($scope.ngModel).toBe("2");
+                });
+                it('should not show placeholder', function() {
+                    $scope.ngRequired = true;
+                    directiveElement = getCompiledDirectiveElement($scope);
+                    var placeholerElement = directiveElement.find('.form-control-placeholder');
+                    expect(placeholerElement.length).toBe(0);
+                });
 
-            it('should not show placeholder when ngModel is "0"', function() {
-                $scope.ngModel = "0";
-                directiveElement = getCompiledDirectiveElement($scope);
-                var placeholderElement = directiveElement.find('.form-control-placeholder');
-                expect(placeholderElement.length).toBe(0);
-            });
-            it('should show selected when ngModel is "0"', function() {
-                $scope.ngModel = "0";
-                directiveElement = getCompiledDirectiveElement($scope);
-                var selectedElement = directiveElement.find('.selected-label');
-                expect(selectedElement.length).toBe(1);
-            });
+                it('should not show placeholder when ngModel is "0"', function() {
+                    $scope.ngModel = "0";
+                    directiveElement = getCompiledDirectiveElement($scope);
+                    var placeholderElement = directiveElement.find('.form-control-placeholder');
+                    expect(placeholderElement.length).toBe(0);
+                });
+                it('should show selected when ngModel is "0"', function() {
+                    $scope.ngModel = "0";
+                    directiveElement = getCompiledDirectiveElement($scope);
+                    var selectedElement = directiveElement.find('.selected-label');
+                    expect(selectedElement.length).toBe(1);
+                });
 
-            it('should set the value of hidden input', function() {
-                expect(directiveElement.find("input").val()).toBe("2");
+                it('should set the value of hidden control', function() {
+                    expect(directiveElement.find(SELECT_SELECTOR).val()).toBe("2");
+                });
             });
+            describe('as number', function() {
+                beforeEach(function() {
+                    $scope.options = OPTIONS_NUMERIC;
+                    $scope.ngModel = 2;
+                    directiveElement = getCompiledDirectiveElement($scope);
+                });
+                it('should preselect ngModel option', function() {
+                    var selectedTextElement = directiveElement.find('.selected-label')[0];
+                    expect(selectedTextElement.innerText.trim()).toBe("Two");
+                });
+                it('should not change ngModel if set', function() {
+                    expect($scope.ngModel).toBe(2);
+                });
+                it('should not show placeholder', function() {
+                    $scope.ngRequired = true;
+                    directiveElement = getCompiledDirectiveElement($scope);
+                    var placeholerElement = directiveElement.find('.form-control-placeholder');
+                    expect(placeholerElement.length).toBe(0);
+                });
+
+                it('should not show placeholder when ngModel is 0', function() {
+                    $scope.ngModel = 0;
+                    directiveElement = getCompiledDirectiveElement($scope);
+                    var placeholderElement = directiveElement.find('.form-control-placeholder');
+                    expect(placeholderElement.length).toBe(0);
+                });
+                it('should show selected when ngModel is 0', function() {
+                    $scope.ngModel = 0;
+                    directiveElement = getCompiledDirectiveElement($scope);
+                    var selectedElement = directiveElement.find('.selected-label');
+                    expect(selectedElement.length).toBe(1);
+                });
+
+                it('should set the value of hidden control', function() {
+                    // always string...
+                    expect(directiveElement.find(SELECT_SELECTOR).val()).toBe("2");
+                });
+            })
         });
 
         describe('when ngModel not supplied', function() {
@@ -334,6 +376,17 @@ describe('Directive: TwSelect', function() {
         label: "Two"
     },{
         value: "3",
+        label: "Three"
+    }];
+
+    var OPTIONS_NUMERIC = [{
+        value: 1,
+        label: "One"
+    },{
+        value: 2,
+        label: "Two"
+    },{
+        value: 3,
         label: "Three"
     }];
 });

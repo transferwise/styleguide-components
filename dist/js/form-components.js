@@ -8,20 +8,22 @@ angular.module("tw.form-components", []);
                     if (vm.modelType !== STRING_TYPE && vm.modelType !== OBJECT_TYPE) throw new Error("Invalid modelType, should be " + STRING_TYPE + " or " + OBJECT_TYPE);
                     vm.dateModelType = vm.modelType;
                 } else vm.dateModelType = OBJECT_TYPE;
-                vm.day = null, vm.month = 0, vm.year = null;
+                vm.day = null, vm.month = "0", vm.year = null;
             }
             ngModel = $element.controller("ngModel"), ngModel.$validators.min = function(value) {
                 if (null === value) return !0;
-                var min = vm.ngMin ? vm.ngMin : vm.min;
-                min = "string" == typeof min ? Date.parse(min) ? new Date(min) : !1 : min;
+                var min = vm.ngMin ? vm.ngMin : vm.min ? vm.min : !1;
+                if (!min) return !0;
+                if (min = "string" == typeof min ? new Date(min) : min, !validDateObject(min)) return !0;
                 var dateValue = "string" == typeof value ? new Date(value) : value;
-                return !min || dateValue >= min;
+                return dateValue >= min;
             }, ngModel.$validators.max = function(value) {
                 if (null === value) return !0;
-                var max = vm.ngMax ? vm.ngMax : vm.max;
-                max = "string" == typeof max ? Date.parse(max) ? new Date(max) : !1 : max;
+                var max = vm.ngMax ? vm.ngMax : vm.max ? vm.max : !1;
+                if (!max) return !0;
+                if (max = "string" == typeof max ? new Date(max) : max, !validDateObject(max)) return !0;
                 var dateValue = "string" == typeof value ? new Date(value) : value;
-                return !max || max >= dateValue;
+                return max >= dateValue;
             }, setDateRequired(), setDateDisabled(), setDateLocale(), setMonths(), registerWatchers();
         }
         function applyDateModelIfValidOrThrowError() {
@@ -38,11 +40,10 @@ angular.module("tw.form-components", []);
             vm.dateDisabled = void 0 !== vm.ngDisabled ? vm.ngDisabled : void 0 !== vm.disabled;
         }
         function setDateLocale() {
-            vm.locale && (vm.dateLocale = vm.locale), vm.twLocale && (vm.dateLocale = vm.twLocale), 
-            vm.dateLocale || setDefaultDateLocale();
+            vm.locale, vm.locale || setDefaultDateLocale();
         }
         function setDefaultDateLocale() {
-            vm.dateLocale = DEFAULT_LOCALE_EN;
+            vm.locale = DEFAULT_LOCALE_EN;
         }
         function explodeDateModel(date) {
             var dateObj = "string" == typeof date ? new Date(date) : date;
@@ -70,13 +71,13 @@ angular.module("tw.form-components", []);
                 newValue !== oldValue && setDateRequired();
             }), $scope.$watch("vm.ngDisabled", function(newValue, oldValue) {
                 newValue !== oldValue && setDateDisabled();
-            }), $scope.$watch("vm.twLocale", function(newValue, oldValue) {
+            }), $scope.$watch("vm.locale", function(newValue, oldValue) {
                 newValue !== oldValue && (setDateLocale(), setMonths());
             });
         }
         function getMonthsBasedOnIntlSupportForLocale() {
             var monthNames;
-            return isIntlSupportedForLocale(vm.dateLocale) ? monthNames = getMonthNamesForLocale() : ($log.warn('i18n not supported for locale "' + vm.dateLocale + '"'), 
+            return isIntlSupportedForLocale(vm.locale) ? monthNames = getMonthNamesForLocale() : ($log.warn('i18n not supported for locale "' + vm.locale + '"'), 
             monthNames = DEFAULT_MONTHS_EN), extendMonthsWithIds(monthNames);
         }
         function isIntlSupportedForLocale(locale) {
@@ -85,7 +86,7 @@ angular.module("tw.form-components", []);
         function getMonthNamesForLocale() {
             for (var date, months = [], i = 0; 12 > i; i++) {
                 date = new Date(), date.setMonth(i);
-                var monthName = date.toLocaleDateString(vm.dateLocale, {
+                var monthName = date.toLocaleDateString(vm.locale, {
                     month: "long"
                 });
                 monthName = monthName[0].toUpperCase() + monthName.substring(1), months.push(monthName);
@@ -163,12 +164,15 @@ angular.module("tw.form-components", []);
         return directive;
     }
     function TwDateLink(scope, element, attrs, ngModel) {
-        element.find("input").on("blur", function() {
-            ngModel.$setTouched();
+        var dayTouched, yearTouched;
+        element.find("input[name=day]").on("blur", function() {
+            dayTouched = !0, dayTouched && yearTouched && (ngModel.$setTouched(), element.trigger("blur"));
+        }), element.find("input[name=year]").on("blur", function() {
+            yearTouched = !0, ngModel.$setTouched(), element.trigger("blur");
         });
     }
     angular.module("tw.form-components").directive("twDate", TwDateDirective);
-    var templateAsString = " 			<div class='row'> 				<div class='col-sm-3'> 					<label class='sr-only' for='day-{{::uniqueId}}'>Day</label> 					<input type='number' 						name='day' 						id='day-{{::uniqueId}}' 						class='form-control tw-date-day' 						ng-model='vm.day' 						ng-change='vm.updateDateModelAndValidationClasses()' 						placeholder='DD' 						min='1' 						ng-min='1' 						ng-disabled='vm.dateDisabled' 						ng-required='vm.dateRequired' 						tw-focusable /> 				</div> 				<div class='col-sm-5'> 					<label class='sr-only' for='month-{{::uniqueId}}'>Month</label> 					<select name='month' 						id='month-{{::uniqueId}}' 						class='form-control tw-date-month' 						ng-model='vm.month' 						ng-change='vm.updateDateModelAndValidationClasses()' 						ng-options='month.value as month.label for month in vm.dateMonths' 						ng-disabled='vm.dateDisabled' 						ng-required='vm.dateRequired' 						autocomplete='off'> 					</select> 				</div> 				<div class='col-sm-4'> 					<label class='sr-only' for='year-{{::uniqueId}}'>Year</label> 					<input type='number' 						id='year-{{::uniqueId}}' 						name='year' 						class='form-control tw-date-year' 						placeholder='YYYY' 						ng-model='vm.year' 						ng-change='vm.updateDateModelAndValidationClasses()' 						ng-min='vm.dateRange.min.getFullYear()' 						ng-max='vm.dateRange.max.getFullYear()' 						maxlength='4' 						ng-maxlength='4' 						ng-disabled='vm.dateDisabled' 						ng-required='vm.dateRequired' 						tw-focusable /> 				</div> 			</div>";
+    var templateAsString = " 			<div class='row'> 				<div class='col-sm-3'> 					<label class='sr-only' for='day-{{::uniqueId}}'>Day</label> 					<input type='number' 						name='day' 						id='day-{{::uniqueId}}' 						class='form-control tw-date-day' 						ng-model='vm.day' 						ng-change='vm.updateDateModelAndValidationClasses()' 						placeholder='DD' 						min='1' 						ng-min='1' 						ng-disabled='vm.dateDisabled' 						ng-required='vm.dateRequired' 						tw-focusable /> 				</div> 				<div class='col-sm-5'> 					<label class='sr-only' for='month-{{::uniqueId}}'>Month</label> 					<tw-select 						name='month' 						class='tw-date-month' 						id='month-{{::uniqueId}}' 						ng-model='vm.month' 						ng-change='vm.updateDateModelAndValidationClasses()' 						ng-required='vm.dateRequired' 						ng-disabled='vm.dateDisabled' 						options='vm.dateMonths'> 					</tw-select> 				</div> 				<div class='col-sm-4'> 					<label class='sr-only' for='year-{{::uniqueId}}'>Year</label> 					<input type='number' 						id='year-{{::uniqueId}}' 						name='year' 						class='form-control tw-date-year' 						placeholder='YYYY' 						ng-model='vm.year' 						ng-change='vm.updateDateModelAndValidationClasses()' 						ng-min='vm.dateRange.min.getFullYear()' 						ng-max='vm.dateRange.max.getFullYear()' 						maxlength='4' 						ng-maxlength='4' 						ng-disabled='vm.dateDisabled' 						ng-required='vm.dateRequired' 						tw-focusable /> 				</div> 			</div>";
 }(window.angular), function(angular) {
     function TwDynamicFormControl() {
         return {
@@ -195,7 +199,7 @@ angular.module("tw.form-components", []);
                 ngMax: "=",
                 ngPattern: "="
             },
-            template: "<div ng-switch='$ctrl.type'> 				<input ng-switch-when='text'  					name='{{$ctrl.name}}'  					id='{{$ctrl.id}}' 					type='text' 					class='form-control' 					placeholder='{{$ctrl.placeholder}}' 					ng-model='$ctrl.ngModel' 					ng-model-options='{ allowInvalid: true }' 					ng-required='$ctrl.ngRequired' 					ng-disabled='$ctrl.ngDisabled' 					ng-pattern='$ctrl.ngPattern' 					ng-change='$ctrl.change()' 					ng-blur='$ctrl.blur()' 					ng-minlength='$ctrl.ngMinlength' 					ng-maxlength='$ctrl.ngMaxlength' />  				<input ng-switch-when='number'  					name='{{$ctrl.name}}'  					id='{{$ctrl.id}}' 					type='number' 					step='{{$ctrl.step}}' 					class='form-control' 					placeholder='{{$ctrl.placeholder}}' 					ng-model='$ctrl.ngModel' 					ng-model-options='{ allowInvalid: true }' 					ng-required='$ctrl.ngRequired' 					ng-disabled='$ctrl.ngDisabled' 					ng-change='$ctrl.change()' 					ng-blur='$ctrl.blur()' 					ng-min='$ctrl.ngMin' 					ng-max='$ctrl.ngMax' />  				<div ng-switch-when='radio' 					class='radio' 					ng-class='{disabled: $ctrl.ngDisabled}' 					ng-repeat='option in $ctrl.options'> 					<label> 						<input type='radio' tw-input 							name='{{$ctrl.name}}' 							value='{{option.value}}' 							ng-model='$ctrl.ngModel' 							ng-required='$ctrl.ngRequired' 							ng-disabled='$ctrl.ngDisabled' 							ng-change='$ctrl.change()' 							ng-click='$ctrl.change()' 							ng-blur='$ctrl.blur()' /> 						{{option.label}} 					</label> 				</div> 				<div ng-switch-when='checkbox' 					class='checkbox' 					ng-class='{disabled: $ctrl.ngDisabled}'> 					<label> 						<input type='checkbox' tw-input 							name='{{$ctrl.name}}' 							id='{{$ctrl.id}}' 							ng-model='$ctrl.ngModel' 							ng-required='$ctrl.ngRequired' 							ng-disabled='$ctrl.ngDisabled' 							ng-change='$ctrl.change()' 							ng-click='$ctrl.change()' 							ng-blur='$ctrl.blur()' /> 						{{$ctrl.placeholder}} 					</label> 				</div> 				<select ng-switch-when='select' 					name='{{$ctrl.name}}' 					id='{{$ctrl.id}}' 					class='form-control' 					ng-options='option.value as option.label for option in $ctrl.options' 					ng-model='$ctrl.ngModel' 					ng-required='$ctrl.ngRequired' 					ng-disabled='$ctrl.ngDisabled' 					ng-change='$ctrl.change(); $ctrl.blur();'> 					ng-blur='$ctrl.blur()'> 					<option ng-if='$ctrl.placeholder' value=''> 						{{$ctrl.placeholder}} 					</option> 				</select> 				<ng-transclude class='error-messages'></ng-transclude> 			</div>"
+            template: "<div ng-switch='$ctrl.type'> 				<input ng-switch-when='text'  					name='{{$ctrl.name}}'  					id='{{$ctrl.id}}' 					type='text' 					class='form-control' 					placeholder='{{$ctrl.placeholder}}' 					ng-model='$ctrl.ngModel' 					ng-model-options='{ allowInvalid: true }' 					ng-required='$ctrl.ngRequired' 					ng-disabled='$ctrl.ngDisabled' 					ng-pattern='$ctrl.ngPattern' 					ng-change='$ctrl.change()' 					ng-blur='$ctrl.blur()' 					ng-minlength='$ctrl.ngMinlength' 					ng-maxlength='$ctrl.ngMaxlength' />  				<input ng-switch-when='number'  					name='{{$ctrl.name}}'  					id='{{$ctrl.id}}' 					type='number' 					step='{{$ctrl.step}}' 					class='form-control' 					placeholder='{{$ctrl.placeholder}}' 					ng-model='$ctrl.ngModel' 					ng-model-options='{ allowInvalid: true }' 					ng-required='$ctrl.ngRequired' 					ng-disabled='$ctrl.ngDisabled' 					ng-change='$ctrl.change()' 					ng-blur='$ctrl.blur()' 					ng-min='$ctrl.ngMin' 					ng-max='$ctrl.ngMax' />  				<div ng-switch-when='radio' 					class='radio' 					ng-class='{disabled: $ctrl.ngDisabled}' 					ng-repeat='option in $ctrl.options'> 					<label> 						<input type='radio' tw-input 							name='{{$ctrl.name}}' 							value='{{option.value}}' 							ng-model='$ctrl.ngModel' 							ng-required='$ctrl.ngRequired' 							ng-disabled='$ctrl.ngDisabled' 							ng-change='$ctrl.change()' 							ng-click='$ctrl.change()' 							ng-blur='$ctrl.blur()' /> 						{{option.label}} 					</label> 				</div> 				<div ng-switch-when='checkbox' 					class='checkbox' 					ng-class='{disabled: $ctrl.ngDisabled}'> 					<label> 						<input type='checkbox' tw-input 							name='{{$ctrl.name}}' 							id='{{$ctrl.id}}' 							ng-model='$ctrl.ngModel' 							ng-required='$ctrl.ngRequired' 							ng-disabled='$ctrl.ngDisabled' 							ng-change='$ctrl.change()' 							ng-click='$ctrl.change()' 							ng-blur='$ctrl.blur()' /> 						{{$ctrl.placeholder}} 					</label> 				</div> 				<select ng-switch-when='select' 					name='{{$ctrl.name}}' 					id='{{$ctrl.id}}' 					class='form-control tw-dynamic-select' 					ng-options='option.value as option.label for option in $ctrl.options' 					ng-model='$ctrl.ngModel' 					ng-required='$ctrl.ngRequired' 					ng-disabled='$ctrl.ngDisabled' 					ng-change='$ctrl.change(); $ctrl.blur();'> 					ng-blur='$ctrl.blur()'> 					<option ng-if='$ctrl.placeholder' value=''> 						{{$ctrl.placeholder}} 					</option> 				</select> 				<ng-transclude class='error-messages'></ng-transclude> 			</div>"
         };
     }
     function TwDynamicFormControlController($element, $scope) {
@@ -203,7 +207,7 @@ angular.module("tw.form-components", []);
         $ctrl.change = function() {
             ngModelController.$setDirty();
         }, $ctrl.blur = function() {
-            ngModelController.$setTouched();
+            ngModelController.$setTouched(), $element.trigger("blur");
         };
     }
     function TwDynamicFormControlLink(scope, element, attrs, ngModel) {

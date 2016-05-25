@@ -28,14 +28,16 @@
 				placeholder: '@'
 			},
 			template: " \
-				<div class='btn-group btn-block'> \
+				<div class='btn-group btn-block tw-select' aria-hidden='true'> \
 					<button type='button' class='btn btn-input dropdown-toggle' \
 						data-toggle='dropdown' aria-expanded='false' \
 						ng-disabled='$ctrl.ngDisabled' \
 						tw-focusable> \
-						<i class='icon {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> \
-						</i><i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}}' ng-if='$ctrl.selected && $ctrl.selected.currency'> \
-						</i><span class='selected-label' ng-if='$ctrl.ngModel != null'>{{$ctrl.selected.label}}</span> \
+						<span class='tw-select-selected' ng-if='$ctrl.ngModel != null'> \
+							<i class='icon {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> \
+							</i><i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}}' ng-if='$ctrl.selected && $ctrl.selected.currency'> \
+							</i><span class='selected-label'>{{$ctrl.selected.label}}</span> \
+						</span> \
 						<span class='form-control-placeholder' ng-if='$ctrl.ngModel == null'>{{$ctrl.placeholder}}</span> \
 						<span class='caret'></span> \
 					</button> \
@@ -56,14 +58,28 @@
 								</i>{{option.label}} \
 							</a> \
 						</li> \
-						<li ng-if='$ctrl.hasTranscluded' class='divider'></li> \
-						<li ng-transclude ng-if='$ctrl.hasTranscluded' class='transcluded'></li> \
+						<li ng-transclude ng-if='$ctrl.hasTranscluded' class='tw-select-transcluded'></li> \
 					</ul> \
-					<input type='hidden' name='{{$ctrl.name}}' value='{{$ctrl.ngModel}}' \
-					 	ng-disabled='$ctrl.ngDisabled' /> \
-				</div>"
+				</div> \
+				<input type='hidden' class='tw-select-hidden' \
+					name='{{$ctrl.name}}' \
+					value='{{$ctrl.ngModel}}' \
+					ng-disabled='$ctrl.ngDisabled' /> "
 		};
 	}
+	/* \
+	<input type='hidden' name='{{$ctrl.name}}' value='{{$ctrl.ngModel}}' \
+		ng-disabled='$ctrl.ngDisabled' /> \
+
+		ng-model='$ctrl.ngModel' \
+
+	<select name='{{$ctrl.name}}' class='sr-only tw-select-hidden' \
+		ng-model='$ctrl.ngModel' \
+		ng-options='option.value as option.label for option in $ctrl.options' \
+		ng-disabled='$ctrl.ngDisabled' \
+		ng-required='$ctrl.ngRequired'> \
+	</select>"
+		*/
 
 	function TwSelectLink(scope, element, attrs, ngModel, $transclude) {
 		var $ctrl = scope.$ctrl,

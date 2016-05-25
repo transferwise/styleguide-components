@@ -24,6 +24,10 @@
 		this.change = function() {
 			console.log('change');
 		};
+		this.longOptions = [];
+		for(var i=0; i<50; i++) {
+			this.longOptions.push({value: String(i), label: String(i)});
+		}
 	}])
 	.directive('validateRegexp', function($q) {
 		return {
@@ -104,6 +108,10 @@
 		margin-right: 8px;
 	}
 
+	.dropdown-menu li:empty {
+		display: none;
+	}
+
 	</style>
 </head>
 <body ng-app="my-app">
@@ -163,8 +171,7 @@
 								ng-model="vm.model.selectRequired"
 								ng-required="true"
 								options="vm.select.options2"
-								placeholder="Select an option...">
-							</tw-select>
+								placeholder="Select an option..."></tw-select>
 							<div class="error-messages">
 								<div class="error-required">Required</div>
 							</div>
@@ -578,18 +585,19 @@
 											</label>
 										</div>
 									</div>
-									<div class="form-group">
+									<div class="form-group" ng-init="vm.date.locales = [
+										{'value': 'en-GB', 'label': 'English UK'},
+										{'value': 'fr-FR', 'label': 'French'},
+										{'value': 'es-ES', 'label': 'Spanish'},
+										{'value': 'ss-SS', 'label': 'Unknown locale'}
+										]; vm.date.locale = 'en-GB';">
 										<label class="control-label">
 											Locale
 										</label>
-										<select required
-											class="form-control"
+										<tw-select
+											options="vm.date.locales"
 											ng-model="vm.date.locale"
 											ng-init="vm.date.locale = 'en-GB'">
-											<option value="en-GB">English UK</option>
-											<option value="fr-FR">French</option>
-											<option value="es-ES">Spanish</option>
-											<option value="ss-SS">Unknown locale</option>
 										</select>
 									</div>
 								</div>
@@ -676,21 +684,21 @@
 										Edit configuration
 									</h5>
 
-									<div class="form-group">
+									<div class="form-group" ng-init="vm.dynamic.types = [
+										{'value': 'text', 'label': 'Text'},
+										{'value': 'number', 'label': 'Number'},
+										{'value': 'select', 'label': 'Select'},
+										{'value': 'radio', 'label': 'Radio'},
+										{'value': 'checkbox', 'label': 'Checkbox'}
+										]; vm.dynamic.type = 'text';">
 										<label class="control-label">
 											Type
 										</label>
-										<select required
-											class="form-control"
+										<tw-select
+											options="vm.dynamic.types"
 											ng-model="vm.dynamic.type"
-											ng-change="vm.model.dynamicFormControl = null"
-											ng-init="vm.dynamic.type = 'text'">
-											<option value="text">Text</option>
-											<option value="number">Number</option>
-											<option value="select">Select</option>
-											<option value="radio">Radio</option>
-											<option value="checkbox">Checkbox</option>
-										</select>
+											ng-change="vm.model.dynamicFormControl = null">
+										</tw-select>
 									</div>
 
 									<div class="form-group">
