@@ -1,0 +1,21 @@
+// Alerts
+
+.alert-variant(@background; @border; @text-color) {
+  background-color: @background;
+  border-color: @border;
+  color: @text-color;
+  a {
+      color: @text-color;
+  }
+  hr {
+    border-top-color: darken(@border, 5%);
+  }
+  b, strong, .close {
+      color: @text-color;
+  }
+  .alert-link,
+  .close:hover,
+  .close:focus {
+      color: darken(@text-color, 10%);
+  }
+}

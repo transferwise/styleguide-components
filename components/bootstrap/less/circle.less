@@ -1,0 +1,109 @@
+@circle-xs-diameter: 24px;
+@circle-sm-diameter: 48px;
+@circle-md-diameter: 72px;
+@circle-lg-diameter: 96px;
+
+@circle-xs-font-size: 14px;
+@circle-sm-font-size: 16px;
+@circle-md-font-size: 24px;
+@circle-lg-font-size: 32px;
+
+.circle {
+    border: 1px solid @brand-smoke;
+    color: @gray-light;
+    border-radius: 50%;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    background-color: @brand-white;
+    background-repeat:no-repeat;
+    background-size: cover;
+    background-position: center;
+
+    display: block;
+    overflow: hidden;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    .circle-variant(@circle-md-diameter, @circle-md-font-size, (@circle-md-font-size + 8px));
+
+    .glyphicon {
+        margin-top: -1px;
+    }
+
+    &.circle-lg {
+        .circle-variant(@circle-lg-diameter, @circle-lg-font-size, (@circle-lg-font-size + 8px));
+
+        .glyphicon {
+            margin-top: -2px;
+        }
+    }
+
+    &.circle-sm {
+        .circle-variant(@circle-sm-diameter, @circle-sm-font-size, (@circle-sm-font-size + 8px));
+
+        .glyphicon {
+            margin-top: 0px;
+        }
+    }
+
+    &.circle-xs {
+        .circle-variant(@circle-xs-diameter, @circle-xs-font-size, 16px);
+
+        .glyphicon {
+            margin-top: 0px;
+        }
+    }
+
+    &.circle-inverse {
+        background-color: @brand-smoke-plus-10;
+        border-color: @brand-smoke-plus-10;
+        color: @brand-grey-plus-10;
+    }
+
+    &.active {
+        border-color: @brand-info;
+        background-color: @brand-info;
+        color: #FFF;
+    }
+
+    img {
+        width: 100%;
+    }
+}
+a.circle,
+a.circle .icon,
+a.circle .glyphicon, {
+    text-decoration: none;
+}
+a:hover .circle,
+a.circle:hover {
+    border-color: @brand-info;
+    color: @brand-info;
+    text-decoration: none;
+}
+a:hover .circle.active,
+a.circle.active:hover {
+    text-decoration: none;
+    color: #FFF;
+}
+
+
+@media (max-width: @screen-sm-max) {
+  .circle.circle-responsive {
+    .circle-variant(@circle-sm-diameter, @circle-sm-font-size, (@circle-sm-font-size + 8px));
+
+    .glyphicon {
+      margin-top: 0px;
+    }
+  }
+  .circle-lg.circle-responsive {
+    .circle-variant(@circle-md-diameter, @circle-md-font-size, (@circle-md-font-size + 8px));
+
+    .glyphicon {
+      margin-top: -1px;
+    }
+  }
+}

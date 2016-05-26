@@ -1,0 +1,78 @@
+
+.tile {
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.1s ease-in-out;
+
+  padding: @tile-padding;
+  background-color: @brand-smoke-plus-20;
+  border: 1px solid @brand-smoke;
+  border-radius: @border-radius-base;
+  font-size: @font-size-small;
+
+  width: 100%;
+  margin-bottom: @grid-gutter-width;
+
+  &:hover:not(.tile-disabled)  {
+    background-color: @brand-smoke-plus-10;
+  }
+
+  &:active:not(.tile-disabled) {
+    background-color: @brand-smoke-plus-10;
+    border: 1px solid @brand-light-blue;
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+
+  .circle {
+    margin-bottom: 16px;
+    color: @brand-light-blue;
+  }
+
+  .tile-ribbon-benefit {
+    position: absolute;
+    top: 24px;
+    left: -40px;
+    width: 160px;
+    background-color: @brand-light-blue;
+    text-align:center;
+    color: @brand-white;
+    font-weight: @tile-font-weight;
+    font-size: @font-size-small;
+    line-height: @line-height-large;
+    -webkit-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+  }
+}
+
+.tile-disabled {
+  background-color: @brand-white;
+  border: 1px solid @brand-smoke-plus-10;
+  cursor: not-allowed;
+  color: @brand-smoke-minus-10;
+
+  h5,
+  .circle,
+  .icon,
+  .glyphicon {
+    color: @brand-smoke-minus-10;
+  }
+}
+
+/* Backwards compaibility for early tile implementation */
+.tile-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: (-0.5 * @grid-gutter-width);
+    margin-left: (-0.5 * @grid-gutter-width);
+
+    > [class*="col-"] {
+        display: flex;
+    }
+}
