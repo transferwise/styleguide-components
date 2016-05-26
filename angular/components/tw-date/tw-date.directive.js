@@ -9,7 +9,7 @@
 		var directive = {
 			require: 'ngModel',
 			bindToController: true,
-			controller: "TwDateController",
+			controller: 'TwDateController',
 			controllerAs: 'vm',
 			replace: false,
 			restrict: 'E',

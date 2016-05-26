@@ -34,9 +34,9 @@ describe('Directive: TwDate', function() {
         es: 'es-ES'
     };
 
-    var DAY_SELECTOR = "input[name=day]";
-    var MONTH_SELECTOR = "input[name=month]";
-    var YEAR_SELECTOR = "input[name=year]";
+    var DAY_SELECTOR = 'input[name=day]';
+    var MONTH_SELECTOR = 'input[name=month]';
+    var YEAR_SELECTOR = 'input[name=year]';
 
     describe('init', function() {
         describe('when empty input $scope is passed', function () {
@@ -86,7 +86,7 @@ describe('Directive: TwDate', function() {
                 });
                 it('should return an updated date as a string', function() {
                     setDateUsingControls(element, '2000', '0', '1');
-                    expect(typeof $scope.ngModel).toBe("string");
+                    expect(typeof $scope.ngModel).toBe('string');
                     //expect($scope.ngModel).toBe('2000-01-01');
                 });
             });
@@ -108,7 +108,7 @@ describe('Directive: TwDate', function() {
                 });
                 it('should return an updated date as an object', function() {
                     setDateUsingControls(element, '2000', '0', '1');
-                    expect(typeof $scope.ngModel).toBe("object");
+                    expect(typeof $scope.ngModel).toBe('object');
                     //expect($scope.ngModel).toEqual(new Date(2000, 0, 1));
                 })
             });
@@ -129,7 +129,7 @@ describe('Directive: TwDate', function() {
                 });
                 it('should return an updated date as a string', function() {
                     setDateUsingControls(element, '2000', '0', '1');
-                    expect(typeof $scope.ngModel).toBe("string");
+                    expect(typeof $scope.ngModel).toBe('string');
                     //expect($scope.ngModel).toEqual('2000-01-01');
                 })
             });
@@ -249,9 +249,9 @@ describe('Directive: TwDate', function() {
                 $scope.ngModel = null;
                 $scope.ngDisabled = true
                 element = getCompiledDirectiveElement($scope);
-                expect(element.find(DAY_SELECTOR).attr("disabled")).toBeDefined();
-                expect(element.find(MONTH_SELECTOR).attr("disabled")).toBeDefined();
-                expect(element.find(YEAR_SELECTOR).attr("disabled")).toBeDefined();
+                expect(element.find(DAY_SELECTOR).attr('disabled')).toBeDefined();
+                expect(element.find(MONTH_SELECTOR).attr('disabled')).toBeDefined();
+                expect(element.find(YEAR_SELECTOR).attr('disabled')).toBeDefined();
             });
         });
         describe('when ngDisabled=false', function () {
@@ -259,9 +259,9 @@ describe('Directive: TwDate', function() {
                 $scope.ngModel = null;
                 $scope.ngDisabled = false;
                 element = getCompiledDirectiveElement($scope);
-                expect(element.find(DAY_SELECTOR).attr("disabled")).not.toBeDefined();
-                expect(element.find(MONTH_SELECTOR).attr("disabled")).not.toBeDefined();
-                expect(element.find(YEAR_SELECTOR).attr("disabled")).not.toBeDefined();
+                expect(element.find(DAY_SELECTOR).attr('disabled')).not.toBeDefined();
+                expect(element.find(MONTH_SELECTOR).attr('disabled')).not.toBeDefined();
+                expect(element.find(YEAR_SELECTOR).attr('disabled')).not.toBeDefined();
             });
         });
         describe('when disabled=true', function () {
@@ -269,9 +269,9 @@ describe('Directive: TwDate', function() {
                 var template = "<tw-date ng-model='ngModel' disabled></tw-date>";
                 $scope.ngModel = null;
                 element = getCompiledDirectiveElement($scope, template);
-                expect(element.find(DAY_SELECTOR).attr("disabled")).toBeDefined();
-                expect(element.find(MONTH_SELECTOR).attr("disabled")).toBeDefined();
-                expect(element.find(YEAR_SELECTOR).attr("disabled")).toBeDefined();
+                expect(element.find(DAY_SELECTOR).attr('disabled')).toBeDefined();
+                expect(element.find(MONTH_SELECTOR).attr('disabled')).toBeDefined();
+                expect(element.find(YEAR_SELECTOR).attr('disabled')).toBeDefined();
             });
         });
 
@@ -530,14 +530,14 @@ describe('Directive: TwDate', function() {
                 monthModelController;
 
             beforeEach(function() {
-                $scope.ngModel = new Date("1989-02-20");
+                $scope.ngModel = new Date('1989-02-20');
                 element = getCompiledDirectiveElement($scope);
                 dayInput = element.find(DAY_SELECTOR);
                 monthInput = element.find(MONTH_SELECTOR);
                 yearInput = element.find(YEAR_SELECTOR);
             });
             it('should re-explode date correctly if new date is valid', function() {
-                $scope.ngModel = new Date("1990-01-12");
+                $scope.ngModel = new Date('1990-01-12');
                 $scope.$digest();
 
                 expect(dayInput.val()).toBe('12');
@@ -781,7 +781,7 @@ describe('Directive: TwDate', function() {
         if (isIntlSupportedForLocale(locale)) {
             for (var i=0; i<12; i++) {
                 date.setMonth(i);
-                monthNames.push(date.toLocaleDateString(locale, {month: "long"}));
+                monthNames.push(date.toLocaleDateString(locale, {month: 'long'}));
             }
         }
         return monthNames;

@@ -14,20 +14,19 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 vm.day = null, vm.month = "0", vm.year = null;
             }
             ngModel = $element.controller("ngModel"), ngModel.$validators.min = function(value) {
-                if (null === value) return !0;
-                var min = vm.ngMin ? vm.ngMin : vm.min ? vm.min : !1;
-                if (!min) return !0;
-                if (min = "string" == typeof min ? new Date(min) : min, !validDateObject(min)) return !0;
-                var dateValue = "string" == typeof value ? new Date(value) : value;
-                return dateValue >= min;
+                var limit = prepDateLimitForComparison(vm.ngMin, vm.min), dateValue = prepDateValueForComparison(value);
+                return !limit || !dateValue || dateValue >= limit;
             }, ngModel.$validators.max = function(value) {
-                if (null === value) return !0;
-                var max = vm.ngMax ? vm.ngMax : vm.max ? vm.max : !1;
-                if (!max) return !0;
-                if (max = "string" == typeof max ? new Date(max) : max, !validDateObject(max)) return !0;
-                var dateValue = "string" == typeof value ? new Date(value) : value;
-                return max >= dateValue;
+                var limit = prepDateLimitForComparison(vm.ngMax, vm.max), dateValue = prepDateValueForComparison(value);
+                return !limit || !dateValue || limit >= dateValue;
             }, setDateRequired(), setDateDisabled(), setDateLocale(), setMonths(), registerWatchers();
+        }
+        function prepDateLimitForComparison(ngLimit, attrLimit) {
+            var limit = ngLimit ? ngLimit : attrLimit ? attrLimit : !1;
+            return limit ? (limit = "string" == typeof limit ? new Date(limit) : limit, validDateObject(limit) ? limit : !1) : !1;
+        }
+        function prepDateValueForComparison(dateValue) {
+            return "string" == typeof dateValue ? new Date(dateValue) : dateValue;
         }
         function applyDateModelIfValidOrThrowError() {
             if (!validDate(vm.ngModel)) throw new Error("date model passed should either be instance of Date or valid ISO8601 string");
@@ -43,10 +42,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             vm.dateDisabled = void 0 !== vm.ngDisabled ? vm.ngDisabled : void 0 !== vm.disabled;
         }
         function setDateLocale() {
-            vm.locale, vm.locale || setDefaultDateLocale();
-        }
-        function setDefaultDateLocale() {
-            vm.locale = DEFAULT_LOCALE_EN;
+            vm.locale || (vm.locale = DEFAULT_LOCALE_EN);
         }
         function explodeDateModel(date) {
             var dateObj = "string" == typeof date ? new Date(date) : date;
@@ -318,14 +314,14 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 required: "@",
                 placeholder: "@"
             },
-            template: " 				<div class='btn-group btn-block tw-select' aria-hidden='true'> 					<button type='button' class='btn btn-input dropdown-toggle' 						data-toggle='dropdown' aria-expanded='false' 						ng-disabled='$ctrl.ngDisabled' 						tw-focusable> 						<span class='tw-select-selected' ng-if='$ctrl.ngModel != null'> 							<i class='icon {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> 							</i><i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}}' ng-if='$ctrl.selected && $ctrl.selected.currency'> 							</i><span class='selected-label'>{{$ctrl.selected.label}}</span> 						</span> 						<span class='form-control-placeholder' ng-if='$ctrl.ngModel == null'>{{$ctrl.placeholder}}</span> 						<span class='caret'></span> 					</button> 					<ul class='dropdown-menu' role='menu'> 						<li ng-class='{active: !$ctrl.ngModel}' 							ng-if='$ctrl.placeholder && !$ctrl.ngRequired'> 							<a href='' value='' class='tw-select-placeholder' tw-focusable> 								{{$ctrl.placeholder}} 							</a> 						</li> 						<li ng-if='$ctrl.placeholder && !$ctrl.ngRequired' class='divider'></li> 						<li 							ng-repeat='option in $ctrl.options' 							ng-class='{active: $ctrl.ngModel === option.value}'> 							<a href='' value='{{option.value}}' class='tw-select-option' tw-focusable> 								<i class='icon {{option.icon}}' ng-if='option.icon'> 								</i><i class='currency-flag currency-flag-{{option.currency | lowercase}}' ng-if='option.currency'> 								</i>{{option.label}} 							</a> 						</li> 						<li ng-transclude ng-if='$ctrl.hasTranscluded' class='tw-select-transcluded'></li> 					</ul> 				</div> 				<input type='hidden' class='tw-select-hidden' 					name='{{$ctrl.name}}' 					value='{{$ctrl.ngModel}}' 					ng-disabled='$ctrl.ngDisabled' /> "
+            template: " 				<div class='btn-group btn-block tw-select' aria-hidden='true'> 					<button type='button' class='btn btn-input dropdown-toggle' 						data-toggle='dropdown' aria-expanded='false' 						ng-disabled='$ctrl.ngDisabled' 						tw-focusable> 						<span class='tw-select-selected' ng-if='$ctrl.ngModel != null'> 							<i class='icon {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> 							</i><i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}}' ng-if='$ctrl.selected && $ctrl.selected.currency'> 							</i><span class='selected-label'>{{$ctrl.selected.label}}</span> 						</span> 						<span class='form-control-placeholder' ng-if='$ctrl.ngModel == null'>{{$ctrl.placeholder}}</span> 						<span class='caret'></span> 					</button> 					<ul class='dropdown-menu' role='menu'> 						<li ng-class='{active: !$ctrl.ngModel}' 							ng-if='$ctrl.placeholder && !$ctrl.ngRequired'> 							<a href='' value='' class='tw-select-placeholder' tw-focusable> 								{{$ctrl.placeholder}} 							</a> 						</li> 						<li ng-if='$ctrl.placeholder && !$ctrl.ngRequired' class='divider'></li> 						<li 							ng-repeat='option in $ctrl.options' 							ng-class='{active: $ctrl.ngModel === option.value}'> 							<a href='' value='{{option.value}}' class='tw-select-option' tw-focusable> 								<i class='icon {{option.icon}}' ng-if='option.icon'> 								</i><i class='currency-flag currency-flag-{{option.currency | lowercase}}' ng-if='option.currency'> 								</i>{{option.label}} 							</a> 						</li> 						<li ng-if='$ctrl.hasTranscluded' class='divider'></li> 						<li ng-transclude ng-if='$ctrl.hasTranscluded' class='tw-select-transcluded'></li> 					</ul> 				</div> 				<input type='hidden' class='tw-select-hidden' 					name='{{$ctrl.name}}' 					value='{{$ctrl.ngModel}}' 					ng-disabled='$ctrl.ngDisabled' /> "
         };
     }
     function TwSelectLink(scope, element, attrs, ngModel, $transclude) {
         var $ctrl = scope.$ctrl, options = scope.$ctrl.options;
         preSelectModelValue(ngModel, $ctrl, options), setDefaultIfRequired(ngModel, $ctrl, element, attrs), 
         $transclude(function(clone) {
-            clone.length && ($ctrl.hasTranscluded = !0);
+            (clone.length > 1 || "" !== clone.text().trim()) && ($ctrl.hasTranscluded = !0);
         }), element.find(".btn, .dropdown-menu").on("focusout", function() {
             setTimeout(function() {
                 0 !== element.find(".btn:focus").length || element.find(".btn-group").hasClass("open") || element.trigger("blur");

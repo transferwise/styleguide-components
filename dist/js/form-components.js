@@ -11,20 +11,19 @@ angular.module("tw.form-components", []);
                 vm.day = null, vm.month = "0", vm.year = null;
             }
             ngModel = $element.controller("ngModel"), ngModel.$validators.min = function(value) {
-                if (null === value) return !0;
-                var min = vm.ngMin ? vm.ngMin : vm.min ? vm.min : !1;
-                if (!min) return !0;
-                if (min = "string" == typeof min ? new Date(min) : min, !validDateObject(min)) return !0;
-                var dateValue = "string" == typeof value ? new Date(value) : value;
-                return dateValue >= min;
+                var limit = prepDateLimitForComparison(vm.ngMin, vm.min), dateValue = prepDateValueForComparison(value);
+                return !limit || !dateValue || dateValue >= limit;
             }, ngModel.$validators.max = function(value) {
-                if (null === value) return !0;
-                var max = vm.ngMax ? vm.ngMax : vm.max ? vm.max : !1;
-                if (!max) return !0;
-                if (max = "string" == typeof max ? new Date(max) : max, !validDateObject(max)) return !0;
-                var dateValue = "string" == typeof value ? new Date(value) : value;
-                return max >= dateValue;
+                var limit = prepDateLimitForComparison(vm.ngMax, vm.max), dateValue = prepDateValueForComparison(value);
+                return !limit || !dateValue || limit >= dateValue;
             }, setDateRequired(), setDateDisabled(), setDateLocale(), setMonths(), registerWatchers();
+        }
+        function prepDateLimitForComparison(ngLimit, attrLimit) {
+            var limit = ngLimit ? ngLimit : attrLimit ? attrLimit : !1;
+            return limit ? (limit = "string" == typeof limit ? new Date(limit) : limit, validDateObject(limit) ? limit : !1) : !1;
+        }
+        function prepDateValueForComparison(dateValue) {
+            return "string" == typeof dateValue ? new Date(dateValue) : dateValue;
         }
         function applyDateModelIfValidOrThrowError() {
             if (!validDate(vm.ngModel)) throw new Error("date model passed should either be instance of Date or valid ISO8601 string");
@@ -40,10 +39,7 @@ angular.module("tw.form-components", []);
             vm.dateDisabled = void 0 !== vm.ngDisabled ? vm.ngDisabled : void 0 !== vm.disabled;
         }
         function setDateLocale() {
-            vm.locale, vm.locale || setDefaultDateLocale();
-        }
-        function setDefaultDateLocale() {
-            vm.locale = DEFAULT_LOCALE_EN;
+            vm.locale || (vm.locale = DEFAULT_LOCALE_EN);
         }
         function explodeDateModel(date) {
             var dateObj = "string" == typeof date ? new Date(date) : date;

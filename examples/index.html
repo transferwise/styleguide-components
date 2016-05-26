@@ -108,10 +108,6 @@
 		margin-right: 8px;
 	}
 
-	.dropdown-menu li:empty {
-		display: none;
-	}
-
 	</style>
 </head>
 <body ng-app="my-app">
@@ -187,7 +183,7 @@
 								twSelect - with icons
 							</label>
 							<tw-select tw-validation
-								ng-model="vm.model.selectRequired"
+								ng-model="vm.model.selectIcons"
 								ng-required="true"
 								options="vm.select.options3"
 								placeholder="Select an option...">
@@ -208,7 +204,7 @@
 								twSelect - with currency
 							</label>
 							<tw-select tw-validation
-								ng-model="vm.model.selectRequired"
+								ng-model="vm.model.selectCurrency"
 								ng-required="true"
 								options="vm.select.options4"
 								placeholder="Select an option...">

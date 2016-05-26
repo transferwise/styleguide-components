@@ -22,7 +22,7 @@
 				ngChange: '&',
 				ngBlur: '&',
 				options: '=',
-				name: "@",
+				name: '@',
 				disabled: '@',
 				required: '@',
 				placeholder: '@'
@@ -58,6 +58,7 @@
 								</i>{{option.label}} \
 							</a> \
 						</li> \
+						<li ng-if='$ctrl.hasTranscluded' class='divider'></li> \
 						<li ng-transclude ng-if='$ctrl.hasTranscluded' class='tw-select-transcluded'></li> \
 					</ul> \
 				</div> \
@@ -89,7 +90,7 @@
 		setDefaultIfRequired(ngModel, $ctrl, element, attrs);
 
 		$transclude(function(clone) {
-			if (clone.length) {
+			if (clone.length > 1 || clone.text().trim() !== '') {
 				$ctrl.hasTranscluded = true;
 			}
 		});
@@ -98,7 +99,7 @@
 			setTimeout(function() {
 				// If button isn't focused and dropdown not open, blur
 				if (element.find('.btn:focus').length === 0 &&
-					!element.find('.btn-group').hasClass("open")) {
+					!element.find('.btn-group').hasClass('open')) {
 					element.trigger('blur');
 				}
 			}, 150); 	// need timeout because using dropdown.js,
@@ -112,7 +113,7 @@
 			continueSearchAndSelectMatch(
 				ngModel, $ctrl, options, event.key
 			);
-			element.find(".active a").focus();
+			element.find('.active a').focus();
 		});
 
 		scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
@@ -145,7 +146,7 @@
 			continueSearchAndSelectMatch(
 				ngModel, $ctrl, options, event.key
 			);
-			element.find(".active a").focus();
+			element.find('.active a').focus();
 		});
 	}
 

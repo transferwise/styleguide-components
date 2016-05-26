@@ -54,54 +54,24 @@
 				}
 
 				vm.day = null;
-				vm.month = "0";
+				vm.month = '0';
 				vm.year = null;
 			}
 
 			ngModel = $element.controller('ngModel');
 
 			ngModel.$validators.min = function(value) {
-				if (value === null) {
-					return true;
-				}
-				var min = vm.ngMin ? vm.ngMin : (vm.min ? vm.min : false);
-				if (!min) {
-					return true;
-				}
-				min = typeof min === 'string' ? new Date(min) : min;
-				if (!validDateObject(min)) {
-					return true;
-				}
-				var dateValue = typeof value === 'string' ? new Date(value) : value;
-				return dateValue >= min;
+				var limit = prepDateLimitForComparison(vm.ngMin, vm.min);
+				var dateValue = prepDateValueForComparison(value);
+
+				return !limit || !dateValue  || dateValue >= limit;
 			};
 			ngModel.$validators.max = function(value) {
-				if (value === null) {
-					return true;
-				}
-				var max = vm.ngMax ? vm.ngMax : (vm.max ? vm.max : false);
-				if (!max) {
-					return true;
-				}
-				max = typeof max === 'string' ? new Date(max) : max;
-				if (!validDateObject(max)) {
-					return true;
-				}
-				var dateValue = typeof value === 'string' ? new Date(value) : value;
-				return dateValue <= max;
+				var limit = prepDateLimitForComparison(vm.ngMax, vm.max);
+				var dateValue = prepDateValueForComparison(value);
+
+				return !limit || !dateValue || dateValue <= limit;
 			};
-			//ngModel.$validators.date = function(value) {
-			//	return true;
-			//};
-			/*
-			ngModel.$formatters.push(function(value) {
-				if (vm.validDate(value)) {
-					return null;
-				}
-				vm.explodeDateModel(value);
-				return value;
-			});
-			*/
 
 			setDateRequired();
 			setDateDisabled();
@@ -112,6 +82,21 @@
 			registerWatchers();
 		}
 
+		function prepDateLimitForComparison(ngLimit, attrLimit) {
+			var limit = ngLimit ? ngLimit : (attrLimit ? attrLimit : false);
+			if (!limit) {
+				return false;
+			}
+			limit = typeof limit === 'string' ? new Date(limit) : limit;
+			if (!validDateObject(limit)) {
+				return false;
+			}
+			return limit;
+		}
+
+		function prepDateValueForComparison(dateValue) {
+			return typeof dateValue === 'string' ? new Date(dateValue) : dateValue;
+		}
 
 		function applyDateModelIfValidOrThrowError() {
 			if (validDate(vm.ngModel)) {
@@ -134,20 +119,13 @@
 		}
 
 		function setDateLocale() {
-			if (vm.locale) {
-				//vm.dateLocale = vm.locale;
-			}
 			if (!vm.locale) {
-				setDefaultDateLocale();
+				vm.locale = DEFAULT_LOCALE_EN;
 			}
-		}
-
-		function setDefaultDateLocale() {
-			vm.locale = DEFAULT_LOCALE_EN;
 		}
 
 		function explodeDateModel(date) {
-			var dateObj = typeof date === "string" ? new Date(date) : date;
+			var dateObj = typeof date === 'string' ? new Date(date) : date;
 
 			vm.day = dateObj.getDate();
 			vm.month = dateObj.getMonth();
@@ -159,7 +137,7 @@
 		}
 
 		function validDateObject(dateObj) {
-			return Object.prototype.toString.call(dateObj) === "[object Date]"
+			return Object.prototype.toString.call(dateObj) === '[object Date]'
 				&& !isNaN(dateObj.getTime());
 		}
 
@@ -243,7 +221,7 @@
 			for(var i = 0; i < 12; i++) {
 				date = new Date();
 				date.setMonth(i);
-				var monthName = date.toLocaleDateString(vm.locale, {month: "long"});
+				var monthName = date.toLocaleDateString(vm.locale, {month: 'long'});
 				monthName = monthName[0].toUpperCase() + monthName.substring(1);
 				months.push(monthName);
 			}
