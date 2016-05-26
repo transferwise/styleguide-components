@@ -18,107 +18,329 @@ describe('Directive: TwDynamicFormControlDirective', function() {
 	}));
 
 	describe('type: text', function() {
+		var input, ngModelController;
 		beforeEach(function() {
+			$scope.model = null;
 			directiveElem = compileTemplate(
-				"<tw-dynamic-form-control type='text'></tw-dynamic-form-control>"
+				"<tw-dynamic-form-control type='text' \
+					ng-model='model'> \
+				</tw-dynamic-form-control>"
 			);
+			input = directiveElem.find('input');
+			ngModelController = directiveElem.controller('ngModel');
 		});
 
 		it('should render a text input', function() {
-			var input = directiveElem.find('input');
 			expect(input.length).toBe(1);
 			expect(input.attr("type")).toBe("text");
+		});
+
+		it('should set $dirty when changed', function() {
+			input.val('example').trigger('input');
+			expect(ngModelController.$dirty).toBe(true);
+			expect(directiveElem.hasClass("ng-dirty")).toBe(true);
+		});
+
+		it('should set $touched when blurred', function() {
+			input.focus().blur();
+			expect(ngModelController.$touched).toBe(true);
+			expect(directiveElem.hasClass("ng-touched")).toBe(true);
+		});
+	});
+
+
+	describe('type: text - validation', function() {
+		var input, directiveElem, ngModelController;
+		beforeEach(function() {
+			$scope.model = '';
+			$scope.pattern = '[a-z]+';
+			formGroup = compileTemplate(
+				"<div class='form-group'> \
+					<label class='control-label'></label> \
+					<tw-dynamic-form-control type='text' \
+						ng-model='model' \
+						ng-minlength='4' \
+						ng-maxlength='6' \
+						ng-pattern='pattern' \
+						ng-required='true'> \
+					</tw-dynamic-form-control> \
+				</div>"
+			);
+			input = formGroup.find('input');
+			directiveElem = formGroup.find('tw-dynamic-form-control');
+			ngModelController = directiveElem.controller('ngModel');
+		});
+
+		it('should set ngModel.$invalid when required value not set', function() {
+			input.val('').triggerHandler('input');
+			expect(ngModelController.$invalid).toBe(true);
+			expect(directiveElem.hasClass("ng-invalid")).toBe(true);
+			expect(directiveElem.hasClass("ng-invalid-required")).toBe(true);
+		});
+		it('should set ngModel.$valid when required value set', function() {
+			input.val('abcd').triggerHandler('input');
+			expect(directiveElem.hasClass("ng-valid-required")).toBe(true);
+		});
+		it('should set ngModel.$invalid when value is shorter than ngMinlength', function() {
+			input.val('abc').triggerHandler('input');
+			expect(ngModelController.$invalid).toBe(true);
+			expect(directiveElem.hasClass("ng-invalid")).toBe(true);
+			expect(directiveElem.hasClass("ng-invalid-minlength")).toBe(true);
+		});
+		it('should set ngModel.$valid when value is longer than ngMinlength', function() {
+			input.val('abcd').triggerHandler('input');
+			expect(directiveElem.hasClass("ng-valid-minlength")).toBe(true);
+		});
+		it('should set ngModel.$invalid when value is longer than ngMaxlength', function() {
+			input.val('abcdefg').triggerHandler('input');
+			expect(ngModelController.$invalid).toBe(true);
+			expect(directiveElem.hasClass("ng-invalid")).toBe(true);
+			expect(directiveElem.hasClass("ng-invalid-maxlength")).toBe(true);
+		});
+		it('should set ngModel.$valid when value is shorter than ngMaxlength', function() {
+			input.val('abcd').triggerHandler('input');
+			expect(directiveElem.hasClass("ng-valid-maxlength")).toBe(true);
+		});
+
+		it('should set ngModel.$invalid when value does not match ngPattern', function() {
+			input.val('1').triggerHandler('input');
+			expect(ngModelController.$invalid).toBe(true);
+			expect(directiveElem.hasClass("ng-invalid")).toBe(true);
+			expect(directiveElem.hasClass("ng-invalid-pattern")).toBe(true);
+		});
+		it('should set ngModel.$valid when value does match ngPattern', function() {
+			input.val('abcd').triggerHandler('input');
+			expect(directiveElem.hasClass("ng-valid-pattern")).toBe(true);
 		});
 	});
 
 	describe('type: number', function() {
+		var input, ngModelController;
+
 		beforeEach(function() {
+			$scope.model = null;
 			directiveElem = compileTemplate(
-				"<tw-dynamic-form-control type='number'></tw-dynamic-form-control>"
+				"<tw-dynamic-form-control type='number' \
+					ng-model='model'> \
+				</tw-dynamic-form-control>"
 			);
+			input = directiveElem.find('input');
+			ngModelController = directiveElem.controller('ngModel');
 		});
 
 		it('should render a number input', function() {
-			var input = directiveElem.find('input');
 			expect(input.length).toBe(1);
 			expect(input.attr("type")).toBe("number");
+		});
+
+		it('should set $dirty when changed', function() {
+			input.val(2).trigger('input');
+			expect(ngModelController.$dirty).toBe(true);
+			expect(directiveElem.hasClass("ng-dirty")).toBe(true);
+		});
+
+		it('should set $touched when blurred', function() {
+			input.focus().blur();
+			expect(ngModelController.$touched).toBe(true);
+			expect(directiveElem.hasClass("ng-touched")).toBe(true);
 		});
 	});
 
 	describe('type: number - validation', function() {
+		var input, directiveElem, ngModelController;
 		beforeEach(function() {
+			$scope.model = null;
 			formGroup = compileTemplate(
 				"<div class='form-group'> \
 					<label class='control-label'></label> \
-					<tw-dynamic-form-control type='number' ng-min='2' ng-max='5' required></tw-dynamic-form-control> \
+					<tw-dynamic-form-control type='number' \
+						ng-model='model' \
+						ng-min='2' \
+						ng-max='5' \
+						required> \
+					</tw-dynamic-form-control> \
 				</div>"
 			);
+			input = formGroup.find('input');
+			directiveElem = formGroup.find('tw-dynamic-form-control');
+			ngModelController = directiveElem.controller('ngModel');
 		});
 
-		it('should add class ng-invalid when value is below min', function() {
-			var input = formGroup.find('input');
-			directiveElem = formGroup.find('tw-dynamic-form-control');
+		it('should set ngModel.$invalid when required value not set', function() {
+			expect(ngModelController.$invalid).toBe(true);
+			expect(directiveElem.hasClass('ng-invalid')).toBe(true);
+			expect(directiveElem.hasClass('ng-invalid-required')).toBe(true);
+		});
+		it('should set ngModel.$invalid when value is below ngMin', function() {
+			input.val('1').triggerHandler('input');
+			expect(ngModelController.$invalid).toBe(true);
+			expect(directiveElem.hasClass('ng-invalid')).toBe(true);
+			expect(directiveElem.hasClass('ng-invalid-min')).toBe(true);
+		});
+		it('should set ngModel.$invalid when value is above ngMax', function() {
+			input.val('6').triggerHandler('input');
 
-			/*
-			input.val('1');
-			$(input).trigger('input');
-			$(input).trigger('change');
-			$scope.$apply();
-
-			expect(directiveElem.hasClass("ng-invalid")).toBe(true);
-			expect(directiveElem.hasClass("ng-invalid-min")).toBe(true);
-			*/
+			expect(ngModelController.$invalid).toBe(true);
+			expect(directiveElem.hasClass('ng-invalid')).toBe(true);
+			expect(directiveElem.hasClass('ng-invalid-max')).toBe(true);
 		});
 	});
 
 	describe('type: select', function() {
+		var selectElem, directiveElem, ngModelController;
 		beforeEach(function() {
+			$scope.model = null;
+			$scope.options = [{
+				'value': '1',
+				'label': 'one'
+			},{
+				'value': '2',
+				'label': 'two'
+			}];
+
 			directiveElem = compileTemplate(
-				"<tw-dynamic-form-control type='select'></tw-dynamic-form-control>"
+				"<tw-dynamic-form-control type='select' \
+					ng-model='model' \
+					options='options' \
+					ng-required='true'> \
+				</tw-dynamic-form-control>"
 			);
+			selectElem = directiveElem.find('.tw-dynamic-select');
+			ngModelController = directiveElem.controller('ngModel');
 		});
 
 		it('should render a select', function() {
-			var input = directiveElem.find('select');
-			expect(input.length).toBe(1);
+			expect(selectElem.length).toBe(1);
+		});
+
+		// Select presets if ngRequired and no ngModel supplied
+		xit('should set ngModel.$invalid when required value not set', function() {
+			expect(ngModelController.$invalid).toBe(true);
+			expect(directiveElem.hasClass('ng-invalid')).toBe(true);
+			expect(directiveElem.hasClass('ng-invalid-required')).toBe(true);
+		});
+
+		it('should set $dirty when changed', function() {
+			var selectModelController = selectElem.controller('ngModel');
+			selectModelController.$setViewValue('2');
+			expect(ngModelController.$dirty).toBe(true);
+			expect(directiveElem.hasClass("ng-dirty")).toBe(true);
+		});
+
+		it('should set $touched when changed', function() {
+			var selectModelController = selectElem.controller('ngModel');
+			selectModelController.$setViewValue('2');
+
+			expect(ngModelController.$touched).toBe(true);
+			expect(directiveElem.hasClass("ng-touched")).toBe(true);
 		});
 	});
 
 	describe('type: checkbox', function() {
+		var input, ngModelController;
 		beforeEach(function() {
+			$scope.model = null;
 			directiveElem = compileTemplate(
-				"<tw-dynamic-form-control type='checkbox'></tw-dynamic-form-control>"
+				"<tw-dynamic-form-control type='checkbox' \
+					ng-model='model' \
+					ng-required='true'> \
+				</tw-dynamic-form-control>"
 			);
+			input = directiveElem.find('input');
+			ngModelController = directiveElem.controller('ngModel');
 		});
 
 		it('should render a checkbox input', function() {
-			var input = directiveElem.find('input');
 			expect(input.length).toBe(1);
 			expect(input.attr("type")).toBe("checkbox");
+		});
+
+		it('should set $dirty when clicked', function() {
+			input.click();
+			expect(ngModelController.$dirty).toBe(true);
+			expect(directiveElem.hasClass("ng-dirty")).toBe(true);
+		});
+
+		it('should set $touched when blurred', function() {
+			input.focus().blur();
+			expect(ngModelController.$touched).toBe(true);
+			expect(directiveElem.hasClass("ng-touched")).toBe(true);
+		});
+
+		describe(' - validation', function() {
+			it('should not set ngModel.$valid to undefined', function() {
+				expect(ngModelController.$valid).not.toBeUndefined();
+			});
+			it('should set ngModel.$invalid when required value not set', function() {
+				expect(ngModelController.$invalid).toBe(true);
+				//expect(directiveElem.hasClass('ng-invalid')).toBe(true);
+				expect(directiveElem.hasClass('ng-invalid-required')).toBe(true);
+			});
 		});
 	});
 
 	describe('type: radio', function() {
+		var input, directiveElem, ngModelController, template;
 		beforeEach(function() {
+			template = "<tw-dynamic-form-control type='radio' \
+				options='options' \
+				ng-model='model' \
+				ng-required='required'> \
+			</tw-dynamic-form-control>";
+
+			$scope.model = null;
 			$scope.options = [
-				{value: 1, label: 'One'}
+				{value: 1, label: 'One'},
+				{value: 2, label: 'Two'}
 			];
-			directiveElem = compileTemplate(
-				"<tw-dynamic-form-control type='radio' options='options'></tw-dynamic-form-control>"
-			);
+			$scope.required = true;
+			directiveElem = compileTemplate(template);
+			ngModelController = directiveElem.controller('ngModel');
+			input = directiveElem.find('input');
 		});
 
 		it('should render a radio input', function() {
-			var input = directiveElem.find('input');
-			expect(input.length).toBe(1);
+			expect(input.length).toBe(2);
 		});
 		it('should use the options correctly for the input value', function() {
-			var input = directiveElem.find('input');
 			expect(input.attr('value')).toBe('1');
 		});
 		it('should use the options correctly for the label', function() {
 			var label = directiveElem.find('label');
 			expect(label.text()).toContain('One');
+		});
+
+		it('should set $dirty when changed ', function() {
+			input.click();
+			expect(ngModelController.$dirty).toBe(true);
+			expect(directiveElem.hasClass("ng-dirty")).toBe(true);
+		});
+
+		it('should set $touched when blurred', function() {
+			input.focus().blur();
+			expect(ngModelController.$touched).toBe(true);
+			expect(directiveElem.hasClass("ng-touched")).toBe(true);
+		});
+
+		describe(' - validation', function() {
+			it('should set ngModel.$invalid when required', function() {
+				$scope.required = true;
+				directiveElem = compileTemplate(template);
+				ngModelController = directiveElem.controller('ngModel');
+
+				expect(ngModelController.$invalid).toBe(true);
+				expect(directiveElem.hasClass('ng-invalid')).toBe(true);
+				expect(directiveElem.hasClass('ng-invalid-required')).toBe(true);
+			});
+			it('should set ngModel.$valid when not required', function() {
+				$scope.required = false;
+				directiveElem = compileTemplate(template);
+				ngModelController = directiveElem.controller('ngModel');
+
+				expect(ngModelController.$valid).toBe(true);
+				expect(directiveElem.hasClass('ng-valid')).toBe(true);
+				expect(directiveElem.hasClass('ng-valid-required')).toBe(true);
+			});
 		});
 	});
 

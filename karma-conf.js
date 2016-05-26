@@ -6,9 +6,10 @@ module.exports = function(config) {
         // files to include, ordered by dependencies
         files : [
             // include relevant Angular files and libs
+            'components/jquery/dist/jquery.js',
+            'components/bootstrap/dist/js/bootstrap.js',
             'components/angular/angular.js',
             'components/angular-mocks/angular-mocks.js',
-            'components/jquery/dist/jquery.js',
 
             // include js files
             //'angular/**/*.controller.js',

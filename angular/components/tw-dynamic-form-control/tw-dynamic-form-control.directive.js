@@ -8,14 +8,12 @@
 	function TwDynamicFormControl() {
 		return {
 			restrict: 'E',
+			require: 'ngModel',
 			transclude: true,
-			controllerAs: "vm",
+			controllerAs: "$ctrl",
 			bindToController: true,
-			controller: ["$element", function($element) {
-				this.change = function() {
-					change($element);
-				};
-			}],
+			controller: "TwDynamicFormControlController",
+			link: TwDynamicFormControlLink,
 			scope: {
 				type: "@",
 				name: "@",
@@ -32,93 +30,166 @@
 				ngMax: "=",
 				ngPattern: "="
 			},
-			link: function(scope, element) {
-
-			},
 			template:
-			"<div ng-switch='vm.type'> \
+			"<div ng-switch='$ctrl.type'> \
 				<input ng-switch-when='text'  \
-					name='{{vm.name}}'  \
-					id='{{vm.id}}' \
+					name='{{$ctrl.name}}'  \
+					id='{{$ctrl.id}}' \
 					type='text' \
 					class='form-control' \
-					placeholder='{{vm.placeholder}}' \
-					ng-model='vm.ngModel' \
-					ng-required='vm.ngRequired' \
-					ng-disabled='vm.ngDisabled' \
-					ng-pattern='vm.ngPattern' \
-					ng-change='vm.change()' \
-					ng-minlength='vm.ngMinlength' \
-					ng-maxlength='vm.ngMaxlength' \
-					tw-validation />  \
+					placeholder='{{$ctrl.placeholder}}' \
+					ng-model='$ctrl.ngModel' \
+					ng-model-options='{ allowInvalid: true }' \
+					ng-required='$ctrl.ngRequired' \
+					ng-disabled='$ctrl.ngDisabled' \
+					ng-pattern='$ctrl.ngPattern' \
+					ng-change='$ctrl.change()' \
+					ng-blur='$ctrl.blur()' \
+					ng-minlength='$ctrl.ngMinlength' \
+					ng-maxlength='$ctrl.ngMaxlength' />  \
 				<input ng-switch-when='number'  \
-					name='{{vm.name}}'  \
-					id='{{vm.id}}' \
+					name='{{$ctrl.name}}'  \
+					id='{{$ctrl.id}}' \
 					type='number' \
-					step='{{vm.step}}' \
+					step='{{$ctrl.step}}' \
 					class='form-control' \
-					placeholder='{{vm.placeholder}}' \
-					ng-model='vm.ngModel' \
-					ng-required='vm.ngRequired' \
-					ng-disabled='vm.ngDisabled' \
-					ng-change='vm.change()' \
-					ng-min='vm.ngMin' \
-					ng-max='vm.ngMax' \
-					tw-validation />  \
+					placeholder='{{$ctrl.placeholder}}' \
+					ng-model='$ctrl.ngModel' \
+					ng-model-options='{ allowInvalid: true }' \
+					ng-required='$ctrl.ngRequired' \
+					ng-disabled='$ctrl.ngDisabled' \
+					ng-change='$ctrl.change()' \
+					ng-blur='$ctrl.blur()' \
+					ng-min='$ctrl.ngMin' \
+					ng-max='$ctrl.ngMax' />  \
 				<div ng-switch-when='radio' \
 					class='radio' \
-					ng-class='{disabled: vm.ngDisabled}' \
-					ng-repeat='option in vm.options'> \
+					ng-class='{disabled: $ctrl.ngDisabled}' \
+					ng-repeat='option in $ctrl.options'> \
 					<label> \
-						<input type='radio' \
-							name='{{vm.name}}' \
+						<input type='radio' tw-input \
+							name='{{$ctrl.name}}' \
 							value='{{option.value}}' \
-							ng-model='vm.ngModel' \
-							ng-required='vm.ngRequired' \
-							ng-disabled='vm.ngDisabled' /> \
+							ng-model='$ctrl.ngModel' \
+							ng-required='$ctrl.ngRequired' \
+							ng-disabled='$ctrl.ngDisabled' \
+							ng-change='$ctrl.change()' \
+							ng-click='$ctrl.change()' \
+							ng-blur='$ctrl.blur()' /> \
 						{{option.label}} \
 					</label> \
 				</div> \
 				<div ng-switch-when='checkbox' \
 					class='checkbox' \
-					ng-class='{disabled: vm.ngDisabled}'> \
+					ng-class='{disabled: $ctrl.ngDisabled}'> \
 					<label> \
-						<input type='checkbox' \
-							name='{{vm.name}}' \
-							id='{{vm.id}}' \
-							ng-model='vm.ngModel' \
-							ng-required='vm.ngRequired' \
-							ng-disabled='vm.ngDisabled' /> \
-						{{vm.placeholder}} \
+						<input type='checkbox' tw-input \
+							name='{{$ctrl.name}}' \
+							id='{{$ctrl.id}}' \
+							ng-model='$ctrl.ngModel' \
+							ng-required='$ctrl.ngRequired' \
+							ng-disabled='$ctrl.ngDisabled' \
+							ng-change='$ctrl.change()' \
+							ng-click='$ctrl.change()' \
+							ng-blur='$ctrl.blur()' /> \
+						{{$ctrl.placeholder}} \
 					</label> \
 				</div> \
 				<select ng-switch-when='select' \
-					name='{{vm.name}}' \
-					id='{{vm.id}}' \
-					class='form-control' \
-					ng-options='option.value as option.label for option in vm.options' \
-					ng-model='vm.ngModel' \
-					ng-required='vm.ngRequired' \
-					ng-disabled='vm.ngDisabled' \
-					ng-change='vm.change()' \
-					tw-validation> \
-					<option ng-if='vm.placeholder' value=''> \
-						{{vm.placeholder}} \
+					name='{{$ctrl.name}}' \
+					id='{{$ctrl.id}}' \
+					class='form-control tw-dynamic-select' \
+					ng-options='option.value as option.label for option in $ctrl.options' \
+					ng-model='$ctrl.ngModel' \
+					ng-required='$ctrl.ngRequired' \
+					ng-disabled='$ctrl.ngDisabled' \
+					ng-change='$ctrl.change(); $ctrl.blur();'> \
+					ng-blur='$ctrl.blur()'> \
+					<option ng-if='$ctrl.placeholder' value=''> \
+						{{$ctrl.placeholder}} \
 					</option> \
 				</select> \
 				<ng-transclude class='error-messages'></ng-transclude> \
 			</div>"
 		};
 	}
+/*
+<div ng-switch-when='select'> \
+	<tw-select  \
+		name='{{$ctrl.name}}' \
+		id='{{$ctrl.id}}' \
+		class='tw-dynamic-select' \
+		options='$ctrl.options' \
+		placeholder='{{$ctrl.placeholder}}' \
+		ng-model='$ctrl.ngModel' \
+		ng-required='$ctrl.ngRequired' \
+		ng-disabled='$ctrl.ngDisabled' \
+		ng-change='$ctrl.change(); $ctrl.blur();' \
+		ng-blur='$ctrl.blur()'> \
+	</tw-select> \
+</div> \
+*/
 
-	function change($element) {
-		var formGroup = $element.closest(".form-group");
-		setTimeout(function() {
-			if ($element.hasClass("ng-invalid")) {
-				formGroup.addClass("has-error");
-			} else {
-				formGroup.removeClass("has-error");
+	angular
+		.module('tw.form-components')
+		.controller('TwDynamicFormControlController', TwDynamicFormControlController);
+
+	TwDynamicFormControlController.$inject = ['$element', '$scope'];
+
+	function TwDynamicFormControlController($element, $scope) {
+		var $ctrl = this;
+		var ngModelController = $element.controller('ngModel');
+		$ctrl.change = function() {
+			ngModelController.$setDirty();
+		};
+		$ctrl.blur = function() {
+			ngModelController.$setTouched();
+			$element.trigger('blur');
+		};
+	}
+
+	function TwDynamicFormControlLink(scope, element, attrs, ngModel) {
+		// Min and max do not work on custom elements, add manual validators
+		ngModel.$validators.min = function(modelValue, viewValue) {
+			if (typeof scope.$ctrl.ngMin === "undefined") {
+				return true;
 			}
-		});
+			if (typeof viewValue === "number" &&
+				typeof scope.$ctrl.ngMin === "number" &&
+				viewValue < scope.$ctrl.ngMin) {
+				return false;
+			}
+			// TODO add comparisons for Date type controls
+			return true;
+		};
+		ngModel.$validators.max = function(modelValue, viewValue) {
+			if (typeof scope.$ctrl.ngMax === "undefined") {
+				return true;
+			}
+			if (typeof viewValue === "number" &&
+				typeof scope.$ctrl.ngMax === "number" &&
+				viewValue > scope.$ctrl.ngMax) {
+				return false;
+			}
+			// TODO add comparisons for Date type controls
+			return true;
+		};
+
+		/*
+		// Attempt to override minlength/maxlength so not applied if not text
+		// TODO doesn't work, must return bool!.
+		ngModel.$validators.minlength = function(modelValue, viewValue) {
+			if (scope.$ctrl.type !== 'text' || !scope.$ctrl.ngMinlength) {
+				return true;
+			}
+			return scope.$ctrl.ngMinlength();
+		};
+		ngModel.$validators.maxlength = function(modelValue, viewValue) {
+			if (scope.$ctrl.type !== 'text' || !scope.$ctrl.ngMaxlength) {
+				return true;
+			}
+			return scope.$ctrl.ngMaxlength();
+		};
+		*/
 	}
 })(window.angular);
