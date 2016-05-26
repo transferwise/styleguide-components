@@ -111,7 +111,7 @@
 
 		element.find('.btn').on('keypress', function(event) {
 			continueSearchAndSelectMatch(
-				ngModel, $ctrl, options, event.key
+				ngModel, $ctrl, options, event.keyCode
 			);
 			element.find('.active a').focus();
 		});
@@ -144,7 +144,7 @@
 
 		element.find('ul').on('keypress', 'a', function(event) {
 			continueSearchAndSelectMatch(
-				ngModel, $ctrl, options, event.key
+				ngModel, $ctrl, options, event.keyCode
 			);
 			element.find('.active a').focus();
 		});
@@ -209,7 +209,8 @@
 		$ctrl.selected = false;
 	}
 
-	function continueSearchAndSelectMatch(ngModel, $ctrl, options, letter) {
+	function continueSearchAndSelectMatch(ngModel, $ctrl, options, keyCode) {
+		var letter = String.fromCharCode(keyCode);
 		var found = searchAndSelect(ngModel, $ctrl, options, $ctrl.search + letter);
 		if (found) {
 			$ctrl.search += letter;
@@ -221,6 +222,9 @@
 	}
 	function searchAndSelect(ngModel, $ctrl, options, term) {
 		var found = false;
+		if (!term) {
+			return false;
+		}
 		var searchTerm = term.toLowerCase();
 		options.forEach(function(option) {
 			if (found) {

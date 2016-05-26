@@ -101,7 +101,7 @@ angular.module("tw.form-styling", []);
         }), element.on("blur", function(event) {
             ngModel.$setTouched();
         }), element.find(".btn").on("keypress", function(event) {
-            continueSearchAndSelectMatch(ngModel, $ctrl, options, event.key), element.find(".active a").focus();
+            continueSearchAndSelectMatch(ngModel, $ctrl, options, event.keyCode), element.find(".active a").focus();
         }), scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
             (newValue || oldValue) && newValue !== oldValue && ngModel.$setDirty(), modelChange(newValue, oldValue, $ctrl);
         }), element.find(".btn").on("click", function() {
@@ -113,7 +113,7 @@ angular.module("tw.form-styling", []);
         }), element.find("ul").on("focus", "a", function(event) {
             optionFocus(event, options, ngModel, $ctrl, this);
         }), element.find("ul").on("keypress", "a", function(event) {
-            continueSearchAndSelectMatch(ngModel, $ctrl, options, event.key), element.find(".active a").focus();
+            continueSearchAndSelectMatch(ngModel, $ctrl, options, event.keyCode), element.find(".active a").focus();
         });
     }
     function optionFocus(event, options, ngModel, $ctrl, optionElement) {
@@ -149,13 +149,15 @@ angular.module("tw.form-styling", []);
     function resetOption(ngModel, $ctrl) {
         ngModel.$setViewValue(null), $ctrl.selected = !1;
     }
-    function continueSearchAndSelectMatch(ngModel, $ctrl, options, letter) {
-        var found = searchAndSelect(ngModel, $ctrl, options, $ctrl.search + letter);
+    function continueSearchAndSelectMatch(ngModel, $ctrl, options, keyCode) {
+        var letter = String.fromCharCode(keyCode), found = searchAndSelect(ngModel, $ctrl, options, $ctrl.search + letter);
         return found ? $ctrl.search += letter : ($ctrl.search = letter, found = searchAndSelect(ngModel, $ctrl, options, $ctrl.search)), 
         found;
     }
     function searchAndSelect(ngModel, $ctrl, options, term) {
-        var found = !1, searchTerm = term.toLowerCase();
+        var found = !1;
+        if (!term) return !1;
+        var searchTerm = term.toLowerCase();
         return options.forEach(function(option) {
             found || 0 === option.label.toLowerCase().indexOf(searchTerm) && (selectOption(ngModel, $ctrl, option), 
             found = !0);
