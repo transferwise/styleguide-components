@@ -123,6 +123,11 @@ module.exports = function(grunt) {
                 src: ['angular/**/*.html'],
                 dest: 'dist/templates/',
                 filter: 'isFile'
+            },
+            docs: {
+                expand: true,
+                src: ['index.html', 'components/**/*.*', 'dist/**/*.*'],
+                dest: 'gh-pages'
             }
         },
         jshint: {
