@@ -219,8 +219,8 @@
 		function getMonthNamesForLocale() {
 			var months = [], date;
 			for(var i = 0; i < 12; i++) {
-				date = new Date();
-				date.setMonth(i);
+				// Day in middle of month avoids timezone issues
+				date = new Date(Date.UTC(2000, i, 15));
 				var monthName = date.toLocaleDateString(vm.locale, {month: 'long'});
 				monthName = monthName[0].toUpperCase() + monthName.substring(1);
 				months.push(monthName);
