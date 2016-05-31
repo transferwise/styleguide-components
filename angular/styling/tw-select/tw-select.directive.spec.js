@@ -353,26 +353,12 @@ describe('Directive: TwSelect', function() {
     }
 
     function keypress(letter) {
-        if (!KEYCODES[letter]) {
-            throw new Error("Code not found: " + letter);
-        }
         return {
             type: 'keypress',
-            keyCode: KEYCODES[letter],
-            which: KEYCODES[letter]
+            keyCode: letter.charCodeAt(0),
+            which: letter.charCodeAt(0)
         };
     }
-
-    var KEYCODES = {
-        'O': 79,
-        'T': 84,
-        'h': 104,
-        'o': 111,
-        't': 116,
-        'w': 119,
-        'ArrowUp': 38,
-        'ArrowDown': 40
-    };
 
     var OPTIONS = [{
         value: '1',
