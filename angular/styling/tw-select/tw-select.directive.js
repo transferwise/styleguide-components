@@ -9,9 +9,8 @@
 		return {
 			require: 'ngModel',
 			bindToController: true,
-			controller: function() {},
+			controller: ['$element', '$scope', '$transclude', TwSelectController],
 			controllerAs: '$ctrl',
-			link: TwSelectLink,
 			replace: false,
 			transclude: true,
 			restrict: 'EA',
@@ -82,87 +81,111 @@
 	</select>"
 		*/
 
-	function TwSelectLink(scope, element, attrs, ngModel, $transclude) {
-		var $ctrl = scope.$ctrl,
-			options = scope.$ctrl.options;
+	function TwSelectController($element, $scope, $transclude) {
+		var $ctrl = this,
+			options = $ctrl.options,
+			$ngModel = $element.controller('ngModel');
 
-		preSelectModelValue(ngModel, $ctrl, options);
-		setDefaultIfRequired(ngModel, $ctrl, element, attrs);
+		$ctrl.search = "";
 
-		$transclude(function(clone) {
-			if (clone.length > 1 || clone.text().trim() !== '') {
-				$ctrl.hasTranscluded = true;
-			}
-		});
+		preSelectModelValue($ngModel, $ctrl, options);
+		setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl);
 
-		element.find('.btn, .dropdown-menu').on('focusout', function() {
-			setTimeout(function() {
-				// If button isn't focused and dropdown not open, blur
-				if (element.find('.btn:focus').length === 0 &&
-					!element.find('.btn-group').hasClass('open')) {
-					element.trigger('blur');
-				}
-			}, 150); 	// need timeout because using dropdown.js,
-		});
+		addWatchers($ctrl, $scope, $ngModel);
+		addEventHandlers($ctrl, $element, $ngModel, options);
 
-		element.on('blur', function(event) {
-			ngModel.$setTouched();
-		});
+		checkForTranscludedContent($transclude, $ctrl);
+	}
 
-		element.find('.btn').on('keypress', function(event) {
-			continueSearchAndSelectMatch(
-				ngModel, $ctrl, options, event.key
-			);
-			element.find('.active a').focus();
-		});
-
-		scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
+	function addWatchers($ctrl, $scope, $ngModel) {
+		$scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
 			if ((newValue || oldValue) && newValue !== oldValue) {
-				ngModel.$setDirty();
+				$ngModel.$setDirty();
 			}
 
 			modelChange(newValue, oldValue, $ctrl);
 		});
+	}
 
-		element.find('.btn').on('click', function() {
+	function addEventHandlers($ctrl, $element, $ngModel, options) {
+		$element.find('.btn, .dropdown-menu').on('focusout', function() {
+			setTimeout(function() {
+				// If button isn't focused and dropdown not open, blur
+				if ($element.find('.btn:focus').length === 0 &&
+					!$element.find('.btn-group').hasClass('open')) {
+					$element.trigger('blur');
+				}
+			}, 150); 	// need timeout because using dropdown.js,
+		});
+
+		$element.on('blur', function(event) {
+			$ngModel.$setTouched();
+		});
+
+		$element.find('.btn').on('keypress', function(event) {
+			var characterCode = getCharacterFromKeypress(event);
+			continueSearchAndSelectMatch(
+				$ngModel, $ctrl, options, characterCode
+			);
+			$element.find('.active a').focus();
+		});
+
+		$element.find('.btn').on('click', function() {
 			// This hack makes test pass., but should be handled by dropdown.js,
 			//$(this).closest('.btn-group').addClass('open');
 
 			// Once dropdown is open, focus on active/selected option for keyboard support
 			setTimeout(function() {
-				element.find('.active a').focus();
+				$element.find('.active a').focus();
 			});
 		});
 
-		element.find('ul').on('click', 'a', function(event) {
-			element.find('.btn').focus();
+		$element.find('ul').on('click', 'a', function(event) {
+			$element.find('.btn').focus();
+			// This causes us to double fire, as focus also calls it EXCEPT on safari...
+			optionFocus(event, options, $ngModel, $ctrl, this);
 		});
 
-		element.find('ul').on('focus', 'a', function(event) {
-			optionFocus(event, options, ngModel, $ctrl, this);
+		$element.find('ul').on('focus', 'a', function(event) {
+			optionFocus(event, options, $ngModel, $ctrl, this);
 		});
 
-		element.find('ul').on('keypress', 'a', function(event) {
+		$element.find('ul').on('keypress', 'a', function(event) {
+			var characterCode = getCharacterFromKeypress(event);
 			continueSearchAndSelectMatch(
-				ngModel, $ctrl, options, event.key
+				$ngModel, $ctrl, options, characterCode
 			);
-			element.find('.active a').focus();
+			$element.find('.active a').focus();
 		});
 	}
 
-	function optionFocus(event, options, ngModel, $ctrl, optionElement) {
+	function checkForTranscludedContent($transclude, $ctrl) {
+		$transclude(function(clone) {
+			if (clone.length > 1 || clone.text().trim() !== '') {
+				$ctrl.hasTranscluded = true;
+			}
+		});
+	}
+
+	function getCharacterFromKeypress(event) {
+		return String.fromCharCode(
+			event.which || event.charCode || event.keyCode
+		);
+	}
+
+	function optionFocus(event, options, $ngModel, $ctrl, optionElement) {
 		if ($(event.target).hasClass('tw-select-option')) {
 			var option = findOptionFromValue(options, optionElement.getAttribute('value'));
-			selectOption(ngModel, $ctrl, option);
+			selectOption($ngModel, $ctrl, option);
 		} else if ($(event.target).hasClass('tw-select-placeholder')) {
-			resetOption(ngModel, $ctrl);
+			resetOption($ngModel, $ctrl);
 		}
 	}
 
-	function preSelectModelValue(ngModel, $ctrl, options) {
+	function preSelectModelValue($ngModel, $ctrl, options) {
 		if ($ctrl.ngModel) {
 			var option = findOptionFromValue(options, $ctrl.ngModel);
-			selectOption(ngModel, $ctrl, option);
+			selectOption($ngModel, $ctrl, option);
 		}
 	}
 
@@ -190,44 +213,44 @@
 		return optionMatch;
 	}
 
-	function setDefaultIfRequired(ngModel, $ctrl, $element, $attrs) {
+	function setDefaultIfRequired($ngModel, $ctrl, $element, $attrs) {
 		// If required and model empty, select first option
 		if (($ctrl.ngRequired || $attrs.required)
 			&& !$ctrl.ngModel
 			&& $ctrl.options[0]) {
-			selectOption(ngModel, $ctrl, $ctrl.options[0]);
+			selectOption($ngModel, $ctrl, $ctrl.options[0]);
 		}
 	}
 
-	function selectOption(ngModel, $ctrl, option) {
-		ngModel.$setViewValue(option.value);
+	function selectOption($ngModel, $ctrl, option) {
+		$ngModel.$setViewValue(option.value);
 		$ctrl.selected = option;
 	}
 
-	function resetOption(ngModel, $ctrl) {
-		ngModel.$setViewValue(null);
+	function resetOption($ngModel, $ctrl) {
+		$ngModel.$setViewValue(null);
 		$ctrl.selected = false;
 	}
 
-	function continueSearchAndSelectMatch(ngModel, $ctrl, options, letter) {
-		var found = searchAndSelect(ngModel, $ctrl, options, $ctrl.search + letter);
+	function continueSearchAndSelectMatch($ngModel, $ctrl, options, letter) {
+		var found = searchAndSelect($ngModel, $ctrl, options, $ctrl.search + letter);
 		if (found) {
 			$ctrl.search += letter;
 		} else {
 			$ctrl.search = letter;
-			found = searchAndSelect(ngModel, $ctrl, options, $ctrl.search);
+			found = searchAndSelect($ngModel, $ctrl, options, $ctrl.search);
 		}
 		return found;
 	}
-	function searchAndSelect(ngModel, $ctrl, options, term) {
-		var found = false;
-		var searchTerm = term.toLowerCase();
+	function searchAndSelect($ngModel, $ctrl, options, term) {
+		var found = false,
+			searchTerm = term.toLowerCase();
 		options.forEach(function(option) {
 			if (found) {
 				return;
 			}
 			if (option.label.toLowerCase().indexOf(searchTerm) === 0) {
-				selectOption(ngModel, $ctrl, option);
+				selectOption($ngModel, $ctrl, option);
 				found = true;
 			}
 		});

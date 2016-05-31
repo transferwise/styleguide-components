@@ -355,18 +355,10 @@ describe('Directive: TwSelect', function() {
     function keypress(letter) {
         return {
             type: 'keypress',
-            key: letter,
-            keyCode: KEYCODES[letter],
-            which: KEYCODES[letter]
+            keyCode: letter.charCodeAt(0),
+            which: letter.charCodeAt(0)
         };
     }
-
-    var KEYCODES = {
-        'o': 111,
-        't': 116,
-        'ArrowUp': 38,
-        'ArrowDown': 40
-    };
 
     var OPTIONS = [{
         value: '1',
