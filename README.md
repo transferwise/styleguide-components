@@ -1,11 +1,13 @@
 # styleguide-components
 AngularJS components for TransferWise Bootstrap.  Currently these components focus on forms and form behaviour, they enable you to use standard Boostrap markup, but gain additional visuals and behaviour.
 
+Live demo http://transferwise.github.io/styleguide-components/
+
 ### Installation
 It is recommended to use bower to import the latest version
 ```
 dependencies: {
-    "styleguide-components": "https://github.com/transferwise/styleguide-components.git",
+    "styleguide-components": "https://github.com/transferwise/styleguide-components.git#v1.2.0",
 }
 ```
 
@@ -21,10 +23,10 @@ angular.module('my-app', ['tw.styleguide-components']);
 
 ### Forms
 ##### Validation
-In the simplest possible case you will need to use Bootstrap's `form-group` and `form-control` classes to gain validation.  Validation will only work if you have bound a value with `ngModel`.  If you were to focus this input and exit without entering a valid value, the control would show a validation error.
+The styleguide components rely on Bootstrap's form-groups to add styling, to add validation simply include the tw-validation directive. Validation will only work if you have bound a value with `ngModel`.  If you were to focus this input and exit without entering a valid value, a `has-error` class will be added to form-group, and the control will be style to show the validation error.
 ```
 <div class="form-group">
-    <input class="form-control" ng-model="ctrl.example" required />
+    <input class="form-control" ng-model="ctrl.example" tw-validation required />
 </div>
 ```
 
@@ -32,7 +34,7 @@ If you add a Bootstrap `control-label` this will also be styled, blue when the c
 ```
 <div class="form-group">
     <label class="control-label">Label</label>
-    <input class="form-control" ng-model="ctrl.example" required />
+    <input class="form-control" ng-model="ctrl.example" tw-validation required />
 </div>
 ```
 
@@ -64,6 +66,23 @@ You will need to use the [TransferWise Bootstrap](http://bootstrap.transferwise.
 ```
 
 ### Components
+#### tw-select
+tw-select is styled replacement for a regular HTML select supporting the same interface, along with keyboard controls etc.
+```
+<tw-select
+  name="mySelect"
+  placeholder="Select an option..."
+  ng-model="vm.components.select"
+  options="[
+    {'value': '1', 'label': 'One'},
+    {'value': '2', 'label': 'Two'},
+    {'value': '3', 'label': 'Three'}
+  ]"
+  tw-validation>
+</tw-select>
+```
+
+
 #### tw-date
 Usage:
 2 way binding via ng-model, with either a javascript `Date` object or an ISO8601 `String` date: `1994-11-05T08:15:30-05:00`

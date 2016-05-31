@@ -242,9 +242,11 @@
 		}
 		return found;
 	}
+
 	function searchAndSelect($ngModel, $ctrl, options, term) {
 		var found = false,
 			searchTerm = term.toLowerCase();
+			
 		options.forEach(function(option) {
 			if (found) {
 				return;
