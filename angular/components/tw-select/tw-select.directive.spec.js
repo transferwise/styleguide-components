@@ -348,10 +348,6 @@ describe('Directive: TwSelect', function() {
         return compiledElement;
     }
 
-    function getIsolateScope(directiveElement) {
-        return directiveElement.isolateScope().$ctrl;
-    }
-
     function keypress(letter) {
         return {
             type: 'keypress',
