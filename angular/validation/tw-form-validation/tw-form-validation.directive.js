@@ -18,7 +18,9 @@
 						.addClass("has-error");
 
 					var invalidControl = $(element).find(
-						"input[type=checkbox].ng-invalid, input[type=radio].ng-invalid"
+						'input[type=checkbox].ng-invalid, input[type=radio].ng-invalid,' +
+						'.tw-checkbox.ng-invalid, .tw-radio.ng-invalid, ' +
+						'.tw-select.ng-invalid, .tw-date.ng-invalid'
 					);
 
 					invalidControl
