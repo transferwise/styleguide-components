@@ -1,0 +1,92 @@
+<h4 id="select">TW Select</h4>
+<p>Styled select box replacement, supporting the majority of the
+	standard HTML interface for a select.  The select box
+	has full keyboard support matching native behaviour.</p>
+<p>The select box also maintains a hidden form input with the
+	given name to be compatible with HTML form posts.</p>
+
+<p class="alert alert-info">The select component depends
+	on dropwdown.js from Bootstrap.</p>
+<hr/>
+<form>
+<div class="row m-b-3" ng-init="vm.select.options = [
+	{'value': '1', 'label': 'One'},
+	{'value': '2', 'label': 'Two'},
+	{'value': '3', 'label': 'Three'}
+]; vm.select.empty = 'Select an option...';">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="control-label" for="date">
+				Example select
+			</label>
+			<tw-select tw-validation
+				name="mySelect"
+				placeholder="{{vm.select.empty}}"
+				ng-model="vm.model.components.select"
+				ng-change="vm.change()"
+				ng-required="vm.select.required"
+				ng-disabled="vm.select.disabled"
+				ng-blur="vm.blur()"
+				options="vm.select.options">
+			</tw-select>
+			<div class="error-messages">
+				<div class="error-required">Required</div>
+			</div>
+			<status-messages></status-messages>
+		</div>
+		<h5>Configuration</h5>
+<pre>&lt;tw-select
+  name="mySelect"
+  placeholder="{{vm.select.empty}}"
+  ng-model="vm.components.select"
+  ng-required="{{vm.select.required}}"
+  ng-disabled="{{vm.select.disabled}}"
+  ng-change="..."
+  options="[
+    {'value': '1', 'label': 'One'},
+    {'value': '2', 'label': 'Two'},
+    {'value': '3', 'label': 'Three'}
+  ]"
+  tw-validation /&gt;</pre>
+	</div>
+	<div class="col-md-6">
+		<div class="well">
+			<h5 class="page-header">
+				Edit configuration
+			</h5>
+			<div class="form-group">
+				<label class="control-label">
+					Required?
+				</label>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" tw-input
+							ng-model="vm.select.required" />
+						Is the control required?
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label">
+					Disabled?
+				</label>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" tw-input
+							ng-model="vm.select.disabled" />
+						Is the control disabled?
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label">
+					Empty value
+				</label>
+				<input class="form-control"
+					ng-model="vm.select.empty" />
+			</div>
+			<input type="submit" class="btn btn-primary btn-block" value="Submit form" />
+		</div>
+	</div>
+</div>
+</form>

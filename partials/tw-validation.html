@@ -1,0 +1,284 @@
+<form id="validation"
+	name="exampleForm"
+	ng-submit="vm.submit()"
+	novalidate>
+	<div class="form-group">
+		<label class="control-label">
+			Text input - required
+		</label>
+		<input type="text" required tw-validation
+			class="form-control"
+			placeholder="Placeholder"
+			ng-model="vm.model.textRequired" />
+		<error-messages></error-messages>
+		<status-messages></status-messages>
+	</div>
+
+	<div class="form-group">
+		<label class="control-label">
+			Select - required
+		</label>
+		<select class="form-control" required tw-validation
+			ng-model="vm.model.selectRequired">
+			<option value="">Please choose..</option>
+			<option value="1">Option 1</option>
+			<option value="2">Option 2</option>
+			<option value="3">Option 3</option>
+		</select>
+		<error-messages></error-messages>
+		<status-messages></status-messages>
+	</div>
+
+	<div class="form-group"
+		ng-init="vm.select.options2 = [
+			{'value': '1', 'label': 'One'},
+			{'value': '2', 'label': 'Two'},
+			{'value': '3', 'label': 'Three'}
+		];">
+		<label class="control-label">
+			twSelect - required
+		</label>
+		<tw-select tw-validation
+			ng-model="vm.model.selectRequired"
+			ng-required="true"
+			options="vm.select.options2"
+			placeholder="Select an option..."></tw-select>
+		<error-messages></error-messages>
+		<status-messages></status-messages>
+	</div>
+
+	<div class="form-group"
+		ng-init="vm.select.options3 = [
+			{'value': '1', 'label': 'Profile', 'icon': 'icon-profile'},
+			{'value': '2', 'label': 'Globe', 'icon': 'icon-globe'},
+			{'value': '3', 'label': 'Bank', 'icon': 'icon-bank'}
+		];">
+		<label class="control-label">
+			twSelect - with icons
+		</label>
+		<tw-select tw-validation
+			ng-model="vm.model.selectIcons"
+			ng-required="true"
+			options="vm.select.options3"
+			placeholder="Select an option...">
+			<a href="" ng-click="">Transcluded Link</a>
+		</tw-select>
+		<error-messages></error-messages>
+		<status-messages></status-messages>
+	</div>
+
+	<div class="form-group"
+		ng-init="vm.select.options4 = [
+			{'value': '1', 'label': 'Euro', 'currency': 'EUR'},
+			{'value': '2', 'label': 'British Pound', 'currency': 'GBP'},
+			{'value': '3', 'label': 'US Dollar', 'currency': 'USD'}
+		];">
+		<label class="control-label">
+			twSelect - with currency
+		</label>
+		<tw-select tw-validation
+			ng-model="vm.model.selectCurrency"
+			ng-required="true"
+			options="vm.select.options4"
+			placeholder="Select an option..." />
+		<error-messages></error-messages>
+		<status-messages></status-messages>
+	</div>
+
+	<div class="form-group">
+		<label class="control-label">
+			Checkboxes
+		</label>
+		<div class="checkbox">
+			<label>
+				<tw-checkbox tw-validation
+					ng-model="vm.model.checkbox1"
+					ng-required="true" />
+				Checkbox 1 - required
+			</label>
+		</div>
+		<div class="checkbox">
+			<label>
+				<tw-checkbox tw-validation
+					ng-model="vm.model.checkbox1"
+					ng-required="true" />
+				Checkbox 1 - required
+			</label>
+		</div>
+		<div class="checkbox">
+			<label>
+				<tw-checkbox tw-validation
+					ng-model="vm.model.checkbox2" />
+				Checkbox 2
+			</label>
+		</div>
+		<div class="checkbox disabled">
+			<label>
+				<tw-checkbox tw-validation
+					ng-model="vm.model.checkbox3"
+					ng-disabled="true" />
+				Checkbox 3 - disabled
+			</label>
+		</div>
+		<div class="checkbox checkbox-lg">
+			<label>
+				<tw-checkbox tw-validation
+					ng-model="vm.model.checkbox4" />
+				Checkbox 4
+				<small>Subsequent information</small>
+			</label>
+		</div>
+	</div>
+
+	<div class="form-group" ng-init="vm.model.simpleRadio = '4'">
+		<label class="control-label">
+			Radio buttons - required
+		</label>
+		<div class="radio">
+			<label>
+				<!--<input type="radio" name="simple-radio"
+					value="1" required
+					ng-model="vm.model.simpleRadio" tw-input />-->
+				<tw-radio name="simple-radio" value="1"
+					ng-model="vm.model.simpleRadio"
+					ng-required="true" />
+				Radio 1
+			</label>
+		</div>
+		<div class="radio">
+			<label>
+				<!--
+				<input type="radio" name="simple-radio"
+					value="2" required
+					ng-model="vm.model.simpleRadio" tw-input /> -->
+				<tw-radio name="simple-radio" value="2"
+					ng-model="vm.model.simpleRadio"
+					ng-required="true" />
+				Radio 2
+			</label>
+		</div>
+		<div class="radio disabled">
+			<label>
+				<!--
+				<input type="radio" name="simple-radio" disabled
+					value="3"
+					ng-model="vm.model.simpleRadio" tw-input />-->
+				<tw-radio name="simple-radio" value="3"
+					ng-disabled="true"
+					ng-model="vm.model.simpleRadio" />
+				Radio 3 - disabled
+			</label>
+		</div>
+		<div class="radio radio-lg">
+			<label>
+				<!--
+				<input type="radio" name="simple-radio"
+					value="4"
+					ng-model="vm.model.simpleRadio" tw-input />-->
+				<tw-radio name="simple-radio" value="4"
+					ng-model="vm.model.simpleRadio" />
+				Radio 4
+				<small>Subsequent information, subsequent
+					information, subsequent information.</small>
+			</label>
+		</div>
+		<div class="radio">
+			<label>
+				<tw-radio name="simple-radio" value="5"
+					ng-model="vm.model.simpleRadio" />
+				Radio 5 - new {{vm.model.simpleRadio}}
+			</label>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="control-label">
+			Textarea - required
+		</label>
+		<textarea required tw-validation
+			name="textareaSimple"
+			class="form-control"
+			placeholder="Required"
+			ng-model="vm.model.textareaSimple"
+			></textarea>
+		<error-messages></error-messages>
+		<status-messages></status-messages>
+	</div>
+
+	<div class="form-group">
+		<label class="control-label">
+			Text - complex validation
+		</label>
+		<input type="text" required tw-validation
+			name="textComplex"
+			class="form-control"
+			placeholder="a-z only, 2 to 6 chars"
+			ng-model="vm.model.textComplex"
+			ng-pattern="/^[a-z]+$/"
+			ng-minlength="2"
+			ng-maxlength="6" />
+		<error-messages></error-messages>
+		<status-messages></status-messages>
+	</div>
+
+	<div class="form-group">
+		<label class="control-label">
+			Number - complex validation
+		</label>
+		<input type="number" required tw-validation
+			name="numberComplex"
+			class="form-control"
+			placeholder="min 5, max 10"
+			ng-model="vm.model.numberComplex"
+			ng-min="5"
+			ng-max="10" />
+		<div class="error-messages">
+			<div class="error-required">Required</div>
+			<div class="error-min">Number must be at least 5</div>
+			<div class="error-max">Number must be at most 10</div>
+			<div class="error-number">Must be a number</div>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="control-label">
+			Date - complex validation
+		</label>
+		<input type="date" required tw-validation
+			name="dateComplex"
+			class="form-control"
+			placeholder="YYYY-MM-DD, dates in 2016 only"
+			ng-model="vm.model.dateComplex"
+			min="2016-01-01"
+			max="2016-12-31" />
+		<div class="error-messages">
+			<div class="error-required">Required</div>
+			<div class="error-min">Date must be after 2015-12-31</div>
+			<div class="error-max">Date must be before 2017-01-01</div>
+			<div class="error-date">Must be a valid YYYY-MM-DD date</div>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="control-label">
+			Time - complex validation
+		</label>
+		<input type="time" required tw-validation
+			name="timeComplex"
+			class="form-control"
+			placeholder="HH:MM:SS, time between 9am and 5pm"
+			ng-model="vm.model.timeComplex"
+			min="09:00:00"
+			max="17:00:00" />
+		<div class="error-messages">
+			<div class="error-required">Required</div>
+			<div class="error-min">Time must be after 09:00:00</div>
+			<div class="error-max">Time must be before 17:00:00</div>
+			<div class="error-time">Must be a valid HH:MM:SS time</div>
+		</div>
+	</div>
+
+	<button type="submit" class="btn btn-primary btn-block">
+		Submit form
+	</button>
+</form>

@@ -1,0 +1,193 @@
+
+
+.status-messages {
+	display: none;
+}
+.touched, .untouched, .pristine, .dirty {
+	display: none;
+}
+.ng-touched ~ .status-messages > .touched,
+.ng-untouched ~ .status-messages > .untouched,
+.ng-pristine ~ .status-messages > .pristine,
+.ng-dirty ~ .status-messages > .dirty {
+	display: block;
+}
+
+.currency-flag {
+	vertical-align: sub;
+	margin-right: 8px;
+}
+/*
+label.btn-input {
+	text-align: left;
+}
+label.btn-input span {
+	display: none;
+}
+label.btn-input.active span {
+	display: inline-block;
+}
+*/
+
+@input-border: #d3d5d8;
+@brand-white: #FFF;
+@input-border-focus: #00b9ff;
+@input-bg-disabled: #FFF;
+@input-border-disabled: #e2e6e8;
+@input-color-disabled: #d3d5d8;
+
+
+.tw-checkbox {
+	.tw-checkbox-button {
+		border: 1px solid @input-border;
+		background: #FFF;
+		width: 22px;
+		height: 22px;
+		border-radius: 3px;
+		display: inline-block;
+
+		padding: 0;
+		vertical-align: middle;
+
+		/* transition: all 0.15s ease-in-out; */
+	}
+
+	.tw-checkbox-check {
+		width: 20px;
+		height: 20px;
+		line-height: 18px;
+		margin: 0;
+		display: none;
+		color: @brand-white;
+	}
+
+	&[checked],
+	&.checked {
+		.tw-checkbox-button {
+			border-color: @input-border-focus;
+			background-color: @input-border-focus;
+		}
+		.tw-checkbox-check {
+			display: inline-block;
+		}
+	}
+
+	&[disabled] {
+		.tw-checkbox-check {
+			color: @input-border-disabled;
+		}
+	}
+}
+
+.tw-checkbox-button,
+.tw-radio-button {
+	&:focus,
+	&:active {
+		border-color: @input-border-focus;
+		outline: none;
+	}
+}
+.tw-checkbox,
+.tw-radio {
+	[disabled] {
+		background-color: @input-bg-disabled;
+		border-color: @input-border-disabled;
+	}
+}
+
+.checkbox {
+	&.has-error .tw-checkbox-button {
+		border-color: #f53636;
+	}
+	&[disabled] label,
+	&[disabled] label:hover {
+		border-color: @input-border-disabled;
+		color: @input-color-disabled !important;
+	}
+}
+
+.tw-radio {
+	.tw-radio-button {
+		width: 24px;
+		height: 24px;
+		border-radius: 50%;
+
+		border: 1px solid @input-border;
+		background: @brand-white;
+		display: inline-block;
+
+		padding: 0;
+		vertical-align: middle;
+	}
+
+	.tw-radio-check {
+		margin: 11px;
+		border-radius: 50%;
+
+		text-align: center;
+		width: 0px;
+		height: 0px;
+		margin: 12px 0 0 12px;
+		transition: all 0.15s ease-in-out;
+	}
+
+	&[checked],
+	&.checked,
+	[checked],
+	.checked {
+		.tw-radio-button {
+			border-color: @input-border-focus;
+		}
+		.tw-radio-check {
+			width: 12px;
+			height: 12px;
+			margin: 5px;
+			display: block;
+			background-color: @input-border-focus;
+		}
+	}
+	&[disabled] {
+		.tw-radio-check {
+			background-color: @input-border-disabled;
+		}
+	}
+}
+
+
+.checkbox .tw-checkbox-button,
+.radio .tw-radio-button {
+	position: absolute;
+	top: 11px;
+	left: 14px;
+}
+.form-inline .tw-checkbox-button,
+.form-inline .tw-radio-button {
+	vertical-align: bottom;
+}
+/*
+label {
+	cursor: pointer;
+}
+
+
+.tw-checkbox-check {
+	background-repeat: no-repeat;
+	background-position: center;
+	background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxNnB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeG1sbnM6c2tldGNoPSJodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2gvbnMiPiAgICAgICAgPHRpdGxlPmljX3RpY2s8L3RpdGxlPiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4gICAgPGRlZnM+PC9kZWZzPiAgICA8ZyBpZD0iRmxvdyIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc2tldGNoOnR5cGU9Ik1TUGFnZSI+ICAgICAgICA8ZyBpZD0iaWNfdGljayIgc2tldGNoOnR5cGU9Ik1TQXJ0Ym9hcmRHcm91cCIgZmlsbD0iI0ZGRkZGRiI+ICAgICAgICAgICAgPHBhdGggZD0iTTYuNSwxMiBMMTMsNS41IEwxMS41LDQgTDYuNSw5IEw0LjUsNyBMMyw4LjUgTDYuNSwxMiBaIiBpZD0iaWNfY2hlY2tib3hfdGljayIgc2tldGNoOnR5cGU9Ik1TU2hhcGVHcm91cCI+PC9wYXRoPiAgICAgICAgPC9nPiAgICA8L2c+PC9zdmc+);
+	transition: all 0.1s ease-in;
+	transition-property: width;
+
+	left: 3px;
+	position: relative;
+	height: 14px;
+	display: block;
+	width: 0px;
+}
+.checked .tw-checkbox-check {
+	width: 14px;
+}
+
+.tick-mask-ticked {
+	width: 0;
+}
+*/

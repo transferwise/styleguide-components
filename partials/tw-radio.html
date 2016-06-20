@@ -1,0 +1,69 @@
+<h4 id="checkbox">TW Checkbox</h4>
+<hr />
+<form>
+<div class="row m-b-3">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="control-label">
+				TW Checkbox
+			</label>
+			<div class="radio">
+				<label>
+					<tw-radio name="myRadio" value="1"
+						ng-model="vm.model.components.radio"
+						ng-required="vm.radio.required"
+						ng-disabled="vm.radio.disabled" />
+					Option 1<span ng-if="vm.radio.required">*</span>
+				</label>
+			</div>
+			<div class="radio">
+				<label>
+					<tw-radio name="myRadio"  value="2"
+						ng-model="vm.model.components.radio"
+						ng-required="vm.radio.required"
+						ng-disabled="vm.radio.disabled" />
+					Option 2<span ng-if="vm.radio.required">*</span>
+				</label>
+			</div>
+		</div>
+		<h5>Configuration</h5>
+<pre>&lt;tw-radio
+  name="myRadio"
+  value="1"
+  ng-model="vm.components.radio"
+  ng-required="{{vm.radio.required}}"
+  ng-disabled="{{vm.radio.disabled}}"
+  tw-validation /&gt;</pre>
+	</div>
+	<div class="col-md-6">
+		<div class="well">
+			<h5 class="page-header">
+				Edit configuration
+			</h5>
+			<div class="form-group">
+				<label class="control-label">
+					Required?
+				</label>
+				<div class="checkbox">
+					<label>
+						<tw-checkbox ng-model="vm.radio.required" />
+						Is the control required?
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label">
+					Disabled?
+				</label>
+				<div class="checkbox">
+					<label>
+						<tw-checkbox ng-model="vm.radio.disabled" />
+						Is the control disabled?
+					</label>
+				</div>
+			</div>
+			<input type="submit" class="btn btn-primary btn-block" value="Submit form" />
+		</div>
+	</div>
+</div>
+</form>

@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 
         watch: {
             less: {
-                files: ['app/**/*.css', 'app/**/*.less'],
+                files: ['styles/**/*.less'],
                 tasks: ['less']
             },
             components: {
@@ -96,38 +96,14 @@ module.exports = function(grunt) {
                 }
             }
         },
-
         less: {
             development: {
                 options: {
-                    paths: ["app"]
+                    paths: [""]
                 },
                 files: {
-                    "public/css/styles.css": ["app/**/*.css", "app/**/*.less"]
+                    "styles/examples.css": ["styles/**/*.less"]
                 }
-            },
-            production: {
-                options: {
-                    paths: ["app"],
-                    compress: true
-                },
-                files: {
-                    "public/css/styles.min.css": ["app/**/*.css", "app/**/*.less"]
-                }
-            }
-        },
-        copy: {
-            templates: {
-                expand: true,
-                flatten: true,  // flattens results to a single level
-                src: ['angular/**/*.html'],
-                dest: 'dist/templates/',
-                filter: 'isFile'
-            },
-            docs: {
-                expand: true,
-                src: ['index.html', 'components/**/*.*', 'dist/**/*.*'],
-                dest: 'gh-pages'
             }
         },
         jshint: {
@@ -138,12 +114,12 @@ module.exports = function(grunt) {
                 browser: true,
                 globals: {
                     jQuery: true,
-					console: true
-				},
-				'-W099': true, // allow mix tabs and spaces
-				'-W014': true, // allow ++
-				'-W043': true, // parseInt without radix parameter
-				'-W065': true  // allow \n for line endings
+                    console: true
+                },
+                '-W099': true, // allow mix tabs and spaces
+                '-W014': true, // allow ++
+                '-W043': true, // parseInt without radix parameter
+                '-W065': true  // allow \n for line endings
             },
             files: [
                 'angular/**/*.controller.js',
@@ -158,7 +134,8 @@ module.exports = function(grunt) {
             },
             files: [
                 'angular/**/*.html',
-                'examples/**/*.html'
+                'partials/**/*.html',
+                'index.html'
             ]
         },
         karma: {
@@ -177,9 +154,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-htmllint');
 
     // === REGISTER TASKS ===
-    grunt.registerTask('default', ['jshint', 'uglify', 'less', 'copy', 'watch', 'htmllint']);
+    grunt.registerTask('default', ['jshint', 'uglify', 'less', 'watch', 'htmllint']);
 };
