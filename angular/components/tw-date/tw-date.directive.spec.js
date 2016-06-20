@@ -52,18 +52,15 @@ describe('Directive: TwDate', function() {
                 expect(element.find(MONTH_SELECTOR).val()).toBe('0');
                 expect(element.find(YEAR_SELECTOR).val()).toBe('');
             });
-
             it('should return an updated date as an object', function() {
                 setDateUsingControls(element, '2000', '0', '1');
-                expect($scope.ngModel).toEqual(new Date(2000, 0, 1));
+                expect($scope.ngModel).toEqual(new Date(Date.UTC(2000, 0, 1)));
             });
-
             it('should populate vm.months based on vm.locale if supported', function () {
                 if (isIntlSupportedForLocale('en')) {
                     expectDateMonthsToBeLocalized(element, 'en');
                 }
             });
-
             it('should populate vm.months with default English months', function () {
                 if (!isIntlSupportedForLocale('en')) {
                     expectDateMonthsToBeDefault(element);
@@ -97,7 +94,6 @@ describe('Directive: TwDate', function() {
                     $scope.ngModel = dateModel;
                     element = getCompiledDirectiveElement($scope);
                 });
-
                 it('should set control values correctly', function () {
                     expect(element.find(DAY_SELECTOR).val()).toBe('21');
                     expect(element.find(MONTH_SELECTOR).val()).toBe('7');
