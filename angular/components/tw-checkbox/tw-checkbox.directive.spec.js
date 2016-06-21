@@ -15,6 +15,7 @@ describe('Directive: TwCheckbox', function() {
     var LABEL_SELECTOR = '.checkbox label';
 
     beforeEach(module('tw.form-components'));
+    beforeEach(module('tw.form-styling'));
 
     beforeEach(inject(function($injector) {
         $rootScope = $injector.get('$rootScope');
