@@ -3,26 +3,21 @@
 	//'use strict';
 
 	angular
-		.module('tw.form-styling')
+		.module('tw.form-components')
 		.directive('twCheckbox', TwCheckboxDirective);
 
 	function TwCheckboxDirective() {
 
 		function TwCheckboxController($scope, $element) {
 			var $ctrl = this,
-				$ngModel = $element.controller('ngModel');
+				$ngModel = $element.controller('ngModel'),
+				buttonElement = $element.find('.tw-checkbox-button');
 				labelSelector = '.checkbox';
 
 			$ctrl.buttonClick = function($event) {
 				$ngModel.$setViewValue(!$ctrl.ngModel);
 				$ngModel.$setTouched();
 				var isChecked = !$ctrl.ngModel;
-
-				if (isChecked) {
-					$element.attr('checked', true);
-				} else {
-					$element.removeAttr('checked');
-				}
 
 				validateCheckbox(isChecked, $element, $ngModel, $ctrl);
 			};
@@ -47,9 +42,9 @@
 
 			$scope.$watch('$ctrl.ngDisabled', function(newValue, oldValue) {
 				if (newValue && !oldValue) {
-					$element.closest('.checkbox').addClass('disabled').attr('disabled', true);
+					$element.closest('.checkbox').addClass('disabled').addClass('disabled', true);
 				} else if (!newValue && oldValue) {
-					$element.closest('.checkbox').removeClass('disabled').removeAttr('disabled');
+					$element.closest('.checkbox').removeClass('disabled').removeClass('disabled');
 				}
 			});
 			$scope.$watch('$ctrl.ngRequired', function(newValue, oldValue) {
@@ -66,10 +61,12 @@
 
 			if (!isChecked && $ctrl.ngRequired) {
 				$ngModel.$setValidity('required', false);
+				$element.find('.tw-checkbox-button').addClass('has-error');
 				$element.closest('.checkbox').addClass('has-error');
 				$element.closest('.form-group').addClass('has-error');
 			} else {
 				$ngModel.$setValidity('required', true);
+				$element.find('.tw-checkbox-button').removeClass('has-error');
 				$element.closest('.checkbox').removeClass('has-error');
 				$element.closest('.form-group').removeClass('has-error');
 			}
@@ -78,7 +75,6 @@
 		return {
 			restrict: 'EA',
 			require: 'ngModel',
-			replace: true,
 			controller: ['$scope', '$element', TwCheckboxController],
 			controllerAs: '$ctrl',
 			bindToController: true,
@@ -89,8 +85,6 @@
 				ngDisabled: '='
 			},
 			template: " \
-			<span class='tw-checkbox' \
-				ng-class='{\"checked\": $ctrl.ngModel}'> \
 				<input type='hidden' class='sr-only' \
 					name='{{$ctrl.name}}' \
 					ng-model='$ctrl.ngModel' \
@@ -99,12 +93,11 @@
 					ng-click='$ctrl.buttonClick($event)' \
 					ng-focus='$ctrl.buttonFocus()' \
 					ng-blur='$ctrl.buttonBlur()' \
-					ng-class='{\"checked\": $ctrl.ngModel}' \
 					ng-disabled='$ctrl.ngDisabled' \
+					ng-class='{\"checked\": $ctrl.ngModel}' \
 					aria-pressed='{{$ctrl.ngModel}}'> \
 					<span class='tw-checkbox-check glyphicon glyphicon-ok'></span> \
-				</button> \
-			</span>"
+				</button>"
 		};
 		/* <span class='tw-checkbox-check'></span> \ */
 	}

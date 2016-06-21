@@ -1,34 +1,4 @@
-.status-messages {
-  display: none;
-}
-.touched,
-.untouched,
-.pristine,
-.dirty {
-  display: none;
-}
-.ng-touched ~ .status-messages > .touched,
-.ng-untouched ~ .status-messages > .untouched,
-.ng-pristine ~ .status-messages > .pristine,
-.ng-dirty ~ .status-messages > .dirty {
-  display: block;
-}
-.currency-flag {
-  vertical-align: sub;
-  margin-right: 8px;
-}
-/*
-label.btn-input {
-	text-align: left;
-}
-label.btn-input span {
-	display: none;
-}
-label.btn-input.active span {
-	display: inline-block;
-}
-*/
-.tw-checkbox .tw-checkbox-button {
+.tw-checkbox-button {
   border: 1px solid #d3d5d8;
   background: #FFF;
   width: 22px;
@@ -37,9 +7,10 @@ label.btn-input.active span {
   display: inline-block;
   padding: 0;
   vertical-align: middle;
-  /* transition: all 0.15s ease-in-out; */
+  text-align: center;
+  transition: all 0.15s ease-in-out;
 }
-.tw-checkbox .tw-checkbox-check {
+.tw-checkbox-button .tw-checkbox-check {
   width: 20px;
   height: 20px;
   line-height: 18px;
@@ -47,39 +18,45 @@ label.btn-input.active span {
   display: none;
   color: #FFF;
 }
-.tw-checkbox[checked] .tw-checkbox-button,
-.tw-checkbox.checked .tw-checkbox-button {
-  border-color: #00b9ff;
-  background-color: #00b9ff;
-}
-.tw-checkbox[checked] .tw-checkbox-check,
-.tw-checkbox.checked .tw-checkbox-check {
-  display: inline-block;
-}
-.tw-checkbox[disabled] .tw-checkbox-check {
-  color: #e2e6e8;
-}
 .tw-checkbox-button:focus,
-.tw-radio-button:focus,
+.tw-checkbox-button.focus,
 .tw-checkbox-button:active,
-.tw-radio-button:active {
+.tw-checkbox-button.active {
   border-color: #00b9ff;
   outline: none;
 }
-.tw-checkbox [disabled],
-.tw-radio [disabled] {
-  background-color: #FFF;
+.tw-checkbox-button[checked],
+.tw-checkbox-button.checked {
+  border-color: #00b9ff;
+  background-color: #00b9ff;
+}
+.tw-checkbox-button[checked] .tw-checkbox-check,
+.tw-checkbox-button.checked .tw-checkbox-check {
+  display: inline-block;
+}
+.tw-checkbox-button[disabled] {
+  background-color: #f2f5f7;
   border-color: #e2e6e8;
+  cursor: not-allowed;
 }
-.checkbox.has-error .tw-checkbox-button {
-  border-color: #f53636;
+.tw-checkbox-button[disabled] .tw-checkbox-check {
+  color: #e2e6e8;
 }
-.checkbox[disabled] label,
-.checkbox[disabled] label:hover {
-  border-color: #e2e6e8;
-  color: #d3d5d8 !important;
+.checkbox.has-error .tw-checkbox-button,
+.tw-checkbox-button.has-error {
+  border-color: #F53636;
 }
-.tw-radio .tw-radio-button {
+.checkbox.has-error .tw-checkbox-button[checked],
+.tw-checkbox-button.has-error[checked],
+.checkbox.has-error .tw-checkbox-button.checked,
+.tw-checkbox-button.has-error.checked {
+  background-color: #F53636;
+}
+.checkbox.has-error .tw-checkbox-button[disabled],
+.tw-checkbox-button.has-error[disabled] {
+  background-color: #f2f5f7;
+}
+.tw-radio-button {
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -89,7 +66,7 @@ label.btn-input.active span {
   padding: 0;
   vertical-align: middle;
 }
-.tw-radio .tw-radio-check {
+.tw-radio-button .tw-radio-check {
   margin: 11px;
   border-radius: 50%;
   text-align: center;
@@ -98,24 +75,51 @@ label.btn-input.active span {
   margin: 12px 0 0 12px;
   transition: all 0.15s ease-in-out;
 }
-.tw-radio[checked] .tw-radio-button,
-.tw-radio.checked .tw-radio-button,
-.tw-radio [checked] .tw-radio-button,
-.tw-radio .checked .tw-radio-button {
+.tw-radio-button:focus,
+.tw-radio-button.focus,
+.tw-radio-button:active,
+.tw-radio-button.active {
+  border-color: #00b9ff;
+  outline: none;
+}
+.tw-radio-button[checked],
+.tw-radio-button.checked {
   border-color: #00b9ff;
 }
-.tw-radio[checked] .tw-radio-check,
-.tw-radio.checked .tw-radio-check,
-.tw-radio [checked] .tw-radio-check,
-.tw-radio .checked .tw-radio-check {
+.tw-radio-button[checked] .tw-radio-check,
+.tw-radio-button.checked .tw-radio-check {
   width: 12px;
   height: 12px;
   margin: 5px;
   display: block;
   background-color: #00b9ff;
 }
-.tw-radio[disabled] .tw-radio-check {
+.tw-radio-button[disabled] {
+  background-color: #f2f5f7;
+  border-color: #e2e6e8;
+  cursor: not-allowed;
+}
+.tw-radio-button[disabled] .tw-radio-check {
   background-color: #e2e6e8;
+}
+.radio.has-error .tw-radio-button,
+.tw-radio-button.has-error {
+  border-color: #F53636;
+}
+.radio.has-error .tw-radio-button[checked] .tw-radio-check,
+.tw-radio-button.has-error[checked] .tw-radio-check,
+.radio.has-error .tw-radio-button.checked .tw-radio-check,
+.tw-radio-button.has-error.checked .tw-radio-check {
+  background-color: #F53636;
+}
+.radio.has-error .tw-radio-button[disabled] .tw-radio-check,
+.tw-radio-button.has-error[disabled] .tw-radio-check {
+  background-color: #e2e6e8;
+}
+.checkbox.disabled label,
+.checkbox.disabled label:hover {
+  border-color: #e2e6e8;
+  color: #d3d5d8 !important;
 }
 .checkbox .tw-checkbox-button,
 .radio .tw-radio-button {
@@ -128,11 +132,6 @@ label.btn-input.active span {
   vertical-align: bottom;
 }
 /*
-label {
-	cursor: pointer;
-}
-
-
 .tw-checkbox-check {
 	background-repeat: no-repeat;
 	background-position: center;
@@ -154,3 +153,23 @@ label {
 	width: 0;
 }
 */
+
+.status-messages {
+  display: none;
+}
+.touched,
+.untouched,
+.pristine,
+.dirty {
+  display: none;
+}
+.ng-touched ~ .status-messages > .touched,
+.ng-untouched ~ .status-messages > .untouched,
+.ng-pristine ~ .status-messages > .pristine,
+.ng-dirty ~ .status-messages > .dirty {
+  display: block;
+}
+.currency-flag {
+  vertical-align: sub;
+  margin-right: 8px;
+}

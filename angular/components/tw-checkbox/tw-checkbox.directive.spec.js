@@ -9,11 +9,12 @@ describe('Directive: TwCheckbox', function() {
         directiveElement,
         button;
 
+    var DIRECTIVE_SELECTOR = 'tw-checkbox';
     var BUTTON_SELECTOR = 'button';
     var INPUT_SELECTOR = 'input';
     var LABEL_SELECTOR = '.checkbox label';
 
-    beforeEach(module('tw.form-styling'));
+    beforeEach(module('tw.form-components'));
 
     beforeEach(inject(function($injector) {
         $rootScope = $injector.get('$rootScope');
@@ -23,7 +24,7 @@ describe('Directive: TwCheckbox', function() {
         $scope.name = 'myCheckbox';
         $scope.ngRequired = true;
         templateElement = getCompiledTemplateElement($scope);
-        directiveElement = templateElement.find('.tw-checkbox');
+        directiveElement = templateElement.find(DIRECTIVE_SELECTOR);
         $ngModel = directiveElement.controller('ngModel');
         button = directiveElement.find(BUTTON_SELECTOR);
     }));
@@ -33,22 +34,23 @@ describe('Directive: TwCheckbox', function() {
             expect(button.length).toBe(1);
         });
         it('should name a hidden form control', function() {
-            var hiddenInput = directiveElement.find('input');
+            var hiddenInput = directiveElement.find(INPUT_SELECTOR);
             expect(hiddenInput.attr('name')).toBe('myCheckbox');
         });
 
         it('should not be checked when ngModel is false', function() {
             // TODO Requires CSS!!!
             //expect(button.find('.tw-checkbox-check').is(':visible')).toBe(false);
-            expect(directiveElement.hasClass('checked')).toBe(false);
+            expect(button.hasClass('checked')).toBe(false);
         });
 
         it('should already be checked when ngModel is true', function() {
             $scope.ngModel = true;
             templateElement = getCompiledTemplateElement($scope);
+            button = templateElement.find(BUTTON_SELECTOR);
             // TODO Requires CSS!!!
             //expect(templateElement.find('.tw-checkbox-check').is(':visible')).toBe(true);
-            expect(directiveElement.hasClass('checked')).toBe(true);
+            expect(button.hasClass('checked')).toBe(true);
         });
     });
     describe('interactions', function() {
@@ -102,6 +104,7 @@ describe('Directive: TwCheckbox', function() {
             button.trigger('click').trigger('click').triggerHandler('blur');
             var checkboxContainer = button.closest('.checkbox');
             expect(checkboxContainer.hasClass('has-error')).toBe(true);
+            expect(button.hasClass('has-error')).toBe(true);
         });
     });
 

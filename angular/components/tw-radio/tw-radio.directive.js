@@ -3,14 +3,14 @@
 	//'use strict';
 
 	angular
-		.module('tw.form-styling')
+		.module('tw.form-components')
 		.directive('twRadio', TwRadioDirective);
 
 	function TwRadioDirective() {
 
 		function TwRadioController($scope, $element) {
 			var $ctrl = this,
-				$ngModel = $element.controller('ngModel');
+				$ngModel = $element.controller('ngModel'),
 				labelSelector = '.radio label';
 
 			$ctrl.buttonClick = function($event) {
@@ -39,10 +39,10 @@
 
 				if ($ctrl.ngModel === $ctrl.value) {
 					//$element.addClass('checked');
-					$element.attr('checked', true);
+					//$element.attr('checked', true);
 				} else {
 					//$element.removeClass('checked');
-					$element.removeAttr('checked');
+					//$element.removeAttr('checked');
 				}
 			});
 
@@ -57,7 +57,6 @@
 
 		return {
 			restrict: 'E',
-			replace: true,
 			require: 'ngModel',
 			controller: ['$scope', '$element', TwRadioController],
 			controllerAs: '$ctrl',
@@ -70,8 +69,6 @@
 				ngDisabled: '='
 			},
 			template: " \
-			<span class='tw-radio' \
-				ng-class='{checked: $ctrl.ngModel == $ctrl.value}'> \
 				<input type='radio' class='sr-only' \
 					name='{{$ctrl.name}}' \
 					value='{{$ctrl.value}}' \
@@ -84,8 +81,7 @@
 					ng-class='{checked: $ctrl.ngModel == $ctrl.value}' \
 					aria-pressed='{{$ctrl.ngModel == $ctrl.value}}'> \
 					<span class='tw-radio-check'></span> \
-				</button> \
-			</span>"
+				</button>"
 		};
 	}
 })(window.angular);

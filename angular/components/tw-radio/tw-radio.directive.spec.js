@@ -11,11 +11,12 @@ describe('Directive: TwRadio', function() {
         buttonOne,
         buttonTwo;
 
+    var DIRECTIVE_SELECTOR = 'tw-radio';
     var BUTTON_SELECTOR = 'button';
     var INPUT_SELECTOR = 'input';
     var LABEL_SELECTOR = '.checkbox label';
 
-    beforeEach(module('tw.form-styling'));
+    beforeEach(module('tw.form-components'));
 
     beforeEach(inject(function($injector) {
         $rootScope = $injector.get('$rootScope');
@@ -26,7 +27,7 @@ describe('Directive: TwRadio', function() {
         $scope.ngRequired = true;
         $scope.ngDisabled = false;
         templateElement = getCompiledTemplateElement($scope);
-        directiveElement = templateElement.find('.tw-radio');
+        directiveElement = templateElement.find(DIRECTIVE_SELECTOR);
         $ngModel = directiveElement.controller('ngModel');
         buttons = directiveElement.find(BUTTON_SELECTOR);
         buttonOne = $(buttons[0]);
@@ -38,23 +39,24 @@ describe('Directive: TwRadio', function() {
             expect(buttons.length).toBe(2);
         });
         it('should name a hidden form control', function() {
-            var hiddenInput = directiveElement.find('input');
+            var hiddenInput = directiveElement.find(INPUT_SELECTOR);
             expect(hiddenInput.attr('name')).toBe('myCheckbox');
         });
         // TODO Requires CSS!!!
         it('should not be checked when ngModel does not match value', function() {
             // TODO Requires CSS!!!
             //expect(buttons.find('.tw-radio-check').is(':visible')).toBe(false);
-            expect(directiveElement.hasClass('checked')).toBe(false);
+            expect(buttonOne.hasClass('checked')).toBe(false);
         });
 
         it('should already be checked when ngModel matches value', function() {
             $scope.ngModel = '1';
             templateElement = getCompiledTemplateElement($scope);
-            directiveElement = templateElement.find('.tw-radio');
+            buttons = templateElement.find(BUTTON_SELECTOR);
+            buttonOne = $(buttons[0]);
             // TODO Requires CSS!!!
             //expect(templateElement.find('.tw-radio-check').is(':visible')).toBe(true);
-            expect(directiveElement.hasClass('checked')).toBe(true);
+            expect(buttonOne.hasClass('checked')).toBe(true);
         });
     });
     describe('interactions', function() {

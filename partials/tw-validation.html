@@ -121,7 +121,7 @@
 			</label>
 		</div>
 		<div class="checkbox checkbox-lg">
-			<label>
+			<label ng-init="vm.model.checkbox4 = true;">
 				<tw-checkbox tw-validation
 					ng-model="vm.model.checkbox4" />
 				Checkbox 4
@@ -180,13 +180,6 @@
 				Radio 4
 				<small>Subsequent information, subsequent
 					information, subsequent information.</small>
-			</label>
-		</div>
-		<div class="radio">
-			<label>
-				<tw-radio name="simple-radio" value="5"
-					ng-model="vm.model.simpleRadio" />
-				Radio 5 - new {{vm.model.simpleRadio}}
 			</label>
 		</div>
 	</div>
