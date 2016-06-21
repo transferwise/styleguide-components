@@ -131,6 +131,51 @@ angular.module("tw.form-components", []);
     angular.module("tw.form-components").controller("TwDateController", TwDateController), 
     TwDateController.$inject = [ "$element", "$log", "$scope" ];
 }(window.angular), function(angular) {
+    function TwCheckboxDirective() {
+        function TwCheckboxController($scope, $element) {
+            var $ctrl = this, $ngModel = $element.controller("ngModel");
+            $element.find(".tw-checkbox-button");
+            labelSelector = ".checkbox", $ctrl.buttonClick = function($event) {
+                $ngModel.$setViewValue(!$ctrl.ngModel), $ngModel.$setTouched();
+                var isChecked = !$ctrl.ngModel;
+                validateCheckbox(isChecked, $element, $ngModel, $ctrl);
+            }, $ctrl.buttonFocus = function() {
+                $element.closest(".checkbox").find("label").addClass("focus"), $element.trigger("focus");
+            }, $ctrl.buttonBlur = function() {
+                $element.closest(".checkbox").find("label").removeClass("focus"), $element.trigger("blur"), 
+                $ngModel.$setTouched(), validateCheckbox($ctrl.ngModel, $element, $ngModel, $ctrl);
+            }, $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+                newValue !== oldValue && ($ngModel.$setDirty(), validateCheckbox($ctrl.ngModel, $element, $ngModel, $ctrl));
+            }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
+                newValue && !oldValue ? $element.closest(".checkbox").addClass("disabled").addClass("disabled", !0) : !newValue && oldValue && $element.closest(".checkbox").removeClass("disabled").removeClass("disabled");
+            }), $scope.$watch("$ctrl.ngRequired", function(newValue, oldValue) {
+                newValue !== oldValue && newValue && validateCheckbox($ctrl.ngModel, $element, $ngModel, $ctrl);
+            });
+        }
+        function validateCheckbox(isChecked, $element, $ngModel, $ctrl) {
+            $ngModel.$touched && (!isChecked && $ctrl.ngRequired ? ($ngModel.$setValidity("required", !1), 
+            $element.find(".tw-checkbox-button").addClass("has-error"), $element.closest(".checkbox").addClass("has-error"), 
+            $element.closest(".form-group").addClass("has-error")) : ($ngModel.$setValidity("required", !0), 
+            $element.find(".tw-checkbox-button").removeClass("has-error"), $element.closest(".checkbox").removeClass("has-error"), 
+            $element.closest(".form-group").removeClass("has-error")));
+        }
+        return {
+            restrict: "EA",
+            require: "ngModel",
+            controller: [ "$scope", "$element", TwCheckboxController ],
+            controllerAs: "$ctrl",
+            bindToController: !0,
+            scope: {
+                name: "@",
+                ngModel: "=",
+                ngRequired: "=",
+                ngDisabled: "="
+            },
+            template: " 				<input type='hidden' class='sr-only' 					name='{{$ctrl.name}}' 					ng-model='$ctrl.ngModel' 					ng-disabled='$ctrl.ngDisabled'/> 				<button type='button' class='tw-checkbox-button' tw-focusable 					ng-click='$ctrl.buttonClick($event)' 					ng-focus='$ctrl.buttonFocus()' 					ng-blur='$ctrl.buttonBlur()' 					ng-disabled='$ctrl.ngDisabled' 					ng-class='{\"checked\": $ctrl.ngModel}' 					aria-pressed='{{$ctrl.ngModel}}'> 					<span class='tw-checkbox-check glyphicon glyphicon-ok'></span> 				</button>"
+        };
+    }
+    angular.module("tw.form-components").directive("twCheckbox", TwCheckboxDirective);
+}(window.angular), function(angular) {
     "use strict";
     function TwDateDirective() {
         var directive = {
@@ -224,4 +269,153 @@ angular.module("tw.form-components", []);
         };
     }
     angular.module("tw.form-components").directive("twLoader", TwLoader);
+}(window.angular), function(angular) {
+    function TwRadioDirective() {
+        function TwRadioController($scope, $element) {
+            var $ctrl = this, $ngModel = $element.controller("ngModel"), labelSelector = ".radio label";
+            $ctrl.buttonClick = function($event) {
+                $ctrl.ngDisabled || $ngModel.$setViewValue($ctrl.value);
+            }, $ctrl.buttonFocus = function() {
+                $element.closest(labelSelector).addClass("focus"), $element.trigger("focus");
+            }, $ctrl.buttonBlur = function() {
+                $element.closest(labelSelector).removeClass("focus"), $element.trigger("blur");
+            }, $element.on("blur", function(event) {
+                $ngModel.$setTouched();
+            }), $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+                newValue !== oldValue && $ngModel.$setDirty(), $ctrl.ngModel === $ctrl.value;
+            }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
+                newValue && !oldValue ? $element.closest(labelSelector).addClass("disabled") : !newValue && oldValue && $element.closest(labelSelector).removeClass("disabled");
+            });
+        }
+        return {
+            restrict: "E",
+            require: "ngModel",
+            controller: [ "$scope", "$element", TwRadioController ],
+            controllerAs: "$ctrl",
+            bindToController: !0,
+            scope: {
+                name: "@",
+                value: "@",
+                ngModel: "=",
+                ngRequired: "=",
+                ngDisabled: "="
+            },
+            template: " 				<input type='radio' class='sr-only' 					name='{{$ctrl.name}}' 					value='{{$ctrl.value}}' 					ng-model='$ctrl.ngModel'  /> 				<button type='button' class='tw-radio-button' tw-focusable 					ng-click='$ctrl.buttonClick($event)' 					ng-focus='$ctrl.buttonFocus()' 					ng-blur='$ctrl.buttonBlur()' 					ng-disabled='$ctrl.ngDisabled' 					ng-class='{checked: $ctrl.ngModel == $ctrl.value}' 					aria-pressed='{{$ctrl.ngModel == $ctrl.value}}'> 					<span class='tw-radio-check'></span> 				</button>"
+        };
+    }
+    angular.module("tw.form-components").directive("twRadio", TwRadioDirective);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwSelectDirective() {
+        return {
+            require: "ngModel",
+            bindToController: !0,
+            controller: [ "$element", "$scope", "$transclude", TwSelectController ],
+            controllerAs: "$ctrl",
+            replace: !1,
+            transclude: !0,
+            restrict: "EA",
+            scope: {
+                ngModel: "=",
+                ngRequired: "=",
+                ngDisabled: "=",
+                ngChange: "&",
+                ngBlur: "&",
+                options: "=",
+                name: "@",
+                disabled: "@",
+                required: "@",
+                placeholder: "@"
+            },
+            template: " 				<div class='btn-group btn-block tw-select' aria-hidden='true'> 					<button type='button' class='btn btn-input dropdown-toggle' 						data-toggle='dropdown' aria-expanded='false' 						ng-disabled='$ctrl.ngDisabled' 						tw-focusable> 						<span class='tw-select-selected' ng-if='$ctrl.ngModel != null'> 							<i class='icon {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> 							</i><i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}}' ng-if='$ctrl.selected && $ctrl.selected.currency'> 							</i><span class='selected-label'>{{$ctrl.selected.label}}</span> 						</span> 						<span class='form-control-placeholder' ng-if='$ctrl.ngModel == null'>{{$ctrl.placeholder}}</span> 						<span class='caret'></span> 					</button> 					<ul class='dropdown-menu' role='menu'> 						<li ng-class='{active: !$ctrl.ngModel}' 							ng-if='$ctrl.placeholder && !$ctrl.ngRequired'> 							<a href='' value='' class='tw-select-placeholder' tw-focusable> 								{{$ctrl.placeholder}} 							</a> 						</li> 						<li ng-if='$ctrl.placeholder && !$ctrl.ngRequired' class='divider'></li> 						<li 							ng-repeat='option in $ctrl.options' 							ng-class='{active: $ctrl.ngModel === option.value}'> 							<a href='' value='{{option.value}}' class='tw-select-option' tw-focusable> 								<i class='icon {{option.icon}}' ng-if='option.icon'> 								</i><i class='currency-flag currency-flag-{{option.currency | lowercase}}' ng-if='option.currency'> 								</i>{{option.label}} 							</a> 						</li> 						<li ng-if='$ctrl.hasTranscluded' class='divider'></li> 						<li ng-transclude ng-if='$ctrl.hasTranscluded' class='tw-select-transcluded'></li> 					</ul> 				</div> 				<input type='hidden' class='tw-select-hidden' 					name='{{$ctrl.name}}' 					value='{{$ctrl.ngModel}}' 					ng-disabled='$ctrl.ngDisabled' /> "
+        };
+    }
+    function TwSelectController($element, $scope, $transclude) {
+        var $ctrl = this, options = $ctrl.options, $ngModel = $element.controller("ngModel");
+        $ctrl.search = "", preSelectModelValue($ngModel, $ctrl, options), setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl), 
+        addWatchers($ctrl, $scope, $ngModel), addEventHandlers($ctrl, $element, $ngModel, options), 
+        checkForTranscludedContent($transclude, $ctrl);
+    }
+    function addWatchers($ctrl, $scope, $ngModel) {
+        $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+            (newValue || oldValue) && newValue !== oldValue && $ngModel.$setDirty(), modelChange(newValue, oldValue, $ctrl);
+        });
+    }
+    function addEventHandlers($ctrl, $element, $ngModel, options) {
+        $element.find(".btn, .dropdown-menu").on("focusout", function() {
+            setTimeout(function() {
+                0 !== $element.find(".btn:focus").length || $element.find(".btn-group").hasClass("open") || $element.trigger("blur");
+            }, 150);
+        }), $element.on("blur", function(event) {
+            $ngModel.$setTouched();
+        }), $element.find(".btn").on("keypress", function(event) {
+            var characterCode = getCharacterFromKeypress(event);
+            continueSearchAndSelectMatch($ngModel, $ctrl, options, characterCode), $element.find(".active a").focus();
+        }), $element.find(".btn").on("click", function() {
+            setTimeout(function() {
+                $element.find(".active a").focus();
+            });
+        }), $element.find("ul").on("click", "a", function(event) {
+            $element.find(".btn").focus(), optionFocus(event, options, $ngModel, $ctrl, this);
+        }), $element.find("ul").on("focus", "a", function(event) {
+            optionFocus(event, options, $ngModel, $ctrl, this);
+        }), $element.find("ul").on("keypress", "a", function(event) {
+            var characterCode = getCharacterFromKeypress(event);
+            continueSearchAndSelectMatch($ngModel, $ctrl, options, characterCode), $element.find(".active a").focus();
+        });
+    }
+    function checkForTranscludedContent($transclude, $ctrl) {
+        $transclude(function(clone) {
+            (clone.length > 1 || "" !== clone.text().trim()) && ($ctrl.hasTranscluded = !0);
+        });
+    }
+    function getCharacterFromKeypress(event) {
+        return String.fromCharCode(event.which || event.charCode || event.keyCode);
+    }
+    function optionFocus(event, options, $ngModel, $ctrl, optionElement) {
+        if ($(event.target).hasClass("tw-select-option")) {
+            var option = findOptionFromValue(options, optionElement.getAttribute("value"));
+            selectOption($ngModel, $ctrl, option);
+        } else $(event.target).hasClass("tw-select-placeholder") && resetOption($ngModel, $ctrl);
+    }
+    function preSelectModelValue($ngModel, $ctrl, options) {
+        if ($ctrl.ngModel) {
+            var option = findOptionFromValue(options, $ctrl.ngModel);
+            selectOption($ngModel, $ctrl, option);
+        }
+    }
+    function modelChange(newVal, oldVal, $ctrl) {
+        if (newVal !== oldVal) {
+            var option = findOptionFromValue($ctrl.options, newVal);
+            option ? $ctrl.selected = option : $ctrl.selected = null;
+        }
+    }
+    function findOptionFromValue(options, value) {
+        var optionMatch = !1;
+        return options.forEach(function(option) {
+            String(option.value) === String(value) && (optionMatch = option);
+        }), optionMatch;
+    }
+    function setDefaultIfRequired($ngModel, $ctrl, $element, $attrs) {
+        ($ctrl.ngRequired || $attrs.required) && !$ctrl.ngModel && $ctrl.options[0] && selectOption($ngModel, $ctrl, $ctrl.options[0]);
+    }
+    function selectOption($ngModel, $ctrl, option) {
+        $ngModel.$setViewValue(option.value), $ctrl.selected = option;
+    }
+    function resetOption($ngModel, $ctrl) {
+        $ngModel.$setViewValue(null), $ctrl.selected = !1;
+    }
+    function continueSearchAndSelectMatch($ngModel, $ctrl, options, letter) {
+        var found = searchAndSelect($ngModel, $ctrl, options, $ctrl.search + letter);
+        return found ? $ctrl.search += letter : ($ctrl.search = letter, found = searchAndSelect($ngModel, $ctrl, options, $ctrl.search)), 
+        found;
+    }
+    function searchAndSelect($ngModel, $ctrl, options, term) {
+        var found = !1, searchTerm = term.toLowerCase();
+        return options.forEach(function(option) {
+            found || 0 === option.label.toLowerCase().indexOf(searchTerm) && (selectOption($ngModel, $ctrl, option), 
+            found = !0);
+        }), found;
+    }
+    angular.module("tw.form-components").directive("twSelect", TwSelectDirective);
 }(window.angular);

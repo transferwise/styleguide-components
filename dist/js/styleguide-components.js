@@ -134,6 +134,51 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     angular.module("tw.form-components").controller("TwDateController", TwDateController), 
     TwDateController.$inject = [ "$element", "$log", "$scope" ];
 }(window.angular), function(angular) {
+    function TwCheckboxDirective() {
+        function TwCheckboxController($scope, $element) {
+            var $ctrl = this, $ngModel = $element.controller("ngModel");
+            $element.find(".tw-checkbox-button");
+            labelSelector = ".checkbox", $ctrl.buttonClick = function($event) {
+                $ngModel.$setViewValue(!$ctrl.ngModel), $ngModel.$setTouched();
+                var isChecked = !$ctrl.ngModel;
+                validateCheckbox(isChecked, $element, $ngModel, $ctrl);
+            }, $ctrl.buttonFocus = function() {
+                $element.closest(".checkbox").find("label").addClass("focus"), $element.trigger("focus");
+            }, $ctrl.buttonBlur = function() {
+                $element.closest(".checkbox").find("label").removeClass("focus"), $element.trigger("blur"), 
+                $ngModel.$setTouched(), validateCheckbox($ctrl.ngModel, $element, $ngModel, $ctrl);
+            }, $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+                newValue !== oldValue && ($ngModel.$setDirty(), validateCheckbox($ctrl.ngModel, $element, $ngModel, $ctrl));
+            }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
+                newValue && !oldValue ? $element.closest(".checkbox").addClass("disabled").addClass("disabled", !0) : !newValue && oldValue && $element.closest(".checkbox").removeClass("disabled").removeClass("disabled");
+            }), $scope.$watch("$ctrl.ngRequired", function(newValue, oldValue) {
+                newValue !== oldValue && newValue && validateCheckbox($ctrl.ngModel, $element, $ngModel, $ctrl);
+            });
+        }
+        function validateCheckbox(isChecked, $element, $ngModel, $ctrl) {
+            $ngModel.$touched && (!isChecked && $ctrl.ngRequired ? ($ngModel.$setValidity("required", !1), 
+            $element.find(".tw-checkbox-button").addClass("has-error"), $element.closest(".checkbox").addClass("has-error"), 
+            $element.closest(".form-group").addClass("has-error")) : ($ngModel.$setValidity("required", !0), 
+            $element.find(".tw-checkbox-button").removeClass("has-error"), $element.closest(".checkbox").removeClass("has-error"), 
+            $element.closest(".form-group").removeClass("has-error")));
+        }
+        return {
+            restrict: "EA",
+            require: "ngModel",
+            controller: [ "$scope", "$element", TwCheckboxController ],
+            controllerAs: "$ctrl",
+            bindToController: !0,
+            scope: {
+                name: "@",
+                ngModel: "=",
+                ngRequired: "=",
+                ngDisabled: "="
+            },
+            template: " 				<input type='hidden' class='sr-only' 					name='{{$ctrl.name}}' 					ng-model='$ctrl.ngModel' 					ng-disabled='$ctrl.ngDisabled'/> 				<button type='button' class='tw-checkbox-button' tw-focusable 					ng-click='$ctrl.buttonClick($event)' 					ng-focus='$ctrl.buttonFocus()' 					ng-blur='$ctrl.buttonBlur()' 					ng-disabled='$ctrl.ngDisabled' 					ng-class='{\"checked\": $ctrl.ngModel}' 					aria-pressed='{{$ctrl.ngModel}}'> 					<span class='tw-checkbox-check glyphicon glyphicon-ok'></span> 				</button>"
+        };
+    }
+    angular.module("tw.form-components").directive("twCheckbox", TwCheckboxDirective);
+}(window.angular), function(angular) {
     "use strict";
     function TwDateDirective() {
         var directive = {
@@ -228,68 +273,40 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     }
     angular.module("tw.form-components").directive("twLoader", TwLoader);
 }(window.angular), function(angular) {
-    "use strict";
-    function TwFormControlStyling() {
+    function TwRadioDirective() {
+        function TwRadioController($scope, $element) {
+            var $ctrl = this, $ngModel = $element.controller("ngModel"), labelSelector = ".radio label";
+            $ctrl.buttonClick = function($event) {
+                $ctrl.ngDisabled || $ngModel.$setViewValue($ctrl.value);
+            }, $ctrl.buttonFocus = function() {
+                $element.closest(labelSelector).addClass("focus"), $element.trigger("focus");
+            }, $ctrl.buttonBlur = function() {
+                $element.closest(labelSelector).removeClass("focus"), $element.trigger("blur");
+            }, $element.on("blur", function(event) {
+                $ngModel.$setTouched();
+            }), $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+                newValue !== oldValue && $ngModel.$setDirty(), $ctrl.ngModel === $ctrl.value;
+            }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
+                newValue && !oldValue ? $element.closest(labelSelector).addClass("disabled") : !newValue && oldValue && $element.closest(labelSelector).removeClass("disabled");
+            });
+        }
         return {
-            restrict: "C",
-            link: FocusableLink
+            restrict: "E",
+            require: "ngModel",
+            controller: [ "$scope", "$element", TwRadioController ],
+            controllerAs: "$ctrl",
+            bindToController: !0,
+            scope: {
+                name: "@",
+                value: "@",
+                ngModel: "=",
+                ngRequired: "=",
+                ngDisabled: "="
+            },
+            template: " 				<input type='radio' class='sr-only' 					name='{{$ctrl.name}}' 					value='{{$ctrl.value}}' 					ng-model='$ctrl.ngModel'  /> 				<button type='button' class='tw-radio-button' tw-focusable 					ng-click='$ctrl.buttonClick($event)' 					ng-focus='$ctrl.buttonFocus()' 					ng-blur='$ctrl.buttonBlur()' 					ng-disabled='$ctrl.ngDisabled' 					ng-class='{checked: $ctrl.ngModel == $ctrl.value}' 					aria-pressed='{{$ctrl.ngModel == $ctrl.value}}'> 					<span class='tw-radio-check'></span> 				</button>"
         };
     }
-    function TwFocusable() {
-        return {
-            restrict: "A",
-            link: FocusableLink
-        };
-    }
-    function FocusableLink(scope, element) {
-        var formGroup = $(element).closest(".form-group");
-        $(element).on("focus", function() {
-            formGroup.addClass("focus");
-        }).on("blur", function() {
-            formGroup.removeClass("focus");
-        });
-    }
-    angular.module("tw.form-styling").directive("formControl", TwFormControlStyling), 
-    angular.module("tw.form-styling").directive("twFocusable", TwFocusable);
-}(window.angular), function(angular) {
-    function TwInputStyling() {
-        function onFocus() {
-            $(this).closest(".form-group").addClass("focus"), $(this).closest(labelSelector).addClass("focus");
-        }
-        function onBlur() {
-            $(this).closest(".form-group").removeClass("focus"), $(this).closest(labelSelector).removeClass("focus");
-        }
-        function onClick(event) {
-            fakeClick(this), event.stopPropagation();
-        }
-        function fakeClick(buttonReplacement) {
-            var formControl = $(buttonReplacement).closest("label").find("input");
-            "undefined" != typeof formControl[0] && (MouseEvent ? formControl[0].dispatchEvent(new MouseEvent("click", {
-                view: window,
-                bubbles: !0,
-                cancelable: !0
-            })) : formControl.click());
-        }
-        function onKeypress(event) {
-            13 === (event.keyCode ? event.keyCode : event.which) && fakeClick(this);
-        }
-        function link(scope, element, attrs, ctrl) {
-            if (attrs.type) {
-                var type = attrs.type.toLowerCase();
-                if (("radio" === type || "checkbox" === type) && 0 !== $(element).closest(labelSelector).length) {
-                    var replacement;
-                    replacement = "radio" === type ? $(radioTemplate) : $(checkboxTemplate), replacement.keypress(onKeypress).click(onClick).focus(onFocus).blur(onBlur), 
-                    $(element).addClass("sr-only").after(replacement), replacement.after(disabledReplacement);
-                }
-            }
-        }
-        var labelSelector = ".checkbox > label, .radio > label", checkboxTemplate = "<button type='button' class='input-replacement'><span class='glyphicon glyphicon-ok'></span></button>", radioTemplate = "<button type='button' class='input-replacement'><span></span></button>", disabledReplacement = "<span class='disabled-replacement input-replacement'><span></span></span>";
-        return {
-            restrict: "EA",
-            link: link
-        };
-    }
-    angular.module("tw.form-styling").directive("twInput", TwInputStyling);
+    angular.module("tw.form-components").directive("twRadio", TwRadioDirective);
 }(window.angular), function(angular) {
     "use strict";
     function TwSelectDirective() {
@@ -406,13 +423,81 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     angular.module("tw.form-components").directive("twSelect", TwSelectDirective);
 }(window.angular), function(angular) {
     "use strict";
+    function TwFormControlStyling() {
+        return {
+            restrict: "C",
+            link: FocusableLink
+        };
+    }
+    function TwFocusable() {
+        return {
+            restrict: "A",
+            link: FocusableLink
+        };
+    }
+    function FocusableLink(scope, element) {
+        var formGroup = $(element).closest(".form-group");
+        $(element).on("focus", function() {
+            formGroup.addClass("focus");
+        }).on("blur", function() {
+            formGroup.removeClass("focus");
+        });
+    }
+    angular.module("tw.form-styling").directive("formControl", TwFormControlStyling), 
+    angular.module("tw.form-styling").directive("twFocusable", TwFocusable);
+}(window.angular), function(angular) {
+    function TwInputStyling() {
+        function onFocus() {
+            $(this).closest(".form-group").addClass("focus"), $(this).closest(labelSelector).addClass("focus");
+        }
+        function onBlur() {
+            $(this).closest(".form-group").removeClass("focus"), $(this).closest(labelSelector).removeClass("focus");
+        }
+        function onClick(event) {
+            fakeClick(this), event.stopPropagation();
+        }
+        function fakeClick(buttonReplacement) {
+            var formControl = $(buttonReplacement).closest("label").find("input");
+            if ("undefined" != typeof formControl[0]) if (MouseEvent) try {
+                return void formControl[0].dispatchEvent(new MouseEvent("click", {
+                    view: window,
+                    bubbles: !0,
+                    cancelable: !0
+                }));
+            } catch (ex) {
+                formControl.click();
+            } else formControl.click();
+        }
+        function onKeypress(event) {
+            13 === (event.keyCode ? event.keyCode : event.which) && fakeClick(this);
+        }
+        function link(scope, element, attrs, ctrl, ngModel) {
+            if (attrs.type) {
+                var type = attrs.type.toLowerCase();
+                if (("radio" === type || "checkbox" === type) && 0 !== $(element).closest(labelSelector).length) {
+                    var replacement;
+                    replacement = "radio" === type ? $(radioTemplate) : $(checkboxTemplate), replacement.keypress(onKeypress).click(onClick).focus(onFocus).blur(onBlur), 
+                    $(element).addClass("sr-only").after(replacement), replacement.after(disabledReplacement);
+                }
+            }
+        }
+        var labelSelector = ".checkbox > label, .radio > label", checkboxTemplate = "<button type='button' class='input-replacement'><span class='glyphicon glyphicon-ok'></span></button>", radioTemplate = "<button type='button' class='input-replacement'><span></span></button>", disabledReplacement = "<span class='disabled-replacement input-replacement'><span></span></span>";
+        return {
+            restrict: "EA",
+            require: "ngModel",
+            link: link
+        };
+    }
+    angular.module("tw.form-styling").directive("twInput", TwInputStyling);
+}(window.angular), function(angular) {
+    "use strict";
     function TwFormValidation() {
         return {
             restrict: "E",
             link: function(scope, element) {
                 $(element).on("submit", function() {
                     $(element).find("[tw-validation].ng-invalid").closest(".form-group").addClass("has-error");
-                    var invalidControl = $(element).find("input[type=checkbox].ng-invalid, input[type=radio].ng-invalid");
+                    var invalidControl = $(element).find("input[type=checkbox].ng-invalid, input[type=radio].ng-invalid,tw-checkbox.ng-invalid, tw-radio.ng-invalid, tw-select.ng-invalid, tw-date.ng-invalid");
                     return invalidControl.closest(".checkbox, .radio").addClass("has-error"), invalidControl.parents(".form-group").addClass("has-error"), 
                     !0;
                 });
