@@ -12,24 +12,10 @@
 			link: function(scope, element) {
 				$(element).on('submit', function() {
 					// Submitting the form won't trigger form controls own validation
-					$(element)
-						.find("[tw-validation].ng-invalid")
-						.closest(".form-group")
-						.addClass("has-error");
+					var elements = $(element).find("[tw-validation].ng-invalid");
 
-					var invalidControl = $(element).find(
-						'input[type=checkbox].ng-invalid, input[type=radio].ng-invalid,' +
-						'tw-checkbox.ng-invalid, tw-radio.ng-invalid, ' +
-						'tw-select.ng-invalid, tw-date.ng-invalid'
-					);
-
-					invalidControl
-						.closest(".checkbox, .radio")
-						.addClass("has-error");
-
-					invalidControl
-						.parents(".form-group")
-						.addClass("has-error");
+					elements.closest(".form-group").addClass("has-error");
+					elements.closest(".checkbox, .radio").addClass("has-error");
 
 					return true;
 				});
