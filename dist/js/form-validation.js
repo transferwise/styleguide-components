@@ -6,9 +6,8 @@ angular.module("tw.form-validation", []);
             restrict: "E",
             link: function(scope, element) {
                 $(element).on("submit", function() {
-                    $(element).find("[tw-validation].ng-invalid").closest(".form-group").addClass("has-error");
-                    var invalidControl = $(element).find("input[type=checkbox].ng-invalid, input[type=radio].ng-invalid,tw-checkbox.ng-invalid, tw-radio.ng-invalid, tw-select.ng-invalid, tw-date.ng-invalid");
-                    return invalidControl.closest(".checkbox, .radio").addClass("has-error"), invalidControl.parents(".form-group").addClass("has-error"), 
+                    var elements = $(element).find("[tw-validation].ng-invalid");
+                    return elements.closest(".form-group").addClass("has-error"), elements.closest(".checkbox, .radio").addClass("has-error"), 
                     !0;
                 });
             }
