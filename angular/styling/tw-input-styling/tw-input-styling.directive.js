@@ -7,6 +7,7 @@
 		.directive('twInput', TwInputStyling);
 
 	function TwInputStyling() {
+		console.log('twInput is deprecated, please use twRadio or twCheckbox.');
 		var labelSelector = '.checkbox > label, .radio > label';
 
 		function onFocus() {

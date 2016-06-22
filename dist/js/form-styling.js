@@ -59,6 +59,7 @@ angular.module("tw.form-styling", []);
                 }
             }
         }
+        console.log("twInput is deprecated, please use twRadio or twCheckbox.");
         var labelSelector = ".checkbox > label, .radio > label", checkboxTemplate = "<button type='button' class='input-replacement'><span class='glyphicon glyphicon-ok'></span></button>", radioTemplate = "<button type='button' class='input-replacement'><span></span></button>", disabledReplacement = "<span class='disabled-replacement input-replacement'><span></span></span>";
         return {
             restrict: "EA",
