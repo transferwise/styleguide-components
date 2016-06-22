@@ -205,7 +205,7 @@ describe('Directive: TwDynamicFormControlDirective', function() {
 					ng-required='true'> \
 				</tw-dynamic-form-control>"
 			);
-			selectElem = directiveElem.find('.tw-dynamic-select');
+			selectElem = directiveElem.find('tw-select');
 			ngModelController = directiveElem.controller('ngModel');
 		});
 
@@ -227,17 +227,15 @@ describe('Directive: TwDynamicFormControlDirective', function() {
 			expect(directiveElem.hasClass("ng-dirty")).toBe(true);
 		});
 
-		it('should set $touched when changed', function() {
-			var selectModelController = selectElem.controller('ngModel');
-			selectModelController.$setViewValue('2');
-
+		it('should set $touched when blurred', function() {
+			selectElem.trigger('blur');
 			expect(ngModelController.$touched).toBe(true);
 			expect(directiveElem.hasClass("ng-touched")).toBe(true);
 		});
 	});
 
 	describe('type: checkbox', function() {
-		var input, ngModelController;
+		var checkbox, ngModelController;
 		beforeEach(function() {
 			$scope.model = null;
 			directiveElem = compileTemplate(
@@ -246,23 +244,22 @@ describe('Directive: TwDynamicFormControlDirective', function() {
 					ng-required='true'> \
 				</tw-dynamic-form-control>"
 			);
-			input = directiveElem.find('input');
+			checkbox = directiveElem.find('tw-checkbox');
 			ngModelController = directiveElem.controller('ngModel');
 		});
 
 		it('should render a checkbox input', function() {
-			expect(input.length).toBe(1);
-			expect(input.attr("type")).toBe("checkbox");
+			expect(checkbox.length).toBe(1);
 		});
 
 		it('should set $dirty when clicked', function() {
-			input.click();
+			checkbox.click();
 			expect(ngModelController.$dirty).toBe(true);
 			expect(directiveElem.hasClass("ng-dirty")).toBe(true);
 		});
 
 		it('should set $touched when blurred', function() {
-			input.focus().blur();
+			checkbox.focus().blur();
 			expect(ngModelController.$touched).toBe(true);
 			expect(directiveElem.hasClass("ng-touched")).toBe(true);
 		});
@@ -280,7 +277,7 @@ describe('Directive: TwDynamicFormControlDirective', function() {
 	});
 
 	describe('type: radio', function() {
-		var input, directiveElem, ngModelController, template;
+		var radio, directiveElem, ngModelController, template;
 		beforeEach(function() {
 			template = "<tw-dynamic-form-control type='radio' \
 				options='options' \
@@ -296,14 +293,15 @@ describe('Directive: TwDynamicFormControlDirective', function() {
 			$scope.required = true;
 			directiveElem = compileTemplate(template);
 			ngModelController = directiveElem.controller('ngModel');
-			input = directiveElem.find('input');
+			radio = directiveElem.find('tw-radio');
 		});
 
-		it('should render a radio input', function() {
-			expect(input.length).toBe(2);
+		it('should render two radio buttons', function() {
+			expect(radio.length).toBe(2);
 		});
-		it('should use the options correctly for the input value', function() {
-			expect(input.attr('value')).toBe('1');
+		it('should set correct value when clicked', function() {
+			$(radio[0]).find('button').trigger('click');
+			expect($scope.model).toBe(1);
 		});
 		it('should use the options correctly for the label', function() {
 			var label = directiveElem.find('label');
@@ -311,13 +309,13 @@ describe('Directive: TwDynamicFormControlDirective', function() {
 		});
 
 		it('should set $dirty when changed ', function() {
-			input.click();
+			radio.click();
 			expect(ngModelController.$dirty).toBe(true);
 			expect(directiveElem.hasClass("ng-dirty")).toBe(true);
 		});
 
 		it('should set $touched when blurred', function() {
-			input.focus().blur();
+			radio.focus().blur();
 			expect(ngModelController.$touched).toBe(true);
 			expect(directiveElem.hasClass("ng-touched")).toBe(true);
 		});
