@@ -13,19 +13,33 @@
 				$ngModel = $element.controller('ngModel'),
 				labelSelector = '.radio label';
 
+			$ctrl.isChecked = function() {
+				return ($ctrl.ngValue && $ctrl.ngModel === $ctrl.ngValue) ||
+					$ctrl.value === $ctrl.ngModel;
+			};
+			$ctrl.checked = $ctrl.isChecked();
 			$ctrl.buttonClick = function($event) {
 				if ($ctrl.ngDisabled) {
 					return;
 				}
-				$ngModel.$setViewValue($ctrl.value);
+
+				$ctrl.checked = true;
+				$ngModel.$setViewValue($ctrl.ngValue || $ctrl.value);
 			};
 			$ctrl.buttonFocus = function() {
 				$element.closest(labelSelector).addClass('focus');
-				$element.trigger('focus');
+				$element.triggerHandler('focus');
 			};
 			$ctrl.buttonBlur = function() {
 				$element.closest(labelSelector).removeClass('focus');
-				$element.trigger('blur');
+				$element.triggerHandler('blur');
+			};
+			$ctrl.hiddenInputChange = function() {
+				// This only fires on label click
+				// Normal change handler doesn't, so trigger manually
+				if ($ctrl.ngChange) {
+					$ctrl.ngChange();
+				}
 			};
 
 			$element.on('blur', function(event) {
@@ -36,14 +50,7 @@
 				if (newValue !== oldValue) {
 					$ngModel.$setDirty();
 				}
-
-				if ($ctrl.ngModel === $ctrl.value) {
-					//$element.addClass('checked');
-					//$element.attr('checked', true);
-				} else {
-					//$element.removeClass('checked');
-					//$element.removeAttr('checked');
-				}
+				$ctrl.checked = $ctrl.isChecked();
 			});
 
 			$scope.$watch('$ctrl.ngDisabled', function(newValue, oldValue) {
@@ -65,21 +72,26 @@
 				name: "@",
 				value: "@",
 				ngModel: '=',
+				ngValue: '=',
 				ngRequired: '=',
-				ngDisabled: '='
+				ngDisabled: '=',
+				ngChange: '&'
 			},
 			template: " \
 				<input type='radio' class='sr-only' \
 					name='{{$ctrl.name}}' \
-					value='{{$ctrl.value}}' \
-					ng-model='$ctrl.ngModel' \ /> \
+					ng-value='$ctrl.ngValue || $ctrl.value' \
+					ng-model='$ctrl.ngModel' \
+					ng-disabled='$ctrl.ngDisabled' \
+					ng-change='$ctrl.hiddenInputChange()' \
+					tabindex='-1' /> \
 				<button type='button' class='tw-radio-button' tw-focusable \
 					ng-click='$ctrl.buttonClick($event)' \
 					ng-focus='$ctrl.buttonFocus()' \
 					ng-blur='$ctrl.buttonBlur()' \
 					ng-disabled='$ctrl.ngDisabled' \
-					ng-class='{checked: $ctrl.ngModel == $ctrl.value}' \
-					aria-pressed='{{$ctrl.ngModel == $ctrl.value}}'> \
+					ng-class='{checked: $ctrl.checked}' \
+					aria-pressed='{{$ctrl.checked}}'> \
 					<span class='tw-radio-check'></span> \
 				</button>"
 		};

@@ -14,29 +14,41 @@
 				buttonElement = $element.find('.tw-checkbox-button');
 				labelSelector = '.checkbox';
 
-			$ctrl.buttonClick = function($event) {
-				$ngModel.$setViewValue(!$ctrl.ngModel);
-				$ngModel.$setTouched();
-				var isChecked = !$ctrl.ngModel;
+			$ctrl.isChecked = function() {
+				return ($ctrl.ngTrueValue && $ctrl.ngTrueValue === $ctrl.ngModel) ||
+					!$ctrl.ngTrueValue && $ctrl.ngModel;
+			};
 
-				validateCheckbox(isChecked, $element, $ngModel, $ctrl);
+			$ctrl.checked = $ctrl.isChecked();
+
+			$ctrl.buttonClick = function($event) {
+				if ($ctrl.checked) {
+					$ngModel.$setViewValue($ctrl.ngFalseValue || false);
+					$ctrl.checked = false;
+				} else {
+					$ngModel.$setViewValue($ctrl.ngTrueValue || true);
+					$ctrl.checked = true;
+				}
+				$ngModel.$setTouched();
+
+				validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl);
 			};
 			$ctrl.buttonFocus = function() {
 				$element.closest('.checkbox').find('label').addClass('focus');
-				$element.trigger('focus');
+				$element.triggerHandler('focus');
 			};
 			$ctrl.buttonBlur = function() {
 				$element.closest('.checkbox').find('label').removeClass('focus');
-				$element.trigger('blur');
+				$element.triggerHandler('blur');
 				$ngModel.$setTouched();
 
-				validateCheckbox($ctrl.ngModel, $element, $ngModel, $ctrl);
+				validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl);
 			};
 
 			$scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
 				if (newValue !== oldValue) {
 					$ngModel.$setDirty();
-					validateCheckbox($ctrl.ngModel, $element, $ngModel, $ctrl);
+					validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl);
 				}
 			});
 
@@ -49,7 +61,7 @@
 			});
 			$scope.$watch('$ctrl.ngRequired', function(newValue, oldValue) {
 				if (newValue !== oldValue && newValue) {
-					validateCheckbox($ctrl.ngModel, $element, $ngModel, $ctrl);
+					validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl);
 				}
 			});
 		}
@@ -81,6 +93,8 @@
 			scope: {
 				name: "@",
 				ngModel: '=',
+				ngTrueValue: '=',
+				ngFalseValue: '=',
 				ngRequired: '=',
 				ngDisabled: '='
 			},
@@ -94,8 +108,8 @@
 					ng-focus='$ctrl.buttonFocus()' \
 					ng-blur='$ctrl.buttonBlur()' \
 					ng-disabled='$ctrl.ngDisabled' \
-					ng-class='{\"checked\": $ctrl.ngModel}' \
-					aria-pressed='{{$ctrl.ngModel}}'> \
+					ng-class='{\"checked\": $ctrl.checked}' \
+					aria-pressed='{{$ctrl.checked}}'> \
 					<span class='tw-checkbox-check glyphicon glyphicon-ok'></span> \
 				</button>"
 		};

@@ -18,19 +18,16 @@
 				ngModel: '=',
 				ngRequired: '=',
 				ngDisabled: '=',
-				ngChange: '&',
-				ngBlur: '&',
 				options: '=',
 				name: '@',
-				disabled: '@',
-				required: '@',
 				placeholder: '@'
 			},
 			template: " \
-				<div class='btn-group btn-block tw-select' aria-hidden='true'> \
+				<div class='btn-group btn-block tw-select' aria-hidden='false'> \
 					<button type='button' class='btn btn-input dropdown-toggle' \
 						data-toggle='dropdown' aria-expanded='false' \
 						ng-disabled='$ctrl.ngDisabled' \
+						ng-focus='$ctrl.buttonFocus()' \
 						tw-focusable> \
 						<span class='tw-select-selected' ng-if='$ctrl.ngModel != null'> \
 							<i class='icon {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> \
@@ -43,15 +40,21 @@
 					<ul class='dropdown-menu' role='menu'> \
 						<li ng-class='{active: !$ctrl.ngModel}' \
 							ng-if='$ctrl.placeholder && !$ctrl.ngRequired'> \
-							<a href='' value='' class='tw-select-placeholder' tw-focusable> \
+							<a href='' \
+								ng-click='$ctrl.placeholderClick()' \
+								ng-focus='$ctrl.placeholderFocus()' \
+								value='' class='tw-select-placeholder' tw-focusable> \
 								{{$ctrl.placeholder}} \
 							</a> \
 						</li> \
 						<li ng-if='$ctrl.placeholder && !$ctrl.ngRequired' class='divider'></li> \
 						<li \
-							ng-repeat='option in $ctrl.options' \
+							ng-repeat='option in $ctrl.options track by $index' \
 							ng-class='{active: $ctrl.ngModel === option.value}'> \
-							<a href='' value='{{option.value}}' class='tw-select-option' tw-focusable> \
+							<a href='' \
+								ng-click='$ctrl.optionClick(option)' \
+								ng-focus='$ctrl.optionFocus(option)' \
+								value='{{option.value}}' class='tw-select-option' tw-focusable> \
 								<i class='icon {{option.icon}}' ng-if='option.icon'> \
 								</i><i class='currency-flag currency-flag-{{option.currency | lowercase}}' ng-if='option.currency'> \
 								</i>{{option.label}} \
@@ -67,43 +70,78 @@
 					ng-disabled='$ctrl.ngDisabled' /> "
 		};
 	}
-	/* \
-	<input type='hidden' name='{{$ctrl.name}}' value='{{$ctrl.ngModel}}' \
-		ng-disabled='$ctrl.ngDisabled' /> \
-
-		ng-model='$ctrl.ngModel' \
-
+	/*
 	<select name='{{$ctrl.name}}' class='sr-only tw-select-hidden' \
 		ng-model='$ctrl.ngModel' \
 		ng-options='option.value as option.label for option in $ctrl.options' \
 		ng-disabled='$ctrl.ngDisabled' \
 		ng-required='$ctrl.ngRequired'> \
 	</select>"
-		*/
+	*/
 
 	function TwSelectController($element, $scope, $transclude) {
 		var $ctrl = this,
-			options = $ctrl.options,
 			$ngModel = $element.controller('ngModel');
 
 		$ctrl.search = "";
 
-		preSelectModelValue($ngModel, $ctrl, options);
+		preSelectModelValue($ngModel, $ctrl, $ctrl.options);
 		setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl);
 
-		addWatchers($ctrl, $scope, $ngModel);
-		addEventHandlers($ctrl, $element, $ngModel, options);
+		addWatchers($ctrl, $scope, $ngModel, $element);
+		addEventHandlers($ctrl, $element, $ngModel, $ctrl.options);
 
 		checkForTranscludedContent($transclude, $ctrl);
+
+		$ctrl.buttonFocus = buttonFocus;
+		$ctrl.optionClick = optionClick;
+		$ctrl.optionFocus = optionFocus;
+		$ctrl.optionKeypress = optionKeypress;
+		$ctrl.placeholderFocus = placeholderFocus;
+		$ctrl.placeholderClick = placeholderClick;
+
+		function buttonFocus() {
+			$element.triggerHandler('focus');
+		}
+		function optionClick(option) {
+			selectOption($ngModel, $ctrl, option);
+			$element.find('.btn').focus();
+		}
+		function optionFocus(option) {
+			selectOption($ngModel, $ctrl, option);
+		}
+		function optionKeypress(event) {
+			var characterCode = getCharacterFromKeypress(event);
+			continueSearchAndSelectMatch(
+				$ngModel, $ctrl, $ctrl.options, characterCode
+			);
+			$element.find('.active a').focus();
+		}
+
+		function placeholderClick(option) {
+			resetOption($ngModel, $ctrl);
+			$element.find('.btn').focus();
+		}
+		function placeholderFocus() {
+			resetOption($ngModel, $ctrl);
+		}
 	}
 
-	function addWatchers($ctrl, $scope, $ngModel) {
+	function addWatchers($ctrl, $scope, $ngModel, $element) {
 		$scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
 			if ((newValue || oldValue) && newValue !== oldValue) {
 				$ngModel.$setDirty();
 			}
 
 			modelChange(newValue, oldValue, $ctrl);
+		});
+
+		$scope.$watch('$ctrl.options', function(newValue, oldValue) {
+			if (newValue !== oldValue) {
+				// Reinitialise selected valus
+				preSelectModelValue($ngModel, $ctrl, $ctrl.options);
+				setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl);
+			}
 		});
 	}
 
@@ -123,39 +161,29 @@
 		});
 
 		$element.find('.btn').on('keypress', function(event) {
-			var characterCode = getCharacterFromKeypress(event);
-			continueSearchAndSelectMatch(
-				$ngModel, $ctrl, options, characterCode
-			);
-			$element.find('.active a').focus();
+			$ctrl.optionKeypress(event);
 		});
 
 		$element.find('.btn').on('click', function() {
-			// This hack makes test pass., but should be handled by dropdown.js,
-			//$(this).closest('.btn-group').addClass('open');
-
 			// Once dropdown is open, focus on active/selected option for keyboard support
 			setTimeout(function() {
 				$element.find('.active a').focus();
 			});
 		});
-
+		/*
 		$element.find('ul').on('click', 'a', function(event) {
 			$element.find('.btn').focus();
 			// This causes us to double fire, as focus also calls it EXCEPT on safari...
-			optionFocus(event, options, $ngModel, $ctrl, this);
+			focusOption(event, options, $ngModel, $ctrl, this);
 		});
 
 		$element.find('ul').on('focus', 'a', function(event) {
-			optionFocus(event, options, $ngModel, $ctrl, this);
+			focusOption(event, options, $ngModel, $ctrl, this);
 		});
+		*/
 
 		$element.find('ul').on('keypress', 'a', function(event) {
-			var characterCode = getCharacterFromKeypress(event);
-			continueSearchAndSelectMatch(
-				$ngModel, $ctrl, options, characterCode
-			);
-			$element.find('.active a').focus();
+			$ctrl.optionKeypress(event);
 		});
 	}
 
@@ -172,19 +200,20 @@
 			event.which || event.charCode || event.keyCode
 		);
 	}
-
-	function optionFocus(event, options, $ngModel, $ctrl, optionElement) {
+	/*
+	function focusOption(event, options, $ngModel, $ctrl, optionElement) {
 		if ($(event.target).hasClass('tw-select-option')) {
 			var option = findOptionFromValue(options, optionElement.getAttribute('value'));
-			selectOption($ngModel, $ctrl, option);
+			$ctrl.selectOption($ngModel, $ctrl, option);
 		} else if ($(event.target).hasClass('tw-select-placeholder')) {
 			resetOption($ngModel, $ctrl);
 		}
 	}
+	*/
 
 	function preSelectModelValue($ngModel, $ctrl, options) {
 		if ($ctrl.ngModel) {
-			var option = findOptionFromValue(options, $ctrl.ngModel);
+			var option = findOptionFromValue($ctrl.options, $ctrl.ngModel);
 			selectOption($ngModel, $ctrl, option);
 		}
 	}
@@ -204,7 +233,6 @@
 
 	function findOptionFromValue(options, value) {
 		var optionMatch = false;
-
 		options.forEach(function(option) {
 			if (String(option.value) === String(value)) {
 				optionMatch = option;
@@ -246,7 +274,7 @@
 	function searchAndSelect($ngModel, $ctrl, options, term) {
 		var found = false,
 			searchTerm = term.toLowerCase();
-			
+
 		options.forEach(function(option) {
 			if (found) {
 				return;

@@ -24,6 +24,9 @@ describe('Directive: TwCheckbox', function() {
         $scope.ngModel = null;
         $scope.name = 'myCheckbox';
         $scope.ngRequired = true;
+        $scope.ngClick = function() {};
+        $scope.ngFocus = function() {};
+        $scope.ngBlur = function() {};
         templateElement = getCompiledTemplateElement($scope);
         directiveElement = templateElement.find(DIRECTIVE_SELECTOR);
         $ngModel = directiveElement.controller('ngModel');
@@ -54,6 +57,7 @@ describe('Directive: TwCheckbox', function() {
             expect(button.hasClass('checked')).toBe(true);
         });
     });
+
     describe('interactions', function() {
 
         it('should change state to true when button clicked', function() {
@@ -76,7 +80,7 @@ describe('Directive: TwCheckbox', function() {
         });
 
         it('should set ngModel.$dirty when button clicked', function() {
-            button.triggerHandler('click');
+            button.trigger('click');
             expect($ngModel.$dirty).toBe(true);
         });
 
@@ -100,12 +104,62 @@ describe('Directive: TwCheckbox', function() {
             expect(directiveElement.closest('.checkbox').find('label').hasClass('focus')).toBe(true);
         });
     });
+
     describe('validation', function() {
         it('should be invalid when required, interacted with, and unchecked', function() {
             button.trigger('click').trigger('click').triggerHandler('blur');
             var checkboxContainer = button.closest('.checkbox');
             expect(checkboxContainer.hasClass('has-error')).toBe(true);
             expect(button.hasClass('has-error')).toBe(true);
+        });
+    });
+
+    describe('ng-true-value and ng-false-value', function() {
+        beforeEach(function() {
+            var template = "<tw-checkbox name='{{name}}' \
+                ng-model='ngModel' \
+                ng-true-value='trueValue' \
+                ng-false-value='falseValue' />";
+
+            $scope.trueValue = 'custom-true';
+            $scope.falseValue = 'custom-false';
+            $scope.ngModel = null;
+
+            directiveElement = getCompiledTemplateElement($scope, template);
+            button = directiveElement.find(BUTTON_SELECTOR);
+        });
+
+        it('should not set ngModel to either until changed ', function() {
+            expect($scope.ngModel).toBe(null);
+        });
+        it('should set ngModel to the true value if checked', function() {
+            button.trigger('click');
+            expect($scope.ngModel).toBe('custom-true');
+        });
+        it('should set ngModel to the false value if unchecked', function() {
+            // Set to true then false
+            button.trigger('click');
+            button.trigger('click');
+            expect($scope.ngModel).toBe('custom-false');
+        });
+    });
+
+    describe('ng-focus', function() {
+        xit('should be triggered when button focussed', function() {
+            spyOn($scope, 'ngFocus');
+            templateElement = getCompiledTemplateElement($scope);
+            button = templateElement.find(BUTTON_SELECTOR);
+            button.triggerHandler('focus');
+            expect($scope.ngFocus).toHaveBeenCalled();
+        });
+    });
+    describe('ng-blur', function() {
+        xit('should be triggered when button blurred', function() {
+            spyOn($scope, 'ngBlur');
+            templateElement = getCompiledTemplateElement($scope);
+            button = templateElement.find(BUTTON_SELECTOR);
+            button.triggerHandler('blur');
+            expect($scope.ngBlur).toHaveBeenCalled();
         });
     });
 
@@ -120,7 +174,10 @@ describe('Directive: TwCheckbox', function() {
                         <label> \
                             <tw-checkbox name='{{name}}' \
                                 ng-model='ngModel' \
-                                ng-required='ngRequired' /> \
+                                ng-required='ngRequired' \
+                                ng-click='ngClick' \
+                                ng-focus='ngFocus' \
+                                ng-blur='ngBlur' /> \
                             Checkbox label \
                         </label> \
                     </div> \

@@ -34,7 +34,6 @@
 			"<div ng-switch='$ctrl.type'> \
 				<input ng-switch-when='text'  \
 					name='{{$ctrl.name}}'  \
-					id='{{$ctrl.id}}' \
 					type='text' \
 					class='form-control' \
 					placeholder='{{$ctrl.placeholder}}' \
@@ -44,12 +43,12 @@
 					ng-disabled='$ctrl.ngDisabled' \
 					ng-pattern='$ctrl.ngPattern' \
 					ng-change='$ctrl.change()' \
+					ng-focus='$ctrl.focus()' \
 					ng-blur='$ctrl.blur()' \
 					ng-minlength='$ctrl.ngMinlength' \
 					ng-maxlength='$ctrl.ngMaxlength' />  \
 				<input ng-switch-when='number'  \
 					name='{{$ctrl.name}}'  \
-					id='{{$ctrl.id}}' \
 					type='number' \
 					step='{{$ctrl.step}}' \
 					class='form-control' \
@@ -59,6 +58,7 @@
 					ng-required='$ctrl.ngRequired' \
 					ng-disabled='$ctrl.ngDisabled' \
 					ng-change='$ctrl.change()' \
+					ng-focus='$ctrl.focus()' \
 					ng-blur='$ctrl.blur()' \
 					ng-min='$ctrl.ngMin' \
 					ng-max='$ctrl.ngMax' />  \
@@ -67,14 +67,15 @@
 					ng-class='{disabled: $ctrl.ngDisabled}' \
 					ng-repeat='option in $ctrl.options'> \
 					<label> \
-						<input type='radio' tw-input \
+						<tw-radio \
 							name='{{$ctrl.name}}' \
-							value='{{option.value}}' \
+							ng-value='option.value' \
 							ng-model='$ctrl.ngModel' \
 							ng-required='$ctrl.ngRequired' \
 							ng-disabled='$ctrl.ngDisabled' \
 							ng-change='$ctrl.change()' \
 							ng-click='$ctrl.change()' \
+							ng-focus='$ctrl.focus()' \
 							ng-blur='$ctrl.blur()' /> \
 						{{option.label}} \
 					</label> \
@@ -83,32 +84,30 @@
 					class='checkbox' \
 					ng-class='{disabled: $ctrl.ngDisabled}'> \
 					<label> \
-						<input type='checkbox' tw-input \
+						<tw-checkbox \
 							name='{{$ctrl.name}}' \
-							id='{{$ctrl.id}}' \
 							ng-model='$ctrl.ngModel' \
 							ng-required='$ctrl.ngRequired' \
 							ng-disabled='$ctrl.ngDisabled' \
 							ng-change='$ctrl.change()' \
 							ng-click='$ctrl.change()' \
+							ng-focus='$ctrl.focus()' \
 							ng-blur='$ctrl.blur()' /> \
 						{{$ctrl.placeholder}} \
 					</label> \
 				</div> \
-				<select ng-switch-when='select' \
-					name='{{$ctrl.name}}' \
-					id='{{$ctrl.id}}' \
-					class='form-control tw-dynamic-select' \
-					ng-options='option.value as option.label for option in $ctrl.options' \
-					ng-model='$ctrl.ngModel' \
-					ng-required='$ctrl.ngRequired' \
-					ng-disabled='$ctrl.ngDisabled' \
-					ng-change='$ctrl.change(); $ctrl.blur();'> \
-					ng-blur='$ctrl.blur()'> \
-					<option ng-if='$ctrl.placeholder' value=''> \
-						{{$ctrl.placeholder}} \
-					</option> \
-				</select> \
+				<div ng-switch-when='select'> \
+					<tw-select \
+						name='{{$ctrl.name}}' \
+						options='$ctrl.options' \
+						placeholder='{{$ctrl.placeholder}}' \
+						ng-model='$ctrl.ngModel' \
+						ng-required='$ctrl.ngRequired' \
+						ng-disabled='$ctrl.ngDisabled' \
+						ng-change='$ctrl.change()' \
+						ng-focus='$ctrl.focus()' \
+						ng-blur='$ctrl.blur()' /> \
+				</div> \
 				<ng-transclude class='error-messages'></ng-transclude> \
 			</div>"
 		};
@@ -128,6 +127,20 @@
 		ng-blur='$ctrl.blur()'> \
 	</tw-select> \
 </div> \
+<select ng-switch-when='select' \
+	name='{{$ctrl.name}}' \
+	id='{{$ctrl.id}}' \
+	class='form-control tw-dynamic-select' \
+	ng-options='option.value as option.label for option in $ctrl.options' \
+	ng-model='$ctrl.ngModel' \
+	ng-required='$ctrl.ngRequired' \
+	ng-disabled='$ctrl.ngDisabled' \
+	ng-change='$ctrl.change(); $ctrl.blur();'> \
+	ng-blur='$ctrl.blur()'> \
+	<option ng-if='$ctrl.placeholder' value=''> \
+		{{$ctrl.placeholder}} \
+	</option> \
+</select> \
 */
 
 	angular
@@ -141,10 +154,16 @@
 		var ngModelController = $element.controller('ngModel');
 		$ctrl.change = function() {
 			ngModelController.$setDirty();
+			if ($ctrl.ngChange) {
+				$ctrl.ngChange();
+			}
+		};
+		$ctrl.focus = function() {
+			$element.triggerHandler('focus');
 		};
 		$ctrl.blur = function() {
 			ngModelController.$setTouched();
-			$element.trigger('blur');
+			$element.triggerHandler('blur');
 		};
 	}
 

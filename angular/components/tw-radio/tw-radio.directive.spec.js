@@ -27,6 +27,8 @@ describe('Directive: TwRadio', function() {
         $scope.name = 'myCheckbox';
         $scope.ngRequired = true;
         $scope.ngDisabled = false;
+        $scope.ngFocus = function() { console.log("focus!!!!!!!!!!"); };
+        $scope.ngBlur = function() { console.log("blur!!!!!!!!!!"); };
         templateElement = getCompiledTemplateElement($scope);
         directiveElement = templateElement.find(DIRECTIVE_SELECTOR);
         $ngModel = directiveElement.controller('ngModel');
@@ -42,8 +44,8 @@ describe('Directive: TwRadio', function() {
         it('should name a hidden form control', function() {
             var hiddenInput = directiveElement.find(INPUT_SELECTOR);
             expect(hiddenInput.attr('name')).toBe('myCheckbox');
+            expect(hiddenInput.attr('value')).toBe('1');
         });
-        // TODO Requires CSS!!!
         it('should not be checked when ngModel does not match value', function() {
             // TODO Requires CSS!!!
             //expect(buttons.find('.tw-radio-check').is(':visible')).toBe(false);
@@ -130,6 +132,95 @@ describe('Directive: TwRadio', function() {
         });
     });
 
+
+    describe('ng-value', function() {
+        var labels, labelOne, labelTwo;
+
+        beforeEach(function() {
+            var template = " \
+            <label> \
+                <tw-radio name='{{name}}' \
+                    ng-model='ngModel' \
+                    ng-value='ngValue1' /> \
+            </label> \
+            <label> \
+                <tw-radio name='{{name}}' \
+                    ng-model='ngModel' \
+                    ng-value='ngValue2' /> \
+            </label>";
+
+            $scope.ngValue1 = 99;
+            $scope.ngValue2 = true;
+            $scope.ngModel = null;
+
+            templateElement = getCompiledTemplateElement($scope, template);
+            buttons = templateElement.find(BUTTON_SELECTOR);
+            buttonOne = $(buttons[0]);
+            buttonTwo = $(buttons[1]);
+            labels = templateElement.find('label');
+            labelOne = $(labels[0]);
+            labelTwo = $(labels[1]);
+        });
+
+        it('should not set ngModel to ngValue until checked ', function() {
+            expect($scope.ngModel).toBe(null);
+        });
+        it('should not check buttons when ngModel not set', function() {
+            expect(buttonOne.hasClass('checked')).toBe(false);
+            expect(buttonTwo.hasClass('checked')).toBe(false);
+        });
+        it('should set ngModel to the first ngValue if button clicked', function() {
+            buttonOne.trigger('click');
+            expect($scope.ngModel).toBe(99);
+        });
+        // TODO this does not trigger chnage in the same way as real browsers
+        xit('should set ngModel to the first ngValue if label clicked', function() {
+            labelOne.trigger('click');
+            expect($scope.ngModel).toBe(99);
+        });
+        it('should check first button when first button clicked', function() {
+            buttonOne.trigger('click');
+            expect(buttonOne.hasClass('checked')).toBe(true);
+            expect(buttonTwo.hasClass('checked')).toBe(false);
+        });
+        it('should set ngModel to the second ngValue if checked', function() {
+            buttonTwo.trigger('click');
+            expect($scope.ngModel).toBe(true);
+        });
+        it('should check second button when second button clicked', function() {
+            buttonOne.trigger('click');
+            buttonTwo.trigger('click');
+            expect(buttonOne.hasClass('checked')).toBe(false);
+            expect(buttonTwo.hasClass('checked')).toBe(true);
+        });
+        it('should have a hidden input withe supplied value', function() {
+            var hiddenInputOne = $(templateElement.find(INPUT_SELECTOR)[0]);
+            expect(hiddenInputOne.attr('value')).toBe('99');
+        });
+    });
+
+    describe('ng-focus', function() {
+        xit('should be triggered when button focussed', function() {
+            spyOn($scope, 'ngFocus').and.callThrough();
+            templateElement = getCompiledTemplateElement($scope);
+            buttons = templateElement.find(BUTTON_SELECTOR);
+            buttonOne = $(buttons[0]);
+            buttonOne.triggerHandler('focus');
+            expect($scope.ngFocus).toHaveBeenCalled();
+        });
+    });
+    describe('ng-blur', function() {
+        xit('should be triggered when button blurred', function() {
+            spyOn($scope, 'ngBlur').and.callThrough();
+            templateElement = getCompiledTemplateElement($scope);
+            buttons = templateElement.find(BUTTON_SELECTOR);
+            buttonOne = $(buttons[0]);
+
+            buttonOne.triggerHandler('blur');
+            expect($scope.ngBlur).toHaveBeenCalled();
+        });
+    });
+
     function getCompiledTemplateElement($scope, template) {
         if (!template) {
             template = " \
@@ -143,7 +234,9 @@ describe('Directive: TwRadio', function() {
                                 value='1' \
                                 ng-model='ngModel' \
                                 ng-required='ngRequired' \
-                                ng-disabled='ngDisabled' /> \
+                                ng-disabled='ngDisabled' \
+                                ng-focus='ngFocus' \
+                                ng-blur='ngBlur' /> \
                             Radio label 1 \
                         </label> \
                     </div> \
@@ -153,7 +246,9 @@ describe('Directive: TwRadio', function() {
                                 value='2' \
                                 ng-model='ngModel' \
                                 ng-required='ngRequired' \
-                                ng-disabled='ngDisabled' /> \
+                                ng-disabled='ngDisabled' \
+                                ng-focus='ngFocus' \
+                                ng-blur='ngBlur' /> \
                             Radio label 2 \
                         </label> \
                     </div> \

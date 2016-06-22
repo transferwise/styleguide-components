@@ -8,6 +8,7 @@ describe('Directive: TwSelect', function() {
         directiveElement;
 
     var SELECT_SELECTOR = '.tw-select-hidden';
+    var LIST_ITEMS_SELECTOR = '.tw-select-option';
 
     beforeEach(module('tw.form-components'));
 
@@ -27,7 +28,7 @@ describe('Directive: TwSelect', function() {
                 directiveElement = getCompiledDirectiveElement($scope);
             });
             it('should render supplied options', function() {
-                var listElements = directiveElement.find('.tw-select-option');
+                var listElements = directiveElement.find(LIST_ITEMS_SELECTOR);
                 expect(listElements.length).toBe(OPTIONS.length);
             });
             it('should name hidden input like component', function() {
@@ -308,6 +309,15 @@ describe('Directive: TwSelect', function() {
             directiveElement.find('.btn').trigger('focusout');
             expect($scope.onBlur).toHaveBeenCalled();
             expect($scope.onBlur.calls.count()).toEqual(1);
+        });
+    });
+
+    describe('when options change', function() {
+        // TODO digets is not updating options, but this works in browser
+        xit('should show new options list', function() {
+            $scope.options = [{value: '90', label: 'Ninety'}];
+            $scope.$digest();
+            expect(directiveElement.find(LIST_ITEMS_SELECTOR).length).toBe(1);
         });
     });
 
