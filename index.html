@@ -21,11 +21,8 @@
 	  $compileProvider.debugInfoEnabled(false);
 	}])
 	.controller('PageController', [function() {
-		this.blur = function() {
-			console.log('blur');
-		};
-		this.change = function() {
-			console.log('change');
+		this.log = function(message) {
+			console.log(message);
 		};
 		this.longOptions = [];
 		for(var i=0; i<50; i++) {
@@ -33,9 +30,42 @@
 		}
 		this.radio = {required: true};
 		this.checkbox = {required: true};
-		this.select = {required: true};
+		this.select = {
+			required: true,
+			empty: 'Select an option...',
+			type: 'standard',
+			types: [
+				{value: 'standard', label: 'Standard'},
+				{value: 'icons', label: 'Icons'},
+				{value: 'currencies', label: 'Currencies'}
+			],
+			options: {
+				standard: [
+					{value: 1, label: 'One'},
+					{value: 2, label: 'Two'},
+					{value: 3, label: 'Three'}
+				],
+				icons: [
+					{value: '1', label: 'Profile', icon: 'icon-profile'},
+					{value: '2', label: 'Globe', icon: 'icon-globe'},
+					{value: '3', label: 'Bank', icon: 'icon-bank'}
+				],
+				currencies: [
+					{value: 'eur', label: 'Euro', currency: 'EUR'},
+					{value: 'gbp', label: 'British Pound', currency: 'GBP'},
+					{value: 'usd', label: 'US Dollar', currency: 'USD'}
+				]
+			}
+		};
 		this.date = {required: true};
-		this.dynamic = {required: true};
+		this.dynamic = {
+			required: true,
+			options: [
+				{value: '1', label: 'One'},
+				{value: '2', label: 'Two'},
+				{value: '3', label: 'Three'},
+			]
+		};
 	}])
 	.directive('validateRegexp', function($q) {
 		return {
@@ -93,6 +123,9 @@
 	})
 	.directive('twValidationDocs', function() {
 		return {templateUrl: 'partials/tw-validation.html'};
+	})
+	.directive('twFocusableDocs', function() {
+		return {templateUrl: 'partials/tw-focusable.html'};
 	});
 	</script>
 
@@ -121,6 +154,7 @@
 						<h3 class="panel-title">Form Styling &amp; Validation</h3>
 					</div>
 					<div class="panel-body">
+						<tw-focusable-docs></tw-focusable-docs>
 						<tw-validation-docs></tw-validation-docs>
 					</div>
 				</div>
@@ -129,9 +163,11 @@
 				<div data-spy="affix" data-offset-top="0">
 					<h5>Jump to:</h5>
 					<ul class="list-unstyled">
+						<li><a href="#focusable">Tw Focusable</a></li>
 						<li><a href="#validation">Tw Validation</a></li>
 						<li><a href="#select">Tw Select</a></li>
 						<li><a href="#checkbox">Tw Checkbox</a></li>
+						<li><a href="#radio">Tw Radio</a></li>
 						<li><a href="#date">Tw Date</a></li>
 						<li><a href="#dynamic">Tw Dynamic Control</a></li>
 					</ul>
@@ -165,7 +201,7 @@
 			<div class="col-lg-8">
 				<div class="panel">
 					<div class="panel-heading">
-						<h3 class="panel-title">Loader</h3>
+						<h3 class="panel-title">Tw Loader</h3>
 					</div>
 					<div class="panel-body">
 						<p>A directive to add the HTML necessary for our

@@ -9,11 +9,7 @@
 	on dropwdown.js from Bootstrap.</p>
 <hr/>
 <form>
-<div class="row m-b-3" ng-init="vm.select.options = [
-	{'value': '1', 'label': 'One'},
-	{'value': '2', 'label': 'Two'},
-	{'value': '3', 'label': 'Three'}
-]; vm.select.empty = 'Select an option...';">
+<div class="row m-b-3">
 	<div class="col-md-6">
 		<div class="form-group">
 			<label class="control-label" for="date">
@@ -23,11 +19,12 @@
 				name="mySelect"
 				placeholder="{{vm.select.empty}}"
 				ng-model="vm.model.components.select"
-				ng-change="vm.change()"
+				ng-change="vm.log('select change')"
 				ng-required="vm.select.required"
 				ng-disabled="vm.select.disabled"
-				ng-blur="vm.blur()"
-				options="vm.select.options">
+				ng-focus="vm.log('select focus')"
+				ng-blur="vm.log('select blur')"
+				options="vm.select.options[vm.select.type]">
 			</tw-select>
 			<div class="error-messages">
 				<div class="error-required">Required</div>
@@ -42,11 +39,9 @@
   ng-required="{{vm.select.required}}"
   ng-disabled="{{vm.select.disabled}}"
   ng-change="..."
-  options="[
-    {'value': '1', 'label': 'One'},
-    {'value': '2', 'label': 'Two'},
-    {'value': '3', 'label': 'Three'}
-  ]"
+  ng-focus="..."
+  ng-blur="..."
+  options="{{vm.select.options[vm.select.type] | json}}"
   tw-validation /&gt;</pre>
 	</div>
 	<div class="col-md-6">
@@ -84,6 +79,12 @@
 				</label>
 				<input class="form-control"
 					ng-model="vm.select.empty" />
+			</div>
+			<div class="form-group">
+				<label class="control-label">
+					Type
+				</label>
+				<tw-select options="vm.select.types" ng-model="vm.select.type" />
 			</div>
 			<input type="submit" class="btn btn-primary btn-block" value="Submit form" />
 		</div>

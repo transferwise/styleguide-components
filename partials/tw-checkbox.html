@@ -8,11 +8,17 @@
 				TW Checkbox
 			</label>
 			<div class="checkbox">
-				<label>
-					<tw-checkbox
+				<label ng-init="vm.checkbox.trueValue = 'custom-true'; vm.checkbox.falseValue = 'custom-true';">
+					<tw-checkbox tw-validation
 						ng-model="vm.model.components.checkbox"
 						ng-required="vm.checkbox.required"
-						ng-disabled="vm.checkbox.disabled" />
+						ng-disabled="vm.checkbox.disabled"
+						ng-click="vm.log('checkbox click')"
+						ng-change="vm.log('checkbox change')"
+						ng-blur="vm.log('checkbox blur')"
+						ng-focus="vm.log('checkbox focus')"
+						ng-true-value="vm.checkbox.customTrueFalse ? 'custom-true' : null"
+						ng-false-value="vm.checkbox.customTrueFalse ? 'custom-false' : null" />
 					TW Checkbox<span ng-if="vm.checkbox.required">*</span>
 				</label>
 			</div>
@@ -31,6 +37,11 @@
   ng-model="vm.components.checkbox"
   ng-required="{{vm.checkbox.required}}"
   ng-disabled="{{vm.checkbox.disabled}}"
+  ng-change="..."
+  ng-blur="..."
+  ng-focus="..."<span ng-if="vm.checkbox.customTrueFalse">
+  ng-true-value="'custom-true'"
+  ng-false-value="'custom-false'"</span>
   tw-validation /&gt;</pre>
 	</div>
 	<div class="col-md-6">
@@ -57,6 +68,17 @@
 					<label>
 						<tw-checkbox ng-model="vm.checkbox.disabled" />
 						Is the control disabled?
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label">
+					Custom true/false values?
+				</label>
+				<div class="checkbox">
+					<label>
+						<tw-checkbox ng-model="vm.checkbox.customTrueFalse" />
+						Use custom values?
 					</label>
 				</div>
 			</div>

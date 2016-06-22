@@ -24,6 +24,9 @@
 				ng-pattern="vm.dynamic.pattern"
 				ng-min="vm.dynamic.min"
 				ng-max="vm.dynamic.max"
+				ng-change="vm.log('dynamic change')"
+				ng-focus="vm.log('dynamic focus')"
+				ng-blur="vm.log('dynamic blur')"
 				tw-validation />
 			<div class="error-messages">
 				<div class="error-required">
@@ -64,6 +67,9 @@
   ng-pattern="{{vm.dynamic.pattern}}"</span></span><span ng-if="vm.dynamic.type === 'number'"><span ng-if="vm.dynamic.min">
   ng-min="{{vm.dynamic.min}}"</span><span ng-if="vm.dynamic.max">
   ng-max="{{vm.dynamic.max}}"</span></span>
+  ng-change='...'
+  ng-focus='...'
+  ng-blur='...'
   tw-validation /&gt;</pre>
 	</div>
 	<div class="col-md-6">
@@ -170,24 +176,6 @@
 							ng-model="vm.dynamic.max" />
 					</div>
 				</div>
-			</div>
-
-			<div class="form-group"
-				ng-if="vm.dynamic.type !== 'text'"
-				ng-init="vm.dynamic.options = [
-					{'value': '1', 'label': 'One'},
-					{'value': '2', 'label': 'Two'},
-					{'value': '3', 'label': 'Three'}
-				]">
-				<!--
-				<label class="control-label">
-					Options
-				</label>
-				<input type="text"
-					class="form-control m-b"
-					ng-repeat="(value, label) in vm.dynamic.options"
-					ng-model="label" />
-				-->
 			</div>
 
 			<div class="form-group"

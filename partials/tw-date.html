@@ -13,6 +13,7 @@
 				ng-model="vm.model.components.date"
 				ng-required="vm.date.required"
 				ng-disabled="vm.date.disabled"
+				ng-change="vm.log('date change')"
 				locale="{{vm.date.locale}}"
 				min="1990-01-01"
 				max="2015-12-31" />
@@ -31,6 +32,7 @@
   locale="{{vm.date.locale}}"
   min="1990-01-01"
   max="2015-12-31"
+  ng-change="..."
   tw-validation /&gt;</pre>
 	</div>
 	<div class="col-md-6">
