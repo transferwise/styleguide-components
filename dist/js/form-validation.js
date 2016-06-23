@@ -15,38 +15,6 @@ angular.module("tw.form-validation", []);
     }
     angular.module("tw.form-validation").directive("form", TwFormValidation);
 }(window.angular), function(angular) {
-    function TwInputValidation() {
-        function checkValid(input, label, formGroup) {
-            setTimeout(function() {
-                input.hasClass("ng-invalid") ? (label.addClass("has-error"), formGroup.addClass("has-error")) : (label.removeClass("has-error"), 
-                checkFormGroup(formGroup));
-            });
-        }
-        function checkFormGroup(formGroup) {
-            var formGroupInvalidInputs = formGroup.find("input.ng-invalid"), formGroupValidInputsContainers = formGroup.find("input.ng-valid").closest(".checkbox, .radio");
-            setTimeout(function() {
-                formGroupValidInputsContainers.removeClass("has-error"), 0 === formGroupInvalidInputs.length && formGroup.removeClass("has-error");
-            });
-        }
-        function link(scope, element, attrs, ctrl) {
-            if (attrs.type) {
-                var type = attrs.type.toLowerCase();
-                if (("radio" === type || "checkbox" === type) && 0 !== $(element).closest(labelSelector).length) {
-                    var formControl = $(element), label = formControl.closest("label");
-                    label.on("click", function() {
-                        checkValid(formControl, formControl.closest(".checkbox, .radio"), formControl.closest(".form-group"));
-                    });
-                }
-            }
-        }
-        var labelSelector = ".checkbox > label, .radio > label";
-        return {
-            restrict: "E",
-            link: link
-        };
-    }
-    angular.module("tw.form-validation").directive("input", TwInputValidation);
-}(window.angular), function(angular) {
     "use strict";
     function TwValidation() {
         return {
