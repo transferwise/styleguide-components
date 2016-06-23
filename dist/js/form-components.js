@@ -282,7 +282,7 @@ angular.module("tw.form-components", []);
 }(window.angular), function(angular) {
     function TwRadioDirective() {
         function TwRadioController($scope, $element) {
-            var $ctrl = this, $ngModel = $element.controller("ngModel"), labelSelector = ".radio label";
+            var $ctrl = this, $ngModel = $element.controller("ngModel"), radioSelector = ".radio", labelSelector = "label";
             $ctrl.isChecked = function() {
                 return $ctrl.ngValue && $ctrl.ngModel === $ctrl.ngValue || $ctrl.value === $ctrl.ngModel;
             }, $ctrl.checked = $ctrl.isChecked(), $ctrl.buttonClick = function($event) {
@@ -298,7 +298,7 @@ angular.module("tw.form-components", []);
             }), $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
                 newValue !== oldValue && $ngModel.$setDirty(), $ctrl.checked = $ctrl.isChecked();
             }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
-                newValue && !oldValue ? $element.closest(labelSelector).addClass("disabled") : !newValue && oldValue && $element.closest(labelSelector).removeClass("disabled");
+                newValue && !oldValue ? $element.closest(radioSelector).addClass("disabled") : !newValue && oldValue && $element.closest(radioSelector).removeClass("disabled");
             });
         }
         return {
