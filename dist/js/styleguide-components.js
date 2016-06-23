@@ -469,51 +469,6 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     angular.module("tw.form-styling").directive("formControl", TwFormControlStyling), 
     angular.module("tw.form-styling").directive("twFocusable", TwFocusable);
 }(window.angular), function(angular) {
-    function TwInputStyling() {
-        function onFocus() {
-            $(this).closest(".form-group").addClass("focus"), $(this).closest(labelSelector).addClass("focus");
-        }
-        function onBlur() {
-            $(this).closest(".form-group").removeClass("focus"), $(this).closest(labelSelector).removeClass("focus");
-        }
-        function onClick(event) {
-            fakeClick(this), event.stopPropagation();
-        }
-        function fakeClick(buttonReplacement) {
-            var formControl = $(buttonReplacement).closest("label").find("input");
-            if ("undefined" != typeof formControl[0]) if (MouseEvent) try {
-                return void formControl[0].dispatchEvent(new MouseEvent("click", {
-                    view: window,
-                    bubbles: !0,
-                    cancelable: !0
-                }));
-            } catch (ex) {
-                formControl.click();
-            } else formControl.click();
-        }
-        function onKeypress(event) {
-            13 === (event.keyCode ? event.keyCode : event.which) && fakeClick(this);
-        }
-        function link(scope, element, attrs, ctrl, ngModel) {
-            if (attrs.type) {
-                var type = attrs.type.toLowerCase();
-                if (("radio" === type || "checkbox" === type) && 0 !== $(element).closest(labelSelector).length) {
-                    var replacement;
-                    replacement = "radio" === type ? $(radioTemplate) : $(checkboxTemplate), replacement.keypress(onKeypress).click(onClick).focus(onFocus).blur(onBlur), 
-                    $(element).addClass("sr-only").after(replacement), replacement.after(disabledReplacement);
-                }
-            }
-        }
-        console.log("twInput is deprecated, please use twRadio or twCheckbox.");
-        var labelSelector = ".checkbox > label, .radio > label", checkboxTemplate = "<button type='button' class='input-replacement'><span class='glyphicon glyphicon-ok'></span></button>", radioTemplate = "<button type='button' class='input-replacement'><span></span></button>", disabledReplacement = "<span class='disabled-replacement input-replacement'><span></span></span>";
-        return {
-            restrict: "EA",
-            require: "ngModel",
-            link: link
-        };
-    }
-    angular.module("tw.form-styling").directive("twInput", TwInputStyling);
-}(window.angular), function(angular) {
     "use strict";
     function TwFormValidation() {
         return {
@@ -528,38 +483,6 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         };
     }
     angular.module("tw.form-validation").directive("form", TwFormValidation);
-}(window.angular), function(angular) {
-    function TwInputValidation() {
-        function checkValid(input, label, formGroup) {
-            setTimeout(function() {
-                input.hasClass("ng-invalid") ? (label.addClass("has-error"), formGroup.addClass("has-error")) : (label.removeClass("has-error"), 
-                checkFormGroup(formGroup));
-            });
-        }
-        function checkFormGroup(formGroup) {
-            var formGroupInvalidInputs = formGroup.find("input.ng-invalid"), formGroupValidInputsContainers = formGroup.find("input.ng-valid").closest(".checkbox, .radio");
-            setTimeout(function() {
-                formGroupValidInputsContainers.removeClass("has-error"), 0 === formGroupInvalidInputs.length && formGroup.removeClass("has-error");
-            });
-        }
-        function link(scope, element, attrs, ctrl) {
-            if (attrs.type) {
-                var type = attrs.type.toLowerCase();
-                if (("radio" === type || "checkbox" === type) && 0 !== $(element).closest(labelSelector).length) {
-                    var formControl = $(element), label = formControl.closest("label");
-                    label.on("click", function() {
-                        checkValid(formControl, formControl.closest(".checkbox, .radio"), formControl.closest(".form-group"));
-                    });
-                }
-            }
-        }
-        var labelSelector = ".checkbox > label, .radio > label";
-        return {
-            restrict: "E",
-            link: link
-        };
-    }
-    angular.module("tw.form-validation").directive("input", TwInputValidation);
 }(window.angular), function(angular) {
     "use strict";
     function TwValidation() {
