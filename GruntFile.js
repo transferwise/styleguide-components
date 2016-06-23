@@ -145,6 +145,27 @@ module.exports = function(grunt) {
             unit: {
                 singleRun: true
             }
+        },
+        copy: {
+            partials: {
+              expand: true,
+              src: 'partials/*',
+              dest: 'gh-pages/'
+            },
+            styles: {
+              expand: true,
+              src: 'styles/*',
+              dest: 'gh-pages/'
+            },
+            components: {
+              expand: true,
+              src: 'components/**/*.*',
+              dest: 'gh-pages/'
+            },
+            index: {
+              src: 'index.html',
+              dest: 'gh-pages/index.html'
+            },
         }
     });
 
@@ -154,8 +175,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-htmllint');
 
     // === REGISTER TASKS ===
-    grunt.registerTask('default', ['jshint', 'uglify', 'less', 'watch', 'htmllint']);
+    grunt.registerTask('default', ['jshint', 'uglify', 'less', 'watch', 'htmllint', 'copy']);
 };
