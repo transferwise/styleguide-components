@@ -16,21 +16,27 @@
 
 			$ctrl.isChecked = function() {
 				return ($ctrl.ngTrueValue && $ctrl.ngTrueValue === $ctrl.ngModel) ||
-					!$ctrl.ngTrueValue && $ctrl.ngModel;
+					!$ctrl.ngTrueValue && $ctrl.ngModel || false;
 			};
 
 			$ctrl.checked = $ctrl.isChecked();
 
 			$ctrl.buttonClick = function($event) {
 				if ($ctrl.checked) {
-					$ngModel.$setViewValue($ctrl.ngFalseValue || false);
 					$ctrl.checked = false;
+					//$ctrl.ngModel = $ctrl.ngFalseValue || false;
+					$ngModel.$setViewValue($ctrl.ngFalseValue || false);
 				} else {
-					$ngModel.$setViewValue($ctrl.ngTrueValue || true);
 					$ctrl.checked = true;
+					//$ctrl.ngModel = $ctrl.ngTrueValue || true;
+					$ngModel.$setViewValue($ctrl.ngTrueValue || true);
 				}
 				$ngModel.$setTouched();
 
+				if ($event) {
+					// Prevent button click propgation from firing label
+					$event.stopPropagation();
+				}
 				validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl);
 			};
 			$ctrl.buttonFocus = function() {
@@ -44,6 +50,18 @@
 
 				validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl);
 			};
+
+			// IE 'clicks' the hidden input when label is clicked
+			$ctrl.hiddenClick = function($event) {
+				$event.stopPropagation();
+			};
+
+			$element.closest('label').on('click', function(event) {
+				// Trigger our button, prevent default label behaviour
+				$element.find('button').trigger('click');
+				event.preventDefault();
+				event.stopPropagation();
+			});
 
 			$scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
 				if (newValue !== oldValue) {
@@ -102,8 +120,9 @@
 				<input type='hidden' class='sr-only' \
 					name='{{$ctrl.name}}' \
 					ng-model='$ctrl.ngModel' \
+					ng-click='$ctrl.hiddenClick($event)' \
 					ng-disabled='$ctrl.ngDisabled'/> \
-				<button type='button' class='tw-checkbox-button' tw-focusable \
+				<button class='tw-checkbox-button' tw-focusable \
 					ng-click='$ctrl.buttonClick($event)' \
 					ng-focus='$ctrl.buttonFocus()' \
 					ng-blur='$ctrl.buttonBlur()' \
@@ -113,6 +132,5 @@
 					<span class='tw-checkbox-check glyphicon glyphicon-ok'></span> \
 				</button>"
 		};
-		/* <span class='tw-checkbox-check'></span> \ */
 	}
 })(window.angular);

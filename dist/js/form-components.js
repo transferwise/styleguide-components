@@ -136,16 +136,21 @@ angular.module("tw.form-components", []);
             var $ctrl = this, $ngModel = $element.controller("ngModel");
             $element.find(".tw-checkbox-button");
             labelSelector = ".checkbox", $ctrl.isChecked = function() {
-                return $ctrl.ngTrueValue && $ctrl.ngTrueValue === $ctrl.ngModel || !$ctrl.ngTrueValue && $ctrl.ngModel;
+                return $ctrl.ngTrueValue && $ctrl.ngTrueValue === $ctrl.ngModel || !$ctrl.ngTrueValue && $ctrl.ngModel || !1;
             }, $ctrl.checked = $ctrl.isChecked(), $ctrl.buttonClick = function($event) {
-                $ctrl.checked ? ($ngModel.$setViewValue($ctrl.ngFalseValue || !1), $ctrl.checked = !1) : ($ngModel.$setViewValue($ctrl.ngTrueValue || !0), 
-                $ctrl.checked = !0), $ngModel.$setTouched(), validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl);
+                $ctrl.checked ? ($ctrl.checked = !1, $ngModel.$setViewValue($ctrl.ngFalseValue || !1)) : ($ctrl.checked = !0, 
+                $ngModel.$setViewValue($ctrl.ngTrueValue || !0)), $ngModel.$setTouched(), $event && $event.stopPropagation(), 
+                validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl);
             }, $ctrl.buttonFocus = function() {
                 $element.closest(".checkbox").find("label").addClass("focus"), $element.triggerHandler("focus");
             }, $ctrl.buttonBlur = function() {
                 $element.closest(".checkbox").find("label").removeClass("focus"), $element.triggerHandler("blur"), 
                 $ngModel.$setTouched(), validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl);
-            }, $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+            }, $ctrl.hiddenClick = function($event) {
+                $event.stopPropagation();
+            }, $element.closest("label").on("click", function(event) {
+                $element.find("button").trigger("click"), event.preventDefault(), event.stopPropagation();
+            }), $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
                 newValue !== oldValue && ($ngModel.$setDirty(), validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl));
             }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
                 newValue && !oldValue ? $element.closest(".checkbox").addClass("disabled").addClass("disabled", !0) : !newValue && oldValue && $element.closest(".checkbox").removeClass("disabled").removeClass("disabled");
@@ -174,7 +179,7 @@ angular.module("tw.form-components", []);
                 ngRequired: "=",
                 ngDisabled: "="
             },
-            template: " 				<input type='hidden' class='sr-only' 					name='{{$ctrl.name}}' 					ng-model='$ctrl.ngModel' 					ng-disabled='$ctrl.ngDisabled'/> 				<button type='button' class='tw-checkbox-button' tw-focusable 					ng-click='$ctrl.buttonClick($event)' 					ng-focus='$ctrl.buttonFocus()' 					ng-blur='$ctrl.buttonBlur()' 					ng-disabled='$ctrl.ngDisabled' 					ng-class='{\"checked\": $ctrl.checked}' 					aria-pressed='{{$ctrl.checked}}'> 					<span class='tw-checkbox-check glyphicon glyphicon-ok'></span> 				</button>"
+            template: " 				<input type='hidden' class='sr-only' 					name='{{$ctrl.name}}' 					ng-model='$ctrl.ngModel' 					ng-click='$ctrl.hiddenClick($event)' 					ng-disabled='$ctrl.ngDisabled'/> 				<button class='tw-checkbox-button' tw-focusable 					ng-click='$ctrl.buttonClick($event)' 					ng-focus='$ctrl.buttonFocus()' 					ng-blur='$ctrl.buttonBlur()' 					ng-disabled='$ctrl.ngDisabled' 					ng-class='{\"checked\": $ctrl.checked}' 					aria-pressed='{{$ctrl.checked}}'> 					<span class='tw-checkbox-check glyphicon glyphicon-ok'></span> 				</button>"
         };
     }
     angular.module("tw.form-components").directive("twCheckbox", TwCheckboxDirective);

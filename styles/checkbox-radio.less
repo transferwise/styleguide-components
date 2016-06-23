@@ -8,13 +8,15 @@
 @cursor-disabled: not-allowed;
 @brand-red: #F53636;
 @state-danger-text: #F53636;
+@input-border-radius: 3px;
+@input-bg: #FFF;
 
 .tw-checkbox-button {
 	border: 1px solid @input-border;
-	background: #FFF;
+	background: @input-bg;
 	width: 22px;
 	height: 22px;
-	border-radius: 3px;
+	border-radius: @input-border-radius;
 	display: inline-block;
 
 	padding: 0;
@@ -82,7 +84,7 @@
 	border-radius: 50%;
 
 	border: 1px solid @input-border;
-	background: @brand-white;
+	background: @input-bg;
 	display: inline-block;
 
 	padding: 0;
