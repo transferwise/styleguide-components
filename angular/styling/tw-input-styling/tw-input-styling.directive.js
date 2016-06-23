@@ -7,6 +7,7 @@
 		.directive('twInput', TwInputStyling);
 
 	function TwInputStyling() {
+		console.log('twInput is deprecated, please use twRadio or twCheckbox.');
 		var labelSelector = '.checkbox > label, .radio > label';
 
 		function onFocus() {
@@ -25,11 +26,17 @@
 			var formControl = $(buttonReplacement).closest('label').find('input');
 			if (typeof formControl[0] !== 'undefined') {
 				if (MouseEvent) {
-					formControl[0].dispatchEvent(new MouseEvent('click', {
-						'view': window,
-						'bubbles': true,
-						'cancelable': true
-					}));
+					try {
+						formControl[0].dispatchEvent(new MouseEvent('click', {
+							'view': window,
+							'bubbles': true,
+							'cancelable': true
+						}));
+						return;
+					} catch(ex) {
+						// Fallback on jquery click if MouseEvent not defined
+						formControl.click();
+					}
 				} else {
 					// Fallback on jquery click if MouseEvent not defined
 					formControl.click();
@@ -57,7 +64,7 @@
 				"<span></span>" +
 			"</span>";
 
-		function link(scope, element, attrs, ctrl) {
+		function link(scope, element, attrs, ctrl, ngModel) {
 			if (!attrs.type) {
 				return;
 			}
@@ -92,6 +99,7 @@
 
 		return {
 			restrict: 'EA',
+			require: 'ngModel',
 			link: link
 		};
 	}

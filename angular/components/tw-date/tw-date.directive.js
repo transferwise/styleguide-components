@@ -47,14 +47,14 @@
 			dayTouched = true;
 			if (dayTouched && yearTouched) {
 				ngModel.$setTouched();
-				element.trigger('blur');
+				element.triggerHandler('blur');
 			}
 		});
 		element.find('input[name=year]').on('blur', function() {
 			yearTouched = true;
 
 			ngModel.$setTouched();
-			element.trigger('blur');
+			element.triggerHandler('blur');
 		});
 
 		/*

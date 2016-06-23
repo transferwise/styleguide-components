@@ -1,6 +1,7 @@
 (function(angular) {
 	'use strict';
 
+	/* TODO deprecate in V1, opt-in through tw-focusable */
 	angular
 		.module('tw.form-styling')
 		.directive('formControl', TwFormControlStyling);
