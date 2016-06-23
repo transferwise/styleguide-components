@@ -11,7 +11,8 @@
 		function TwRadioController($scope, $element) {
 			var $ctrl = this,
 				$ngModel = $element.controller('ngModel'),
-				labelSelector = '.radio label';
+				radioSelector = '.radio',
+				labelSelector = 'label';
 
 			$ctrl.isChecked = function() {
 				return ($ctrl.ngValue && $ctrl.ngModel === $ctrl.ngValue) ||
@@ -55,9 +56,9 @@
 
 			$scope.$watch('$ctrl.ngDisabled', function(newValue, oldValue) {
 				if (newValue && !oldValue) {
-					$element.closest(labelSelector).addClass('disabled');
+					$element.closest(radioSelector).addClass('disabled');
 				} else if (!newValue && oldValue) {
-					$element.closest(labelSelector).removeClass('disabled');
+					$element.closest(radioSelector).removeClass('disabled');
 				}
 			});
 		}

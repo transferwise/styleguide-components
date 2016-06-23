@@ -67,12 +67,11 @@
   vertical-align: middle;
 }
 .tw-radio-button .tw-radio-check {
-  margin: 11px;
   border-radius: 50%;
   text-align: center;
   width: 0px;
   height: 0px;
-  margin: 12px 0 0 12px;
+  margin: 0 0 0 11px;
   transition: all 0.15s ease-in-out;
 }
 .tw-radio-button:focus,
