@@ -134,6 +134,50 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     angular.module("tw.form-components").controller("TwDateController", TwDateController), 
     TwDateController.$inject = [ "$element", "$log", "$scope" ];
 }(window.angular), function(angular) {
+    function TwCheckboxDirective() {
+        function TwCheckboxController($scope, $element) {
+            var $ctrl = this, $ngModel = $element.controller("ngModel");
+            labelSelector = ".checkbox", $ctrl.buttonClick = function($event) {
+                $ngModel.$setViewValue(!$ctrl.ngModel), $ngModel.$setTouched();
+                var isChecked = !$ctrl.ngModel;
+                isChecked ? $element.attr("checked", "checked") : $element.removeAttr("checked"), 
+                validateCheckbox(isChecked, $element, $ngModel, $ctrl);
+            }, $ctrl.buttonFocus = function() {
+                $element.closest(".checkbox").find("label").addClass("focus"), $element.trigger("focus");
+            }, $ctrl.buttonBlur = function() {
+                $element.closest(".checkbox").find("label").removeClass("focus"), $element.trigger("blur"), 
+                $ngModel.$setTouched(), validateCheckbox($ctrl.ngModel, $element, $ngModel, $ctrl);
+            }, $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+                newValue !== oldValue && ($ngModel.$setDirty(), validateCheckbox($ctrl.ngModel, $element, $ngModel, $ctrl));
+            }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
+                newValue && !oldValue ? $element.closest(".checkbox").addClass("disabled").attr("disabled", !0) : !newValue && oldValue && $element.closest(".checkbox").removeClass("disabled").removeAttr("disabled");
+            }), $scope.$watch("$ctrl.ngRequired", function(newValue, oldValue) {
+                newValue !== oldValue && newValue && validateCheckbox($ctrl.ngModel, $element, $ngModel, $ctrl);
+            });
+        }
+        function validateCheckbox(isChecked, $element, $ngModel, $ctrl) {
+            $ngModel.$touched && (!isChecked && $ctrl.ngRequired ? ($ngModel.$setValidity("required", !1), 
+            $element.closest(".checkbox").addClass("has-error"), $element.closest(".form-group").addClass("has-error")) : ($ngModel.$setValidity("required", !0), 
+            $element.closest(".checkbox").removeClass("has-error"), $element.closest(".form-group").removeClass("has-error")));
+        }
+        return {
+            restrict: "EA",
+            require: "ngModel",
+            replace: !0,
+            controller: [ "$scope", "$element", TwCheckboxController ],
+            controllerAs: "$ctrl",
+            bindToController: !0,
+            scope: {
+                name: "@",
+                ngModel: "=",
+                ngRequired: "=",
+                ngDisabled: "="
+            },
+            template: " 			<span class='tw-checkbox'> 				<input type='hidden' class='sr-only' 					name='{{$ctrl.name}}' 					ng-model='$ctrl.ngModel' 					ng-disabled='$ctrl.ngDisabled'/> 				<button type='button' class='tw-checkbox-button' tw-focusable 					ng-click='$ctrl.buttonClick($event)' 					ng-focus='$ctrl.buttonFocus()' 					ng-blur='$ctrl.buttonBlur()' 					ng-class='{\"checked\": $ctrl.ngModel}' 					ng-disabled='$ctrl.ngDisabled' 					aria-pressed='{{$ctrl.ngModel}}'> 					<span class='tw-checkbox-check glyphicon glyphicon-ok'></span> 				</button> 			</span>"
+        };
+    }
+    angular.module("tw.form-styling").directive("twCheckbox", TwCheckboxDirective);
+}(window.angular), function(angular) {
     "use strict";
     function TwDateDirective() {
         var directive = {
@@ -228,6 +272,41 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     }
     angular.module("tw.form-components").directive("twLoader", TwLoader);
 }(window.angular), function(angular) {
+    function TwRadioDirective() {
+        function TwRadioController($scope, $element) {
+            var $ctrl = this, $ngModel = $element.controller("ngModel");
+            labelSelector = ".radio label", $ctrl.buttonClick = function($event) {
+                $ngModel.$setViewValue($ctrl.value), $ctrl.ngModel ? $element.addClass("checked") : $element.removeClass("checked");
+            }, $ctrl.buttonFocus = function() {
+                $element.closest(labelSelector).addClass("focus"), $element.trigger("focus");
+            }, $ctrl.buttonBlur = function() {
+                $element.closest(labelSelector).removeClass("focus"), $element.trigger("blur");
+            }, $element.on("blur", function(event) {
+                $ngModel.$setTouched();
+            }), $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+                newValue !== oldValue && $ngModel.$setDirty();
+            }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
+                newValue && !oldValue ? $element.closest(labelSelector).addClass("disabled") : !newValue && oldValue && $element.closest(labelSelector).removeClass("disabled");
+            });
+        }
+        return {
+            restrict: "E",
+            require: "ngModel",
+            controller: [ "$scope", "$element", TwRadioController ],
+            controllerAs: "$ctrl",
+            bindToController: !0,
+            scope: {
+                name: "@",
+                value: "@",
+                ngModel: "=",
+                ngRequired: "=",
+                ngDisabled: "="
+            },
+            template: " 				<input type='radio' class='sr-onl' 					name='{{$ctrl.name}}' 					value='{{$ctrl.value}}' 					ng-model='$ctrl.ngModel'  /> 				<button type='button' class='tw-radio-button' tw-focusable 					ng-click='$ctrl.buttonClick($event)' 					ng-focus='$ctrl.buttonFocus()' 					ng-blur='$ctrl.buttonBlur()' 					ng-class='{\"checked\": $ctrl.ngModel == $ctrl.value}' 					ng-disabled='$ctrl.ngDisabled' 					aria-pressed='{{$ctrl.ngModel == $ctrl.value}}'> 					<span class='tw-radio-check'></span> 				</button>"
+        };
+    }
+    angular.module("tw.form-styling").directive("twRadio", TwRadioDirective);
+}(window.angular), function(angular) {
     "use strict";
     function TwFormControlStyling() {
         return {
@@ -264,16 +343,12 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         }
         function fakeClick(buttonReplacement) {
             var formControl = $(buttonReplacement).closest("label").find("input");
-            "undefined" != typeof formControl[0] && (MouseEvent ? formControl[0].dispatchEvent(new MouseEvent("click", {
-                view: window,
-                bubbles: !0,
-                cancelable: !0
-            })) : formControl.click());
+            "undefined" != typeof formControl[0] && formControl.click();
         }
         function onKeypress(event) {
             13 === (event.keyCode ? event.keyCode : event.which) && fakeClick(this);
         }
-        function link(scope, element, attrs, ctrl) {
+        function link(scope, element, attrs, ctrl, ngModel) {
             if (attrs.type) {
                 var type = attrs.type.toLowerCase();
                 if (("radio" === type || "checkbox" === type) && 0 !== $(element).closest(labelSelector).length) {
@@ -286,6 +361,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         var labelSelector = ".checkbox > label, .radio > label", checkboxTemplate = "<button type='button' class='input-replacement'><span class='glyphicon glyphicon-ok'></span></button>", radioTemplate = "<button type='button' class='input-replacement'><span></span></button>", disabledReplacement = "<span class='disabled-replacement input-replacement'><span></span></span>";
         return {
             restrict: "EA",
+            require: "ngModel",
             link: link
         };
     }
@@ -412,7 +488,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             link: function(scope, element) {
                 $(element).on("submit", function() {
                     $(element).find("[tw-validation].ng-invalid").closest(".form-group").addClass("has-error");
-                    var invalidControl = $(element).find("input[type=checkbox].ng-invalid, input[type=radio].ng-invalid");
+                    var invalidControl = $(element).find("input[type=checkbox].ng-invalid, input[type=radio].ng-invalid, .tw-checkbox.ng-invalid, .tw-radio.ng-invalid");
                     return invalidControl.closest(".checkbox, .radio").addClass("has-error"), invalidControl.parents(".form-group").addClass("has-error"), 
                     !0;
                 });

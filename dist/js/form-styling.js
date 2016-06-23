@@ -36,16 +36,12 @@ angular.module("tw.form-styling", []);
         }
         function fakeClick(buttonReplacement) {
             var formControl = $(buttonReplacement).closest("label").find("input");
-            "undefined" != typeof formControl[0] && (MouseEvent ? formControl[0].dispatchEvent(new MouseEvent("click", {
-                view: window,
-                bubbles: !0,
-                cancelable: !0
-            })) : formControl.click());
+            "undefined" != typeof formControl[0] && formControl.click();
         }
         function onKeypress(event) {
             13 === (event.keyCode ? event.keyCode : event.which) && fakeClick(this);
         }
-        function link(scope, element, attrs, ctrl) {
+        function link(scope, element, attrs, ctrl, ngModel) {
             if (attrs.type) {
                 var type = attrs.type.toLowerCase();
                 if (("radio" === type || "checkbox" === type) && 0 !== $(element).closest(labelSelector).length) {
@@ -58,6 +54,7 @@ angular.module("tw.form-styling", []);
         var labelSelector = ".checkbox > label, .radio > label", checkboxTemplate = "<button type='button' class='input-replacement'><span class='glyphicon glyphicon-ok'></span></button>", radioTemplate = "<button type='button' class='input-replacement'><span></span></button>", disabledReplacement = "<span class='disabled-replacement input-replacement'><span></span></span>";
         return {
             restrict: "EA",
+            require: "ngModel",
             link: link
         };
     }

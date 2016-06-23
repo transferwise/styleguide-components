@@ -7,7 +7,7 @@ angular.module("tw.form-validation", []);
             link: function(scope, element) {
                 $(element).on("submit", function() {
                     $(element).find("[tw-validation].ng-invalid").closest(".form-group").addClass("has-error");
-                    var invalidControl = $(element).find("input[type=checkbox].ng-invalid, input[type=radio].ng-invalid");
+                    var invalidControl = $(element).find("input[type=checkbox].ng-invalid, input[type=radio].ng-invalid, .tw-checkbox.ng-invalid, .tw-radio.ng-invalid");
                     return invalidControl.closest(".checkbox, .radio").addClass("has-error"), invalidControl.parents(".form-group").addClass("has-error"), 
                     !0;
                 });
