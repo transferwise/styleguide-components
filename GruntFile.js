@@ -190,4 +190,5 @@ module.exports = function(grunt) {
 
     // === REGISTER TASKS ===
     grunt.registerTask('default', ['jshint', 'uglify', 'less', 'htmllint', 'copy', 'watch']);
+    grunt.registerTask('build', ['jshint', 'uglify', 'less', 'htmllint', 'copy']);
 };
