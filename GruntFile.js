@@ -129,12 +129,22 @@ module.exports = function(grunt) {
         htmllint: {
             options: {
                 "attr-name-style": false,
+                "label-req-for": false,
+                "attr-req-value": false,
                 "id-class-style": false,
+                "line-end-style": false,
                 "ignore": ['indenting spaces must be used in groups of 4']
             },
             files: [
                 'angular/**/*.html',
-                'partials/**/*.html',
+                //'partials/**/*.html',
+                'partials/tw-checkbox.html',
+                'partials/tw-date.html',
+                'partials/tw-dynamic-control.html',
+                'partials/tw-focusable.html',
+                'partials/tw-radio.html',
+                'partials/tw-select.html',
+                'partials/tw-validation.html',
                 'index.html'
             ]
         },
@@ -179,5 +189,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-htmllint');
 
     // === REGISTER TASKS ===
-    grunt.registerTask('default', ['jshint', 'uglify', 'less', 'watch', 'htmllint', 'copy']);
+    grunt.registerTask('default', ['jshint', 'uglify', 'less', 'htmllint', 'copy', 'watch']);
 };

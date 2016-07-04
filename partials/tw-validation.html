@@ -1,6 +1,6 @@
-<h4 id="validation">TW Validation</h4>
-<p><code>tw-validation</code> is an attribute based direcitve that provides
-	validation behaviour for any HTML element also using <code>ng-model</code>.
+<h4>TW Validation</h4>
+<p><code>tw-validation</code> is an attribute based directive that provides
+	validation behaviour for any HTML element also using <code>ng-model</code>.</p>
 <p>The validation rules are more complex than the standard angular validation
 	to provide a better customer experience. Validation will only occur if:</p>
 <ul>
@@ -34,11 +34,11 @@
 		<status-messages></status-messages>
 	</div>
 <pre class="m-b-3">
-&lt;input type="text" class="form-control" tw-validation tw-focusable
-  ng-model="..." ng-required="true" /&gt;
-&lt;div class="error-messages"&gt;
-  &lt;div class="error-required"&gt;Required&lt;/div&gt;
-&lt;/div&gt;
+	&lt;input type="text" class="form-control" tw-validation tw-focusable
+	ng-model="..." ng-required="true" /&gt;
+	&lt;div class="error-messages"&gt;
+	&lt;div class="error-required"&gt;Required&lt;/div&gt;
+	&lt;/div&gt;
 </pre>
 
 	<div class="form-group">
@@ -56,11 +56,11 @@
 		<status-messages></status-messages>
 	</div>
 <pre class="m-b-3">
-&lt;select class="form-control" tw-validation tw-focusable
-  ng-model="..." ng-required="true"&gt;...&lt;/select&gt;
-&lt;div class="error-messages"&gt;
-  &lt;div class="error-required"&gt;Required&lt;/div&gt;
-&lt;/div&gt;
+	&lt;select class="form-control" tw-validation tw-focusable
+	ng-model="..." ng-required="true"&gt;...&lt;/select&gt;
+	&lt;div class="error-messages"&gt;
+	&lt;div class="error-required"&gt;Required&lt;/div&gt;
+	&lt;/div&gt;
 </pre>
 
 	<div class="form-group">
@@ -92,8 +92,8 @@
 		</div>
 	</div>
 <pre class="m-b-3">
-&lt;input type="checkbox" name="myCheckbox" tw-validation tw-focusable
-  ng-model="..." ng-required="true" /&gt;
+	&lt;input type="checkbox" name="myCheckbox" tw-validation tw-focusable
+	ng-model="..." ng-required="true" /&gt;
 </pre>
 
 	<div class="form-group">
@@ -128,8 +128,8 @@
 		</div>
 	</div>
 <pre class="m-b-3">
-&lt;input type="radio" name="myRadio" tw-validation tw-focusable
-  ng-model="..." ng-required="true" /&gt;
+	&lt;input type="radio" name="myRadio" tw-validation tw-focusable
+	ng-model="..." ng-required="true" /&gt;
 </pre>
 
 	<div class="form-group">
@@ -146,11 +146,11 @@
 		<status-messages></status-messages>
 	</div>
 <pre class="m-b-3">
-&lt;textarea class="form-control" tw-validation tw-focusable
-  ng-model="..." ng-required="true"&gt;...&lt;/textarea&gt;
-&lt;div class="error-messages"&gt;
-  &lt;div class="error-required"&gt;Required&lt;/div&gt;
-&lt;/div&gt;
+	&lt;textarea class="form-control" tw-validation tw-focusable
+	ng-model="..." ng-required="true"&gt;...&lt;/textarea&gt;
+	&lt;div class="error-messages"&gt;
+	&lt;div class="error-required"&gt;Required&lt;/div&gt;
+	&lt;/div&gt;
 </pre>
 
 	<div class="form-group">
@@ -169,16 +169,16 @@
 		<status-messages></status-messages>
 	</div>
 <pre class="m-b-3">
-&lt;input type="text" class="form-control" tw-validation tw-focusable
-  ng-model="..."
-  ng-required="true" ng-pattern="/^[a-z]+$/"
-  ng-minlength="2" ng-maxlength="6" /&gt;
-&lt;div class="error-messages"&gt;
-  &lt;div class="error-required"&gt;Required&lt;/div&gt;
-  &lt;div class="error-pattern"&gt;Invalid characters&lt;/div&gt;
-  &lt;div class="error-minlength"&gt;Too short&lt;/div&gt;
-  &lt;div class="error-maxlength"&gt;Too long&lt;/div&gt;
-&lt;/div&gt;
+	&lt;input type="text" class="form-control" tw-validation tw-focusable
+	ng-model="..."
+	ng-required="true" ng-pattern="/^[a-z]+$/"
+	ng-minlength="2" ng-maxlength="6" /&gt;
+	&lt;div class="error-messages"&gt;
+	&lt;div class="error-required"&gt;Required&lt;/div&gt;
+	&lt;div class="error-pattern"&gt;Invalid characters&lt;/div&gt;
+	&lt;div class="error-minlength"&gt;Too short&lt;/div&gt;
+	&lt;div class="error-maxlength"&gt;Too long&lt;/div&gt;
+	&lt;/div&gt;
 </pre>
 
 	<div class="form-group">
@@ -200,14 +200,14 @@
 		</div>
 	</div>
 <pre class="m-b-3">
-&lt;input type="number" class="form-control" tw-validation tw-focusable
-  ng-model="..." ng-required="true" ng-min="5" ng-max="10" /&gt;
-&lt;div class="error-messages"&gt;
-  &lt;div class="error-required"&gt;Required&lt;/div&gt;
-  &lt;div class="error-min"&gt;Number must be at least 5&lt;/div&gt;
-  &lt;div class="error-max"&gt;Number must be at most 10&lt;/div&gt;
-  &lt;div class="error-number"&gt;Must be a number&lt;/div&gt;
-&lt;/div&gt;
+	&lt;input type="number" class="form-control" tw-validation tw-focusable
+	ng-model="..." ng-required="true" ng-min="5" ng-max="10" /&gt;
+	&lt;div class="error-messages"&gt;
+	&lt;div class="error-required"&gt;Required&lt;/div&gt;
+	&lt;div class="error-min"&gt;Number must be at least 5&lt;/div&gt;
+	&lt;div class="error-max"&gt;Number must be at most 10&lt;/div&gt;
+	&lt;div class="error-number"&gt;Must be a number&lt;/div&gt;
+	&lt;/div&gt;
 </pre>
 
 	<button type="submit" class="btn btn-primary btn-block m-b-3">
@@ -235,11 +235,11 @@
 		<status-messages></status-messages>
 	</div>
 <pre class="m-b-3">
-&lt;tw-select options="..." tw-validation
-  ng-model="..." ng-required="true" /&gt;
-&lt;div class="error-messages"&gt;
-  &lt;div class="error-required"&gt;Required&lt;/div&gt;
-&lt;/div&gt;
+	&lt;tw-select options="..." tw-validation
+	ng-model="..." ng-required="true" /&gt;
+	&lt;div class="error-messages"&gt;
+	&lt;div class="error-required"&gt;Required&lt;/div&gt;
+	&lt;/div&gt;
 </pre>
 
 	<div class="form-group">
@@ -263,8 +263,8 @@
 		</div>
 	</div>
 <pre class="m-b-3">
-&lt;tw-checkbox tw-validation
-  ng-model="..." ng-required="true" /&gt;
+	&lt;tw-checkbox tw-validation
+	ng-model="..." ng-required="true" /&gt;
 </pre>
 
 	<div class="form-group">
@@ -289,8 +289,8 @@
 		</div>
 	</div>
 <pre class="m-b-3">
-&lt;tw-radio tw-validation
-  ng-model="..." ng-required="true" /&gt;
+	&lt;tw-radio tw-validation
+	ng-model="..." ng-required="true" /&gt;
 </pre>
 
 	<button type="submit" class="btn btn-primary btn-block">

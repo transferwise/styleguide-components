@@ -18,7 +18,7 @@
 
 	angular.module('my-app', ['tw.styleguide-components'])
 	.config(['$compileProvider', function ($compileProvider) {
-	  $compileProvider.debugInfoEnabled(false);
+		$compileProvider.debugInfoEnabled(false);
 	}])
 	.controller('PageController', [function() {
 		this.log = function(message) {
@@ -133,17 +133,7 @@
 		href="components/bootstrap/dist/css/bootstrap.min.css" />
 	<link type="text/css" rel="stylesheet"
 		href="components/currency-flags/dist/currency-flags.min.css" />
-
-	<style>
-	body {
-		background-color: #F2F5F7;
-	}
-	pre {
-		border: 0;
-		background-color: transparent;
-		padding: 0;
-	}
-	</style>
+	<link type="text/css" rel="stylesheet" href="index.css" />
 </head>
 <body ng-app="my-app">
 	<div class="container" ng-controller="PageController as vm">
