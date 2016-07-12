@@ -147,6 +147,11 @@ module.exports = function(grunt) {
             }
         },
         copy: {
+            dist: {
+              expand: true,
+              src: 'dist/**/*.*',
+              dest: 'gh-pages/'
+            },
             partials: {
               expand: true,
               src: 'partials/*',

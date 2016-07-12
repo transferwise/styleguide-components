@@ -15,7 +15,17 @@
 			<label class="control-label" for="date">
 				Example select
 			</label>
-			<tw-select tw-validation
+			<tw-select tw-validation ng-if='!vm.select.extraLink'
+				name="mySelect"
+				placeholder="{{vm.select.empty}}"
+				ng-model="vm.model.components.select"
+				ng-change="vm.log('select change')"
+				ng-required="vm.select.required"
+				ng-disabled="vm.select.disabled"
+				ng-focus="vm.log('select focus')"
+				ng-blur="vm.log('select blur')"
+				options="vm.select.options[vm.select.type]" />
+			<tw-select tw-validation ng-if='vm.select.extraLink'
 				name="mySelect"
 				placeholder="{{vm.select.empty}}"
 				ng-model="vm.model.components.select"
@@ -25,6 +35,9 @@
 				ng-focus="vm.log('select focus')"
 				ng-blur="vm.log('select blur')"
 				options="vm.select.options[vm.select.type]">
+				<a href='' ng-click="vm.log('click')">
+					Custom action
+				</a>
 			</tw-select>
 			<div class="error-messages">
 				<div class="error-required">Required</div>
@@ -42,7 +55,12 @@
   ng-focus="..."
   ng-blur="..."
   options="{{vm.select.options[vm.select.type] | json}}"
-  tw-validation /&gt;</pre>
+  tw-validation<span ng-if="!vm.select.extraLink"> /&gt;</span><span ng-if="vm.select.extraLink">&gt;
+    &lt;a href='' ng-click='...'&gt;
+      Custom action
+    &lt;/a&gt;
+  &lt;/tw-select&gt;</span>
+</pre>
 	</div>
 	<div class="col-md-6">
 		<div class="well">
@@ -83,6 +101,17 @@
 					Type
 				</label>
 				<tw-select options="vm.select.types" ng-model="vm.select.type" />
+			</div>
+			<div class="form-group">
+				<label class="control-label">
+					Additional link?
+				</label>
+				<div class="checkbox">
+					<label>
+						<tw-checkbox ng-model="vm.select.extraLink" />
+						Option with custom action?
+					</label>
+				</div>
 			</div>
 			<input type="submit" class="btn btn-primary btn-block" value="Submit form" />
 		</div>

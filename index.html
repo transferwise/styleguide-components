@@ -12,6 +12,10 @@
 
 	<script src="components/bootstrap/dist/js/bootstrap.min.js"></script>
 
+	<link type="text/css" rel="stylesheet"
+		href="components/bootstrap/dist/css/bootstrap.min.css" />
+	<link type="text/css" rel="stylesheet"
+		href="components/currency-flags/dist/currency-flags.min.css" />
 	<link type="text/css" rel="stylesheet" href="styles/examples.css" />
 
 	<script>
@@ -37,7 +41,13 @@
 			types: [
 				{value: 'standard', label: 'Standard'},
 				{value: 'icons', label: 'Icons'},
-				{value: 'currencies', label: 'Currencies'}
+				{value: 'currencies', label: 'Currencies'},
+				{value: 'notes', label: 'Notes'},
+				{value: 'headers', label: 'Headers'},
+				{value: 'secondary', label: 'Secondary Text'},
+				{value: 'circles', label: 'Circles'},
+				{value: 'currencySelect', label: 'Example: Currency select'},
+				{value: 'accountSelect', label: 'Example: Account select'}
 			],
 			options: {
 				standard: [
@@ -54,6 +64,40 @@
 					{value: 'eur', label: 'Euro', currency: 'EUR'},
 					{value: 'gbp', label: 'British Pound', currency: 'GBP'},
 					{value: 'usd', label: 'US Dollar', currency: 'USD'}
+				],
+				notes: [
+					{value: 'eur', label: 'EUR', note: 'Euro'},
+					{value: 'gbp', label: 'GBP', note: 'Great British Pound'},
+					{value: 'usd', label: 'USD', note: 'United States Dollar'}
+				],
+				headers: [
+					{header: 'Header'},
+					{value: 'opt1', label: 'Option 1'},
+					{header: 'Another header'},
+					{value: 'opt2', label: 'Option 2'}
+				],
+				secondary: [
+					{value: '1', label: 'Bob Smith', secondary: 'Account ending 1234'},
+					{value: '2', label: 'James Davies', secondary: 'Account ending 9876'},
+					{value: '3', label: 'Helen Williams', secondary: 'Accont ending 4321'}
+				],
+				circles: [
+					{value: '1', label: 'Bob Smith', circleImage: 'http://localhost:9001/assets/img/mike.jpg'},
+					{value: '2', label: 'James Davies', circleIcon: 'icon-bank'},
+					{value: '3', label: 'Helen Williams', circleText: 'AZ'}
+				],
+				currencySelect: [
+					{header: 'Popular currencies'},
+					{value: 'eur', label: 'EUR', note: 'Euro', currency: 'EUR'},
+					{value: 'gbp', label: 'GBP', note: 'Great British Pound', currency: 'GBP'},
+					{value: 'usd', label: 'USD', note: 'United States Dollar', currency: 'USD'},
+					{header: 'All currencies'},
+					{value: 'aud', label: 'AUD', note: 'Australian Dollar', currency: 'AUD'}
+				],
+				accountSelect: [
+					{value: '1', label: 'Bob Smith', note: "GBP", secondary: 'Account ending 1234', circleImage: "http://localhost:9001/assets/img/mike.jpg"},
+					{value: '2', label: 'James Davies', note: "GBP", secondary: 'Account ending 9876', circleText: "JD"},
+					{value: '3', label: 'Helen Williams', note: "EUR", secondary: 'Accont ending 4321', circleText: "HW"}
 				]
 			}
 		};
@@ -90,7 +134,8 @@
 				<div class='error-required'>Required</div> \
 				<div class='error-minlength'>Too short</div> \
 				<div class='error-maxlength'>Too long</div> \
-				<div class='error-pattern'>Invalid characters</div> \
+				<div class='error-pattern'>Invalid characters</div> \ \
+				<div class='error-async'>Invalid async</div> \
 			</div>"
 		};
 	})
@@ -129,10 +174,6 @@
 	});
 	</script>
 
-	<link type="text/css" rel="stylesheet"
-		href="components/bootstrap/dist/css/bootstrap.min.css" />
-	<link type="text/css" rel="stylesheet"
-		href="components/currency-flags/dist/currency-flags.min.css" />
 
 	<style>
 	body {
