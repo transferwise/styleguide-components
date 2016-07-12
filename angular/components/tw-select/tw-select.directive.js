@@ -30,9 +30,18 @@
 						ng-focus='$ctrl.buttonFocus()' \
 						tw-focusable> \
 						<span class='tw-select-selected' ng-if='$ctrl.ngModel != null'> \
-							<i class='icon {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> \
-							</i><i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}}' ng-if='$ctrl.selected && $ctrl.selected.currency'> \
-							</i><span class='selected-label'>{{$ctrl.selected.label}}</span> \
+							<i class='icon pull-left {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> \
+							</i><i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}} pull-left' \
+								ng-if='$ctrl.selected && $ctrl.selected.currency'> \
+							</i><span class='circle circle-inverse pull-left'  \
+								ng-class='{\"circle-sm\": $ctrl.selected.secondary, \"circle-xs\": !$ctrl.selected.secondary}' \
+								ng-if='$ctrl.selected.circleText || $ctrl.selected.circleImage || $ctrl.selected.circleIcon'> \
+								<span ng-if='$ctrl.selected.circleText'>{{$ctrl.selected.circleText}}</span> \
+								<img ng-if='$ctrl.selected.circleImage' ng-src='{{$ctrl.selected.circleImage}}' /> \
+								<i ng-if='$ctrl.selected.circleIcon' class='icon {{$ctrl.selected.circleIcon}}'></i> \
+							</span><span class='text-ellipsis'><span class='selected-label'>{{$ctrl.selected.label}}</span><span \
+							ng-if='$ctrl.selected.note' class='small m-l-1'>{{$ctrl.selected.note}}</span><span \
+							ng-if='$ctrl.selected.secondary' class='small text-ellipsis'>{{$ctrl.selected.secondary}}</span></span> \
 						</span> \
 						<span class='form-control-placeholder' ng-if='$ctrl.ngModel == null'>{{$ctrl.placeholder}}</span> \
 						<span class='caret'></span> \
@@ -50,14 +59,23 @@
 						<li ng-if='$ctrl.placeholder && !$ctrl.ngRequired' class='divider'></li> \
 						<li \
 							ng-repeat='option in $ctrl.options track by $index' \
-							ng-class='{active: $ctrl.ngModel === option.value}'> \
+							ng-class='{active: $ctrl.ngModel === option.value, \"dropdown-header\": option.header}'> \
+							<span ng-if='option.header'>{{option.header}}</span> \
 							<a href='' \
+								ng-if='!option.header' \
 								ng-click='$ctrl.optionClick(option)' \
 								ng-focus='$ctrl.optionFocus(option)' \
 								value='{{option.value}}' class='tw-select-option' tw-focusable> \
-								<i class='icon {{option.icon}}' ng-if='option.icon'> \
-								</i><i class='currency-flag currency-flag-{{option.currency | lowercase}}' ng-if='option.currency'> \
-								</i>{{option.label}} \
+								<i class='icon {{option.icon}} pull-left' ng-if='option.icon'> \
+								</i><i class='currency-flag currency-flag-{{option.currency | lowercase}} pull-left' ng-if='option.currency'> \
+								</i><span class='circle circle-inverse pull-left' ng-class='{\"circle-sm\": option.secondary, \"circle-xs\": !option.secondary}' \
+									ng-if='option.circleText || option.circleImage || option.circleIcon'> \
+									<span ng-if='option.circleText'>{{option.circleText}}</span> \
+									<img ng-if='option.circleImage' ng-src='{{option.circleImage}}' /> \
+									<i ng-if='option.circleIcon' class='icon {{option.circleIcon}}'></i> \
+								</span>{{option.label}}<span \
+								ng-if='option.note' class='small m-l-1'>{{option.note}}</span><span \
+								ng-if='option.secondary' class='small text-ellipsis'>{{option.secondary}}</span> \
 							</a> \
 						</li> \
 						<li ng-if='$ctrl.hasTranscluded' class='divider'></li> \
@@ -189,6 +207,8 @@
 
 	function checkForTranscludedContent($transclude, $ctrl) {
 		$transclude(function(clone) {
+			//var trimmed = clone.text().replace(/<!--[\s\S]*?-->/g, '').trim();
+			//if (trimmed !== '' && clone.length > 1) {
 			if (clone.length > 1 || clone.text().trim() !== '') {
 				$ctrl.hasTranscluded = true;
 			}
@@ -276,10 +296,12 @@
 			searchTerm = term.toLowerCase();
 
 		options.forEach(function(option) {
-			if (found) {
+			if (found || !option.label) {
 				return;
 			}
-			if (option.label.toLowerCase().indexOf(searchTerm) === 0) {
+			if (option.label.toLowerCase().indexOf(searchTerm) === 0 ||
+				option.note && option.note.toLowerCase().indexOf(searchTerm) === 0||
+				option.secondary && option.secondary.toLowerCase().indexOf(searchTerm) === 0) {
 				selectOption($ngModel, $ctrl, option);
 				found = true;
 			}

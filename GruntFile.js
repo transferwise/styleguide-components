@@ -133,18 +133,12 @@ module.exports = function(grunt) {
                 "attr-req-value": false,
                 "id-class-style": false,
                 "line-end-style": false,
-                "ignore": ['indenting spaces must be used in groups of 4']
+                "indent-style": false,
+                "indent-width": false
             },
             files: [
                 'angular/**/*.html',
-                //'partials/**/*.html',
-                'partials/tw-checkbox.html',
-                'partials/tw-date.html',
-                'partials/tw-dynamic-control.html',
-                'partials/tw-focusable.html',
-                'partials/tw-radio.html',
-                'partials/tw-select.html',
-                'partials/tw-validation.html',
+                'partials/**/*.html',
                 'index.html'
             ]
         },
@@ -157,6 +151,11 @@ module.exports = function(grunt) {
             }
         },
         copy: {
+            dist: {
+              expand: true,
+              src: 'dist/**/*.*',
+              dest: 'gh-pages/'
+            },
             partials: {
               expand: true,
               src: 'partials/*',
