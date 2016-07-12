@@ -129,8 +129,12 @@ module.exports = function(grunt) {
         htmllint: {
             options: {
                 "attr-name-style": false,
+                "label-req-for": false,
+                "attr-req-value": false,
                 "id-class-style": false,
-                "ignore": ['indenting spaces must be used in groups of 4']
+                "line-end-style": false,
+                "indent-style": false,
+                "indent-width": false
             },
             files: [
                 'angular/**/*.html',
@@ -184,5 +188,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-htmllint');
 
     // === REGISTER TASKS ===
-    grunt.registerTask('default', ['jshint', 'uglify', 'less', 'watch', 'htmllint', 'copy']);
+    grunt.registerTask('default', ['jshint', 'uglify', 'less', 'htmllint', 'copy', 'watch']);
+    grunt.registerTask('build', ['jshint', 'uglify', 'less', 'htmllint', 'copy']);
 };

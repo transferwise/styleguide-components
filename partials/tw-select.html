@@ -15,7 +15,7 @@
 			<label class="control-label" for="date">
 				Example select
 			</label>
-			<tw-select tw-validation ng-if='!vm.select.extraLink'
+			<tw-select tw-validation ng-if="!vm.select.extraLink"
 				name="mySelect"
 				placeholder="{{vm.select.empty}}"
 				ng-model="vm.model.components.select"
@@ -25,7 +25,7 @@
 				ng-focus="vm.log('select focus')"
 				ng-blur="vm.log('select blur')"
 				options="vm.select.options[vm.select.type]" />
-			<tw-select tw-validation ng-if='vm.select.extraLink'
+			<tw-select tw-validation ng-if="vm.select.extraLink"
 				name="mySelect"
 				placeholder="{{vm.select.empty}}"
 				ng-model="vm.model.components.select"
@@ -35,7 +35,7 @@
 				ng-focus="vm.log('select focus')"
 				ng-blur="vm.log('select blur')"
 				options="vm.select.options[vm.select.type]">
-				<a href='' ng-click="vm.log('click')">
+				<a href="" ng-click="vm.log('click')">
 					Custom action
 				</a>
 			</tw-select>

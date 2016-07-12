@@ -22,7 +22,7 @@
 
 	angular.module('my-app', ['tw.styleguide-components'])
 	.config(['$compileProvider', function ($compileProvider) {
-	  $compileProvider.debugInfoEnabled(false);
+		$compileProvider.debugInfoEnabled(false);
 	}])
 	.controller('PageController', [function() {
 		this.log = function(message) {
@@ -173,18 +173,6 @@
 		return {templateUrl: 'partials/tw-focusable.html'};
 	});
 	</script>
-
-
-	<style>
-	body {
-		background-color: #F2F5F7;
-	}
-	pre {
-		border: 0;
-		background-color: transparent;
-		padding: 0;
-	}
-	</style>
 </head>
 <body ng-app="my-app">
 	<div class="container" ng-controller="PageController as vm">
