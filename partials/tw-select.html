@@ -24,7 +24,8 @@
 				ng-disabled="vm.select.disabled"
 				ng-focus="vm.log('select focus')"
 				ng-blur="vm.log('select blur')"
-				options="vm.select.options[vm.select.type]" />
+				options="vm.select.options[vm.select.type]"
+				filter="{{vm.select.showFilter}}" />
 			<tw-select tw-validation ng-if="vm.select.extraLink"
 				name="mySelect"
 				placeholder="{{vm.select.empty}}"
@@ -34,7 +35,8 @@
 				ng-disabled="vm.select.disabled"
 				ng-focus="vm.log('select focus')"
 				ng-blur="vm.log('select blur')"
-				options="vm.select.options[vm.select.type]">
+				options="vm.select.options[vm.select.type]"
+				filter="{{vm.select.showFilter}}">
 				<a href="" ng-click="vm.log('click')">
 					Custom action
 				</a>
@@ -47,7 +49,8 @@
 		<h5>Configuration</h5>
 <pre>&lt;tw-select
   name="mySelect"
-  placeholder="{{vm.select.empty}}"
+  placeholder="{{vm.select.empty}}"<span ng-if="vm.select.showFilter">
+  filter="Search..."</span>
   ng-model="vm.components.select"
   ng-required="{{vm.select.required}}"
   ng-disabled="{{vm.select.disabled}}"
@@ -101,6 +104,20 @@
 					Type
 				</label>
 				<tw-select options="vm.select.types" ng-model="vm.select.type" />
+			</div>
+			<div class="form-group">
+				<label class="control-label">
+					Show filter?
+				</label>
+				<div class="checkbox">
+					<label>
+						<tw-checkbox
+							ng-model="vm.select.showFilter"
+							ng-true-value="'Search...'"
+							ng-false-value="false" />
+						Allow user to filter list?
+					</label>
+				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label">

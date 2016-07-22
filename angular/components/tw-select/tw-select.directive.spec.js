@@ -8,7 +8,8 @@ describe('Directive: TwSelect', function() {
         directiveElement;
 
     var SELECT_SELECTOR = '.tw-select-hidden';
-    var LIST_ITEMS_SELECTOR = '.tw-select-option';
+    var LIST_ITEMS_SELECTOR = '.tw-select-option-link';
+    var FILTER_INPUT_SELECTOR = '.tw-select-filter';
 
     beforeEach(module('tw.form-components'));
 
@@ -339,6 +340,106 @@ describe('Directive: TwSelect', function() {
             expect(transcluded.parent().is('li')).toBe(true);
         });
     });
+    describe('filter not used', function() {
+        it('should be hidden if not specified in template', function() {
+            var filter = directiveElement.find(FILTER_INPUT_SELECTOR);
+            expect(filter.length).toBe(0);
+        });
+    });
+    describe('filter', function() {
+        var filterInput;
+        beforeEach(function() {
+            $scope.options = OPTIONS;
+            $scope.ngModel = '1';
+            $scope.filter = 'Search';
+            var template = " \
+                <tw-select \
+                    options='options' \
+                    ng-model='ngModel' \
+                    filter='{{filter}}'> \
+                    <a href='' class='custom-action'> \
+                        Custom action \
+                    </a> \
+                </tw-select>";
+            directiveElement = getCompiledDirectiveElement($scope, template);
+            filterInput = directiveElement.find(FILTER_INPUT_SELECTOR);
+        });
+        it('should render if non false value is passed', function() {
+            expect(filterInput.length).toBe(1);
+        });
+
+        it('should move to the next option when down arrow pressed', function() {
+            expect($scope.ngModel).toBe('1');
+            filterInput.trigger(keydownCode(SPECIAL_KEYS.down));
+            expect($scope.ngModel).toBe('2');
+        });
+        it('should move to the previous option when up arrow pressed', function() {
+            $scope.ngModel = '3';
+            $scope.$digest();
+            filterInput.trigger(keydownCode(SPECIAL_KEYS.up));
+            expect($scope.ngModel).toBe('2');
+        });
+
+        it('should move to the first option when down arrow pressed and nothing active', function() {
+            $scope.ngModel = '99';
+            $scope.$digest();
+            filterInput.trigger(keydownCode(SPECIAL_KEYS.down));
+            expect($scope.ngModel).toBe('1');
+        });
+        it('should move to the last option when up arrow pressed and nothing active', function() {
+            $scope.ngModel = '99';
+            $scope.$digest();
+            filterInput.trigger(keydownCode(SPECIAL_KEYS.up));
+            expect($scope.ngModel).toBe('3');
+        });
+
+        it('should retain focus when down arrow pressed', function() {
+            filterInput.focus();
+            filterInput.trigger(keydownCode(SPECIAL_KEYS.down));
+            expect(filterInput[0] === document.activeElement).toBe(true);
+        });
+        it('should retain focus when up arrow pressed', function() {
+            filterInput.focus();
+            filterInput.trigger(keydownCode(SPECIAL_KEYS.up));
+            expect(filterInput[0] === document.activeElement).toBe(true);
+        });
+        it('should focus back on the button when return key pressed', function() {
+            filterInput.trigger(keydownCode(SPECIAL_KEYS.return));
+            expect(directiveElement.find('.btn')[0] === document.activeElement).toBe(true);
+        });
+        it('should move focus to custom action if last option selected and down arrow pressed', function() {
+            $scope.ngModel = '3';
+            $scope.$digest();
+            filterInput.trigger(keydownCode(SPECIAL_KEYS.down));
+            expect(directiveElement.find('.custom-action')[0] === document.activeElement).toBe(true);
+        });
+
+        it('should filter the list if characters entered', function() {
+            filterInput.val("One").trigger('change');
+            var options = directiveElement.find(LIST_ITEMS_SELECTOR);
+            expect(options.length).toBe(1);
+            expect(optionText(options[0])).toBe('One');
+        });
+        it('should filter case insensitvely', function() {
+            filterInput.val("t").trigger('change');
+            var options = directiveElement.find(LIST_ITEMS_SELECTOR)
+            expect(options.length).toBe(2);
+            expect(optionText(options[0])).toBe('Two');
+            expect(optionText(options[1])).toBe('Three');
+        });
+        it('should filter on substrings', function() {
+            filterInput.val("ne").trigger('change');
+            var options = directiveElement.find(LIST_ITEMS_SELECTOR);
+            expect(options.length).toBe(1);
+            expect(optionText(options[0])).toBe('One');
+        });
+        it('should change ngModel to first visible option if none selected', function() {
+            filterInput.val("t").trigger('change');
+            var options = directiveElement.find(LIST_ITEMS_SELECTOR);
+            expect($scope.ngModel).toBe('2');
+            expect(optionText(options[0])).toBe('Two');
+        });
+    });
 
     function getCompiledDirectiveElement($scope, template) {
         if (!template) {
@@ -352,18 +453,36 @@ describe('Directive: TwSelect', function() {
                 </tw-select>";
         }
         var element = angular.element(template);
+        // append to document so we can test document.activeElement
+        angular.element(document.body).append(element);
         var compiledElement = $compile(element)($scope);
 
         $scope.$digest();
         return compiledElement;
     }
 
+    function optionText(optionEl) {
+        return $(optionEl).text().trim();
+    }
+
     function keypress(letter) {
+        return keyEventByCode("keypress", letter.charCodeAt(0));
+    }
+    function keydownCode(charCode) {
+        return keyEventByCode("keydown", charCode);
+    }
+    function keyEventByCode(eventName, charCode) {
         return {
-            type: 'keypress',
-            keyCode: letter.charCodeAt(0),
-            which: letter.charCodeAt(0)
+            type: eventName,
+            keyCode: charCode,
+            which: charCode
         };
+    }
+
+    var SPECIAL_KEYS = {
+        up: 38,
+        down: 40,
+        return: 13
     }
 
     var OPTIONS = [{
