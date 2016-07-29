@@ -506,7 +506,7 @@ angular.module("tw.form-components", []);
     function TwUploadDroppableDirective() {
         return {
             bindToController: !0,
-            controller: [ "$element", "$scope", "$transclude", "$timeout", TwUploadDroppableController ],
+            controller: [ TwUploadDroppableController ],
             controllerAs: "$ctrl",
             replace: !1,
             transclude: !0,
@@ -515,13 +515,13 @@ angular.module("tw.form-components", []);
                 title: "@",
                 buttonText: "@",
                 onUpload: "=",
-                ngAccept: "="
+                accept: "="
             },
             link: TwUploadDroppableLink,
-            template: '<div class="text-center tw-upload-droppable-box" ng-class="{\'active\': $ctrl.isActive}"> \t\t\t\t<div class="row">\t\t\t\t\t<i class="icon icon-upload tw-upload-droppable-icon"></i>\t\t\t\t</div>\t\t\t\t\t<h4 class="m-t-2">{{$ctrl.title}}</h4>\t\t\t\t<div class="row">\t\t\t\t\t<div class="col-xs-12 col-sm-6 col-sm-offset-3 m-t-1">\t\t\t\t\t<ng-transclude></ng-transclude>\t\t\t\t\t<label class="btn-link"for="file-upload">{{$ctrl.buttonText}}</label>\t\t\t\t\t<input tw-file-select id="file-upload" type="file" accept={{$ctrl.ngAccept}} class="hidden" on-user-input="$ctrl.onManualUpload"/>\t\t\t\t\t</div>\t\t\t\t</div>\t\t\t</div>'
+            template: '<div class="text-center tw-upload-droppable-box" ng-class="{\'active\': $ctrl.isActive}"> \t\t\t\t<div class="row">\t\t\t\t\t<i class="icon icon-upload tw-upload-droppable-icon"></i>\t\t\t\t</div>\t\t\t\t\t<h4 class="m-t-2">{{$ctrl.title}}</h4>\t\t\t\t<div class="row">\t\t\t\t\t<div class="col-xs-12 col-sm-6 col-sm-offset-3 m-t-1">\t\t\t\t\t<ng-transclude></ng-transclude>\t\t\t\t\t<label class="btn-link"for="file-upload">{{$ctrl.buttonText}}</label>\t\t\t\t\t<input tw-file-select id="file-upload" type="file" accept={{$ctrl.accept}} class="hidden" on-user-input="$ctrl.onManualUpload"/>\t\t\t\t\t</div>\t\t\t\t</div>\t\t\t</div>'
         };
     }
-    function TwUploadDroppableController($element, $log, $scope) {
+    function TwUploadDroppableController() {
         var vm = this;
         vm.dragCounter = 0, vm.isActive = !1, vm.onManualUpload = function() {
             vm.onUpload && "function" == typeof vm.onUpload && vm.onUpload(angular.element(document.querySelector("#file-upload"))[0].files[0]);
@@ -562,6 +562,5 @@ angular.module("tw.form-components", []);
             scope.$ctrl.onUserInput && "function" == typeof scope.$ctrl.onUserInput && scope.$ctrl.onUserInput();
         });
     }
-    angular.module("tw.form-components").directive("twFileSelect", TwFileSelectDirective).controller("TwUploadDroppableController", TwUploadDroppableController).directive("twUploadDroppable", TwUploadDroppableDirective), 
-    TwUploadDroppableController.$inject = [ "$element", "$log", "$scope" ];
+    angular.module("tw.form-components").directive("twFileSelect", TwFileSelectDirective).controller("TwUploadDroppableController", TwUploadDroppableController).directive("twUploadDroppable", TwUploadDroppableDirective);
 }(window.angular);

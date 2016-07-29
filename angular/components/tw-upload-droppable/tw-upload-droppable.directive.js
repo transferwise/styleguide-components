@@ -10,7 +10,7 @@
 	function TwUploadDroppableDirective() {
 		return {
 			bindToController: true,
-			controller: ['$element', '$scope', '$transclude', '$timeout', TwUploadDroppableController],
+			controller: [TwUploadDroppableController],
 			controllerAs: '$ctrl',
 			replace: false,
 			transclude: true,
@@ -19,7 +19,7 @@
 				title: '@',
 				buttonText: '@',
 				onUpload: '=',
-				ngAccept: '='
+				accept: '='
 			},
 			link: TwUploadDroppableLink,
 			template:
@@ -32,16 +32,15 @@
 					<div class="col-xs-12 col-sm-6 col-sm-offset-3 m-t-1">\
 					<ng-transclude></ng-transclude>\
 					<label class="btn-link"for="file-upload">{{$ctrl.buttonText}}</label>\
-					<input tw-file-select id="file-upload" type="file" accept={{$ctrl.ngAccept}} class="hidden" on-user-input="$ctrl.onManualUpload"/>\
+					<input tw-file-select id="file-upload" type="file" accept={{$ctrl.accept}} class="hidden" on-user-input="$ctrl.onManualUpload"/>\
 					</div>\
 				</div>\
 			</div>'
 		};
 	}
 
-	TwUploadDroppableController.$inject = ['$element', '$log', '$scope'];
 
-	function TwUploadDroppableController($element, $log, $scope) {
+	function TwUploadDroppableController() {
 		var vm = this;
 
 		vm.dragCounter = 0;
