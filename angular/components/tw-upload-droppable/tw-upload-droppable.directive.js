@@ -23,24 +23,19 @@
 			},
 			link: TwUploadDroppableLink,
 			template:
-			"<div class='row text-center' ng-style='$ctrl.getBorderStyle()'> \
-				<div class='col-xs-12' style='padding-top:85px;padding-bottom:85px;'>\
-					<div class='row'>\
-						<i class='icon icon-upload' style='font-size:60px;'></i>\
-					</div>\
-					<div class='row m-t-2'>\
-						<span style='font-size:18;font-weight:700;'>{{$ctrl.title}}</span>\
-					</div>\
-					<div class='row m-t-1'>\
-						<div class='col-xs-3'></div>\
-						<div class='col-xs-6'>\
-						<ng-transclude></ng-transclude>\
-						<label class='btn-link'for='file-upload'>{{$ctrl.buttonText}}</label>\
-						<input tw-file-select id='file-upload' type='file' accept={{$ctrl.ngAccept}} class='hidden' on-user-input='$ctrl.onManualUpload'/>\
-						</div>\
+			'<div class="text-center tw-upload-droppable-box" ng-class="{\'active\': $ctrl.isActive}"> \
+				<div class="row">\
+					<i class="icon icon-upload tw-upload-droppable-icon"></i>\
+				</div>\
+					<h4 class="m-t-2">{{$ctrl.title}}</h4>\
+				<div class="row">\
+					<div class="col-xs-12 col-sm-6 col-sm-offset-3 m-t-1">\
+					<ng-transclude></ng-transclude>\
+					<label class="btn-link"for="file-upload">{{$ctrl.buttonText}}</label>\
+					<input tw-file-select id="file-upload" type="file" accept={{$ctrl.ngAccept}} class="hidden" on-user-input="$ctrl.onManualUpload"/>\
 					</div>\
 				</div>\
-			</div>"
+			</div>'
 		};
 	}
 
@@ -49,40 +44,36 @@
 	function TwUploadDroppableController($element, $log, $scope) {
 		var vm = this;
 
-		vm.borderStyle = "2px dashed #e2e6e8";
 		vm.dragCounter = 0;
+		vm.isActive = false;
 
 		vm.onManualUpload = function() {
-			if(vm.onUpload && typeof vm.onUpload === 'function') {
+			if (vm.onUpload && typeof vm.onUpload === 'function') {
 				vm.onUpload(angular.element(document.querySelector('#file-upload'))[0].files[0]);
 			}
 		};
 
 		vm.onDrop = function(file) {
-			if(vm.onUpload && typeof vm.onUpload === 'function') {
+			if (vm.onUpload && typeof vm.onUpload === 'function') {
 				vm.onUpload(file);
 			}
-			vm.borderStyle = "2px dashed #e2e6e8";
+			vm.isActive = false;
+			vm.dropCounter = 0;
 		};
 
 		vm.onDragChange = function(enter) {
 			if (enter) {
 				vm.dragCounter++;
 				if (vm.dragCounter === 1) {
-					vm.borderStyle = "4px dashed #00B9FF";
+					vm.isActive = true;
+					debugger;
 				}
 			} else {
 				vm.dragCounter--;
 				if (vm.dragCounter === 0) {
-					vm.borderStyle = "2px dashed #e2e6e8";
+					vm.isActive = false;
 				}
 			}
-		};
-
-		vm.getBorderStyle = function() {
-			return {
-				border: vm.borderStyle
-			};
 		};
 
 	}

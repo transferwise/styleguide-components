@@ -521,22 +521,19 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 ngAccept: "="
             },
             link: TwUploadDroppableLink,
-            template: "<div class='row text-center' ng-style='$ctrl.getBorderStyle()'> \t\t\t\t<div class='col-xs-12' style='padding-top:85px;padding-bottom:85px;'>\t\t\t\t\t<div class='row'>\t\t\t\t\t\t<i class='icon icon-upload' style='font-size:60px;'></i>\t\t\t\t\t</div>\t\t\t\t\t<div class='row m-t-2'>\t\t\t\t\t\t<span style='font-size:18;font-weight:700;'>{{$ctrl.title}}</span>\t\t\t\t\t</div>\t\t\t\t\t<div class='row m-t-1'>\t\t\t\t\t\t<div class='col-xs-3'></div>\t\t\t\t\t\t<div class='col-xs-6'>\t\t\t\t\t\t<ng-transclude></ng-transclude>\t\t\t\t\t\t<label class='btn-link'for='file-upload'>{{$ctrl.buttonText}}</label>\t\t\t\t\t\t<input tw-file-select id='file-upload' type='file' accept={{$ctrl.ngAccept}} class='hidden' on-user-input='$ctrl.onManualUpload'/>\t\t\t\t\t\t</div>\t\t\t\t\t</div>\t\t\t\t</div>\t\t\t</div>"
+            template: '<div class="text-center tw-upload-droppable-box" ng-class="{\'active\': $ctrl.isActive}"> \t\t\t\t<div class="row">\t\t\t\t\t<i class="icon icon-upload tw-upload-droppable-icon"></i>\t\t\t\t</div>\t\t\t\t\t<h4 class="m-t-2">{{$ctrl.title}}</h4>\t\t\t\t<div class="row">\t\t\t\t\t<div class="col-xs-12 col-sm-6 col-sm-offset-3 m-t-1">\t\t\t\t\t<ng-transclude></ng-transclude>\t\t\t\t\t<label class="btn-link"for="file-upload">{{$ctrl.buttonText}}</label>\t\t\t\t\t<input tw-file-select id="file-upload" type="file" accept={{$ctrl.ngAccept}} class="hidden" on-user-input="$ctrl.onManualUpload"/>\t\t\t\t\t</div>\t\t\t\t</div>\t\t\t</div>'
         };
     }
     function TwUploadDroppableController($element, $log, $scope) {
         var vm = this;
-        vm.borderStyle = "2px dashed #e2e6e8", vm.dragCounter = 0, vm.onManualUpload = function() {
+        vm.dragCounter = 0, vm.isActive = !1, vm.onManualUpload = function() {
             vm.onUpload && "function" == typeof vm.onUpload && vm.onUpload(angular.element(document.querySelector("#file-upload"))[0].files[0]);
         }, vm.onDrop = function(file) {
-            vm.onUpload && "function" == typeof vm.onUpload && vm.onUpload(file), vm.borderStyle = "2px dashed #e2e6e8";
+            vm.onUpload && "function" == typeof vm.onUpload && vm.onUpload(file), vm.isActive = !1, 
+            vm.dropCounter = 0;
         }, vm.onDragChange = function(enter) {
-            enter ? (vm.dragCounter++, 1 === vm.dragCounter && (vm.borderStyle = "4px dashed #00B9FF")) : (vm.dragCounter--, 
-            0 === vm.dragCounter && (vm.borderStyle = "2px dashed #e2e6e8"));
-        }, vm.getBorderStyle = function() {
-            return {
-                border: vm.borderStyle
-            };
+            enter ? (vm.dragCounter++, 1 === vm.dragCounter && (vm.isActive = !0)) : (vm.dragCounter--, 
+            0 === vm.dragCounter && (vm.isActive = !1));
         };
     }
     function TwUploadDroppableLink(scope, element, attr) {
