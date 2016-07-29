@@ -66,7 +66,6 @@
 				vm.dragCounter++;
 				if (vm.dragCounter === 1) {
 					vm.isActive = true;
-					debugger;
 				}
 			} else {
 				vm.dragCounter--;
