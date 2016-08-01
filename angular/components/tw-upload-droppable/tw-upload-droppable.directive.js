@@ -31,7 +31,7 @@
 				<div class="row">\
 					<div class="col-xs-12 col-sm-6 col-sm-offset-3 m-t-1">\
 					<ng-transclude></ng-transclude>\
-					<label class="btn-link"for="file-upload">{{$ctrl.buttonText}}</label>\
+					<label class="link"for="file-upload">{{$ctrl.buttonText}}</label>\
 					<input tw-file-select id="file-upload" type="file" accept={{$ctrl.accept}} class="hidden" on-user-input="$ctrl.onManualUpload"/>\
 					</div>\
 				</div>\
