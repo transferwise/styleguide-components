@@ -21,17 +21,16 @@ describe('Directive: TwUploadDroppable', function() {
 
     describe('transclusion', function() {
         beforeEach(function() {
-            $scope.options = OPTIONS;
-            $scope.ngModel = '1';
+            $scope.onUpload = function() {};
             var template = " \
-		                <tw-upload-droppable \
-		                    title='Drag and drop here' \
-		                    buttonText='or click here' \
-		                    placeholder='please choose' \
-		                    on-upload='uploadFunction' \
-		                    ng-accept='csv'> \
-												<a class='transcluded-content'></a> \
-		                </tw-upload-droppable>";
+                <tw-upload-droppable \
+                    title='Drag and drop here' \
+                    buttonText='or click here' \
+                    placeholder='please choose' \
+                    on-upload='onUpload' \
+                    ng-accept='csv'> \
+                    <a class='transcluded-content'></a> \
+                </tw-upload-droppable>";
             directiveElement = getCompiledDirectiveElement($scope, template);
         });
         it('should render transcluded content', function() {
