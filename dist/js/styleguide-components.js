@@ -422,14 +422,13 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             return transcludedOption.length ? void transcludedOption.find("a").focus() : void 0;
         }
         var $ctrl = this, $ngModel = $element.controller("ngModel");
-        console.log($element), $ctrl.search = "", preSelectModelValue($ngModel, $ctrl, $ctrl.options), 
-        setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl), addWatchers($ctrl, $scope, $ngModel, $element), 
-        addEventHandlers($ctrl, $element, $ngModel, $ctrl.options, $timeout), checkForTranscludedContent($transclude, $ctrl), 
-        $ctrl.buttonFocus = buttonFocus, $ctrl.optionClick = optionClick, $ctrl.optionFocus = optionFocus, 
-        $ctrl.optionKeypress = optionKeypress, $ctrl.placeholderFocus = placeholderFocus, 
-        $ctrl.placeholderClick = placeholderClick, $ctrl.filterFocus = filterFocus, $ctrl.filterChange = filterChange, 
-        $ctrl.filterKeydown = filterKeydown, $ctrl.isOptionFiltered = isOptionFiltered, 
-        $ctrl.getFilteredOptions = getFilteredOptions;
+        $ctrl.search = "", preSelectModelValue($ngModel, $ctrl, $ctrl.options), setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl), 
+        addWatchers($ctrl, $scope, $ngModel, $element), addEventHandlers($ctrl, $element, $ngModel, $ctrl.options, $timeout), 
+        checkForTranscludedContent($transclude, $ctrl), $ctrl.buttonFocus = buttonFocus, 
+        $ctrl.optionClick = optionClick, $ctrl.optionFocus = optionFocus, $ctrl.optionKeypress = optionKeypress, 
+        $ctrl.placeholderFocus = placeholderFocus, $ctrl.placeholderClick = placeholderClick, 
+        $ctrl.filterFocus = filterFocus, $ctrl.filterChange = filterChange, $ctrl.filterKeydown = filterKeydown, 
+        $ctrl.isOptionFiltered = isOptionFiltered, $ctrl.getFilteredOptions = getFilteredOptions;
     }
     function addWatchers($ctrl, $scope, $ngModel, $element) {
         $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {

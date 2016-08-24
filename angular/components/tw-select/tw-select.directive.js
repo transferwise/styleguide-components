@@ -118,8 +118,6 @@
 		var $ctrl = this,
 			$ngModel = $element.controller('ngModel');
 
-		console.log($element);
-
 		$ctrl.search = "";
 
 		preSelectModelValue($ngModel, $ctrl, $ctrl.options);
