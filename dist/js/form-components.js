@@ -151,7 +151,8 @@ angular.module("tw.form-components", []);
             }, $element.closest("label").on("click", function(event) {
                 $element.find("button").trigger("click"), event.preventDefault(), event.stopPropagation();
             }), $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
-                newValue !== oldValue && ($ngModel.$setDirty(), validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl));
+                newValue !== oldValue && ($ngModel.$setDirty(), validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl), 
+                $ctrl.checked = $ctrl.isChecked());
             }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
                 newValue && !oldValue ? $element.closest(".checkbox").addClass("disabled").addClass("disabled", !0) : !newValue && oldValue && $element.closest(".checkbox").removeClass("disabled").removeClass("disabled");
             }), $scope.$watch("$ctrl.ngRequired", function(newValue, oldValue) {
@@ -340,7 +341,7 @@ angular.module("tw.form-components", []);
                 placeholder: "@",
                 filter: "@"
             },
-            template: " 				<div class='btn-group btn-block tw-select' aria-hidden='false'> 					<button type='button' class='btn btn-input dropdown-toggle' 						data-toggle='dropdown' aria-expanded='false' 						ng-disabled='$ctrl.ngDisabled' 						ng-focus='$ctrl.buttonFocus()' 						tw-focusable> 						<span class='tw-select-selected' ng-if='$ctrl.ngModel != null'> 							<i class='icon pull-left {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> 							</i><i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}} pull-left' 								ng-if='$ctrl.selected && $ctrl.selected.currency'> 							</i><span class='circle circle-inverse pull-left'  								ng-class='{\"circle-sm\": $ctrl.selected.secondary, \"circle-xs\": !$ctrl.selected.secondary}' 								ng-if='$ctrl.selected.circleText || $ctrl.selected.circleImage || $ctrl.selected.circleIcon'> 								<span ng-if='$ctrl.selected.circleText'>{{$ctrl.selected.circleText}}</span> 								<img ng-if='$ctrl.selected.circleImage' ng-src='{{$ctrl.selected.circleImage}}' /> 								<i ng-if='$ctrl.selected.circleIcon' class='icon {{$ctrl.selected.circleIcon}}'></i> 							</span><span class='text-ellipsis'><span class='selected-label'>{{$ctrl.selected.label}}</span><span 							ng-if='$ctrl.selected.note' class='small m-l-1'>{{$ctrl.selected.note}}</span><span 							ng-if='$ctrl.selected.secondary' class='small text-ellipsis'>{{$ctrl.selected.secondary}}</span></span> 						</span> 						<span class='form-control-placeholder' ng-if='$ctrl.ngModel == null'>{{$ctrl.placeholder}}</span> 						<span class='caret'></span> 					</button> 					<ul class='dropdown-menu' role='menu'> 						<li ng-if='$ctrl.filter'> 							<a href='' class='tw-select-filter-link p-a-0' ng-focus='$ctrl.filterFocus()'> 								<div class='input-group'> 									<span class='input-group-addon p-r-0'><i class='icon icon-search m-r-1'></i></span> 									<input type='text' class='form-control tw-select-filter' placeholder='{{$ctrl.filter}}' 										ng-model='$ctrl.filterString' 										ng-change='$ctrl.filterChange()' 										ng-keydown='$ctrl.filterKeydown($event)' /> 								</div> 							</a> 						</li> 						<li ng-class='{active: !$ctrl.ngModel}' 							ng-if='$ctrl.placeholder && !$ctrl.ngRequired && !$ctrl.filter'> 							<a href='' 								ng-click='$ctrl.placeholderClick()' 								ng-focus='$ctrl.placeholderFocus()' 								value='' class='tw-select-placeholder' tw-focusable> 								{{$ctrl.placeholder}} 							</a> 						</li> 						<li ng-if='($ctrl.placeholder && !$ctrl.ngRequired) || $ctrl.filter' class='divider'></li> 						<li 							ng-repeat='option in $ctrl.options | filter: $ctrl.isOptionFiltered' 							ng-class='{ 								active: $ctrl.ngModel === option.value, 								\"dropdown-header\": option.header, 								\"tw-select-option\": !option.header 							}'> 							<span ng-if='option.header'>{{option.header}}</span> 							<a href='' 								ng-if='!option.header' 								ng-click='$ctrl.optionClick(option)' 								ng-focus='$ctrl.optionFocus(option)' 								value='{{option.value}}' class='tw-select-option-link' tw-focusable> 								<i class='icon {{option.icon}} pull-left' ng-if='option.icon'> 								</i><i class='currency-flag currency-flag-{{option.currency | lowercase}} pull-left' ng-if='option.currency'> 								</i><span class='circle circle-inverse pull-left' ng-class='{\"circle-sm\": option.secondary, \"circle-xs\": !option.secondary}' 									ng-if='option.circleText || option.circleImage || option.circleIcon'> 									<span ng-if='option.circleText'>{{option.circleText}}</span> 									<img ng-if='option.circleImage' ng-src='{{option.circleImage}}' /> 									<i ng-if='option.circleIcon' class='icon {{option.circleIcon}}'></i> 								</span>{{option.label}}<span 								ng-if='option.note' class='small m-l-1'>{{option.note}}</span><span 								ng-if='option.secondary' class='small text-ellipsis'>{{option.secondary}}</span> 							</a> 						</li> 						<li ng-if='$ctrl.hasTranscluded' class='divider'></li> 						<li ng-transclude ng-if='$ctrl.hasTranscluded' class='tw-select-transcluded'></li> 					</ul> 				</div> 				<input type='hidden' class='tw-select-hidden' 					name='{{$ctrl.name}}' 					value='{{$ctrl.ngModel}}' 					ng-disabled='$ctrl.ngDisabled' />"
+            template: " 				<div class='btn-group btn-block dropdown tw-select' aria-hidden='false'> 					<button type='button' class='btn btn-input dropdown-toggle' 						data-toggle='dropdown' aria-expanded='false' 						ng-disabled='$ctrl.ngDisabled' 						ng-focus='$ctrl.buttonFocus()' 						tw-focusable> 						<span class='tw-select-selected' ng-if='$ctrl.ngModel != null'> 							<i class='icon pull-left {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> 							</i><i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}} pull-left' 								ng-if='$ctrl.selected && $ctrl.selected.currency'> 							</i><span class='circle circle-inverse pull-left'  								ng-class='{\"circle-sm\": $ctrl.selected.secondary, \"circle-xs\": !$ctrl.selected.secondary}' 								ng-if='$ctrl.selected.circleText || $ctrl.selected.circleImage || $ctrl.selected.circleIcon'> 								<span ng-if='$ctrl.selected.circleText'>{{$ctrl.selected.circleText}}</span> 								<img ng-if='$ctrl.selected.circleImage' ng-src='{{$ctrl.selected.circleImage}}' /> 								<i ng-if='$ctrl.selected.circleIcon' class='icon {{$ctrl.selected.circleIcon}}'></i> 							</span><span class='text-ellipsis'><span class='tw-select-label'>{{$ctrl.selected.label}}</span><span 							ng-if='$ctrl.selected.note' class='tw-select-note small m-l-1'>{{$ctrl.selected.note}}</span><span 							ng-if='$ctrl.selected.secondary' class='tw-select-secondary small text-ellipsis'>{{$ctrl.selected.secondary}}</span></span> 						</span> 						<span class='form-control-placeholder' ng-if='$ctrl.ngModel == null'>{{$ctrl.placeholder}}</span> 						<span class='caret'></span> 					</button> 					<ul class='dropdown-menu' role='menu'> 						<li ng-if='$ctrl.filter'> 							<a href='' class='tw-select-filter-link p-a-0' ng-focus='$ctrl.filterFocus()'> 								<div class='input-group'> 									<span class='input-group-addon'><i class='icon icon-search'></i></span> 									<input type='text' class='form-control tw-select-filter' placeholder='{{$ctrl.filter}}' 										ng-model='$ctrl.filterString' 										ng-change='$ctrl.filterChange()' 										ng-keydown='$ctrl.filterKeydown($event)' /> 								</div> 							</a> 						</li> 						<li ng-class='{active: !$ctrl.ngModel}' 							ng-if='$ctrl.placeholder && !$ctrl.ngRequired && !$ctrl.filter'> 							<a href='' 								ng-click='$ctrl.placeholderClick()' 								ng-focus='$ctrl.placeholderFocus()' 								value='' class='tw-select-placeholder' tw-focusable> 								{{$ctrl.placeholder}} 							</a> 						</li> 						<li ng-if='($ctrl.placeholder && !$ctrl.ngRequired) || $ctrl.filter' class='divider'></li> 						<li 							ng-repeat='option in $ctrl.options | filter: $ctrl.isOptionFiltered' 							ng-class='{ 								active: $ctrl.ngModel === option.value, 								\"dropdown-header\": option.header, 								\"tw-select-option\": !option.header 							}'> 							<span ng-if='option.header'>{{option.header}}</span> 							<a href='' 								ng-if='!option.header' 								ng-click='$ctrl.optionClick(option)' 								ng-focus='$ctrl.optionFocus(option)' 								value='{{option.value}}' class='tw-select-option-link' tw-focusable> 								<i class='icon {{option.icon}} pull-left' ng-if='option.icon'> 								</i><i class='currency-flag currency-flag-{{option.currency | lowercase}} pull-left' ng-if='option.currency'> 								</i><span class='circle circle-inverse pull-left' ng-class='{\"circle-sm\": option.secondary, \"circle-xs\": !option.secondary}' 									ng-if='option.circleText || option.circleImage || option.circleIcon'> 									<span ng-if='option.circleText'>{{option.circleText}}</span> 									<img ng-if='option.circleImage' ng-src='{{option.circleImage}}' /> 									<i ng-if='option.circleIcon' class='icon {{option.circleIcon}}'></i> 								</span>{{option.label}}<span 								ng-if='option.note' class='tw-select-note small m-l-1'>{{option.note}}</span><span 								ng-if='option.secondary' class='tw-select-secondary small text-ellipsis'>{{option.secondary}}</span> 							</a> 						</li> 						<li ng-if='$ctrl.hasTranscluded' class='divider'></li> 						<li ng-transclude ng-if='$ctrl.hasTranscluded' class='tw-select-transcluded'></li> 					</ul> 				</div> 				<input type='hidden' class='tw-select-hidden' 					name='{{$ctrl.name}}' 					value='{{$ctrl.ngModel}}' 					ng-disabled='$ctrl.ngDisabled' />"
         };
     }
     function TwSelectController($element, $scope, $transclude, $timeout) {
@@ -418,13 +419,14 @@ angular.module("tw.form-components", []);
             return transcludedOption.length ? void transcludedOption.find("a").focus() : void 0;
         }
         var $ctrl = this, $ngModel = $element.controller("ngModel");
-        $ctrl.search = "", preSelectModelValue($ngModel, $ctrl, $ctrl.options), setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl), 
-        addWatchers($ctrl, $scope, $ngModel, $element), addEventHandlers($ctrl, $element, $ngModel, $ctrl.options, $timeout), 
-        checkForTranscludedContent($transclude, $ctrl), $ctrl.buttonFocus = buttonFocus, 
-        $ctrl.optionClick = optionClick, $ctrl.optionFocus = optionFocus, $ctrl.optionKeypress = optionKeypress, 
-        $ctrl.placeholderFocus = placeholderFocus, $ctrl.placeholderClick = placeholderClick, 
-        $ctrl.filterFocus = filterFocus, $ctrl.filterChange = filterChange, $ctrl.filterKeydown = filterKeydown, 
-        $ctrl.isOptionFiltered = isOptionFiltered, $ctrl.getFilteredOptions = getFilteredOptions;
+        console.log($element), $ctrl.search = "", preSelectModelValue($ngModel, $ctrl, $ctrl.options), 
+        setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl), addWatchers($ctrl, $scope, $ngModel, $element), 
+        addEventHandlers($ctrl, $element, $ngModel, $ctrl.options, $timeout), checkForTranscludedContent($transclude, $ctrl), 
+        $ctrl.buttonFocus = buttonFocus, $ctrl.optionClick = optionClick, $ctrl.optionFocus = optionFocus, 
+        $ctrl.optionKeypress = optionKeypress, $ctrl.placeholderFocus = placeholderFocus, 
+        $ctrl.placeholderClick = placeholderClick, $ctrl.filterFocus = filterFocus, $ctrl.filterChange = filterChange, 
+        $ctrl.filterKeydown = filterKeydown, $ctrl.isOptionFiltered = isOptionFiltered, 
+        $ctrl.getFilteredOptions = getFilteredOptions;
     }
     function addWatchers($ctrl, $scope, $ngModel, $element) {
         $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
@@ -501,4 +503,66 @@ angular.module("tw.form-components", []);
         }), found;
     }
     angular.module("tw.form-components").directive("twSelect", TwSelectDirective);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwUploadDroppableDirective() {
+        return {
+            bindToController: !0,
+            controller: [ TwUploadDroppableController ],
+            controllerAs: "$ctrl",
+            replace: !1,
+            transclude: !0,
+            restrict: "E",
+            scope: {
+                title: "@",
+                cta: "@",
+                onUpload: "=",
+                accept: "="
+            },
+            link: TwUploadDroppableLink,
+            template: '<div class="text-center tw-upload-droppable-box" ng-class="{\'active\': $ctrl.isActive}"> 				<i class="icon icon-upload tw-upload-droppable-icon"></i>				<h4 class="m-t-2">{{$ctrl.title}}</h4>				<div class="row">					<div class="col-xs-12 col-sm-6 col-sm-offset-3 m-t-1">					<ng-transclude></ng-transclude>					<label class="link" for="file-upload">{{$ctrl.cta}}</label>					<input tw-file-select id="file-upload" type="file" accept={{$ctrl.accept}} class="hidden" on-user-input="$ctrl.onManualUpload"/>					</div>				</div>			</div>'
+        };
+    }
+    function TwUploadDroppableController() {
+        var $ctrl = this;
+        $ctrl.dragCounter = 0, $ctrl.isActive = !1, $ctrl.onManualUpload = function() {
+            $ctrl.onUpload && "function" == typeof $ctrl.onUpload && $ctrl.onUpload(angular.element(document.querySelector("#file-upload"))[0].files[0]);
+        }, $ctrl.onDrop = function(file) {
+            $ctrl.onUpload && "function" == typeof $ctrl.onUpload && $ctrl.onUpload(file), $ctrl.isActive = !1, 
+            $ctrl.dropCounter = 0;
+        }, $ctrl.onDragChange = function(enter) {
+            enter ? ($ctrl.dragCounter++, 1 === $ctrl.dragCounter && ($ctrl.isActive = !0)) : ($ctrl.dragCounter--, 
+            0 === $ctrl.dragCounter && ($ctrl.isActive = !1));
+        };
+    }
+    function TwUploadDroppableLink(scope, element, attr) {
+        element[0].addEventListener("dragenter", function(evt) {
+            evt.preventDefault(), scope.$ctrl.onDragChange(!0), scope.$apply();
+        }, !1), element[0].addEventListener("dragover", function(evt) {
+            evt.preventDefault();
+        }, !1), element[0].addEventListener("dragleave", function(evt) {
+            evt.preventDefault(), scope.$ctrl.onDragChange(!1), scope.$apply();
+        }, !1), element[0].addEventListener("drop", function(evt) {
+            evt.preventDefault(), scope.$ctrl.onDrop(evt.dataTransfer.files[0]), scope.$apply();
+        }, !1);
+    }
+    function TwFileSelectDirective() {
+        return {
+            bindToController: !0,
+            controller: function() {},
+            controllerAs: "$ctrl",
+            replace: !1,
+            restrict: "A",
+            scope: {
+                onUserInput: "="
+            },
+            link: TwFileSelectLink
+        };
+    }
+    function TwFileSelectLink(scope, element) {
+        element.on("change", function() {
+            scope.$ctrl.onUserInput && "function" == typeof scope.$ctrl.onUserInput && scope.$ctrl.onUserInput();
+        });
+    }
+    angular.module("tw.form-components").directive("twFileSelect", TwFileSelectDirective).controller("TwUploadDroppableController", TwUploadDroppableController).directive("twUploadDroppable", TwUploadDroppableDirective);
 }(window.angular);
