@@ -24,7 +24,7 @@
 				filter: '@'
 			},
 			template: " \
-				<div class='btn-group btn-block tw-select' aria-hidden='false'> \
+				<div class='btn-group btn-block dropdown tw-select' aria-hidden='false'> \
 					<button type='button' class='btn btn-input dropdown-toggle' \
 						data-toggle='dropdown' aria-expanded='false' \
 						ng-disabled='$ctrl.ngDisabled' \
@@ -40,9 +40,9 @@
 								<span ng-if='$ctrl.selected.circleText'>{{$ctrl.selected.circleText}}</span> \
 								<img ng-if='$ctrl.selected.circleImage' ng-src='{{$ctrl.selected.circleImage}}' /> \
 								<i ng-if='$ctrl.selected.circleIcon' class='icon {{$ctrl.selected.circleIcon}}'></i> \
-							</span><span class='text-ellipsis'><span class='selected-label'>{{$ctrl.selected.label}}</span><span \
-							ng-if='$ctrl.selected.note' class='small m-l-1'>{{$ctrl.selected.note}}</span><span \
-							ng-if='$ctrl.selected.secondary' class='small text-ellipsis'>{{$ctrl.selected.secondary}}</span></span> \
+							</span><span class='text-ellipsis'><span class='tw-select-label'>{{$ctrl.selected.label}}</span><span \
+							ng-if='$ctrl.selected.note' class='tw-select-note small m-l-1'>{{$ctrl.selected.note}}</span><span \
+							ng-if='$ctrl.selected.secondary' class='tw-select-secondary small text-ellipsis'>{{$ctrl.selected.secondary}}</span></span> \
 						</span> \
 						<span class='form-control-placeholder' ng-if='$ctrl.ngModel == null'>{{$ctrl.placeholder}}</span> \
 						<span class='caret'></span> \
@@ -51,7 +51,7 @@
 						<li ng-if='$ctrl.filter'> \
 							<a href='' class='tw-select-filter-link p-a-0' ng-focus='$ctrl.filterFocus()'> \
 								<div class='input-group'> \
-									<span class='input-group-addon p-r-0'><i class='icon icon-search m-r-1'></i></span> \
+									<span class='input-group-addon'><i class='icon icon-search'></i></span> \
 									<input type='text' class='form-control tw-select-filter' placeholder='{{$ctrl.filter}}' \
 										ng-model='$ctrl.filterString' \
 										ng-change='$ctrl.filterChange()' \
@@ -90,8 +90,8 @@
 									<img ng-if='option.circleImage' ng-src='{{option.circleImage}}' /> \
 									<i ng-if='option.circleIcon' class='icon {{option.circleIcon}}'></i> \
 								</span>{{option.label}}<span \
-								ng-if='option.note' class='small m-l-1'>{{option.note}}</span><span \
-								ng-if='option.secondary' class='small text-ellipsis'>{{option.secondary}}</span> \
+								ng-if='option.note' class='tw-select-note small m-l-1'>{{option.note}}</span><span \
+								ng-if='option.secondary' class='tw-select-secondary small text-ellipsis'>{{option.secondary}}</span> \
 							</a> \
 						</li> \
 						<li ng-if='$ctrl.hasTranscluded' class='divider'></li> \
