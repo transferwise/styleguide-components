@@ -128,6 +128,7 @@ module.exports = function(grunt) {
         },
         htmllint: {
             options: {
+                "attr-name-ignore-regex": "{{.*?}}",
                 "attr-name-style": false,
                 "label-req-for": false,
                 "attr-req-value": false,
@@ -164,6 +165,11 @@ module.exports = function(grunt) {
             styles: {
               expand: true,
               src: 'styles/*',
+              dest: 'gh-pages/'
+            },
+            images: {
+              expand: true,
+              src: 'images/*',
               dest: 'gh-pages/'
             },
             components: {

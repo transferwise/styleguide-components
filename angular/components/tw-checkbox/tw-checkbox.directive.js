@@ -67,6 +67,7 @@
 				if (newValue !== oldValue) {
 					$ngModel.$setDirty();
 					validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl);
+					$ctrl.checked = $ctrl.isChecked();
 				}
 			});
 

@@ -10,6 +10,7 @@ describe('Directive: TwSelect', function() {
     var SELECT_SELECTOR = '.tw-select-hidden';
     var LIST_ITEMS_SELECTOR = '.tw-select-option-link';
     var FILTER_INPUT_SELECTOR = '.tw-select-filter';
+    var SELECTED_LABEL_SELECTOR = '.tw-select-selected .tw-select-label';
 
     beforeEach(module('tw.form-components'));
 
@@ -45,7 +46,7 @@ describe('Directive: TwSelect', function() {
                     directiveElement = getCompiledDirectiveElement($scope);
                 });
                 it('should preselect ngModel option', function() {
-                    var selectedTextElement = directiveElement.find('.selected-label')[0];
+                    var selectedTextElement = directiveElement.find(SELECTED_LABEL_SELECTOR)[0];
                     expect(selectedTextElement.innerText.trim()).toBe('Two');
                 });
                 it('should not change ngModel if set', function() {
@@ -67,7 +68,7 @@ describe('Directive: TwSelect', function() {
                 it('should show selected when ngModel is "0"', function() {
                     $scope.ngModel = '0';
                     directiveElement = getCompiledDirectiveElement($scope);
-                    var selectedElement = directiveElement.find('.selected-label');
+                    var selectedElement = directiveElement.find(SELECTED_LABEL_SELECTOR);
                     expect(selectedElement.length).toBe(1);
                 });
 
@@ -82,7 +83,7 @@ describe('Directive: TwSelect', function() {
                     directiveElement = getCompiledDirectiveElement($scope);
                 });
                 it('should preselect ngModel option', function() {
-                    var selectedTextElement = directiveElement.find('.selected-label')[0];
+                    var selectedTextElement = directiveElement.find(SELECTED_LABEL_SELECTOR)[0];
                     expect(selectedTextElement.innerText.trim()).toBe('Two');
                 });
                 it('should not change ngModel if set', function() {
@@ -104,7 +105,7 @@ describe('Directive: TwSelect', function() {
                 it('should show selected when ngModel is 0', function() {
                     $scope.ngModel = 0;
                     directiveElement = getCompiledDirectiveElement($scope);
-                    var selectedElement = directiveElement.find('.selected-label');
+                    var selectedElement = directiveElement.find(SELECTED_LABEL_SELECTOR);
                     expect(selectedElement.length).toBe(1);
                 });
 
@@ -141,7 +142,7 @@ describe('Directive: TwSelect', function() {
                 expect($scope.ngModel).toBe('1');
             });
             it('should show first option', function() {
-                var selectedTextElement = directiveElement.find('.selected-label')[0];
+                var selectedTextElement = directiveElement.find(SELECTED_LABEL_SELECTOR)[0];
                 expect(selectedTextElement.innerText.trim()).toBe('One');
             });
         });
