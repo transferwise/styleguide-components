@@ -70,7 +70,7 @@
 						</li> \
 						<li ng-if='($ctrl.placeholder && !$ctrl.ngRequired) || $ctrl.filter' class='divider'></li> \
 						<li \
-							ng-repeat='option in $ctrl.options | filter: $ctrl.isOptionFiltered' \
+							ng-repeat='option in $ctrl.filteredOptions' \
 							ng-class='{ \
 								active: $ctrl.ngModel === option.value, \
 								\"dropdown-header\": option.header, \
@@ -81,8 +81,7 @@
 								ng-if='!option.header' \
 								ng-click='$ctrl.optionClick(option)' \
 								ng-focus='$ctrl.optionFocus(option)' \
-								tw-select-option='option' \
-								value='{{option.value}}' \
+								index='{{$index}}' \
 								class='tw-select-option-link' tw-focusable> \
 								<i class='icon {{option.icon}} pull-left' ng-if='option.icon'> \
 								</i><i class='currency-flag currency-flag-{{option.currency | lowercase}} pull-left' ng-if='option.currency'> \
@@ -143,6 +142,9 @@
 		$ctrl.isOptionFiltered = isOptionFiltered;
 		$ctrl.getFilteredOptions = getFilteredOptions;
 
+		$ctrl.filterString = "";
+		$ctrl.filteredOptions = $ctrl.getFilteredOptions();
+
 		function buttonFocus() {
 			$element.triggerHandler('focus');
 		}
@@ -181,8 +183,6 @@
 		function placeholderFocus() {
 			resetOption($ngModel, $ctrl);
 		}
-		// TODO filter is inefficient, runs too often, switch to using this
-		// internally, and watch for changes in $ctrl.options & $ctrl.filter
 		function getFilteredOptions() {
 			return $ctrl.options.filter(isOptionFiltered);
 		}
@@ -205,18 +205,19 @@
 			$element.find('.tw-select-filter').focus();
 		}
 		function filterChange() {
-			var filteredOptions = $ctrl.getFilteredOptions(),
-				selectedOption = findSelected(filteredOptions, $ctrl.selected);
+			$ctrl.filteredOptions = $ctrl.getFilteredOptions();
+			var selectedOption = findSelected($ctrl.filteredOptions, $ctrl.selected);
 
-			if (!selectedOption && filteredOptions.length) {
-				selectOption($ngModel, $ctrl, filteredOptions[0]);
+			// Choose a new selected value if the old one was hidden
+			if (!selectedOption && $ctrl.filteredOptions.length) {
+				selectOption($ngModel, $ctrl, $ctrl.filteredOptions[0]);
 			}
 		}
 		function findSelected(options, selected) {
 			// Prefer forEach over find for browser support
 			var selectedOption;
 			options.forEach(function(option) {
-				if (selected && selected.value === option.value) {
+				if (selected && angular.equals(selected.value, option.value)) {
 					selectedOption = selected;
 				}
 			});
@@ -245,10 +246,7 @@
 		}
 
 		function selectOptionUsingLink(link) {
-			// TODO this is inefficent as we need a controller on each option
-			// would be better to get the index from the link, but this changes
-			// when filtering.  If we filter in controller, we ccould change it
-			var option = link.controller('twSelectOption').twSelectOption;
+			var option = $ctrl.filteredOptions[link.attr('index')];
 			selectOption($ngModel, $ctrl, option);
 		}
 
@@ -302,6 +300,8 @@
 				// Reinitialise selected valus
 				preSelectModelValue($ngModel, $ctrl, $ctrl.options);
 				setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl);
+
+				$ctrl.filteredOptions = $ctrl.getFilteredOptions();
 			}
 		});
 	}
@@ -459,24 +459,5 @@
 			}
 		});
 		return found;
-	}
-
-	// TODO this is a way to make the option value accessible from the DOM element using
-	// el.controller('twSelectOption').twSelectOption but requires controllers on everything
-	// Perhaps better to store the option index and do it that way...
-	angular
-		.module('tw.form-components')
-		.directive('twSelectOption', TwSelectOptionDirective);
-
-	function TwSelectOptionDirective() {
-		return {
-			bindToController: true,
-			controller: function() { },
-			controllerAs: '$ctrl',
-			restrict: 'A',
-			scope: {
-				twSelectOption: '=',
-			}
-		};
 	}
 })(window.angular);
