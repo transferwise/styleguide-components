@@ -114,6 +114,31 @@ describe('Directive: TwSelect', function() {
                     expect(directiveElement.find(SELECT_SELECTOR).val()).toBe('2');
                 });
             })
+
+            describe('as object', function() {
+                beforeEach(function() {
+                    $scope.options = OPTIONS_OBJECTS;
+                    $scope.ngModel = {id: 2};
+                    directiveElement = getCompiledDirectiveElement($scope);
+                });
+                it('should preselect ngModel option', function() {
+                    var selectedTextElement = directiveElement.find(SELECTED_LABEL_SELECTOR)[0];
+                    expect(selectedTextElement.innerText.trim()).toBe('Two');
+                });
+                it('should not change ngModel if set', function() {
+                    expect($scope.ngModel).toEqual({id: 2});
+                });
+                it('should not show placeholder', function() {
+                    $scope.ngRequired = true;
+                    directiveElement = getCompiledDirectiveElement($scope);
+                    var placeholerElement = directiveElement.find('.form-control-placeholder');
+                    expect(placeholerElement.length).toBe(0);
+                });
+                it('should set the value of hidden control', function() {
+                    // always string...
+                    expect(directiveElement.find(SELECT_SELECTOR).val()).toBe(JSON.stringify({id: 2}));
+                });
+            })
         });
 
         describe('when ngModel not supplied', function() {
@@ -283,7 +308,7 @@ describe('Directive: TwSelect', function() {
         beforeEach(function() {
             $scope.options = OPTIONS;
             $scope.ngModel = '1';
-            $scope.onChange = function() {};
+            $scope.onChange = function(newVale, oldVal) {};
             $scope.onBlur = function() {};
             var template = " \
                 <tw-select \
@@ -300,6 +325,12 @@ describe('Directive: TwSelect', function() {
             expect($scope.ngModel).toBe('2');
             expect($scope.onChange).toHaveBeenCalled();
         });
+        // TODO Fix this
+        xit('should trigger ngChange with new and old values', function() {
+            spyOn($scope, 'onChange');
+            directiveElement.controller('ngModel').$setViewValue('2');
+            expect($scope.onChange).toHaveBeenCalledWith('2', '1');
+        });
         it('should not trigger ngChange on first open', function() {
             spyOn($scope, 'onChange');
             directiveElement.find('.btn').trigger('click');
@@ -315,7 +346,7 @@ describe('Directive: TwSelect', function() {
     });
 
     describe('when options change', function() {
-        // TODO digets is not updating options, but this works in browser
+        // TODO digest is not updating options, but this works in browser
         xit('should show new options list', function() {
             $scope.options = [{value: '90', label: 'Ninety'}];
             $scope.$digest();
@@ -505,6 +536,17 @@ describe('Directive: TwSelect', function() {
         label: 'Two'
     },{
         value: 3,
+        label: 'Three'
+    }];
+
+    var OPTIONS_OBJECTS = [{
+        value: {id: 1},
+        label: 'One'
+    },{
+        value: {id: 2},
+        label: 'Two'
+    },{
+        value: {id: 3},
         label: 'Three'
     }];
 });

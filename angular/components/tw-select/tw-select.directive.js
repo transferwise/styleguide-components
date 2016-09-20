@@ -70,7 +70,7 @@
 						</li> \
 						<li ng-if='($ctrl.placeholder && !$ctrl.ngRequired) || $ctrl.filter' class='divider'></li> \
 						<li \
-							ng-repeat='option in $ctrl.options | filter: $ctrl.isOptionFiltered' \
+							ng-repeat='option in $ctrl.filteredOptions' \
 							ng-class='{ \
 								active: $ctrl.ngModel === option.value, \
 								\"dropdown-header\": option.header, \
@@ -81,7 +81,8 @@
 								ng-if='!option.header' \
 								ng-click='$ctrl.optionClick(option)' \
 								ng-focus='$ctrl.optionFocus(option)' \
-								value='{{option.value}}' class='tw-select-option-link' tw-focusable> \
+								index='{{$index}}' \
+								class='tw-select-option-link' tw-focusable> \
 								<i class='icon {{option.icon}} pull-left' ng-if='option.icon'> \
 								</i><i class='currency-flag currency-flag-{{option.currency | lowercase}} pull-left' ng-if='option.currency'> \
 								</i><span class='circle circle-inverse pull-left' ng-class='{\"circle-sm\": option.secondary, \"circle-xs\": !option.secondary}' \
@@ -141,6 +142,9 @@
 		$ctrl.isOptionFiltered = isOptionFiltered;
 		$ctrl.getFilteredOptions = getFilteredOptions;
 
+		$ctrl.filterString = "";
+		$ctrl.filteredOptions = $ctrl.getFilteredOptions();
+
 		function buttonFocus() {
 			$element.triggerHandler('focus');
 		}
@@ -179,8 +183,6 @@
 		function placeholderFocus() {
 			resetOption($ngModel, $ctrl);
 		}
-		// TODO filter is inefficient, runs too often, switch to using this
-		// internally, and watch for changes in $ctrl.options & $ctrl.filter
 		function getFilteredOptions() {
 			return $ctrl.options.filter(isOptionFiltered);
 		}
@@ -203,18 +205,19 @@
 			$element.find('.tw-select-filter').focus();
 		}
 		function filterChange() {
-			var filteredOptions = $ctrl.getFilteredOptions(),
-				selectedOption = findSelected(filteredOptions, $ctrl.selected);
+			$ctrl.filteredOptions = $ctrl.getFilteredOptions();
+			var selectedOption = findSelected($ctrl.filteredOptions, $ctrl.selected);
 
-			if (!selectedOption && filteredOptions.length) {
-				selectOption($ngModel, $ctrl, filteredOptions[0]);
+			// Choose a new selected value if the old one was hidden
+			if (!selectedOption && $ctrl.filteredOptions.length) {
+				selectOption($ngModel, $ctrl, $ctrl.filteredOptions[0]);
 			}
 		}
 		function findSelected(options, selected) {
 			// Prefer forEach over find for browser support
 			var selectedOption;
 			options.forEach(function(option) {
-				if (selected && selected.value === option.value) {
+				if (selected && angular.equals(selected.value, option.value)) {
 					selectedOption = selected;
 				}
 			});
@@ -243,7 +246,7 @@
 		}
 
 		function selectOptionUsingLink(link) {
-			var option = findOptionFromValue($ctrl.options, link.attr('value'));
+			var option = $ctrl.filteredOptions[link.attr('index')];
 			selectOption($ngModel, $ctrl, option);
 		}
 
@@ -297,6 +300,8 @@
 				// Reinitialise selected valus
 				preSelectModelValue($ngModel, $ctrl, $ctrl.options);
 				setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl);
+
+				$ctrl.filteredOptions = $ctrl.getFilteredOptions();
 			}
 		});
 	}
@@ -397,7 +402,7 @@
 	function findOptionFromValue(options, value) {
 		var optionMatch = false;
 		options.forEach(function(option) {
-			if (String(option.value) === String(value)) {
+			if (angular.equals(option.value, value)) {
 				optionMatch = option;
 			}
 		});
@@ -415,11 +420,15 @@
 
 	function selectOption($ngModel, $ctrl, option) {
 		$ngModel.$setViewValue(option.value);
+		// Force commit so that ng-change always has new value
+		$ngModel.$commitViewValue();
 		$ctrl.selected = option;
 	}
 
 	function resetOption($ngModel, $ctrl) {
 		$ngModel.$setViewValue(null);
+		// Force commit so that ng-change always has new value
+		$ngModel.$commitViewValue();
 		$ctrl.selected = false;
 	}
 

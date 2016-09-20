@@ -341,7 +341,7 @@ angular.module("tw.form-components", []);
                 placeholder: "@",
                 filter: "@"
             },
-            template: " 				<div class='btn-group btn-block dropdown tw-select' aria-hidden='false'> 					<button type='button' class='btn btn-input dropdown-toggle' 						data-toggle='dropdown' aria-expanded='false' 						ng-disabled='$ctrl.ngDisabled' 						ng-focus='$ctrl.buttonFocus()' 						tw-focusable> 						<span class='tw-select-selected' ng-if='$ctrl.ngModel != null'> 							<i class='icon pull-left {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> 							</i><i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}} pull-left' 								ng-if='$ctrl.selected && $ctrl.selected.currency'> 							</i><span class='circle circle-inverse pull-left'  								ng-class='{\"circle-sm\": $ctrl.selected.secondary, \"circle-xs\": !$ctrl.selected.secondary}' 								ng-if='$ctrl.selected.circleText || $ctrl.selected.circleImage || $ctrl.selected.circleIcon'> 								<span ng-if='$ctrl.selected.circleText'>{{$ctrl.selected.circleText}}</span> 								<img ng-if='$ctrl.selected.circleImage' ng-src='{{$ctrl.selected.circleImage}}' /> 								<i ng-if='$ctrl.selected.circleIcon' class='icon {{$ctrl.selected.circleIcon}}'></i> 							</span><span class='text-ellipsis'><span class='tw-select-label'>{{$ctrl.selected.label}}</span><span 							ng-if='$ctrl.selected.note' class='tw-select-note small m-l-1'>{{$ctrl.selected.note}}</span><span 							ng-if='$ctrl.selected.secondary' class='tw-select-secondary small text-ellipsis'>{{$ctrl.selected.secondary}}</span></span> 						</span> 						<span class='form-control-placeholder' ng-if='$ctrl.ngModel == null'>{{$ctrl.placeholder}}</span> 						<span class='caret'></span> 					</button> 					<ul class='dropdown-menu' role='menu'> 						<li ng-if='$ctrl.filter'> 							<a href='' class='tw-select-filter-link p-a-0' ng-focus='$ctrl.filterFocus()'> 								<div class='input-group'> 									<span class='input-group-addon'><i class='icon icon-search'></i></span> 									<input type='text' class='form-control tw-select-filter' placeholder='{{$ctrl.filter}}' 										ng-model='$ctrl.filterString' 										ng-change='$ctrl.filterChange()' 										ng-keydown='$ctrl.filterKeydown($event)' /> 								</div> 							</a> 						</li> 						<li ng-class='{active: !$ctrl.ngModel}' 							ng-if='$ctrl.placeholder && !$ctrl.ngRequired && !$ctrl.filter'> 							<a href='' 								ng-click='$ctrl.placeholderClick()' 								ng-focus='$ctrl.placeholderFocus()' 								value='' class='tw-select-placeholder' tw-focusable> 								{{$ctrl.placeholder}} 							</a> 						</li> 						<li ng-if='($ctrl.placeholder && !$ctrl.ngRequired) || $ctrl.filter' class='divider'></li> 						<li 							ng-repeat='option in $ctrl.options | filter: $ctrl.isOptionFiltered' 							ng-class='{ 								active: $ctrl.ngModel === option.value, 								\"dropdown-header\": option.header, 								\"tw-select-option\": !option.header 							}'> 							<span ng-if='option.header'>{{option.header}}</span> 							<a href='' 								ng-if='!option.header' 								ng-click='$ctrl.optionClick(option)' 								ng-focus='$ctrl.optionFocus(option)' 								value='{{option.value}}' class='tw-select-option-link' tw-focusable> 								<i class='icon {{option.icon}} pull-left' ng-if='option.icon'> 								</i><i class='currency-flag currency-flag-{{option.currency | lowercase}} pull-left' ng-if='option.currency'> 								</i><span class='circle circle-inverse pull-left' ng-class='{\"circle-sm\": option.secondary, \"circle-xs\": !option.secondary}' 									ng-if='option.circleText || option.circleImage || option.circleIcon'> 									<span ng-if='option.circleText'>{{option.circleText}}</span> 									<img ng-if='option.circleImage' ng-src='{{option.circleImage}}' /> 									<i ng-if='option.circleIcon' class='icon {{option.circleIcon}}'></i> 								</span>{{option.label}}<span 								ng-if='option.note' class='tw-select-note small m-l-1'>{{option.note}}</span><span 								ng-if='option.secondary' class='tw-select-secondary small text-ellipsis'>{{option.secondary}}</span> 							</a> 						</li> 						<li ng-if='$ctrl.hasTranscluded' class='divider'></li> 						<li ng-transclude ng-if='$ctrl.hasTranscluded' class='tw-select-transcluded'></li> 					</ul> 				</div> 				<input type='hidden' class='tw-select-hidden' 					name='{{$ctrl.name}}' 					value='{{$ctrl.ngModel}}' 					ng-disabled='$ctrl.ngDisabled' />"
+            template: " 				<div class='btn-group btn-block dropdown tw-select' aria-hidden='false'> 					<button type='button' class='btn btn-input dropdown-toggle' 						data-toggle='dropdown' aria-expanded='false' 						ng-disabled='$ctrl.ngDisabled' 						ng-focus='$ctrl.buttonFocus()' 						tw-focusable> 						<span class='tw-select-selected' ng-if='$ctrl.ngModel != null'> 							<i class='icon pull-left {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> 							</i><i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}} pull-left' 								ng-if='$ctrl.selected && $ctrl.selected.currency'> 							</i><span class='circle circle-inverse pull-left'  								ng-class='{\"circle-sm\": $ctrl.selected.secondary, \"circle-xs\": !$ctrl.selected.secondary}' 								ng-if='$ctrl.selected.circleText || $ctrl.selected.circleImage || $ctrl.selected.circleIcon'> 								<span ng-if='$ctrl.selected.circleText'>{{$ctrl.selected.circleText}}</span> 								<img ng-if='$ctrl.selected.circleImage' ng-src='{{$ctrl.selected.circleImage}}' /> 								<i ng-if='$ctrl.selected.circleIcon' class='icon {{$ctrl.selected.circleIcon}}'></i> 							</span><span class='text-ellipsis'><span class='tw-select-label'>{{$ctrl.selected.label}}</span><span 							ng-if='$ctrl.selected.note' class='tw-select-note small m-l-1'>{{$ctrl.selected.note}}</span><span 							ng-if='$ctrl.selected.secondary' class='tw-select-secondary small text-ellipsis'>{{$ctrl.selected.secondary}}</span></span> 						</span> 						<span class='form-control-placeholder' ng-if='$ctrl.ngModel == null'>{{$ctrl.placeholder}}</span> 						<span class='caret'></span> 					</button> 					<ul class='dropdown-menu' role='menu'> 						<li ng-if='$ctrl.filter'> 							<a href='' class='tw-select-filter-link p-a-0' ng-focus='$ctrl.filterFocus()'> 								<div class='input-group'> 									<span class='input-group-addon'><i class='icon icon-search'></i></span> 									<input type='text' class='form-control tw-select-filter' placeholder='{{$ctrl.filter}}' 										ng-model='$ctrl.filterString' 										ng-change='$ctrl.filterChange()' 										ng-keydown='$ctrl.filterKeydown($event)' /> 								</div> 							</a> 						</li> 						<li ng-class='{active: !$ctrl.ngModel}' 							ng-if='$ctrl.placeholder && !$ctrl.ngRequired && !$ctrl.filter'> 							<a href='' 								ng-click='$ctrl.placeholderClick()' 								ng-focus='$ctrl.placeholderFocus()' 								value='' class='tw-select-placeholder' tw-focusable> 								{{$ctrl.placeholder}} 							</a> 						</li> 						<li ng-if='($ctrl.placeholder && !$ctrl.ngRequired) || $ctrl.filter' class='divider'></li> 						<li 							ng-repeat='option in $ctrl.filteredOptions' 							ng-class='{ 								active: $ctrl.ngModel === option.value, 								\"dropdown-header\": option.header, 								\"tw-select-option\": !option.header 							}'> 							<span ng-if='option.header'>{{option.header}}</span> 							<a href='' 								ng-if='!option.header' 								ng-click='$ctrl.optionClick(option)' 								ng-focus='$ctrl.optionFocus(option)' 								index='{{$index}}' 								class='tw-select-option-link' tw-focusable> 								<i class='icon {{option.icon}} pull-left' ng-if='option.icon'> 								</i><i class='currency-flag currency-flag-{{option.currency | lowercase}} pull-left' ng-if='option.currency'> 								</i><span class='circle circle-inverse pull-left' ng-class='{\"circle-sm\": option.secondary, \"circle-xs\": !option.secondary}' 									ng-if='option.circleText || option.circleImage || option.circleIcon'> 									<span ng-if='option.circleText'>{{option.circleText}}</span> 									<img ng-if='option.circleImage' ng-src='{{option.circleImage}}' /> 									<i ng-if='option.circleIcon' class='icon {{option.circleIcon}}'></i> 								</span>{{option.label}}<span 								ng-if='option.note' class='tw-select-note small m-l-1'>{{option.note}}</span><span 								ng-if='option.secondary' class='tw-select-secondary small text-ellipsis'>{{option.secondary}}</span> 							</a> 						</li> 						<li ng-if='$ctrl.hasTranscluded' class='divider'></li> 						<li ng-transclude ng-if='$ctrl.hasTranscluded' class='tw-select-transcluded'></li> 					</ul> 				</div> 				<input type='hidden' class='tw-select-hidden' 					name='{{$ctrl.name}}' 					value='{{$ctrl.ngModel}}' 					ng-disabled='$ctrl.ngDisabled' />"
         };
     }
     function TwSelectController($element, $scope, $transclude, $timeout) {
@@ -382,13 +382,14 @@ angular.module("tw.form-components", []);
             $element.find(".tw-select-filter").focus();
         }
         function filterChange() {
-            var filteredOptions = $ctrl.getFilteredOptions(), selectedOption = findSelected(filteredOptions, $ctrl.selected);
-            !selectedOption && filteredOptions.length && selectOption($ngModel, $ctrl, filteredOptions[0]);
+            $ctrl.filteredOptions = $ctrl.getFilteredOptions();
+            var selectedOption = findSelected($ctrl.filteredOptions, $ctrl.selected);
+            !selectedOption && $ctrl.filteredOptions.length && selectOption($ngModel, $ctrl, $ctrl.filteredOptions[0]);
         }
         function findSelected(options, selected) {
             var selectedOption;
             return options.forEach(function(option) {
-                selected && selected.value === option.value && (selectedOption = selected);
+                selected && angular.equals(selected.value, option.value) && (selectedOption = selected);
             }), selectedOption;
         }
         function filterKeydown(event) {
@@ -399,7 +400,7 @@ angular.module("tw.form-components", []);
             event.preventDefault()), !0;
         }
         function selectOptionUsingLink(link) {
-            var option = findOptionFromValue($ctrl.options, link.attr("value"));
+            var option = $ctrl.filteredOptions[link.attr("index")];
             selectOption($ngModel, $ctrl, option);
         }
         function moveUpOneOption(activeOption, activeLink, optionLinks) {
@@ -425,13 +426,15 @@ angular.module("tw.form-components", []);
         $ctrl.optionClick = optionClick, $ctrl.optionFocus = optionFocus, $ctrl.optionKeypress = optionKeypress, 
         $ctrl.placeholderFocus = placeholderFocus, $ctrl.placeholderClick = placeholderClick, 
         $ctrl.filterFocus = filterFocus, $ctrl.filterChange = filterChange, $ctrl.filterKeydown = filterKeydown, 
-        $ctrl.isOptionFiltered = isOptionFiltered, $ctrl.getFilteredOptions = getFilteredOptions;
+        $ctrl.isOptionFiltered = isOptionFiltered, $ctrl.getFilteredOptions = getFilteredOptions, 
+        $ctrl.filterString = "", $ctrl.filteredOptions = $ctrl.getFilteredOptions();
     }
     function addWatchers($ctrl, $scope, $ngModel, $element) {
         $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
             (newValue || oldValue) && newValue !== oldValue && $ngModel.$setDirty(), modelChange(newValue, oldValue, $ctrl);
         }), $scope.$watch("$ctrl.options", function(newValue, oldValue) {
-            newValue !== oldValue && (preSelectModelValue($ngModel, $ctrl, $ctrl.options), setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl));
+            newValue !== oldValue && (preSelectModelValue($ngModel, $ctrl, $ctrl.options), setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl), 
+            $ctrl.filteredOptions = $ctrl.getFilteredOptions());
         });
     }
     function addEventHandlers($ctrl, $element, $ngModel, options, $timeout) {
@@ -477,17 +480,17 @@ angular.module("tw.form-components", []);
     function findOptionFromValue(options, value) {
         var optionMatch = !1;
         return options.forEach(function(option) {
-            String(option.value) === String(value) && (optionMatch = option);
+            angular.equals(option.value, value) && (optionMatch = option);
         }), optionMatch;
     }
     function setDefaultIfRequired($ngModel, $ctrl, $element, $attrs) {
         ($ctrl.ngRequired || $attrs.required) && !$ctrl.ngModel && $ctrl.options[0] && selectOption($ngModel, $ctrl, $ctrl.options[0]);
     }
     function selectOption($ngModel, $ctrl, option) {
-        $ngModel.$setViewValue(option.value), $ctrl.selected = option;
+        $ngModel.$setViewValue(option.value), $ngModel.$commitViewValue(), $ctrl.selected = option;
     }
     function resetOption($ngModel, $ctrl) {
-        $ngModel.$setViewValue(null), $ctrl.selected = !1;
+        $ngModel.$setViewValue(null), $ngModel.$commitViewValue(), $ctrl.selected = !1;
     }
     function continueSearchAndSelectMatch($ngModel, $ctrl, options, letter) {
         var found = searchAndSelect($ngModel, $ctrl, options, $ctrl.search + letter);
