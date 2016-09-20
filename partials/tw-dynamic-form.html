@@ -1,0 +1,34 @@
+<h4 id="dynamic">Dynamic form</h4>
+<p>The dynamic form uses the dynamic form control to build a fully featured form.
+	It accepts a model object which it permutes based on a set of requirements.
+	The requirements object should mathc that returned by the TransferWise API</p>
+<hr />
+<form>
+	<div class="well">
+		<h5 class="page-header">
+			Edit configuration
+		</h5>
+
+		<div class="form-group">
+			<label class="control-label">
+				Example form
+			</label>
+			<tw-select
+				options="$ctrl.types"
+				ng-model="$ctrl.type">
+			</tw-select>
+		</div>
+	</div>
+	<div class="m-b-3">
+		<tw-dynamic-form
+			requirements="$ctrl.requirements"
+			model="$ctrl.model"
+			on-refresh-requirements=""></tw-dynamic-form>
+
+		<h5>Configuration</h5>
+<pre>&lt;tw-dynamic-form
+  requirements="$ctrl.requirements"
+  model="{{$ctrl.model | json}}"
+  on-refresh-requirements="" /&gt;</pre>
+	</div>
+</form>
