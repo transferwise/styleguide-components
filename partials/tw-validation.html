@@ -17,7 +17,7 @@
 	<code>[tw-validation]</code> are in an invalid state and triggers the
 	validation styles.</p>
 <hr />
-<form 
+<form
 	name="exampleForm"
 	ng-submit="vm.submit()"
 	novalidate>
@@ -46,7 +46,8 @@
 			Select - required
 		</label>
 		<select class="form-control" required tw-validation
-			ng-model="vm.model.select">
+			ng-model="vm.model.select"
+			ng-change="vm.log()">
 			<option value="">Please choose..</option>
 			<option value="1">Option 1</option>
 			<option value="2">Option 2</option>

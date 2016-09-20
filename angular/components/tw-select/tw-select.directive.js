@@ -81,7 +81,9 @@
 								ng-if='!option.header' \
 								ng-click='$ctrl.optionClick(option)' \
 								ng-focus='$ctrl.optionFocus(option)' \
-								value='{{option.value}}' class='tw-select-option-link' tw-focusable> \
+								tw-select-option='option' \
+								value='{{option.value}}' \
+								class='tw-select-option-link' tw-focusable> \
 								<i class='icon {{option.icon}} pull-left' ng-if='option.icon'> \
 								</i><i class='currency-flag currency-flag-{{option.currency | lowercase}} pull-left' ng-if='option.currency'> \
 								</i><span class='circle circle-inverse pull-left' ng-class='{\"circle-sm\": option.secondary, \"circle-xs\": !option.secondary}' \
@@ -243,7 +245,10 @@
 		}
 
 		function selectOptionUsingLink(link) {
-			var option = findOptionFromValue($ctrl.options, link.attr('value'));
+			// TODO this is inefficent as we need a controller on each option
+			// would be better to get the index from the link, but this changes
+			// when filtering.  If we filter in controller, we ccould change it
+			var option = link.controller('twSelectOption').twSelectOption;
 			selectOption($ngModel, $ctrl, option);
 		}
 
@@ -397,7 +402,7 @@
 	function findOptionFromValue(options, value) {
 		var optionMatch = false;
 		options.forEach(function(option) {
-			if (String(option.value) === String(value)) {
+			if (angular.equals(option.value, value)) {
 				optionMatch = option;
 			}
 		});
@@ -415,11 +420,15 @@
 
 	function selectOption($ngModel, $ctrl, option) {
 		$ngModel.$setViewValue(option.value);
+		// Force commit so that ng-change always has new value
+		$ngModel.$commitViewValue();
 		$ctrl.selected = option;
 	}
 
 	function resetOption($ngModel, $ctrl) {
 		$ngModel.$setViewValue(null);
+		// Force commit so that ng-change always has new value
+		$ngModel.$commitViewValue();
 		$ctrl.selected = false;
 	}
 
@@ -450,5 +459,24 @@
 			}
 		});
 		return found;
+	}
+
+	// TODO this is a way to make the option value accessible from the DOM element using
+	// el.controller('twSelectOption').twSelectOption but requires controllers on everything
+	// Perhaps better to store the option index and do it that way...
+	angular
+		.module('tw.form-components')
+		.directive('twSelectOption', TwSelectOptionDirective);
+
+	function TwSelectOptionDirective() {
+		return {
+			bindToController: true,
+			controller: function() { },
+			controllerAs: '$ctrl',
+			restrict: 'A',
+			scope: {
+				twSelectOption: '=',
+			}
+		};
 	}
 })(window.angular);

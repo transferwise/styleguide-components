@@ -16,6 +16,8 @@ module.exports = function(config) {
             //'angular/**/*.directive.js',
             'dist/js/styleguide-components.js',
 
+            //'components/bootstrap/dist/css/bootstrap.css',
+
             // include unit test specs
             'angular/**/*.spec.js'
         ],

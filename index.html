@@ -11,6 +11,7 @@
 	<script src="dist/js/styleguide-components.js"></script>
 
 	<script src="components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="index.js"></script>
 
 	<link type="text/css" rel="stylesheet"
 		href="components/bootstrap/dist/css/bootstrap.min.css" />
@@ -18,165 +19,10 @@
 		href="components/currency-flags/dist/currency-flags.min.css" />
 	<link type="text/css" rel="stylesheet" href="styles/examples.css" />
 
-	<script>
-
-	angular.module('my-app', ['tw.styleguide-components'])
-	.config(['$compileProvider', function ($compileProvider) {
-		$compileProvider.debugInfoEnabled(false);
-	}])
-	.controller('PageController', [function() {
-		this.log = function(message) {
-			console.log(message);
-		};
-		this.longOptions = [{header: "example header"}];
-		for(var i=0; i<50; i++) {
-			this.longOptions.push({value: String(i), label: String(i)});
-		}
-		this.radio = {required: true};
-		this.checkbox = {required: true};
-		this.select = {
-			required: true,
-			empty: 'Select an option...',
-			type: 'standard',
-			types: [
-				{value: 'standard', label: 'Standard'},
-				{value: 'icons', label: 'Icons'},
-				{value: 'currencies', label: 'Currencies'},
-				{value: 'notes', label: 'Notes'},
-				{value: 'headers', label: 'Headers'},
-				{value: 'secondary', label: 'Secondary Text'},
-				{value: 'circles', label: 'Circles'},
-				{value: 'currencySelect', label: 'Example: Currency select'},
-				{value: 'accountSelect', label: 'Example: Account select'}
-			],
-			options: {
-				standard: [
-					{value: 1, label: 'One'},
-					{value: 2, label: 'Two'},
-					{value: 3, label: 'Three'}
-				],
-				icons: [
-					{value: '1', label: 'Profile', icon: 'icon-profile'},
-					{value: '2', label: 'Globe', icon: 'icon-globe'},
-					{value: '3', label: 'Bank', icon: 'icon-bank'}
-				],
-				currencies: [
-					{value: 'eur', label: 'Euro', currency: 'EUR'},
-					{value: 'gbp', label: 'British Pound', currency: 'GBP'},
-					{value: 'usd', label: 'US Dollar', currency: 'USD'}
-				],
-				notes: [
-					{value: 'eur', label: 'EUR', note: 'Euro'},
-					{value: 'gbp', label: 'GBP', note: 'Great British Pound'},
-					{value: 'usd', label: 'USD', note: 'United States Dollar'}
-				],
-				headers: [
-					{header: 'Header'},
-					{value: 'opt1', label: 'Option 1'},
-					{header: 'Another header'},
-					{value: 'opt2', label: 'Option 2'}
-				],
-				secondary: [
-					{value: '1', label: 'Bob Smith', secondary: 'Account ending 1234'},
-					{value: '2', label: 'James Davies', secondary: 'Account ending 9876'},
-					{value: '3', label: 'Helen Williams', secondary: 'Accont ending 4321'}
-				],
-				circles: [
-					{value: '1', label: 'Bob Smith', circleImage: 'images/mike.jpg'},
-					{value: '2', label: 'James Davies', circleIcon: 'icon-bank'},
-					{value: '3', label: 'Helen Williams', circleText: 'AZ'}
-				],
-				currencySelect: [
-					{header: 'Popular currencies'},
-					{value: 'eur', label: 'EUR', note: 'Euro', currency: 'EUR'},
-					{value: 'gbp', label: 'GBP', note: 'Great British Pound', currency: 'GBP'},
-					{value: 'usd', label: 'USD', note: 'United States Dollar', currency: 'USD'},
-					{header: 'All currencies'},
-					{value: 'aud', label: 'AUD', note: 'Australian Dollar', currency: 'AUD'}
-				],
-				accountSelect: [
-					{value: '1', label: 'Bob Smith', note: "GBP", secondary: 'Account ending 1234', circleImage: "images/mike.jpg"},
-					{value: '2', label: 'James Davies', note: "GBP", secondary: 'Account ending 9876', circleText: "JD"},
-					{value: '3', label: 'Helen Williams', note: "EUR", secondary: 'Accont ending 4321', circleText: "HW"}
-				]
-			}
-		};
-		this.date = {required: true};
-		this.dynamic = {
-			required: true,
-			options: [
-				{value: '1', label: 'One'},
-				{value: '2', label: 'Two'},
-				{value: '3', label: 'Three'},
-			]
-		};
-	}])
-	.directive('validateRegexp', function($q) {
-		return {
-			require: 'ngModel',
-			link: function(scope, element, attrs, ngModel) {
-				ngModel.$asyncValidators.async = function(modelValue, viewValue) {
-					try {
-						var reg = new RegExp(viewValue);
-						return $q.when(true);
-					} catch(error) {
-						return $q.reject(false);
-					}
-				};
-			}
-		};
-	})
-	.directive('errorMessages', function() {
-		return {
-			replace: true,
-			template: " \
-			<div class='error-messages'> \
-				<div class='error-required'>Required</div> \
-				<div class='error-minlength'>Too short</div> \
-				<div class='error-maxlength'>Too long</div> \
-				<div class='error-pattern'>Invalid characters</div> \ \
-				<div class='error-async'>Invalid async</div> \
-			</div>"
-		};
-	})
-	.directive('statusMessages', function() {
-		return {
-			replace: true,
-			template: " \
-			<div class='status-messages'> \
-				<div class='touched'>Touched</div> \
-				<div class='untouched'>Untouched</div> \
-				<div class='pristine'>Pristine</div> \
-				<div class='dirty'>Dirty</div> \
-			</div>"
-		};
-	})
-	.directive('twCheckboxDocs', function() {
-		return {templateUrl: 'partials/tw-checkbox.html'};
-	})
-	.directive('twRadioDocs', function() {
-		return {templateUrl: 'partials/tw-radio.html'};
-	})
-	.directive('twSelectDocs', function() {
-		return {templateUrl: 'partials/tw-select.html'};
-	})
-	.directive('twDateDocs', function() {
-		return {templateUrl: 'partials/tw-date.html'};
-	})
-	.directive('twDynamicControlDocs', function() {
-		return {templateUrl: 'partials/tw-dynamic-control.html'};
-	})
-	.directive('twValidationDocs', function() {
-		return {templateUrl: 'partials/tw-validation.html'};
-	})
-	.directive('twFocusableDocs', function() {
-		return {templateUrl: 'partials/tw-focusable.html'};
-	});
-	</script>
 </head>
 <body ng-app="my-app">
 	<div class="container" ng-controller="PageController as vm">
-		<div class="row m-t-lg">
+		<div class="row m-t-3">
 			<div class="col-lg-8">
 				<div class="panel">
 					<div class="panel-heading">
@@ -199,6 +45,7 @@
 						<li><a href="#radio">Tw Radio</a></li>
 						<li><a href="#date">Tw Date</a></li>
 						<li><a href="#dynamic">Tw Dynamic Control</a></li>
+						<li><a href="#dynamic-form">Tw Dynamic Form</a></li>
 					</ul>
 					<h5>
 						Data Model
@@ -208,7 +55,7 @@
 			</div>
 		</div>
 
-		<div class="row m-t-lg">
+		<div class="row m-t-3">
 			<div class="col-lg-8">
 				<form class="panel"
 					name="componentsForm"
@@ -217,16 +64,20 @@
 						<h3 class="panel-title">Form components</h3>
 					</div>
 					<div class="panel-body">
+						<!-- ng-init="vm.dynamicForm = {}" -->
 						<tw-select-docs></tw-select-docs>
 						<tw-checkbox-docs></tw-checkbox-docs>
 						<tw-radio-docs></tw-radio-docs>
 						<tw-date-docs></tw-date-docs>
 						<tw-dynamic-control-docs></tw-dynamic-control-docs>
+						<!--
+						<tw-dynamic-form-docs model="vm.dynamicForm"></tw-dynamic-form-docs>
+						-->
 					</div>
 				</form>
 			</div>
 		</div>
-		<div class="row m-t-lg">
+		<div class="row m-t-3">
 			<div class="col-lg-8">
 				<div class="panel">
 					<div class="panel-heading">
@@ -238,7 +89,7 @@
 <pre>
 &lt;tw-loader /&gt;
 </pre>
-						<div class="m-b-lg m-t-lg text-center">
+						<div class="m-y-3 text-xs-center">
 							<tw-loader />
 						</div>
 					</div>
