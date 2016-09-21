@@ -118,6 +118,13 @@ describe('Directive: TwCurrencyInput', function() {
             expect(directiveElement.hasClass('ng-invalid-required')).toBe(false);
         });
 
+        it('should be invalid when min is zero', function() {
+            input.val('0').trigger('input');
+
+            expect(directiveElement.hasClass('ng-invalid')).toBe(true);
+            expect(directiveElement.hasClass('ng-invalid-min')).toBe(true);
+        });
+
         it('should be invalid when max is not reached', function() {
             input.val('500').trigger('input');
 
