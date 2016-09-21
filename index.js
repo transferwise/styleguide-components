@@ -144,6 +144,9 @@ angular.module('my-app', ['tw.styleguide-components'])
 .directive('twDateDocs', function() {
 	return {templateUrl: 'partials/tw-date.html'};
 })
+.directive('twCurrencyInputDocs', function() {
+	return {templateUrl: 'partials/tw-currency-input.html'};
+})
 .directive('twDynamicControlDocs', function() {
 	return {templateUrl: 'partials/tw-dynamic-control.html'};
 })
