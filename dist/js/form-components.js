@@ -203,7 +203,7 @@ angular.module("tw.form-components", []);
 }(window.angular), function(angular) {
     "use strict";
     function TwCurrencyInputDirective() {
-        var directive = {
+        return {
             require: "ngModel",
             bindToController: !0,
             controller: "TwCurrencyInputController",
@@ -220,10 +220,9 @@ angular.module("tw.form-components", []);
                 currencyCode: "@"
             }
         };
-        return directive;
     }
     angular.module("tw.form-components").directive("twCurrencyInput", TwCurrencyInputDirective);
-    var templateAsString = ' \t\t<div class="input-group"> \t\t\t<span class="input-group-addon tw-currency-input-symbol">{{ vm.currencySymbol }}</span> \t\t\t<input        \t\t\ttype="number" \t\t\t\tname="amount" \t\t\t\tstep="any"        \t\t\tclass="form-control text-xs-right p-r-0" \t\t\t\tng-model="vm.ngModel" /> \t\t\t<span class="input-group-addon tw-currency-input-code p-l-1">     \t\t\t{{ vm.currencyCode }} \t\t\t</span> \t\t</div> \t';
+    var templateAsString = ' \t\t<div class="input-group"> \t\t\t<span class="input-group-addon tw-currency-input-symbol">{{ vm.currencySymbol }}</span> \t\t\t<input \t\t\t\ttype="number" \t\t\t\tautocomplete="off" \t\t\t\tname="amount" \t\t\t\tstep="any" \t\t\t\tclass="form-control text-xs-right p-r-0" \t\t\t\ttw-focusable \t\t\t\tng-model="vm.ngModel" /> \t\t\t<span class="input-group-addon tw-currency-input-code p-l-1"> \t\t\t\t{{ vm.currencyCode }} \t\t\t</span> \t\t</div> \t';
 }(window.angular), function(angular) {
     "use strict";
     function TwDateDirective() {

@@ -27,7 +27,7 @@ describe('Directive: TwCurrencyInput', function() {
     }));
 
     describe('init', function() {
-        beforeEach(inject(function($injector) {
+        beforeEach(inject(function() {
             templateElement = getCompiledTemplateElement($scope);
             directiveElement = templateElement.find(DIRECTIVE_SELECTOR);
             $ngModel = directiveElement.controller('ngModel');
@@ -54,7 +54,7 @@ describe('Directive: TwCurrencyInput', function() {
     });
 
     describe('interactions', function() {
-        beforeEach(inject(function($injector) {
+        beforeEach(inject(function() {
             templateElement = getCompiledTemplateElement($scope);
             directiveElement = templateElement.find(DIRECTIVE_SELECTOR);
             $ngModel = directiveElement.controller('ngModel');
@@ -72,7 +72,7 @@ describe('Directive: TwCurrencyInput', function() {
         });
 
         it('should set ngModel.$touched when blured', function() {
-            input.triggerHandler('blur')
+            input.triggerHandler('blur');
             expect($ngModel.$touched).toBe(true);
         });
 
@@ -83,7 +83,7 @@ describe('Directive: TwCurrencyInput', function() {
     });
 
     describe('validation', function() {
-        beforeEach(inject(function($injector) {
+        beforeEach(inject(function() {
             $scope.isRequired = true;
             $scope.minValue = 10;
             $scope.maxValue = 100;

@@ -6,7 +6,7 @@
 		.directive('twCurrencyInput', TwCurrencyInputDirective);
 
 	function TwCurrencyInputDirective() {
-		var directive = {
+		return {
 			require: 'ngModel',
 			bindToController: true,
 			controller: 'TwCurrencyInputController',
@@ -23,8 +23,6 @@
 				currencyCode: '@',
 			},
 		};
-
-		return directive;
 	}
 
 	var templateAsString = ' \

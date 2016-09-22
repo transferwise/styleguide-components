@@ -8,7 +8,6 @@
 	TwCurrencyInputController.$inject = ['$element', '$scope'];
 
 	function TwCurrencyInputController($element, $scope) {
-		var vm = this;
 		var $ngModel = $element.controller('ngModel');
 
 		$scope.$watch('vm.ngModel', function(newValue, oldValue) {
@@ -23,7 +22,7 @@
 		});
 
 		$ngModel.$validators.min = function(modelValue, viewValue) {
-			if (typeof $scope.vm.ngMin === "undefined" || viewValue === null) {
+			if (typeof $scope.vm.ngMin === 'undefined' || viewValue === null) {
 				return true;
 			}
 
@@ -31,11 +30,12 @@
 		};
 
 		$ngModel.$validators.max = function(modelValue, viewValue) {
-			if (typeof $scope.vm.ngMax === "undefined" || viewValue === null) {
+			if (typeof $scope.vm.ngMax === 'undefined' || viewValue === null) {
 				return true;
 			}
 
 			return viewValue <= $scope.vm.ngMax;
 		};
 	}
+
 })(window.angular);
