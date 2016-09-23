@@ -9,21 +9,35 @@
 
     function TwDynamicAsyncValidator($log, $q, $http) {
         return {
-            require: 'ngModel',
+            /*require: 'ngModel',*/
             link: emailValidLink,
-            restrict: "A"
+            restrict: 'A',
+            controller: DyancicAsyncValidatorController,
+            contollerAs: 'ctrl',
+            bindToController: {
+                twDynamicAsyncValidator: '='
+            }
         };
+
+        function DyancicAsyncValidatorController() {
+            var $ctrl = this;
+            console.log("this.twDynamicAsyncValidator");
+            console.log(ctrl.twDynamicAsyncValidator);
+        }
         function emailValidLink(scope, element, attrs, ngModel) {
             var validatorSetting = attrs['tw-dynamic-async-validator'];
-            ngModel.$asyncValidators.async = dynamicAsyncValidator;
+            //ngModel.$asyncValidators.async = dynamicAsyncValidator;
+            //console.log(ngModel);
+            //console.log(ngModel.twDynamicAsyncValidator);
         }
         function dynamicAsyncValidator(modelValue, viewValue) {
             var req = {
-                url: "/api/v1/account/checkEmail",
+                method: 'GET',
+                url: 'partials/requirements.json', // TODO!!!!!
                 params: {email: null}
             };
             req.params.email = modelValue || viewValue;
-            return $http.get(req)
+            return $http(req)
                 .catch(function(response) {
                     $log.warn('emailValidValidator', 'response', response);
                     return response;

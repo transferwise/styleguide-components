@@ -55,12 +55,14 @@
 										ng-disabled='field.disabled' \
 										ng-minlength='field.minLength' \
 										ng-maxlength='field.maxLength' \
-										ng-pattern='field.validationRegexp'> \
+										ng-pattern='field.validationRegexp' \
+										tw-validation \> \
+										<!-- tw-dynamic-async-validator='field.validationAsync' --> \
 									</tw-dynamic-form-control> \
 									<div class='error-messages'> \
 										<div class='error-minlength'>Minimum {{field.minlength}} characters</div> \
 										<div class='error-maxlength'>Maximum {{field.maxlength}} characters</div> \
-										<div class='error-required'>{{fieldGroup.title}} is required</div> \
+										<div class='error-required'>{{fieldGroup.name}} is required</div> \
 										<div class='error-pattern'>Incorrect format</div> \
 									</div> \
 									<div class='help-block' \
