@@ -21,6 +21,7 @@ describe('Directive: TwCurrencyInput', function() {
         $scope = $rootScope.$new();
         $scope.ngModel = null;
         $scope.name = 'myCurrencyInput';
+        $scope.onChange = function() {};
         $scope.ngClick = function() {};
         $scope.ngFocus = function() {};
         $scope.ngBlur = function() {};
@@ -79,6 +80,14 @@ describe('Directive: TwCurrencyInput', function() {
         it('should style nearest parent form-group when focussed', function() {
             input.triggerHandler('focus');
             expect(directiveElement.closest('.form-group').hasClass('focus')).toBe(true);
+        });
+
+        it('should trigger ngChange when internal model changes', function() {
+            spyOn($scope, 'onChange');
+            directiveElement.controller('ngModel').$setViewValue(100);
+
+            expect($scope.ngModel).toBe(100);
+            expect($scope.onChange).toHaveBeenCalled();
         });
     });
 
@@ -153,6 +162,7 @@ describe('Directive: TwCurrencyInput', function() {
                     currency-code="EUR" \
     			    ng-model="ngModel" \
                     ng-required="isRequired" \
+                    ng-change="onChange()" \
                     ng-min="minValue" \
                     ng-max="maxValue" /> \
             </div> \
