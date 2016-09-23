@@ -8,6 +8,7 @@
 	TwCurrencyInputController.$inject = ['$element', '$scope'];
 
 	function TwCurrencyInputController($element, $scope) {
+		var $ctrl = this;
 		var $ngModel = $element.controller('ngModel');
 
 		$scope.$watch('vm.ngModel', function(newValue, oldValue) {
@@ -35,6 +36,12 @@
 			}
 
 			return viewValue <= $scope.vm.ngMax;
+		};
+
+		$ctrl.changedInputValue = function() {
+			if ($ctrl.ngChange) {
+				$ctrl.ngChange();
+			}
 		};
 	}
 

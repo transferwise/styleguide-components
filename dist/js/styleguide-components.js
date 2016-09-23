@@ -5,7 +5,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
 !function(angular) {
     "use strict";
     function TwCurrencyInputController($element, $scope) {
-        var $ngModel = $element.controller("ngModel");
+        var $ctrl = this, $ngModel = $element.controller("ngModel");
         $scope.$watch("vm.ngModel", function(newValue, oldValue) {
             newValue !== oldValue && $ngModel.$setDirty();
         }), $element.find("input").on("blur", function() {
@@ -14,6 +14,8 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             return "undefined" == typeof $scope.vm.ngMin || null === viewValue || viewValue >= $scope.vm.ngMin;
         }, $ngModel.$validators.max = function(modelValue, viewValue) {
             return "undefined" == typeof $scope.vm.ngMax || null === viewValue || viewValue <= $scope.vm.ngMax;
+        }, $ctrl.changedInputValue = function() {
+            $ctrl.ngChange && $ctrl.ngChange();
         };
     }
     angular.module("tw.form-components").controller("TwCurrencyInputController", TwCurrencyInputController), 
@@ -216,6 +218,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             template: templateAsString,
             scope: {
                 ngModel: "=",
+                ngChange: "&",
                 ngMin: "=",
                 ngMax: "=",
                 ngRequired: "=",
@@ -225,7 +228,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         };
     }
     angular.module("tw.form-components").directive("twCurrencyInput", TwCurrencyInputDirective);
-    var templateAsString = ' \t\t<div class="input-group"> \t\t\t<span class="input-group-addon tw-currency-input-symbol">{{ vm.currencySymbol }}</span> \t\t\t<input \t\t\t\ttype="number" \t\t\t\tautocomplete="off" \t\t\t\tname="amount" \t\t\t\tstep="any" \t\t\t\tclass="form-control text-xs-right p-r-0" \t\t\t\ttw-focusable \t\t\t\tng-model="vm.ngModel" /> \t\t\t<span class="input-group-addon tw-currency-input-code p-l-1"> \t\t\t\t{{ vm.currencyCode }} \t\t\t</span> \t\t</div> \t';
+    var templateAsString = ' \t\t<div class="input-group"> \t\t\t<span class="input-group-addon tw-currency-input-symbol">{{ vm.currencySymbol }}</span> \t\t\t<input \t\t\t\ttype="number" \t\t\t\tautocomplete="off" \t\t\t\tname="amount" \t\t\t\tstep="any" \t\t\t\tclass="form-control text-xs-right p-r-0" \t\t\t\ttw-focusable \t\t\t\tng-change="vm.changedInputValue()" \t\t\t\tng-model="vm.ngModel" /> \t\t\t<span class="input-group-addon tw-currency-input-code p-l-1"> \t\t\t\t{{ vm.currencyCode }} \t\t\t</span> \t\t</div> \t';
 }(window.angular), function(angular) {
     "use strict";
     function TwDateDirective() {

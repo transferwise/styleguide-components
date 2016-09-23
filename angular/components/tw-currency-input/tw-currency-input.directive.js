@@ -16,6 +16,7 @@
 			template: templateAsString,
 			scope: {
 				ngModel: '=',
+				ngChange: '&',
 				ngMin: '=',
 				ngMax: '=',
 				ngRequired: '=',
@@ -35,6 +36,7 @@
 				step="any" \
 				class="form-control text-xs-right p-r-0" \
 				tw-focusable \
+				ng-change="vm.changedInputValue()" \
 				ng-model="vm.ngModel" /> \
 			<span class="input-group-addon tw-currency-input-code p-l-1"> \
 				{{ vm.currencyCode }} \
