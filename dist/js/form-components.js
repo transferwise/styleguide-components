@@ -1,6 +1,22 @@
 angular.module("tw.form-components", []);
 !function(angular) {
     "use strict";
+    function TwCurrencyInputController($element, $scope) {
+        var $ngModel = $element.controller("ngModel");
+        $scope.$watch("vm.ngModel", function(newValue, oldValue) {
+            newValue !== oldValue && $ngModel.$setDirty();
+        }), $element.find("input").on("blur", function() {
+            $ngModel.$setTouched(), $element.triggerHandler("blur");
+        }), $ngModel.$validators.min = function(modelValue, viewValue) {
+            return "undefined" == typeof $scope.vm.ngMin || null === viewValue || viewValue >= $scope.vm.ngMin;
+        }, $ngModel.$validators.max = function(modelValue, viewValue) {
+            return "undefined" == typeof $scope.vm.ngMax || null === viewValue || viewValue <= $scope.vm.ngMax;
+        };
+    }
+    angular.module("tw.form-components").controller("TwCurrencyInputController", TwCurrencyInputController), 
+    TwCurrencyInputController.$inject = [ "$element", "$scope" ];
+}(window.angular), function(angular) {
+    "use strict";
     function TwDateController($element, $log, $scope) {
         function init() {
             if (vm.ngModel) applyDateModelIfValidOrThrowError(), initialisedWithDate = !0; else {
@@ -15,12 +31,12 @@ angular.module("tw.form-components", []);
                 return !limit || !dateValue || dateValue >= limit;
             }, ngModel.$validators.max = function(value) {
                 var limit = prepDateLimitForComparison(vm.ngMax, vm.max), dateValue = prepDateValueForComparison(value);
-                return !limit || !dateValue || limit >= dateValue;
+                return !limit || !dateValue || dateValue <= limit;
             }, setDateRequired(), setDateDisabled(), setDateLocale(), setMonths(), registerWatchers();
         }
         function prepDateLimitForComparison(ngLimit, attrLimit) {
-            var limit = ngLimit ? ngLimit : attrLimit ? attrLimit : !1;
-            return limit ? (limit = "string" == typeof limit ? new Date(limit) : limit, validDateObject(limit) ? limit : !1) : !1;
+            var limit = ngLimit ? ngLimit : !!attrLimit && attrLimit;
+            return !!limit && (limit = "string" == typeof limit ? new Date(limit) : limit, !!validDateObject(limit) && limit);
         }
         function prepDateValueForComparison(dateValue) {
             return "string" == typeof dateValue ? new Date(dateValue) : dateValue;
@@ -80,7 +96,7 @@ angular.module("tw.form-components", []);
             return window.Intl && "object" == typeof window.Intl && window.Intl.DateTimeFormat.supportedLocalesOf([ locale ]).length > 0;
         }
         function getMonthNamesForLocale() {
-            for (var date, months = [], i = 0; 12 > i; i++) {
+            for (var date, months = [], i = 0; i < 12; i++) {
                 date = new Date(Date.UTC(2e3, i, 15));
                 var monthName = date.toLocaleDateString(vm.locale, {
                     month: "long"
@@ -180,10 +196,33 @@ angular.module("tw.form-components", []);
                 ngRequired: "=",
                 ngDisabled: "="
             },
-            template: " 				<input type='hidden' class='sr-only' 					name='{{$ctrl.name}}' 					ng-model='$ctrl.ngModel' 					ng-click='$ctrl.hiddenClick($event)' 					ng-disabled='$ctrl.ngDisabled'/> 				<button class='tw-checkbox-button' tw-focusable 					ng-click='$ctrl.buttonClick($event)' 					ng-focus='$ctrl.buttonFocus()' 					ng-blur='$ctrl.buttonBlur()' 					ng-disabled='$ctrl.ngDisabled' 					ng-class='{\"checked\": $ctrl.checked}' 					aria-pressed='{{$ctrl.checked}}'> 					<span class='tw-checkbox-check glyphicon glyphicon-ok'></span> 				</button>"
+            template: " \t\t\t\t<input type='hidden' class='sr-only' \t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-click='$ctrl.hiddenClick($event)' \t\t\t\t\tng-disabled='$ctrl.ngDisabled'/> \t\t\t\t<button class='tw-checkbox-button' tw-focusable \t\t\t\t\tng-click='$ctrl.buttonClick($event)' \t\t\t\t\tng-focus='$ctrl.buttonFocus()' \t\t\t\t\tng-blur='$ctrl.buttonBlur()' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-class='{\"checked\": $ctrl.checked}' \t\t\t\t\taria-pressed='{{$ctrl.checked}}'> \t\t\t\t\t<span class='tw-checkbox-check glyphicon glyphicon-ok'></span> \t\t\t\t</button>"
         };
     }
     angular.module("tw.form-components").directive("twCheckbox", TwCheckboxDirective);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwCurrencyInputDirective() {
+        return {
+            require: "ngModel",
+            bindToController: !0,
+            controller: "TwCurrencyInputController",
+            controllerAs: "vm",
+            replace: !1,
+            restrict: "E",
+            template: templateAsString,
+            scope: {
+                ngModel: "=",
+                ngMin: "=",
+                ngMax: "=",
+                ngRequired: "=",
+                currencySymbol: "@",
+                currencyCode: "@"
+            }
+        };
+    }
+    angular.module("tw.form-components").directive("twCurrencyInput", TwCurrencyInputDirective);
+    var templateAsString = ' \t\t<div class="input-group"> \t\t\t<span class="input-group-addon tw-currency-input-symbol">{{ vm.currencySymbol }}</span> \t\t\t<input \t\t\t\ttype="number" \t\t\t\tautocomplete="off" \t\t\t\tname="amount" \t\t\t\tstep="any" \t\t\t\tclass="form-control text-xs-right p-r-0" \t\t\t\ttw-focusable \t\t\t\tng-model="vm.ngModel" /> \t\t\t<span class="input-group-addon tw-currency-input-code p-l-1"> \t\t\t\t{{ vm.currencyCode }} \t\t\t</span> \t\t</div> \t';
 }(window.angular), function(angular) {
     "use strict";
     function TwDateDirective() {
@@ -222,7 +261,7 @@ angular.module("tw.form-components", []);
         });
     }
     angular.module("tw.form-components").directive("twDate", TwDateDirective);
-    var templateAsString = " 			<div class='row'> 				<div class='col-sm-3'> 					<label class='sr-only' for='day-{{::uniqueId}}'>Day</label> 					<input type='number' 						name='day' 						id='day-{{::uniqueId}}' 						class='form-control tw-date-day' 						ng-model='vm.day' 						ng-change='vm.updateDateModelAndValidationClasses()' 						placeholder='DD' 						min='1' 						ng-min='1' 						ng-disabled='vm.dateDisabled' 						ng-required='vm.dateRequired' 						tw-focusable /> 				</div> 				<div class='col-sm-5'> 					<label class='sr-only' for='month-{{::uniqueId}}'>Month</label> 					<tw-select 						name='month' 						class='tw-date-month' 						id='month-{{::uniqueId}}' 						ng-model='vm.month' 						ng-change='vm.updateDateModelAndValidationClasses()' 						ng-required='vm.dateRequired' 						ng-disabled='vm.dateDisabled' 						options='vm.dateMonths'> 					</tw-select> 				</div> 				<div class='col-sm-4'> 					<label class='sr-only' for='year-{{::uniqueId}}'>Year</label> 					<input type='number' 						id='year-{{::uniqueId}}' 						name='year' 						class='form-control tw-date-year' 						placeholder='YYYY' 						ng-model='vm.year' 						ng-change='vm.updateDateModelAndValidationClasses()' 						ng-min='vm.dateRange.min.getFullYear()' 						ng-max='vm.dateRange.max.getFullYear()' 						maxlength='4' 						ng-maxlength='4' 						ng-disabled='vm.dateDisabled' 						ng-required='vm.dateRequired' 						tw-focusable /> 				</div> 			</div>";
+    var templateAsString = " \t\t\t<div class='row'> \t\t\t\t<div class='col-sm-3'> \t\t\t\t\t<label class='sr-only' for='day-{{::uniqueId}}'>Day</label> \t\t\t\t\t<input type='number' \t\t\t\t\t\tname='day' \t\t\t\t\t\tid='day-{{::uniqueId}}' \t\t\t\t\t\tclass='form-control tw-date-day' \t\t\t\t\t\tng-model='vm.day' \t\t\t\t\t\tng-change='vm.updateDateModelAndValidationClasses()' \t\t\t\t\t\tplaceholder='DD' \t\t\t\t\t\tmin='1' \t\t\t\t\t\tng-min='1' \t\t\t\t\t\tng-disabled='vm.dateDisabled' \t\t\t\t\t\tng-required='vm.dateRequired' \t\t\t\t\t\ttw-focusable /> \t\t\t\t</div> \t\t\t\t<div class='col-sm-5'> \t\t\t\t\t<label class='sr-only' for='month-{{::uniqueId}}'>Month</label> \t\t\t\t\t<tw-select \t\t\t\t\t\tname='month' \t\t\t\t\t\tclass='tw-date-month' \t\t\t\t\t\tid='month-{{::uniqueId}}' \t\t\t\t\t\tng-model='vm.month' \t\t\t\t\t\tng-change='vm.updateDateModelAndValidationClasses()' \t\t\t\t\t\tng-required='vm.dateRequired' \t\t\t\t\t\tng-disabled='vm.dateDisabled' \t\t\t\t\t\toptions='vm.dateMonths'> \t\t\t\t\t</tw-select> \t\t\t\t</div> \t\t\t\t<div class='col-sm-4'> \t\t\t\t\t<label class='sr-only' for='year-{{::uniqueId}}'>Year</label> \t\t\t\t\t<input type='number' \t\t\t\t\t\tid='year-{{::uniqueId}}' \t\t\t\t\t\tname='year' \t\t\t\t\t\tclass='form-control tw-date-year' \t\t\t\t\t\tplaceholder='YYYY' \t\t\t\t\t\tng-model='vm.year' \t\t\t\t\t\tng-change='vm.updateDateModelAndValidationClasses()' \t\t\t\t\t\tng-min='vm.dateRange.min.getFullYear()' \t\t\t\t\t\tng-max='vm.dateRange.max.getFullYear()' \t\t\t\t\t\tmaxlength='4' \t\t\t\t\t\tng-maxlength='4' \t\t\t\t\t\tng-disabled='vm.dateDisabled' \t\t\t\t\t\tng-required='vm.dateRequired' \t\t\t\t\t\ttw-focusable /> \t\t\t\t</div> \t\t\t</div>";
 }(window.angular), function(angular) {
     function TwDynamicFormControl() {
         return {
@@ -249,7 +288,7 @@ angular.module("tw.form-components", []);
                 ngMax: "=",
                 ngPattern: "="
             },
-            template: "<div ng-switch='$ctrl.type'> 				<input ng-switch-when='text'  					name='{{$ctrl.name}}'  					type='text' 					class='form-control' 					placeholder='{{$ctrl.placeholder}}' 					ng-model='$ctrl.ngModel' 					ng-model-options='{ allowInvalid: true }' 					ng-required='$ctrl.ngRequired' 					ng-disabled='$ctrl.ngDisabled' 					ng-pattern='$ctrl.ngPattern' 					ng-change='$ctrl.change()' 					ng-focus='$ctrl.focus()' 					ng-blur='$ctrl.blur()' 					ng-minlength='$ctrl.ngMinlength' 					ng-maxlength='$ctrl.ngMaxlength' />  				<input ng-switch-when='number'  					name='{{$ctrl.name}}'  					type='number' 					step='{{$ctrl.step}}' 					class='form-control' 					placeholder='{{$ctrl.placeholder}}' 					ng-model='$ctrl.ngModel' 					ng-model-options='{ allowInvalid: true }' 					ng-required='$ctrl.ngRequired' 					ng-disabled='$ctrl.ngDisabled' 					ng-change='$ctrl.change()' 					ng-focus='$ctrl.focus()' 					ng-blur='$ctrl.blur()' 					ng-min='$ctrl.ngMin' 					ng-max='$ctrl.ngMax' />  				<div ng-switch-when='radio' 					class='radio' 					ng-class='{disabled: $ctrl.ngDisabled}' 					ng-repeat='option in $ctrl.options'> 					<label> 						<tw-radio 							name='{{$ctrl.name}}' 							ng-value='option.value' 							ng-model='$ctrl.ngModel' 							ng-required='$ctrl.ngRequired' 							ng-disabled='$ctrl.ngDisabled' 							ng-change='$ctrl.change()' 							ng-click='$ctrl.change()' 							ng-focus='$ctrl.focus()' 							ng-blur='$ctrl.blur()' /> 						{{option.label}} 					</label> 				</div> 				<div ng-switch-when='checkbox' 					class='checkbox' 					ng-class='{disabled: $ctrl.ngDisabled}'> 					<label> 						<tw-checkbox 							name='{{$ctrl.name}}' 							ng-model='$ctrl.ngModel' 							ng-required='$ctrl.ngRequired' 							ng-disabled='$ctrl.ngDisabled' 							ng-change='$ctrl.change()' 							ng-click='$ctrl.change()' 							ng-focus='$ctrl.focus()' 							ng-blur='$ctrl.blur()' /> 						{{$ctrl.placeholder}} 					</label> 				</div> 				<div ng-switch-when='select'> 					<tw-select 						name='{{$ctrl.name}}' 						options='$ctrl.options' 						placeholder='{{$ctrl.placeholder}}' 						ng-model='$ctrl.ngModel' 						ng-required='$ctrl.ngRequired' 						ng-disabled='$ctrl.ngDisabled' 						ng-change='$ctrl.change()' 						ng-focus='$ctrl.focus()' 						ng-blur='$ctrl.blur()' /> 				</div> 				<ng-transclude class='error-messages'></ng-transclude> 			</div>"
+            template: "<div ng-switch='$ctrl.type'> \t\t\t\t<input ng-switch-when='text'  \t\t\t\t\tname='{{$ctrl.name}}'  \t\t\t\t\ttype='text' \t\t\t\t\tclass='form-control' \t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-model-options='{ allowInvalid: true }' \t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-pattern='$ctrl.ngPattern' \t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\tng-blur='$ctrl.blur()' \t\t\t\t\tng-minlength='$ctrl.ngMinlength' \t\t\t\t\tng-maxlength='$ctrl.ngMaxlength' />  \t\t\t\t<input ng-switch-when='number'  \t\t\t\t\tname='{{$ctrl.name}}'  \t\t\t\t\ttype='number' \t\t\t\t\tstep='{{$ctrl.step}}' \t\t\t\t\tclass='form-control' \t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-model-options='{ allowInvalid: true }' \t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\tng-blur='$ctrl.blur()' \t\t\t\t\tng-min='$ctrl.ngMin' \t\t\t\t\tng-max='$ctrl.ngMax' />  \t\t\t\t<div ng-switch-when='radio' \t\t\t\t\tclass='radio' \t\t\t\t\tng-class='{disabled: $ctrl.ngDisabled}' \t\t\t\t\tng-repeat='option in $ctrl.options'> \t\t\t\t\t<label> \t\t\t\t\t\t<tw-radio \t\t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\t\tng-value='option.value' \t\t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\t\tng-click='$ctrl.change()' \t\t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t\t\t{{option.label}} \t\t\t\t\t</label> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='checkbox' \t\t\t\t\tclass='checkbox' \t\t\t\t\tng-class='{disabled: $ctrl.ngDisabled}'> \t\t\t\t\t<label> \t\t\t\t\t\t<tw-checkbox \t\t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\t\tng-click='$ctrl.change()' \t\t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t\t\t{{$ctrl.placeholder}} \t\t\t\t\t</label> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='select'> \t\t\t\t\t<tw-select \t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\toptions='$ctrl.options' \t\t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t</div> \t\t\t\t<ng-transclude class='error-messages'></ng-transclude> \t\t\t</div>"
         };
     }
     function TwDynamicFormControlController($element, $scope) {
@@ -264,9 +303,9 @@ angular.module("tw.form-components", []);
     }
     function TwDynamicFormControlLink(scope, element, attrs, ngModel) {
         ngModel.$validators.min = function(modelValue, viewValue) {
-            return "undefined" == typeof scope.$ctrl.ngMin ? !0 : !("number" == typeof viewValue && "number" == typeof scope.$ctrl.ngMin && viewValue < scope.$ctrl.ngMin);
+            return "undefined" == typeof scope.$ctrl.ngMin || !("number" == typeof viewValue && "number" == typeof scope.$ctrl.ngMin && viewValue < scope.$ctrl.ngMin);
         }, ngModel.$validators.max = function(modelValue, viewValue) {
-            return "undefined" == typeof scope.$ctrl.ngMax ? !0 : !("number" == typeof viewValue && "number" == typeof scope.$ctrl.ngMax && viewValue > scope.$ctrl.ngMax);
+            return "undefined" == typeof scope.$ctrl.ngMax || !("number" == typeof viewValue && "number" == typeof scope.$ctrl.ngMax && viewValue > scope.$ctrl.ngMax);
         };
     }
     angular.module("tw.form-components").directive("twDynamicFormControl", TwDynamicFormControl), 
@@ -276,7 +315,7 @@ angular.module("tw.form-components", []);
     function TwLoader() {
         return {
             restrict: "E",
-            template: "<div class='loader'> 			  <div class='loader-spinner'></div> 			  <div class='loader-flag'> 			    <svg xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='-2 -2 56 56'> 			      <polygon class='loader-flag-stroke'  stroke='#00B9FF' stroke-width='2' stroke-linejoin='miter' stroke-linecap='round' stroke-miterlimit='10' stroke-dasharray='300' stroke-dashoffset='300' fill='none' points='24.6,27.3 0,27.3 14.3,13.7 6.1,0 48.2,0 26.3,52 19.5,52 39.2,5.5 16.8,5.5 21.6,13.6 13.4,21.8 27,21.8' /> 			    </svg> 			    <svg class='loader-flag-fill' xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='0 2 52 48'> 			      <polygon fill='#00B9FF' points='6.1,0 14.3,13.7 0,27.3 24.6,27.3 27,21.8 13.4,21.8 21.6,13.6 16.8,5.5 39.2,5.5 19.5,52 26.3,52 48.2,0 '/> 			    </svg> 			  </div> 			</div>"
+            template: "<div class='loader'> \t\t\t  <div class='loader-spinner'></div> \t\t\t  <div class='loader-flag'> \t\t\t    <svg xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='-2 -2 56 56'> \t\t\t      <polygon class='loader-flag-stroke'  stroke='#00B9FF' stroke-width='2' stroke-linejoin='miter' stroke-linecap='round' stroke-miterlimit='10' stroke-dasharray='300' stroke-dashoffset='300' fill='none' points='24.6,27.3 0,27.3 14.3,13.7 6.1,0 48.2,0 26.3,52 19.5,52 39.2,5.5 16.8,5.5 21.6,13.6 13.4,21.8 27,21.8' /> \t\t\t    </svg> \t\t\t    <svg class='loader-flag-fill' xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='0 2 52 48'> \t\t\t      <polygon fill='#00B9FF' points='6.1,0 14.3,13.7 0,27.3 24.6,27.3 27,21.8 13.4,21.8 21.6,13.6 16.8,5.5 39.2,5.5 19.5,52 26.3,52 48.2,0 '/> \t\t\t    </svg> \t\t\t  </div> \t\t\t</div>"
         };
     }
     angular.module("tw.form-components").directive("twLoader", TwLoader);
@@ -317,7 +356,7 @@ angular.module("tw.form-components", []);
                 ngDisabled: "=",
                 ngChange: "&"
             },
-            template: " 				<input type='radio' class='sr-only' 					name='{{$ctrl.name}}' 					ng-value='$ctrl.ngValue || $ctrl.value' 					ng-model='$ctrl.ngModel' 					ng-disabled='$ctrl.ngDisabled' 					ng-change='$ctrl.hiddenInputChange()' 					tabindex='-1' /> 				<button type='button' class='tw-radio-button' tw-focusable 					ng-click='$ctrl.buttonClick($event)' 					ng-focus='$ctrl.buttonFocus()' 					ng-blur='$ctrl.buttonBlur()' 					ng-disabled='$ctrl.ngDisabled' 					ng-class='{checked: $ctrl.checked}' 					aria-pressed='{{$ctrl.checked}}'> 					<span class='tw-radio-check'></span> 				</button>"
+            template: " \t\t\t\t<input type='radio' class='sr-only' \t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\tng-value='$ctrl.ngValue || $ctrl.value' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-change='$ctrl.hiddenInputChange()' \t\t\t\t\ttabindex='-1' /> \t\t\t\t<button type='button' class='tw-radio-button' tw-focusable \t\t\t\t\tng-click='$ctrl.buttonClick($event)' \t\t\t\t\tng-focus='$ctrl.buttonFocus()' \t\t\t\t\tng-blur='$ctrl.buttonBlur()' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-class='{checked: $ctrl.checked}' \t\t\t\t\taria-pressed='{{$ctrl.checked}}'> \t\t\t\t\t<span class='tw-radio-check'></span> \t\t\t\t</button>"
         };
     }
     angular.module("tw.form-components").directive("twRadio", TwRadioDirective);
@@ -341,7 +380,7 @@ angular.module("tw.form-components", []);
                 placeholder: "@",
                 filter: "@"
             },
-            template: " 				<div class='btn-group btn-block dropdown tw-select' aria-hidden='false'> 					<button type='button' class='btn btn-input dropdown-toggle' 						data-toggle='dropdown' aria-expanded='false' 						ng-disabled='$ctrl.ngDisabled' 						ng-focus='$ctrl.buttonFocus()' 						tw-focusable> 						<span class='tw-select-selected' ng-if='$ctrl.ngModel != null'> 							<i class='icon pull-left {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> 							</i><i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}} pull-left' 								ng-if='$ctrl.selected && $ctrl.selected.currency'> 							</i><span class='circle circle-inverse pull-left'  								ng-class='{\"circle-sm\": $ctrl.selected.secondary, \"circle-xs\": !$ctrl.selected.secondary}' 								ng-if='$ctrl.selected.circleText || $ctrl.selected.circleImage || $ctrl.selected.circleIcon'> 								<span ng-if='$ctrl.selected.circleText'>{{$ctrl.selected.circleText}}</span> 								<img ng-if='$ctrl.selected.circleImage' ng-src='{{$ctrl.selected.circleImage}}' /> 								<i ng-if='$ctrl.selected.circleIcon' class='icon {{$ctrl.selected.circleIcon}}'></i> 							</span><span class='text-ellipsis'><span class='tw-select-label'>{{$ctrl.selected.label}}</span><span 							ng-if='$ctrl.selected.note' class='tw-select-note small m-l-1'>{{$ctrl.selected.note}}</span><span 							ng-if='$ctrl.selected.secondary' class='tw-select-secondary small text-ellipsis'>{{$ctrl.selected.secondary}}</span></span> 						</span> 						<span class='form-control-placeholder' ng-if='$ctrl.ngModel == null'>{{$ctrl.placeholder}}</span> 						<span class='caret'></span> 					</button> 					<ul class='dropdown-menu' role='menu'> 						<li ng-if='$ctrl.filter'> 							<a href='' class='tw-select-filter-link p-a-0' ng-focus='$ctrl.filterFocus()'> 								<div class='input-group'> 									<span class='input-group-addon'><i class='icon icon-search'></i></span> 									<input type='text' class='form-control tw-select-filter' placeholder='{{$ctrl.filter}}' 										ng-model='$ctrl.filterString' 										ng-change='$ctrl.filterChange()' 										ng-keydown='$ctrl.filterKeydown($event)' /> 								</div> 							</a> 						</li> 						<li ng-class='{active: !$ctrl.ngModel}' 							ng-if='$ctrl.placeholder && !$ctrl.ngRequired && !$ctrl.filter'> 							<a href='' 								ng-click='$ctrl.placeholderClick()' 								ng-focus='$ctrl.placeholderFocus()' 								value='' class='tw-select-placeholder' tw-focusable> 								{{$ctrl.placeholder}} 							</a> 						</li> 						<li ng-if='($ctrl.placeholder && !$ctrl.ngRequired) || $ctrl.filter' class='divider'></li> 						<li 							ng-repeat='option in $ctrl.filteredOptions' 							ng-class='{ 								active: $ctrl.ngModel === option.value, 								\"dropdown-header\": option.header, 								\"tw-select-option\": !option.header 							}'> 							<span ng-if='option.header'>{{option.header}}</span> 							<a href='' 								ng-if='!option.header' 								ng-click='$ctrl.optionClick(option)' 								ng-focus='$ctrl.optionFocus(option)' 								index='{{$index}}' 								class='tw-select-option-link' tw-focusable> 								<i class='icon {{option.icon}} pull-left' ng-if='option.icon'> 								</i><i class='currency-flag currency-flag-{{option.currency | lowercase}} pull-left' ng-if='option.currency'> 								</i><span class='circle circle-inverse pull-left' ng-class='{\"circle-sm\": option.secondary, \"circle-xs\": !option.secondary}' 									ng-if='option.circleText || option.circleImage || option.circleIcon'> 									<span ng-if='option.circleText'>{{option.circleText}}</span> 									<img ng-if='option.circleImage' ng-src='{{option.circleImage}}' /> 									<i ng-if='option.circleIcon' class='icon {{option.circleIcon}}'></i> 								</span>{{option.label}}<span 								ng-if='option.note' class='tw-select-note small m-l-1'>{{option.note}}</span><span 								ng-if='option.secondary' class='tw-select-secondary small text-ellipsis'>{{option.secondary}}</span> 							</a> 						</li> 						<li ng-if='$ctrl.hasTranscluded' class='divider'></li> 						<li ng-transclude ng-if='$ctrl.hasTranscluded' class='tw-select-transcluded'></li> 					</ul> 				</div> 				<input type='hidden' class='tw-select-hidden' 					name='{{$ctrl.name}}' 					value='{{$ctrl.ngModel}}' 					ng-disabled='$ctrl.ngDisabled' />"
+            template: " \t\t\t\t<div class='btn-group btn-block dropdown tw-select' aria-hidden='false'> \t\t\t\t\t<button type='button' class='btn btn-input dropdown-toggle' \t\t\t\t\t\tdata-toggle='dropdown' aria-expanded='false' \t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\tng-focus='$ctrl.buttonFocus()' \t\t\t\t\t\ttw-focusable> \t\t\t\t\t\t<span class='tw-select-selected' ng-if='$ctrl.ngModel != null'> \t\t\t\t\t\t\t<i class='icon pull-left {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> \t\t\t\t\t\t\t</i><i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}} pull-left' \t\t\t\t\t\t\t\tng-if='$ctrl.selected && $ctrl.selected.currency'> \t\t\t\t\t\t\t</i><span class='circle circle-inverse pull-left'  \t\t\t\t\t\t\t\tng-class='{\"circle-sm\": $ctrl.selected.secondary, \"circle-xs\": !$ctrl.selected.secondary}' \t\t\t\t\t\t\t\tng-if='$ctrl.selected.circleText || $ctrl.selected.circleImage || $ctrl.selected.circleIcon'> \t\t\t\t\t\t\t\t<span ng-if='$ctrl.selected.circleText'>{{$ctrl.selected.circleText}}</span> \t\t\t\t\t\t\t\t<img ng-if='$ctrl.selected.circleImage' ng-src='{{$ctrl.selected.circleImage}}' /> \t\t\t\t\t\t\t\t<i ng-if='$ctrl.selected.circleIcon' class='icon {{$ctrl.selected.circleIcon}}'></i> \t\t\t\t\t\t\t</span><span class='text-ellipsis'><span class='tw-select-label'>{{$ctrl.selected.label}}</span><span \t\t\t\t\t\t\tng-if='$ctrl.selected.note' class='tw-select-note small m-l-1'>{{$ctrl.selected.note}}</span><span \t\t\t\t\t\t\tng-if='$ctrl.selected.secondary' class='tw-select-secondary small text-ellipsis'>{{$ctrl.selected.secondary}}</span></span> \t\t\t\t\t\t</span> \t\t\t\t\t\t<span class='form-control-placeholder' ng-if='$ctrl.ngModel == null'>{{$ctrl.placeholder}}</span> \t\t\t\t\t\t<span class='caret'></span> \t\t\t\t\t</button> \t\t\t\t\t<ul class='dropdown-menu' role='menu'> \t\t\t\t\t\t<li ng-if='$ctrl.filter'> \t\t\t\t\t\t\t<a href='' class='tw-select-filter-link p-a-0' ng-focus='$ctrl.filterFocus()'> \t\t\t\t\t\t\t\t<div class='input-group'> \t\t\t\t\t\t\t\t\t<span class='input-group-addon'><i class='icon icon-search'></i></span> \t\t\t\t\t\t\t\t\t<input type='text' class='form-control tw-select-filter' placeholder='{{$ctrl.filter}}' \t\t\t\t\t\t\t\t\t\tng-model='$ctrl.filterString' \t\t\t\t\t\t\t\t\t\tng-change='$ctrl.filterChange()' \t\t\t\t\t\t\t\t\t\tng-keydown='$ctrl.filterKeydown($event)' /> \t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</li> \t\t\t\t\t\t<li ng-class='{active: !$ctrl.ngModel}' \t\t\t\t\t\t\tng-if='$ctrl.placeholder && !$ctrl.ngRequired && !$ctrl.filter'> \t\t\t\t\t\t\t<a href='' \t\t\t\t\t\t\t\tng-click='$ctrl.placeholderClick()' \t\t\t\t\t\t\t\tng-focus='$ctrl.placeholderFocus()' \t\t\t\t\t\t\t\tvalue='' class='tw-select-placeholder' tw-focusable> \t\t\t\t\t\t\t\t{{$ctrl.placeholder}} \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</li> \t\t\t\t\t\t<li ng-if='($ctrl.placeholder && !$ctrl.ngRequired) || $ctrl.filter' class='divider'></li> \t\t\t\t\t\t<li \t\t\t\t\t\t\tng-repeat='option in $ctrl.filteredOptions' \t\t\t\t\t\t\tng-class='{ \t\t\t\t\t\t\t\tactive: $ctrl.ngModel === option.value, \t\t\t\t\t\t\t\t\"dropdown-header\": option.header, \t\t\t\t\t\t\t\t\"tw-select-option\": !option.header \t\t\t\t\t\t\t}'> \t\t\t\t\t\t\t<span ng-if='option.header'>{{option.header}}</span> \t\t\t\t\t\t\t<a href='' \t\t\t\t\t\t\t\tng-if='!option.header' \t\t\t\t\t\t\t\tng-click='$ctrl.optionClick(option)' \t\t\t\t\t\t\t\tng-focus='$ctrl.optionFocus(option)' \t\t\t\t\t\t\t\tindex='{{$index}}' \t\t\t\t\t\t\t\tclass='tw-select-option-link' tw-focusable> \t\t\t\t\t\t\t\t<i class='icon {{option.icon}} pull-left' ng-if='option.icon'> \t\t\t\t\t\t\t\t</i><i class='currency-flag currency-flag-{{option.currency | lowercase}} pull-left' ng-if='option.currency'> \t\t\t\t\t\t\t\t</i><span class='circle circle-inverse pull-left' ng-class='{\"circle-sm\": option.secondary, \"circle-xs\": !option.secondary}' \t\t\t\t\t\t\t\t\tng-if='option.circleText || option.circleImage || option.circleIcon'> \t\t\t\t\t\t\t\t\t<span ng-if='option.circleText'>{{option.circleText}}</span> \t\t\t\t\t\t\t\t\t<img ng-if='option.circleImage' ng-src='{{option.circleImage}}' /> \t\t\t\t\t\t\t\t\t<i ng-if='option.circleIcon' class='icon {{option.circleIcon}}'></i> \t\t\t\t\t\t\t\t</span>{{option.label}}<span \t\t\t\t\t\t\t\tng-if='option.note' class='tw-select-note small m-l-1'>{{option.note}}</span><span \t\t\t\t\t\t\t\tng-if='option.secondary' class='tw-select-secondary small text-ellipsis'>{{option.secondary}}</span> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</li> \t\t\t\t\t\t<li ng-if='$ctrl.hasTranscluded' class='divider'></li> \t\t\t\t\t\t<li ng-transclude ng-if='$ctrl.hasTranscluded' class='tw-select-transcluded'></li> \t\t\t\t\t</ul> \t\t\t\t</div> \t\t\t\t<input type='hidden' class='tw-select-hidden' \t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\tvalue='{{$ctrl.ngModel}}' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' />"
         };
     }
     function TwSelectController($element, $scope, $transclude, $timeout) {
@@ -373,7 +412,7 @@ angular.module("tw.form-components", []);
         }
         function isOptionFiltered(option) {
             var filterStringLower = $ctrl.filterString && escapeRegExp($ctrl.filterString.toLowerCase());
-            return filterStringLower ? option.label && option.label.toLowerCase().search(filterStringLower) >= 0 || option.note && option.note.toLowerCase().search(filterStringLower) >= 0 || option.secondary && option.secondary.toLowerCase().search(filterStringLower) >= 0 : !0;
+            return !filterStringLower || (option.label && option.label.toLowerCase().search(filterStringLower) >= 0 || option.note && option.note.toLowerCase().search(filterStringLower) >= 0 || option.secondary && option.secondary.toLowerCase().search(filterStringLower) >= 0);
         }
         function escapeRegExp(str) {
             return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
@@ -522,7 +561,7 @@ angular.module("tw.form-components", []);
                 accept: "="
             },
             link: TwUploadDroppableLink,
-            template: '<div class="text-center tw-upload-droppable-box" ng-class="{\'active\': $ctrl.isActive}"> 				<i class="icon icon-upload tw-upload-droppable-icon"></i>				<h4 class="m-t-2">{{$ctrl.title}}</h4>				<div class="row">					<div class="col-xs-12 col-sm-6 col-sm-offset-3 m-t-1">					<ng-transclude></ng-transclude>					<label class="link" for="file-upload">{{$ctrl.cta}}</label>					<input tw-file-select id="file-upload" type="file" accept={{$ctrl.accept}} class="hidden" on-user-input="$ctrl.onManualUpload"/>					</div>				</div>			</div>'
+            template: '<div class="text-center tw-upload-droppable-box" ng-class="{\'active\': $ctrl.isActive}"> \t\t\t\t<i class="icon icon-upload tw-upload-droppable-icon"></i>\t\t\t\t<h4 class="m-t-2">{{$ctrl.title}}</h4>\t\t\t\t<div class="row">\t\t\t\t\t<div class="col-xs-12 col-sm-6 col-sm-offset-3 m-t-1">\t\t\t\t\t<ng-transclude></ng-transclude>\t\t\t\t\t<label class="link" for="file-upload">{{$ctrl.cta}}</label>\t\t\t\t\t<input tw-file-select id="file-upload" type="file" accept={{$ctrl.accept}} class="hidden" on-user-input="$ctrl.onManualUpload"/>\t\t\t\t\t</div>\t\t\t\t</div>\t\t\t</div>'
         };
     }
     function TwUploadDroppableController() {
