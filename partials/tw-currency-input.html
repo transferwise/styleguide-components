@@ -14,6 +14,7 @@
                 currency-code="{{ vm.currencyInput.currencyCode }}"
                 ng-model="vm.model.components.currencyInput"
                 ng-required="vm.currencyInput.required"
+                ng-change="vm.log('input change')"
                 ng-min="vm.currencyInput.min"
                 ng-max="vm.currencyInput.max" />
             <div class="error-messages">
@@ -29,6 +30,7 @@
     currency-symbol="{{ vm.currencyInput.currencySymbol }}"
     currency-code="{{ vm.currencyInput.currencyCode }}"
     ng-model="vm.component.currencyInput"
+    ng-change="vm.log('input change')"
     ng-required="{{ vm.currencyInput.required }}"
     ng-min="{{ vm.currencyInput.min }}"
     ng-max="{{ vm.currencyInput.max }}" /&gt;</pre>
