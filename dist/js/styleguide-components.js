@@ -4,7 +4,7 @@ angular.module("tw.form-components", []);
 angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styling', 'tw.form-components']);
 !function(angular) {
     "use strict";
-    function TwCurrencyInputController($element, $scope) {
+    function TwCurrencyInputController($element, $scope, $timeout) {
         var $ctrl = this, $ngModel = $element.controller("ngModel");
         $scope.$watch("vm.ngModel", function(newValue, oldValue) {
             newValue !== oldValue && $ngModel.$setDirty();
@@ -15,11 +15,11 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         }, $ngModel.$validators.max = function(modelValue, viewValue) {
             return "undefined" == typeof $scope.vm.ngMax || null === $scope.vm.ngMax || null === viewValue || viewValue <= $scope.vm.ngMax;
         }, $ctrl.changedInputValue = function() {
-            $ctrl.ngChange && $ctrl.ngChange();
+            $ctrl.ngChange && $timeout($ctrl.ngChange);
         };
     }
     angular.module("tw.form-components").controller("TwCurrencyInputController", TwCurrencyInputController), 
-    TwCurrencyInputController.$inject = [ "$element", "$scope" ];
+    TwCurrencyInputController.$inject = [ "$element", "$scope", "$timeout" ];
 }(window.angular), function(angular) {
     "use strict";
     function TwDateController($element, $log, $scope) {

@@ -5,9 +5,9 @@
 		.module('tw.form-components')
 		.controller('TwCurrencyInputController', TwCurrencyInputController);
 
-	TwCurrencyInputController.$inject = ['$element', '$scope'];
+	TwCurrencyInputController.$inject = ['$element', '$scope', '$timeout'];
 
-	function TwCurrencyInputController($element, $scope) {
+	function TwCurrencyInputController($element, $scope, $timeout) {
 		var $ctrl = this;
 		var $ngModel = $element.controller('ngModel');
 
@@ -40,7 +40,9 @@
 
 		$ctrl.changedInputValue = function() {
 			if ($ctrl.ngChange) {
-				$ctrl.ngChange();
+				// $timeout is needed to get the last ngModel value. See:
+				// https://github.com/angular/angular.js/issues/4558
+				$timeout($ctrl.ngChange);
 			}
 		};
 	}
