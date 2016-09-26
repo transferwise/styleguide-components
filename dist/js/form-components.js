@@ -8,9 +8,9 @@ angular.module("tw.form-components", []);
         }), $element.find("input").on("blur", function() {
             $ngModel.$setTouched(), $element.triggerHandler("blur");
         }), $ngModel.$validators.min = function(modelValue, viewValue) {
-            return "undefined" == typeof $scope.vm.ngMin || null === viewValue || viewValue >= $scope.vm.ngMin;
+            return "undefined" == typeof $scope.vm.ngMin || null === $scope.vm.ngMin || null === viewValue || viewValue >= $scope.vm.ngMin;
         }, $ngModel.$validators.max = function(modelValue, viewValue) {
-            return "undefined" == typeof $scope.vm.ngMax || null === viewValue || viewValue <= $scope.vm.ngMax;
+            return "undefined" == typeof $scope.vm.ngMax || null === $scope.vm.ngMax || null === viewValue || viewValue <= $scope.vm.ngMax;
         }, $ctrl.changedInputValue = function() {
             $ctrl.ngChange && $ctrl.ngChange();
         };

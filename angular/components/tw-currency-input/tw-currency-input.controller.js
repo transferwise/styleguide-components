@@ -23,7 +23,7 @@
 		});
 
 		$ngModel.$validators.min = function(modelValue, viewValue) {
-			if (typeof $scope.vm.ngMin === 'undefined' || viewValue === null) {
+			if (typeof $scope.vm.ngMin === 'undefined' || $scope.vm.ngMin === null || viewValue === null) {
 				return true;
 			}
 
@@ -31,7 +31,7 @@
 		};
 
 		$ngModel.$validators.max = function(modelValue, viewValue) {
-			if (typeof $scope.vm.ngMax === 'undefined' || viewValue === null) {
+			if (typeof $scope.vm.ngMax === 'undefined' || $scope.vm.ngMax === null || viewValue === null) {
 				return true;
 			}
 
