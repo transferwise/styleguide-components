@@ -31,8 +31,11 @@
 						ng-focus='$ctrl.buttonFocus()' \
 						tw-focusable> \
 						<span class='tw-select-selected' ng-if='$ctrl.ngModel != null'> \
-							<i class='icon pull-left {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon'> \
-							</i><i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}} pull-left' \
+							<span class='circle circle-inverse pull-left circle-sm' ng-if='$ctrl.selected && $ctrl.selected.icon && $ctrl.selected.secondary'>\
+								 <i class='icon {{$ctrl.selected.icon}}'></i>\
+							</span>\
+							<i class='icon pull-left {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon && !$ctrl.selected.secondary'></i>\
+							<i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}} pull-left' \
 								ng-if='$ctrl.selected && $ctrl.selected.currency'> \
 							</i><span class='circle circle-inverse pull-left'  \
 								ng-class='{\"circle-sm\": $ctrl.selected.secondary, \"circle-xs\": !$ctrl.selected.secondary}' \
@@ -83,8 +86,11 @@
 								ng-focus='$ctrl.optionFocus(option)' \
 								index='{{$index}}' \
 								class='tw-select-option-link' tw-focusable> \
-								<i class='icon {{option.icon}} pull-left' ng-if='option.icon'> \
-								</i><i class='currency-flag currency-flag-{{option.currency | lowercase}} pull-left' ng-if='option.currency'> \
+								<div class='circle circle-inverse pull-left circle-sm' ng-if='option.icon && option.secondary'>\
+									<i class='icon {{option.icon}}'></i>\
+								</div>\
+								<i class='icon {{option.icon}} pull-left' ng-if='option.icon && !option.secondary'></i> \
+								<i class='currency-flag currency-flag-{{option.currency | lowercase}} pull-left' ng-if='option.currency'> \
 								</i><span class='circle circle-inverse pull-left' ng-class='{\"circle-sm\": option.secondary, \"circle-xs\": !option.secondary}' \
 									ng-if='option.circleText || option.circleImage || option.circleIcon'> \
 									<span ng-if='option.circleText'>{{option.circleText}}</span> \
