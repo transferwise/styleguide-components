@@ -11,7 +11,7 @@
 		var $ctrl = this;
 		var $ngModel = $element.controller('ngModel');
 
-		$scope.$watch('vm.ngModel', function(newValue, oldValue) {
+		$scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
 			if (newValue !== oldValue) {
 				$ngModel.$setDirty();
 			}
@@ -23,19 +23,19 @@
 		});
 
 		$ngModel.$validators.min = function(modelValue, viewValue) {
-			if (typeof $scope.vm.ngMin === 'undefined' || $scope.vm.ngMin === null || !isNumber(viewValue)) {
+			if (typeof $ctrl.ngMin === 'undefined' || $ctrl.ngMin === null || !isNumber(viewValue)) {
 				return true;
 			}
 
-			return viewValue >= $scope.vm.ngMin;
+			return viewValue >= $ctrl.ngMin;
 		};
 
 		$ngModel.$validators.max = function(modelValue, viewValue) {
-			if (typeof $scope.vm.ngMax === 'undefined' || $scope.vm.ngMax === null || !isNumber(viewValue)) {
+			if (typeof $ctrl.ngMax === 'undefined' || $ctrl.ngMax === null || !isNumber(viewValue)) {
 				return true;
 			}
 
-			return viewValue <= $scope.vm.ngMax;
+			return viewValue <= $ctrl.ngMax;
 		};
 
 		$ctrl.changedInputValue = function() {
@@ -47,7 +47,7 @@
 		};
 
 		function isNumber(value) {
-			return !isNaN(parseFloat(value));
+       		return !isNaN(parseFloat(value));
 		}
 	}
 
