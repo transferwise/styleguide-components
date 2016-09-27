@@ -64,7 +64,7 @@ describe('Directive: TwCurrencyInput', function() {
 
         it('should change ngModel when value is changed', function() {
             input.val('200.05').trigger('input');
-            expect($scope.ngModel).toBe(200.05);
+            expect($scope.ngModel).toBe('200.05');
         });
 
         it('should set ngModel.$dirty when button clicked', function() {

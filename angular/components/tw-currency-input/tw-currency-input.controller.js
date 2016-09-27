@@ -23,7 +23,7 @@
 		});
 
 		$ngModel.$validators.min = function(modelValue, viewValue) {
-			if (typeof $scope.vm.ngMin === 'undefined' || $scope.vm.ngMin === null || viewValue === null) {
+			if (typeof $scope.vm.ngMin === 'undefined' || $scope.vm.ngMin === null || !isNumber(viewValue)) {
 				return true;
 			}
 
@@ -31,7 +31,7 @@
 		};
 
 		$ngModel.$validators.max = function(modelValue, viewValue) {
-			if (typeof $scope.vm.ngMax === 'undefined' || $scope.vm.ngMax === null || viewValue === null) {
+			if (typeof $scope.vm.ngMax === 'undefined' || $scope.vm.ngMax === null || !isNumber(viewValue)) {
 				return true;
 			}
 
@@ -40,11 +40,15 @@
 
 		$ctrl.changedInputValue = function() {
 			if ($ctrl.ngChange) {
-				// $timeout is needed to get the last ngModel value. See:
-				// https://github.com/angular/angular.js/issues/4558
+				// $timeout is needed to get the last ngModel value.
+				// See: https://github.com/angular/angular.js/issues/4558
 				$timeout($ctrl.ngChange);
 			}
 		};
+
+		function isNumber(value) {
+			return !isNaN(parseFloat(value));
+		}
 	}
 
 })(window.angular);
