@@ -5,13 +5,13 @@
 		.module('tw.form-components')
 		.controller('TwCurrencyInputController', TwCurrencyInputController);
 
-	TwCurrencyInputController.$inject = ['$element', '$scope'];
+	TwCurrencyInputController.$inject = ['$element', '$scope', '$timeout'];
 
-	function TwCurrencyInputController($element, $scope) {
+	function TwCurrencyInputController($element, $scope, $timeout) {
 		var $ctrl = this;
 		var $ngModel = $element.controller('ngModel');
 
-		$scope.$watch('vm.ngModel', function(newValue, oldValue) {
+		$scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
 			if (newValue !== oldValue) {
 				$ngModel.$setDirty();
 			}
@@ -23,26 +23,32 @@
 		});
 
 		$ngModel.$validators.min = function(modelValue, viewValue) {
-			if (typeof $scope.vm.ngMin === 'undefined' || viewValue === null) {
+			if (typeof $ctrl.ngMin === 'undefined' || $ctrl.ngMin === null || !isNumber(viewValue)) {
 				return true;
 			}
 
-			return viewValue >= $scope.vm.ngMin;
+			return viewValue >= $ctrl.ngMin;
 		};
 
 		$ngModel.$validators.max = function(modelValue, viewValue) {
-			if (typeof $scope.vm.ngMax === 'undefined' || viewValue === null) {
+			if (typeof $ctrl.ngMax === 'undefined' || $ctrl.ngMax === null || !isNumber(viewValue)) {
 				return true;
 			}
 
-			return viewValue <= $scope.vm.ngMax;
+			return viewValue <= $ctrl.ngMax;
 		};
 
 		$ctrl.changedInputValue = function() {
 			if ($ctrl.ngChange) {
-				$ctrl.ngChange();
+				// $timeout is needed to get the last ngModel value.
+				// See: https://github.com/angular/angular.js/issues/4558
+				$timeout($ctrl.ngChange);
 			}
 		};
+
+		function isNumber(value) {
+       		return !isNaN(parseFloat(value));
+		}
 	}
 
 })(window.angular);

@@ -12,9 +12,10 @@
                 tw-validation
                 currency-symbol="{{ vm.currencyInput.currencySymbol }}"
                 currency-code="{{ vm.currencyInput.currencyCode }}"
+                show-decimals="true"
                 ng-model="vm.model.components.currencyInput"
+                ng-change="vm.log('currency input value:' + vm.model.components.currencyInput)"
                 ng-required="vm.currencyInput.required"
-                ng-change="vm.log('input change')"
                 ng-min="vm.currencyInput.min"
                 ng-max="vm.currencyInput.max" />
             <div class="error-messages">
@@ -29,6 +30,7 @@
     tw-validation
     currency-symbol="{{ vm.currencyInput.currencySymbol }}"
     currency-code="{{ vm.currencyInput.currencyCode }}"
+    show-decimals="{{ vm.currencyInput.showDecimals }}"
     ng-model="vm.component.currencyInput"
     ng-change="vm.log('input change')"
     ng-required="{{ vm.currencyInput.required }}"
@@ -46,7 +48,7 @@
                 </label>
                 <div class="checkbox">
                     <label>
-                        <tw-checkbox ng-model="vm.currencyInput.required" />
+                        <tw-checkbox ng-model="vm.currencyInput.required" ng-init="vm.currencyInput.required = false" />
                         Is the control required?
                     </label>
                 </div>
@@ -90,6 +92,18 @@
                     ng-model="vm.currencyInput.max"
                     ng-init="vm.currencyInput.max = 100"
                     tw-validation />
+            </div>
+            <div class="form-group" ng-init="vm.currencyInput.showDecimalsTypes = [
+                {'value': true, 'label': 'True'},
+                {'value': false, 'label': 'False'},
+                ]; vm.currencyInput.showDecimals = true;">
+                <label class="control-label">
+                    Type
+                </label>
+                <tw-select
+                    options="vm.currencyInput.showDecimalsTypes"
+                    ng-model="vm.currencyInput.showDecimals">
+                </tw-select>
             </div>
         </div>
     </div>

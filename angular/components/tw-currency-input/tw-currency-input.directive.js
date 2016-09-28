@@ -10,7 +10,7 @@
 			require: 'ngModel',
 			bindToController: true,
 			controller: 'TwCurrencyInputController',
-			controllerAs: 'vm',
+			controllerAs: '$ctrl',
 			replace: false,
 			restrict: 'E',
 			template: templateAsString,
@@ -20,6 +20,7 @@
 				ngMin: '=',
 				ngMax: '=',
 				ngRequired: '=',
+				showDecimals: '=',
 				currencySymbol: '@',
 				currencyCode: '@',
 			},
@@ -28,18 +29,20 @@
 
 	var templateAsString = ' \
 		<div class="input-group"> \
-			<span class="input-group-addon tw-currency-input-symbol">{{ vm.currencySymbol }}</span> \
+			<span class="input-group-addon tw-currency-input-symbol">{{ $ctrl.currencySymbol }}</span> \
 			<input \
-				type="number" \
+				type="tel" \
 				autocomplete="off" \
 				name="amount" \
 				step="any" \
 				class="form-control text-xs-right p-r-0" \
+				show-decimals="$ctrl.showDecimals" \
 				tw-focusable \
-				ng-change="vm.changedInputValue()" \
-				ng-model="vm.ngModel" /> \
+				tw-number-input-formatter \
+				ng-change="$ctrl.changedInputValue()" \
+				ng-model="$ctrl.ngModel" /> \
 			<span class="input-group-addon tw-currency-input-code p-l-1"> \
-				{{ vm.currencyCode }} \
+				{{ $ctrl.currencyCode }} \
 			</span> \
 		</div> \
 	';

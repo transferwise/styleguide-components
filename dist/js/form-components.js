@@ -1,22 +1,25 @@
 angular.module("tw.form-components", []);
 !function(angular) {
     "use strict";
-    function TwCurrencyInputController($element, $scope) {
+    function TwCurrencyInputController($element, $scope, $timeout) {
+        function isNumber(value) {
+            return !isNaN(parseFloat(value));
+        }
         var $ctrl = this, $ngModel = $element.controller("ngModel");
-        $scope.$watch("vm.ngModel", function(newValue, oldValue) {
+        $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
             newValue !== oldValue && $ngModel.$setDirty();
         }), $element.find("input").on("blur", function() {
             $ngModel.$setTouched(), $element.triggerHandler("blur");
         }), $ngModel.$validators.min = function(modelValue, viewValue) {
-            return "undefined" == typeof $scope.vm.ngMin || null === viewValue || viewValue >= $scope.vm.ngMin;
+            return "undefined" == typeof $ctrl.ngMin || null === $ctrl.ngMin || !isNumber(viewValue) || viewValue >= $ctrl.ngMin;
         }, $ngModel.$validators.max = function(modelValue, viewValue) {
-            return "undefined" == typeof $scope.vm.ngMax || null === viewValue || viewValue <= $scope.vm.ngMax;
+            return "undefined" == typeof $ctrl.ngMax || null === $ctrl.ngMax || !isNumber(viewValue) || viewValue <= $ctrl.ngMax;
         }, $ctrl.changedInputValue = function() {
-            $ctrl.ngChange && $ctrl.ngChange();
+            $ctrl.ngChange && $timeout($ctrl.ngChange);
         };
     }
     angular.module("tw.form-components").controller("TwCurrencyInputController", TwCurrencyInputController), 
-    TwCurrencyInputController.$inject = [ "$element", "$scope" ];
+    TwCurrencyInputController.$inject = [ "$element", "$scope", "$timeout" ];
 }(window.angular), function(angular) {
     "use strict";
     function TwDateController($element, $log, $scope) {
@@ -209,7 +212,7 @@ angular.module("tw.form-components", []);
             require: "ngModel",
             bindToController: !0,
             controller: "TwCurrencyInputController",
-            controllerAs: "vm",
+            controllerAs: "$ctrl",
             replace: !1,
             restrict: "E",
             template: templateAsString,
@@ -219,13 +222,14 @@ angular.module("tw.form-components", []);
                 ngMin: "=",
                 ngMax: "=",
                 ngRequired: "=",
+                showDecimals: "=",
                 currencySymbol: "@",
                 currencyCode: "@"
             }
         };
     }
     angular.module("tw.form-components").directive("twCurrencyInput", TwCurrencyInputDirective);
-    var templateAsString = ' \t\t<div class="input-group"> \t\t\t<span class="input-group-addon tw-currency-input-symbol">{{ vm.currencySymbol }}</span> \t\t\t<input \t\t\t\ttype="number" \t\t\t\tautocomplete="off" \t\t\t\tname="amount" \t\t\t\tstep="any" \t\t\t\tclass="form-control text-xs-right p-r-0" \t\t\t\ttw-focusable \t\t\t\tng-change="vm.changedInputValue()" \t\t\t\tng-model="vm.ngModel" /> \t\t\t<span class="input-group-addon tw-currency-input-code p-l-1"> \t\t\t\t{{ vm.currencyCode }} \t\t\t</span> \t\t</div> \t';
+    var templateAsString = ' \t\t<div class="input-group"> \t\t\t<span class="input-group-addon tw-currency-input-symbol">{{ $ctrl.currencySymbol }}</span> \t\t\t<input \t\t\t\ttype="tel" \t\t\t\tautocomplete="off" \t\t\t\tname="amount" \t\t\t\tstep="any" \t\t\t\tclass="form-control text-xs-right p-r-0" \t\t\t\tshow-decimals="$ctrl.showDecimals" \t\t\t\ttw-focusable \t\t\t\ttw-number-input-formatter \t\t\t\tng-change="$ctrl.changedInputValue()" \t\t\t\tng-model="$ctrl.ngModel" /> \t\t\t<span class="input-group-addon tw-currency-input-code p-l-1"> \t\t\t\t{{ $ctrl.currencyCode }} \t\t\t</span> \t\t</div> \t';
 }(window.angular), function(angular) {
     "use strict";
     function TwDateDirective() {
