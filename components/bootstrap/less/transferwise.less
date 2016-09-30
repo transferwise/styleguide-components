@@ -1,7 +1,14 @@
 .section,
 .footer {
-    padding-top: 96px;
-    padding-bottom: 96px;
+    padding-top: 64px;
+    padding-bottom: 64px;
+}
+@media (min-width: @screen-md-min) {
+    .section,
+    .footer {
+        padding-top: 96px;
+        padding-bottom: 96px;
+    }
 }
 
 .bg-default {
@@ -28,12 +35,12 @@
     &:hover {
         border-color: @brand-smoke-plus-20;
         background-color: @brand-smoke-plus-20;
-        color: #00b9ff;
+        color: @brand-light-blue;
     }
     &:active {
         border-color: @brand-smoke-plus-10;
         background-color: @brand-smoke-plus-10;
-        color: #00b9ff;
+        color: @brand-light-blue;
     }
 }
 
@@ -109,11 +116,11 @@ blockquote footer {
 
 .navbar + .jumbotron,
 .navbar + .jumbotron-image > .jumbotron {
-    padding-bottom: 100px;
+    padding-bottom: 64px;
 
     @media (min-width: @screen-md-min) {
-        padding-top: 150px;
-        padding-bottom: 110px;
+        padding-top: 140px;
+        padding-bottom: 104px;
     }
 }
 
@@ -203,7 +210,7 @@ blockquote footer {
 .btn {
   .icon {
       font-size: 24px;
-      vertical-align: bottom;
+      vertical-align: middle;
   }
 }
 li,

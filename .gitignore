@@ -3,7 +3,6 @@
 /node_modules/
 /public/
 /build/
-/components/
 npm-debug.log
 .env
 .DS_Store

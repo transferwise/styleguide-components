@@ -33,14 +33,9 @@
   margin-top: 0;
   margin-bottom: 0;
   line-height: (@line-height-computed + 8px);
-  color: @panel-heading-color;
 
-  > a,
-  > small,
-  > .small,
-  > small > a,
-  > .small > a {
-    color: inherit;
+  > a {
+    text-decoration: none;
   }
 }
 
@@ -109,11 +104,6 @@
 
     .list-group-item {
       border-radius: 0;
-
-      &.active {
-        margin-top: @line-height-computed;
-        margin-bottom: @line-height-computed;
-      }
     }
   }
   > .panel-heading + .panel-collapse > .list-group {
@@ -122,6 +112,12 @@
     }
   }
 }
+.panel-list-group {
+  margin-bottom: 0;
+  border-left: 0;
+  border-right: 0;
+}
+
 // Collapse space between when there's no additional content.
 .list-group + .panel-footer {
   border-top-width: 0;
@@ -502,52 +498,16 @@
     .panel {
         margin-left: 0;
         margin-right: 0;
-        border-right: 1px solid @brand-smoke-plus-10;
-        border-left: 1px solid @brand-smoke-plus-10;
+        border: 1px solid @brand-smoke-plus-10;
     }
     .panel-heading,
     .panel-footer {
         padding: @panel-collapse-xs;
     }
 }
+.spacing(@panel-collapse-xs, panel);
+.negative-spacing(@panel-collapse-xs, panel);
 
-.panel-m-l {
-    margin-left: @panel-collapse-xs !important;
-}
-.panel-m-r {
-    margin-right: @panel-collapse-xs !important;
-}
-.panel-m-t {
-    margin-top: @panel-collapse-xs !important;
-}
-.panel-m-b {
-    margin-bottom: @panel-collapse-xs !important;
-}
-.panel-p-l {
-    padding-left: @panel-collapse-xs !important;
-}
-.panel-p-r {
-    padding-right: @panel-collapse-xs !important;
-}
-.panel-p-t {
-    padding-top: @panel-collapse-xs !important;
-}
-.panel-p-b {
-    padding-bottom: @panel-collapse-xs !important;
-}
-
-.panel-m-l-negative {
-    margin-left: (-@panel-collapse-xs) !important;
-}
-.panel-m-r-negative {
-    margin-right: (-@panel-collapse-xs) !important;
-}
-.panel-m-t-negative {
-    margin-top: (-@panel-collapse-xs) !important;
-}
-.panel-m-b-negative {
-    margin-bottom: (-@panel-collapse-xs) !important;
-}
 @media (min-width: @screen-sm-min) {
     .panel-group .panel {
         .panel-heading,
@@ -555,43 +515,8 @@
             padding: @panel-body-padding-collapse !important;
         }
     }
-    .panel-m-l {
-        margin-left: @panel-body-padding-collapse !important;
-    }
-    .panel-m-r {
-        margin-right: @panel-body-padding-collapse !important;
-    }
-    .panel-m-t {
-        margin-top: @panel-body-padding-collapse !important;
-    }
-    .panel-m-b {
-        margin-bottom: @panel-body-padding-collapse !important;
-    }
-    .panel-p-l {
-        padding-left: @panel-body-padding-collapse !important;
-    }
-    .panel-p-r {
-        padding-right: @panel-body-padding-collapse !important;
-    }
-    .panel-p-t {
-        padding-top: @panel-body-padding-collapse !important;
-    }
-    .panel-p-b {
-        padding-bottom: @panel-body-padding-collapse !important;
-    }
-
-    .panel-m-l-negative {
-        margin-left: (-@panel-body-padding-collapse) !important;
-    }
-    .panel-m-r-negative {
-        margin-right: (-@panel-body-padding-collapse) !important;
-    }
-    .panel-m-t-negative {
-        margin-top: (-@panel-body-padding-collapse) !important;
-    }
-    .panel-m-b-negative {
-        margin-bottom: (-@panel-body-padding-collapse) !important;
-    }
+    .spacing(@panel-body-padding-collapse, panel);
+    .negative-spacing(@panel-body-padding-collapse, panel);
 }
 @media (min-width: @screen-lg-min) {
     .panel-group .panel {
@@ -600,44 +525,9 @@
             padding: @panel-body-padding-collapse @panel-body-padding;
         }
     }
-    .panel-m-l {
-        margin-left: @panel-body-padding !important;
-    }
-    .panel-m-r {
-        margin-right: @panel-body-padding !important;
-    }
-    .panel-m-t {
-        margin-top: @panel-body-padding !important;
-    }
-    .panel-m-b {
-        margin-bottom: @panel-body-padding !important;
-    }
-    .panel-p-l {
-        padding-left: @panel-body-padding !important;
-    }
-    .panel-p-r {
-        padding-right: @panel-body-padding !important;
-    }
-    .panel-p-t {
-        padding-top: @panel-body-padding !important;
-    }
-    .panel-p-b {
-        padding-bottom: @panel-body-padding !important;
-    }
 
-
-    .panel-m-l-negative {
-        margin-left: (-@panel-body-padding) !important;
-    }
-    .panel-m-r-negative {
-        margin-right: (-@panel-body-padding) !important;
-    }
-    .panel-m-t-negative {
-        margin-top: (-@panel-body-padding) !important;
-    }
-    .panel-m-b-negative {
-        margin-bottom: (-@panel-body-padding) !important;
-    }
+    .spacing(@panel-body-padding, panel);
+    .negative-spacing(@panel-body-padding, panel);
 }
 @media (min-width: @screen-sm-min) {
     .panel {

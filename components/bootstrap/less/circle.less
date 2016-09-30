@@ -20,7 +20,7 @@
     text-decoration: none;
     text-transform: uppercase;
 
-    border: 1px solid @brand-white;
+    border: 1px solid transparent;
     background-color: @brand-white;
     border-radius: 50%;
 
@@ -35,6 +35,7 @@
     margin-right: auto;
 
     transition: background-color ease @transition-duration,
+                border-color ease @transition-duration,
                 color ease @transition-duration;
 
     &.active {
@@ -45,11 +46,20 @@
 
     img {
         width: 100%;
-    }
-
-    img&,
-    img {
         border-radius: 50%;
+    }
+    img& {
+        background-color: transparent;
+        border-radius: 50%;
+    }
+    &[style] {
+        border: 0;
+        border-radius: 50% !important;
+    }
+    a& {
+        &[style]:hover {
+            border: 1px solid @brand-info;
+        }
     }
 }
 
@@ -89,7 +99,6 @@ a.circle.active:hover {
 }
 
 .circle-inverse {
-  border-color: @brand-smoke-plus-20;
   background-color: @brand-smoke-plus-20;
 }
 
@@ -111,10 +120,8 @@ a.circle.active:hover {
 
   &.circle-lg {
     border-radius: 50%;
-    border-color: @brand-white;
     background-color: @brand-white;
     &.circle-inverse {
-      border-color: @brand-smoke-plus-20;
       background-color: @brand-smoke-plus-20;
     }
     .circle-variant(@circle-sm-diameter, @circle-sm-font-size, @circle-sm-icon-size);
@@ -124,10 +131,8 @@ a.circle.active:hover {
 @media (min-width: @screen-sm-min) {
   .circle-responsive {
     border-radius: 50%;
-    border-color: @brand-white;
     background-color: @brand-white;
     &.circle-inverse {
-      border-color: @brand-smoke-plus-20;
       background-color: @brand-smoke-plus-20;
     }
   }
