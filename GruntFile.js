@@ -178,8 +178,9 @@ module.exports = function(grunt) {
               dest: 'gh-pages/'
             },
             index: {
-              src: 'index.html',
-              dest: 'gh-pages/index.html'
+              expand: true,
+              src: 'index.*',
+              dest: 'gh-pages/'
             },
         }
     });
