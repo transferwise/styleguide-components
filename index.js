@@ -20,7 +20,8 @@ angular.module('my-app', ['tw.styleguide-components'])
 			{value: 'currencies', label: 'Currencies'},
 			{value: 'notes', label: 'Notes'},
 			{value: 'headers', label: 'Headers'},
-			{value: 'secondary', label: 'Secondary Text'},
+			{value: 'secondary', label: 'Secondary text'},
+			{value: 'searchable', label: 'Searchable text'},
 			{value: 'circles', label: 'Circles'},
 			{value: 'long', label: 'Long list'},
 			{value: 'currencySelect', label: 'Example: Currency select'},
@@ -58,6 +59,11 @@ angular.module('my-app', ['tw.styleguide-components'])
 				{value: '2', label: 'James Davies', secondary: 'Account ending 9876'},
 				{value: '3', label: 'Helen Williams', secondary: 'Accont ending 4321'}
 			],
+			searchable: [
+				{value: 'eur', label: 'Euro', searchable: 'Austria, France, Germany, Spain'},
+				{value: 'usd', label: 'Dollar', searchable: 'United States, Hong Kong, Saudi Arabia'},
+				{value: 'gbp', label: 'Pound', searchable: 'Great britain, England, Scotland'}
+			],
 			circles: [
 				{value: '1', label: 'Bob Smith', circleImage: 'images/mike.jpg'},
 				{value: '2', label: 'James Davies', circleIcon: 'icon-bank'},
@@ -65,9 +71,9 @@ angular.module('my-app', ['tw.styleguide-components'])
 			],
 			currencySelect: [
 				{header: 'Popular currencies'},
-				{value: 'eur', label: 'EUR', note: 'Euro', currency: 'EUR'},
-				{value: 'gbp', label: 'GBP', note: 'Great British Pound', currency: 'GBP'},
-				{value: 'usd', label: 'USD', note: 'United States Dollar', currency: 'USD'},
+				{value: 'eur', label: 'EUR', note: 'Euro', currency: 'EUR', searchable: 'Spain, Germany, France, Austria, Estonia'},
+				{value: 'gbp', label: 'GBP', note: 'Great British Pound', currency: 'GBP', searchable: 'England, Scotland, Wales'},
+				{value: 'usd', label: 'USD', note: 'United States Dollar', currency: 'USD', searchable: 'Hong Kong, Saudi Arabia'},
 				{header: 'All currencies'},
 				{value: 'aud', label: 'AUD', note: 'Australian Dollar', currency: 'AUD'}
 			],

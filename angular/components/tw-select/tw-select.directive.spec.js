@@ -10,7 +10,21 @@ describe('Directive: TwSelect', function() {
     var SELECT_SELECTOR = '.tw-select-hidden';
     var LIST_ITEMS_SELECTOR = '.tw-select-option-link';
     var FILTER_INPUT_SELECTOR = '.tw-select-filter';
+
     var SELECTED_LABEL_SELECTOR = '.tw-select-selected .tw-select-label';
+    var SELECTED_NOTE_SELECTOR = '.tw-select-selected .tw-select-note';
+    var SELECTED_SECONDARY_SELECTOR = '.tw-select-selected .tw-select-secondary';
+    var SELECTED_FLAG_SELECTOR = '.tw-select-selected .currency-flag';
+    var SELECTED_ICON_SELECTOR = '.tw-select-selected .icon';
+    var SELECTED_CIRCLE_SELECTOR = '.tw-select-selected .circle';
+
+    var OPTION_NOTE_SELECTOR = '.dropdown-menu .tw-select-note';
+    var OPTION_SECONDARY_SELECTOR = '.dropdown-menu .tw-select-secondary';
+    var OPTION_FLAG_SELECTOR = '.dropdown-menu .currency-flag';
+    var OPTION_ICON_SELECTOR = '.dropdown-menu a > .icon';
+    var OPTION_CIRCLE_IMAGE_SELECTOR = '.dropdown-menu .circle img';
+    var OPTION_CIRCLE_TEXT_SELECTOR = '.dropdown-menu .tw-select-circle-text';
+    var OPTION_CIRCLE_ICON_SELECTOR = '.dropdown-menu .circle .icon';
 
     beforeEach(module('tw.form-components'));
 
@@ -473,6 +487,142 @@ describe('Directive: TwSelect', function() {
         });
     });
 
+    describe('when selected option has', function() {
+        beforeEach(function() {
+            $scope.options = OPTIONS_EXTRAS;
+            $scope.ngModel = null;
+            $scope.config = null;
+            directiveElement = getCompiledDirectiveElement($scope);
+        });
+        describe('note text', function() {
+            it('should be displayed', function() {
+                $scope.ngModel = 'NOTE';
+                $scope.$digest();
+                var el = directiveElement.find(SELECTED_NOTE_SELECTOR)
+                expect(el.length).toBe(1);
+            });
+            it('should be possible to hide it through config', function() {
+                $scope.ngModel = 'NOTE';
+                $scope.config = {hideNote: true};
+                $scope.$digest();
+                var el = directiveElement.find(SELECTED_NOTE_SELECTOR)
+                expect(el.length).toBe(0);
+            });
+        });
+        describe('secondary text', function() {
+            it('should be displayed', function() {
+                $scope.ngModel = 'SECONDARY';
+                $scope.$digest();
+                var el = directiveElement.find(SELECTED_SECONDARY_SELECTOR)
+                expect(el.length).toBe(1);
+            });
+            it('should be possible to hide it through config', function() {
+                $scope.ngModel = 'SECONDARY';
+                $scope.config = {hideSecondary: true};
+                $scope.$digest();
+                var el = directiveElement.find(SELECTED_SECONDARY_SELECTOR)
+                expect(el.length).toBe(0);
+            });
+        });
+        describe('icon', function() {
+            it('should be displayed', function() {
+                $scope.ngModel = 'ICON';
+                $scope.$digest();
+                var el = directiveElement.find(SELECTED_ICON_SELECTOR)
+                expect(el.length).toBe(1);
+
+            });
+            it('should be possible to hide it through config', function() {
+                $scope.ngModel = 'ICON';
+                $scope.config = {hideIcon: true};
+                $scope.$digest();
+                var el = directiveElement.find(SELECTED_ICON_SELECTOR)
+                expect(el.length).toBe(0);
+            });
+        });
+        describe('currency flag', function() {
+            it('should be displayed', function() {
+                $scope.ngModel = 'CIRCLE_ICON';
+                $scope.$digest();
+                var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR)
+                expect(el.length).toBe(1);
+            });
+            it('should be possible to hide it through config', function() {
+                $scope.ngModel = 'CIRCLE_ICON';
+                $scope.config = {hideCircle: true};
+                $scope.$digest();
+                var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR)
+                expect(el.length).toBe(0);
+            });
+        });
+        describe('circle image', function() {
+            it('should be displayed', function() {
+                $scope.ngModel = 'CIRCLE_IMAGE';
+                $scope.$digest();
+                var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR)
+                expect(el.length).toBe(1);
+            });
+            it('should be possible to hide it through config', function() {
+                $scope.ngModel = 'CIRCLE_IMAGE';
+                $scope.config = {hideCircle: true};
+                $scope.$digest();
+                var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR)
+                expect(el.length).toBe(0);
+            });
+        });
+        describe('circle text', function() {
+            it('should be displayed', function() {
+                $scope.ngModel = 'CIRCLE_TEXT';
+                $scope.$digest();
+                var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR)
+                expect(el.length).toBe(1);
+            });
+            it('should be possible to hide it through config', function() {
+                $scope.ngModel = 'CIRCLE_TEXT';
+                $scope.config = {hideCircle: true};
+                $scope.$digest();
+                var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR)
+                expect(el.length).toBe(0);
+            });
+        });
+    });
+
+    describe('when special options are supplied', function() {
+        beforeEach(function() {
+            $scope.options = OPTIONS_EXTRAS;
+            $scope.ngModel = null;
+            directiveElement = getCompiledDirectiveElement($scope);
+        });
+        it('should show note text', function() {
+            var el = directiveElement.find(OPTION_NOTE_SELECTOR)
+            expect(el.length).toBe(1);
+        });
+        it('should show secondary text', function() {
+            var el = directiveElement.find(OPTION_SECONDARY_SELECTOR)
+            expect(el.length).toBe(1);
+        });
+        it('should show currency flag', function() {
+            var el = directiveElement.find(OPTION_FLAG_SELECTOR)
+            expect(el.length).toBe(1);
+        });
+        it('should show icon', function() {
+            var el = directiveElement.find(OPTION_ICON_SELECTOR)
+            expect(el.length).toBe(1);
+        });
+        it('should show circle image', function() {
+            var el = directiveElement.find(OPTION_CIRCLE_IMAGE_SELECTOR)
+            expect(el.length).toBe(1);
+        });
+        it('should show circle text', function() {
+            var el = directiveElement.find(OPTION_CIRCLE_TEXT_SELECTOR)
+            expect(el.length).toBe(1);
+        });
+        it('should show circle icon', function() {
+            var el = directiveElement.find(OPTION_CIRCLE_ICON_SELECTOR)
+            expect(el.length).toBe(1);
+        });
+    });
+
     function getCompiledDirectiveElement($scope, template) {
         if (!template) {
             template = " \
@@ -481,7 +631,8 @@ describe('Directive: TwSelect', function() {
                     options='options' \
                     placeholder='please choose' \
                     ng-model='ngModel' \
-                    ng-required='ngRequired'> \
+                    ng-required='ngRequired' \
+                    config='config'> \
                 </tw-select>";
         }
         var element = angular.element(template);
@@ -548,5 +699,41 @@ describe('Directive: TwSelect', function() {
     },{
         value: {id: 3},
         label: 'Three'
+    }];
+
+    var OPTIONS_EXTRAS = [{
+        value: 'NOTE',
+        label: 'Note text',
+        note: 'Note text'
+    },{
+        value: 'SECONDARY',
+        label: 'Secondary text',
+        secondary: "Secondary text"
+    },{
+        value: "ICON",
+        label: 'Icon',
+        icon: "bank"
+    },{
+        value: "CURRENCY",
+        label: 'Currency flag',
+        currency: "GBP"
+    },{
+        value: "CIRCLE_IMAGE",
+        label: 'Circle image',
+        circleImage: "images/mike.jpg"
+    },{
+        value: "CIRCLE_ICON",
+        label: 'Circle icon',
+        circleIcon: "bank"
+    },{
+        value: "CIRCLE_TEXT",
+        label: 'Circle text',
+        circleText: "AZ"
+    },{
+        header: "header"
+    },{
+        value: "SEARCHABLE",
+        label: "Unrelated",
+        searchable: "Searchable"
     }];
 });

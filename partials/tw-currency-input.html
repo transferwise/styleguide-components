@@ -31,7 +31,7 @@
     currency-symbol="{{ vm.currencyInput.currencySymbol }}"
     currency-code="{{ vm.currencyInput.currencyCode }}"
     show-decimals="{{ vm.currencyInput.showDecimals }}"
-    ng-model="vm.component.currencyInput"
+    ng-model="{{vm.model.components.currencyInput}}"
     ng-change="vm.log('input change')"
     ng-required="{{ vm.currencyInput.required }}"
     ng-min="{{ vm.currencyInput.min }}"
