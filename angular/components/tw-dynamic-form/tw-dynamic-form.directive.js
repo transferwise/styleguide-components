@@ -17,8 +17,8 @@
 			controllerAs : '$ctrl',
 			bindToController: true,
 			template: " \
-			<ul class='nav nav-tabs m-b-3' \
-				ng-if='$ctrl.requirements && $ctrl.requirements.length > 1'> \
+			<ul ng-if='$ctrl.requirements && $ctrl.requirements.length > 1' \
+				class='nav nav-tabs m-b-3'> \
 				<li ng-repeat='requirementType in $ctrl.requirements' \
 					ng-class='{\"active\": $ctrl.model.type === requirementType.type}'> \
 					<a href='' ng-click='$ctrl.switchTab(requirementType.type)'> \
@@ -27,10 +27,11 @@
 				</li> \
 			</ul> \
 			<div class='tab-content'> \
-				<div class='tab-pane' id='{{requirementType.type}}' \
-					ng-class='{\"active\": $ctrl.model.type == requirementType.type}' \
-					ng-repeat='requirementType in $ctrl.requirements' \
-					ng-if='$ctrl.model.type == requirementType.type'> \
+				<div ng-if='$ctrl.model.type == requirementType.type' \
+					ng-repeat='requirementType in $ctrl.requirements'\
+					class='tab-pane' \
+					id='{{requirementType.type}}' \
+					ng-class='{\"active\": $ctrl.model.type == requirementType.type}'> \
 					<div class='row'> \
 						<div class='form-group' \
 							ng-repeat='fieldGroup in requirementType.fields' \
@@ -65,8 +66,8 @@
 										<div class='error-required'>{{fieldGroup.name}} is required</div> \
 										<div class='error-pattern'>Incorrect format</div> \
 									</div> \
-									<div class='help-block' \
-										ng-if='field.tooltip'> \
+									<div ng-if='field.tooltip' \
+										class='help-block'> \
 										<a role='button' \
 											tabindex='0' \
 											data-toggle='popover' \
