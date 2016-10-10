@@ -4,6 +4,31 @@ angular.module("tw.form-components", []);
 angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styling', 'tw.form-components']);
 !function(angular) {
     "use strict";
+    function TwAmountCurrencySelectController($element, $scope, $timeout) {
+        function isNumber(value) {
+            return !isNaN(parseFloat(value));
+        }
+        var $ctrl = this, $ngModel = $element.controller("ngModel");
+        $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+            newValue !== oldValue && $ngModel.$setDirty();
+        }), $element.find("input").on("blur", function() {
+            $ngModel.$setTouched(), $element.triggerHandler("blur");
+        }), $ngModel.$validators.min = function(modelValue, viewValue) {
+            return "undefined" == typeof $ctrl.ngMin || null === $ctrl.ngMin || !isNumber(viewValue) || viewValue >= $ctrl.ngMin;
+        }, $ngModel.$validators.max = function(modelValue, viewValue) {
+            return "undefined" == typeof $ctrl.ngMax || null === $ctrl.ngMax || !isNumber(viewValue) || viewValue <= $ctrl.ngMax;
+        }, $ctrl.changedAmount = function() {
+            $ctrl.onAmountChange && $timeout($ctrl.onAmountChange);
+        }, $ctrl.changedCurrency = function() {
+            $ctrl.onCurrencyChange && $timeout($ctrl.onCurrencyChange);
+        }, $ctrl.customAction = function() {
+            $ctrl.onCustomAction && $ctrl.onCustomAction();
+        };
+    }
+    angular.module("tw.form-components").controller("TwAmountCurrencySelectController", TwAmountCurrencySelectController), 
+    TwAmountCurrencySelectController.$inject = [ "$element", "$scope", "$timeout" ];
+}(window.angular), function(angular) {
+    "use strict";
     function TwCurrencyInputController($element, $scope, $timeout) {
         function isNumber(value) {
             return !isNaN(parseFloat(value));
@@ -154,6 +179,36 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     }
     angular.module("tw.form-components").controller("TwDateController", TwDateController), 
     TwDateController.$inject = [ "$element", "$log", "$scope" ];
+}(window.angular), function(angular) {
+    "use strict";
+    function TwAmountCurrencySelectDirective() {
+        return {
+            require: "ngModel",
+            bindToController: !0,
+            controller: "TwAmountCurrencySelectController",
+            controllerAs: "$ctrl",
+            replace: !1,
+            restrict: "E",
+            template: templateAsString,
+            scope: {
+                ngModel: "=",
+                ngMin: "=",
+                ngMax: "=",
+                ngRequired: "=",
+                label: "=",
+                amountReadOnly: "=",
+                onAmountChange: "&",
+                currency: "=",
+                currencies: "=",
+                onCurrencyChange: "&",
+                customActionLabel: "=",
+                onCustomAction: "&",
+                error: "="
+            }
+        };
+    }
+    angular.module("tw.form-components").directive("twAmountCurrencySelect", TwAmountCurrencySelectDirective);
+    var templateAsString = '\t<div class="form-group form-group-lg" ng-class="{ \'has-error\': $ctrl.error }"> \t\t<label class="control-label">{{ $ctrl.label }}</label> \t\t<div class="input-group input-group-lg">  \t\t\t<input \t\t\t\ttype="tel"  \t\t\t\tautocomplete="off"  \t\t\t\tname="amount"  \t\t\t\tstep="any"  \t\t\t\tclass="form-control"  \t\t\t\ttw-focusable  \t\t\t\ttw-number-input-formatter  \t\t\t\tng-change="$ctrl.changedAmount()"  \t\t\t\tng-model="$ctrl.ngModel" \t\t\t\tng-disabled="$ctrl.amountReadOnly" /> \t\t\t<span class="input-group-btn">  \t\t\t\t<tw-select \t\t\t\t\tng-model="$ctrl.currency" \t\t\t\t\tng-required="true" \t\t\t\t\tsize="lg" \t\t\t\t\tinverse="true" \t\t\t\t\tdropdown-right="xs" \t\t\t\t\tdropdown-width="lg" \t\t\t\t\thide-note="true" \t\t\t\t\thide-secondary="true" \t\t\t\t\toptions="$ctrl.currencies" \t\t\t\t\tng-change="$ctrl.changedCurrency()"> \t\t\t\t\t\t<a ng-if="!!$ctrl.customActionLabel" ng-click="$ctrl.onCustomAction()">{{ $ctrl.customActionLabel }}</a> \t\t\t\t</tw-select> \t\t\t</span>  \t\t</div>  \t</div>';
 }(window.angular), function(angular) {
     function TwCheckboxDirective() {
         function TwCheckboxController($scope, $element) {
@@ -583,7 +638,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 accept: "="
             },
             link: TwUploadDroppableLink,
-            template: '<div class="text-center tw-upload-droppable-box" ng-class="{\'active\': $ctrl.isActive}"> \t\t\t\t<i class="icon icon-upload tw-upload-droppable-icon"></i>\t\t\t\t<h4 class="m-t-2">{{$ctrl.title}}</h4>\t\t\t\t<div class="row">\t\t\t\t\t<div class="col-xs-12 col-sm-6 col-sm-offset-3 m-t-1">\t\t\t\t\t<ng-transclude></ng-transclude>\t\t\t\t\t<label class="link" for="file-upload">{{$ctrl.cta}}</label>\t\t\t\t\t<input tw-file-select id="file-upload" type="file" accept={{$ctrl.accept}} class="hidden" on-user-input="$ctrl.onManualUpload"/>\t\t\t\t\t</div>\t\t\t\t</div>\t\t\t</div>'
+            template: '<div class="text-center tw-upload-droppable-box" ng-class="{\'active\': $ctrl.isActive}"> \t\t\t\t<i class="icon icon-upload tw-upload-droppable-icon"></i>\t\t\t\t<h4 class="m-t-2" ng-if="$ctrl.title">{{$ctrl.title}}</h4>\t\t\t\t<div class="row">\t\t\t\t\t<div class="col-xs-12 col-sm-6 col-sm-offset-3 m-t-1">\t\t\t\t\t<ng-transclude></ng-transclude>\t\t\t\t\t<label class="link" for="file-upload">{{$ctrl.cta}}</label>\t\t\t\t\t<input tw-file-select id="file-upload" type="file" accept={{$ctrl.accept}} class="hidden" on-user-input="$ctrl.onManualUpload"/>\t\t\t\t\t</div>\t\t\t\t</div>\t\t\t</div>'
         };
     }
     function TwUploadDroppableController() {

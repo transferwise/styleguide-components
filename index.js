@@ -138,6 +138,9 @@ angular.module('my-app', ['tw.styleguide-components'])
 		</div>"
 	};
 })
+.directive('twAmountCurrencySelectDocs', function() {
+	return {templateUrl: 'partials/tw-amount-currency-select.html'};
+})
 .directive('twCheckboxDocs', function() {
 	return {templateUrl: 'partials/tw-checkbox.html'};
 })
