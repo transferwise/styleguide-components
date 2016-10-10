@@ -25,7 +25,7 @@
 			template:
 			'<div class="text-center tw-upload-droppable-box" ng-class="{\'active\': $ctrl.isActive}"> \
 				<i class="icon icon-upload tw-upload-droppable-icon"></i>\
-				<h4 class="m-t-2">{{$ctrl.title}}</h4>\
+				<h4 class="m-t-2" ng-if="$ctrl.title">{{$ctrl.title}}</h4>\
 				<div class="row">\
 					<div class="col-xs-12 col-sm-6 col-sm-offset-3 m-t-1">\
 					<ng-transclude></ng-transclude>\
