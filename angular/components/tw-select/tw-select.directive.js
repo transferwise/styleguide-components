@@ -66,7 +66,6 @@
 						<span class='caret'></span> \
 					</button> \
 					<ul class='dropdown-menu' role='menu' ng-class='{ \
-							\"dropdown-menu-right\": $ctrl.dropdownRight, \
 							\"dropdown-menu-xs-right\": $ctrl.dropdownRight === \"xs\", \
 							\"dropdown-menu-sm-right\": $ctrl.dropdownRight === \"sm\", \
 							\"dropdown-menu-md-right\": $ctrl.dropdownRight === \"md\", \
