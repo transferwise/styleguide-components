@@ -14,13 +14,13 @@ describe('Directive: TwSelect', function() {
     var SELECTED_LABEL_SELECTOR = '.tw-select-selected .tw-select-label';
     var SELECTED_NOTE_SELECTOR = '.tw-select-selected .tw-select-note';
     var SELECTED_SECONDARY_SELECTOR = '.tw-select-selected .tw-select-secondary';
-    var SELECTED_FLAG_SELECTOR = '.tw-select-selected .currency-flag';
+    var SELECTED_CURRENCY_FLAG_SELECTOR = '.tw-select-selected .currency-flag';
     var SELECTED_ICON_SELECTOR = '.tw-select-selected .icon';
     var SELECTED_CIRCLE_SELECTOR = '.tw-select-selected .circle';
 
     var OPTION_NOTE_SELECTOR = '.dropdown-menu .tw-select-note';
     var OPTION_SECONDARY_SELECTOR = '.dropdown-menu .tw-select-secondary';
-    var OPTION_FLAG_SELECTOR = '.dropdown-menu .currency-flag';
+    var OPTION_CURRENCY_FLAG_SELECTOR = '.dropdown-menu .currency-flag';
     var OPTION_ICON_SELECTOR = '.dropdown-menu a > .icon';
     var OPTION_CIRCLE_IMAGE_SELECTOR = '.dropdown-menu .circle img';
     var OPTION_CIRCLE_TEXT_SELECTOR = '.dropdown-menu .tw-select-circle-text';
@@ -172,17 +172,17 @@ describe('Directive: TwSelect', function() {
 
         describe('when ngModel not supplied but ngRequired', function() {
             beforeEach(function() {
-                $scope.options = OPTIONS;
+                $scope.options = OPTIONS_EXTRAS;
                 $scope.ngModel = null;
                 $scope.ngRequired = true;
                 directiveElement = getCompiledDirectiveElement($scope);
             });
-            it('should set ngModel to first value', function() {
-                expect($scope.ngModel).toBe('1');
+            it('should set ngModel to first option with a value', function() {
+                expect($scope.ngModel).toBe('NOTE');
             });
             it('should show first option', function() {
                 var selectedTextElement = directiveElement.find(SELECTED_LABEL_SELECTOR)[0];
-                expect(selectedTextElement.innerText.trim()).toBe('One');
+                expect(selectedTextElement.innerText.trim()).toBe('Note text');
             });
         });
     });
@@ -491,7 +491,6 @@ describe('Directive: TwSelect', function() {
         beforeEach(function() {
             $scope.options = OPTIONS_EXTRAS;
             $scope.ngModel = null;
-            $scope.config = null;
             directiveElement = getCompiledDirectiveElement($scope);
         });
         describe('note text', function() {
@@ -501,9 +500,9 @@ describe('Directive: TwSelect', function() {
                 var el = directiveElement.find(SELECTED_NOTE_SELECTOR)
                 expect(el.length).toBe(1);
             });
-            it('should be possible to hide it through config', function() {
+            it('should be possible to hide it', function() {
                 $scope.ngModel = 'NOTE';
-                $scope.config = {hideNote: true};
+                $scope.hideNote = true;
                 $scope.$digest();
                 var el = directiveElement.find(SELECTED_NOTE_SELECTOR)
                 expect(el.length).toBe(0);
@@ -516,9 +515,9 @@ describe('Directive: TwSelect', function() {
                 var el = directiveElement.find(SELECTED_SECONDARY_SELECTOR)
                 expect(el.length).toBe(1);
             });
-            it('should be possible to hide it through config', function() {
+            it('should be possible to hide it', function() {
                 $scope.ngModel = 'SECONDARY';
-                $scope.config = {hideSecondary: true};
+                $scope.hideSecondary = true;
                 $scope.$digest();
                 var el = directiveElement.find(SELECTED_SECONDARY_SELECTOR)
                 expect(el.length).toBe(0);
@@ -532,9 +531,9 @@ describe('Directive: TwSelect', function() {
                 expect(el.length).toBe(1);
 
             });
-            it('should be possible to hide it through config', function() {
+            it('should be possible to hide it', function() {
                 $scope.ngModel = 'ICON';
-                $scope.config = {hideIcon: true};
+                $scope.hideIcon = true;
                 $scope.$digest();
                 var el = directiveElement.find(SELECTED_ICON_SELECTOR)
                 expect(el.length).toBe(0);
@@ -542,14 +541,30 @@ describe('Directive: TwSelect', function() {
         });
         describe('currency flag', function() {
             it('should be displayed', function() {
+                $scope.ngModel = 'CURRENCY_FLAG';
+                $scope.$digest();
+                var el = directiveElement.find(SELECTED_CURRENCY_FLAG_SELECTOR)
+                expect(el.length).toBe(1);
+
+            });
+            it('should be possible to hide it', function() {
+                $scope.ngModel = 'CURRENCY_FLAG';
+                $scope.hideCurrency = true;
+                $scope.$digest();
+                var el = directiveElement.find(SELECTED_CURRENCY_FLAG_SELECTOR)
+                expect(el.length).toBe(0);
+            });
+        });
+        describe('circle icon', function() {
+            it('should be displayed', function() {
                 $scope.ngModel = 'CIRCLE_ICON';
                 $scope.$digest();
                 var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR)
                 expect(el.length).toBe(1);
             });
-            it('should be possible to hide it through config', function() {
+            it('should be possible to hide it', function() {
                 $scope.ngModel = 'CIRCLE_ICON';
-                $scope.config = {hideCircle: true};
+                $scope.hideCircle = true;
                 $scope.$digest();
                 var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR)
                 expect(el.length).toBe(0);
@@ -562,9 +577,9 @@ describe('Directive: TwSelect', function() {
                 var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR)
                 expect(el.length).toBe(1);
             });
-            it('should be possible to hide it through config', function() {
+            it('should be possible to hide it', function() {
                 $scope.ngModel = 'CIRCLE_IMAGE';
-                $scope.config = {hideCircle: true};
+                $scope.hideCircle = true;
                 $scope.$digest();
                 var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR)
                 expect(el.length).toBe(0);
@@ -577,9 +592,9 @@ describe('Directive: TwSelect', function() {
                 var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR)
                 expect(el.length).toBe(1);
             });
-            it('should be possible to hide it through config', function() {
+            it('should be possible to hide it', function() {
                 $scope.ngModel = 'CIRCLE_TEXT';
-                $scope.config = {hideCircle: true};
+                $scope.hideCircle = true;
                 $scope.$digest();
                 var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR)
                 expect(el.length).toBe(0);
@@ -602,7 +617,7 @@ describe('Directive: TwSelect', function() {
             expect(el.length).toBe(1);
         });
         it('should show currency flag', function() {
-            var el = directiveElement.find(OPTION_FLAG_SELECTOR)
+            var el = directiveElement.find(OPTION_CURRENCY_FLAG_SELECTOR)
             expect(el.length).toBe(1);
         });
         it('should show icon', function() {
@@ -623,6 +638,10 @@ describe('Directive: TwSelect', function() {
         });
     });
 
+    // TODO test config
+    // dropdown right grid sizes
+    // dropdown width
+
     function getCompiledDirectiveElement($scope, template) {
         if (!template) {
             template = " \
@@ -632,7 +651,15 @@ describe('Directive: TwSelect', function() {
                     placeholder='please choose' \
                     ng-model='ngModel' \
                     ng-required='ngRequired' \
-                    config='config'> \
+                    size='size' \
+                    dropdown-right='dropdownRight' \
+                    dropdown-width='dropdownWidth' \
+                    inverse='inverse' \
+                    hide-note='hideNote' \
+                    hide-secondary='hideSecondary' \
+                    hide-icon='hideIcon' \
+                    hide-currency='hideCurrency' \
+                    hide-circle='hideCircle'> \
                 </tw-select>";
         }
         var element = angular.element(template);
@@ -702,6 +729,8 @@ describe('Directive: TwSelect', function() {
     }];
 
     var OPTIONS_EXTRAS = [{
+        header: "header"
+    },{
         value: 'NOTE',
         label: 'Note text',
         note: 'Note text'
@@ -714,9 +743,9 @@ describe('Directive: TwSelect', function() {
         label: 'Icon',
         icon: "bank"
     },{
-        value: "CURRENCY",
+        value: "CURRENCY_FLAG",
         label: 'Currency flag',
-        currency: "GBP"
+        currency: "USD"
     },{
         value: "CIRCLE_IMAGE",
         label: 'Circle image',
@@ -729,8 +758,6 @@ describe('Directive: TwSelect', function() {
         value: "CIRCLE_TEXT",
         label: 'Circle text',
         circleText: "AZ"
-    },{
-        header: "header"
     },{
         value: "SEARCHABLE",
         label: "Unrelated",
