@@ -6,9 +6,6 @@ describe('Directive: TwDynamicForm', function() {
         $scope,
         directiveElement;
 
-    var MODEL = getModel();
-    var REQUIREMENTS = getRequirements();
-
     beforeEach(module('tw.form-components'));
 
     beforeEach(inject(function($injector) {
@@ -17,22 +14,25 @@ describe('Directive: TwDynamicForm', function() {
         $scope = $rootScope.$new();
     }));
 
-    describe('init', function() {
-        describe('basics', function() {
-            beforeEach(function() {
-                $scope.model = MODEL;
-                $scope.requirements = REQUIREMENTS
-                directiveElement = getCompiledDirectiveElement();
-            });
+    describe('with multiple requirements', function() {
+        var MODEL = getMultipleRequirementsModel();
+        var REQUIREMENTS = getMultipleRequirements();
+        
+        beforeEach(function() {
+            $scope.model = MODEL;
+            $scope.requirements = REQUIREMENTS
+            directiveElement = getCompiledDirectiveElement();
+        });
 
-            it('shows tab navigation if there are multiple requirements', function() {
+        describe('in tab navigation', function() {
+            it('shows a tab for every requirement', function() {
                 var navWrapper = directiveElement.find('.nav.nav-tabs');
                 var navTabs = navWrapper.find('li');
                 expect(navWrapper.length).toBe(1);
                 expect(navTabs.length).toBe(REQUIREMENTS.length);
             });
 
-            it('shows an active tab', function() {
+            it('shows one active tab based on the model', function() {
                 var navWrapper = directiveElement.find('.nav.nav-tabs');
                 var activeTab = navWrapper.find('li.active');
                 expect(activeTab.length).toBe(1);
@@ -40,9 +40,58 @@ describe('Directive: TwDynamicForm', function() {
                 var tabText = activeTab.find('a').text();
                 expect(tabText.trim()).toBe('iban');
             });
+        }); 
 
+        describe('in the content area', function() {
+            var activePane, formGroups;
+            var ibanFields = REQUIREMENTS[1].fields;
 
+            beforeEach(function() {
+                activePane = directiveElement.find('.tab-content .tab-pane.active');
+            });
+
+            it('has an active pane', function() {
+                expect(activePane.length).toBe(1);
+            });
+
+            describe('for form groups', function() {
+                beforeEach(function() {
+                    formGroups = activePane.find('.form-group');
+                });
+
+                it('shows one for every requirement field', function() {
+                    expect(formGroups.length).toBe(ibanFields.length);
+                });
+
+                it ('shows labels in each group from requirements', function() {
+                     for (var i = 0; i < ibanFields.length; i++) {
+                        var ibanField = ibanFields[i];
+                        var fieldElement = formGroups.eq(i);
+                        expect(fieldElement.length).toBe(1);
+
+                        var fieldLabel = fieldElement.find('label');
+                        expect(fieldLabel.text().trim()).toBe(ibanField.name);
+                    }
+                });
+
+                it('shows a tooltip if the field has it', function() {
+                     for (var i = 0; i < ibanFields.length; i++) {
+                        var ibanField = ibanFields[i];
+                        var fieldElement = formGroups.eq(i);
+                        expect(fieldElement.length).toBe(1);
+
+                        var tooltipElement = fieldElement.find('.help-block');
+                        if (ibanField.group[0].tooltip) {
+                            expect(tooltipElement.length).toBe(1);
+                        } else {
+                            expect(tooltipElement.length).toBe(0);
+                        }
+                    }
+                });
+            });
         });
+
+        
     });
 
     function getCompiledDirectiveElement() {
@@ -50,11 +99,10 @@ describe('Directive: TwDynamicForm', function() {
         var compiledElement = $compile(template)($scope);
 
         $scope.$digest();
-        //console.log(compiledElement);
         return compiledElement;
     }
 
-    function getModel() {
+    function getMultipleRequirementsModel() {
         return {
             type: "iban",
             legalType: "PRIVATE",
@@ -63,7 +111,7 @@ describe('Directive: TwDynamicForm', function() {
         }
     }
 
-    function getRequirements () {
+    function getMultipleRequirements() {
         return [
           {
             "type": "sort_code",
@@ -177,7 +225,8 @@ describe('Directive: TwDynamicForm', function() {
                         "key": "BUSINESS",
                         "name": "Business"
                       }
-                    ]
+                    ],
+                    "tooltip": "I am a nice tooltip that was created by fingers pressing buttons"
                   }
                 ]
               },
