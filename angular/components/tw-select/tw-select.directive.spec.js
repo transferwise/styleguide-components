@@ -638,9 +638,81 @@ describe('Directive: TwSelect', function() {
         });
     });
 
-    // TODO test config
-    // dropdown right grid sizes
-    // dropdown width
+    describe('when visual configuration is supplied', function() {
+        beforeEach(function() {
+            $scope.options = OPTIONS;
+            $scope.ngModel = null;
+            directiveElement = getCompiledDirectiveElement($scope);
+        });
+        it('should show small selct', function() {
+            $scope.size = 'sm';
+            $scope.$digest();
+            var el = directiveElement.find('.btn-sm')
+            expect(el.length).toBe(1);
+        });
+        it('should show large select', function() {
+            $scope.size = 'lg';
+            $scope.$digest();
+            var el = directiveElement.find('.btn-lg')
+            expect(el.length).toBe(1);
+        });
+        it('should show inverse select', function() {
+            $scope.inverse = true;
+            $scope.$digest();
+            var el = directiveElement.find('.btn-input-inverse')
+            expect(el.length).toBe(1);
+        });
+        
+        it('should dropdown right aligned on xs small screens and wider', function() {
+            $scope.dropdownRight = 'xs';
+            $scope.$digest();
+            var el = directiveElement.find('.dropdown-menu-xs-right')
+            expect(el.length).toBe(1);
+        });
+        it('should dropdown right aligned on sm small screens and wider', function() {
+            $scope.dropdownRight = 'sm';
+            $scope.$digest();
+            var el = directiveElement.find('.dropdown-menu-sm-right')
+            expect(el.length).toBe(1);
+        });
+        it('should dropdown right aligned on md small screens and wider', function() {
+            $scope.dropdownRight = 'md';
+            $scope.$digest();
+            var el = directiveElement.find('.dropdown-menu-md-right')
+            expect(el.length).toBe(1);
+        });
+        it('should dropdown right aligned on lg small screens and wider', function() {
+            $scope.dropdownRight = 'lg';
+            $scope.$digest();
+            var el = directiveElement.find('.dropdown-menu-lg-right')
+            expect(el.length).toBe(1);
+        });
+        it('should dropdown right aligned on xl small screens and wider', function() {
+            $scope.dropdownRight = 'xl';
+            $scope.$digest();
+            var el = directiveElement.find('.dropdown-menu-xl-right')
+            expect(el.length).toBe(1);
+        });
+
+        it('should show sm dropdown width', function() {
+            $scope.dropdownWidth = 'sm';
+            $scope.$digest();
+            var el = directiveElement.find('.dropdown-menu-sm')
+            expect(el.length).toBe(1);
+        });
+        it('should show md dropdown width', function() {
+            $scope.dropdownWidth = 'md';
+            $scope.$digest();
+            var el = directiveElement.find('.dropdown-menu-md')
+            expect(el.length).toBe(1);
+        });
+        it('should show lg dropdown width', function() {
+            $scope.dropdownWidth = 'lg';
+            $scope.$digest();
+            var el = directiveElement.find('.dropdown-menu-lg')
+            expect(el.length).toBe(1);
+        });
+    });
 
     function getCompiledDirectiveElement($scope, template) {
         if (!template) {
@@ -651,9 +723,9 @@ describe('Directive: TwSelect', function() {
                     placeholder='please choose' \
                     ng-model='ngModel' \
                     ng-required='ngRequired' \
-                    size='size' \
-                    dropdown-right='dropdownRight' \
-                    dropdown-width='dropdownWidth' \
+                    size='{{size}}' \
+                    dropdown-right='{{dropdownRight}}' \
+                    dropdown-width='{{dropdownWidth}}' \
                     inverse='inverse' \
                     hide-note='hideNote' \
                     hide-secondary='hideSecondary' \
