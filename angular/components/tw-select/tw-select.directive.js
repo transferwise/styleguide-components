@@ -21,36 +21,60 @@
 				options: '=',
 				name: '@',
 				placeholder: '@',
-				filter: '@'
+				filter: '@',
+				size: '@',
+				dropdownRight: '@',
+				dropdownWidth: '@',
+				inverse: '=',
+				hideNote: '=',
+				hideSecondary: '=',
+				hideIcon: '=',
+				hideCurrency: '=',
+				hideCircle: '='
 			},
 			template: " \
 				<div class='btn-group btn-block dropdown tw-select' aria-hidden='false'> \
 					<button type='button' class='btn btn-input dropdown-toggle' \
+						ng-class='{ \
+							\"btn-input-inverse\": $ctrl.inverse, \
+							\"btn-sm\": $ctrl.size === \"sm\", \
+							\"btn-lg\": $ctrl.size === \"lg\" \
+						}' \
 						data-toggle='dropdown' aria-expanded='false' \
 						ng-disabled='$ctrl.ngDisabled' \
 						ng-focus='$ctrl.buttonFocus()' \
 						tw-focusable> \
 						<span class='tw-select-selected' ng-if='$ctrl.ngModel != null'> \
-							<span class='circle circle-inverse pull-left circle-sm' ng-if='$ctrl.selected && $ctrl.selected.icon && $ctrl.selected.secondary'>\
-								 <i class='icon {{$ctrl.selected.icon}}'></i>\
-							</span>\
-							<i class='icon pull-left {{$ctrl.selected.icon}}' ng-if='$ctrl.selected && $ctrl.selected.icon && !$ctrl.selected.secondary'></i>\
-							<i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}} pull-left' \
-								ng-if='$ctrl.selected && $ctrl.selected.currency'> \
-							</i><span class='circle circle-inverse pull-left'  \
-								ng-class='{\"circle-sm\": $ctrl.selected.secondary, \"circle-xs\": !$ctrl.selected.secondary}' \
-								ng-if='$ctrl.selected.circleText || $ctrl.selected.circleImage || $ctrl.selected.circleIcon'> \
+							<span class='circle circle-inverse pull-xs-left circle-sm' ng-if='$ctrl.selected && $ctrl.selected.icon && $ctrl.selected.secondary'>\
+								 <i class='icon {{$ctrl.selected.icon}}'></i> \
+							</span> \
+							<span class='circle circle-inverse pull-xs-left'  \
+								ng-class='{\"circle-sm\": $ctrl.selected.secondary && !$ctrl.hideSecondary, \"circle-xs\": !$ctrl.selected.secondary || $ctrl.hideSecondary}' \
+								ng-if='($ctrl.selected.circleText || $ctrl.selected.circleImage || $ctrl.selected.circleIcon) && !$ctrl.hideCircle'> \
 								<span ng-if='$ctrl.selected.circleText'>{{$ctrl.selected.circleText}}</span> \
 								<img ng-if='$ctrl.selected.circleImage' ng-src='{{$ctrl.selected.circleImage}}' /> \
 								<i ng-if='$ctrl.selected.circleIcon' class='icon {{$ctrl.selected.circleIcon}}'></i> \
-							</span><span class='text-ellipsis'><span class='tw-select-label'>{{$ctrl.selected.label}}</span><span \
-							ng-if='$ctrl.selected.note' class='tw-select-note small m-l-1'>{{$ctrl.selected.note}}</span><span \
-							ng-if='$ctrl.selected.secondary' class='tw-select-secondary small text-ellipsis'>{{$ctrl.selected.secondary}}</span></span> \
+							</span><span class='text-ellipsis'><i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}}' \
+								ng-if='$ctrl.selected && $ctrl.selected.currency && !$ctrl.hideCurrency' \
+								></i><i class='icon {{$ctrl.selected.icon}}' \
+								ng-if='$ctrl.selected && $ctrl.selected.icon && !$ctrl.selected.secondary &&  !$ctrl.hideIcon' \
+								></i><span class='tw-select-label'>{{$ctrl.selected.label}}</span><span \
+							ng-if='$ctrl.selected.note && !$ctrl.hideNote' class='tw-select-note small m-l-1'>{{$ctrl.selected.note}}</span><span \
+							ng-if='$ctrl.selected.secondary && !$ctrl.hideSecondary' class='tw-select-secondary small secondary text-ellipsis'>{{$ctrl.selected.secondary}}</span></span> \
 						</span> \
 						<span class='form-control-placeholder' ng-if='$ctrl.ngModel == null'>{{$ctrl.placeholder}}</span> \
 						<span class='caret'></span> \
 					</button> \
-					<ul class='dropdown-menu' role='menu'> \
+					<ul class='dropdown-menu' role='menu' ng-class='{ \
+							\"dropdown-menu-xs-right\": $ctrl.dropdownRight === \"xs\", \
+							\"dropdown-menu-sm-right\": $ctrl.dropdownRight === \"sm\", \
+							\"dropdown-menu-md-right\": $ctrl.dropdownRight === \"md\", \
+							\"dropdown-menu-lg-right\": $ctrl.dropdownRight === \"lg\", \
+							\"dropdown-menu-xl-right\": $ctrl.dropdownRight === \"xl\", \
+							\"dropdown-menu-sm\": $ctrl.dropdownWidth === \"sm\", \
+							\"dropdown-menu-md\": $ctrl.dropdownWidth === \"md\", \
+							\"dropdown-menu-lg\": $ctrl.dropdownWidth === \"lg\" \
+						}'> \
 						<li ng-if='$ctrl.filter'> \
 							<a href='' class='tw-select-filter-link p-a-0' ng-focus='$ctrl.filterFocus()'> \
 								<div class='input-group'> \
@@ -86,14 +110,14 @@
 								ng-focus='$ctrl.optionFocus(option)' \
 								index='{{$index}}' \
 								class='tw-select-option-link' tw-focusable> \
-								<div class='circle circle-inverse pull-left circle-sm' ng-if='option.icon && option.secondary'>\
+								<div class='circle circle-inverse pull-xs-left circle-sm' ng-if='option.icon && option.secondary'>\
 									<i class='icon {{option.icon}}'></i>\
 								</div>\
-								<i class='icon {{option.icon}} pull-left' ng-if='option.icon && !option.secondary'></i> \
-								<i class='currency-flag currency-flag-{{option.currency | lowercase}} pull-left' ng-if='option.currency'> \
-								</i><span class='circle circle-inverse pull-left' ng-class='{\"circle-sm\": option.secondary, \"circle-xs\": !option.secondary}' \
+								<i class='icon {{option.icon}} pull-xs-left' ng-if='option.icon && !option.secondary'></i> \
+								<i class='currency-flag currency-flag-{{option.currency | lowercase}} pull-xs-left' ng-if='option.currency'> \
+								</i><span class='circle circle-inverse pull-xs-left' ng-class='{\"circle-sm\": option.secondary, \"circle-xs\": !option.secondary}' \
 									ng-if='option.circleText || option.circleImage || option.circleIcon'> \
-									<span ng-if='option.circleText'>{{option.circleText}}</span> \
+									<span class='tw-select-circle-text' ng-if='option.circleText'>{{option.circleText}}</span> \
 									<img ng-if='option.circleImage' ng-src='{{option.circleImage}}' /> \
 									<i ng-if='option.circleIcon' class='icon {{option.circleIcon}}'></i> \
 								</span>{{option.label}}<span \
@@ -202,7 +226,8 @@
 
 			return (option.label && option.label.toLowerCase().search(filterStringLower) >= 0) ||
 				(option.note && option.note.toLowerCase().search(filterStringLower) >= 0) ||
-				(option.secondary && option.secondary.toLowerCase().search(filterStringLower) >= 0);
+				(option.secondary && option.secondary.toLowerCase().search(filterStringLower) >= 0) ||
+				(option.searchable && option.searchable.toLowerCase().search(filterStringLower) >= 0);
 		}
 		function escapeRegExp(str) {
 			return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
@@ -416,11 +441,14 @@
 	}
 
 	function setDefaultIfRequired($ngModel, $ctrl, $element, $attrs) {
-		// If required and model empty, select first option
-		if (($ctrl.ngRequired || $attrs.required)
-			&& !$ctrl.ngModel
-			&& $ctrl.options[0]) {
-			selectOption($ngModel, $ctrl, $ctrl.options[0]);
+		// If required and model empty, select first option with value
+		if (($ctrl.ngRequired || $attrs.required) && !$ctrl.ngModel) {
+			for (var i = 0; i < $ctrl.options.length; i++) {
+				if ($ctrl.options[i].value) {
+					selectOption($ngModel, $ctrl, $ctrl.options[i]);
+					break;
+				}
+			}
 		}
 	}
 
@@ -458,8 +486,9 @@
 				return;
 			}
 			if (option.label.toLowerCase().indexOf(searchTerm) === 0 ||
-				option.note && option.note.toLowerCase().indexOf(searchTerm) === 0||
-				option.secondary && option.secondary.toLowerCase().indexOf(searchTerm) === 0) {
+				option.note && option.note.toLowerCase().indexOf(searchTerm) === 0 ||
+				option.secondary && option.secondary.toLowerCase().indexOf(searchTerm) === 0||
+				option.searchable && option.searchable.toLowerCase().indexOf(searchTerm) === 0) {
 				selectOption($ngModel, $ctrl, option);
 				found = true;
 			}
