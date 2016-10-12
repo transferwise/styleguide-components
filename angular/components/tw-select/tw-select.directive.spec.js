@@ -61,7 +61,7 @@ describe('Directive: TwSelect', function() {
                 });
                 it('should preselect ngModel option', function() {
                     var selectedTextElement = directiveElement.find(SELECTED_LABEL_SELECTOR)[0];
-                    expect(selectedTextElement.innerText.trim()).toBe('Two');
+                    expect($(selectedTextElement).text().trim()).toBe('Two');
                 });
                 it('should not change ngModel if set', function() {
                     expect($scope.ngModel).toBe('2');
@@ -98,7 +98,7 @@ describe('Directive: TwSelect', function() {
                 });
                 it('should preselect ngModel option', function() {
                     var selectedTextElement = directiveElement.find(SELECTED_LABEL_SELECTOR)[0];
-                    expect(selectedTextElement.innerText.trim()).toBe('Two');
+                    expect($(selectedTextElement).text().trim()).toBe('Two');
                 });
                 it('should not change ngModel if set', function() {
                     expect($scope.ngModel).toBe(2);
@@ -137,7 +137,7 @@ describe('Directive: TwSelect', function() {
                 });
                 it('should preselect ngModel option', function() {
                     var selectedTextElement = directiveElement.find(SELECTED_LABEL_SELECTOR)[0];
-                    expect(selectedTextElement.innerText.trim()).toBe('Two');
+                    expect($(selectedTextElement).text().trim()).toBe('Two');
                 });
                 it('should not change ngModel if set', function() {
                     expect($scope.ngModel).toEqual({id: 2});
@@ -182,7 +182,7 @@ describe('Directive: TwSelect', function() {
             });
             it('should show first option', function() {
                 var selectedTextElement = directiveElement.find(SELECTED_LABEL_SELECTOR)[0];
-                expect(selectedTextElement.innerText.trim()).toBe('Note text');
+                expect($(selectedTextElement).text().trim()).toBe('Note text');
             });
         });
     });
@@ -236,7 +236,7 @@ describe('Directive: TwSelect', function() {
 
             var selectedOptionElement = selectedElements[0];
             expect($scope.ngModel).toBe('1');
-            expect(selectedOptionElement.innerText.trim()).toBe('One');
+            expect($(selectedOptionElement).text().trim()).toBe('One');
         });
         it('should select first matching option beginning with pressed letter', function() {
             directiveElement.find('.btn').trigger(keypress('T'));
@@ -245,7 +245,7 @@ describe('Directive: TwSelect', function() {
 
             var selectedOptionElement = selectedElements[0];
             expect($scope.ngModel).toBe('2');
-            expect(selectedOptionElement.innerText.trim()).toBe('Two');
+            expect($(selectedOptionElement).text().trim()).toBe('Two');
         });
         it('should select option beginning with pressed letter case insensitively', function() {
             directiveElement.find('.btn').trigger(keypress('t'));
@@ -254,7 +254,7 @@ describe('Directive: TwSelect', function() {
 
             var selectedOptionElement = selectedElements[0];
             expect($scope.ngModel).toBe('2');
-            expect(selectedOptionElement.innerText.trim()).toBe('Two');
+            expect($(selectedOptionElement).text().trim()).toBe('Two');
         });
         it('should append to existing search string to match on subsequent letters', function() {
             directiveElement.find('.btn').trigger(keypress('T')).trigger(keypress('h'));
@@ -263,7 +263,7 @@ describe('Directive: TwSelect', function() {
 
             var selectedOptionElement = selectedElements[0];
             expect($scope.ngModel).toBe('3');
-            expect(selectedOptionElement.innerText.trim()).toBe('Three');
+            expect($(selectedOptionElement).text().trim()).toBe('Three');
         });
         it('should try a new search if appending to existing search produces no match', function() {
             directiveElement.find('.btn').trigger(keypress('T')).trigger(keypress('o'));
@@ -272,7 +272,7 @@ describe('Directive: TwSelect', function() {
 
             var selectedOptionElement = selectedElements[0];
             expect($scope.ngModel).toBe('1');
-            expect(selectedOptionElement.innerText.trim()).toBe('One');
+            expect($(selectedOptionElement).text().trim()).toBe('One');
         });
         it('should not use new search if appending to existing search still produces a match', function() {
             directiveElement.find('.btn').trigger(keypress('T')).trigger(keypress('w')).trigger(keypress('o'));
@@ -281,13 +281,13 @@ describe('Directive: TwSelect', function() {
 
             var selectedOptionElement = selectedElements[0];
             expect($scope.ngModel).not.toBe('1');
-            expect(selectedOptionElement.innerText.trim()).not.toBe('One');
+            expect($(selectedOptionElement).text().trim()).not.toBe('One');
         });
         it('should open dropdown and select first option when down arrow pressed', function() {
             directiveElement.find('.btn').focus().triggerHandler(keypress('ArrowDown'));
             var selectedOptionElement = directiveElement.find('.active')[0];
             expect($scope.ngModel).toBe('1');
-            expect(selectedOptionElement.innerText.trim()).toBe('One');
+            expect($(selectedOptionElement).text().trim()).toBe('One');
 
             // dropdown.js not working in tests
             //var buttonGroupElement = directiveElement.find('.btn-group');
@@ -307,13 +307,13 @@ describe('Directive: TwSelect', function() {
                 // Dropdown.js not working in tests
                 var secondLink = directiveElement.find('.active a')[0];
                 //expect($scope.ngModel).toBe('2');
-                //expect(secondLink.innerText.trim()).toBe('Two');
+                //expect($(secondLink).text.trim()).toBe('Two');
             });
             it('should select item above when up arrow pressed', function() {
                 directiveElement.find('.btn').focus().triggerHandler(keypress('ArrowDown'));
                 var selectedOptionElement = directiveElement.find('.active')[0];
                 expect($scope.ngModel).toBe('1');
-                expect(selectedOptionElement.innerText.trim()).toBe('One');
+                expect($(selectedOptionElement).text().trim()).toBe('One');
             });
         });
     });
