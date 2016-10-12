@@ -4,7 +4,9 @@ describe('Directive: TwDynamicForm', function() {
     var $compile,
         $rootScope,
         $scope,
-        directiveElement;
+        directiveElement,
+        MODEL,
+        REQUIREMENTS;
 
     beforeEach(module('tw.form-components'));
 
@@ -14,36 +16,69 @@ describe('Directive: TwDynamicForm', function() {
         $scope = $rootScope.$new();
     }));
 
-    describe('with multiple requirements', function() {
-        var MODEL = getMultipleRequirementsModel();
-        var REQUIREMENTS = getMultipleRequirements();
-        
+    describe('with multiple requirements', function() {        
         beforeEach(function() {
-            $scope.model = MODEL;
-            $scope.requirements = REQUIREMENTS
+            $scope.model = getMultipleRequirementsModel();
+            $scope.requirements = getMultipleRequirements();
             directiveElement = getCompiledDirectiveElement();
         });
 
         describe('in tab navigation', function() {
-            it('shows a tab for every requirement', function() {
-                var navWrapper = directiveElement.find('.nav.nav-tabs');
-                var navTabs = navWrapper.find('li');
-                expect(navWrapper.length).toBe(1);
-                expect(navTabs.length).toBe(REQUIREMENTS.length);
+            var navWrapper, navTabs;
 
-                for (var i = 0; i < REQUIREMENTS.length; i++) {
-                    var tab = navTabs.eq(i);
-                    expect(tab.text().trim()).toBe(REQUIREMENTS[i].type);
-                }
+            beforeEach(function() {
+                navWrapper = directiveElement.find('.nav.nav-tabs');
+                navTabs = navWrapper.find('li');
             });
 
-            it('adds an active class to a tab if the model type matches the requirement type', function() {
-                var navWrapper = directiveElement.find('.nav.nav-tabs');
-                var navTabs = navWrapper.find('li');
-                
-                for (var i = 0; i < REQUIREMENTS.length; i++) {
+            it('shows a tab for every requirement', function() {
+                expect(navWrapper.length).toBe(1);
+                expect(navTabs.length).toBe($scope.requirements.length);
+            });
+
+            it('formats the tab names correctly', function() {
+                expect(navWrapper.length).toBe(1);
+                expect(navTabs.length).toBe($scope.requirements.length);
+
+                var testObjects = [
+                    {
+                      first: 'words_with_underscores', 
+                      firstResult: 'Words with underscores',
+                      second: 'two_words',
+                      secondResult: 'Two words'
+                    },
+                    {
+                      first: 'woRds_With_underscores', 
+                      firstResult: 'Words with underscores',
+                      second: 'two words',
+                      secondResult: 'Two words'
+                    },
+                    {
+                      first: '', 
+                      firstResult: '',
+                      second: '_',
+                      secondResult: ''
+                    },
+                ];
+
+                testObjects.forEach(function(testObject) {
+                    $scope.requirements[0].type = testObject.first;
+                    $scope.requirements[1].type = testObject.second;
+
+                    var expectedResults = [testObject.firstResult, testObject.secondResult];
+                    $scope.$digest();
+
+                    for (var i = 0; i < $scope.requirements.length; i++) {
+                        var tab = navTabs.eq(i);
+                        expect(tab.text().trim()).toBe(expectedResults[i]);
+                    }
+                });
+            });
+
+            it('adds an active class to a tab if the model type matches the requirement type', function() {                
+                for (var i = 0; i < $scope.requirements.length; i++) {
                     var tab = navTabs.eq(i);
-                    if (MODEL.type === REQUIREMENTS[i].type) {
+                    if ($scope.model.type === $scope.requirements[i].type) {
                         expect(tab.hasClass('active')).toBe(true);
                     } else {
                         expect(tab.hasClass('active')).toBe(false);
@@ -55,11 +90,11 @@ describe('Directive: TwDynamicForm', function() {
         }); 
 
         describe('in the content area', function() {
-            var activePane, formGroups;
-            var ibanFields = REQUIREMENTS[1].fields;
+            var activePane, ibanFields, formGroups;
 
             beforeEach(function() {
                 activePane = directiveElement.find('.tab-content .tab-pane.active');
+                ibanFields = $scope.requirements[1].fields;
             });
 
             it('has an active pane', function() {

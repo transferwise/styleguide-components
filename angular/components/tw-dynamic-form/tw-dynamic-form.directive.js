@@ -22,7 +22,7 @@
 				<li ng-repeat='requirementType in $ctrl.requirements' \
 					ng-class='{\"active\": $ctrl.model.type === requirementType.type}'> \
 					<a href='' ng-click='$ctrl.switchTab(requirementType.type)'> \
-						{{requirementType.type}} \
+						{{$ctrl.getTabName(requirementType.type)}} \
 					</a> \
 				</li> \
 			</ul> \
@@ -88,6 +88,7 @@
 	function TwDynamicFormController($scope, $http) {
 		var $ctrl = this;
 		$ctrl.switchTab = switchTab;
+		$ctrl.getTabName = getTabName;
 
 		function init() {
 			if (!$ctrl.model) {
@@ -177,6 +178,15 @@
 			$ctrl.model.type = newType;
 
 			removeObsoletePropertiesFromModel(oldRequirements, newRequirements);
+		}
+
+		function getTabName(tabType) {
+			if (tabType && tabType.length > 0) {
+				var tabNameWithSpaces = tabType.toLowerCase().split('_').join(' '); // String.replace method only replaces first instance
+				return tabNameWithSpaces.charAt(0).toUpperCase() + tabNameWithSpaces.slice(1);
+			} else {
+				return '';
+			}
 		}
 
 		function removeObsoletePropertiesFromModel(oldRequirements, newRequirements) {
