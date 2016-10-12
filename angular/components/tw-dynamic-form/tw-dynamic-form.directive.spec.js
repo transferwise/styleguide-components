@@ -1,6 +1,6 @@
 'use strict';
 
-fdescribe('Directive: TwDynamicForm', function() {
+describe('Directive: TwDynamicForm', function() {
     var $compile,
         $rootScope,
         $scope,
@@ -37,12 +37,20 @@ fdescribe('Directive: TwDynamicForm', function() {
                 }
             });
 
-            it('shows second tab as active due to the model', function() {
+            it('adds an active class to a tab if the model type matches the requirement type', function() {
                 var navWrapper = directiveElement.find('.nav.nav-tabs');
                 var navTabs = navWrapper.find('li');
-                var activeTab = navTabs.eq(1);
+                
+                for (var i = 0; i < REQUIREMENTS.length; i++) {
+                    var tab = navTabs.eq(i);
+                    if (MODEL.type === REQUIREMENTS[i].type) {
+                        expect(tab.hasClass('active')).toBe(true);
+                    } else {
+                        expect(tab.hasClass('active')).toBe(false);
+                    }
+                }
 
-                expect(activeTab.hasClass('active')).toBe(true);
+                
             });
         }); 
 
