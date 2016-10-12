@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: TwDynamicForm', function() {
+fdescribe('Directive: TwDynamicForm', function() {
     var $compile,
         $rootScope,
         $scope,
@@ -30,15 +30,19 @@ describe('Directive: TwDynamicForm', function() {
                 var navTabs = navWrapper.find('li');
                 expect(navWrapper.length).toBe(1);
                 expect(navTabs.length).toBe(REQUIREMENTS.length);
+
+                for (var i = 0; i < REQUIREMENTS.length; i++) {
+                    var tab = navTabs.eq(i);
+                    expect(tab.text().trim()).toBe(REQUIREMENTS[i].type);
+                }
             });
 
-            it('shows one active tab based on the model', function() {
+            it('shows second tab as active due to the model', function() {
                 var navWrapper = directiveElement.find('.nav.nav-tabs');
-                var activeTab = navWrapper.find('li.active');
-                expect(activeTab.length).toBe(1);
+                var navTabs = navWrapper.find('li');
+                var activeTab = navTabs.eq(1);
 
-                var tabText = activeTab.find('a').text();
-                expect(tabText.trim()).toBe('iban');
+                expect(activeTab.hasClass('active')).toBe(true);
             });
         }); 
 
