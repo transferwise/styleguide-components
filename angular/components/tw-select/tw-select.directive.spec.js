@@ -108,8 +108,12 @@ describe('Directive: TwSelect', function() {
                     var placeholderElement = directiveElement.find('.form-control-placeholder');
                     expect(placeholderElement.length).toBe(1);
                 });
-                // TODO is this correct?
                 it('should not change ngModel', function() {
+                    expect($scope.ngModel).toBe('99');
+                });
+                it('should not change ngModel even if ngRequired', function() {
+                    $scope.ngModel = '99';
+                    $scope.$digest();
                     expect($scope.ngModel).toBe('99');
                 });
             });
