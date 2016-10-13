@@ -35,12 +35,6 @@
 	}
 
 	function TwDateLink(scope, element, attrs, ngModel) {
-		// Done in controller
-		//scope.$watch('vm.ngModel', function(newValue, oldValue) {
-		//	if (newValue !== oldValue) {
-		//		ngModel.$setDirty();
-		//	}
-		//});
 		var dayTouched, yearTouched;
 
 		element.find('input[name=day]').on('blur', function() {
@@ -103,7 +97,20 @@
 
 	var templateAsString = " \
 			<div class='row'> \
-				<div class='col-sm-3'> \
+				<div class='col-sm-5 tw-date-month-column' ng-if='vm.monthBeforeDay'> \
+					<label class='sr-only' for='month-{{::uniqueId}}'>Month</label> \
+					<tw-select \
+						name='month' \
+						class='tw-date-month' \
+						id='month-{{::uniqueId}}' \
+						ng-model='vm.month' \
+						ng-change='vm.updateDateModelAndValidationClasses()' \
+						ng-required='vm.dateRequired' \
+						ng-disabled='vm.dateDisabled' \
+						options='vm.dateMonths'> \
+					</tw-select> \
+				</div> \
+				<div class='col-sm-3 tw-date-day-column'> \
 					<label class='sr-only' for='day-{{::uniqueId}}'>Day</label> \
 					<input type='number' \
 						name='day' \
@@ -118,7 +125,7 @@
 						ng-required='vm.dateRequired' \
 						tw-focusable /> \
 				</div> \
-				<div class='col-sm-5'> \
+				<div class='col-sm-5 tw-date-month-column' ng-if='!vm.monthBeforeDay'> \
 					<label class='sr-only' for='month-{{::uniqueId}}'>Month</label> \
 					<tw-select \
 						name='month' \
@@ -131,7 +138,7 @@
 						options='vm.dateMonths'> \
 					</tw-select> \
 				</div> \
-				<div class='col-sm-4'> \
+				<div class='col-sm-4 tw-date-year-column'> \
 					<label class='sr-only' for='year-{{::uniqueId}}'>Year</label> \
 					<input type='number' \
 						id='year-{{::uniqueId}}' \
@@ -149,29 +156,4 @@
 						tw-focusable /> \
 				</div> \
 			</div>";
-
-	/*
-
-<tw-select \
-	name='month' \
-	class='tw-date-month' \
-	id='month-{{::uniqueId}}' \
-	ng-model='vm.month' \
-	ng-change='vm.updateDateModelAndValidationClasses()' \
-	ng-required='vm.dateRequired' \
-	ng-disabled='vm.dateDisabled' \
-	options='vm.dateMonths'> \
-</tw-select> \
-
-<select name='month' \
-	id='month-{{::uniqueId}}' \
-	class='form-control tw-date-month' \
-	ng-model='vm.month' \
-	ng-change='vm.updateDateModelAndValidationClasses()' \
-	ng-options='month.value as month.label for month in vm.dateMonths' \
-	ng-disabled='vm.dateDisabled' \
-	ng-required='vm.dateRequired' \
-	autocomplete='off'> \
-</select> \
-	*/
 })(window.angular);

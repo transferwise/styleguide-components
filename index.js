@@ -29,6 +29,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 		],
 		options: {
 			standard: [
+				{value: 0, label: 'Zero'},
 				{value: 1, label: 'One'},
 				{value: 2, label: 'Two'},
 				{value: 3, label: 'Three'}

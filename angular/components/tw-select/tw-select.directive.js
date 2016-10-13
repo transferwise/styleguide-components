@@ -44,7 +44,7 @@
 						ng-disabled='$ctrl.ngDisabled' \
 						ng-focus='$ctrl.buttonFocus()' \
 						tw-focusable> \
-						<span class='tw-select-selected' ng-if='$ctrl.ngModel != null'> \
+						<span class='tw-select-selected' ng-if='$ctrl.selected'> \
 							<span class='circle circle-inverse pull-xs-left circle-sm' ng-if='$ctrl.selected && $ctrl.selected.icon && $ctrl.selected.secondary'>\
 								 <i class='icon {{$ctrl.selected.icon}}'></i> \
 							</span> \
@@ -62,7 +62,7 @@
 							ng-if='$ctrl.selected.note && !$ctrl.hideNote' class='tw-select-note small m-l-1'>{{$ctrl.selected.note}}</span><span \
 							ng-if='$ctrl.selected.secondary && !$ctrl.hideSecondary' class='tw-select-secondary small secondary text-ellipsis'>{{$ctrl.selected.secondary}}</span></span> \
 						</span> \
-						<span class='form-control-placeholder' ng-if='$ctrl.ngModel == null'>{{$ctrl.placeholder}}</span> \
+						<span class='form-control-placeholder' ng-if='!$ctrl.selected'>{{$ctrl.placeholder}}</span> \
 						<span class='caret'></span> \
 					</button> \
 					<ul class='dropdown-menu' role='menu' ng-class='{ \
@@ -86,12 +86,12 @@
 								</div> \
 							</a> \
 						</li> \
-						<li ng-class='{active: !$ctrl.ngModel}' \
+						<li ng-class='{active: !$ctrl.selected}' \
 							ng-if='$ctrl.placeholder && !$ctrl.ngRequired && !$ctrl.filter'> \
 							<a href='' \
 								ng-click='$ctrl.placeholderClick()' \
 								ng-focus='$ctrl.placeholderFocus()' \
-								value='' class='tw-select-placeholder' tw-focusable> \
+								class='tw-select-placeholder' tw-focusable> \
 								{{$ctrl.placeholder}} \
 							</a> \
 						</li> \
@@ -411,7 +411,7 @@
 	}
 
 	function preSelectModelValue($ngModel, $ctrl, options) {
-		if ($ctrl.ngModel) {
+		if (isValidModel($ctrl.ngModel)) {
 			var option = findOptionFromValue($ctrl.options, $ctrl.ngModel);
 			selectOption($ngModel, $ctrl, option);
 		}
@@ -442,9 +442,9 @@
 
 	function setDefaultIfRequired($ngModel, $ctrl, $element, $attrs) {
 		// If required and model empty, select first option with value
-		if (($ctrl.ngRequired || $attrs.required) && !$ctrl.ngModel) {
+		if (($ctrl.ngRequired || $attrs.required) && !isValidModel($ctrl.ngModel)) {
 			for (var i = 0; i < $ctrl.options.length; i++) {
-				if ($ctrl.options[i].value) {
+				if (isValidModel($ctrl.options[i].value)) {
 					selectOption($ngModel, $ctrl, $ctrl.options[i]);
 					break;
 				}
@@ -494,5 +494,9 @@
 			}
 		});
 		return found;
+	}
+
+	function isValidModel(value) {
+		return value || value === 0 || value === false;
 	}
 })(window.angular);
