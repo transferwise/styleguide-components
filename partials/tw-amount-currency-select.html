@@ -19,11 +19,10 @@
                 currency="vm.model.components.currencySelected"
                 currencies="vm.select.options.currencySelect"
                 on-currency-change="vm.log('currency input value changed:' + vm.model.components.currencySelected)"
-                currency-read-only="vm.amountCurrencySelect.currencyReadOnly"
 
                 custom-action-label="vm.amountCurrencySelect.customActionLabel"
                 on-custom-action="vm.log('Custom Action Called')"
-                
+
                 error="vm.amountCurrencySelect.hasError"
                 />
                 <div class="error-messages">
@@ -45,7 +44,6 @@
     currency="{{ vm.model.components.currencySelected }}"
     currencies="{{ vm.select.options.currencySelect }}"
     on-currency-change="vm.log('currency input value changed:' + vm.model.components.currencySelected)"
-    currency-read-only="{{ vm.amountCurrencySelect.currencyReadOnly }}"
     custom-action-label="{{ vm.amountCurrencySelect.customActionLabel }}"
     on-custom-action="vm.log('Custom Action Called')"
     error="{{ vm.amountCurrencySelect.hasError }}"
@@ -75,17 +73,6 @@
                     <label>
                         <tw-checkbox ng-model="vm.amountCurrencySelect.amountReadOnly" ng-init="vm.amountCurrencySelect.amountReadOnly = false" />
                         Is amount read only?
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label">
-                    Currency Read only?
-                </label>
-                <div class="checkbox">
-                    <label>
-                        <tw-checkbox ng-model="vm.amountCurrencySelect.currencyReadOnly" ng-init="vm.amountCurrencySelect.currencyReadOnly = false" />
-                        Is currency read only?
                     </label>
                 </div>
             </div>

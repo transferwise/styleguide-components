@@ -23,15 +23,14 @@
 				label: '=',
 				amountReadOnly: '=',
 				onAmountChange: '&',
-				
+
 				currency: '=',
 				currencies: '=',
 				onCurrencyChange: '&',
-				currencyReadOnly: '=',
 
 				customActionLabel: '=',
 				onCustomAction: '&',
-				
+
 				error: '='
 			},
 		};
@@ -52,8 +51,7 @@
 				ng-change="$ctrl.changedAmount()"  \
 				ng-model="$ctrl.ngModel" \
 				ng-disabled="$ctrl.amountReadOnly" /> \
-			<span class="input-group-addon" ng-if="$ctrl.currencyReadOnly">{{ $ctrl.currency | uppercase }}</span> \
-			<span class="input-group-btn" ng-if="!$ctrl.currencyReadOnly">  \
+			<span class="input-group-btn">  \
 				<tw-select \
 					ng-model="$ctrl.currency" \
 					ng-required="true" \
