@@ -185,4 +185,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 })
 .directive('twFocusableDocs', function() {
 	return {templateUrl: 'partials/tw-focusable.html'};
+})
+.directive('twCurrencyFormatDocs', function() {
+	return {templateUrl: 'partials/tw-currency-format.html'};
 });
