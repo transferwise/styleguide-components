@@ -52,6 +52,10 @@
 						currency: currency,
 						symbol: ''
 					})(0).trim();
+
+					// TODO if we are happy to use locale we use this over OSREC
+					//decimalSeparator = $locale.NUMBER_FORMATS.DECIMAL_SEP,
+					//thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
 					return zeroCase[1];
 				}
 
