@@ -53,7 +53,6 @@ describe('Directive: TwDate', function() {
             });
             it('should set month control to first value', function () {
                 expect(element.find(MONTH_SELECTOR).val()).toEqual('0');
-                //console.log(element.find('.tw-select-selected')[0]);
                 expect(element.find('.tw-select-selected').text().trim()).toEqual('January');
             });
             it('should set year control to empty', function () {
