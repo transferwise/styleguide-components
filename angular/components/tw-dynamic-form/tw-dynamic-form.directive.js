@@ -11,7 +11,8 @@
 			//replace: true,
 			scope: {
 				requirements: '=',
-				model: '='
+				model: '=',
+				onRefreshRequirements: '&'
 			},
 			controller: ['$scope', '$http', TwDynamicFormController],
 			controllerAs : '$ctrl',
@@ -51,7 +52,7 @@
 										placeholder='{{field.placeholder}}' \
 										options='field.valuesAllowed' \
 										ng-model='$ctrl.model[field.key]' \
-										ng-change='$ctrl.onChange(field)' \
+										ng-blur='$ctrl.onBlur(field)' \
 										ng-required='field.required' \
 										ng-disabled='field.disabled' \
 										ng-minlength='field.minLength' \
@@ -107,17 +108,21 @@
 			// TODO can we add asyncvalidator here? - prob not
 		}
 
-		$ctrl.onChange = function(field) {
-			if (!field.refreshOnChangeGUESS) {
+		/**
+		 * Perform the refreshRequirementsOnChange check on blur
+		 */
+		$ctrl.onBlur = function(field) {
+			if (!field.refreshRequirementsOnChange) {
 				return;
 			}
-			// POST the current model to the requirements endpoint and refresh
-			// the form with updated values
-			$http.post($ctrl.requirementsUrl, $ctrl.model).then(function(requirements) {
-				$ctrl.requirements = requirements;
-			}).catch(function() {
-				// TODO
-			});
+			// TODO disabled the form while we refresh requirements?
+
+			if (false && $ctrl.onRefreshRequirements) {
+				// Should post the current model back to the requirements end
+				// point and update the requirements.
+				// TODO Can we handle this internally?
+				$ctrl.onRefreshRequirements();
+			}
 		};
 
 		function prepRequirements(types) {
