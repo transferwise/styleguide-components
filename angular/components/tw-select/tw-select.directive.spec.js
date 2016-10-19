@@ -52,19 +52,16 @@ describe('Directive: TwSelect', function() {
             });
         });
 
-        describe('when ngModel supplied', function() {
-            describe('as string', function() {
+        describe('when intialised with an ngModel', function() {
+            describe('as non-empty string that matches an option', function() {
                 beforeEach(function() {
                     $scope.options = OPTIONS;
                     $scope.ngModel = '2';
                     directiveElement = getCompiledDirectiveElement($scope);
                 });
-                it('should preselect ngModel option', function() {
+                it('should show selected text', function() {
                     var selectedTextElement = directiveElement.find(SELECTED_LABEL_SELECTOR)[0];
                     expect($(selectedTextElement).text().trim()).toBe('Two');
-                });
-                it('should not change ngModel if set', function() {
-                    expect($scope.ngModel).toBe('2');
                 });
                 it('should not show placeholder', function() {
                     $scope.ngRequired = true;
@@ -72,31 +69,61 @@ describe('Directive: TwSelect', function() {
                     var placeholerElement = directiveElement.find('.form-control-placeholder');
                     expect(placeholerElement.length).toBe(0);
                 });
-
-                it('should not show placeholder when ngModel is "0"', function() {
-                    $scope.ngModel = '0';
-                    directiveElement = getCompiledDirectiveElement($scope);
-                    var placeholderElement = directiveElement.find('.form-control-placeholder');
-                    expect(placeholderElement.length).toBe(0);
+                it('should not change ngModel', function() {
+                    expect($scope.ngModel).toBe('2');
                 });
-                it('should show selected when ngModel is "0"', function() {
-                    $scope.ngModel = '0';
-                    directiveElement = getCompiledDirectiveElement($scope);
-                    var selectedElement = directiveElement.find(SELECTED_LABEL_SELECTOR);
-                    expect(selectedElement.length).toBe(1);
-                });
-
                 it('should set the value of hidden control', function() {
                     expect(directiveElement.find(SELECT_SELECTOR).val()).toBe('2');
                 });
             });
-            describe('as number', function() {
+            describe('as empty string', function() {
+                beforeEach(function() {
+                    $scope.options = OPTIONS;
+                    $scope.ngModel = '';
+                    directiveElement = getCompiledDirectiveElement($scope);
+                });
+                it('should not show selected text', function() {
+                    var selectedElement = directiveElement.find(SELECTED_LABEL_SELECTOR);
+                    expect(selectedElement.length).toBe(0);
+                });
+                it('should show placeholder', function() {
+                    var placeholderElement = directiveElement.find('.form-control-placeholder');
+                    expect(placeholderElement.length).toBe(1);
+                });
+                it('should not change ngModel', function() {
+                    expect($scope.ngModel).toBe('');
+                });
+            });
+            describe('as string that does not match an option', function() {
+                beforeEach(function() {
+                    $scope.options = OPTIONS;
+                    $scope.ngModel = '99';
+                    directiveElement = getCompiledDirectiveElement($scope);
+                });
+                it('should not show selected text', function() {
+                    var selectedElement = directiveElement.find(SELECTED_LABEL_SELECTOR);
+                    expect(selectedElement.length).toBe(0);
+                });
+                it('should show placeholder', function() {
+                    var placeholderElement = directiveElement.find('.form-control-placeholder');
+                    expect(placeholderElement.length).toBe(1);
+                });
+                it('should not change ngModel', function() {
+                    expect($scope.ngModel).toBe('99');
+                });
+                it('should not change ngModel even if ngRequired', function() {
+                    $scope.ngModel = '99';
+                    $scope.$digest();
+                    expect($scope.ngModel).toBe('99');
+                });
+            });
+            describe('as non-zero number that matches an option', function() {
                 beforeEach(function() {
                     $scope.options = OPTIONS_NUMERIC;
                     $scope.ngModel = 2;
                     directiveElement = getCompiledDirectiveElement($scope);
                 });
-                it('should preselect ngModel option', function() {
+                it('should show selected text', function() {
                     var selectedTextElement = directiveElement.find(SELECTED_LABEL_SELECTOR)[0];
                     expect($(selectedTextElement).text().trim()).toBe('Two');
                 });
@@ -104,49 +131,50 @@ describe('Directive: TwSelect', function() {
                     expect($scope.ngModel).toBe(2);
                 });
                 it('should not show placeholder', function() {
-                    $scope.ngRequired = true;
-                    directiveElement = getCompiledDirectiveElement($scope);
                     var placeholerElement = directiveElement.find('.form-control-placeholder');
                     expect(placeholerElement.length).toBe(0);
                 });
-
-                it('should not show placeholder when ngModel is 0', function() {
-                    $scope.ngModel = 0;
-                    directiveElement = getCompiledDirectiveElement($scope);
-                    var placeholderElement = directiveElement.find('.form-control-placeholder');
-                    expect(placeholderElement.length).toBe(0);
-                });
-                it('should show selected when ngModel is 0', function() {
-                    $scope.ngModel = 0;
-                    directiveElement = getCompiledDirectiveElement($scope);
-                    var selectedElement = directiveElement.find(SELECTED_LABEL_SELECTOR);
-                    expect(selectedElement.length).toBe(1);
-                });
-
                 it('should set the value of hidden control', function() {
                     // always string...
                     expect(directiveElement.find(SELECT_SELECTOR).val()).toBe('2');
                 });
-            })
+            });
+            describe('as numeric zero that matches an option', function() {
+                beforeEach(function() {
+                    $scope.options = OPTIONS_NUMERIC;
+                    $scope.ngModel = 0;
+                    directiveElement = getCompiledDirectiveElement($scope);
+                });
+                it('should show matching option label', function() {
+                    var selectedTextElement = directiveElement.find(SELECTED_LABEL_SELECTOR)[0];
+                    expect($(selectedTextElement).text().trim()).toBe(OPTIONS_NUMERIC[0].label);
+                });
+                it('should not show placeholder', function() {
+                    var placeholderElement = directiveElement.find('.form-control-placeholder');
+                    expect(placeholderElement.length).toBe(0);
+                });
+                it('should not change to a non-zero value', function() {
+                    expect($scope.ngModel).toBe(0);
+                });
+            });
 
-            describe('as object', function() {
+            describe('as object that matches an option', function() {
                 beforeEach(function() {
                     $scope.options = OPTIONS_OBJECTS;
                     $scope.ngModel = {id: 2};
                     directiveElement = getCompiledDirectiveElement($scope);
                 });
-                it('should preselect ngModel option', function() {
+                it('should show selected text', function() {
                     var selectedTextElement = directiveElement.find(SELECTED_LABEL_SELECTOR)[0];
                     expect($(selectedTextElement).text().trim()).toBe('Two');
                 });
-                it('should not change ngModel if set', function() {
-                    expect($scope.ngModel).toEqual({id: 2});
-                });
                 it('should not show placeholder', function() {
-                    $scope.ngRequired = true;
                     directiveElement = getCompiledDirectiveElement($scope);
                     var placeholerElement = directiveElement.find('.form-control-placeholder');
                     expect(placeholerElement.length).toBe(0);
+                });
+                it('should not change ngModel', function() {
+                    expect($scope.ngModel).toEqual({id: 2});
                 });
                 it('should set the value of hidden control', function() {
                     // always string...
@@ -168,6 +196,10 @@ describe('Directive: TwSelect', function() {
             it('should not set ngModel', function() {
                 expect($scope.ngModel).toBe(null);
             });
+            it('should not show selected text', function() {
+                var selectedElement = directiveElement.find(SELECTED_LABEL_SELECTOR);
+                expect(selectedElement.length).toBe(0);
+            });
         });
 
         describe('when ngModel not supplied but ngRequired', function() {
@@ -177,12 +209,18 @@ describe('Directive: TwSelect', function() {
                 $scope.ngRequired = true;
                 directiveElement = getCompiledDirectiveElement($scope);
             });
-            it('should set ngModel to first option with a value', function() {
-                expect($scope.ngModel).toBe('NOTE');
+            it('should select first option with a value', function() {
+                expect($scope.ngModel).toBe(OPTIONS_EXTRAS[1].value);
             });
-            it('should show first option', function() {
+            it('should show selected text', function() {
                 var selectedTextElement = directiveElement.find(SELECTED_LABEL_SELECTOR)[0];
-                expect($(selectedTextElement).text().trim()).toBe('Note text');
+                expect($(selectedTextElement).text().trim()).toBe(OPTIONS_EXTRAS[1].label);
+            });
+            it('should select first value even if 0', function() {
+                $scope.options = OPTIONS_NUMERIC;
+                $scope.ngModel = 0;
+                directiveElement = getCompiledDirectiveElement($scope);
+                expect($scope.ngModel).toBe(OPTIONS_NUMERIC[0].value);
             });
         });
     });
@@ -235,8 +273,9 @@ describe('Directive: TwSelect', function() {
             expect(selectedElements.length).toBe(1);
 
             var selectedOptionElement = selectedElements[0];
-            expect($scope.ngModel).toBe('1');
-            expect($(selectedOptionElement).text().trim()).toBe('One');
+            var OptionOne = OPTIONS[1];
+            expect($scope.ngModel).toBe(OptionOne.value);
+            expect($(selectedOptionElement).text().trim()).toBe(OptionOne.label);
         });
         it('should select first matching option beginning with pressed letter', function() {
             directiveElement.find('.btn').trigger(keypress('T'));
@@ -286,8 +325,9 @@ describe('Directive: TwSelect', function() {
         it('should open dropdown and select first option when down arrow pressed', function() {
             directiveElement.find('.btn').focus().triggerHandler(keypress('ArrowDown'));
             var selectedOptionElement = directiveElement.find('.active')[0];
-            expect($scope.ngModel).toBe('1');
-            expect($(selectedOptionElement).text().trim()).toBe('One');
+            var firstOption = OPTIONS[0];
+            expect($scope.ngModel).toBe(firstOption.value);
+            expect($(selectedOptionElement).text().trim()).toBe(firstOption.label);
 
             // dropdown.js not working in tests
             //var buttonGroupElement = directiveElement.find('.btn-group');
@@ -296,24 +336,26 @@ describe('Directive: TwSelect', function() {
 
         describe('when dropdown item has focus', function() {
             it('should select item below when down arrow pressed', function() {
-                // First open dropdown and select first item
-                directiveElement.find('.btn').focus().triggerHandler(keypress('ArrowDown'));
-                var firstLink = directiveElement.find('.active a')[0];
-                expect($scope.ngModel).toBe('1');
+                $scope.ngModel = OPTIONS[1].value;
 
-                // Focus on first item and move down to next
-                $(firstLink).focus().triggerHandler(keypress('ArrowDown'));
+                var secondLink = directiveElement.find('.active a')[0];
+                $(secondLink).focus().triggerHandler(keypress('ArrowDown'));
+
+                // Dropdown.js not working in tests
+                var thirdLink = directiveElement.find('.active a')[0];
+                //expect($scope.ngModel).toBe(OPTIONS[2].value);
+                //expect($(thirdLink).text.trim()).toBe(OPTIONS[2].label);
+            });
+            it('should select item above when up arrow pressed', function() {
+                $scope.ngModel = OPTIONS[2].value;
+
+                var thirdLink = directiveElement.find('.active a')[0];
+                $(thirdLink).focus().triggerHandler(keypress('ArrowUp'));
 
                 // Dropdown.js not working in tests
                 var secondLink = directiveElement.find('.active a')[0];
-                //expect($scope.ngModel).toBe('2');
-                //expect($(secondLink).text.trim()).toBe('Two');
-            });
-            it('should select item above when up arrow pressed', function() {
-                directiveElement.find('.btn').focus().triggerHandler(keypress('ArrowDown'));
-                var selectedOptionElement = directiveElement.find('.active')[0];
-                expect($scope.ngModel).toBe('1');
-                expect($(selectedOptionElement).text().trim()).toBe('One');
+                //expect($scope.ngModel).toBe(OPTIONS[1].value);
+                //expect($(secondLink).text.trim()).toBe(OPTIONS[1].label);
             });
         });
     });
@@ -430,13 +472,13 @@ describe('Directive: TwSelect', function() {
             $scope.ngModel = '99';
             $scope.$digest();
             filterInput.trigger(keydownCode(SPECIAL_KEYS.down));
-            expect($scope.ngModel).toBe('1');
+            expect($scope.ngModel).toBe(OPTIONS[0].value);
         });
         it('should move to the last option when up arrow pressed and nothing active', function() {
             $scope.ngModel = '99';
             $scope.$digest();
             filterInput.trigger(keydownCode(SPECIAL_KEYS.up));
-            expect($scope.ngModel).toBe('3');
+            expect($scope.ngModel).toBe(OPTIONS[OPTIONS.length - 1].value);
         });
 
         it('should retain focus when down arrow pressed', function() {
@@ -662,7 +704,7 @@ describe('Directive: TwSelect', function() {
             var el = directiveElement.find('.btn-input-inverse')
             expect(el.length).toBe(1);
         });
-        
+
         it('should dropdown right aligned on xs small screens and wider', function() {
             $scope.dropdownRight = 'xs';
             $scope.$digest();
@@ -768,6 +810,9 @@ describe('Directive: TwSelect', function() {
     }
 
     var OPTIONS = [{
+        value: '0',
+        label: 'Zero'
+    },{
         value: '1',
         label: 'One'
     },{
@@ -779,6 +824,9 @@ describe('Directive: TwSelect', function() {
     }];
 
     var OPTIONS_NUMERIC = [{
+        value: 0,
+        label: 'Zero'
+    },{
         value: 1,
         label: 'One'
     },{

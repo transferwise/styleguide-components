@@ -54,7 +54,7 @@
 				}
 
 				vm.day = null;
-				vm.month = '0';
+				vm.month = 0;
 				vm.year = null;
 			}
 
@@ -64,7 +64,7 @@
 				var limit = prepDateLimitForComparison(vm.ngMin, vm.min);
 				var dateValue = prepDateValueForComparison(value);
 
-				return !limit || !dateValue  || dateValue >= limit;
+				return !limit || !dateValue || dateValue >= limit;
 			};
 			ngModel.$validators.max = function(value) {
 				var limit = prepDateLimitForComparison(vm.ngMax, vm.max);
@@ -121,6 +121,11 @@
 		function setDateLocale() {
 			if (!vm.locale) {
 				vm.locale = DEFAULT_LOCALE_EN;
+			}
+			if (vm.locale.indexOf('US', vm.locale.length - 2) !== -1) {
+				vm.monthBeforeDay = true;
+			} else {
+				vm.monthBeforeDay = false;
 			}
 		}
 
