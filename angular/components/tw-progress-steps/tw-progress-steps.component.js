@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-		.module('tw.styleguide-components')
+		.module('tw.form-components')
 		.component('twProgressSteps', TwProgressSteps);
 
 	function TwProgressSteps() {
