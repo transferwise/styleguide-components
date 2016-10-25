@@ -1,53 +1,53 @@
 (function(angular) {
 	'use strict';
-	
+
 	angular
-		.module('tw.onboarding')
+		.module('tw.styleguide-components')
 		.component('twProgressSteps', TwProgressSteps);
 
-		function TwProgressSteps() {
-			return {
-				bindings: {
-					steps: '<',
-					onStepSelect: '&'
-				},
-				controller: ProgressStepsController,
-				template: 
-				"<div class='row'>\
-					<div class='col-xs-12'>\
-						<div class='progress m-b-1'>\
-							<div class='progress-bar' role='progressbar' \
-							aria-valuenow='{{$ctrl.progressPercentage}}' aria-valuemin='0' \
-							aria-valuemax='100' ng-style='{width: $ctrl.progressPercentage + \"%\"}'> \
-								<span class='sr-only'>{{$ctrl.progressPercentage}}% Complete</span> \
-							</div> \
-							</div> \
-						<div class='row'> \
-							<div class='col-xs-12 hidden-xs hidden-sm'> \
-								<div class='step-name p-l-1 p-r-1 text-xs-center pull-left' ng-repeat='step in $ctrl.visibleSteps' \
-								ng-style='{width: $ctrl.stepLabelWidth + \"%\"}' ng-class='{\"active\": step.isActive}'> \
-									<a ng-if='!step.isActive' ng-click='$ctrl.selectStep(step)' href=''> \
-										<small>{{step.label}}</small> \
-									</a> \
-									<strong ng-if='step.isActive'>\
-										<small>{{step.label}}</small>\
-									</strong> \
-								</div> \
-							</div> \
-							<div class='col-xs-12 visible-xs visible-sm'>\
-								<tw-select \
-								name='stepSelect' \
-								ng-model='$ctrl.activeStepForTwSelect' \
-								options='$ctrl.visibleStepsForTwSelect' \
-								ng-change='$ctrl.selectStep()'></tw-select>\
-							</div>\
+	function TwProgressSteps() {
+		return {
+			bindings: {
+				steps: '<',
+				onStepSelect: '&'
+			},
+			controller: TwProgressStepsController,
+			template: 
+			"<div class='row'>\
+				<div class='col-xs-12'>\
+					<div class='progress m-b-1'>\
+						<div class='progress-bar' role='progressbar' \
+						aria-valuenow='{{$ctrl.progressPercentage}}' aria-valuemin='0' \
+						aria-valuemax='100' ng-style='{width: $ctrl.progressPercentage + \"%\"}'> \
+							<span class='sr-only'>{{$ctrl.progressPercentage}}% Complete</span> \
 						</div> \
 					</div> \
-				</div>",
-		}
-		}
+					<div class='row'> \
+						<div class='col-xs-12 hidden-xs hidden-sm'> \
+							<div class='step-name p-l-1 p-r-1 text-xs-center pull-left' ng-repeat='step in $ctrl.visibleSteps' \
+							ng-style='{width: $ctrl.stepLabelWidth + \"%\"}' ng-class='{\"active\": step.isActive}'> \
+								<a ng-if='!step.isActive' ng-click='$ctrl.selectStep(step)' href=''> \
+									<small>{{step.label}}</small> \
+								</a> \
+								<strong ng-if='step.isActive'>\
+									<small>{{step.label}}</small>\
+								</strong> \
+							</div> \
+						</div> \
+						<div class='col-xs-12 visible-xs visible-sm'>\
+							<tw-select \
+							name='stepSelect' \
+							ng-model='$ctrl.activeStepForTwSelect' \
+							options='$ctrl.visibleStepsForTwSelect' \
+							ng-change='$ctrl.selectStep()'></tw-select>\
+						</div>\
+					</div> \
+				</div> \
+			</div>",
+		};
+	}
 
-	function ProgressStepsController() {
+	function TwProgressStepsController() {
 
 		var $ctrl = this;
 		var stepsVisibleUpTo;
