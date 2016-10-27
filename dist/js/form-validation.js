@@ -1,5 +1,26 @@
 angular.module("tw.form-validation", []);
-!function(angular) {
+!function() {
+    "use strict";
+    function TwDynamicAsyncValidator($log, $q, $http) {
+        function DyancicAsyncValidatorController() {
+            console.log("this.twDynamicAsyncValidator"), console.log(ctrl.twDynamicAsyncValidator);
+        }
+        function emailValidLink(scope, element, attrs, ngModel) {
+            attrs["tw-dynamic-async-validator"];
+        }
+        return {
+            link: emailValidLink,
+            restrict: "A",
+            controller: DyancicAsyncValidatorController,
+            contollerAs: "ctrl",
+            bindToController: {
+                twDynamicAsyncValidator: "="
+            }
+        };
+    }
+    angular.module("tw.form-validation").directive("twDynamicAsyncValidator", TwDynamicAsyncValidator), 
+    TwDynamicAsyncValidator.$inject = [ "$log", "$q", "$http" ];
+}(), function(angular) {
     "use strict";
     function TwFormValidation() {
         return {

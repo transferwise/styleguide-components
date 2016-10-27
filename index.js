@@ -157,25 +157,28 @@ angular.module('my-app', ['tw.styleguide-components'])
 .directive('twDynamicControlDocs', function() {
 	return {templateUrl: 'partials/tw-dynamic-control.html'};
 })
-.directive('twDynamicFormDocs', function() {
+.directive('twRequirementsFormDocs', function() {
 	return {
 		controllerAs: "$ctrl",
 		bindToController: true,
-		controller: ['$http', function($http) {
+		controller: ['$scope', '$http', function($scope, $http) {
 			var $ctrl = this;
 			$ctrl.types = [
 				{'value': 'account', 'label': 'Account'},
 				{'value': 'profile', 'label': 'Profile'}
 			];
 			$ctrl.type = 'account';
-			$http.get('partials/requirements.json').then(function(response) {
-				$ctrl.requirements = response.data;
+
+			$scope.$watch('$ctrl.type', function(newVal) {
+				$http.get('partials/'+newVal+'-requirements.json').then(function(response) {
+					$ctrl.requirements = response.data;
+				});
 			});
 		}],
 		scope: {
 			model: "="
 		},
-		templateUrl: 'partials/tw-dynamic-form.html'
+		templateUrl: 'partials/tw-requirements-form.html'
 	};
 })
 .directive('twValidationDocs', function() {

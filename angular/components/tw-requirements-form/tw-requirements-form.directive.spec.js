@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: TwDynamicForm', function() {
+describe('Directive: TwRequirementForm', function() {
     var $compile,
         $rootScope,
         $scope,
@@ -16,7 +16,7 @@ describe('Directive: TwDynamicForm', function() {
         $scope = $rootScope.$new();
     }));
 
-    describe('with multiple requirements', function() {        
+    describe('with multiple requirements', function() {
         beforeEach(function() {
             $scope.model = getMultipleRequirementsModel();
             $scope.requirements = getMultipleRequirements();
@@ -42,19 +42,19 @@ describe('Directive: TwDynamicForm', function() {
 
                 var testObjects = [
                     {
-                      first: 'words_with_underscores', 
+                      first: 'words_with_underscores',
                       firstResult: 'Words with underscores',
                       second: 'two_words',
                       secondResult: 'Two words'
                     },
                     {
-                      first: 'woRds_With_underscores', 
+                      first: 'woRds_With_underscores',
                       firstResult: 'Words with underscores',
                       second: 'two words',
                       secondResult: 'Two words'
                     },
                     {
-                      first: '', 
+                      first: '',
                       firstResult: '',
                       second: '_',
                       secondResult: ''
@@ -75,7 +75,7 @@ describe('Directive: TwDynamicForm', function() {
                 });
             });
 
-            it('adds an active class to a tab if the model type matches the requirement type', function() {                
+            it('adds an active class to a tab if the model type matches the requirement type', function() {
                 for (var i = 0; i < $scope.requirements.length; i++) {
                     var tab = navTabs.eq(i);
                     if ($scope.model.type === $scope.requirements[i].type) {
@@ -85,9 +85,9 @@ describe('Directive: TwDynamicForm', function() {
                     }
                 }
 
-                
+
             });
-        }); 
+        });
 
         describe('in the content area', function() {
             var activePane, ibanFields, formGroups;
@@ -138,7 +138,7 @@ describe('Directive: TwDynamicForm', function() {
             });
         });
 
-        
+
     });
 
     function getCompiledDirectiveElement() {
