@@ -97,6 +97,10 @@ angular.module('my-app', ['tw.styleguide-components'])
 			{value: '3', label: 'Three'},
 		]
 	};
+
+	vm.locales = ["en_GB", "fr_FR", "de_DE", "hi_IN", "de_CH", "ja_JP", "ar_JO", "xx_XX"].map(function(locale) {
+		return {value: locale, label: locale};
+	});
 }])
 .directive('validateRegexp', function($q) {
 	return {

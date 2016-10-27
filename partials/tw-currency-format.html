@@ -6,13 +6,14 @@
 <div class="row">
 	<div class="col-md-6" ng-init="vm.model.currencyFormat = 999999999.99;">
 		<div class="input-group m-b-3">
-			<input ng-model="vm.model.currencyFormat" tw-currency-format="{{vm.currencyFormat.currency1}}" class="form-control" />
+			<input ng-model="vm.model.currencyFormat" tw-currency-format="{{vm.currencyFormat.locale1}}" tw-currence-code="{{vm.currencyFormat.currency1}}" class="form-control" />
 			<span class="input-group-addon">{{vm.currencyFormat.currency1}}</span>
 		</div>
 		<div class="input-group m-b-3">
-			<input ng-model="vm.model.currencyFormat" tw-currency-format="{{vm.currencyFormat.currency2}}" class="form-control" />
+			<input ng-model="vm.model.currencyFormat" tw-currency-format="{{vm.currencyFormat.locale2}}" tw-currence-code="{{vm.currencyFormat.currency2}}"  class="form-control" />
 			<span class="input-group-addon">{{vm.currencyFormat.currency2}}</span>
 		</div>
+		model: {{vm.model.currencyFormat}}
 <pre>&lt;div class="input-group"&gt;
   &lt;input
     ng-model="{{vm.model.currencyFormat}}"
@@ -30,8 +31,8 @@
   &lt;/span&gt;
 &lt;/div&gt;<pre>
 	</div>
-	<div class="col-md-6" ng-init="vm.currencyFormat.currency1 = 'GBP'; vm.currencyFormat.currency2 = 'EUR';">
-		<div class="well">
+	<div class="col-md-6" ng-init="vm.currencyFormat.currency1 = 'GBP'; vm.currencyFormat.locale1 = 'en_GB'; vm.currencyFormat.currency2 = 'EUR'; vm.currencyFormat.locale2 = 'fr_FR';">
+		<div class="well" ng-init="vm.currencies = [{value: 'GBP', label: 'GBP'},{value: 'EUR', label: 'EUR'},{value: 'INR', label: 'INR'},{value: 'CHF', label: 'CHF'},{value: 'JPY', label: 'JPY - 0 decimals'},{value: 'JOD', label: 'JOD - 3 decimals'}]">
 			<h5 class="page-header">
 				Edit configuration
 			</h5>
@@ -41,7 +42,15 @@
 				</label>
 				<tw-select
 					ng-model="vm.currencyFormat.currency1"
-					options="[{value: 'GBP', label: 'GBP'},{value: 'EUR', label: 'EUR'},{value: 'INR', label: 'INR'},{value: 'CHF', label: 'CHF'}]" />
+					options="vm.currencies" />
+			</div>
+			<div class="form-group">
+				<label class="control-label">
+					Locale 1
+				</label>
+				<tw-select
+					ng-model="vm.currencyFormat.locale1"
+					options="vm.locales" />
 			</div>
 			<div class="form-group">
 				<label class="control-label">
@@ -49,7 +58,15 @@
 				</label>
 				<tw-select
 					ng-model="vm.currencyFormat.currency2"
-					options="[{value: 'GBP', label: 'GBP'},{value: 'EUR', label: 'EUR'},{value: 'INR', label: 'INR'},{value: 'CHF', label: 'CHF'}]" />
+					options="vm.currencies" />
+			</div>
+			<div class="form-group">
+				<label class="control-label">
+					Locale 2
+				</label>
+				<tw-select
+					ng-model="vm.currencyFormat.locale2"
+					options="vm.locales" />
 			</div>
 		</div>
 	</div>

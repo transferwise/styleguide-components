@@ -686,37 +686,50 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     angular.module("tw.form-components").directive("twFileSelect", TwFileSelectDirective).controller("TwUploadDroppableController", TwUploadDroppableController).directive("twUploadDroppable", TwUploadDroppableDirective);
 }(window.angular), function(angular) {
     "use strict";
-    function TwCurrencyFormat() {
+    function TwCurrencyFormat($locale) {
         return {
             restrict: "A",
             require: "ngModel",
             link: function(scope, element, attrs, ngModel) {
                 function formatCurrency(value) {
                     if (OSREC && value) {
-                        var currency = getCurrencyCode(attrs);
-                        return OSREC.CurrencyFormatter.format(value, {
-                            currency: currency,
-                            symbol: ""
-                        }).trim();
+                        var currency = getCurrencyCode(attrs), locale = getLocale(attrs);
+                        try {
+                            return OSREC.CurrencyFormatter.format(value, {
+                                currency: currency,
+                                symbol: "",
+                                locale: locale
+                            }).trim();
+                        } catch (ex) {
+                            return console.log(ex), value.toString();
+                        }
                     }
-                    return value;
+                    return value.toString();
                 }
                 function parseCurrency(value) {
                     if (OSREC && value) {
-                        var currency = getCurrencyCode(attrs), decimalSeparator = getDecimalSeparator(currency);
+                        var decimalSeparator = getDecimalSeparator(getCurrencyCode(attrs), getLocale(attrs));
                         return parseString(value, decimalSeparator);
                     }
                     return value;
                 }
                 function getCurrencyCode(attrs) {
-                    return attrs.twCurrencyFormat ? attrs.twCurrencyFormat.toUpperCase() : "GBP";
+                    return attrs.twCurrencyCode ? attrs.twCurrencyCode.toUpperCase() : "GBP";
                 }
-                function getDecimalSeparator(currency) {
-                    var zeroCase = OSREC.CurrencyFormatter.getFormatter({
-                        currency: currency,
-                        symbol: ""
-                    })(0).trim();
-                    return zeroCase[1];
+                function getLocale(attrs) {
+                    return attrs.twCurrencyFormat ? attrs.twCurrencyFormat : "en_GB";
+                }
+                function getDecimalSeparator(currency, locale) {
+                    try {
+                        var zeroCase = OSREC.CurrencyFormatter.getFormatter({
+                            currency: currency,
+                            symbol: "",
+                            locale: locale
+                        })(0).trim();
+                        return zeroCase[1];
+                    } catch (ex) {
+                        return ".";
+                    }
                 }
                 function parseString(amountString, decimalSeparator) {
                     var sections = amountString.split(decimalSeparator), integerString = sections[0].replace(/[^0-9]/g, ""), decimalString = sections[1] ? sections[1].trim() : "00", integerValue = Number(integerString), decimalValue = getDecimalValue(decimalString);
@@ -736,7 +749,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             }
         };
     }
-    angular.module("tw.form-styling").directive("twCurrencyFormat", TwCurrencyFormat);
+    angular.module("tw.form-styling").directive("twCurrencyFormat", [ "$locale", TwCurrencyFormat ]);
 }(window.angular), function(angular) {
     "use strict";
     function TwFormControlStyling() {
