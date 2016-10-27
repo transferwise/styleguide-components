@@ -279,12 +279,13 @@ angular.module("tw.form-components", []);
                 ngRequired: "=",
                 showDecimals: "=",
                 currencySymbol: "@",
-                currencyCode: "@"
+                currencyCode: "@",
+                size: "@"
             }
         };
     }
     angular.module("tw.form-components").directive("twCurrencyInput", TwCurrencyInputDirective);
-    var templateAsString = ' \t\t<div class="input-group"> \t\t\t<span class="input-group-addon tw-currency-input-symbol">{{ $ctrl.currencySymbol }}</span> \t\t\t<input \t\t\t\ttype="tel" \t\t\t\tautocomplete="off" \t\t\t\tname="amount" \t\t\t\tstep="any" \t\t\t\tclass="form-control text-xs-right p-r-0" \t\t\t\tshow-decimals="$ctrl.showDecimals" \t\t\t\ttw-focusable \t\t\t\ttw-number-input-formatter \t\t\t\tng-change="$ctrl.changedInputValue()" \t\t\t\tng-model="$ctrl.ngModel" /> \t\t\t<span class="input-group-addon tw-currency-input-code p-l-1"> \t\t\t\t{{ $ctrl.currencyCode }} \t\t\t</span> \t\t</div> \t';
+    var templateAsString = " \t\t<div class='input-group' \t\t\tng-class='{ \t\t\t\t\"input-group-sm\": $ctrl.size === \"sm\", \t\t\t\t\"input-group-lg\": $ctrl.size === \"lg\" \t\t\t}'> \t\t\t<span class='input-group-addon tw-currency-input-symbol'>{{ $ctrl.currencySymbol }}</span> \t\t\t<input \t\t\t\ttype='tel' \t\t\t\tautocomplete='off' \t\t\t\tname='amount' \t\t\t\tstep='any' \t\t\t\tclass='form-control text-xs-right p-r-0' \t\t\t\tshow-decimals=''$ctrl.showDecimals' \t\t\t\ttw-focusable \t\t\t\ttw-number-input-formatter \t\t\t\tng-change='$ctrl.changedInputValue()' \t\t\t\tng-model='$ctrl.ngModel' /> \t\t\t<span class='input-group-addon tw-currency-input-code p-l-1'> \t\t\t\t{{ $ctrl.currencyCode }} \t\t\t</span> \t\t</div>";
 }(window.angular), function(angular) {
     "use strict";
     function TwDateDirective() {

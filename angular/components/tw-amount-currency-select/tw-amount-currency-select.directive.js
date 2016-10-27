@@ -23,14 +23,14 @@
 				label: '=',
 				amountReadOnly: '=',
 				onAmountChange: '&',
-				
+
 				currency: '=',
 				currencies: '=',
 				onCurrencyChange: '&',
 
 				customActionLabel: '=',
 				onCustomAction: '&',
-				
+
 				error: '='
 			},
 		};

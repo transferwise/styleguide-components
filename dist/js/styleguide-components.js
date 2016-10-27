@@ -282,12 +282,13 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 ngRequired: "=",
                 showDecimals: "=",
                 currencySymbol: "@",
-                currencyCode: "@"
+                currencyCode: "@",
+                size: "@"
             }
         };
     }
     angular.module("tw.form-components").directive("twCurrencyInput", TwCurrencyInputDirective);
-    var templateAsString = ' \t\t<div class="input-group"> \t\t\t<span class="input-group-addon tw-currency-input-symbol">{{ $ctrl.currencySymbol }}</span> \t\t\t<input \t\t\t\ttype="tel" \t\t\t\tautocomplete="off" \t\t\t\tname="amount" \t\t\t\tstep="any" \t\t\t\tclass="form-control text-xs-right p-r-0" \t\t\t\tshow-decimals="$ctrl.showDecimals" \t\t\t\ttw-focusable \t\t\t\ttw-number-input-formatter \t\t\t\tng-change="$ctrl.changedInputValue()" \t\t\t\tng-model="$ctrl.ngModel" /> \t\t\t<span class="input-group-addon tw-currency-input-code p-l-1"> \t\t\t\t{{ $ctrl.currencyCode }} \t\t\t</span> \t\t</div> \t';
+    var templateAsString = " \t\t<div class='input-group' \t\t\tng-class='{ \t\t\t\t\"input-group-sm\": $ctrl.size === \"sm\", \t\t\t\t\"input-group-lg\": $ctrl.size === \"lg\" \t\t\t}'> \t\t\t<span class='input-group-addon tw-currency-input-symbol'>{{ $ctrl.currencySymbol }}</span> \t\t\t<input \t\t\t\ttype='tel' \t\t\t\tautocomplete='off' \t\t\t\tname='amount' \t\t\t\tstep='any' \t\t\t\tclass='form-control text-xs-right p-r-0' \t\t\t\tshow-decimals=''$ctrl.showDecimals' \t\t\t\ttw-focusable \t\t\t\ttw-number-input-formatter \t\t\t\tng-change='$ctrl.changedInputValue()' \t\t\t\tng-model='$ctrl.ngModel' /> \t\t\t<span class='input-group-addon tw-currency-input-code p-l-1'> \t\t\t\t{{ $ctrl.currencyCode }} \t\t\t</span> \t\t</div>";
 }(window.angular), function(angular) {
     "use strict";
     function TwDateDirective() {
@@ -683,6 +684,72 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         });
     }
     angular.module("tw.form-components").directive("twFileSelect", TwFileSelectDirective).controller("TwUploadDroppableController", TwUploadDroppableController).directive("twUploadDroppable", TwUploadDroppableDirective);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwCurrencyFormat($locale) {
+        return {
+            restrict: "A",
+            require: "ngModel",
+            link: function(scope, element, attrs, ngModel) {
+                function formatCurrency(value) {
+                    if (OSREC && value) {
+                        var currency = getCurrencyCode(attrs), locale = getLocale(attrs);
+                        try {
+                            return OSREC.CurrencyFormatter.format(value, {
+                                currency: currency,
+                                symbol: "",
+                                locale: locale
+                            }).trim();
+                        } catch (ex) {
+                            return console.log(ex), value.toString();
+                        }
+                    }
+                    return value.toString();
+                }
+                function parseCurrency(value) {
+                    if (OSREC && value) {
+                        var decimalSeparator = getDecimalSeparator(getCurrencyCode(attrs), getLocale(attrs));
+                        return parseString(value, decimalSeparator);
+                    }
+                    return value;
+                }
+                function getCurrencyCode(attrs) {
+                    return attrs.twCurrencyCode ? attrs.twCurrencyCode.toUpperCase() : "GBP";
+                }
+                function getLocale(attrs) {
+                    return attrs.twCurrencyFormat ? attrs.twCurrencyFormat : "en_GB";
+                }
+                function getDecimalSeparator(currency, locale) {
+                    try {
+                        var zeroCase = OSREC.CurrencyFormatter.getFormatter({
+                            currency: currency,
+                            symbol: "",
+                            locale: locale
+                        })(0).trim();
+                        return zeroCase[1];
+                    } catch (ex) {
+                        return ".";
+                    }
+                }
+                function parseString(amountString, decimalSeparator) {
+                    var sections = amountString.split(decimalSeparator), integerString = sections[0].replace(/[^0-9]/g, ""), decimalString = sections[1] ? sections[1].trim() : "00", integerValue = Number(integerString), decimalValue = getDecimalValue(decimalString);
+                    return integerValue + decimalValue;
+                }
+                function getDecimalValue(decimalString) {
+                    return decimalString.length > 1 ? Number(decimalString.substring(0, 2)) / 100 : Number(decimalString) / 10;
+                }
+                ngModel.$formatters.push(formatCurrency), ngModel.$parsers.push(parseCurrency), 
+                element.on("blur", function() {
+                    ngModel.$setViewValue(formatCurrency(ngModel.$modelValue)), ngModel.$render();
+                }), scope.$watch(function() {
+                    return attrs.twCurrencyFormat;
+                }, function(newVal) {
+                    ngModel.$setViewValue(formatCurrency(ngModel.$modelValue)), ngModel.$render();
+                });
+            }
+        };
+    }
+    angular.module("tw.form-styling").directive("twCurrencyFormat", [ "$locale", TwCurrencyFormat ]);
 }(window.angular), function(angular) {
     "use strict";
     function TwFormControlStyling() {
