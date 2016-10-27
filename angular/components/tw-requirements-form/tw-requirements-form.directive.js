@@ -3,9 +3,9 @@
 
 	angular
 		.module('tw.form-components')
-		.directive('twDynamicForm', TwDynamicForm);
+		.directive('twRequirementsForm', TwRequirementsForm);
 
-	function TwDynamicForm() {
+	function TwRequirementsForm() {
 		return {
 			restrict: 'E',
 			//replace: true,
@@ -14,7 +14,7 @@
 				model: '=',
 				onRefreshRequirements: '&'
 			},
-			controller: ['$scope', '$http', TwDynamicFormController],
+			controller: ['$scope', '$http', TwRequirementsFormController],
 			controllerAs : '$ctrl',
 			bindToController: true,
 			template: " \
@@ -28,8 +28,8 @@
 				</li> \
 			</ul> \
 			<div class='tab-content'> \
-				<div ng-if='$ctrl.model.type == requirementType.type' \
-					ng-repeat='requirementType in $ctrl.requirements'\
+				<div ng-repeat='requirementType in $ctrl.requirements'\
+					ng-if='$ctrl.model.type == requirementType.type' \
 					class='tab-pane' \
 					id='{{requirementType.type}}' \
 					ng-class='{\"active\": $ctrl.model.type == requirementType.type}'> \
@@ -86,7 +86,7 @@
 		};
 	}
 
-	function TwDynamicFormController($scope, $http) {
+	function TwRequirementsFormController($scope, $http) {
 		var $ctrl = this;
 		$ctrl.switchTab = switchTab;
 		$ctrl.getTabName = getTabName;
@@ -96,12 +96,10 @@
 				$ctrl.model = {};
 			}
 			$scope.$watch('$ctrl.requirements', function(newValue, oldValue) {
-				if (newValue !== oldValue) {
+				if (!angular.equals(newValue, oldValue)) {
 					prepRequirements($ctrl.requirements);
-					if (!$ctrl.model.type) {
-						$ctrl.model.type =
-							$ctrl.requirements.length ? $ctrl.requirements[0].type : false;
-					}
+					$ctrl.model.type =
+						$ctrl.requirements.length ? $ctrl.requirements[0].type : null;
 				}
 			});
 

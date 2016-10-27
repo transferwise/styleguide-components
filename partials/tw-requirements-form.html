@@ -1,7 +1,7 @@
-<h4 id="dynamic">Dynamic form</h4>
-<p>The dynamic form uses the dynamic form control to build a fully featured form.
+<h4 id="requirements-form">Requirements form</h4>
+<p>The requirements form uses the dynamic form control to build a fully featured form.
 	It accepts a model object which it permutes based on a set of requirements.
-	The requirements object should mathc that returned by the TransferWise API</p>
+	The requirements object should match that returned by the TransferWise API</p>
 <hr />
 <form>
 	<div class="well">
@@ -20,15 +20,15 @@
 		</div>
 	</div>
 	<div class="m-b-3">
-		<tw-dynamic-form
+		<tw-requirements-form
 			requirements="$ctrl.requirements"
 			model="$ctrl.model"
-			on-refresh-requirements=""></tw-dynamic-form>
+			on-refresh-requirements=""></tw-requirements-form>
 
 		<h5>Configuration</h5>
-<pre>&lt;tw-dynamic-form
+<pre>&lt;tw-requirements-form
   requirements="$ctrl.requirements"
   model="{{$ctrl.model | json}}"
-  on-refresh-requirements="" /&gt;</pre>
+  on-refresh-requirements=""&gt;&lt;/tw-requirements-form&gt;</pre>
 	</div>
 </form>

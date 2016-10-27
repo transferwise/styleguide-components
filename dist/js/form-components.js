@@ -295,7 +295,7 @@ angular.module("tw.form-components", []);
                 ngMax: "=",
                 ngPattern: "="
             },
-            template: "<div ng-switch='$ctrl.type'> \t\t\t\t<input ng-switch-when='text'  \t\t\t\t\tname='{{$ctrl.name}}'  \t\t\t\t\ttype='text' \t\t\t\t\tclass='form-control' \t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-model-options='{ allowInvalid: true }' \t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-pattern='$ctrl.ngPattern' \t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\tng-blur='$ctrl.blur()' \t\t\t\t\tng-minlength='$ctrl.ngMinlength' \t\t\t\t\tng-maxlength='$ctrl.ngMaxlength' />  \t\t\t\t<input ng-switch-when='number'  \t\t\t\t\tname='{{$ctrl.name}}'  \t\t\t\t\ttype='number' \t\t\t\t\tstep='{{$ctrl.step}}' \t\t\t\t\tclass='form-control' \t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-model-options='{ allowInvalid: true }' \t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\tng-blur='$ctrl.blur()' \t\t\t\t\tng-min='$ctrl.ngMin' \t\t\t\t\tng-max='$ctrl.ngMax' />  \t\t\t\t<div ng-switch-when='radio' \t\t\t\t\tclass='radio' \t\t\t\t\tng-class='{disabled: $ctrl.ngDisabled}' \t\t\t\t\tng-repeat='option in $ctrl.options'> \t\t\t\t\t<label> \t\t\t\t\t\t<tw-radio \t\t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\t\tng-value='option.value' \t\t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\t\tng-click='$ctrl.change()' \t\t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t\t\t{{option.label}} \t\t\t\t\t</label> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='checkbox' \t\t\t\t\tclass='checkbox' \t\t\t\t\tng-class='{disabled: $ctrl.ngDisabled}'> \t\t\t\t\t<label> \t\t\t\t\t\t<tw-checkbox \t\t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\t\tng-click='$ctrl.change()' \t\t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t\t\t{{$ctrl.placeholder}} \t\t\t\t\t</label> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='select'> \t\t\t\t\t<tw-select \t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\toptions='$ctrl.options' \t\t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t</div> \t\t\t\t<ng-transclude class='error-messages'></ng-transclude> \t\t\t</div>"
+            template: "<div ng-switch='$ctrl.type'> \t\t\t\t<input ng-switch-when='text'  \t\t\t\t\tname='{{$ctrl.name}}'  \t\t\t\t\ttype='text' \t\t\t\t\tclass='form-control' \t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-model-options='{ allowInvalid: true }' \t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-pattern='$ctrl.ngPattern' \t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\tng-blur='$ctrl.blur()' \t\t\t\t\tng-minlength='$ctrl.ngMinlength' \t\t\t\t\tng-maxlength='$ctrl.ngMaxlength' />  \t\t\t\t<input ng-switch-when='password'  \t\t\t\t\tname='{{$ctrl.name}}'  \t\t\t\t\ttype='password' \t\t\t\t\tclass='form-control' \t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-model-options='{ allowInvalid: true }' \t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\tng-blur='$ctrl.blur()' \t\t\t\t\tng-minlength='$ctrl.ngMinlength' \t\t\t\t\tng-maxlength='$ctrl.ngMaxlength' />  \t\t\t\t<input ng-switch-when='number'  \t\t\t\t\tname='{{$ctrl.name}}'  \t\t\t\t\ttype='number' \t\t\t\t\tstep='{{$ctrl.step}}' \t\t\t\t\tclass='form-control' \t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-model-options='{ allowInvalid: true }' \t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\tng-blur='$ctrl.blur()' \t\t\t\t\tng-min='$ctrl.ngMin' \t\t\t\t\tng-max='$ctrl.ngMax' />  \t\t\t\t<div ng-switch-when='radio' \t\t\t\t\tclass='radio' \t\t\t\t\tng-class='{disabled: $ctrl.ngDisabled}' \t\t\t\t\tng-repeat='option in $ctrl.options'> \t\t\t\t\t<label> \t\t\t\t\t\t<tw-radio \t\t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\t\tng-value='option.value' \t\t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\t\tng-click='$ctrl.change()' \t\t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t\t\t{{option.label}} \t\t\t\t\t</label> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='checkbox' \t\t\t\t\tclass='checkbox' \t\t\t\t\tng-class='{disabled: $ctrl.ngDisabled}'> \t\t\t\t\t<label> \t\t\t\t\t\t<tw-checkbox \t\t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\t\tng-click='$ctrl.change()' \t\t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t\t\t{{$ctrl.placeholder}} \t\t\t\t\t</label> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='select'> \t\t\t\t\t<tw-select \t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\toptions='$ctrl.options' \t\t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t</div> \t\t\t\t<ng-transclude class='error-messages'></ng-transclude> \t\t\t</div>"
         };
     }
     function TwDynamicFormControlController($element, $scope) {
@@ -367,6 +367,103 @@ angular.module("tw.form-components", []);
         };
     }
     angular.module("tw.form-components").directive("twRadio", TwRadioDirective);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwRequirementsForm() {
+        return {
+            restrict: "E",
+            scope: {
+                requirements: "=",
+                model: "=",
+                onRefreshRequirements: "&"
+            },
+            controller: [ "$scope", "$http", TwRequirementsFormController ],
+            controllerAs: "$ctrl",
+            bindToController: !0,
+            template: " \t\t\t<ul ng-if='$ctrl.requirements && $ctrl.requirements.length > 1' \t\t\t\tclass='nav nav-tabs m-b-3'> \t\t\t\t<li ng-repeat='requirementType in $ctrl.requirements' \t\t\t\t\tng-class='{\"active\": $ctrl.model.type === requirementType.type}'> \t\t\t\t\t<a href='' ng-click='$ctrl.switchTab(requirementType.type)'> \t\t\t\t\t\t{{$ctrl.getTabName(requirementType.type)}} \t\t\t\t\t</a> \t\t\t\t</li> \t\t\t</ul> \t\t\t<div class='tab-content'> \t\t\t\t<div ng-repeat='requirementType in $ctrl.requirements'\t\t\t\t\tng-if='$ctrl.model.type == requirementType.type' \t\t\t\t\tclass='tab-pane' \t\t\t\t\tid='{{requirementType.type}}' \t\t\t\t\tng-class='{\"active\": $ctrl.model.type == requirementType.type}'> \t\t\t\t\t<div class='row'> \t\t\t\t\t\t<div class='form-group' \t\t\t\t\t\t\tng-repeat='fieldGroup in requirementType.fields' \t\t\t\t\t\t\tng-class='{ \t\t\t\t\t\t\t\t\"col-sm-6\": fieldGroup.maxlength && fieldGroup.maxlength <= 10, \t\t\t\t\t\t\t\t\"col-sm-12\": !fieldGroup.maxlength || fieldGroup.maxlength > 10 \t\t\t\t\t\t\t}'> \t\t\t\t\t\t\t<label class='control-label'> \t\t\t\t\t\t\t\t{{fieldGroup.name}} \t\t\t\t\t\t\t</label> \t\t\t\t\t\t\t<div class='row'> \t\t\t\t\t\t\t\t<div class='col-xs-{{field.columns}}' \t\t\t\t\t\t\t\t\tng-repeat='field in fieldGroup.group'> \t\t\t\t\t\t\t\t\t<tw-dynamic-form-control \t\t\t\t\t\t\t\t\t\tname='{{field.key}}' \t\t\t\t\t\t\t\t\t\ttype='{{field.type | lowercase}}' \t\t\t\t\t\t\t\t\t\tplaceholder='{{field.placeholder}}' \t\t\t\t\t\t\t\t\t\toptions='field.valuesAllowed' \t\t\t\t\t\t\t\t\t\tng-model='$ctrl.model[field.key]' \t\t\t\t\t\t\t\t\t\tng-blur='$ctrl.onBlur(field)' \t\t\t\t\t\t\t\t\t\tng-required='field.required' \t\t\t\t\t\t\t\t\t\tng-disabled='field.disabled' \t\t\t\t\t\t\t\t\t\tng-minlength='field.minLength' \t\t\t\t\t\t\t\t\t\tng-maxlength='field.maxLength' \t\t\t\t\t\t\t\t\t\tng-pattern='field.validationRegexp' \t\t\t\t\t\t\t\t\t\ttw-validation > \t\t\t\t\t\t\t\t\t\t<!-- tw-dynamic-async-validator='field.validationAsync' --> \t\t\t\t\t\t\t\t\t</tw-dynamic-form-control> \t\t\t\t\t\t\t\t\t<div class='error-messages'> \t\t\t\t\t\t\t\t\t\t<div class='error-minlength'>Minimum {{field.minlength}} characters</div> \t\t\t\t\t\t\t\t\t\t<div class='error-maxlength'>Maximum {{field.maxlength}} characters</div> \t\t\t\t\t\t\t\t\t\t<div class='error-required'>{{fieldGroup.name}} is required</div> \t\t\t\t\t\t\t\t\t\t<div class='error-pattern'>Incorrect format</div> \t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t<div ng-if='field.tooltip' \t\t\t\t\t\t\t\t\t\tclass='help-block'> \t\t\t\t\t\t\t\t\t\t<a role='button' \t\t\t\t\t\t\t\t\t\t\ttabindex='0' \t\t\t\t\t\t\t\t\t\t\tdata-toggle='popover' \t\t\t\t\t\t\t\t\t\t\tdata-placement='top' \t\t\t\t\t\t\t\t\t\t\ttitle='{{field.tooltip}}'> \t\t\t\t\t\t\t\t\t\t\t<span class='glyphicon glyphicon-question-sign'></span> \t\t\t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t</div>"
+        };
+    }
+    function TwRequirementsFormController($scope, $http) {
+        function init() {
+            $ctrl.model || ($ctrl.model = {}), $scope.$watch("$ctrl.requirements", function(newValue, oldValue) {
+                angular.equals(newValue, oldValue) || (prepRequirements($ctrl.requirements), $ctrl.model.type = $ctrl.requirements.length ? $ctrl.requirements[0].type : null);
+            });
+        }
+        function prepRequirements(types) {
+            types.forEach(function(type) {
+                type.fields.forEach(function(fieldGroup) {
+                    fieldGroup.group.forEach(function(field) {
+                        prepRegExp(field), prepValuesAsync(field), prepValuesAllowed(field);
+                    });
+                });
+            });
+        }
+        function prepRegExp(field) {
+            if (field.validationRegexp) try {
+                field.validationRegexp = new RegExp(ield.validationRegexp);
+            } catch (ex) {
+                console.log("API regexp is invalid"), field.validationRegexp = !1;
+            } else field.validationRegexp = !1;
+        }
+        function prepValuesAsync(field) {
+            if (field.valuesAsync) {
+                var postData = {};
+                field.valuesAsync.params && field.valuesAsync.params.length && (postData = getParamValuesFromModel($ctrl.model, field.valuesAsync.params)), 
+                $http.post(field.valuesAsync.url, postData).then(function(response) {
+                    field.valuesAllowed = response.data, prepValuesAllowed(field);
+                })["catch"](function() {});
+            }
+        }
+        function prepValuesAllowed(field) {
+            angular.isArray(field.valuesAllowed) && field.valuesAllowed.forEach(function(valueAllowed) {
+                valueAllowed.value = valueAllowed.key, valueAllowed.label = valueAllowed.name;
+            });
+        }
+        function switchTab(newType) {
+            var oldRequirements = findRequirementByType($ctrl.model.type), newRequirements = findRequirementByType(newType);
+            $ctrl.model.type = newType, removeObsoletePropertiesFromModel(oldRequirements, newRequirements);
+        }
+        function getTabName(tabType) {
+            if (tabType && tabType.length > 0) {
+                var tabNameWithSpaces = tabType.toLowerCase().split("_").join(" ");
+                return tabNameWithSpaces.charAt(0).toUpperCase() + tabNameWithSpaces.slice(1);
+            }
+            return "";
+        }
+        function removeObsoletePropertiesFromModel(oldRequirements, newRequirements) {
+            var oldFieldNames = getFieldNamesFromRequirement(oldRequirements), newFieldNames = getFieldNamesFromRequirement(newRequirements), obsoleteFieldNames = oldFieldNames.filter(function(fieldName) {
+                return newFieldNames.indexOf(fieldName) < 0;
+            });
+            obsoleteFieldNames.forEach(function(fieldName) {
+                delete $ctrl.model[fieldName];
+            });
+        }
+        function findRequirementByType(type) {
+            for (var i = 0; i < $ctrl.requirements.length; i++) {
+                var modelType = $ctrl.requirements[i];
+                if (modelType.type === type) return modelType;
+            }
+        }
+        function getFieldNamesFromRequirement(modelRequirement) {
+            var names = modelRequirement.fields.map(function(fieldGroup) {
+                return fieldGroup.group.map(function(field) {
+                    return field.key;
+                });
+            });
+            return Array.prototype.concat.apply([], names);
+        }
+        function getParamValuesFromModel(model, params) {
+            var data = {};
+            return params.forEach(function(param) {
+                model[param.key] ? data[param.parameterName] = model[param.key] : param.required;
+            }), data;
+        }
+        var $ctrl = this;
+        $ctrl.switchTab = switchTab, $ctrl.getTabName = getTabName, $ctrl.onBlur = function(field) {
+            !field.refreshRequirementsOnChange;
+        }, init();
+    }
+    angular.module("tw.form-components").directive("twRequirementsForm", TwRequirementsForm);
 }(window.angular), function(angular) {
     "use strict";
     function TwSelectDirective() {
