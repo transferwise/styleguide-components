@@ -98,6 +98,12 @@ angular.module('my-app', ['tw.styleguide-components'])
 			{value: '3', label: 'Three'},
 		]
 	};
+
+	this.sizes = [
+		{value:'sm',label:'Small'},
+		{value:'md',label:'Medium'},
+		{value:'lg',label:'Large'}
+	];
 }])
 .directive('validateRegexp', function($q) {
 	return {
@@ -138,6 +144,9 @@ angular.module('my-app', ['tw.styleguide-components'])
 			<div class='dirty'>Dirty</div> \
 		</div>"
 	};
+})
+.directive('twAmountCurrencySelectDocs', function() {
+	return {templateUrl: 'partials/tw-amount-currency-select.html'};
 })
 .directive('twCheckboxDocs', function() {
 	return {templateUrl: 'partials/tw-checkbox.html'};

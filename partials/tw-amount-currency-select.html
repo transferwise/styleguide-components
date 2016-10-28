@@ -1,0 +1,162 @@
+<h4 id="amount-currency-select">TW Amount Currency Select</h4>
+<p>Two way data binding via ng-model</p>
+<hr/>
+<form>
+<div class="row m-b-3">
+    <div class="col-md-6">
+        <div class="form-group" ng-init="vm.model.components.currencySelected = 'eur'">
+            <label class="control-label">How much?</label>
+            <tw-amount-currency-select tw-validation
+                ng-model="vm.model.components.amountCurrencySelect"
+                ng-required="vm.amountCurrencySelect.required"
+                ng-disabled="vm.amountCurrencySelect.disabled"
+                ng-min="vm.amountCurrencySelect.min"
+                ng-max="vm.amountCurrencySelect.max"
+                placeholder="{{ vm.amountCurrencySelect.placeholder }}"
+
+                on-amount-change="vm.log('amount input value changed:' + vm.model.components.amountCurrencySelect)"
+
+                currency="vm.model.components.currencySelected"
+                currencies="vm.select.options.currencySelect"
+                on-currency-change="vm.log('currency input value changed:' + vm.model.components.currencySelected)"
+
+                custom-action-label="vm.amountCurrencySelect.customActionLabel"
+                on-custom-action="vm.log('Custom Action Called')"
+
+                lock="{{ vm.amountCurrencySelect.lock }}"
+                size="{{ vm.amountCurrencySelect.size }}"
+                />
+                <div class="error-messages">
+                <div class="error-required">Required</div>
+                <div class="error-min">Must be higher</div>
+                <div class="error-max">Must be lower</div>
+            </div>
+        </div>
+
+        <div class="form-group form-group-lg">
+            <label class="control-label">How much?</label>
+            <tw-amount-currency-select tw-validation
+                ng-model="vm.model.components.amountCurrencySelect"
+                ng-required="vm.amountCurrencySelect.required"
+                ng-disabled="vm.amountCurrencySelect.disabled"
+                ng-min="vm.amountCurrencySelect.min"
+                ng-max="vm.amountCurrencySelect.max"
+                placeholder="{{ vm.amountCurrencySelect.placeholder }}"
+
+                on-amount-change="vm.log('amount input value changed:' + vm.model.components.amountCurrencySelect)"
+
+                currency="vm.model.components.currencySelected"
+                currencies="vm.select.options.currencySelect"
+                on-currency-change="vm.log('currency input value changed:' + vm.model.components.currencySelected)"
+
+                custom-action-label="vm.amountCurrencySelect.customActionLabel"
+                on-custom-action="vm.log('Custom Action Called')"
+
+                lock="{{ vm.amountCurrencySelect.lock }}"
+                size="lg"
+                />
+                <div class="error-messages">
+                <div class="error-required">Required</div>
+                <div class="error-min">Must be higher</div>
+                <div class="error-max">Must be lower</div>
+            </div>
+        </div>
+        <h5>Configuration</h5>
+<pre>&lt;tw-amount-curency-select tw-validation
+    ng-model="{{ vm.model.components.amountCurrencySelect }}"
+    ng-required="{{ vm.amountCurrencySelect.required }}"
+    ng-disabled="{{ vm.amountCurrencySelect.disabled }}"
+    ng-min="{{ vm.amountCurrencySelect.min }}"
+    ng-max="{{ vm.amountCurrencySelect.max }}"
+    placeholder="{{ vm.amountCurrencySelect.placeholder }}"
+    on-amount-change="vm.log('amount input value changed:' + vm.model.components.amountCurrencySelect)"
+    currency="{{ vm.model.components.currencySelected }}"
+    currencies="{{ vm.select.options.currencySelect }}"
+    on-currency-change="vm.log('currency input value changed:' + vm.model.components.currencySelected)"
+    custom-action-label="{{ vm.amountCurrencySelect.customActionLabel }}"
+    on-custom-action="vm.log('Custom Action Called')"
+    /&gt;</pre>
+    </div>
+    <div class="col-md-6">
+        <div class="well">
+            <h5 class="page-header">
+                Edit configuration
+            </h5>
+            <div class="form-group">
+                <label class="control-label">
+                    Toggles
+                </label>
+                <div class="checkbox">
+                    <label>
+                        <tw-checkbox ng-model="vm.amountCurrencySelect.required"
+                            ng-init="vm.amountCurrencySelect.required = false" />
+                        Is the control required?
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <tw-checkbox ng-model="vm.amountCurrencySelect.disabled"
+                            ng-init="vm.amountCurrencySelect.disabled = false" />
+                        Is the control disabled?
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">
+                    Placeholder
+                </label>
+                <input type="text"
+                    class="form-control"
+                    ng-model="vm.amountCurrencySelect.placeholder" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">
+                    Custom Action Label
+                </label>
+                <input type="text"
+                    class="form-control"
+                    ng-model="vm.amountCurrencySelect.customActionLabel"
+                    ng-init="vm.amountCurrencySelect.customActionLabel = 'Custom Action'"
+                    tw-validation />
+            </div>
+            <div class="form-group">
+                <label class="control-label">
+                    Min amount
+                </label>
+                <input type="number"
+                    class="form-control"
+                    ng-model="vm.amountCurrencySelect.min"
+                    ng-init="vm.amountCurrencySelect.min = 10"
+                    tw-validation />
+            </div>
+            <div class="form-group">
+                <label class="control-label">
+                    Max amount
+                </label>
+                <input type="number"
+                    class="form-control"
+                    ng-model="vm.amountCurrencySelect.max"
+                    ng-init="vm.amountCurrencySelect.max = 100"
+                    tw-validation />
+            </div>
+            <div class="form-group" ng-init="vm.amountCurrencySelect.size = 'md'">
+                <label class="control-label">
+                    Size
+                </label>
+                <tw-select
+                    ng-model="vm.amountCurrencySelect.size"
+                    options="vm.sizes" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">
+                    Lock
+                </label>
+                <tw-select
+                    ng-model="vm.amountCurrencySelect.lock"
+                    ng-required="true"
+                    options="[{value:'',label:'None'},{value:'locked',label:'Locked'},{value:'unlocked',label:'Unlocked'}]" />
+            </div>
+        </div>
+    </div>
+</div>
+</form>

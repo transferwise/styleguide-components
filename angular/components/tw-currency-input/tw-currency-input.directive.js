@@ -20,27 +20,35 @@
 				ngMin: '=',
 				ngMax: '=',
 				ngRequired: '=',
+				ngDisabled: '=',
 				showDecimals: '=',
-				currencySymbol: '@',
 				currencyCode: '@',
+				placeholder: '@',
+				size: '@',
+				locale: '@'
 			},
 		};
 	}
 
 	var templateAsString = ' \
-		<div class="input-group"> \
-			<span class="input-group-addon tw-currency-input-symbol">{{ $ctrl.currencySymbol }}</span> \
+		<div class="input-group" ng-class="{ \
+			\'input-group-sm\': $ctrl.size === \'sm\', \
+			\'input-group-lg\': $ctrl.size === \'lg\', \
+			disabled: $ctrl.ngDisabled \
+		}"> \
 			<input \
 				type="tel" \
 				autocomplete="off" \
 				name="amount" \
 				step="any" \
-				class="form-control text-xs-right p-r-0" \
+				class="form-control p-r-0" \
+				placeholder="{{$ctrl.placeholder}}" \
 				show-decimals="$ctrl.showDecimals" \
 				tw-focusable \
 				tw-number-input-formatter \
 				ng-change="$ctrl.changedInputValue()" \
-				ng-model="$ctrl.ngModel" /> \
+				ng-model="$ctrl.ngModel" \
+				ng-disabled="$ctrl.ngDisabled" /> \
 			<span class="input-group-addon tw-currency-input-code p-l-1"> \
 				{{ $ctrl.currencyCode }} \
 			</span> \
