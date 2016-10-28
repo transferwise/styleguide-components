@@ -31,7 +31,8 @@ describe('Directive: TwDate', function() {
     var LOCALES = {
         en: 'en-GB',
         fr: 'fr-FR',
-        es: 'es-ES'
+        es: 'es-ES',
+        us: 'en-US'
     };
 
     var DAY_SELECTOR = 'input[name=day]';
@@ -47,9 +48,14 @@ describe('Directive: TwDate', function() {
             it('should leave date model undefined', function () {
                 expect($scope.ngModel).toBe(null);
             });
-            it('should set controls to default', function () {
+            it('should set date control to empty', function () {
                 expect(element.find(DAY_SELECTOR).val()).toBe('');
-                expect(element.find(MONTH_SELECTOR).val()).toBe('0');
+            });
+            it('should set month control to first value', function () {
+                expect(element.find(MONTH_SELECTOR).val()).toEqual('0');
+                expect(element.find('.tw-select-selected').text().trim()).toEqual('January');
+            });
+            it('should set year control to empty', function () {
                 expect(element.find(YEAR_SELECTOR).val()).toBe('');
             });
             it('should return an updated date as an object', function() {
@@ -620,6 +626,23 @@ describe('Directive: TwDate', function() {
                     expectDateMonthsToBeDefault(element);
                 });
             }
+
+            it('should show day before month if locale not US', function () {
+                $scope.locale = LOCALES.fr;
+                $scope.$digest();
+                var dayInput = element.find('.tw-date-day-column'),
+                    monthInput = element.find('.tw-date-month-column');
+
+                expect(dayInput.index()).toBeLessThan(monthInput.index());
+            });
+            it('should show month before day if locale is US', function () {
+                $scope.locale = LOCALES.us;
+                $scope.$digest();
+                var dayInput = element.find('.tw-date-day-column'),
+                    monthInput = element.find('.tw-date-month-column');
+
+                expect(dayInput.index()).toBeGreaterThan(monthInput.index());
+            });
         });
     });
 
