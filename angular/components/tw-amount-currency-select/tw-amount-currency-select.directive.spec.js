@@ -21,8 +21,9 @@ describe('Directive: TwAmountCurrencySelect', function() {
         $compile = $injector.get('$compile');
         $scope = $rootScope.$new();
         $scope.ngModel = null;
-        $scope.name = 'myAmountCurrencySelect';
-        $scope.onChange = function() {};
+        $scope.currency = "eur";
+        $scope.currencies = [{value:'eur',label:'EUR'},{value:'gbp',label:'GBP'},{value:'usd',label:'USD'}];
+        $scope.ngChange = function() {};
         $scope.ngClick = function() {};
         $scope.ngFocus = function() {};
         $scope.ngBlur = function() {};
@@ -47,7 +48,7 @@ describe('Directive: TwAmountCurrencySelect', function() {
         });
 
         it('should have the currency code', function() {
-            expect(input.siblings('.tw-select').text().trim()).toBe('EUR');
+            expect(directiveElement.find('.tw-select-selected').text().trim()).toBe('EUR');
         });
     });
 
@@ -80,19 +81,19 @@ describe('Directive: TwAmountCurrencySelect', function() {
         });
 
         it('should trigger ngChange when internal model changes', function() {
-            spyOn($scope, 'onChange');
+            spyOn($scope, 'ngChange');
             directiveElement.controller('ngModel').$setViewValue(100);
 
             expect($scope.ngModel).toBe(100);
-            expect($scope.onChange).toHaveBeenCalled();
+            expect($scope.ngChange).toHaveBeenCalled();
         });
     });
 
     describe('validation', function() {
         beforeEach(inject(function() {
-            $scope.isRequired = true;
-            $scope.minValue = 10;
-            $scope.maxValue = 100;
+            $scope.ngRequired = true;
+            $scope.ngMin = 10;
+            $scope.ngMax = 100;
             templateElement = getCompiledTemplateElement($scope);
             directiveElement = templateElement.find(DIRECTIVE_SELECTOR);
             $ngModel = directiveElement.controller('ngModel');
@@ -100,7 +101,7 @@ describe('Directive: TwAmountCurrencySelect', function() {
         }));
 
         it('should be valid when not required and empty', function() {
-            $scope.isRequired = false;
+            $scope.ngRequired = false;
             templateElement = getCompiledTemplateElement($scope);
             input.trigger('input');
 
@@ -108,7 +109,7 @@ describe('Directive: TwAmountCurrencySelect', function() {
         });
 
         it('should be invalid when required and empty', function() {
-            $scope.isRequired = true;
+            $scope.ngRequired = true;
             input.trigger('input');
 
             expect(directiveElement.hasClass('ng-invalid')).toBe(true);
@@ -153,15 +154,15 @@ describe('Directive: TwAmountCurrencySelect', function() {
                 <label class="control-label"> \
                     Example currency input \
                 </label> \
-                <tw-currency-input \
-    				tw-validation \
-                    currency-symbol="€" \
-                    currency-code="EUR" \
-    			    ng-model="ngModel" \
-                    ng-required="isRequired" \
-                    ng-change="onChange()" \
-                    ng-min="minValue" \
-                    ng-max="maxValue" /> \
+                <tw-amount-currency-select \
+                    tw-validation \
+                    currency="currency" \
+                    currencies="currencies" \
+                    ng-model="ngModel" \
+                    ng-required="ngRequired" \
+                    ng-min="ngMin" \
+                    ng-max="ngMax" \
+                    ng-change="ngChange()"></tw-amount-currency-select> \
             </div> \
         ');
 
