@@ -19,28 +19,31 @@
 				ngMin: '=',
 				ngMax: '=',
 				ngRequired: '=',
+				ngDisabled: '=',
 
-				label: '=',
 				amountReadOnly: '=',
 				onAmountChange: '&',
-				
+
 				currency: '=',
 				currencies: '=',
 				onCurrencyChange: '&',
-				currencyReadOnly: '=',
 
 				customActionLabel: '=',
 				onCustomAction: '&',
-				
-				error: '='
+
+				lock: '@',
+				size: '@',
+				locale: '@'
 			},
 		};
 	}
 
 	var templateAsString = '\
-	<div class="form-group form-group-lg" ng-class="{ \'has-error\': $ctrl.error }"> \
-		<label class="control-label">{{ $ctrl.label }}</label> \
-		<div class="input-group input-group-lg">  \
+		<div class="input-group" ng-class="{ \
+			\'input-group-sm\': $ctrl.size === \'sm\', \
+			\'input-group-lg\': $ctrl.size === \'lg\', \
+			disabled: $ctrl.ngDisabled \
+		}">  \
 			<input \
 				type="tel"  \
 				autocomplete="off"  \
@@ -51,24 +54,29 @@
 				tw-number-input-formatter  \
 				ng-change="$ctrl.changedAmount()"  \
 				ng-model="$ctrl.ngModel" \
-				ng-disabled="$ctrl.amountReadOnly" /> \
-			<span class="input-group-addon" ng-if="$ctrl.currencyReadOnly">{{ $ctrl.currency | uppercase }}</span> \
-			<span class="input-group-btn" ng-if="!$ctrl.currencyReadOnly">  \
+				ng-disabled="$ctrl.ngDisabled" /> \
+			<span class="input-group-addon" ng-if="$ctrl.lock" \
+				ng-class="{\'input-lg\': $ctrl.size === \'lg\'}"> \
+				<i class="icon icon-lock" ng-if="$ctrl.lock === \'locked\'"></i> \
+				<i class="icon icon-unlock" ng-if="$ctrl.lock === \'unlocked\'"></i> \
+			</span> \
+			<span class="input-group-btn">  \
 				<tw-select \
 					ng-model="$ctrl.currency" \
 					ng-required="true" \
-					size="lg" \
+					size="{{ $ctrl.size }}" \
 					inverse="true" \
 					dropdown-right="xs" \
-					dropdown-width="lg" \
+					dropdown-width="md" \
 					hide-note="true" \
 					hide-secondary="true" \
 					options="$ctrl.currencies" \
 					ng-change="$ctrl.changedCurrency()"> \
-						<a ng-if="!!$ctrl.customActionLabel" ng-click="$ctrl.onCustomAction()">{{ $ctrl.customActionLabel }}</a> \
+						<a ng-if="!!$ctrl.customActionLabel" ng-click="$ctrl.onCustomAction()"> \
+							{{ $ctrl.customActionLabel }} \
+						</a> \
 				</tw-select> \
-			</span>  \
-		</div>  \
-	</div>';
+			</span> \
+		</div>';
 
 })(window.angular);
