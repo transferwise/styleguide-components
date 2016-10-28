@@ -142,7 +142,7 @@ describe('Directive: TwRequirementsForm', function() {
     });
 
     function getCompiledDirectiveElement() {
-        var template = "<tw-dynamic-form model='model' requirements='requirements'></tw-dynamic-form-control>"
+        var template = "<tw-requirements-form model='model' requirements='requirements'></tw-requirements-form>"
         var compiledElement = $compile(template)($scope);
 
         $scope.$digest();
