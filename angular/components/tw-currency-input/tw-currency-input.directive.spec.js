@@ -48,10 +48,6 @@ describe('Directive: TwCurrencyInput', function() {
         it('should have the currency code', function() {
             expect(input.siblings('.tw-currency-input-code').text().trim()).toBe('EUR');
         });
-
-        it('should have the currency symbol', function() {
-            expect(input.siblings('.tw-currency-input-symbol').text().trim()).toBe('€');
-        });
     });
 
     describe('interactions', function() {
@@ -158,7 +154,6 @@ describe('Directive: TwCurrencyInput', function() {
                 </label> \
                 <tw-currency-input \
     				tw-validation \
-                    currency-symbol="€" \
                     currency-code="EUR" \
     			    ng-model="ngModel" \
                     ng-required="isRequired" \

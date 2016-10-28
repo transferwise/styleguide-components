@@ -98,6 +98,12 @@ angular.module('my-app', ['tw.styleguide-components'])
 			{value: '3', label: 'Three'},
 		]
 	};
+
+	this.sizes = [
+		{value:'sm',label:'Small'},
+		{value:'md',label:'Medium'},
+		{value:'lg',label:'Large'}
+	];
 }])
 .directive('validateRegexp', function($q) {
 	return {
