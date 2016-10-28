@@ -6,18 +6,21 @@
     <div class="col-md-6">
         <div class="form-group">
             <label class="control-label" for="date">
-                Example currency input
+                How much?
             </label>
             <tw-currency-input
                 tw-validation
                 currency-symbol="{{ vm.currencyInput.currencySymbol }}"
                 currency-code="{{ vm.currencyInput.currencyCode }}"
                 show-decimals="true"
+                placeholder="{{ vm.currencyInput.placeholder }}"
                 ng-model="vm.model.components.currencyInput"
                 ng-change="vm.log('currency input value:' + vm.model.components.currencyInput)"
                 ng-required="vm.currencyInput.required"
+                ng-disabled="vm.currencyInput.disabled"
                 ng-min="vm.currencyInput.min"
-                ng-max="vm.currencyInput.max" />
+                ng-max="vm.currencyInput.max"
+                size="{{ vm.currencyInput.size }}" />
             <div class="error-messages">
                 <div class="error-required">Required</div>
                 <div class="error-min">Must be higher</div>
@@ -25,15 +28,37 @@
             </div>
             <status-messages></status-messages>
         </div>
+        <div class="form-group form-group-lg">
+            <label class="control-label" for="date">
+                How much?
+            </label>
+            <tw-currency-input
+                tw-validation
+                currency-code="{{ vm.currencyInput.currencyCode }}"
+                show-decimals="true"
+                placeholder="{{ vm.currencyInput.placeholder }}"
+                ng-model="vm.model.components.currencyInput"
+                ng-change="vm.log('currency input value:' + vm.model.components.currencyInput)"
+                ng-required="vm.currencyInput.required"
+                ng-disabled="vm.currencyInput.disabled"
+                ng-min="vm.currencyInput.min"
+                ng-max="vm.currencyInput.max"
+                size="lg"/>
+            <div class="error-messages">
+                <div class="error-required">Required</div>
+                <div class="error-min">Must be higher</div>
+                <div class="error-max">Must be lower</div>
+            </div>
+        </div>
         <h5>Configuration</h5>
 <pre>&lt;tw-currency-input
     tw-validation
-    currency-symbol="{{ vm.currencyInput.currencySymbol }}"
     currency-code="{{ vm.currencyInput.currencyCode }}"
     show-decimals="{{ vm.currencyInput.showDecimals }}"
-    ng-model="vm.component.currencyInput"
-    ng-change="vm.log('input change')"
-    ng-required="{{ vm.currencyInput.required }}"
+    ng-model="{{vm.model.components.currencyInput}}"
+    ng-change="vm.log('input change')"<span ng-if="vm.currencyInput.required">
+    ng-required="{{ vm.currencyInput.required }}"</span><span ng-if="vm.currencyInput.disabled">
+    ng-disabled="{{ vm.currencyInput.disabled }}"</span>
     ng-min="{{ vm.currencyInput.min }}"
     ng-max="{{ vm.currencyInput.max }}" /&gt;</pre>
     </div>
@@ -44,7 +69,7 @@
             </h5>
             <div class="form-group">
                 <label class="control-label">
-                    Required?
+                    Toggles
                 </label>
                 <div class="checkbox">
                     <label>
@@ -52,16 +77,12 @@
                         Is the control required?
                     </label>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label">
-                    Currency Symbol
-                </label>
-                <input type="text"
-                    class="form-control"
-                    ng-model="vm.currencyInput.currencySymbol"
-                    ng-init="vm.currencyInput.currencySymbol = '€'"
-                    tw-validation />
+                <div class="checkbox">
+                    <label>
+                        <tw-checkbox ng-model="vm.currencyInput.disabled" ng-init="vm.currencyInput.disabled = false" />
+                        Is the control disabled?
+                    </label>
+                </div>
             </div>
             <div class="form-group">
                 <label class="control-label">
@@ -72,6 +93,14 @@
                     ng-model="vm.currencyInput.currencyCode"
                     ng-init="vm.currencyInput.currencyCode = 'EUR'"
                     tw-validation />
+            </div>
+            <div class="form-group">
+                <label class="control-label">
+                    Placeholder
+                </label>
+                <input type="text"
+                    class="form-control"
+                    ng-model="vm.currencyInput.placeholder" />
             </div>
             <div class="form-group">
                 <label class="control-label">
@@ -93,17 +122,21 @@
                     ng-init="vm.currencyInput.max = 100"
                     tw-validation />
             </div>
-            <div class="form-group" ng-init="vm.currencyInput.showDecimalsTypes = [
-                {'value': true, 'label': 'True'},
-                {'value': false, 'label': 'False'},
-                ]; vm.currencyInput.showDecimals = true;">
+            <div class="form-group" ng-init="vm.currencyInput.size = 'md'">
                 <label class="control-label">
-                    Type
+                    Size
                 </label>
                 <tw-select
-                    options="vm.currencyInput.showDecimalsTypes"
-                    ng-model="vm.currencyInput.showDecimals">
-                </tw-select>
+                    ng-model="vm.currencyInput.size"
+                    options="vm.sizes" />
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <tw-checkbox ng-model="vm.currencyInput.showDecimals" />
+                        Show decimals?
+                    </label>
+                </div>
             </div>
         </div>
     </div>

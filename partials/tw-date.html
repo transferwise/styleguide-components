@@ -26,7 +26,7 @@
 		</div>
 		<h5>Configuration</h5>
 <pre>&lt;tw-date
-  ng-model="vm.components.date"
+  ng-model="{{vm.model.components.date}}"
   ng-required="{{vm.date.required}}"
   ng-disabled="{{vm.date.disabled}}"
   locale="{{vm.date.locale}}"
@@ -64,10 +64,12 @@
 			</div>
 			<div class="form-group" ng-init="vm.date.locales = [
 				{'value': 'en-GB', 'label': 'English UK'},
+				{'value': 'en-US', 'label': 'English US'},
 				{'value': 'fr-FR', 'label': 'French'},
 				{'value': 'es-ES', 'label': 'Spanish'},
+				{'value': 'es-US', 'label': 'Spanish US'},
 				{'value': 'ss-SS', 'label': 'Unknown locale'}
-				]; vm.date.locale = 'en-GB';">
+			]; vm.date.locale = 'en-GB';">
 				<label class="control-label">
 					Locale
 				</label>

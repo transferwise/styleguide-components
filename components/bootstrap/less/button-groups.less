@@ -40,6 +40,13 @@
     margin-bottom: 16px;
   }
 }
+.btn-toolbar {
+  .btn-group .btn,
+  .input-group .btn {
+    width: auto;
+    margin-bottom: 0;
+  }
+}
 
 @media (min-width: @screen-lg-min) {
   .btn-toolbar {
@@ -139,6 +146,14 @@
 .btn-lg .caret {
   border-width: @caret-width-large @caret-width-large 0;
   border-bottom-width: 0;
+}
+.btn-sm .caret,
+.input-group-sm .btn .caret {
+  top: 8px !important;
+}
+.btn-lg .caret,
+.input-group-lg .btn .caret {
+  top: 27px !important;
 }
 // Upside down carets for .dropup
 .dropup .btn-lg .caret {
@@ -286,15 +301,17 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    .dropdown-menu {
-        width: 100%;
+}
+.btn-block {
+  .dropdown-menu {
+    width: 100%;
 
-        > li > a {
-            overflow: hidden;
-            width: 100%;
-            text-overflow: ellipsis;
-        }
+    > li > a {
+      overflow: hidden;
+      width: 100%;
+      text-overflow: ellipsis;
     }
+  }
 }
 
 .btn-group .dropdown-menu {
@@ -308,12 +325,17 @@
 }
 .btn-group {
   .small {
-    font-size: @font-size-small;
-    color: @brand-grey-plus-20 !important;
-
+    font-size: @input-group-addon-font-size;
+    color: @input-group-color;
     line-height: (@line-height-computed - 1px);
+
     &.text-ellipsis {
       line-height: @line-height-computed;
     }
   }
+}
+.btn-group .secondary {
+  font-size: @control-label-font-size;
+  color: @control-label-color;
+  line-height: 24px;
 }
