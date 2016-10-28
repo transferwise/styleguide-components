@@ -77,7 +77,7 @@ describe('Directive: TwAmountCurrencySelect', function() {
 
         it('should style nearest parent form-group when focussed', function() {
             input.triggerHandler('focus');
-            expect(directiveElement.closest('.form-group').hasClass('focus')).toBe(true);
+            expect(input.closest('.form-group').hasClass('focus')).toBe(true);
         });
 
         it('should trigger ngChange when internal model changes', function() {
