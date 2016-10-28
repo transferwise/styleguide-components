@@ -13,6 +13,7 @@
                 currency-symbol="{{ vm.currencyInput.currencySymbol }}"
                 currency-code="{{ vm.currencyInput.currencyCode }}"
                 show-decimals="true"
+                placeholder="{{ vm.currencyInput.placeholder }}"
                 ng-model="vm.model.components.currencyInput"
                 ng-change="vm.log('currency input value:' + vm.model.components.currencyInput)"
                 ng-required="vm.currencyInput.required"
@@ -35,6 +36,7 @@
                 tw-validation
                 currency-code="{{ vm.currencyInput.currencyCode }}"
                 show-decimals="true"
+                placeholder="{{ vm.currencyInput.placeholder }}"
                 ng-model="vm.model.components.currencyInput"
                 ng-change="vm.log('currency input value:' + vm.model.components.currencyInput)"
                 ng-required="vm.currencyInput.required"
@@ -91,6 +93,14 @@
                     ng-model="vm.currencyInput.currencyCode"
                     ng-init="vm.currencyInput.currencyCode = 'EUR'"
                     tw-validation />
+            </div>
+            <div class="form-group">
+                <label class="control-label">
+                    Placeholder
+                </label>
+                <input type="text"
+                    class="form-control"
+                    ng-model="vm.currencyInput.placeholder" />
             </div>
             <div class="form-group">
                 <label class="control-label">

@@ -31,6 +31,8 @@
 				customActionLabel: '=',
 				onCustomAction: '&',
 
+				placeholder: '@',
+
 				lock: '@',
 				size: '@',
 				locale: '@'
@@ -50,6 +52,7 @@
 				name="amount"  \
 				step="any"  \
 				class="form-control"  \
+				placeholder="{{ $ctrl.placeholder }}" \
 				tw-focusable  \
 				tw-number-input-formatter  \
 				ng-change="$ctrl.changedAmount()"  \

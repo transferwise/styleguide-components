@@ -22,8 +22,8 @@
 				ngRequired: '=',
 				ngDisabled: '=',
 				showDecimals: '=',
-				currencySymbol: '@',
 				currencyCode: '@',
+				placeholder: '@',
 				size: '@',
 				locale: '@'
 			},
@@ -42,6 +42,7 @@
 				name="amount" \
 				step="any" \
 				class="form-control p-r-0" \
+				placeholder="{{$ctrl.placeholder}}" \
 				show-decimals="$ctrl.showDecimals" \
 				tw-focusable \
 				tw-number-input-formatter \
