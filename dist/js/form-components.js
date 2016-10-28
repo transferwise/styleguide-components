@@ -192,21 +192,22 @@ angular.module("tw.form-components", []);
                 ngMin: "=",
                 ngMax: "=",
                 ngRequired: "=",
-                label: "=",
+                ngDisabled: "=",
                 amountReadOnly: "=",
                 onAmountChange: "&",
                 currency: "=",
                 currencies: "=",
                 onCurrencyChange: "&",
-                currencyReadOnly: "=",
                 customActionLabel: "=",
                 onCustomAction: "&",
-                error: "="
+                lock: "@",
+                size: "@",
+                locale: "@"
             }
         };
     }
     angular.module("tw.form-components").directive("twAmountCurrencySelect", TwAmountCurrencySelectDirective);
-    var templateAsString = '\t<div class="form-group form-group-lg" ng-class="{ \'has-error\': $ctrl.error }"> \t\t<label class="control-label">{{ $ctrl.label }}</label> \t\t<div class="input-group input-group-lg">  \t\t\t<input \t\t\t\ttype="tel"  \t\t\t\tautocomplete="off"  \t\t\t\tname="amount"  \t\t\t\tstep="any"  \t\t\t\tclass="form-control"  \t\t\t\ttw-focusable  \t\t\t\ttw-number-input-formatter  \t\t\t\tng-change="$ctrl.changedAmount()"  \t\t\t\tng-model="$ctrl.ngModel" \t\t\t\tng-disabled="$ctrl.amountReadOnly" /> \t\t\t<span class="input-group-addon" ng-if="$ctrl.currencyReadOnly">{{ $ctrl.currency | uppercase }}</span> \t\t\t<span class="input-group-btn" ng-if="!$ctrl.currencyReadOnly">  \t\t\t\t<tw-select \t\t\t\t\tng-model="$ctrl.currency" \t\t\t\t\tng-required="true" \t\t\t\t\tsize="lg" \t\t\t\t\tinverse="true" \t\t\t\t\tdropdown-right="xs" \t\t\t\t\tdropdown-width="lg" \t\t\t\t\thide-note="true" \t\t\t\t\thide-secondary="true" \t\t\t\t\toptions="$ctrl.currencies" \t\t\t\t\tng-change="$ctrl.changedCurrency()"> \t\t\t\t\t\t<a ng-if="!!$ctrl.customActionLabel" ng-click="$ctrl.onCustomAction()">{{ $ctrl.customActionLabel }}</a> \t\t\t\t</tw-select> \t\t\t</span>  \t\t</div>  \t</div>';
+    var templateAsString = '\t\t<div class="input-group" ng-class="{ \t\t\t\'input-group-sm\': $ctrl.size === \'sm\', \t\t\t\'input-group-lg\': $ctrl.size === \'lg\', \t\t\tdisabled: $ctrl.ngDisabled \t\t}">  \t\t\t<input \t\t\t\ttype="tel"  \t\t\t\tautocomplete="off"  \t\t\t\tname="amount"  \t\t\t\tstep="any"  \t\t\t\tclass="form-control"  \t\t\t\ttw-focusable  \t\t\t\ttw-number-input-formatter  \t\t\t\tng-change="$ctrl.changedAmount()"  \t\t\t\tng-model="$ctrl.ngModel" \t\t\t\tng-disabled="$ctrl.ngDisabled" /> \t\t\t<span class="input-group-addon" ng-if="$ctrl.lock" \t\t\t\tng-class="{\'input-lg\': $ctrl.size === \'lg\'}"> \t\t\t\t<i class="icon icon-lock" ng-if="$ctrl.lock === \'locked\'"></i> \t\t\t\t<i class="icon icon-unlock" ng-if="$ctrl.lock === \'unlocked\'"></i> \t\t\t</span> \t\t\t<span class="input-group-btn">  \t\t\t\t<tw-select \t\t\t\t\tng-model="$ctrl.currency" \t\t\t\t\tng-required="true" \t\t\t\t\tsize="{{ $ctrl.size }}" \t\t\t\t\tinverse="true" \t\t\t\t\tdropdown-right="xs" \t\t\t\t\tdropdown-width="md" \t\t\t\t\thide-note="true" \t\t\t\t\thide-secondary="true" \t\t\t\t\toptions="$ctrl.currencies" \t\t\t\t\tng-change="$ctrl.changedCurrency()"> \t\t\t\t\t\t<a ng-if="!!$ctrl.customActionLabel" ng-click="$ctrl.onCustomAction()"> \t\t\t\t\t\t\t{{ $ctrl.customActionLabel }} \t\t\t\t\t\t</a> \t\t\t\t</tw-select> \t\t\t</span> \t\t</div>';
 }(window.angular), function(angular) {
     function TwCheckboxDirective() {
         function TwCheckboxController($scope, $element) {
@@ -278,14 +279,17 @@ angular.module("tw.form-components", []);
                 ngMin: "=",
                 ngMax: "=",
                 ngRequired: "=",
+                ngDisabled: "=",
                 showDecimals: "=",
                 currencySymbol: "@",
-                currencyCode: "@"
+                currencyCode: "@",
+                size: "@",
+                locale: "@"
             }
         };
     }
     angular.module("tw.form-components").directive("twCurrencyInput", TwCurrencyInputDirective);
-    var templateAsString = ' \t\t<div class="input-group"> \t\t\t<span class="input-group-addon tw-currency-input-symbol">{{ $ctrl.currencySymbol }}</span> \t\t\t<input \t\t\t\ttype="tel" \t\t\t\tautocomplete="off" \t\t\t\tname="amount" \t\t\t\tstep="any" \t\t\t\tclass="form-control text-xs-right p-r-0" \t\t\t\tshow-decimals="$ctrl.showDecimals" \t\t\t\ttw-focusable \t\t\t\ttw-number-input-formatter \t\t\t\tng-change="$ctrl.changedInputValue()" \t\t\t\tng-model="$ctrl.ngModel" /> \t\t\t<span class="input-group-addon tw-currency-input-code p-l-1"> \t\t\t\t{{ $ctrl.currencyCode }} \t\t\t</span> \t\t</div> \t';
+    var templateAsString = ' \t\t<div class="input-group" ng-class="{ \t\t\t\'input-group-sm\': $ctrl.size === \'sm\', \t\t\t\'input-group-lg\': $ctrl.size === \'lg\', \t\t\tdisabled: $ctrl.ngDisabled \t\t}"> \t\t\t<input \t\t\t\ttype="tel" \t\t\t\tautocomplete="off" \t\t\t\tname="amount" \t\t\t\tstep="any" \t\t\t\tclass="form-control p-r-0" \t\t\t\tshow-decimals="$ctrl.showDecimals" \t\t\t\ttw-focusable \t\t\t\ttw-number-input-formatter \t\t\t\tng-change="$ctrl.changedInputValue()" \t\t\t\tng-model="$ctrl.ngModel" \t\t\t\tng-disabled="$ctrl.ngDisabled" /> \t\t\t<span class="input-group-addon tw-currency-input-code p-l-1"> \t\t\t\t{{ $ctrl.currencyCode }} \t\t\t</span> \t\t</div> \t';
 }(window.angular), function(angular) {
     "use strict";
     function TwDateDirective() {
