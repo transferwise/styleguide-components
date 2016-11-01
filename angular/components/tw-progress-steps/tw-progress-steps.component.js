@@ -111,9 +111,14 @@
 		}
 
 		function getActiveStep(steps) {
-			return _.find(steps, function(step) {
-				return step.isActive;
-			});
+			var value;
+			for (var i = 0; i < steps.length; i++) {
+				if (steps[i].isActive) {
+					value = steps[i];
+					break;
+				}
+			}
+			return value;
 		}
 
 		function getStepLabelWidth(steps) {
