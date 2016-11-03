@@ -62,7 +62,7 @@
             </div>
         </div>
         <h5>Configuration</h5>
-<pre>&lt;tw-amount-curency-select tw-validation
+<pre>&lt;tw-amount-currency-select tw-validation
     ng-model="{{ vm.model.components.amountCurrencySelect }}"
     ng-required="{{ vm.amountCurrencySelect.required }}"
     ng-disabled="{{ vm.amountCurrencySelect.disabled }}"
@@ -75,7 +75,7 @@
     on-currency-change="vm.log('currency input value changed:' + vm.model.components.currencySelected)"
     custom-action-label="{{ vm.amountCurrencySelect.customActionLabel }}"
     on-custom-action="vm.log('Custom Action Called')"
-    /&gt;</pre>
+    &gt;&lt;/tw-amount-currency-select&gt;</pre>
     </div>
     <div class="col-md-6">
         <div class="well">
