@@ -23,6 +23,7 @@
 
 				amountReadOnly: '=',
 				onAmountChange: '&',
+				showDecimals: '=',
 
 				currency: '=',
 				currencies: '=',
@@ -54,6 +55,7 @@
 				class="form-control"  \
 				placeholder="{{ $ctrl.placeholder }}" \
 				tw-focusable  \
+				show-decimals="$ctrl.showDecimals" \
 				tw-number-input-formatter  \
 				ng-change="$ctrl.changedAmount()"  \
 				ng-model="$ctrl.ngModel" \

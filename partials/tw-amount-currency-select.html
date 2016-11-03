@@ -14,6 +14,7 @@
                 ng-max="vm.amountCurrencySelect.max"
                 placeholder="{{ vm.amountCurrencySelect.placeholder }}"
 
+                show-decimals="{{ vm.amountCurrencySelect.showDecimals }}"
                 on-amount-change="vm.log('amount input value changed:' + vm.model.components.amountCurrencySelect)"
 
                 currency="vm.model.components.currencySelected"
@@ -43,6 +44,7 @@
                 ng-max="vm.amountCurrencySelect.max"
                 placeholder="{{ vm.amountCurrencySelect.placeholder }}"
 
+                show-decimals="{{ vm.amountCurrencySelect.showDecimals }}"
                 on-amount-change="vm.log('amount input value changed:' + vm.model.components.amountCurrencySelect)"
 
                 currency="vm.model.components.currencySelected"
@@ -69,6 +71,7 @@
     ng-min="{{ vm.amountCurrencySelect.min }}"
     ng-max="{{ vm.amountCurrencySelect.max }}"
     placeholder="{{ vm.amountCurrencySelect.placeholder }}"
+    show-decimals="{{ vm.amountCurrencySelect.showDecimals }}"
     on-amount-change="vm.log('amount input value changed:' + vm.model.components.amountCurrencySelect)"
     currency="{{ vm.model.components.currencySelected }}"
     currencies="{{ vm.select.options.currencySelect }}"
@@ -146,6 +149,14 @@
                 <tw-select
                     ng-model="vm.amountCurrencySelect.size"
                     options="vm.sizes" />
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <tw-checkbox ng-model="vm.amountCurrencySelect.showDecimals" />
+                        Show decimals?
+                    </label>
+                </div>
             </div>
             <div class="form-group">
                 <label class="control-label">
