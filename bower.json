@@ -1,6 +1,6 @@
 {
   "name": "tw-styleguide-components",
-  "version": "1.1.0",
+  "version": "1.6.2",
   "componentsDirectory": "components/",
   "directory": "components",
   "dependencies": {
