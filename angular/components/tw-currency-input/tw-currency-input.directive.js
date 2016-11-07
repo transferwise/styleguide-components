@@ -21,7 +21,7 @@
 				ngMax: '=',
 				ngRequired: '=',
 				ngDisabled: '=',
-				showDecimals: '=',
+				currency: '=',
 				currencyCode: '@',
 				placeholder: '@',
 				size: '@',
@@ -50,7 +50,7 @@
 				ng-model="$ctrl.ngModel" \
 				ng-disabled="$ctrl.ngDisabled" /> \
 			<span class="input-group-addon tw-currency-input-code p-l-1"> \
-				{{ $ctrl.currencyCode }} \
+				{{ $ctrl.currency || $ctrl.currencyCode }} \
 			</span> \
 		</div> \
 	';

@@ -18,7 +18,7 @@ module.exports = function(grunt) {
         },
         uglify: {
             combined: {
-                src: ['angular/**/*.controller.js', 'angular/**/*.directive.js'],
+                src: ['angular/**/*.controller.js', 'angular/**/*.directive.js', 'angular/**/*.service.js'],
                 dest: 'dist/js/styleguide-components.js',
                 options: {
                     banner: 'angular.module("tw.form-validation", []);\n' +
@@ -30,7 +30,7 @@ module.exports = function(grunt) {
                 }
             },
             combinedMin: {
-                src: ['angular/**/*.controller.js', 'angular/**/*.directive.js'],
+                src: ['angular/**/*.controller.js', 'angular/**/*.directive.js', 'angular/**/*.service.js'],
                 dest: 'dist/js/styleguide-components.min.js',
                 options: {
                     banner: 'angular.module("tw.form-validation", []);\n' +
@@ -78,7 +78,7 @@ module.exports = function(grunt) {
                 }
             },
             components: {
-                src: ['angular/components/**/*.controller.js', 'angular/components/**/*.directive.js'],
+                src: ['angular/components/**/*.controller.js', 'angular/components/**/*.directive.js', 'angular/**/*.service.js'],
                 dest: 'dist/js/form-components.js',
                 options: {
                     banner: 'angular.module("tw.form-components", []);\n',
@@ -87,7 +87,7 @@ module.exports = function(grunt) {
                 }
             },
             componentsMin: {
-                src: ['angular/components/**/*.controller.js', 'angular/components/**/*.directive.js'],
+                src: ['angular/components/**/*.controller.js', 'angular/components/**/*.directive.js', 'angular/**/*.service.js'],
                 dest: 'dist/js/form-components.min.js',
                 options: {
                     banner: 'angular.module("tw.form-components", []);\n',

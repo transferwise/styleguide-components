@@ -5,15 +5,27 @@
 		.module('tw.form-components')
 		.controller('TwAmountCurrencySelectController', TwAmountCurrencySelectController);
 
-	TwAmountCurrencySelectController.$inject = ['$element', '$scope', '$timeout'];
+	TwAmountCurrencySelectController.$inject = [
+		'$element',
+		'$scope',
+		'$timeout',
+		'TwCurrencyData'
+	];
 
-	function TwAmountCurrencySelectController($element, $scope, $timeout) {
+	function TwAmountCurrencySelectController($element, $scope, $timeout, TwCurrencyData) {
 		var $ctrl = this;
 		var $ngModel = $element.controller('ngModel');
+
+		$ctrl.showDecimals = true;
 
 		$scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
 			if (newValue !== oldValue) {
 				$ngModel.$setDirty();
+			}
+		});
+		$scope.$watch('$ctrl.currency', function(newValue, oldValue) {
+			if (newValue && newValue !== oldValue) {
+				$ctrl.showDecimals = TwCurrencyData.getDecimals(newValue) > 0;
 			}
 		});
 
@@ -39,9 +51,18 @@
 		};
 
 		$ctrl.changedAmount = function() {
+			if ($ctrl.ngChange) {
+				// $timeout is needed to get the last ngModel value.
+				// See: https://github.com/angular/angular.js/issues/4558
+				$timeout($ctrl.ngChange);
+			}
+			/* Deprecated */
 			if ($ctrl.onAmountChange) {
 				// $timeout is needed to get the last ngModel value.
 				// See: https://github.com/angular/angular.js/issues/4558
+				if (console & console.log) {
+					console.log("onAmountChange is deprecated in twAmountCurrencySelect, please use ngChange.");
+				}
 				$timeout($ctrl.onAmountChange);
 			}
 		};
@@ -60,8 +81,16 @@
 			}
 		};
 
+		$ctrl.lockClick = function() {
+			if ($ctrl.lock === 'locked') {
+				$ctrl.lock = 'unlocked';
+			} else {
+				$ctrl.lock = 'locked';
+			}
+		};
+
 		function isNumber(value) {
-       		return !isNaN(parseFloat(value));
+			return !isNaN(parseFloat(value));
 		}
 	}
 

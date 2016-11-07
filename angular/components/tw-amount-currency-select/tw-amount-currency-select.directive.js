@@ -20,21 +20,24 @@
 				ngMax: '=',
 				ngRequired: '=',
 				ngDisabled: '=',
+				ngChange: '&',
 
+				/* Begin deprecated */
 				amountReadOnly: '=',
 				onAmountChange: '&',
-				showDecimals: '=',
+				/* End deprecated */
 
 				currency: '=',
 				currencies: '=',
 				onCurrencyChange: '&',
+				currencyFilterPlaceholder: '@',
 
 				customActionLabel: '=',
 				onCustomAction: '&',
 
 				placeholder: '@',
 
-				lock: '@',
+				lock: '=',
 				size: '@',
 				locale: '@'
 			},
@@ -62,8 +65,10 @@
 				ng-disabled="$ctrl.ngDisabled" /> \
 			<span class="input-group-addon" ng-if="$ctrl.lock" \
 				ng-class="{\'input-lg\': $ctrl.size === \'lg\'}"> \
-				<i class="icon icon-lock" ng-if="$ctrl.lock === \'locked\'"></i> \
-				<i class="icon icon-unlock" ng-if="$ctrl.lock === \'unlocked\'"></i> \
+				<a href="" ng-click="$ctrl.lockClick()"> \
+					<i class="icon icon-lock" ng-if="$ctrl.lock === \'locked\'"></i> \
+					<i class="icon icon-unlock" ng-if="$ctrl.lock === \'unlocked\'"></i> \
+				</a> \
 			</span> \
 			<span class="input-group-btn">  \
 				<tw-select \
@@ -76,8 +81,9 @@
 					hide-note="true" \
 					hide-secondary="true" \
 					options="$ctrl.currencies" \
+					filter="{{ $ctrl.currencyFilterPlaceholder }}" \
 					ng-change="$ctrl.changedCurrency()"> \
-						<a ng-if="!!$ctrl.customActionLabel" ng-click="$ctrl.onCustomAction()"> \
+						<a href="" ng-if="!!$ctrl.customActionLabel" ng-click="$ctrl.onCustomAction()"> \
 							{{ $ctrl.customActionLabel }} \
 						</a> \
 				</tw-select> \
