@@ -14,7 +14,7 @@
                 ng-max="vm.amountCurrencySelect.max"
                 placeholder="{{ vm.amountCurrencySelect.placeholder }}"
 
-                show-decimals="{{ vm.amountCurrencySelect.showDecimals }}"
+                show-decimals="vm.amountCurrencySelect.showDecimals"
                 on-amount-change="vm.log('amount input value changed:' + vm.model.components.amountCurrencySelect)"
 
                 currency="vm.model.components.currencySelected"
@@ -44,7 +44,7 @@
                 ng-max="vm.amountCurrencySelect.max"
                 placeholder="{{ vm.amountCurrencySelect.placeholder }}"
 
-                show-decimals="{{ vm.amountCurrencySelect.showDecimals }}"
+                show-decimals="vm.amountCurrencySelect.showDecimals"
                 on-amount-change="vm.log('amount input value changed:' + vm.model.components.amountCurrencySelect)"
 
                 currency="vm.model.components.currencySelected"
