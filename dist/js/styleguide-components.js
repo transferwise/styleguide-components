@@ -13,6 +13,8 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             newValue !== oldValue && $ngModel.$setDirty();
         }), $scope.$watch("$ctrl.currency", function(newValue, oldValue) {
             newValue && newValue !== oldValue && ($ctrl.showDecimals = TwCurrencyData.getDecimals(newValue) > 0);
+        }), $scope.$watch("$ctrl.locked", function(newValue, oldValue) {
+            $ctrl.showLock = "undefined" != typeof $ctrl.locked;
         }), $element.find("input").on("blur", function() {
             $ngModel.$setTouched(), $element.triggerHandler("blur");
         }), $ngModel.$validators.min = function(modelValue, viewValue) {
@@ -27,7 +29,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         }, $ctrl.customAction = function() {
             $ctrl.onCustomAction && $ctrl.onCustomAction();
         }, $ctrl.lockClick = function() {
-            "locked" === $ctrl.lock ? $ctrl.lock = "unlocked" : $ctrl.lock = "locked", $ctrl.onLockChange && $timeout($ctrl.onLockChange);
+            $ctrl.locked = !$ctrl.locked, $ctrl.onLockedChange && $timeout($ctrl.onLockedChange);
         };
     }
     angular.module("tw.form-components").controller("TwAmountCurrencySelectController", TwAmountCurrencySelectController), 
@@ -43,6 +45,8 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             newValue !== oldValue && $ngModel.$setDirty();
         }), $scope.$watch("$ctrl.currency", function(newValue, oldValue) {
             newValue !== oldValue && ($ctrl.showDecimals = TwCurrencyData.getDecimals(newValue) > 0);
+        }), $scope.$watch("$ctrl.locked", function(newValue, oldValue) {
+            $ctrl.showLock = "undefined" != typeof $ctrl.locked;
         }), $element.find("input").on("blur", function() {
             $ngModel.$setTouched(), $element.triggerHandler("blur");
         }), $ctrl.currencyCode && console && console.log && console.log("currency code is deprecated in twCurrencyInput, please use currency."), 
@@ -52,6 +56,8 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             return "undefined" == typeof $ctrl.ngMax || null === $ctrl.ngMax || !isNumber(viewValue) || viewValue <= $ctrl.ngMax;
         }, $ctrl.changedInputValue = function() {
             $ctrl.ngChange && $timeout($ctrl.ngChange);
+        }, $ctrl.lockClick = function() {
+            $ctrl.locked = !$ctrl.locked, $ctrl.onLockedChange && $timeout($ctrl.onLockedChange);
         };
     }
     angular.module("tw.form-components").controller("TwCurrencyInputController", TwCurrencyInputController), 
@@ -214,15 +220,15 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 customActionLabel: "=",
                 onCustomAction: "&",
                 placeholder: "@",
-                lock: "=",
-                onLockChange: "&",
+                locked: "=",
+                onLockedChange: "&",
                 size: "@",
                 locale: "@"
             }
         };
     }
     angular.module("tw.form-components").directive("twAmountCurrencySelect", TwAmountCurrencySelectDirective);
-    var templateAsString = '\t\t<div class="input-group" ng-class="{ \t\t\t\'input-group-sm\': $ctrl.size === \'sm\', \t\t\t\'input-group-lg\': $ctrl.size === \'lg\', \t\t\tdisabled: $ctrl.ngDisabled \t\t}">  \t\t\t<input \t\t\t\ttype="tel"  \t\t\t\tautocomplete="off"  \t\t\t\tname="amount"  \t\t\t\tstep="any"  \t\t\t\tclass="form-control"  \t\t\t\tplaceholder="{{ $ctrl.placeholder }}" \t\t\t\ttw-focusable  \t\t\t\tshow-decimals="$ctrl.showDecimals" \t\t\t\ttw-number-input-formatter  \t\t\t\tng-change="$ctrl.changedAmount()"  \t\t\t\tng-model="$ctrl.ngModel" \t\t\t\tng-disabled="$ctrl.ngDisabled" /> \t\t\t<span class="input-group-addon" ng-if="$ctrl.lock" \t\t\t\tng-class="{\'input-lg\': $ctrl.size === \'lg\'}"> \t\t\t\t<a href="" ng-click="$ctrl.lockClick()"> \t\t\t\t\t<i class="icon icon-lock" ng-if="$ctrl.lock === \'locked\'"></i> \t\t\t\t\t<i class="icon icon-unlock" ng-if="$ctrl.lock === \'unlocked\'"></i> \t\t\t\t</a> \t\t\t</span> \t\t\t<span class="input-group-btn">  \t\t\t\t<tw-select \t\t\t\t\tng-model="$ctrl.currency" \t\t\t\t\tng-required="true" \t\t\t\t\tsize="{{ $ctrl.size }}" \t\t\t\t\tinverse="true" \t\t\t\t\tdropdown-right="xs" \t\t\t\t\tdropdown-width="md" \t\t\t\t\thide-note="true" \t\t\t\t\thide-secondary="true" \t\t\t\t\toptions="$ctrl.currencies" \t\t\t\t\tfilter="{{ $ctrl.currencyFilterPlaceholder }}" \t\t\t\t\tng-change="$ctrl.changedCurrency()"> \t\t\t\t\t\t<a href="" ng-if="!!$ctrl.customActionLabel" ng-click="$ctrl.onCustomAction()"> \t\t\t\t\t\t\t{{ $ctrl.customActionLabel }} \t\t\t\t\t\t</a> \t\t\t\t</tw-select> \t\t\t</span> \t\t</div>';
+    var templateAsString = '\t\t<div class="input-group" ng-class="{ \t\t\t\'input-group-sm\': $ctrl.size === \'sm\', \t\t\t\'input-group-lg\': $ctrl.size === \'lg\', \t\t\tdisabled: $ctrl.ngDisabled \t\t}">  \t\t\t<input \t\t\t\ttype="tel"  \t\t\t\tautocomplete="off"  \t\t\t\tname="amount"  \t\t\t\tstep="any"  \t\t\t\tclass="form-control"  \t\t\t\tplaceholder="{{ $ctrl.placeholder }}" \t\t\t\ttw-focusable  \t\t\t\tshow-decimals="$ctrl.showDecimals" \t\t\t\ttw-number-input-formatter  \t\t\t\tng-change="$ctrl.changedAmount()"  \t\t\t\tng-model="$ctrl.ngModel" \t\t\t\tng-disabled="$ctrl.ngDisabled" /> \t\t\t<span class="input-group-addon" ng-if="$ctrl.showLock" \t\t\t\tng-class="{\'input-lg\': $ctrl.size === \'lg\'}"> \t\t\t\t<a href="" ng-click="$ctrl.lockClick()" class="tw-rate-lock-link"> \t\t\t\t\t<i class="icon icon-lock" ng-if="$ctrl.locked"></i> \t\t\t\t\t<i class="icon icon-unlock" ng-if="!$ctrl.locked"></i> \t\t\t\t</a> \t\t\t</span> \t\t\t<span class="input-group-btn">  \t\t\t\t<tw-select \t\t\t\t\tng-model="$ctrl.currency" \t\t\t\t\tng-required="true" \t\t\t\t\tsize="{{ $ctrl.size }}" \t\t\t\t\tinverse="true" \t\t\t\t\tdropdown-right="xs" \t\t\t\t\tdropdown-width="md" \t\t\t\t\thide-note="true" \t\t\t\t\thide-secondary="true" \t\t\t\t\toptions="$ctrl.currencies" \t\t\t\t\tfilter="{{ $ctrl.currencyFilterPlaceholder }}" \t\t\t\t\tng-change="$ctrl.changedCurrency()"> \t\t\t\t\t\t<a href="" ng-if="!!$ctrl.customActionLabel" ng-click="$ctrl.onCustomAction()"> \t\t\t\t\t\t\t{{ $ctrl.customActionLabel }} \t\t\t\t\t\t</a> \t\t\t\t</tw-select> \t\t\t</span> \t\t</div>';
 }(window.angular), function(angular) {
     function TwCheckboxDirective() {
         function TwCheckboxController($scope, $element) {
@@ -299,12 +305,14 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 currencyCode: "@",
                 placeholder: "@",
                 size: "@",
-                locale: "@"
+                locale: "@",
+                locked: "=",
+                onLockedChange: "&"
             }
         };
     }
     angular.module("tw.form-components").directive("twCurrencyInput", TwCurrencyInputDirective);
-    var templateAsString = ' \t\t<div class="input-group" ng-class="{ \t\t\t\'input-group-sm\': $ctrl.size === \'sm\', \t\t\t\'input-group-lg\': $ctrl.size === \'lg\', \t\t\tdisabled: $ctrl.ngDisabled \t\t}"> \t\t\t<input \t\t\t\ttype="tel" \t\t\t\tautocomplete="off" \t\t\t\tname="amount" \t\t\t\tstep="any" \t\t\t\tclass="form-control p-r-0" \t\t\t\tplaceholder="{{$ctrl.placeholder}}" \t\t\t\tshow-decimals="$ctrl.showDecimals" \t\t\t\ttw-focusable \t\t\t\ttw-number-input-formatter \t\t\t\tng-change="$ctrl.changedInputValue()" \t\t\t\tng-model="$ctrl.ngModel" \t\t\t\tng-disabled="$ctrl.ngDisabled" /> \t\t\t<span class="input-group-addon tw-currency-input-code p-l-1"> \t\t\t\t{{ $ctrl.currency || $ctrl.currencyCode }} \t\t\t</span> \t\t</div> \t';
+    var templateAsString = ' \t\t<div class="input-group" ng-class="{ \t\t\t\'input-group-sm\': $ctrl.size === \'sm\', \t\t\t\'input-group-lg\': $ctrl.size === \'lg\', \t\t\tdisabled: $ctrl.ngDisabled \t\t}"> \t\t\t<input \t\t\t\ttype="tel" \t\t\t\tautocomplete="off" \t\t\t\tname="amount" \t\t\t\tstep="any" \t\t\t\tclass="form-control p-r-0" \t\t\t\tplaceholder="{{$ctrl.placeholder}}" \t\t\t\tshow-decimals="$ctrl.showDecimals" \t\t\t\ttw-focusable \t\t\t\ttw-number-input-formatter \t\t\t\tng-change="$ctrl.changedInputValue()" \t\t\t\tng-model="$ctrl.ngModel" \t\t\t\tng-disabled="$ctrl.ngDisabled" /> \t\t\t<span class="input-group-addon tw-currency-input-code p-l-1"> \t\t\t\t<a href=""  class="tw-rate-lock-link m-r-1" \t\t\t\t\tng-if="$ctrl.showLock" \t\t\t\t\tng-click="$ctrl.lockClick()"> \t\t\t\t\t<i class="icon icon-lock" ng-if="$ctrl.locked"></i> \t\t\t\t\t<i class="icon icon-unlock" ng-if="!$ctrl.locked"></i> \t\t\t\t</a> \t\t\t\t{{ $ctrl.currency || $ctrl.currencyCode }} \t\t\t</span> \t\t</div> \t';
 }(window.angular), function(angular) {
     "use strict";
     function TwDateDirective() {

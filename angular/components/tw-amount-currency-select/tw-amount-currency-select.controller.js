@@ -28,6 +28,9 @@
 				$ctrl.showDecimals = TwCurrencyData.getDecimals(newValue) > 0;
 			}
 		});
+		$scope.$watch('$ctrl.locked', function(newValue, oldValue) {
+			$ctrl.showLock = (typeof $ctrl.locked !== 'undefined');
+		});
 
 		$element.find('input').on('blur', function() {
 			$ngModel.$setTouched();
@@ -80,13 +83,10 @@
 		};
 
 		$ctrl.lockClick = function() {
-			if ($ctrl.lock === 'locked') {
-				$ctrl.lock = 'unlocked';
-			} else {
-				$ctrl.lock = 'locked';
-			}
-			if ($ctrl.onLockChange) {
-				$timeout($ctrl.onLockChange);
+			$ctrl.locked = !$ctrl.locked;
+
+			if ($ctrl.onLockedChange) {
+				$timeout($ctrl.onLockedChange);
 			}
 		};
 

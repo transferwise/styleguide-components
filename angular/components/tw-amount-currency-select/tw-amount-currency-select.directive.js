@@ -37,8 +37,8 @@
 
 				placeholder: '@',
 
-				lock: '=',
-				onLockChange: '&',
+				locked: '=',
+				onLockedChange: '&',
 
 				size: '@',
 				locale: '@'
@@ -65,11 +65,11 @@
 				ng-change="$ctrl.changedAmount()"  \
 				ng-model="$ctrl.ngModel" \
 				ng-disabled="$ctrl.ngDisabled" /> \
-			<span class="input-group-addon" ng-if="$ctrl.lock" \
+			<span class="input-group-addon" ng-if="$ctrl.showLock" \
 				ng-class="{\'input-lg\': $ctrl.size === \'lg\'}"> \
-				<a href="" ng-click="$ctrl.lockClick()"> \
-					<i class="icon icon-lock" ng-if="$ctrl.lock === \'locked\'"></i> \
-					<i class="icon icon-unlock" ng-if="$ctrl.lock === \'unlocked\'"></i> \
+				<a href="" ng-click="$ctrl.lockClick()" class="tw-rate-lock-link"> \
+					<i class="icon icon-lock" ng-if="$ctrl.locked"></i> \
+					<i class="icon icon-unlock" ng-if="!$ctrl.locked"></i> \
 				</a> \
 			</span> \
 			<span class="input-group-btn">  \

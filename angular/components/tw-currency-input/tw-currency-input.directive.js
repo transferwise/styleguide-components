@@ -25,7 +25,9 @@
 				currencyCode: '@',
 				placeholder: '@',
 				size: '@',
-				locale: '@'
+				locale: '@',
+				locked: '=',
+				onLockedChange: '&'
 			},
 		};
 	}
@@ -50,6 +52,12 @@
 				ng-model="$ctrl.ngModel" \
 				ng-disabled="$ctrl.ngDisabled" /> \
 			<span class="input-group-addon tw-currency-input-code p-l-1"> \
+				<a href=""  class="tw-rate-lock-link m-r-1" \
+					ng-if="$ctrl.showLock" \
+					ng-click="$ctrl.lockClick()"> \
+					<i class="icon icon-lock" ng-if="$ctrl.locked"></i> \
+					<i class="icon icon-unlock" ng-if="!$ctrl.locked"></i> \
+				</a> \
 				{{ $ctrl.currency || $ctrl.currencyCode }} \
 			</span> \
 		</div> \

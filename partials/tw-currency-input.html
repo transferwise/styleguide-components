@@ -5,7 +5,7 @@
 <div class="row m-b-3">
     <div class="col-md-6">
         <div class="form-group">
-            <label class="control-label" for="date">
+            <label class="control-label">
                 How much?
             </label>
             <tw-currency-input
@@ -18,7 +18,9 @@
                 ng-disabled="vm.currencyInput.disabled"
                 ng-min="vm.currencyInput.min"
                 ng-max="vm.currencyInput.max"
-                size="{{ vm.currencyInput.size }}" />
+                size="{{ vm.currencyInput.size }}"
+                locked="vm.currencyInput.locked">
+            </tw-currency-input>
             <div class="error-messages">
                 <div class="error-required">Required</div>
                 <div class="error-min">Must be higher</div>
@@ -27,7 +29,7 @@
             <status-messages></status-messages>
         </div>
         <div class="form-group form-group-lg">
-            <label class="control-label" for="date">
+            <label class="control-label">
                 How much?
             </label>
             <tw-currency-input
@@ -40,7 +42,10 @@
                 ng-disabled="vm.currencyInput.disabled"
                 ng-min="vm.currencyInput.min"
                 ng-max="vm.currencyInput.max"
-                size="lg"/>
+                size="lg"
+                locked="vm.currencyInput.locked"
+                on-locked-change="vm.log('locked change:' + vm.currencyInput.locked)">
+            </tw-currency-input>
             <div class="error-messages">
                 <div class="error-required">Required</div>
                 <div class="error-min">Must be higher</div>
@@ -50,13 +55,16 @@
         <h5>Configuration</h5>
 <pre>&lt;tw-currency-input
     tw-validation
-    currency="'{{ vm.currencyInput.currency }}'"
     ng-model="{{vm.model.components.currencyInput}}"
     ng-change="vm.log('input change')"<span ng-if="vm.currencyInput.required">
     ng-required="{{ vm.currencyInput.required }}"</span><span ng-if="vm.currencyInput.disabled">
     ng-disabled="{{ vm.currencyInput.disabled }}"</span>
     ng-min="{{ vm.currencyInput.min }}"
-    ng-max="{{ vm.currencyInput.max }}" /&gt;</pre>
+    ng-max="{{ vm.currencyInput.max }}"
+    currency="'{{ vm.currencyInput.currency }}'"<span ng-if="vm.currencyInput.locked">
+    locked="{{ vm.currencyInput.locked }}"</span><span ng-if="vm.currencyInput.locked">
+    on-locked-change="vm.log('locked changed: ' + locked)"</span>&gt;
+&lt;/tw-currency-input&gt;</pre>
     </div>
     <div class="col-md-6">
         <div class="well">
@@ -69,14 +77,22 @@
                 </label>
                 <div class="checkbox">
                     <label>
-                        <tw-checkbox ng-model="vm.currencyInput.required" ng-init="vm.currencyInput.required = false" />
+                        <tw-checkbox ng-model="vm.currencyInput.required"
+                            ng-init="vm.currencyInput.required = false" />
                         Is the control required?
                     </label>
                 </div>
                 <div class="checkbox">
                     <label>
-                        <tw-checkbox ng-model="vm.currencyInput.disabled" ng-init="vm.currencyInput.disabled = false" />
+                        <tw-checkbox ng-model="vm.currencyInput.disabled"
+                            ng-init="vm.currencyInput.disabled = false" />
                         Is the control disabled?
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <tw-checkbox ng-model="vm.currencyInput.locked" />
+                        Locked?
                     </label>
                 </div>
             </div>
