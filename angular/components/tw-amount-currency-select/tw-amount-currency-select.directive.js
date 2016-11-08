@@ -38,6 +38,8 @@
 				placeholder: '@',
 
 				lock: '=',
+				onLockChange: '&',
+
 				size: '@',
 				locale: '@'
 			},

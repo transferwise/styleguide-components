@@ -69,8 +69,6 @@
 
 		$ctrl.changedCurrency = function() {
 			if ($ctrl.onCurrencyChange) {
-				// $timeout is needed to get the last ngModel value.
-				// See: https://github.com/angular/angular.js/issues/4558
 				$timeout($ctrl.onCurrencyChange);
 			}
 		};
@@ -86,6 +84,9 @@
 				$ctrl.lock = 'unlocked';
 			} else {
 				$ctrl.lock = 'locked';
+			}
+			if ($ctrl.onLockChange) {
+				$timeout($ctrl.onLockChange);
 			}
 		};
 
