@@ -12,22 +12,25 @@
                 ng-disabled="vm.amountCurrencySelect.disabled"
                 ng-min="vm.amountCurrencySelect.min"
                 ng-max="vm.amountCurrencySelect.max"
+                ng-change="vm.log('amount input value changed:' + vm.model.components.amountCurrencySelect)"
+
                 placeholder="{{ vm.amountCurrencySelect.placeholder }}"
 
-                show-decimals="{{ vm.amountCurrencySelect.showDecimals }}"
-                on-amount-change="vm.log('amount input value changed:' + vm.model.components.amountCurrencySelect)"
-
                 currency="vm.model.components.currencySelected"
-                currencies="vm.select.options.currencySelect"
                 on-currency-change="vm.log('currency input value changed:' + vm.model.components.currencySelected)"
+
+                currencies="vm.select.options.currencySelect"
+                currency-filter-placeholder="{{ vm.amountCurrencySelect.currencyFilterPlaceholder }}"
 
                 custom-action-label="vm.amountCurrencySelect.customActionLabel"
                 on-custom-action="vm.log('Custom Action Called')"
 
-                lock="{{ vm.amountCurrencySelect.lock }}"
-                size="{{ vm.amountCurrencySelect.size }}"
-                />
-                <div class="error-messages">
+                locked="vm.amountCurrencySelect.locked"
+                on-locked-change="vm.log('Locked changed: ' + vm.amountCurrencySelect.locked)"
+
+                size="{{ vm.amountCurrencySelect.size }}">
+            </tw-amount-currency-select>
+            <div class="error-messages">
                 <div class="error-required">Required</div>
                 <div class="error-min">Must be higher</div>
                 <div class="error-max">Must be lower</div>
@@ -42,22 +45,25 @@
                 ng-disabled="vm.amountCurrencySelect.disabled"
                 ng-min="vm.amountCurrencySelect.min"
                 ng-max="vm.amountCurrencySelect.max"
+                ng-change="vm.log('amount input value changed:' + vm.model.components.amountCurrencySelect)"
+
                 placeholder="{{ vm.amountCurrencySelect.placeholder }}"
 
-                show-decimals="{{ vm.amountCurrencySelect.showDecimals }}"
-                on-amount-change="vm.log('amount input value changed:' + vm.model.components.amountCurrencySelect)"
-
                 currency="vm.model.components.currencySelected"
-                currencies="vm.select.options.currencySelect"
                 on-currency-change="vm.log('currency input value changed:' + vm.model.components.currencySelected)"
+
+                currencies="vm.select.options.currencySelect"
+                currency-filter-placeholder="{{ vm.amountCurrencySelect.currencyFilterPlaceholder }}"
 
                 custom-action-label="vm.amountCurrencySelect.customActionLabel"
                 on-custom-action="vm.log('Custom Action Called')"
 
-                lock="{{ vm.amountCurrencySelect.lock }}"
-                size="lg"
-                />
-                <div class="error-messages">
+                locked="vm.amountCurrencySelect.locked"
+                on-locked-change="vm.log('Lock changed: ' + vm.amountCurrencySelect.locked)"
+
+                size="lg">
+            </tw-amount-currency-select>
+            <div class="error-messages">
                 <div class="error-required">Required</div>
                 <div class="error-min">Must be higher</div>
                 <div class="error-max">Must be lower</div>
@@ -65,20 +71,23 @@
         </div>
         <h5>Configuration</h5>
 <pre>&lt;tw-amount-currency-select tw-validation
-    ng-model="{{ vm.model.components.amountCurrencySelect }}"
-    ng-required="{{ vm.amountCurrencySelect.required }}"
-    ng-disabled="{{ vm.amountCurrencySelect.disabled }}"
-    ng-min="{{ vm.amountCurrencySelect.min }}"
-    ng-max="{{ vm.amountCurrencySelect.max }}"
-    placeholder="{{ vm.amountCurrencySelect.placeholder }}"
-    show-decimals="{{ vm.amountCurrencySelect.showDecimals }}"
-    on-amount-change="vm.log('amount input value changed:' + vm.model.components.amountCurrencySelect)"
-    currency="{{ vm.model.components.currencySelected }}"
+    ng-model="{{ vm.model.components.amountCurrencySelect }}"<span ng-if="vm.amountCurrencySelect.required">
+    ng-required="{{ vm.amountCurrencySelect.required }}"</span><span ng-if="vm.amountCurrencySelect.disabled">
+    ng-disabled="{{ vm.amountCurrencySelect.disabled }}"</span><span ng-if="vm.amountCurrencySelect.min">
+    ng-min="{{ vm.amountCurrencySelect.min }}"</span><span ng-if="vm.amountCurrencySelect.max">
+    ng-max="{{ vm.amountCurrencySelect.max }}"</span>
+    ng-change="vm.log('amount input value changed:' + vm.model.components.amountCurrencySelect)"
     currencies="{{ vm.select.options.currencySelect }}"
-    on-currency-change="vm.log('currency input value changed:' + vm.model.components.currencySelected)"
+    currency="'{{ vm.model.components.currencySelected | uppercase }}'"
+    on-currency-change="vm.log('currency input value changed:' + vm.model.components.currencySelected)"<span ng-if="vm.amountCurrencySelect.placeholder">
+    placeholder="{{ vm.amountCurrencySelect.placeholder }}"</span>
     custom-action-label="{{ vm.amountCurrencySelect.customActionLabel }}"
-    on-custom-action="vm.log('Custom Action Called')"
-    &gt;&lt;/tw-amount-currency-select&gt;</pre>
+    on-custom-action="vm.log('Custom Action Called')"<span ng-if="vm.amountCurrencySelect.currencyFilterPlaceholder">
+    currency-filter-placeholder="{{ vm.amountCurrencySelect.currencyFilterPlaceholder }}"</span><span ng-if="vm.amountCurrencySelect.size !== 'md'">
+    size="{{ vm.amountCurrencySelect.size }}"</span><span ng-if="vm.amountCurrencySelect.locked">
+    locked="{{ vm.amountCurrencySelect.locked }}"</span><span ng-if="vm.amountCurrencySelect.locked">
+    on-locked-change="vm.log('lock changed:' + locked)"</span>&gt;
+&lt;/tw-amount-currency-select&gt;</pre>
     </div>
     <div class="col-md-6">
         <div class="well">
@@ -103,6 +112,12 @@
                         Is the control disabled?
                     </label>
                 </div>
+                <div class="checkbox">
+                    <label>
+                        <tw-checkbox ng-model="vm.amountCurrencySelect.locked" />
+                        Locked?
+                    </label>
+                </div>
             </div>
             <div class="form-group">
                 <label class="control-label">
@@ -119,8 +134,17 @@
                 <input type="text"
                     class="form-control"
                     ng-model="vm.amountCurrencySelect.customActionLabel"
-                    ng-init="vm.amountCurrencySelect.customActionLabel = 'Custom Action'"
-                    tw-validation />
+                    ng-init="vm.amountCurrencySelect.customActionLabel = 'Can\'t find your currency?'" />
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">
+                    Currency Filter Placeholder
+                </label>
+                <input type="text"
+                    class="form-control"
+                    ng-model="vm.amountCurrencySelect.currencyFilterPlaceholder"
+                    ng-init="vm.amountCurrencySelect.currencyFilterPlaceholder = 'Search...'" />
             </div>
             <div class="form-group">
                 <label class="control-label">
@@ -129,7 +153,6 @@
                 <input type="number"
                     class="form-control"
                     ng-model="vm.amountCurrencySelect.min"
-                    ng-init="vm.amountCurrencySelect.min = 10"
                     tw-validation />
             </div>
             <div class="form-group">
@@ -139,7 +162,6 @@
                 <input type="number"
                     class="form-control"
                     ng-model="vm.amountCurrencySelect.max"
-                    ng-init="vm.amountCurrencySelect.max = 100"
                     tw-validation />
             </div>
             <div class="form-group" ng-init="vm.amountCurrencySelect.size = 'md'">
@@ -149,23 +171,6 @@
                 <tw-select
                     ng-model="vm.amountCurrencySelect.size"
                     options="vm.sizes" />
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <tw-checkbox ng-model="vm.amountCurrencySelect.showDecimals" />
-                        Show decimals?
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label">
-                    Lock
-                </label>
-                <tw-select
-                    ng-model="vm.amountCurrencySelect.lock"
-                    ng-required="true"
-                    options="[{value:'',label:'None'},{value:'locked',label:'Locked'},{value:'unlocked',label:'Unlocked'}]" />
             </div>
         </div>
     </div>

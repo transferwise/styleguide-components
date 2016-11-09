@@ -5,22 +5,41 @@
 		.module('tw.form-components')
 		.controller('TwCurrencyInputController', TwCurrencyInputController);
 
-	TwCurrencyInputController.$inject = ['$element', '$scope', '$timeout'];
+	TwCurrencyInputController.$inject = [
+		'$element',
+		'$scope',
+		'$timeout',
+		'TwCurrencyData'
+	];
 
-	function TwCurrencyInputController($element, $scope, $timeout) {
+	function TwCurrencyInputController($element, $scope, $timeout, TwCurrencyData) {
 		var $ctrl = this;
 		var $ngModel = $element.controller('ngModel');
+
+		$ctrl.showDecimals = true;
 
 		$scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
 			if (newValue !== oldValue) {
 				$ngModel.$setDirty();
 			}
 		});
+		$scope.$watch('$ctrl.currency', function(newValue, oldValue) {
+			if (newValue !== oldValue) {
+				$ctrl.showDecimals = TwCurrencyData.getDecimals(newValue) > 0;
+			}
+		});
+		$scope.$watch('$ctrl.locked', function(newValue, oldValue) {
+			$ctrl.showLock = (typeof $ctrl.locked !== 'undefined');
+		});
 
 		$element.find('input').on('blur', function() {
 			$ngModel.$setTouched();
 			$element.triggerHandler('blur');
 		});
+
+		if ($ctrl.currencyCode && console && console.log) {
+			console.log('currency code is deprecated in twCurrencyInput, please use currency.');
+		}
 
 		$ngModel.$validators.min = function(modelValue, viewValue) {
 			if (typeof $ctrl.ngMin === 'undefined' || $ctrl.ngMin === null || !isNumber(viewValue)) {
@@ -46,8 +65,16 @@
 			}
 		};
 
+		$ctrl.lockClick = function() {
+			$ctrl.locked = !$ctrl.locked;
+
+			if ($ctrl.onLockedChange) {
+				$timeout($ctrl.onLockedChange);
+			}
+		};
+
 		function isNumber(value) {
-       		return !isNaN(parseFloat(value));
+			return !isNaN(parseFloat(value));
 		}
 	}
 
