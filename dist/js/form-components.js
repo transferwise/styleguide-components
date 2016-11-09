@@ -1,13 +1,17 @@
 angular.module("tw.form-components", []);
 !function(angular) {
     "use strict";
-    function TwAmountCurrencySelectController($element, $scope, $timeout) {
+    function TwAmountCurrencySelectController($element, $scope, $timeout, TwCurrencyData) {
         function isNumber(value) {
             return !isNaN(parseFloat(value));
         }
         var $ctrl = this, $ngModel = $element.controller("ngModel");
-        $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+        $ctrl.showDecimals = !0, $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
             newValue !== oldValue && $ngModel.$setDirty();
+        }), $scope.$watch("$ctrl.currency", function(newValue, oldValue) {
+            newValue && newValue !== oldValue && ($ctrl.showDecimals = TwCurrencyData.getDecimals(newValue) > 0);
+        }), $scope.$watch("$ctrl.locked", function(newValue, oldValue) {
+            $ctrl.showLock = "undefined" != typeof $ctrl.locked;
         }), $element.find("input").on("blur", function() {
             $ngModel.$setTouched(), $element.triggerHandler("blur");
         }), $ngModel.$validators.min = function(modelValue, viewValue) {
@@ -15,36 +19,46 @@ angular.module("tw.form-components", []);
         }, $ngModel.$validators.max = function(modelValue, viewValue) {
             return "undefined" == typeof $ctrl.ngMax || null === $ctrl.ngMax || !isNumber(viewValue) || viewValue <= $ctrl.ngMax;
         }, $ctrl.changedAmount = function() {
-            $ctrl.onAmountChange && $timeout($ctrl.onAmountChange);
+            $ctrl.ngChange && $timeout($ctrl.ngChange), $ctrl.onAmountChange && (console & console.log && console.log("onAmountChange is deprecated in twAmountCurrencySelect, please use ngChange."), 
+            $timeout($ctrl.onAmountChange));
         }, $ctrl.changedCurrency = function() {
             $ctrl.onCurrencyChange && $timeout($ctrl.onCurrencyChange);
         }, $ctrl.customAction = function() {
             $ctrl.onCustomAction && $ctrl.onCustomAction();
+        }, $ctrl.lockClick = function() {
+            $ctrl.locked = !$ctrl.locked, $ctrl.onLockedChange && $timeout($ctrl.onLockedChange);
         };
     }
     angular.module("tw.form-components").controller("TwAmountCurrencySelectController", TwAmountCurrencySelectController), 
-    TwAmountCurrencySelectController.$inject = [ "$element", "$scope", "$timeout" ];
+    TwAmountCurrencySelectController.$inject = [ "$element", "$scope", "$timeout", "TwCurrencyData" ];
 }(window.angular), function(angular) {
     "use strict";
-    function TwCurrencyInputController($element, $scope, $timeout) {
+    function TwCurrencyInputController($element, $scope, $timeout, TwCurrencyData) {
         function isNumber(value) {
             return !isNaN(parseFloat(value));
         }
         var $ctrl = this, $ngModel = $element.controller("ngModel");
-        $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+        $ctrl.showDecimals = !0, $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
             newValue !== oldValue && $ngModel.$setDirty();
+        }), $scope.$watch("$ctrl.currency", function(newValue, oldValue) {
+            newValue !== oldValue && ($ctrl.showDecimals = TwCurrencyData.getDecimals(newValue) > 0);
+        }), $scope.$watch("$ctrl.locked", function(newValue, oldValue) {
+            $ctrl.showLock = "undefined" != typeof $ctrl.locked;
         }), $element.find("input").on("blur", function() {
             $ngModel.$setTouched(), $element.triggerHandler("blur");
-        }), $ngModel.$validators.min = function(modelValue, viewValue) {
+        }), $ctrl.currencyCode && console && console.log && console.log("currency code is deprecated in twCurrencyInput, please use currency."), 
+        $ngModel.$validators.min = function(modelValue, viewValue) {
             return "undefined" == typeof $ctrl.ngMin || null === $ctrl.ngMin || !isNumber(viewValue) || viewValue >= $ctrl.ngMin;
         }, $ngModel.$validators.max = function(modelValue, viewValue) {
             return "undefined" == typeof $ctrl.ngMax || null === $ctrl.ngMax || !isNumber(viewValue) || viewValue <= $ctrl.ngMax;
         }, $ctrl.changedInputValue = function() {
             $ctrl.ngChange && $timeout($ctrl.ngChange);
+        }, $ctrl.lockClick = function() {
+            $ctrl.locked = !$ctrl.locked, $ctrl.onLockedChange && $timeout($ctrl.onLockedChange);
         };
     }
     angular.module("tw.form-components").controller("TwCurrencyInputController", TwCurrencyInputController), 
-    TwCurrencyInputController.$inject = [ "$element", "$scope", "$timeout" ];
+    TwCurrencyInputController.$inject = [ "$element", "$scope", "$timeout", "TwCurrencyData" ];
 }(window.angular), function(angular) {
     "use strict";
     function TwDateController($element, $log, $scope) {
@@ -193,22 +207,25 @@ angular.module("tw.form-components", []);
                 ngMax: "=",
                 ngRequired: "=",
                 ngDisabled: "=",
+                ngChange: "&",
                 amountReadOnly: "=",
                 onAmountChange: "&",
                 currency: "=",
                 currencies: "=",
                 onCurrencyChange: "&",
+                currencyFilterPlaceholder: "@",
                 customActionLabel: "=",
                 onCustomAction: "&",
                 placeholder: "@",
-                lock: "@",
+                locked: "=",
+                onLockedChange: "&",
                 size: "@",
                 locale: "@"
             }
         };
     }
     angular.module("tw.form-components").directive("twAmountCurrencySelect", TwAmountCurrencySelectDirective);
-    var templateAsString = '\t\t<div class="input-group" ng-class="{ \t\t\t\'input-group-sm\': $ctrl.size === \'sm\', \t\t\t\'input-group-lg\': $ctrl.size === \'lg\', \t\t\tdisabled: $ctrl.ngDisabled \t\t}">  \t\t\t<input \t\t\t\ttype="tel"  \t\t\t\tautocomplete="off"  \t\t\t\tname="amount"  \t\t\t\tstep="any"  \t\t\t\tclass="form-control"  \t\t\t\tplaceholder="{{ $ctrl.placeholder }}" \t\t\t\ttw-focusable  \t\t\t\ttw-number-input-formatter  \t\t\t\tng-change="$ctrl.changedAmount()"  \t\t\t\tng-model="$ctrl.ngModel" \t\t\t\tng-disabled="$ctrl.ngDisabled" /> \t\t\t<span class="input-group-addon" ng-if="$ctrl.lock" \t\t\t\tng-class="{\'input-lg\': $ctrl.size === \'lg\'}"> \t\t\t\t<i class="icon icon-lock" ng-if="$ctrl.lock === \'locked\'"></i> \t\t\t\t<i class="icon icon-unlock" ng-if="$ctrl.lock === \'unlocked\'"></i> \t\t\t</span> \t\t\t<span class="input-group-btn">  \t\t\t\t<tw-select \t\t\t\t\tng-model="$ctrl.currency" \t\t\t\t\tng-required="true" \t\t\t\t\tsize="{{ $ctrl.size }}" \t\t\t\t\tinverse="true" \t\t\t\t\tdropdown-right="xs" \t\t\t\t\tdropdown-width="md" \t\t\t\t\thide-note="true" \t\t\t\t\thide-secondary="true" \t\t\t\t\toptions="$ctrl.currencies" \t\t\t\t\tng-change="$ctrl.changedCurrency()"> \t\t\t\t\t\t<a ng-if="!!$ctrl.customActionLabel" ng-click="$ctrl.onCustomAction()"> \t\t\t\t\t\t\t{{ $ctrl.customActionLabel }} \t\t\t\t\t\t</a> \t\t\t\t</tw-select> \t\t\t</span> \t\t</div>';
+    var templateAsString = '\t\t<div class="input-group" ng-class="{ \t\t\t\'input-group-sm\': $ctrl.size === \'sm\', \t\t\t\'input-group-lg\': $ctrl.size === \'lg\', \t\t\tdisabled: $ctrl.ngDisabled \t\t}">  \t\t\t<input \t\t\t\ttype="tel"  \t\t\t\tautocomplete="off"  \t\t\t\tname="amount"  \t\t\t\tstep="any"  \t\t\t\tclass="form-control"  \t\t\t\tplaceholder="{{ $ctrl.placeholder }}" \t\t\t\ttw-focusable  \t\t\t\tshow-decimals="$ctrl.showDecimals" \t\t\t\ttw-number-input-formatter  \t\t\t\tng-change="$ctrl.changedAmount()"  \t\t\t\tng-model="$ctrl.ngModel" \t\t\t\tng-disabled="$ctrl.ngDisabled" /> \t\t\t<span class="input-group-addon" ng-if="$ctrl.showLock" \t\t\t\tng-class="{\'input-lg\': $ctrl.size === \'lg\'}"> \t\t\t\t<a href="" ng-click="$ctrl.lockClick()" class="tw-rate-lock-link"> \t\t\t\t\t<i class="icon icon-lock" ng-if="$ctrl.locked"></i> \t\t\t\t\t<i class="icon icon-unlock" ng-if="!$ctrl.locked"></i> \t\t\t\t</a> \t\t\t</span> \t\t\t<span class="input-group-btn">  \t\t\t\t<tw-select \t\t\t\t\tng-model="$ctrl.currency" \t\t\t\t\tng-required="true" \t\t\t\t\tsize="{{ $ctrl.size }}" \t\t\t\t\tinverse="true" \t\t\t\t\tdropdown-right="xs" \t\t\t\t\tdropdown-width="md" \t\t\t\t\thide-note="true" \t\t\t\t\thide-secondary="true" \t\t\t\t\toptions="$ctrl.currencies" \t\t\t\t\tfilter="{{ $ctrl.currencyFilterPlaceholder }}" \t\t\t\t\tng-change="$ctrl.changedCurrency()"> \t\t\t\t\t\t<a href="" ng-if="!!$ctrl.customActionLabel" ng-click="$ctrl.onCustomAction()"> \t\t\t\t\t\t\t{{ $ctrl.customActionLabel }} \t\t\t\t\t\t</a> \t\t\t\t</tw-select> \t\t\t</span> \t\t</div>';
 }(window.angular), function(angular) {
     function TwCheckboxDirective() {
         function TwCheckboxController($scope, $element) {
@@ -281,16 +298,18 @@ angular.module("tw.form-components", []);
                 ngMax: "=",
                 ngRequired: "=",
                 ngDisabled: "=",
-                showDecimals: "=",
+                currency: "=",
                 currencyCode: "@",
                 placeholder: "@",
                 size: "@",
-                locale: "@"
+                locale: "@",
+                locked: "=",
+                onLockedChange: "&"
             }
         };
     }
     angular.module("tw.form-components").directive("twCurrencyInput", TwCurrencyInputDirective);
-    var templateAsString = ' \t\t<div class="input-group" ng-class="{ \t\t\t\'input-group-sm\': $ctrl.size === \'sm\', \t\t\t\'input-group-lg\': $ctrl.size === \'lg\', \t\t\tdisabled: $ctrl.ngDisabled \t\t}"> \t\t\t<input \t\t\t\ttype="tel" \t\t\t\tautocomplete="off" \t\t\t\tname="amount" \t\t\t\tstep="any" \t\t\t\tclass="form-control p-r-0" \t\t\t\tplaceholder="{{$ctrl.placeholder}}" \t\t\t\tshow-decimals="$ctrl.showDecimals" \t\t\t\ttw-focusable \t\t\t\ttw-number-input-formatter \t\t\t\tng-change="$ctrl.changedInputValue()" \t\t\t\tng-model="$ctrl.ngModel" \t\t\t\tng-disabled="$ctrl.ngDisabled" /> \t\t\t<span class="input-group-addon tw-currency-input-code p-l-1"> \t\t\t\t{{ $ctrl.currencyCode }} \t\t\t</span> \t\t</div> \t';
+    var templateAsString = ' \t\t<div class="input-group" ng-class="{ \t\t\t\'input-group-sm\': $ctrl.size === \'sm\', \t\t\t\'input-group-lg\': $ctrl.size === \'lg\', \t\t\tdisabled: $ctrl.ngDisabled \t\t}"> \t\t\t<input \t\t\t\ttype="tel" \t\t\t\tautocomplete="off" \t\t\t\tname="amount" \t\t\t\tstep="any" \t\t\t\tclass="form-control p-r-0" \t\t\t\tplaceholder="{{$ctrl.placeholder}}" \t\t\t\tshow-decimals="$ctrl.showDecimals" \t\t\t\ttw-focusable \t\t\t\ttw-number-input-formatter \t\t\t\tng-change="$ctrl.changedInputValue()" \t\t\t\tng-model="$ctrl.ngModel" \t\t\t\tng-disabled="$ctrl.ngDisabled" /> \t\t\t<span class="input-group-addon tw-currency-input-code p-l-1"> \t\t\t\t<a href=""  class="tw-rate-lock-link m-r-1" \t\t\t\t\tng-if="$ctrl.showLock" \t\t\t\t\tng-click="$ctrl.lockClick()"> \t\t\t\t\t<i class="icon icon-lock" ng-if="$ctrl.locked"></i> \t\t\t\t\t<i class="icon icon-unlock" ng-if="!$ctrl.locked"></i> \t\t\t\t</a> \t\t\t\t{{ $ctrl.currency || $ctrl.currencyCode }} \t\t\t</span> \t\t</div> \t';
 }(window.angular), function(angular) {
     "use strict";
     function TwDateDirective() {
@@ -786,4 +805,35 @@ angular.module("tw.form-components", []);
         });
     }
     angular.module("tw.form-components").directive("twFileSelect", TwFileSelectDirective).controller("TwUploadDroppableController", TwUploadDroppableController).directive("twUploadDroppable", TwUploadDroppableDirective);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwCurrencyData() {
+        var currencyDecimals = {
+            BIF: 0,
+            BYR: 0,
+            CLP: 0,
+            DJF: 0,
+            GNF: 0,
+            JPY: 0,
+            KMF: 0,
+            KRW: 0,
+            MGA: 0,
+            PYG: 0,
+            RWF: 0,
+            VND: 0,
+            VUV: 0,
+            XAF: 0,
+            XOF: 0,
+            XPF: 0,
+            BHD: 3,
+            JOD: 3,
+            KWD: 3,
+            OMR: 3,
+            TND: 3
+        };
+        this.getDecimals = function(currency) {
+            return currency.toUpperCase && "undefined" != typeof currencyDecimals[currency.toUpperCase()] ? currencyDecimals[currency.toUpperCase()] : 2;
+        };
+    }
+    angular.module("tw.form-components").service("TwCurrencyData", TwCurrencyData);
 }(window.angular);
