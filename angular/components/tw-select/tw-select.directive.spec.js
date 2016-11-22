@@ -25,6 +25,7 @@ describe('Directive: TwSelect', function() {
     var OPTION_CIRCLE_IMAGE_SELECTOR = '.dropdown-menu .circle img';
     var OPTION_CIRCLE_TEXT_SELECTOR = '.dropdown-menu .tw-select-circle-text';
     var OPTION_CIRCLE_ICON_SELECTOR = '.dropdown-menu .circle .icon';
+    var OPTION_DISABLED_SELECTOR = '.dropdown-menu .disabled';
 
     beforeEach(module('tw.form-components'));
 
@@ -357,6 +358,28 @@ describe('Directive: TwSelect', function() {
                 //expect($scope.ngModel).toBe(OPTIONS[1].value);
                 //expect($(secondLink).text.trim()).toBe(OPTIONS[1].label);
             });
+            it('should skip next option if header', function() {
+                $scope.options = OPTIONS_HEADER;
+                $scope.ngModel = 1;
+                $scope.$digest();
+                var firstLink = directiveElement.find('.active a')[0];
+                $(firstLink).focus().triggerHandler(keypress('ArrowDown'));
+                var activeLink = directiveElement.find('.active a')[0];
+                // TODO Dropdown.js not working in tests
+                //expect($scope.ngModel).toBe(3);
+                //expect($(activeLink).text.trim()).toBe('Three');
+            });
+            it('should skip next option if disabled', function() {
+                $scope.options = OPTIONS_DISABLED;
+                $scope.ngModel = 1;
+                $scope.$digest();
+                var firstLink = directiveElement.find('.active a')[0];
+                $(firstLink).focus().triggerHandler(keypress('ArrowDown'));
+                var activeLink = directiveElement.find('.active a')[0];
+                // TODO Dropdown.js not working in tests
+                //expect($scope.ngModel).toBe(3);
+                //expect($(activeLink).text.trim()).toBe('Three');
+            });
         });
     });
 
@@ -678,6 +701,11 @@ describe('Directive: TwSelect', function() {
             var el = directiveElement.find(OPTION_CIRCLE_ICON_SELECTOR)
             expect(el.length).toBe(1);
         });
+        it('should show disabled option', function() {
+            var el = directiveElement.find(OPTION_DISABLED_SELECTOR)
+            expect(el.length).toBe(1);
+        });
+
     });
 
     describe('when visual configuration is supplied', function() {
@@ -848,12 +876,39 @@ describe('Directive: TwSelect', function() {
         label: 'Three'
     }];
 
+    var OPTIONS_DISABLED = [{
+        value: 1,
+        label: 'One'
+    },{
+        value: 2,
+        label: 'Two',
+        disabled: true
+    },{
+        value: 3,
+        label: 'Three'
+    }];
+
+    var OPTIONS_HEADER = [{
+        value: 1,
+        label: 'One'
+    },{
+        header: 'Header'
+    },{
+        value: 3,
+        label: 'Three'
+    }];
+
+
     var OPTIONS_EXTRAS = [{
         header: "header"
     },{
         value: 'NOTE',
         label: 'Note text',
         note: 'Note text'
+    },{
+        value: 'DISABLED',
+        label: 'Disabled',
+        disabled: true
     },{
         value: 'SECONDARY',
         label: 'Secondary text',

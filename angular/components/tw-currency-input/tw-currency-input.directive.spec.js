@@ -153,9 +153,9 @@ describe('Directive: TwCurrencyInput', function() {
                     Example currency input \
                 </label> \
                 <tw-currency-input \
-    				tw-validation \
-                    currency-code="EUR" \
-    			    ng-model="ngModel" \
+                    tw-validation \
+                    currency="\'EUR\'" \
+                    ng-model="ngModel" \
                     ng-required="isRequired" \
                     ng-change="onChange()" \
                     ng-min="minValue" \
