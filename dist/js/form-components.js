@@ -581,7 +581,7 @@ angular.module("tw.form-components", []);
             $element.triggerHandler("focus");
         }
         function optionClick(option, $event) {
-            return option.disabled ? ($event.stopPropagation && $event.stopPropagation(), void ($event.cancelBubble = !0)) : (selectOption($ngModel, $ctrl, option), 
+            return option.disabled ? void $event.stopPropagation() : (selectOption($ngModel, $ctrl, option), 
             void $element.find(".btn").focus());
         }
         function optionFocus(option) {

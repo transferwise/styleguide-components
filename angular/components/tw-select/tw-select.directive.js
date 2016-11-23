@@ -185,10 +185,7 @@
 		}
 		function optionClick(option, $event) {
 			if (option.disabled) {
-				if ($event.stopPropagation) {
-					$event.stopPropagation();
-				}
-				$event.cancelBubble = true;
+				$event.stopPropagation();
 				return;
 			}
 			selectOption($ngModel, $ctrl, option);
