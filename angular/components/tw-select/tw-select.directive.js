@@ -77,7 +77,8 @@
 							\"dropdown-menu-lg\": $ctrl.dropdownWidth === \"lg\" \
 						}'> \
 						<li ng-if='$ctrl.filter'> \
-							<a href='' class='tw-select-filter-link p-a-0' ng-focus='$ctrl.filterFocus()'> \
+							<a href='' class='tw-select-filter-link p-a-0' tabindex='-1' \
+								ng-focus='$ctrl.filterFocus()'> \
 								<div class='input-group'> \
 									<span class='input-group-addon'><i class='icon icon-search'></i></span> \
 									<input type='text' class='form-control tw-select-filter' placeholder='{{$ctrl.filter}}' \
@@ -89,7 +90,7 @@
 						</li> \
 						<li ng-class='{active: !$ctrl.selected}' \
 							ng-if='$ctrl.placeholder && !$ctrl.ngRequired && !$ctrl.filter'> \
-							<a href='' \
+							<a href='' tabindex='-1' \
 								ng-click='$ctrl.placeholderClick()' \
 								ng-focus='$ctrl.placeholderFocus()' \
 								class='tw-select-placeholder' tw-focusable> \
@@ -112,7 +113,8 @@
 								ng-focus='$ctrl.optionFocus(option)' \
 								ng-class='{\"tw-select-option-link\": !option.disabled}' \
 								index='{{$index}}' \
-								tw-focusable> \
+								tabindex='-1' \
+								tw-focusable > \
 								<div class='circle circle-inverse pull-xs-left circle-sm' ng-if='option.icon && option.secondary'>\
 									<i class='icon {{option.icon}}'></i>\
 								</div>\

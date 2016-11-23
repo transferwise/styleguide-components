@@ -324,7 +324,7 @@ describe('Directive: TwSelect', function() {
             expect($(selectedOptionElement).text().trim()).not.toBe('One');
         });
         it('should open dropdown and select first option when down arrow pressed', function() {
-            directiveElement.find('.btn').focus().triggerHandler(keypress('ArrowDown'));
+            directiveElement.find('.btn').focus().triggerHandler(keydownCode(SPECIAL_KEYS.down));
             var selectedOptionElement = directiveElement.find('.active')[0];
             var firstOption = OPTIONS[0];
             expect($scope.ngModel).toBe(firstOption.value);
@@ -338,48 +338,62 @@ describe('Directive: TwSelect', function() {
         describe('when dropdown item has focus', function() {
             it('should select item below when down arrow pressed', function() {
                 $scope.ngModel = OPTIONS[1].value;
+                $scope.$digest();
 
                 var secondLink = directiveElement.find('.active a')[0];
-                $(secondLink).focus().triggerHandler(keypress('ArrowDown'));
+                $(secondLink).focus().trigger(keydownCode(SPECIAL_KEYS.down));
 
                 // Dropdown.js not working in tests
                 var thirdLink = directiveElement.find('.active a')[0];
                 //expect($scope.ngModel).toBe(OPTIONS[2].value);
-                //expect($(thirdLink).text.trim()).toBe(OPTIONS[2].label);
+                //expect($(thirdLink).text().trim()).toBe(OPTIONS[2].label);
             });
             it('should select item above when up arrow pressed', function() {
                 $scope.ngModel = OPTIONS[2].value;
+                $scope.$digest();
 
                 var thirdLink = directiveElement.find('.active a')[0];
-                $(thirdLink).focus().triggerHandler(keypress('ArrowUp'));
+                $(thirdLink).focus().triggerHandler(keydownCode(SPECIAL_KEYS.up));
 
                 // Dropdown.js not working in tests
                 var secondLink = directiveElement.find('.active a')[0];
                 //expect($scope.ngModel).toBe(OPTIONS[1].value);
-                //expect($(secondLink).text.trim()).toBe(OPTIONS[1].label);
+                //expect($(secondLink).text().trim()).toBe(OPTIONS[1].label);
+            });
+            it('should not select next option when tab presses', function() {
+                var firstLink = directiveElement.find('.active a')[0];
+                $(firstLink).focus().triggerHandler(keydownCode(SPECIAL_KEYS.down));
+                var activeLink = directiveElement.find('.active a')[0];
+                // TODO this test is correct, but as dropdown.js not working,
+                // not testing much right now
+                expect($scope.ngModel).toBe(OPTIONS[0].value);
+                expect($(activeLink).text().trim()).toBe('Zero');
             });
             it('should skip next option if header', function() {
                 $scope.options = OPTIONS_HEADER;
                 $scope.ngModel = 1;
                 $scope.$digest();
+
                 var firstLink = directiveElement.find('.active a')[0];
-                $(firstLink).focus().triggerHandler(keypress('ArrowDown'));
+                $(firstLink).focus().triggerHandler(keydownCode(SPECIAL_KEYS.down));
                 var activeLink = directiveElement.find('.active a')[0];
                 // TODO Dropdown.js not working in tests
                 //expect($scope.ngModel).toBe(3);
-                //expect($(activeLink).text.trim()).toBe('Three');
+                //expect($(activeLink).text().trim()).toBe('Three');
             });
             it('should skip next option if disabled', function() {
                 $scope.options = OPTIONS_DISABLED;
                 $scope.ngModel = 1;
                 $scope.$digest();
+
                 var firstLink = directiveElement.find('.active a')[0];
-                $(firstLink).focus().triggerHandler(keypress('ArrowDown'));
+                $(firstLink).focus().triggerHandler(keydownCode(SPECIAL_KEYS.down));
                 var activeLink = directiveElement.find('.active a')[0];
                 // TODO Dropdown.js not working in tests
                 //expect($scope.ngModel).toBe(3);
-                //expect($(activeLink).text.trim()).toBe('Three');
+                //expect($(activeLink).text().trim()).toBe('Three');
             });
+
         });
     });
 
@@ -834,7 +848,8 @@ describe('Directive: TwSelect', function() {
     var SPECIAL_KEYS = {
         up: 38,
         down: 40,
-        return: 13
+        return: 13,
+        tab: 9
     }
 
     var OPTIONS = [{
