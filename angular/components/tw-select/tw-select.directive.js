@@ -37,6 +37,7 @@
 					<button type='button' class='btn btn-input dropdown-toggle' \
 						ng-class='{ \
 							\"btn-input-inverse\": $ctrl.inverse, \
+							\"btn-addon\": $ctrl.inverse, \
 							\"btn-sm\": $ctrl.size === \"sm\", \
 							\"btn-lg\": $ctrl.size === \"lg\" \
 						}' \
@@ -76,7 +77,8 @@
 							\"dropdown-menu-lg\": $ctrl.dropdownWidth === \"lg\" \
 						}'> \
 						<li ng-if='$ctrl.filter'> \
-							<a href='' class='tw-select-filter-link p-a-0' ng-focus='$ctrl.filterFocus()'> \
+							<a href='' class='tw-select-filter-link p-a-0' tabindex='-1' \
+								ng-focus='$ctrl.filterFocus()'> \
 								<div class='input-group'> \
 									<span class='input-group-addon'><i class='icon icon-search'></i></span> \
 									<input type='text' class='form-control tw-select-filter' placeholder='{{$ctrl.filter}}' \
@@ -88,7 +90,7 @@
 						</li> \
 						<li ng-class='{active: !$ctrl.selected}' \
 							ng-if='$ctrl.placeholder && !$ctrl.ngRequired && !$ctrl.filter'> \
-							<a href='' \
+							<a href='' tabindex='-1' \
 								ng-click='$ctrl.placeholderClick()' \
 								ng-focus='$ctrl.placeholderFocus()' \
 								class='tw-select-placeholder' tw-focusable> \
@@ -100,16 +102,19 @@
 							ng-repeat='option in $ctrl.filteredOptions' \
 							ng-class='{ \
 								active: $ctrl.ngModel === option.value, \
+								disabled: option.disabled, \
 								\"dropdown-header\": option.header, \
-								\"tw-select-option\": !option.header \
+								\"tw-select-option\": !option.header && !option.disabled \
 							}'> \
 							<span ng-if='option.header'>{{option.header}}</span> \
 							<a href='' \
 								ng-if='!option.header' \
-								ng-click='$ctrl.optionClick(option)' \
+								ng-click='$ctrl.optionClick(option, $event)' \
 								ng-focus='$ctrl.optionFocus(option)' \
+								ng-class='{\"tw-select-option-link\": !option.disabled}' \
 								index='{{$index}}' \
-								class='tw-select-option-link' tw-focusable> \
+								tabindex='-1' \
+								tw-focusable > \
 								<div class='circle circle-inverse pull-xs-left circle-sm' ng-if='option.icon && option.secondary'>\
 									<i class='icon {{option.icon}}'></i>\
 								</div>\
@@ -178,7 +183,11 @@
 		function buttonFocus() {
 			$element.triggerHandler('focus');
 		}
-		function optionClick(option) {
+		function optionClick(option, $event) {
+			if (option.disabled) {
+				$event.stopPropagation();
+				return;
+			}
 			selectOption($ngModel, $ctrl, option);
 			$element.find('.btn').focus();
 		}
@@ -366,27 +375,6 @@
 				}
 			});
 		});
-		/*
-		// TODO could get efficiency gains by delegating event handler
-		$element.find('ul').on('click', 'a', function(event) {
-			$element.find('.btn').focus();
-			// This causes us to double fire, as focus also calls it EXCEPT on safari...
-			focusOption(event, options, $ngModel, $ctrl, this);
-		});
-
-		$element.find('ul').on('focus', 'a', function(event) {
-			focusOption(event, options, $ngModel, $ctrl, this);
-		});
-
-		function focusOption(event, options, $ngModel, $ctrl, optionElement) {
-			if ($(event.target).hasClass('tw-select-option-link')) {
-				var option = findOptionFromValue(options, optionElement.getAttribute('value'));
-				$ctrl.selectOption($ngModel, $ctrl, option);
-			} else if ($(event.target).hasClass('tw-select-placeholder')) {
-				resetOption($ngModel, $ctrl);
-			}
-		}
-		*/
 
 		$element.find('ul').on('keypress', 'a', function(event) {
 			$ctrl.optionKeypress(event);
@@ -395,8 +383,6 @@
 
 	function checkForTranscludedContent($transclude, $ctrl) {
 		$transclude(function(clone) {
-			//var trimmed = clone.text().replace(/<!--[\s\S]*?-->/g, '').trim();
-			//if (trimmed !== '' && clone.length > 1) {
 			if (clone.length > 1 || clone.text().trim() !== '') {
 				$ctrl.hasTranscluded = true;
 			}
@@ -453,6 +439,9 @@
 	}
 
 	function selectOption($ngModel, $ctrl, option) {
+		if (option.disabled) {
+			return;
+		}
 		$ngModel.$setViewValue(option.value);
 		// Force commit so that ng-change always has new value
 		$ngModel.$commitViewValue();
