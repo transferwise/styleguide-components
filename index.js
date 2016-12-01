@@ -24,6 +24,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 			{value: 'searchable', label: 'Searchable text'},
 			{value: 'circles', label: 'Circles'},
 			{value: 'long', label: 'Long list'},
+			{value: 'disabled', label: 'Disabled option'},
 			{value: 'currencySelect', label: 'Example: Currency select'},
 			{value: 'accountSelect', label: 'Example: Account select'}
 		],
@@ -69,6 +70,11 @@ angular.module('my-app', ['tw.styleguide-components'])
 				{value: '1', label: 'Bob Smith', circleImage: 'images/mike.jpg'},
 				{value: '2', label: 'James Davies', circleIcon: 'icon-bank'},
 				{value: '3', label: 'Helen Williams', circleText: 'AZ'}
+			],
+			disabled: [
+				{value: '1', label: 'Enabled option'},
+				{value: '2', label: 'Disabled option', disabled: true},
+				{value: '3', label: 'Second option'}
 			],
 			currencySelect: [
 				{header: 'Popular currencies'},
@@ -195,4 +201,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 })
 .directive('twFocusableDocs', function() {
 	return {templateUrl: 'partials/tw-focusable.html'};
+})
+.directive('twProcessDocs', function() {
+	return {templateUrl: 'partials/tw-process.html'};
 });
