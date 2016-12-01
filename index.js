@@ -201,4 +201,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 })
 .directive('twFocusableDocs', function() {
 	return {templateUrl: 'partials/tw-focusable.html'};
+})
+.directive('twProcessDocs', function() {
+	return {templateUrl: 'partials/tw-process.html'};
 });

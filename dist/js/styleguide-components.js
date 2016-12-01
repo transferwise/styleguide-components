@@ -410,6 +410,56 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     }
     angular.module("tw.form-components").directive("twLoader", TwLoader);
 }(window.angular), function(angular) {
+    "use strict";
+    function TwProcess() {
+        return {
+            restrict: "E",
+            controllerAs: "$ctrl",
+            bindToController: !0,
+            scope: {
+                state: "=",
+                size: "@",
+                onStop: "&"
+            },
+            controller: [ "$scope", "$interval", "$timeout", TwProcessController ],
+            template: "<span class='process' \t\t\t\tng-class='{ \t\t\t\t\t\"process-success\": $ctrl.processing === 1, \t\t\t\t\t\"process-danger\": $ctrl.processing === -1, \t\t\t\t\t\"process-stopped\": $ctrl.processing === 0, \t\t\t\t\t\"process-xs\": $ctrl.size === \"xs\", \t\t\t\t\t\"process-sm\": $ctrl.size === \"sm\", \t\t\t\t\t\"process-md\": $ctrl.size === \"md\", \t\t\t\t\t\"process-lg\": $ctrl.size === \"lg\", \t\t\t\t\t\"process-xl\": $ctrl.size === \"xl\" \t\t\t\t}'> \t\t\t\t<span class='process-icon-container'> \t\t\t\t\t<span class='process-icon-horizontal'></span> \t\t\t\t\t<span class='process-icon-vertical'></span> \t\t\t\t</span> \t\t\t\t<svg version='1.1' \t\t\t\t\txmlns='http://www.w3.org/2000/svg' \t\t\t\t\txml:space='preserve'> \t\t\t\t\t<circle class='process-circle' cx='50%' cy='50%' ng-attr-r='{{$ctrl.radius}}' \t\t\t\t\t\tfill-opacity='0.0' /> \t\t\t\t</svg> \t\t\t</span>"
+        };
+    }
+    function TwProcessController($scope, $interval, $timeout) {
+        var $ctrl = this;
+        $ctrl.processing = $ctrl.state;
+        var promise;
+        $scope.$watch("$ctrl.state", function(newVal) {
+            $ctrl.processing !== -1 && 0 !== $ctrl.processing && 1 !== $ctrl.processing || ($ctrl.processing = null, 
+            $ctrl.startProcess());
+        }), $scope.$watch("$ctrl.size", function(newVal) {
+            switch ($interval.cancel(promise), $ctrl.startProcess(), $ctrl.size || ($ctrl.size = "sm"), 
+            $ctrl.size) {
+              case "xs":
+                $ctrl.radius = "11";
+                break;
+
+              case "sm":
+                $ctrl.radius = "22";
+                break;
+
+              case "xl":
+                $ctrl.radius = "61";
+                break;
+
+              default:
+                $ctrl.radius = "46%";
+            }
+        }), $ctrl.startProcess = function() {
+            promise = $interval(function() {
+                $ctrl.processing = $ctrl.state, $ctrl.state !== -1 && 0 !== $ctrl.state && 1 !== $ctrl.state || $ctrl.stopProcess();
+            }, 1500);
+        }, $ctrl.stopProcess = function() {
+            $interval.cancel(promise), $ctrl.onStop && (0 === $ctrl.state ? $ctrl.onStop() : $timeout($ctrl.onStop, 1800));
+        }, $ctrl.startProcess();
+    }
+    angular.module("tw.form-components").directive("twProcess", TwProcess);
+}(window.angular), function(angular) {
     function TwRadioDirective() {
         function TwRadioController($scope, $element) {
             var $ctrl = this, $ngModel = $element.controller("ngModel"), radioSelector = ".radio", labelSelector = "label";
