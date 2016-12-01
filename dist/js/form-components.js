@@ -423,12 +423,14 @@ angular.module("tw.form-components", []);
         };
     }
     function TwProcessController($scope, $interval, $timeout) {
+        function isStopped(state) {
+            return state === -1 || 0 === state || 1 === state;
+        }
         var $ctrl = this;
         $ctrl.processing = $ctrl.state;
         var promise;
         $scope.$watch("$ctrl.state", function(newVal) {
-            $ctrl.processing !== -1 && 0 !== $ctrl.processing && 1 !== $ctrl.processing || ($ctrl.processing = null, 
-            $ctrl.startProcess());
+            isStopped($ctrl.processing) && ($ctrl.processing = null, $ctrl.startProcess());
         }), $scope.$watch("$ctrl.size", function(newVal) {
             switch ($interval.cancel(promise), $ctrl.startProcess(), $ctrl.size || ($ctrl.size = "sm"), 
             $ctrl.size) {
@@ -449,7 +451,7 @@ angular.module("tw.form-components", []);
             }
         }), $ctrl.startProcess = function() {
             promise = $interval(function() {
-                $ctrl.processing = $ctrl.state, $ctrl.state !== -1 && 0 !== $ctrl.state && 1 !== $ctrl.state || $ctrl.stopProcess();
+                $ctrl.processing = $ctrl.state, isStopped($ctrl.state) && $ctrl.stopProcess();
             }, 1500);
         }, $ctrl.stopProcess = function() {
             $interval.cancel(promise), $ctrl.onStop && (0 === $ctrl.state ? $ctrl.onStop() : $timeout($ctrl.onStop, 1800));

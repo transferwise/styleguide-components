@@ -49,10 +49,7 @@
 
 		// This allows us to cancel the interval when not needed.
 		$scope.$watch('$ctrl.state', function(newVal) {
-			if ($ctrl.processing === -1 ||
-				$ctrl.processing === 0 ||
-				$ctrl.processing === 1) {
-				// We're stopped so restart
+			if (isStopped($ctrl.processing)) {
 				$ctrl.processing = null;
 				$ctrl.startProcess();
 			}
@@ -82,12 +79,14 @@
 			}
 		});
 
+		function isStopped(state) {
+			return state === -1 || state === 0 || state === 1;
+		}
+
 		$ctrl.startProcess = function() {
 			promise = $interval(function() {
 				$ctrl.processing = $ctrl.state;
-				if ($ctrl.state === -1 ||
-					$ctrl.state === 0 ||
-					$ctrl.state === 1) {
+				if (isStopped($ctrl.state)) {
 					$ctrl.stopProcess();
 				}
 			}, 1500);
