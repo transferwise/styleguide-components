@@ -28,9 +28,6 @@
 				$ctrl.showDecimals = TwCurrencyData.getDecimals(newValue) > 0;
 			}
 		});
-		$scope.$watch('$ctrl.locked', function(newValue, oldValue) {
-			$ctrl.showLock = (typeof $ctrl.locked !== 'undefined');
-		});
 
 		$element.find('input').on('blur', function() {
 			$ngModel.$setTouched();
