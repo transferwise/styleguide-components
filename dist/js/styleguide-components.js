@@ -13,8 +13,6 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             newValue !== oldValue && $ngModel.$setDirty();
         }), $scope.$watch("$ctrl.currency", function(newValue, oldValue) {
             newValue && newValue !== oldValue && ($ctrl.showDecimals = TwCurrencyData.getDecimals(newValue) > 0);
-        }), $scope.$watch("$ctrl.locked", function(newValue, oldValue) {
-            $ctrl.showLock = "undefined" != typeof $ctrl.locked;
         }), $element.find("input").on("blur", function() {
             $ngModel.$setTouched(), $element.triggerHandler("blur");
         }), $ngModel.$validators.min = function(modelValue, viewValue) {
@@ -222,6 +220,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 placeholder: "@",
                 locked: "=",
                 onLockedChange: "&",
+                showLock: "=?",
                 size: "@",
                 locale: "@"
             }

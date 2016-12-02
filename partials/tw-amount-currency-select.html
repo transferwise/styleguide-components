@@ -27,6 +27,7 @@
 
                 locked="vm.amountCurrencySelect.locked"
                 on-locked-change="vm.log('Locked changed: ' + vm.amountCurrencySelect.locked)"
+                show-lock="vm.amountCurrencySelect.showLock"
 
                 size="{{ vm.amountCurrencySelect.size }}">
             </tw-amount-currency-select>
@@ -60,6 +61,7 @@
 
                 locked="vm.amountCurrencySelect.locked"
                 on-locked-change="vm.log('Lock changed: ' + vm.amountCurrencySelect.locked)"
+                show-lock="vm.amountCurrencySelect.showLock"
 
                 size="lg">
             </tw-amount-currency-select>
@@ -84,7 +86,8 @@
     custom-action-label="{{ vm.amountCurrencySelect.customActionLabel }}"
     on-custom-action="vm.log('Custom Action Called')"<span ng-if="vm.amountCurrencySelect.currencyFilterPlaceholder">
     currency-filter-placeholder="{{ vm.amountCurrencySelect.currencyFilterPlaceholder }}"</span><span ng-if="vm.amountCurrencySelect.size !== 'md'">
-    size="{{ vm.amountCurrencySelect.size }}"</span><span ng-if="vm.amountCurrencySelect.locked">
+    size="{{ vm.amountCurrencySelect.size }}"</span><span ng-if="vm.amountCurrencySelect.showLock">
+    show-lock="{{vm.amountCurrencySelect.showLock}}"
     locked="{{ vm.amountCurrencySelect.locked }}"</span><span ng-if="vm.amountCurrencySelect.locked">
     on-locked-change="vm.log('lock changed:' + locked)"</span>&gt;
 &lt;/tw-amount-currency-select&gt;</pre>
@@ -116,6 +119,12 @@
                     <label>
                         <tw-checkbox ng-model="vm.amountCurrencySelect.locked" />
                         Locked?
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <tw-checkbox ng-model="vm.amountCurrencySelect.showLock" />
+                        Show lock?
                     </label>
                 </div>
             </div>
