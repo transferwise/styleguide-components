@@ -39,6 +39,7 @@
 
 				locked: '=',
 				onLockedChange: '&',
+				showLock: '=?',
 
 				size: '@',
 				locale: '@'
