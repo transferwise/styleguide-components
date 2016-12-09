@@ -12,22 +12,30 @@
 					return;
 				}
 				var options = {};
+				var tag = element[0];
 
-				if (!element.attr('data-trigger')) {
+				if (!tag.getAttribute('data-trigger')) {
 					options.trigger = 'focus';
-				} else if (element.attr('data-trigger') === 'hover') {
+				} else if (tag.getAttribute('data-trigger') === 'hover') {
 					options.trigger = 'hover focus';
 				}
-				if (!element.attr('data-placement')) {
+				if (!tag.getAttribute('data-placement')) {
 					options.placement = 'top';
 				}
-				if (element.attr('data-content-html')) {
+				if (tag.getAttribute('data-content-html')) {
 					options.html = true;
 				}
 
 				element.popover(options);
 
-				element.prop('tabindex', '0').prop('role', 'button');
+				tag.setAttribute('tabindex', '0');
+				tag.setAttribute('role', 'button');
+				tag.setAttribute('data-toggle', 'popover');
+
+				// TODO can we reinitialise popove when copy changes.
+				//scope.$watch(attrs.title, function() {
+					//console.log("watch.title " + element.attr('title'));
+				//});
 			}
 		};
 	}

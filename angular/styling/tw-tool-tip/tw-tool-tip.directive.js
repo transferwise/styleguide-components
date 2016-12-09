@@ -11,12 +11,14 @@
 					console.log('twToolTip requires bootstrap.js');
 					return;
 				}
+				var tag = element[0];
 				var options = {};
-				if (!element.attr('data-placement')) {
+				if (!tag.getAttribute('data-placement')) {
 					options.placement = 'top';
 				}
 				element.tooltip(options);
-				element.prop('tabindex', '0');
+				tag.setAttribute('tabindex', '0');
+				tag.setAttribute('data-toggle', 'tooltip');
 			}
 		};
 	}
