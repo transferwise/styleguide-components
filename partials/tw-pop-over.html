@@ -1,5 +1,5 @@
 <h4 id="pop-over">TW Pop Over</h4>
-<p><code>tw-popover</code> is an attribute based directive that enables a
+<p><code>tw-pop-over</code> is an attribute based directive that enables a
 	floating description to be revealed when an element is <strong>clicked</strong>
 	or <strong>focused</strong>.  It is configured through data attributes.</p>
 
@@ -15,22 +15,20 @@
 	</a>
 	-
 	<a tw-pop-over
-		title="Popover title"
-		data-placement="right"
-		data-content="Full description copy, explaining in more detail"
-		data-link-target="http://transferwise.com"
-		data-link-text="link text">
-		With optional link
+		title="Popover on hover"
+		data-trigger="hover"
+		data-placement="bottom"
+		data-content="Positioned beneath the target element">
+		On hover, with custom position
 	</a>
 	-
 	<a tw-pop-over
-		title="Injected into .popover-title"
-		data-placement="bottom"
-	  data-trigger="hover"
-		data-content="Injected into .popover-content"
-		data-template="<div class='popover' role='tooltip'><div class='arrow'></div><h3 class='popover-title'></h3><div class='popover-content'></div><a href=''>Custom Link</a></div>">
-		Custom template on hover
+		title="Popover title"
+		data-content-html="true"
+		data-content="HTML enabled <a href='/path'>content</a>, do not use with user entered data">
+		With HTML content
 	</a>
+
 <pre>
 &lt;a tw-pop-over
   title="Popover title"
@@ -39,22 +37,20 @@
 &lt;/a&gt;
 
 &lt;a tw-pop-over
-  title="Injected into .popover-title"
-  data-content="Injected into .popover-content"
-  data-placement="right"
-  data-link-target="http://transferwise.com"
-  data-link-text="link text"
-  With optional link
+  title="Popover on hover"
+  data-placement="bottom"
+  data-trigger="hover"
+  data-content="Positioned beneath the target element"&gt;
+  On hover, with custom position
 &lt;/a&gt;
 
 &lt;a tw-pop-over
   title="Injected into .popover-title"
-  data-placement="bottom"
-  data-trigger="hover"
-  data-content="Injected into .popover-content"
-  data-template="&lt;div class='popover' role='tooltip'&gt;&lt;div class='arrow'&gt;&lt;/div&gt;&lt;h3 class='popover-title'&gt;&lt;/h3&gt;&lt;div class='popover-content'&gt;&lt;/div&gt;&lt;a href=''&gt;Custom Link&lt;/a&gt;&lt;/div&gt;"&gt;
-  Custom template on hover
+  data-content-html="true"
+  data-content="HTML enabled &lt;a href='/path'&gt;content&lt;/a&gt;, do not use with user entered data">
+  With HTML content
 &lt;/a&gt;
+
 </pre>
 
 </div>
