@@ -1,0 +1,35 @@
+<h4 id="tool-tip">TW Tool Tip</h4>
+<p><code>tw-tool-tip</code> is an attribute based directive that enables a
+	floating description to be revealed when an element on <strong>hover</strong>,
+	<strong>focus</strong> or <code>click</code>.  It is configured through data attributes.</p>
+
+<p class="text-danger">tw-tool-tip requires bootstrap.js</p>
+
+<hr />
+
+<div>
+	<a tw-tool-tip
+		title="Tool tip title on left">
+		Tool tip on left
+	</a>
+	-
+	<span class="icon icon-help-circle icon-md"
+		tw-tool-tip
+		title="Tool tip title on bottom"
+		data-placement="bottom"></span>
+
+<pre>
+&lt;a tw-tool-tip
+  title="Default tool tip on top"&gt;
+  Tool tip
+&lt;/a&gt;
+
+&lt;span class="icon icon-help-circle icon-md"
+  tw-tool-tip
+  title="Tool tip title on bottom"
+  data-placement="bottom"&gt;&lt;/span&gt;
+</pre>
+
+</div>
+
+<hr />
