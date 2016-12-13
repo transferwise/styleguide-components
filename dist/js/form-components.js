@@ -24,7 +24,7 @@ angular.module("tw.form-components", []);
         }, $ctrl.customAction = function() {
             $ctrl.onCustomAction && $ctrl.onCustomAction();
         }, $ctrl.lockClick = function() {
-            $ctrl.locked = !$ctrl.locked, $ctrl.onLockedChange && $timeout($ctrl.onLockedChange);
+            $ctrl.onLockedChange && $timeout($ctrl.onLockedChange);
         };
     }
     angular.module("tw.form-components").controller("TwAmountCurrencySelectController", TwAmountCurrencySelectController), 
@@ -52,7 +52,7 @@ angular.module("tw.form-components", []);
         }, $ctrl.changedInputValue = function() {
             $ctrl.ngChange && $timeout($ctrl.ngChange);
         }, $ctrl.lockClick = function() {
-            $ctrl.locked = !$ctrl.locked, $ctrl.onLockedChange && $timeout($ctrl.onLockedChange);
+            $ctrl.onLockedChange && $timeout($ctrl.onLockedChange);
         };
     }
     angular.module("tw.form-components").controller("TwCurrencyInputController", TwCurrencyInputController), 
