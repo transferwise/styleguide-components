@@ -222,9 +222,14 @@
 		function placeholderFocus() {
 			resetOption($ngModel, $ctrl);
 		}
+
+		var filteredCurrencyCodes = [];
+
 		function getFilteredOptions() {
+			filteredCurrencyCodes = [];
 			return $ctrl.options.filter(isOptionFiltered);
 		}
+
 		function isOptionFiltered(option) {
 			var filterStringLower =
 				$ctrl.filterString && escapeRegExp($ctrl.filterString.toLowerCase());
@@ -233,11 +238,23 @@
 				return true;
 			}
 
-			return (option.label && option.label.toLowerCase().search(filterStringLower) >= 0) ||
+			var duplicate = false;
+			if (filteredCurrencyCodes.indexOf(filterStringLower) > -1) {
+				duplicate = true;
+			}
+
+			var addOption = ((option.label && option.label.toLowerCase().search(filterStringLower) >= 0) ||
 				(option.note && option.note.toLowerCase().search(filterStringLower) >= 0) ||
 				(option.secondary && option.secondary.toLowerCase().search(filterStringLower) >= 0) ||
-				(option.searchable && option.searchable.toLowerCase().search(filterStringLower) >= 0);
+				(option.searchable && option.searchable.toLowerCase().search(filterStringLower) >= 0)) &&
+				!duplicate;
+
+			if (addOption) {
+				filteredCurrencyCodes.push(filterStringLower);
+			}
+			return addOption;
 		}
+		
 		function escapeRegExp(str) {
 			return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 		}
