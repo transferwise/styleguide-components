@@ -864,9 +864,6 @@ describe('Directive: TwSelect', function() {
     },{
         value: '3',
         label: 'Three'
-    },{
-        value: '3',
-        label: 'Three'
     }];
 
     var OPTIONS_NUMERIC = [{
