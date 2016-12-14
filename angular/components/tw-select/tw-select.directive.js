@@ -223,7 +223,7 @@
 			resetOption($ngModel, $ctrl);
 		}
 		function getFilteredOptions() {
-			return $ctrl.options.filter(isOptionFiltered);
+			return $ctrl.options && $ctrl.options.filter ? $ctrl.options.filter(isOptionFiltered) : [];
 		}
 		function isOptionFiltered(option) {
 			var filterStringLower =
