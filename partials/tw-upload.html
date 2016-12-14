@@ -1,0 +1,113 @@
+<h4 id="upload">TW Upload</h4>
+<p>...</p>
+<hr/>
+<form action="/file" method="POST" enctype="multipart/form-data">
+<div class="row m-b-3">
+	<div class="col-md-6">
+		<div class="form-group">
+			<tw-upload-droppable
+				default-text="{{$ctrl.defaultText}}"
+				processing-text="{{$ctrl.processingText}}"
+				complete-text="{{$ctrl.completeText}}"
+				error-text="{{$ctrl.errorText}}"
+				button-text="{{$ctrl.buttonText}}"
+				accept="{{$ctrl.accept}}"
+				on-drop="$ctrl.onDrop"
+				on-success="$ctrl.onSuccess"
+				on-failure="$ctrl.onFailure"
+				post-url="partials/image-upload.json"
+				control-name="file"
+				show-transcluded="$ctrl.transclude">
+
+				<h4 class="m-b-2">MikeMarter.jpg</h4>
+				<img ng-src="{{$ctrl.image}}" class="circle circle-lg" />
+				<!--
+				<h4 class="m-b-2">Processing file...</h4>
+				<tw-process size='sm'></tw-process>
+				-->
+			</tw-upload-droppable>
+		</div>
+		<input type="submit" value="Submit" class="btn btn-primary" />
+		<h5>Configuration</h5>
+<pre>&lt;tw-upload
+  default-text="{{$ctrl.defaultText}}"
+  processing-text="{{$ctrl.processingText}}"
+  complete-text="{{$ctrl.completeText}}"
+  error-text="{{$ctrl.errorText}}"
+  button-text="{{$ctrl.buttonText}}"
+  accept="{{$ctrl.accept}}"
+  on-drop="$ctrl.onDrop"
+  on-success="$ctrl.onSuccess"
+  on-failure="$ctrl.onFailure"
+  post-url="partials/image-upload.json"
+  control-name="file"
+  show-transcluded="$ctrl.transclude"&gt;
+&lt;/tw-upload&gt;
+</pre>
+	</div>
+	<div class="col-md-6">
+		<div class="well">
+			<h5 class="page-header">
+				Edit configuration
+			</h5>
+			<div class="form-group" ng-init="$ctrl.defaultText = 'Drag and drop a file less than 5MB'">
+				<label class="control-label">
+					Default text
+				</label>
+				<input type="text" class="form-control" ng-model="$ctrl.defaultText" />
+			</div>
+
+			<div class="form-group" ng-init="$ctrl.processingText = 'Processing'">
+				<label class="control-label">
+					Processing text
+				</label>
+				<input type="text" class="form-control" ng-model="$ctrl.processingText" />
+			</div>
+
+			<div class="form-group" ng-init="$ctrl.completeText = 'Upload complete'">
+				<label class="control-label">
+					Complete text
+				</label>
+				<input type="text" class="form-control" ng-model="$ctrl.completeText" />
+			</div>
+
+			<div class="form-group" ng-init="$ctrl.errorText = 'Upload error'">
+				<label class="control-label">
+					Error text
+				</label>
+				<input type="text" class="form-control" ng-model="$ctrl.errorText" />
+			</div>
+			<!--
+			<div class="form-group" ng-init="$ctrl.errorMessage = ''">
+				<label class="control-label">
+					error message
+				</label>
+				<input type="text" class="form-control" ng-model="$ctrl.errorMessage" />
+			</div>
+			-->
+			<div class="form-group" ng-init="$ctrl.buttonText = 'Or choose file'">
+				<label class="control-label">
+					Button text
+				</label>
+				<input type="text" class="form-control" ng-model="$ctrl.buttonText" />
+			</div>
+			<div class="form-group" ng-init="$ctrl.size = 'sm'">
+				<label class="control-label">
+					Size
+				</label>
+				<tw-select
+					placeholder="Size"
+					ng-required="true"
+					ng-model="$ctrl.size"
+					options="[{value: 'sm', label: 'Small'},{value: 'md', label: 'Medium'},{value: 'lg', label: 'Large'}]"/></tw-select>
+			</div>
+			<div class="form-group" ng-init="$ctrl.accept = 'png'">
+				<label class="control-label">
+					Accept (CSV of file extensions)
+				</label>
+				<input type="text" class="form-control" ng-model="$ctrl.accept" />
+			</div>
+		</div>
+	</div>
+</div>
+</form>

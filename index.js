@@ -163,6 +163,31 @@ angular.module('my-app', ['tw.styleguide-components'])
 .directive('twSelectDocs', function() {
 	return {templateUrl: 'partials/tw-select.html'};
 })
+.directive('twUploadDocs', function() {
+	return {
+		controllerAs: '$ctrl',
+		bindToController: true,
+		scope: {},
+		controller: ['$timeout', '$q', '$http', function($timeout, $q, $http) {
+			var $ctrl = this;
+			$ctrl.onDrop = function(file) {
+				console.log("drop!");
+				console.log(file);
+			};
+			$ctrl.onSuccess = function(response) {
+				console.log('complete!');
+				console.log(response);
+				$ctrl.image = response.data.imageUrl;
+				$ctrl.transclude = true;
+			};
+			$ctrl.onFailure = function(error) {
+				console.log('failure!');
+				console.log(error);
+			};
+		}],
+		templateUrl: 'partials/tw-upload.html'
+	};
+})
 .directive('twDateDocs', function() {
 	return {templateUrl: 'partials/tw-date.html'};
 })

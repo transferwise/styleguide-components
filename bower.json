@@ -6,8 +6,8 @@
   "dependencies": {
     "bootstrap": "https://github.com/transferwise/bootstrap.git",
     "currency-flags": "https://github.com/transferwise/currency-flags.git",
-    "angular": "<2.0.0",
-    "angular-mocks": "<2.0.0"
+    "angular": "<1.6.0",
+    "angular-mocks": "<1.6.0"
   },
   "private": true
 }

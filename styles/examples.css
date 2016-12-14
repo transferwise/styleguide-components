@@ -18,3 +18,75 @@ pre {
 .ng-dirty ~ .status-messages > .dirty {
   display: block;
 }
+.droppable img {
+  animation: fade-in 0.5s 0s linear forwards;
+}
+.slide-out-to-left {
+  animation: slide-out-to-left 0.3s 0s ease forwards;
+}
+.slide-in-from-right {
+  animation: slide-in-from-right 0.3s 0s ease forwards;
+}
+.droppable {
+  overflow: hidden;
+}
+.droppable-transcluded {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding: 48px 32px;
+  background-color: #fff;
+}
+@keyframes slide-in-from-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes slide-in-from-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes slide-out-to-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+@keyframes slide-out-to-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

@@ -13,7 +13,8 @@
 			scope: {
 				state: '=',
 				size: '@',
-				onStop: '&'
+				onStop: '&',
+				promise: '='
 			},
 			controller: ['$scope', '$interval', '$timeout', TwProcessController],
 			template:
@@ -45,7 +46,7 @@
 	function TwProcessController($scope, $interval, $timeout) {
 		var $ctrl = this;
 		$ctrl.processing = $ctrl.state;
-		var promise;
+		var interval;
 
 		// This allows us to cancel the interval when not needed.
 		$scope.$watch('$ctrl.state', function(newVal) {
@@ -56,8 +57,8 @@
 		});
 
 		$scope.$watch('$ctrl.size', function(newVal) {
-			// Kill the promise and restart on size change as animation will restart
-			$interval.cancel(promise);
+			// Kill the interval and restart on size change as animation will restart
+			$interval.cancel(interval);
 			$ctrl.startProcess();
 
 			if (!$ctrl.size) {
@@ -84,7 +85,7 @@
 		}
 
 		$ctrl.startProcess = function() {
-			promise = $interval(function() {
+			interval = $interval(function() {
 				$ctrl.processing = $ctrl.state;
 				if (isStopped($ctrl.state)) {
 					$ctrl.stopProcess();
@@ -93,7 +94,7 @@
 		};
 
 		$ctrl.stopProcess = function() {
-			$interval.cancel(promise);
+			$interval.cancel(interval);
 
 			if ($ctrl.onStop) {
 				if ($ctrl.state === 0) {
