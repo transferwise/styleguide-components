@@ -798,6 +798,42 @@ describe('Directive: TwSelect', function() {
         });
     });
 
+	describe('filter duplicates', function() {
+		var filterInput;
+		beforeEach(function () {
+			$scope.options = [{
+				value: '0',
+				label: 'Abel'
+			},{
+				value: '1',
+				label: 'Cain'
+			},{
+			    value: '1',
+                label: 'Cain'
+            }];
+			$scope.filter = 'Search';
+			var template = " \
+                <tw-select \
+                    options='options' \
+                    ng-model='ngModel' \
+                    filter='{{filter}}'> \
+                    <a href='' class='custom-action'> \
+                        Custom action \
+                    </a> \
+                </tw-select>";
+			directiveElement = getCompiledDirectiveElement($scope, template);
+			filterInput = directiveElement.find(FILTER_INPUT_SELECTOR);
+		});
+
+		it('should show one result, removing dupliactes', function() {
+			filterInput.val("ca").trigger('change');
+			var options = directiveElement.find(LIST_ITEMS_SELECTOR)
+			expect(options.length).toBe(1);
+			expect(optionText(options[0])).toBe('Cain');
+		});
+
+	});
+
     function getCompiledDirectiveElement($scope, template) {
         if (!template) {
             template = " \
