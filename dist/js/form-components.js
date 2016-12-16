@@ -653,11 +653,15 @@ angular.module("tw.form-components", []);
             resetOption($ngModel, $ctrl);
         }
         function getFilteredOptions() {
-            return $ctrl.options.filter(isOptionFiltered);
-        }
-        function isOptionFiltered(option) {
-            var filterStringLower = $ctrl.filterString && escapeRegExp($ctrl.filterString.toLowerCase());
-            return !filterStringLower || (option.label && option.label.toLowerCase().search(filterStringLower) >= 0 || option.note && option.note.toLowerCase().search(filterStringLower) >= 0 || option.secondary && option.secondary.toLowerCase().search(filterStringLower) >= 0 || option.searchable && option.searchable.toLowerCase().search(filterStringLower) >= 0);
+            var filteredLabels = [];
+            return $ctrl.options.filter(function(option) {
+                var filterStringLower = $ctrl.filterString && escapeRegExp($ctrl.filterString.toLowerCase());
+                if (!filterStringLower) return !0;
+                var duplicate = !1;
+                filteredLabels.indexOf(option.label) > -1 && (duplicate = !0);
+                var addOption = (option.label && option.label.toLowerCase().search(filterStringLower) >= 0 || option.note && option.note.toLowerCase().search(filterStringLower) >= 0 || option.secondary && option.secondary.toLowerCase().search(filterStringLower) >= 0 || option.searchable && option.searchable.toLowerCase().search(filterStringLower) >= 0) && !duplicate;
+                return addOption && filteredLabels.push(option.label), addOption;
+            });
         }
         function escapeRegExp(str) {
             return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
@@ -710,8 +714,7 @@ angular.module("tw.form-components", []);
         $ctrl.optionClick = optionClick, $ctrl.optionFocus = optionFocus, $ctrl.optionKeypress = optionKeypress, 
         $ctrl.placeholderFocus = placeholderFocus, $ctrl.placeholderClick = placeholderClick, 
         $ctrl.filterFocus = filterFocus, $ctrl.filterChange = filterChange, $ctrl.filterKeydown = filterKeydown, 
-        $ctrl.isOptionFiltered = isOptionFiltered, $ctrl.getFilteredOptions = getFilteredOptions, 
-        $ctrl.filterString = "", $ctrl.filteredOptions = $ctrl.getFilteredOptions();
+        $ctrl.getFilteredOptions = getFilteredOptions, $ctrl.filterString = "", $ctrl.filteredOptions = $ctrl.getFilteredOptions();
     }
     function addWatchers($ctrl, $scope, $ngModel, $element) {
         $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
