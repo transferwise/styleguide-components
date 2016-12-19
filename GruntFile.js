@@ -141,9 +141,6 @@ module.exports = function(grunt) {
                 'angular/**/*.html',
                 'partials/**/*.html',
                 'index.html'
-            ],
-            ignore: [
-              'partials/**/tw-upload.html'
             ]
         },
         karma: {
@@ -198,6 +195,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-htmllint');
 
     // === REGISTER TASKS ===
-    grunt.registerTask('default', ['jshint', 'uglify', 'less', 'copy', 'watch']); //'htmllint',
+    grunt.registerTask('default', ['jshint', 'uglify', 'less', 'htmllint', 'copy', 'watch']);
     grunt.registerTask('build', ['jshint', 'uglify', 'less', 'htmllint', 'copy']);
 };
