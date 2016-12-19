@@ -1,0 +1,68 @@
+<h4 id="pop-over">TW Pop Over</h4>
+<p><code>tw-pop-over</code> is an attribute based directive that enables a
+	floating description to be revealed when an element is <strong>clicked</strong>
+	or <strong>focused</strong>.  It is configured through data attributes.</p>
+
+<p class="text-danger">tw-popover requires bootstrap.js</p>
+
+<hr />
+
+<div class="row">
+	<div class="col-md-12">
+		<a tw-pop-over
+			title="Popover title"
+			data-content="Full description copy, explaining in more detail">
+			Simple click based
+		</a>
+		-
+		<a tw-pop-over
+			title="Popover on hover"
+			data-trigger="hover"
+			data-placement="bottom"
+			data-content="Positioned beneath the target element">
+			On hover, with custom position
+		</a>
+		-
+		<a tw-pop-over
+			title="Popover title"
+			data-content-html="true"
+			data-content="HTML enabled <a href='/path'>content</a>, do not use with user entered data">
+			With HTML content
+		</a>
+
+		<pre>
+&lt;a tw-pop-over
+  title="Popover title"
+  data-content="Full description copy, explaining in more detail"&gt;
+  Simple click based
+&lt;/a&gt;
+
+&lt;a tw-pop-over
+  title="Popover on hover"
+  data-placement="bottom"
+  data-trigger="hover"
+  data-content="Positioned beneath the target element"&gt;
+  On hover, with custom position
+&lt;/a&gt;
+
+&lt;a tw-pop-over
+  title="Injected into .popover-title"
+  data-content-html="true"
+  data-content="HTML enabled &lt;a href='/path'&gt;content&lt;/a&gt;, do not use with user entered data">
+  With HTML content
+&lt;/a&gt;
+		</pre>
+	</div>
+	<!--
+	<div class="col-md-4">
+		<div class="well">
+			<div class="form-group" ng-init="$ctrl.popover = 'Popover title'">
+				<label class="control-label"></label>
+				<input type="text" ng-model="$ctrl.popover" class="form-control" />
+			</div>
+		</div>
+	</div>
+	-->
+</div>
+
+<hr />

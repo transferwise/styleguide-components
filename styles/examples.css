@@ -18,7 +18,7 @@ pre {
 .ng-dirty ~ .status-messages > .dirty {
   display: block;
 }
-.droppable img {
+.fade-in {
   animation: fade-in 0.5s 0s linear forwards;
 }
 .slide-out-to-left {
@@ -29,8 +29,12 @@ pre {
 }
 .droppable {
   overflow: hidden;
+  position: relative;
 }
-.droppable-transcluded {
+.droppable:hover {
+  border-color: #829ca9;
+}
+.droppable-complete {
   position: absolute;
   top: 0;
   left: 0;
@@ -39,8 +43,29 @@ pre {
   align-items: center;
   justify-content: center;
   display: flex;
-  padding: 48px 32px;
   background-color: #fff;
+}
+.droppable-complete-content {
+  padding: 32px;
+  max-width: 100%;
+}
+.droppable-cancel {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  width: 100%;
+}
+.droppable .thumbnail {
+  width: auto;
+  max-height: 96px;
+  max-width: 96px;
+  margin: 0 auto;
+}
+@media (min-width: 768px) {
+  .droppable .thumbnail {
+    max-height: 128px;
+    max-width: 128px;
+  }
 }
 @keyframes slide-in-from-left {
   from {
