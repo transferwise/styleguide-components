@@ -164,6 +164,13 @@ describe('Directive: TwAmountCurrencySelect', function() {
 			expect(templateElement.html()).toContain('<input-addon>' + needle + '</input-addon>');
 		});
 
+		it('should transclude and compile a directive', function() {
+			var needle = '<tw-loader></tw-loader>';
+			templateElement = getCompiledTransclusionTemplateElement($scope, needle);
+
+			expect(templateElement.html()).toContain('<div class="loader-spinner">');
+		});
+
 	});
 
 	function getCompiledTransclusionTemplateElement($scope, needle) {
