@@ -1,6 +1,6 @@
 {
   "name": "tw-styleguide-components",
-  "version": "1.8.4",
+  "version": "1.9.0",
   "description": "TransfeWise Styleguide Components",
   "scripts": {
     "pretest": "bower install",

@@ -148,6 +148,49 @@ describe('Directive: TwAmountCurrencySelect', function() {
         });
     });
 
+	describe('transclude', function() {
+
+		it('should transclude empty text', function() {
+			var needle = '';
+			templateElement = getCompiledTransclusionTemplateElement($scope, needle);
+
+			expect(templateElement.html()).toContain('<input-addon></input-addon>');
+		});
+
+		it('should transclude text', function() {
+			var needle = 'Addon here?';
+			templateElement = getCompiledTransclusionTemplateElement($scope, needle);
+
+			expect(templateElement.html()).toContain('<input-addon>' + needle + '</input-addon>');
+		});
+
+	});
+
+	function getCompiledTransclusionTemplateElement($scope, needle) {
+		var element = angular.element(' \
+            <div class="form-group"> \
+                <label class="control-label"> \
+                    Example currency input \
+                </label> \
+                <tw-amount-currency-select \
+                    tw-validation \
+                    currency="currency" \
+                    currencies="currencies" \
+                    ng-model="ngModel" \
+                    ng-required="ngRequired" \
+                    ng-min="ngMin" \
+                    ng-max="ngMax" \
+                    ng-change="ngChange()"></tw-amount-currency-select> \
+                    <input-addon>' + needle + '</input-addon>\
+            </div> \
+        ');
+
+		var compiledElement = $compile(element)($scope);
+		$scope.$digest();
+
+		return compiledElement;
+	}
+
     function getCompiledTemplateElement($scope) {
         var element = angular.element(' \
             <div class="form-group"> \
