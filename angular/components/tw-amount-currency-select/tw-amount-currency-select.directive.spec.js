@@ -12,7 +12,6 @@ describe('Directive: TwAmountCurrencySelect', function() {
     var DIRECTIVE_SELECTOR = 'tw-amount-currency-select';
     var INPUT_SELECTOR = 'input';
     var SELECT_SELECTOR = 'select';
-    var LOCK_CLASS_NAME = 'tw-rate-lock-link';
 
     beforeEach(module('tw.form-components'));
     beforeEach(module('tw.form-styling'));
@@ -50,20 +49,6 @@ describe('Directive: TwAmountCurrencySelect', function() {
 
         it('should have the currency code', function() {
             expect(directiveElement.find('.tw-select-selected').text().trim()).toBe('EUR');
-        });
-
-        it('should show lock when showLock is true', function() {
-            $scope.showLock = true;
-            templateElement = getCompiledTemplateElement($scope);
-            expect(templateElement.find(DIRECTIVE_SELECTOR).html()).toContain(LOCK_CLASS_NAME);
-
-        });
-
-        it('should hide lock when showLock is false', function() {
-            $scope.showLock = false;
-            templateElement = getCompiledTemplateElement($scope);
-            expect(templateElement.find(DIRECTIVE_SELECTOR).html()).not.toContain(LOCK_CLASS_NAME);
-
         });
     });
 
@@ -163,6 +148,61 @@ describe('Directive: TwAmountCurrencySelect', function() {
         });
     });
 
+	describe('addon transclusion slot', function() {
+
+		it('should show nothing, when not used', function() {
+			templateElement = getCompiledTemplateElement($scope);
+			expect(templateElement.html()).not.toContain('<input-addon>');
+		});
+
+		it('should be empty, when empty string provided', function() {
+			var needle = '';
+			templateElement = getCompiledTransclusionTemplateElement($scope, needle);
+
+			expect(templateElement.html()).toContain('<input-addon></input-addon>');
+		});
+
+		it('should show text, when text provided', function() {
+			var needle = 'Addon here?';
+			templateElement = getCompiledTransclusionTemplateElement($scope, needle);
+
+			expect(templateElement.html()).toContain('<input-addon>' + needle + '</input-addon>');
+		});
+
+		it('should show compiled component, when component provided', function() {
+			var needle = '<tw-loader></tw-loader>';
+			templateElement = getCompiledTransclusionTemplateElement($scope, needle);
+
+			expect(templateElement.html()).toContain('<div class="loader-spinner">');
+		});
+
+	});
+
+	function getCompiledTransclusionTemplateElement($scope, needle) {
+		var element = angular.element(' \
+            <div class="form-group"> \
+                <label class="control-label"> \
+                    Example currency input \
+                </label> \
+                <tw-amount-currency-select \
+                    tw-validation \
+                    currency="currency" \
+                    currencies="currencies" \
+                    ng-model="ngModel" \
+                    ng-required="ngRequired" \
+                    ng-min="ngMin" \
+                    ng-max="ngMax" \
+                    ng-change="ngChange()"></tw-amount-currency-select> \
+                    <input-addon>' + needle + '</input-addon>\
+            </div> \
+        ');
+
+		var compiledElement = $compile(element)($scope);
+		$scope.$digest();
+
+		return compiledElement;
+	}
+
     function getCompiledTemplateElement($scope) {
         var element = angular.element(' \
             <div class="form-group"> \
@@ -173,7 +213,6 @@ describe('Directive: TwAmountCurrencySelect', function() {
                     tw-validation \
                     currency="currency" \
                     currencies="currencies" \
-                    show-lock="showLock" \
                     ng-model="ngModel" \
                     ng-required="ngRequired" \
                     ng-min="ngMin" \

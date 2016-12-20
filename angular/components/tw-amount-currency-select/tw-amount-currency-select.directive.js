@@ -13,6 +13,9 @@
 			controllerAs: '$ctrl',
 			replace: false,
 			restrict: 'E',
+			transclude: {
+				'input-addon': '?input-addon'
+			},
 			template: templateAsString,
 			scope: {
 				ngModel: '=',
@@ -36,13 +39,6 @@
 				onCustomAction: '&',
 
 				placeholder: '@',
-
-				locked: '=',
-				onLockedChange: '&',
-				showLock: '=?',
-
-				lockTooltipTitle: '=?',
-				lockTooltipContent: '=?',
 
 				size: '@',
 				locale: '@'
@@ -69,12 +65,8 @@
 				ng-change="$ctrl.changedAmount()"  \
 				ng-model="$ctrl.ngModel" \
 				ng-disabled="$ctrl.ngDisabled" /> \
-			<span class="input-group-addon" ng-if="$ctrl.showLock" \
-				ng-class="{\'input-lg\': $ctrl.size === \'lg\'}"> \
-				<a href="" tw-pop-over data-original-title="{{ $ctrl.lockTooltipTitle }}" data-content="{{ $ctrl.lockTooltipContent }}" data-content-html="true" data-trigger="hover" ng-click="$ctrl.lockClick()" class="tw-rate-lock-link"> \
-					<i class="icon icon-lock" ng-if="$ctrl.locked"></i> \
-					<i class="icon icon-unlock" ng-if="!$ctrl.locked"></i> \
-				</a> \
+			<span class="input-group-addon" \
+				ng-class="{\'input-lg\': $ctrl.size === \'lg\'}" ng-transclude="input-addon"> \
 			</span> \
 			<span class="input-group-btn">  \
 				<tw-select \
