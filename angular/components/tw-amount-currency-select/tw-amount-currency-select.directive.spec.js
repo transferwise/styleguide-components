@@ -100,10 +100,6 @@ describe('Directive: TwAmountCurrencySelect', function() {
             input = directiveElement.find(INPUT_SELECTOR);
         }));
 
-        it('should not include input-addon, if no transclusion is incuded', function() {
-            expect(templateElement.html()).not.toContain('<input-addon>');
-        });
-
         it('should be valid when not required and empty', function() {
             $scope.ngRequired = false;
             templateElement = getCompiledTemplateElement($scope);
@@ -152,23 +148,28 @@ describe('Directive: TwAmountCurrencySelect', function() {
         });
     });
 
-	describe('transclude', function() {
+	describe('addon transclusion slot', function() {
 
-		it('should transclude empty text', function() {
+		it('should show nothing, when not used', function() {
+			templateElement = getCompiledTemplateElement($scope);
+			expect(templateElement.html()).not.toContain('<input-addon>');
+		});
+
+		it('should be empty, when empty string provided', function() {
 			var needle = '';
 			templateElement = getCompiledTransclusionTemplateElement($scope, needle);
 
 			expect(templateElement.html()).toContain('<input-addon></input-addon>');
 		});
 
-		it('should transclude text', function() {
+		it('should show text, when text provided', function() {
 			var needle = 'Addon here?';
 			templateElement = getCompiledTransclusionTemplateElement($scope, needle);
 
 			expect(templateElement.html()).toContain('<input-addon>' + needle + '</input-addon>');
 		});
 
-		it('should transclude and compile a directive', function() {
+		it('should show compiled component, when component provided', function() {
 			var needle = '<tw-loader></tw-loader>';
 			templateElement = getCompiledTransclusionTemplateElement($scope, needle);
 
