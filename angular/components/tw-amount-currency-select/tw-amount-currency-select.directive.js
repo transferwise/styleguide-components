@@ -14,7 +14,7 @@
 			replace: false,
 			restrict: 'E',
 			transclude: {
-				'input-addon': '?input-addon'
+				'addon': '?addon'
 			},
 			template: templateAsString,
 			scope: {
@@ -66,7 +66,7 @@
 				ng-model="$ctrl.ngModel" \
 				ng-disabled="$ctrl.ngDisabled" /> \
 			<span class="input-group-addon" \
-				ng-class="{\'input-lg\': $ctrl.size === \'lg\'}" ng-transclude="input-addon"> \
+				ng-class="{\'input-lg\': $ctrl.size === \'lg\'}" ng-transclude="addon"> \
 			</span> \
 			<span class="input-group-btn">  \
 				<tw-select \

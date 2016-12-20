@@ -152,21 +152,21 @@ describe('Directive: TwAmountCurrencySelect', function() {
 
 		it('should show nothing, when not used', function() {
 			templateElement = getCompiledTemplateElement($scope);
-			expect(templateElement.html()).not.toContain('<input-addon>');
+			expect(templateElement.html()).not.toContain('<addon>');
 		});
 
 		it('should be empty, when empty string provided', function() {
 			var needle = '';
 			templateElement = getCompiledTransclusionTemplateElement($scope, needle);
 
-			expect(templateElement.html()).toContain('<input-addon></input-addon>');
+			expect(templateElement.html()).toContain('<addon></addon>');
 		});
 
 		it('should show text, when text provided', function() {
 			var needle = 'Addon here?';
 			templateElement = getCompiledTransclusionTemplateElement($scope, needle);
 
-			expect(templateElement.html()).toContain('<input-addon>' + needle + '</input-addon>');
+			expect(templateElement.html()).toContain('<addon>' + needle + '</addon>');
 		});
 
 		it('should show compiled component, when component provided', function() {
@@ -193,7 +193,7 @@ describe('Directive: TwAmountCurrencySelect', function() {
                     ng-min="ngMin" \
                     ng-max="ngMax" \
                     ng-change="ngChange()"></tw-amount-currency-select> \
-                    <input-addon>' + needle + '</input-addon>\
+                    <addon>' + needle + '</addon>\
             </div> \
         ');
 
