@@ -54,43 +54,42 @@
 					\'droppable-sm\': $ctrl.size === \'sm\', \
 					\'droppable-md\': $ctrl.size === \'md\' || !$ctrl.size, \
 					\'droppable-lg\': $ctrl.size === \'lg\', \
-					\'droppable-active\': $ctrl.isDroppable || $ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError, \
-					\'droppable-dropping\': $ctrl.isDroppable \
+					\'droppable-dropping\': $ctrl.isDroppable, \
+					\'droppable-processing\': !$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError), \
+					\'droppable-complete\': $ctrl.isDone \
 				}"> \
 				<div class="droppable-default" aria-hidden="{{$ctrl.isDone}}"> \
-					<div class="m-b-2"> \
-						<i class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></i> \
-					</div> \
-					<h4 class="m-b-1" ng-if="$ctrl.description">{{$ctrl.description}}</h4> \
-					<p class="m-b-2">{{$ctrl.instructions}}</p> \
-					<label class="btn btn-primary">{{$ctrl.buttonText}} \
-						<input tw-file-select type="file" \
-							accept="{{$ctrl.accept}}"" class="tw-droppable-input hidden" name="file-upload" \
-							on-user-input="$ctrl.onManualUpload" ng-model="$ctrl.inputFile"/> \
-					</label> \
-				</div> \
-				<div class="droppable-active-cover" ng-class="{\'slide-out-to-left\': $ctrl.isDone}" aria-hidden="{{$ctrl.isDone}}"> \
-					<div ng-if="$ctrl.isDroppable" ar> \
-						<h4 class="m-b-2">Drop file to start upload</h4> \
-						<div class="circle circle-sm"> \
-							<i class="icon icon-add"></i> \
+					<div class="droppable-card-content"> \
+						<div class="m-b-2"> \
+							<i class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></i> \
 						</div> \
-						<p class="m-t-2 m-b-0"></p> \
+						<h4 class="m-b-1" ng-if="$ctrl.description">{{$ctrl.description}}</h4> \
+						<p class="m-b-2">{{$ctrl.instructions}}</p> \
+						<label class="btn btn-primary">{{$ctrl.buttonText}} \
+							<input tw-file-select type="file" \
+								accept="{{$ctrl.accept}}"" class="tw-droppable-input hidden" name="file-upload" \
+								on-user-input="$ctrl.onManualUpload" ng-model="$ctrl.inputFile"/> \
+						</label> \
 					</div> \
-					<div ng-if="!$ctrl.isDroppable && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"> \
+				</div> \
+				<div class="droppable-processing-card droppable-card droppable-active-cover" \
+					aria-hidden="{{$ctrl.isDone}}"> \
+					<div class="droppable-card-content"> \
 						<h4 class="m-b-2"> \
 							<span ng-if="$ctrl.isProcessing && $ctrl.processingText">{{$ctrl.processingText}}</span> \
 							<span ng-if="$ctrl.isSuccess && $ctrl.successText">{{$ctrl.successText}}</span> \
 							<span ng-if="$ctrl.isError && $ctrl.failureText">{{$ctrl.failureText}}</span> \
 						</h4> \
-						<tw-process size="sm" state="$ctrl.processingState"></tw-process> \
+						<tw-process size="sm" state="$ctrl.processingState" \
+							ng-if="$ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError"></tw-process> \
 					</div> \
 				</div> \
-				<div class="droppable-complete slide-in-from-right" ng-if="$ctrl.isDone" aria-hidden="{{!$ctrl.isDone}}" ng-class="{\'in\': $ctrl.isDone}"> \
-					<div class="droppable-complete-content">	\
+				<div class="droppable-complete-card droppable-card droppable-active-cover" \
+					aria-hidden="{{!$ctrl.isDone}}"> \
+					<div class="droppable-card-content">	\
 						<div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError"> \
 							<h4 class="m-b-2" ng-if="$ctrl.completeText">{{$ctrl.completeText}}</h4> \
-							<img ng-src="{{$ctrl.image}}" ng-if="$ctrl.isImage" class="thumbnail fade-in m-b-3" /> \
+							<img ng-src="{{$ctrl.image}}" ng-if="$ctrl.isImage" class="thumbnail m-b-3" /> \
 							<i class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></i> \
 							<p class="text-ellipsis m-b-2">{{$ctrl.fileName}}</p> \
 						</div> \
@@ -101,9 +100,18 @@
 							<i class="icon icon-alert icon-xxl text-danger m-b-1"></i> \
 						</div> \
 						<div ng-if="$ctrl.hasTranscluded" ng-transclude></div> \
-						<p ng-if="$ctrl.cancelText" class="m-t-2 m-b-0 fade-in"> \
+						<p ng-if="$ctrl.cancelText" class="m-t-2 m-b-0"> \
 							<a href="" ng-click="$ctrl.clear()">{{$ctrl.cancelText}}</a> \
 						</p> \
+					</div> \
+				</div> \
+				<div class="droppable-dropping-card droppable-card droppable-active-cover"> \
+					<div class="droppable-card-content"> \
+						<h4 class="m-b-2">Drop file to start upload</h4> \
+						<div class="circle circle-sm"> \
+							<i class="icon icon-add"></i> \
+						</div> \
+						<p class="m-t-2 m-b-0"></p> \
 					</div> \
 				</div> \
 			</div>'
@@ -121,6 +129,7 @@
 	{
 		var $ctrl = this;
 		var asyncPromise;
+		var isImage = false;
 
 		$ctrl.dragCounter = 0;
 		$ctrl.isProcessing = false;
@@ -149,7 +158,7 @@
 		$ctrl.fileDropped = function(file) {
 			reset();
 
-			$ctrl.isImage = (file.type && file.type.indexOf('image') > -1);
+			isImage = (file.type && file.type.indexOf('image') > -1);
 			$ctrl.fileName = file.name;
 
 			$ctrl.isProcessing = true;
@@ -278,7 +287,11 @@
 
 		function showDataImage(dataUrl) {
 			setNgModel(dataUrl);
-			$ctrl.image = dataUrl;
+			// Only set isImage at this point to avoid trying to show another file type
+			$ctrl.isImage = isImage;
+			if (isImage) {
+				$ctrl.image = dataUrl;
+			}
 		}
 
 		function asyncSuccess(response) {
@@ -295,7 +308,7 @@
 			$timeout(function() {
 				triggerHandler($ctrl.onSuccess, response);
 				$ctrl.isDone = true;
-			}, 3500);
+			}, 3800);
 
 			return response;
 		}
@@ -314,7 +327,7 @@
 			$timeout(function() {
 				triggerHandler($ctrl.onFailure, error);
 				$ctrl.isDone = true;
-			}, 4000);  //3500); TODO for some reason more time is needed
+			}, 4100);  //3500); TODO for some reason more time is needed
 
 			return error;
 		}

@@ -835,7 +835,7 @@ angular.module("tw.form-components", []);
                 maxSize: "="
             },
             link: TwUploadDroppableLink,
-            template: '<div class="droppable" ng-class="{ \t\t\t\t\t\'droppable-sm\': $ctrl.size === \'sm\', \t\t\t\t\t\'droppable-md\': $ctrl.size === \'md\' || !$ctrl.size, \t\t\t\t\t\'droppable-lg\': $ctrl.size === \'lg\', \t\t\t\t\t\'droppable-active\': $ctrl.isDroppable || $ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError, \t\t\t\t\t\'droppable-dropping\': $ctrl.isDroppable \t\t\t\t}"> \t\t\t\t<div class="droppable-default" aria-hidden="{{$ctrl.isDone}}"> \t\t\t\t\t<div class="m-b-2"> \t\t\t\t\t\t<i class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></i> \t\t\t\t\t</div> \t\t\t\t\t<h4 class="m-b-1" ng-if="$ctrl.description">{{$ctrl.description}}</h4> \t\t\t\t\t<p class="m-b-2">{{$ctrl.instructions}}</p> \t\t\t\t\t<label class="btn btn-primary">{{$ctrl.buttonText}} \t\t\t\t\t\t<input tw-file-select type="file" \t\t\t\t\t\t\taccept="{{$ctrl.accept}}"" class="tw-droppable-input hidden" name="file-upload" \t\t\t\t\t\t\ton-user-input="$ctrl.onManualUpload" ng-model="$ctrl.inputFile"/> \t\t\t\t\t</label> \t\t\t\t</div> \t\t\t\t<div class="droppable-active-cover" ng-class="{\'slide-out-to-left\': $ctrl.isDone}" aria-hidden="{{$ctrl.isDone}}"> \t\t\t\t\t<div ng-if="$ctrl.isDroppable" ar> \t\t\t\t\t\t<h4 class="m-b-2">Drop file to start upload</h4> \t\t\t\t\t\t<div class="circle circle-sm"> \t\t\t\t\t\t\t<i class="icon icon-add"></i> \t\t\t\t\t\t</div> \t\t\t\t\t\t<p class="m-t-2 m-b-0"></p> \t\t\t\t\t</div> \t\t\t\t\t<div ng-if="!$ctrl.isDroppable && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"> \t\t\t\t\t\t<h4 class="m-b-2"> \t\t\t\t\t\t\t<span ng-if="$ctrl.isProcessing && $ctrl.processingText">{{$ctrl.processingText}}</span> \t\t\t\t\t\t\t<span ng-if="$ctrl.isSuccess && $ctrl.successText">{{$ctrl.successText}}</span> \t\t\t\t\t\t\t<span ng-if="$ctrl.isError && $ctrl.failureText">{{$ctrl.failureText}}</span> \t\t\t\t\t\t</h4> \t\t\t\t\t\t<tw-process size="sm" state="$ctrl.processingState"></tw-process> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t\t<div class="droppable-complete slide-in-from-right" ng-if="$ctrl.isDone" aria-hidden="{{!$ctrl.isDone}}" ng-class="{\'in\': $ctrl.isDone}"> \t\t\t\t\t<div class="droppable-complete-content">\t\t\t\t\t\t\t<div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError"> \t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="$ctrl.completeText">{{$ctrl.completeText}}</h4> \t\t\t\t\t\t\t<img ng-src="{{$ctrl.image}}" ng-if="$ctrl.isImage" class="thumbnail fade-in m-b-3" /> \t\t\t\t\t\t\t<i class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></i> \t\t\t\t\t\t\t<p class="text-ellipsis m-b-2">{{$ctrl.fileName}}</p> \t\t\t\t\t\t</div> \t\t\t\t\t\t<div ng-if="!$ctrl.hasTranscluded && $ctrl.isError"> \t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="$ctrl.isTooLarge">{{$ctrl.tooLargeMessage}}</h4> \t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="$ctrl.isWrongType">{{$ctrl.wrongTypeText}}</h4> \t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="!$ctrl.isTooLarge && $ctrl.errorMessage">{{$ctrl.errorMessage}}</h4> \t\t\t\t\t\t\t<i class="icon icon-alert icon-xxl text-danger m-b-1"></i> \t\t\t\t\t\t</div> \t\t\t\t\t\t<div ng-if="$ctrl.hasTranscluded" ng-transclude></div> \t\t\t\t\t\t<p ng-if="$ctrl.cancelText" class="m-t-2 m-b-0 fade-in"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.clear()">{{$ctrl.cancelText}}</a> \t\t\t\t\t\t</p> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t</div>'
+            template: '<div class="droppable" ng-class="{ \t\t\t\t\t\'droppable-sm\': $ctrl.size === \'sm\', \t\t\t\t\t\'droppable-md\': $ctrl.size === \'md\' || !$ctrl.size, \t\t\t\t\t\'droppable-lg\': $ctrl.size === \'lg\', \t\t\t\t\t\'droppable-dropping\': $ctrl.isDroppable, \t\t\t\t\t\'droppable-processing\': !$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError), \t\t\t\t\t\'droppable-complete\': $ctrl.isDone \t\t\t\t}"> \t\t\t\t<div class="droppable-default" aria-hidden="{{$ctrl.isDone}}"> \t\t\t\t\t<div class="droppable-card-content"> \t\t\t\t\t\t<div class="m-b-2"> \t\t\t\t\t\t\t<i class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></i> \t\t\t\t\t\t</div> \t\t\t\t\t\t<h4 class="m-b-1" ng-if="$ctrl.description">{{$ctrl.description}}</h4> \t\t\t\t\t\t<p class="m-b-2">{{$ctrl.instructions}}</p> \t\t\t\t\t\t<label class="btn btn-primary">{{$ctrl.buttonText}} \t\t\t\t\t\t\t<input tw-file-select type="file" \t\t\t\t\t\t\t\taccept="{{$ctrl.accept}}"" class="tw-droppable-input hidden" name="file-upload" \t\t\t\t\t\t\t\ton-user-input="$ctrl.onManualUpload" ng-model="$ctrl.inputFile"/> \t\t\t\t\t\t</label> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t\t<div class="droppable-processing-card droppable-card droppable-active-cover" \t\t\t\t\taria-hidden="{{$ctrl.isDone}}"> \t\t\t\t\t<div class="droppable-card-content"> \t\t\t\t\t\t<h4 class="m-b-2"> \t\t\t\t\t\t\t<span ng-if="$ctrl.isProcessing && $ctrl.processingText">{{$ctrl.processingText}}</span> \t\t\t\t\t\t\t<span ng-if="$ctrl.isSuccess && $ctrl.successText">{{$ctrl.successText}}</span> \t\t\t\t\t\t\t<span ng-if="$ctrl.isError && $ctrl.failureText">{{$ctrl.failureText}}</span> \t\t\t\t\t\t</h4> \t\t\t\t\t\t<tw-process size="sm" state="$ctrl.processingState" \t\t\t\t\t\t\tng-if="$ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError"></tw-process> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t\t<div class="droppable-complete-card droppable-card droppable-active-cover" \t\t\t\t\taria-hidden="{{!$ctrl.isDone}}"> \t\t\t\t\t<div class="droppable-card-content">\t\t\t\t\t\t\t<div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError"> \t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="$ctrl.completeText">{{$ctrl.completeText}}</h4> \t\t\t\t\t\t\t<img ng-src="{{$ctrl.image}}" ng-if="$ctrl.isImage" class="thumbnail m-b-3" /> \t\t\t\t\t\t\t<i class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></i> \t\t\t\t\t\t\t<p class="text-ellipsis m-b-2">{{$ctrl.fileName}}</p> \t\t\t\t\t\t</div> \t\t\t\t\t\t<div ng-if="!$ctrl.hasTranscluded && $ctrl.isError"> \t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="$ctrl.isTooLarge">{{$ctrl.tooLargeMessage}}</h4> \t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="$ctrl.isWrongType">{{$ctrl.wrongTypeText}}</h4> \t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="!$ctrl.isTooLarge && $ctrl.errorMessage">{{$ctrl.errorMessage}}</h4> \t\t\t\t\t\t\t<i class="icon icon-alert icon-xxl text-danger m-b-1"></i> \t\t\t\t\t\t</div> \t\t\t\t\t\t<div ng-if="$ctrl.hasTranscluded" ng-transclude></div> \t\t\t\t\t\t<p ng-if="$ctrl.cancelText" class="m-t-2 m-b-0"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.clear()">{{$ctrl.cancelText}}</a> \t\t\t\t\t\t</p> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t\t<div class="droppable-dropping-card droppable-card droppable-active-cover"> \t\t\t\t\t<div class="droppable-card-content"> \t\t\t\t\t\t<h4 class="m-b-2">Drop file to start upload</h4> \t\t\t\t\t\t<div class="circle circle-sm"> \t\t\t\t\t\t\t<i class="icon icon-add"></i> \t\t\t\t\t\t</div> \t\t\t\t\t\t<p class="m-t-2 m-b-0"></p> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t</div>'
         };
     }
     function TwUploadDroppableController($timeout, $element, $http, $scope, $transclude, $q, $attrs) {
@@ -868,21 +868,21 @@ angular.module("tw.form-components", []);
             }, reader.readAsDataURL(file), deferred.promise;
         }
         function showDataImage(dataUrl) {
-            setNgModel(dataUrl), $ctrl.image = dataUrl;
+            setNgModel(dataUrl), $ctrl.isImage = isImage, isImage && ($ctrl.image = dataUrl);
         }
         function asyncSuccess(response) {
             return $ctrl.processingState = 1, $timeout(function() {
                 $ctrl.isProcessing = !1, $ctrl.isSuccess = !0;
             }, 3e3), $timeout(function() {
                 triggerHandler($ctrl.onSuccess, response), $ctrl.isDone = !0;
-            }, 3500), response;
+            }, 3800), response;
         }
         function asyncFailure(error) {
             return $ctrl.processingState = -1, $timeout(function() {
                 $ctrl.isProcessing = !1, $ctrl.isError = !0;
             }, 3e3), $timeout(function() {
                 triggerHandler($ctrl.onFailure, error), $ctrl.isDone = !0;
-            }, 4e3), error;
+            }, 4100), error;
         }
         function isSizeValid(file, maxSize) {
             return !(angular.isNumber(maxSize) && file.size > maxSize);
@@ -890,7 +890,7 @@ angular.module("tw.form-components", []);
         function isTypeValid(file, accept) {
             return !0;
         }
-        var $ctrl = this;
+        var $ctrl = this, isImage = !1;
         if ($ctrl.dragCounter = 0, $ctrl.isProcessing = !1, $ctrl.processingState = null, 
         checkForTranscludedContent($transclude, $ctrl), $scope.$watch("$ctrl.icon", function() {
             $ctrl.viewIcon = $ctrl.icon ? $ctrl.icon : "upload";
@@ -899,7 +899,7 @@ angular.module("tw.form-components", []);
             var file = angular.element($element[0].querySelector(".tw-droppable-input"))[0].files[0];
             $ctrl.fileDropped(file);
         }, $ctrl.fileDropped = function(file) {
-            return reset(), $ctrl.isImage = file.type && file.type.indexOf("image") > -1, $ctrl.fileName = file.name, 
+            return reset(), isImage = file.type && file.type.indexOf("image") > -1, $ctrl.fileName = file.name, 
             $ctrl.isProcessing = !0, $ctrl.processingState = null, triggerHandler($ctrl.onStart, file), 
             isSizeValid(file, $ctrl.maxSize) ? isTypeValid(file, $ctrl.accept) ? void ($ctrl.httpOptions ? $q.all([ asyncPost(file), asyncFileRead(file) ]).then(function(response) {
                 showDataImage(response[1]);
