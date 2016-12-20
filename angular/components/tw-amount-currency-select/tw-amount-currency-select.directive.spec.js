@@ -12,7 +12,6 @@ describe('Directive: TwAmountCurrencySelect', function() {
     var DIRECTIVE_SELECTOR = 'tw-amount-currency-select';
     var INPUT_SELECTOR = 'input';
     var SELECT_SELECTOR = 'select';
-    var LOCK_CLASS_NAME = 'tw-rate-lock-link';
 
     beforeEach(module('tw.form-components'));
     beforeEach(module('tw.form-styling'));
@@ -50,20 +49,6 @@ describe('Directive: TwAmountCurrencySelect', function() {
 
         it('should have the currency code', function() {
             expect(directiveElement.find('.tw-select-selected').text().trim()).toBe('EUR');
-        });
-
-        it('should show lock when showLock is true', function() {
-            $scope.showLock = true;
-            templateElement = getCompiledTemplateElement($scope);
-            expect(templateElement.find(DIRECTIVE_SELECTOR).html()).toContain(LOCK_CLASS_NAME);
-
-        });
-
-        it('should hide lock when showLock is false', function() {
-            $scope.showLock = false;
-            templateElement = getCompiledTemplateElement($scope);
-            expect(templateElement.find(DIRECTIVE_SELECTOR).html()).not.toContain(LOCK_CLASS_NAME);
-
         });
     });
 
@@ -173,7 +158,6 @@ describe('Directive: TwAmountCurrencySelect', function() {
                     tw-validation \
                     currency="currency" \
                     currencies="currencies" \
-                    show-lock="showLock" \
                     ng-model="ngModel" \
                     ng-required="ngRequired" \
                     ng-min="ngMin" \
