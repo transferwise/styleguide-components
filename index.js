@@ -202,6 +202,12 @@ angular.module('my-app', ['tw.styleguide-components'])
 .directive('twFocusableDocs', function() {
 	return {templateUrl: 'partials/tw-focusable.html'};
 })
+.directive('twPopOverDocs', function() {
+	return {templateUrl: 'partials/tw-pop-over.html'};
+})
+.directive('twToolTipDocs', function() {
+	return {templateUrl: 'partials/tw-tool-tip.html'};
+})
 .directive('twProcessDocs', function() {
 	return {templateUrl: 'partials/tw-process.html'};
 });

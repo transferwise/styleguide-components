@@ -41,9 +41,12 @@
 				onLockedChange: '&',
 				showLock: '=?',
 
+				lockTooltipTitle: '=?',
+				lockTooltipContent: '=?',
+
 				size: '@',
 				locale: '@'
-			},
+			}
 		};
 	}
 
@@ -68,7 +71,7 @@
 				ng-disabled="$ctrl.ngDisabled" /> \
 			<span class="input-group-addon" ng-if="$ctrl.showLock" \
 				ng-class="{\'input-lg\': $ctrl.size === \'lg\'}"> \
-				<a href="" ng-click="$ctrl.lockClick()" class="tw-rate-lock-link"> \
+				<a href="" tw-pop-over data-original-title="{{ $ctrl.lockTooltipTitle }}" data-content="{{ $ctrl.lockTooltipContent }}" data-content-html="true" data-trigger="hover" ng-click="$ctrl.lockClick()" class="tw-rate-lock-link"> \
 					<i class="icon icon-lock" ng-if="$ctrl.locked"></i> \
 					<i class="icon icon-unlock" ng-if="!$ctrl.locked"></i> \
 				</a> \

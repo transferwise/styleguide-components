@@ -221,13 +221,15 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 locked: "=",
                 onLockedChange: "&",
                 showLock: "=?",
+                lockTooltipTitle: "=?",
+                lockTooltipContent: "=?",
                 size: "@",
                 locale: "@"
             }
         };
     }
     angular.module("tw.form-components").directive("twAmountCurrencySelect", TwAmountCurrencySelectDirective);
-    var templateAsString = '\t\t<div class="input-group" ng-class="{ \t\t\t\'input-group-sm\': $ctrl.size === \'sm\', \t\t\t\'input-group-lg\': $ctrl.size === \'lg\', \t\t\tdisabled: $ctrl.ngDisabled \t\t}">  \t\t\t<input \t\t\t\ttype="tel"  \t\t\t\tautocomplete="off"  \t\t\t\tname="amount"  \t\t\t\tstep="any"  \t\t\t\tclass="form-control"  \t\t\t\tplaceholder="{{ $ctrl.placeholder }}" \t\t\t\ttw-focusable  \t\t\t\tshow-decimals="$ctrl.showDecimals" \t\t\t\ttw-number-input-formatter  \t\t\t\tng-change="$ctrl.changedAmount()"  \t\t\t\tng-model="$ctrl.ngModel" \t\t\t\tng-disabled="$ctrl.ngDisabled" /> \t\t\t<span class="input-group-addon" ng-if="$ctrl.showLock" \t\t\t\tng-class="{\'input-lg\': $ctrl.size === \'lg\'}"> \t\t\t\t<a href="" ng-click="$ctrl.lockClick()" class="tw-rate-lock-link"> \t\t\t\t\t<i class="icon icon-lock" ng-if="$ctrl.locked"></i> \t\t\t\t\t<i class="icon icon-unlock" ng-if="!$ctrl.locked"></i> \t\t\t\t</a> \t\t\t</span> \t\t\t<span class="input-group-btn">  \t\t\t\t<tw-select \t\t\t\t\tng-model="$ctrl.currency" \t\t\t\t\tng-required="true" \t\t\t\t\tsize="{{ $ctrl.size }}" \t\t\t\t\tinverse="true" \t\t\t\t\tdropdown-right="xs" \t\t\t\t\tdropdown-width="md" \t\t\t\t\thide-note="true" \t\t\t\t\thide-secondary="true" \t\t\t\t\toptions="$ctrl.currencies" \t\t\t\t\tfilter="{{ $ctrl.currencyFilterPlaceholder }}" \t\t\t\t\tng-change="$ctrl.changedCurrency()"> \t\t\t\t\t\t<a href="" ng-if="!!$ctrl.customActionLabel" ng-click="$ctrl.onCustomAction()"> \t\t\t\t\t\t\t{{ $ctrl.customActionLabel }} \t\t\t\t\t\t</a> \t\t\t\t</tw-select> \t\t\t</span> \t\t</div>';
+    var templateAsString = '\t\t<div class="input-group" ng-class="{ \t\t\t\'input-group-sm\': $ctrl.size === \'sm\', \t\t\t\'input-group-lg\': $ctrl.size === \'lg\', \t\t\tdisabled: $ctrl.ngDisabled \t\t}">  \t\t\t<input \t\t\t\ttype="tel"  \t\t\t\tautocomplete="off"  \t\t\t\tname="amount"  \t\t\t\tstep="any"  \t\t\t\tclass="form-control"  \t\t\t\tplaceholder="{{ $ctrl.placeholder }}" \t\t\t\ttw-focusable  \t\t\t\tshow-decimals="$ctrl.showDecimals" \t\t\t\ttw-number-input-formatter  \t\t\t\tng-change="$ctrl.changedAmount()"  \t\t\t\tng-model="$ctrl.ngModel" \t\t\t\tng-disabled="$ctrl.ngDisabled" /> \t\t\t<span class="input-group-addon" ng-if="$ctrl.showLock" \t\t\t\tng-class="{\'input-lg\': $ctrl.size === \'lg\'}"> \t\t\t\t<a href="" tw-pop-over data-original-title="{{ $ctrl.lockTooltipTitle }}" data-content="{{ $ctrl.lockTooltipContent }}" data-content-html="true" data-trigger="hover" ng-click="$ctrl.lockClick()" class="tw-rate-lock-link"> \t\t\t\t\t<i class="icon icon-lock" ng-if="$ctrl.locked"></i> \t\t\t\t\t<i class="icon icon-unlock" ng-if="!$ctrl.locked"></i> \t\t\t\t</a> \t\t\t</span> \t\t\t<span class="input-group-btn">  \t\t\t\t<tw-select \t\t\t\t\tng-model="$ctrl.currency" \t\t\t\t\tng-required="true" \t\t\t\t\tsize="{{ $ctrl.size }}" \t\t\t\t\tinverse="true" \t\t\t\t\tdropdown-right="xs" \t\t\t\t\tdropdown-width="md" \t\t\t\t\thide-note="true" \t\t\t\t\thide-secondary="true" \t\t\t\t\toptions="$ctrl.currencies" \t\t\t\t\tfilter="{{ $ctrl.currencyFilterPlaceholder }}" \t\t\t\t\tng-change="$ctrl.changedCurrency()"> \t\t\t\t\t\t<a href="" ng-if="!!$ctrl.customActionLabel" ng-click="$ctrl.onCustomAction()"> \t\t\t\t\t\t\t{{ $ctrl.customActionLabel }} \t\t\t\t\t\t</a> \t\t\t\t</tw-select> \t\t\t</span> \t\t</div>';
 }(window.angular), function(angular) {
     function TwCheckboxDirective() {
         function TwCheckboxController($scope, $element) {
@@ -888,6 +890,34 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     }
     angular.module("tw.form-styling").directive("formControl", TwFormControlStyling), 
     angular.module("tw.form-styling").directive("twFocusable", TwFocusable);
+}(window.angular), function(angular) {
+    function TwPopOver() {
+        return {
+            restrict: "A",
+            link: function(scope, element) {
+                if (!element.popover) return void console.log("twPopOver requires tooltip from bootstrap.js");
+                var options = {}, tag = element[0];
+                tag.getAttribute("data-trigger") ? "hover" === tag.getAttribute("data-trigger") && (options.trigger = "hover focus") : options.trigger = "focus", 
+                tag.getAttribute("data-placement") || (options.placement = "top"), tag.getAttribute("data-content-html") && (options.html = !0), 
+                element.popover(options), tag.setAttribute("tabindex", "0"), tag.setAttribute("role", "button"), 
+                tag.setAttribute("data-toggle", "popover");
+            }
+        };
+    }
+    angular.module("tw.form-styling").directive("twPopOver", TwPopOver);
+}(window.angular), function(angular) {
+    function TwToolTip() {
+        return {
+            restrict: "A",
+            link: function(scope, element) {
+                if (!element.tooltip) return void console.log("twToolTip requires bootstrap.js");
+                var tag = element[0], options = {};
+                tag.getAttribute("data-placement") || (options.placement = "top"), element.tooltip(options), 
+                tag.setAttribute("tabindex", "0"), tag.setAttribute("data-toggle", "tooltip");
+            }
+        };
+    }
+    angular.module("tw.form-styling").directive("twToolTip", TwToolTip);
 }(window.angular), function() {
     "use strict";
     function TwDynamicAsyncValidator($log, $q, $http) {
