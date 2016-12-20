@@ -89,7 +89,7 @@ describe('Directive: TwAmountCurrencySelect', function() {
         });
     });
 
-    fdescribe('validation', function() {
+    describe('validation', function() {
         beforeEach(inject(function() {
             $scope.ngRequired = true;
             $scope.ngMin = 10;
