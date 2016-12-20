@@ -80,8 +80,6 @@
 		};
 
 		$ctrl.lockClick = function() {
-			$ctrl.locked = !$ctrl.locked;
-
 			if ($ctrl.onLockedChange) {
 				$timeout($ctrl.onLockedChange);
 			}

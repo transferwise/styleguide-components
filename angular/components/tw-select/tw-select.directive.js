@@ -174,7 +174,6 @@
 		$ctrl.filterChange = filterChange;
 		$ctrl.filterKeydown = filterKeydown;
 
-		$ctrl.isOptionFiltered = isOptionFiltered;
 		$ctrl.getFilteredOptions = getFilteredOptions;
 
 		$ctrl.filterString = "";
@@ -222,22 +221,35 @@
 		function placeholderFocus() {
 			resetOption($ngModel, $ctrl);
 		}
+
 		function getFilteredOptions() {
-			return $ctrl.options.filter(isOptionFiltered);
-		}
-		function isOptionFiltered(option) {
-			var filterStringLower =
-				$ctrl.filterString && escapeRegExp($ctrl.filterString.toLowerCase());
+			var filteredLabels = [];
+			return $ctrl.options.filter(function (option) {
+				var filterStringLower =
+					$ctrl.filterString && escapeRegExp($ctrl.filterString.toLowerCase());
 
-			if (!filterStringLower) {
-				return true;
-			}
+				if (!filterStringLower) {
+					return true;
+				}
 
-			return (option.label && option.label.toLowerCase().search(filterStringLower) >= 0) ||
-				(option.note && option.note.toLowerCase().search(filterStringLower) >= 0) ||
-				(option.secondary && option.secondary.toLowerCase().search(filterStringLower) >= 0) ||
-				(option.searchable && option.searchable.toLowerCase().search(filterStringLower) >= 0);
+				var duplicate = false;
+				if (filteredLabels.indexOf(option.label) > -1) {
+					duplicate = true;
+				}
+
+				var addOption = ((option.label && option.label.toLowerCase().search(filterStringLower) >= 0) ||
+					(option.note && option.note.toLowerCase().search(filterStringLower) >= 0) ||
+					(option.secondary && option.secondary.toLowerCase().search(filterStringLower) >= 0) ||
+					(option.searchable && option.searchable.toLowerCase().search(filterStringLower) >= 0)) &&
+					!duplicate;
+
+				if (addOption) {
+					filteredLabels.push(option.label);
+				}
+				return addOption;
+			});
 		}
+		
 		function escapeRegExp(str) {
 			return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 		}
