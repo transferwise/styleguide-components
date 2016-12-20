@@ -18,13 +18,6 @@ pre {
 }
 
 
-.droppable-active-cover {
-  // animation: fade-out .15s 0s ease forwards;
-}
-.droppable-active .droppable-active-cover {
-  // animation: fade-in .15s 0s ease forwards;
-}
-
 .fade-in {
   animation: fade-in .5s 0s linear forwards;
 }
@@ -54,6 +47,11 @@ pre {
 
   // padding: 48px 32px;
   background-color: #fff;
+  // transform: translateX(100%);
+  //transition: transform .3s ease;
+}
+.droppable-complete.in {
+  //transform: translateX(0);
 }
 .droppable-complete-content {
   padding: 32px;

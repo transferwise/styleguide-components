@@ -57,7 +57,7 @@
 					\'droppable-active\': $ctrl.isDroppable || $ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError, \
 					\'droppable-dropping\': $ctrl.isDroppable \
 				}"> \
-				<div class="droppable-default"> \
+				<div class="droppable-default" aria-hidden="{{$ctrl.isDone}}"> \
 					<div class="m-b-2"> \
 						<i class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></i> \
 					</div> \
@@ -69,8 +69,8 @@
 							on-user-input="$ctrl.onManualUpload" ng-model="$ctrl.inputFile"/> \
 					</label> \
 				</div> \
-				<div class="droppable-active-cover" ng-class="{\'slide-out-to-left\': $ctrl.isDone}"> \
-					<div ng-if="$ctrl.isDroppable"> \
+				<div class="droppable-active-cover" ng-class="{\'slide-out-to-left\': $ctrl.isDone}" aria-hidden="{{$ctrl.isDone}}"> \
+					<div ng-if="$ctrl.isDroppable" ar> \
 						<h4 class="m-b-2">Drop file to start upload</h4> \
 						<div class="circle circle-sm"> \
 							<i class="icon icon-add"></i> \
@@ -86,7 +86,7 @@
 						<tw-process size="sm" state="$ctrl.processingState"></tw-process> \
 					</div> \
 				</div> \
-				<div class="droppable-complete slide-in-from-right" ng-if="$ctrl.isDone"> \
+				<div class="droppable-complete slide-in-from-right" ng-if="$ctrl.isDone" aria-hidden="{{!$ctrl.isDone}}" ng-class="{\'in\': $ctrl.isDone}"> \
 					<div class="droppable-complete-content">	\
 						<div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError"> \
 							<h4 class="m-b-2" ng-if="$ctrl.completeText">{{$ctrl.completeText}}</h4> \
