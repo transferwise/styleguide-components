@@ -89,7 +89,7 @@ describe('Directive: TwAmountCurrencySelect', function() {
         });
     });
 
-    describe('validation', function() {
+    fdescribe('validation', function() {
         beforeEach(inject(function() {
             $scope.ngRequired = true;
             $scope.ngMin = 10;
@@ -99,6 +99,10 @@ describe('Directive: TwAmountCurrencySelect', function() {
             $ngModel = directiveElement.controller('ngModel');
             input = directiveElement.find(INPUT_SELECTOR);
         }));
+
+        it('should not include input-addon, if no transclusion is incuded', function() {
+            expect(templateElement.html()).not.toContain('<input-addon>');
+        });
 
         it('should be valid when not required and empty', function() {
             $scope.ngRequired = false;
