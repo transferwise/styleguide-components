@@ -843,7 +843,11 @@ angular.module("tw.form-components", []);
             $element[0].querySelector("input").value = null, setNgModel(null);
         }
         function setNgModel(value) {
-            "undefined" != typeof $attrs.ngModel && ($ctrl.ngModel = value);
+            if ("undefined" != typeof $attrs.ngModel) {
+                var $ngModel = $element.controller("ngModel");
+                if (!$ngModel.$setViewValue) return;
+                $ngModel.$setViewValue(value);
+            }
         }
         function asyncPost(file) {
             var formData = new FormData();

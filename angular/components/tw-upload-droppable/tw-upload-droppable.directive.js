@@ -239,7 +239,11 @@
 		function setNgModel(value) {
 			// If ngModel not assignable, we don't want to error.
 			if (typeof $attrs.ngModel !== 'undefined') {
-				$ctrl.ngModel = value;
+				var $ngModel = $element.controller('ngModel');
+				if (!$ngModel.$setViewValue) {
+					return;
+				}
+				$ngModel.$setViewValue(value);
 			}
 		}
 
