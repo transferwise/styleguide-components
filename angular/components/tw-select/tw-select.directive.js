@@ -223,6 +223,10 @@
 		}
 
 		function getFilteredOptions() {
+			if (!$ctrl.options || !$ctrl.options.filter) {
+				return [];
+			}
+
 			var filteredLabels = [];
 			return $ctrl.options.filter(function (option) {
 				var filterStringLower =
@@ -249,7 +253,7 @@
 				return addOption;
 			});
 		}
-		
+
 		function escapeRegExp(str) {
 			return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 		}

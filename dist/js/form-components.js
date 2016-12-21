@@ -273,7 +273,7 @@ angular.module("tw.form-components", []);
                 ngRequired: "=",
                 ngDisabled: "="
             },
-            template: " \t\t\t\t<input type='hidden' class='sr-only' \t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-click='$ctrl.hiddenClick($event)' \t\t\t\t\tng-disabled='$ctrl.ngDisabled'/> \t\t\t\t<button class='tw-checkbox-button' tw-focusable \t\t\t\t\tng-click='$ctrl.buttonClick($event)' \t\t\t\t\tng-focus='$ctrl.buttonFocus()' \t\t\t\t\tng-blur='$ctrl.buttonBlur()' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-class='{\"checked\": $ctrl.checked}' \t\t\t\t\taria-pressed='{{$ctrl.checked}}'> \t\t\t\t\t<span class='tw-checkbox-check glyphicon glyphicon-ok'></span> \t\t\t\t</button>"
+            template: " \t\t\t\t<input type='hidden' class='sr-only' \t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-click='$ctrl.hiddenClick($event)' \t\t\t\t\tng-disabled='$ctrl.ngDisabled'/> \t\t\t\t<button type='button' class='tw-checkbox-button' tw-focusable \t\t\t\t\tng-click='$ctrl.buttonClick($event)' \t\t\t\t\tng-focus='$ctrl.buttonFocus()' \t\t\t\t\tng-blur='$ctrl.buttonBlur()' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-class='{\"checked\": $ctrl.checked}' \t\t\t\t\taria-pressed='{{$ctrl.checked}}'> \t\t\t\t\t<span class='tw-checkbox-check glyphicon glyphicon-ok'></span> \t\t\t\t</button>"
         };
     }
     angular.module("tw.form-components").directive("twCheckbox", TwCheckboxDirective);
@@ -413,7 +413,8 @@ angular.module("tw.form-components", []);
             scope: {
                 state: "=",
                 size: "@",
-                onStop: "&"
+                onStop: "&",
+                promise: "="
             },
             controller: [ "$scope", "$interval", "$timeout", TwProcessController ],
             template: "<span class='process' \t\t\t\tng-class='{ \t\t\t\t\t\"process-success\": $ctrl.processing === 1, \t\t\t\t\t\"process-danger\": $ctrl.processing === -1, \t\t\t\t\t\"process-stopped\": $ctrl.processing === 0, \t\t\t\t\t\"process-xs\": $ctrl.size === \"xs\", \t\t\t\t\t\"process-sm\": $ctrl.size === \"sm\", \t\t\t\t\t\"process-md\": $ctrl.size === \"md\", \t\t\t\t\t\"process-lg\": $ctrl.size === \"lg\", \t\t\t\t\t\"process-xl\": $ctrl.size === \"xl\" \t\t\t\t}'> \t\t\t\t<span class='process-icon-container'> \t\t\t\t\t<span class='process-icon-horizontal'></span> \t\t\t\t\t<span class='process-icon-vertical'></span> \t\t\t\t</span> \t\t\t\t<svg version='1.1' \t\t\t\t\txmlns='http://www.w3.org/2000/svg' \t\t\t\t\txml:space='preserve'> \t\t\t\t\t<circle class='process-circle' cx='50%' cy='50%' ng-attr-r='{{$ctrl.radius}}' \t\t\t\t\t\tfill-opacity='0.0' /> \t\t\t\t</svg> \t\t\t</span>"
@@ -425,11 +426,11 @@ angular.module("tw.form-components", []);
         }
         var $ctrl = this;
         $ctrl.processing = $ctrl.state;
-        var promise;
+        var interval;
         $scope.$watch("$ctrl.state", function(newVal) {
             isStopped($ctrl.processing) && ($ctrl.processing = null, $ctrl.startProcess());
         }), $scope.$watch("$ctrl.size", function(newVal) {
-            switch ($interval.cancel(promise), $ctrl.startProcess(), $ctrl.size || ($ctrl.size = "sm"), 
+            switch ($interval.cancel(interval), $ctrl.startProcess(), $ctrl.size || ($ctrl.size = "sm"), 
             $ctrl.size) {
               case "xs":
                 $ctrl.radius = "11";
@@ -447,11 +448,11 @@ angular.module("tw.form-components", []);
                 $ctrl.radius = "46%";
             }
         }), $ctrl.startProcess = function() {
-            promise = $interval(function() {
+            interval = $interval(function() {
                 $ctrl.processing = $ctrl.state, isStopped($ctrl.state) && $ctrl.stopProcess();
             }, 1500);
         }, $ctrl.stopProcess = function() {
-            $interval.cancel(promise), $ctrl.onStop && (0 === $ctrl.state ? $ctrl.onStop() : $timeout($ctrl.onStop, 1800));
+            $interval.cancel(interval), $ctrl.onStop && (0 === $ctrl.state ? $ctrl.onStop() : $timeout($ctrl.onStop, 1800));
         }, $ctrl.startProcess();
     }
     angular.module("tw.form-components").directive("twProcess", TwProcess);
@@ -651,6 +652,7 @@ angular.module("tw.form-components", []);
             resetOption($ngModel, $ctrl);
         }
         function getFilteredOptions() {
+            if (!$ctrl.options || !$ctrl.options.filter) return [];
             var filteredLabels = [];
             return $ctrl.options.filter(function(option) {
                 var filterStringLower = $ctrl.filterString && escapeRegExp($ctrl.filterString.toLowerCase());
@@ -859,6 +861,165 @@ angular.module("tw.form-components", []);
         });
     }
     angular.module("tw.form-components").directive("twFileSelect", TwFileSelectDirective).controller("TwUploadDroppableController", TwUploadDroppableController).directive("twUploadDroppable", TwUploadDroppableDirective);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwUploadDirective() {
+        return {
+            bindToController: !0,
+            controller: [ "$timeout", "$element", "$http", "$scope", "$transclude", "$q", "$attrs", TwUploadController ],
+            controllerAs: "$ctrl",
+            replace: !1,
+            transclude: !0,
+            restrict: "E",
+            scope: {
+                ngModel: "=",
+                name: "@",
+                icon: "@",
+                description: "@",
+                instructions: "@",
+                buttonText: "@",
+                cancelText: "@",
+                processingText: "@",
+                successText: "@",
+                failureText: "@",
+                completeText: "@",
+                errorMessage: "@",
+                tooLargeMessage: "@",
+                size: "@",
+                accept: "@",
+                httpOptions: "=",
+                onStart: "=",
+                onSuccess: "=",
+                onFailure: "=",
+                onCancel: "=",
+                maxSize: "="
+            },
+            link: twUploadLink,
+            template: '<div class="droppable" ng-class="{ \t\t\t\t\t\'droppable-sm\': $ctrl.size === \'sm\', \t\t\t\t\t\'droppable-md\': $ctrl.size === \'md\' || !$ctrl.size, \t\t\t\t\t\'droppable-lg\': $ctrl.size === \'lg\', \t\t\t\t\t\'droppable-dropping\': $ctrl.isDroppable, \t\t\t\t\t\'droppable-processing\': !$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError), \t\t\t\t\t\'droppable-complete\': $ctrl.isDone \t\t\t\t}"> \t\t\t\t<div class="droppable-default-card" aria-hidden="{{$ctrl.isDone}}"> \t\t\t\t\t<div class="droppable-card-content"> \t\t\t\t\t\t<div class="m-b-2"> \t\t\t\t\t\t\t<i class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></i> \t\t\t\t\t\t</div> \t\t\t\t\t\t<h4 class="m-b-1" ng-if="$ctrl.description">{{$ctrl.description}}</h4> \t\t\t\t\t\t<p class="m-b-2">{{$ctrl.instructions}}</p> \t\t\t\t\t\t<label class="btn btn-primary">{{$ctrl.buttonText}} \t\t\t\t\t\t\t<input tw-file-select type="file" \t\t\t\t\t\t\t\taccept="{{$ctrl.accept}}"" class="tw-droppable-input hidden" name="file-upload" \t\t\t\t\t\t\t\ton-user-input="$ctrl.onManualUpload" ng-model="$ctrl.inputFile"/> \t\t\t\t\t\t</label> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t\t<div class="droppable-processing-card droppable-card" \t\t\t\t\taria-hidden="{{$ctrl.isDone}}"> \t\t\t\t\t<div class="droppable-card-content"> \t\t\t\t\t\t<h4 class="m-b-2"> \t\t\t\t\t\t\t<span ng-if="$ctrl.isProcessing && $ctrl.processingText">{{$ctrl.processingText}}</span> \t\t\t\t\t\t\t<span ng-if="$ctrl.isSuccess && $ctrl.successText">{{$ctrl.successText}}</span> \t\t\t\t\t\t\t<span ng-if="$ctrl.isError && $ctrl.failureText">{{$ctrl.failureText}}</span> \t\t\t\t\t\t</h4> \t\t\t\t\t\t<tw-process size="sm" state="$ctrl.processingState" \t\t\t\t\t\t\tng-if="!$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"></tw-process> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t\t<div class="droppable-complete-card droppable-card" \t\t\t\t\taria-hidden="{{!$ctrl.isDone}}"> \t\t\t\t\t<div class="droppable-card-content">\t\t\t\t\t\t\t<div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError"> \t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="$ctrl.completeText">{{$ctrl.completeText}}</h4> \t\t\t\t\t\t\t<img ng-src="{{$ctrl.image}}" ng-if="$ctrl.isImage" class="thumbnail m-b-3" /> \t\t\t\t\t\t\t<i class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></i> \t\t\t\t\t\t\t<p class="text-ellipsis m-b-2">{{$ctrl.fileName}}</p> \t\t\t\t\t\t</div> \t\t\t\t\t\t<div ng-if="!$ctrl.hasTranscluded && $ctrl.isError"> \t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="$ctrl.isTooLarge">{{$ctrl.tooLargeMessage}}</h4> \t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="$ctrl.isWrongType">{{$ctrl.wrongTypeText}}</h4> \t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="!$ctrl.isTooLarge && $ctrl.errorMessage">{{$ctrl.errorMessage}}</h4> \t\t\t\t\t\t\t<i class="icon icon-alert icon-xxl text-danger m-b-1"></i> \t\t\t\t\t\t</div> \t\t\t\t\t\t<div ng-if="$ctrl.hasTranscluded" ng-transclude></div> \t\t\t\t\t\t<p ng-if="$ctrl.cancelText" class="m-t-2 m-b-0"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.clear()">{{$ctrl.cancelText}}</a> \t\t\t\t\t\t</p> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t\t<div class="droppable-dropping-card droppable-card"> \t\t\t\t\t<div class="droppable-card-content"> \t\t\t\t\t\t<h4 class="m-b-2">Drop file to start upload</h4> \t\t\t\t\t\t<div class="circle circle-sm"> \t\t\t\t\t\t\t<i class="icon icon-add"></i> \t\t\t\t\t\t</div> \t\t\t\t\t\t<p class="m-t-2 m-b-0"></p> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t</div>'
+        };
+    }
+    function TwUploadController($timeout, $element, $http, $scope, $transclude, $q, $attrs) {
+        function reset() {
+            $ctrl.isDroppable = !1, $ctrl.isProcessing = !1, $ctrl.isSuccess = !1, $ctrl.isError = !1, 
+            $ctrl.dragCounter = 0, $ctrl.isDone = !1, $ctrl.isTooLarge = !1, $ctrl.isWrongType = !1, 
+            $element[0].querySelector("input").value = null, setNgModel(null);
+        }
+        function setNgModel(value) {
+            if ("undefined" != typeof $attrs.ngModel) {
+                var $ngModel = $element.controller("ngModel");
+                if (!$ngModel.$setViewValue) return;
+                $ngModel.$setViewValue(value);
+            }
+        }
+        function asyncPost(file) {
+            var formData = new FormData();
+            formData.append($ctrl.name, file);
+            var $httpOptions = prepareHttpOptions(angular.copy($ctrl.httpOptions));
+            return $http.post($httpOptions.url, formData, $httpOptions);
+        }
+        function prepareHttpOptions($httpOptions) {
+            if (!$httpOptions.url) throw new Error("You must supply a URL to post image data asynchronously");
+            return $httpOptions.headers || ($httpOptions.headers = {}), $httpOptions.method && delete $httpOptions.method, 
+            $httpOptions.headers["Content-Type"] = void 0, $httpOptions.transformRequest = angular.identity, 
+            $httpOptions;
+        }
+        function asyncFileRead(file) {
+            var reader = new FileReader(), deferred = $q.defer();
+            return reader.onload = function(event) {
+                deferred.resolve(event.target.result);
+            }, reader.onerror = function(event) {
+                deferred.reject(event);
+            }, reader.readAsDataURL(file), deferred.promise;
+        }
+        function showDataImage(dataUrl) {
+            setNgModel(dataUrl), $ctrl.isImage = isImage, isImage && ($ctrl.image = dataUrl);
+        }
+        function asyncSuccess(response) {
+            return $ctrl.processingState = 1, $timeout(function() {
+                $ctrl.isProcessing = !1, $ctrl.isSuccess = !0;
+            }, 3e3), $timeout(function() {
+                triggerHandler($ctrl.onSuccess, response), $ctrl.isDone = !0;
+            }, 3800), response;
+        }
+        function asyncFailure(error) {
+            return $ctrl.processingState = -1, $timeout(function() {
+                $ctrl.isProcessing = !1, $ctrl.isError = !0;
+            }, 3e3), $timeout(function() {
+                triggerHandler($ctrl.onFailure, error), $ctrl.isDone = !0;
+            }, 4100), error;
+        }
+        function isSizeValid(file, maxSize) {
+            return !(angular.isNumber(maxSize) && file.size > maxSize);
+        }
+        function isTypeValid(file, accept) {
+            return !0;
+        }
+        var $ctrl = this, isImage = !1;
+        if ($ctrl.dragCounter = 0, $ctrl.isProcessing = !1, $ctrl.processingState = null, 
+        checkForTranscludedContent($transclude, $ctrl), $scope.$watch("$ctrl.icon", function() {
+            $ctrl.viewIcon = $ctrl.icon ? $ctrl.icon : "upload";
+        }), ($ctrl.processingText || $ctrl.successText || $ctrl.failureText) && (!$ctrl.processingText || !$ctrl.successText || !$ctrl.failureText)) throw new Error("Supply all of processing, success, and failure text, or supply none.");
+        $ctrl.onManualUpload = function() {
+            var file = angular.element($element[0].querySelector(".tw-droppable-input"))[0].files[0];
+            $ctrl.fileDropped(file);
+        }, $ctrl.fileDropped = function(file) {
+            return reset(), isImage = file.type && file.type.indexOf("image") > -1, $ctrl.fileName = file.name, 
+            $ctrl.isProcessing = !0, $ctrl.processingState = null, triggerHandler($ctrl.onStart, file), 
+            isSizeValid(file, $ctrl.maxSize) ? isTypeValid(file, $ctrl.accept) ? void ($ctrl.httpOptions ? $q.all([ asyncPost(file), asyncFileRead(file) ]).then(function(response) {
+                showDataImage(response[1]);
+            }).then(asyncSuccess)["catch"](asyncFailure) : asyncFileRead(file).then(showDataImage).then(asyncSuccess)["catch"](asyncFailure)) : ($ctrl.isWrongType = !0, 
+            void asyncFailure({
+                status: 415,
+                statusText: "Unsupported Media Type"
+            })) : ($ctrl.isTooLarge = !0, void asyncFailure({
+                status: 413,
+                statusText: "Request Entity Too Large"
+            }));
+        }, $ctrl.onDragChange = function(enter) {
+            enter ? ($ctrl.dragCounter++, $ctrl.dragCounter >= 1 && ($ctrl.isDroppable = !0)) : ($ctrl.dragCounter--, 
+            $ctrl.dragCounter <= 0 && ($ctrl.isDroppable = !1));
+        }, $ctrl.clear = function() {
+            reset(), triggerHandler($ctrl.onCancel);
+        };
+    }
+    function twUploadLink(scope, element, attr) {
+        element[0].addEventListener("dragenter", function(event) {
+            event.preventDefault(), scope.$ctrl.onDragChange(!0), scope.$apply();
+        }, !1), element[0].addEventListener("dragover", function(event) {
+            event.preventDefault();
+        }, !1), element[0].addEventListener("dragleave", function(event) {
+            event.preventDefault(), scope.$ctrl.onDragChange(!1), scope.$apply();
+        }, !1), element[0].addEventListener("drop", function(event) {
+            event.preventDefault(), scope.$ctrl.fileDropped(event.dataTransfer.files[0]), scope.$apply();
+        }, !1);
+    }
+    function triggerHandler(method, argument) {
+        method && "function" == typeof method && method(argument);
+    }
+    function checkForTranscludedContent($transclude, $ctrl) {
+        $transclude(function(clone) {
+            (clone.length > 1 || "" !== clone.text().trim()) && ($ctrl.hasTranscluded = !0);
+        });
+    }
+    function TwFileInputDirective() {
+        return {
+            bindToController: !0,
+            controller: function() {},
+            controllerAs: "$ctrl",
+            replace: !1,
+            restrict: "A",
+            scope: {
+                onUserInput: "="
+            },
+            link: TwFileInputLink
+        };
+    }
+    function TwFileInputLink(scope, element) {
+        element.on("change", function() {
+            scope.$ctrl.onUserInput && "function" == typeof scope.$ctrl.onUserInput && scope.$ctrl.onUserInput();
+        });
+    }
+    angular.module("tw.form-components").directive("twFileInput", TwFileInputDirective).controller("twUploadController", TwUploadController).directive("twUpload", TwUploadDirective);
 }(window.angular), function(angular) {
     "use strict";
     function TwCurrencyData() {

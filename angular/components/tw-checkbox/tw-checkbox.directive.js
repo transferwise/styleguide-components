@@ -123,7 +123,7 @@
 					ng-model='$ctrl.ngModel' \
 					ng-click='$ctrl.hiddenClick($event)' \
 					ng-disabled='$ctrl.ngDisabled'/> \
-				<button class='tw-checkbox-button' tw-focusable \
+				<button type='button' class='tw-checkbox-button' tw-focusable \
 					ng-click='$ctrl.buttonClick($event)' \
 					ng-focus='$ctrl.buttonFocus()' \
 					ng-blur='$ctrl.buttonBlur()' \

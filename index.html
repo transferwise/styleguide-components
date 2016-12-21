@@ -15,6 +15,8 @@
 
 	<link type="text/css" rel="stylesheet"
 		href="components/bootstrap/dist/css/bootstrap.min.css" />
+	<!--<link type="text/css" rel="stylesheet"
+		href="http://localhost:9001/dist/css/bootstrap.min.css" />-->
 	<link type="text/css" rel="stylesheet"
 		href="components/currency-flags/dist/currency-flags.min.css" />
 	<link type="text/css" rel="stylesheet" href="styles/examples.css" />
@@ -52,6 +54,7 @@
 						<li><a href="#requirements-form">Requirements form</a></li>
 						<li><a href="#select">Select</a></li>
 						<li><a href="#tool-tip">Tool tip</a></li>
+						<li><a href="#upload">Upload</a></li>
 						<li><a href="#validation">Validation</a></li>
 					</ul>
 					<h5>
@@ -64,23 +67,20 @@
 
 		<div class="row m-t-3">
 			<div class="col-lg-9">
-				<form class="panel"
-					name="componentsForm"
-					novalidate>
-					<div class="panel-heading">
-						<h3 class="panel-title">Form components</h3>
-					</div>
-					<div class="panel-body" ng-init="vm.requirementsForm = {}">
-						<tw-select-docs></tw-select-docs>
-						<tw-checkbox-docs></tw-checkbox-docs>
-						<tw-radio-docs></tw-radio-docs>
-						<tw-date-docs></tw-date-docs>
-						<tw-currency-input-docs></tw-currency-input-docs>
-						<tw-amount-currency-select-docs></tw-amount-currency-select-docs>
-						<tw-dynamic-control-docs></tw-dynamic-control-docs>
-						<tw-requirements-form-docs model="vm.requirementsForm"></tw-requirements-form-docs>
-					</div>
-				</form>
+				<div class="panel-heading">
+					<h3 class="panel-title">Form components</h3>
+				</div>
+				<div class="panel-body" ng-init="vm.requirementsForm = {}">
+					<tw-select-docs></tw-select-docs>
+					<tw-checkbox-docs></tw-checkbox-docs>
+					<tw-radio-docs></tw-radio-docs>
+					<tw-date-docs></tw-date-docs>
+					<tw-upload-docs></tw-upload-docs>
+					<tw-currency-input-docs></tw-currency-input-docs>
+					<tw-amount-currency-select-docs></tw-amount-currency-select-docs>
+					<tw-dynamic-control-docs></tw-dynamic-control-docs>
+					<tw-requirements-form-docs model="vm.requirementsForm"></tw-requirements-form-docs>
+				</div>
 			</div>
 		</div>
 		<div class="row m-t-3">

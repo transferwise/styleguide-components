@@ -34,7 +34,8 @@
 				hide-secondary="vm.select.hideSecondary"
 				hide-icon="vm.select.hideIcon"
 				hide-currency="vm.select.hideCurrency"
-				hide-circle="vm.select.hideCircle" />
+				hide-circle="vm.select.hideCircle">
+			</tw-select>
 			<tw-select tw-validation ng-if="vm.select.extraLink"
 				name="mySelect"
 				placeholder="{{vm.select.empty}}"
@@ -54,7 +55,7 @@
 				hide-secondary="vm.select.hideSecondary"
 				hide-icon="vm.select.hideIcon"
 				hide-currency="vm.select.hideCurrency"
-				hide-circle="vm.select.hideCircle" >
+				hide-circle="vm.select.hideCircle">
 				<a href="" ng-click="vm.log('click')">
 					Custom action
 				</a>
@@ -87,7 +88,7 @@
 				hide-secondary="vm.select.hideSecondary"
 				hide-icon="vm.select.hideIcon"
 				hide-currency="vm.select.hideCurrency"
-				hide-circle="vm.select.hideCircle" >
+				hide-circle="vm.select.hideCircle">
 			</tw-select>
 			<tw-select tw-validation ng-if="vm.select.extraLink"
 				name="mySelect"
@@ -108,7 +109,7 @@
 				hide-secondary="vm.select.hideSecondary"
 				hide-icon="vm.select.hideIcon"
 				hide-currency="vm.select.hideCurrency"
-				hide-circle="vm.select.hideCircle" >
+				hide-circle="vm.select.hideCircle">
 			</tw-select>
 		</div>
 
@@ -243,19 +244,19 @@
 					<tw-select
 						placeholder="Button size..."
 						ng-model="vm.select.size"
-					 	options="[{value: 'sm', label: 'Small button'},{value: 'md', label: 'Medium button'},{value: 'lg', label: 'Large button'}]"/></tw-select>
+					 	options="[{value: 'sm', label: 'Small button'},{value: 'md', label: 'Medium button'},{value: 'lg', label: 'Large button'}]"></tw-select>
 				</div>
 				<div>
 					<tw-select
 						placeholder="Dropdown width..."
 						ng-model="vm.select.dropdownWidth"
-					 	options="[{value: 'sm', label: 'Small dropdown'},{value: 'md', label: 'Medium dropdown'},{value: 'lg', label: 'Large dropdown'}]"/></tw-select>
+					 	options="[{value: 'sm', label: 'Small dropdown'},{value: 'md', label: 'Medium dropdown'},{value: 'lg', label: 'Large dropdown'}]"></tw-select>
 				</div>
 				<div>
 					<tw-select
 						placeholder="Dropdown on right..."
 						ng-model="vm.select.dropdownRight"
-					 	options="[{value: 'xs', label: 'XSmall grids and wider'},{value: 'sm', label: 'Small grids and wider'},{value: 'md', label: 'Medium grids and wider'},{value: 'lg', label: 'Large grids and wider'},{value: 'xl', label: 'XLarge grids and wider'}]"/></tw-select>
+					 	options="[{value: 'xs', label: 'XSmall grids and wider'},{value: 'sm', label: 'Small grids and wider'},{value: 'md', label: 'Medium grids and wider'},{value: 'lg', label: 'Large grids and wider'},{value: 'xl', label: 'XLarge grids and wider'}]"></tw-select>
 				</div>
 			</div>
 			<input type="submit" class="btn btn-primary btn-block" value="Submit form" />

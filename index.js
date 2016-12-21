@@ -163,6 +163,50 @@ angular.module('my-app', ['tw.styleguide-components'])
 .directive('twSelectDocs', function() {
 	return {templateUrl: 'partials/tw-select.html'};
 })
+.directive('twUploadDocs', function() {
+	return {
+		controllerAs: '$ctrl',
+		bindToController: true,
+		scope: {},
+		controller: ['$timeout', '$q', '$http', function($timeout, $q, $http) {
+			var $ctrl = this;
+			$ctrl.onStart = function(file) {
+				console.log("File upload starting");
+			};
+			$ctrl.onSuccess = function(response) {
+				console.log('File upload complete');
+			};
+			$ctrl.onFailure = function(error) {
+				console.log('File upload failure');
+				if (error.status === 404) {
+					$ctrl.errorMessage = 'Bad URL';
+				} else {
+					$ctrl.errorMessage = 'Unknown error';
+				}
+			};
+			$ctrl.onCancel= function() {
+				console.log('File upload cancelled');
+			};
+
+			$ctrl.makeFancy = function() {
+				$ctrl.description = "Front of your ID document";
+				$ctrl.processingText = "Processing...";
+				$ctrl.successText = "Upload complete!";
+				$ctrl.failureText = "Upload failed!";
+				$ctrl.completeText = "Front of ID";
+			};
+
+			$ctrl.acceptOptions = [
+				{value: '.png', label: 'PNG (.png)'},
+				{value: '.jpg,.jpeg', label: 'JPG (.jpg,.jpeg)'},
+				{value: 'image/*', label: 'Images (image/*)'},
+				{value: 'video/*', label: 'Video (video/*)'},
+				{value: 'audio/*', label: 'Audio (audio/*)'}
+			];
+		}],
+		templateUrl: 'partials/tw-upload.html'
+	};
+})
 .directive('twDateDocs', function() {
 	return {templateUrl: 'partials/tw-date.html'};
 })
