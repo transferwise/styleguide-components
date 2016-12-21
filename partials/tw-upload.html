@@ -45,7 +45,7 @@
 <div class="row m-b-3">
 	<div class="col-md-6">
 		<div class="form-group">
-			<tw-upload-droppable
+			<tw-upload
 				ng-model="$ctrl.ngModel"
 				name="$ctrl.name"
 				icon="{{$ctrl.icon}}"
@@ -72,7 +72,7 @@
 				on-cancel="$ctrl.onCancel"
 
 				http-options="$ctrl.httpOptions">
-			</tw-upload-droppable>
+			</tw-upload>
 			<!--
 			<div class="thumbnail">
 			  <img ng-src="{{$ctrl.image}}" alt="...">
