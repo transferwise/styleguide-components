@@ -46,6 +46,7 @@
 	<div class="col-md-6">
 		<div class="form-group">
 			<tw-upload
+				ng-if="!$ctrl.customComplete"
 				ng-model="$ctrl.ngModel"
 				name="$ctrl.name"
 				icon="{{$ctrl.icon}}"
@@ -72,6 +73,36 @@
 				on-cancel="$ctrl.onCancel"
 
 				http-options="$ctrl.httpOptions">
+			</tw-upload>
+			<tw-upload
+				ng-if="$ctrl.customComplete"
+				ng-model="$ctrl.ngModel"
+				name="$ctrl.name"
+				icon="{{$ctrl.icon}}"
+				size="{{$ctrl.size}}"
+				accept="{{$ctrl.accept}}"
+				max-size="$ctrl.maxSize"
+				description="{{$ctrl.description}}"
+				instructions="{{$ctrl.instructions}}"
+
+				button-text="{{$ctrl.buttonText}}"
+				cancel-text="{{$ctrl.cancelText}}"
+
+				too-large-message="{{$ctrl.tooLargeMessage}}"
+				error-message="{{$ctrl.errorMessage}}"
+
+				processing-text="{{$ctrl.processingText}}"
+				success-text="{{$ctrl.successText}}"
+				failure-text="{{$ctrl.failureText}}"
+				complete-text="{{$ctrl.completeText}}"
+
+				on-start="$ctrl.onStart"
+				on-success="$ctrl.onSuccess"
+				on-failure="$ctrl.onFailure"
+				on-cancel="$ctrl.onCancel"
+
+				http-options="$ctrl.httpOptions">
+				<h1>Custom completion card</h1>
 			</tw-upload>
 			<!--
 			<div class="thumbnail">
@@ -113,7 +144,8 @@
   on-start="$ctrl.onStart"
   on-success="$ctrl.onSuccess"
   on-failure="$ctrl.onFailure"
-  on-cancel="$ctrl.onCancel"&gt;
+  on-cancel="$ctrl.onCancel"&gt;<span ng-if="$ctrl.customComplete">
+  &lt;h1&gt;Custom completion card&lt;/h1&gt;</span>
 &lt;/tw-upload&gt;
 </pre>
 	</div>
@@ -196,19 +228,25 @@
 				<div class="checkbox">
 					<label>
 						<tw-checkbox ng-model="$ctrl.httpOptions" ng-true-value="{url: 'partials/image-upload.json'}" ng-false-value="false" />
-						POST immmediately
+						POST immmediately?
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
 						<tw-checkbox ng-model="$ctrl.httpOptions" ng-true-value="{url: '404'}" ng-false-value="false" />
-						Post to a 404 for testing
+						Post to a 404 for testing?
 					</label>
 				</div>
 				<div class="checkbox">
 					<label>
 						<tw-checkbox ng-model="$ctrl.showNgModel" />
-					 	Bind to ngModel
+					 	Bind to ngModel?
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<tw-checkbox ng-model="$ctrl.customComplete" />
+					 	Custom complete screen?
 					</label>
 				</div>
 			</div>
