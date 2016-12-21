@@ -49,6 +49,7 @@
 				ng-model="$ctrl.ngModel"
 				name="$ctrl.name"
 				icon="{{$ctrl.icon}}"
+				size="{{$ctrl.size}}"
 				accept="{{$ctrl.accept}}"
 				max-size="$ctrl.maxSize"
 				description="{{$ctrl.description}}"
@@ -91,7 +92,8 @@
 <pre>&lt;tw-upload<span ng-if="$ctrl.showNgModel">
   ng-model="{{$ctrl.ngModel | limitTo : 30}}..."</span>
   name="{{$ctrl.name}}"<span ng-if="$ctrl.icon">
-  icon="{{$ctrl.icon}}"</span><span ng-if="$ctrl.description">
+  icon="{{$ctrl.icon}}"</span><span ng-if="$ctrl.size !== 'md'">
+  size="{{$ctrl.size}}"</span><span ng-if="$ctrl.description">
   description="{{$ctrl.description}}"</span>
   instructions="{{$ctrl.instructions}}"
   button-text="{{$ctrl.buttonText}}"
@@ -211,7 +213,7 @@
 				</div>
 			</div>
 
-			<div class="form-group" ng-init="$ctrl.size = 'sm'">
+			<div class="form-group" ng-init="$ctrl.size = 'md'">
 				<label class="control-label">
 					Size
 				</label>

@@ -58,7 +58,7 @@
 					\'droppable-processing\': !$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError), \
 					\'droppable-complete\': $ctrl.isDone \
 				}"> \
-				<div class="droppable-default" aria-hidden="{{$ctrl.isDone}}"> \
+				<div class="droppable-default-card" aria-hidden="{{$ctrl.isDone}}"> \
 					<div class="droppable-card-content"> \
 						<div class="m-b-2"> \
 							<i class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></i> \
@@ -72,7 +72,7 @@
 						</label> \
 					</div> \
 				</div> \
-				<div class="droppable-processing-card droppable-card droppable-active-cover" \
+				<div class="droppable-processing-card droppable-card" \
 					aria-hidden="{{$ctrl.isDone}}"> \
 					<div class="droppable-card-content"> \
 						<h4 class="m-b-2"> \
@@ -81,10 +81,10 @@
 							<span ng-if="$ctrl.isError && $ctrl.failureText">{{$ctrl.failureText}}</span> \
 						</h4> \
 						<tw-process size="sm" state="$ctrl.processingState" \
-							ng-if="$ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError"></tw-process> \
+							ng-if="!$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"></tw-process> \
 					</div> \
 				</div> \
-				<div class="droppable-complete-card droppable-card droppable-active-cover" \
+				<div class="droppable-complete-card droppable-card" \
 					aria-hidden="{{!$ctrl.isDone}}"> \
 					<div class="droppable-card-content">	\
 						<div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError"> \
@@ -105,7 +105,7 @@
 						</p> \
 					</div> \
 				</div> \
-				<div class="droppable-dropping-card droppable-card droppable-active-cover"> \
+				<div class="droppable-dropping-card droppable-card"> \
 					<div class="droppable-card-content"> \
 						<h4 class="m-b-2">Drop file to start upload</h4> \
 						<div class="circle circle-sm"> \
