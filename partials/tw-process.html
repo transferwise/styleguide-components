@@ -7,13 +7,15 @@
 		<div class="m-y-3">
 			<tw-process
 				state="vm.process.state"
-				size="{{vm.process.size}}">
+				size="{{vm.process.size}}"
+				on-stop="vm.log('stopped')">
 			</tw-process>
 		</div>
 <pre>
 &lt;tw-process
   state='{{vm.process.state}}'
-  size='{{vm.process.size}}'&gt;
+  size='{{vm.process.size}}'
+  on-stop='vm.log('stopped')'&gt;
 &lt;/tw-process&gt;
 </pre>
 	</div>
@@ -30,7 +32,7 @@
 					options="[{value: null, label: 'Processing'},{value: -1, label: 'Failed'},{value: 0, label: 'Hidden'},{value: 1, label: 'Success'}]">
 				</tw-select>
 			</div>
-			<div class="form-group">
+			<div class="form-group" ng-init="vm.process.size = 'xl'">
 				<label class="control-label">
 					Size?
 				</label>
