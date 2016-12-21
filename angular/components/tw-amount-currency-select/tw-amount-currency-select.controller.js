@@ -79,12 +79,6 @@
 			}
 		};
 
-		$ctrl.lockClick = function() {
-			if ($ctrl.onLockedChange) {
-				$timeout($ctrl.onLockedChange);
-			}
-		};
-
 		function isNumber(value) {
 			return !isNaN(parseFloat(value));
 		}
