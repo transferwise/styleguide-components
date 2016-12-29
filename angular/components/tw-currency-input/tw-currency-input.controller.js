@@ -28,9 +28,6 @@
 				$ctrl.showDecimals = TwCurrencyData.getDecimals(newValue) > 0;
 			}
 		});
-		$scope.$watch('$ctrl.locked', function(newValue, oldValue) {
-			$ctrl.showLock = (typeof $ctrl.locked !== 'undefined');
-		});
 
 		$element.find('input').on('blur', function() {
 			$ngModel.$setTouched();
@@ -62,12 +59,6 @@
 				// $timeout is needed to get the last ngModel value.
 				// See: https://github.com/angular/angular.js/issues/4558
 				$timeout($ctrl.ngChange);
-			}
-		};
-
-		$ctrl.lockClick = function() {
-			if ($ctrl.onLockedChange) {
-				$timeout($ctrl.onLockedChange);
 			}
 		};
 
