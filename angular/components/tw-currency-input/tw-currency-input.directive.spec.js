@@ -146,6 +146,36 @@ describe('Directive: TwCurrencyInput', function() {
         });
     });
 
+	describe('addon transclusion slot', function() {
+
+		it('should show nothing, when not used', function() {
+			templateElement = getCompiledTemplateElement($scope);
+			expect(templateElement.html()).not.toContain('<addon>');
+		});
+
+		it('should be empty, when empty string provided', function() {
+			var needle = '';
+			templateElement = getCompiledTransclusionTemplateElement($scope, needle);
+
+			expect(templateElement.html()).toContain('<addon></addon>');
+		});
+
+		it('should show text, when text provided', function() {
+			var needle = 'Addon here?';
+			templateElement = getCompiledTransclusionTemplateElement($scope, needle);
+
+			expect(templateElement.html()).toContain('<addon>' + needle + '</addon>');
+		});
+
+		it('should show compiled component, when component provided', function() {
+			var needle = '<tw-loader></tw-loader>';
+			templateElement = getCompiledTransclusionTemplateElement($scope, needle);
+
+			expect(templateElement.html()).toContain('<div class="loader-spinner">');
+		});
+
+	});
+
     function getCompiledTemplateElement($scope) {
         var element = angular.element(' \
             <div class="form-group"> \
@@ -167,5 +197,30 @@ describe('Directive: TwCurrencyInput', function() {
         $scope.$digest();
 
         return compiledElement;
+    }
+
+	function getCompiledTransclusionTemplateElement($scope, needle) {
+		var element = angular.element(' \
+            <div class="form-group"> \
+                <label class="control-label"> \
+                    Example currency input \
+                </label> \
+                <tw-currency-input \
+                    tw-validation \
+                    currency="\'EUR\'" \
+                    ng-model="ngModel" \
+                    ng-required="isRequired" \
+                    ng-change="onChange()" \
+                    ng-min="minValue" \
+                    ng-max="maxValue" /> \
+                    <addon>' + needle + '</addon>\
+                    </tw-currency-input>\
+            </div> \
+        ');
+
+		var compiledElement = $compile(element)($scope);
+		$scope.$digest();
+
+		return compiledElement;
     }
 });

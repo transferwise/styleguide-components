@@ -13,6 +13,9 @@
 			controllerAs: '$ctrl',
 			replace: false,
 			restrict: 'E',
+			transclude: {
+				'addon': '?addon'
+			},
 			template: templateAsString,
 			scope: {
 				ngModel: '=',
@@ -25,10 +28,8 @@
 				currencyCode: '@',
 				placeholder: '@',
 				size: '@',
-				locale: '@',
-				locked: '=',
-				onLockedChange: '&'
-			},
+				locale: '@'
+			}
 		};
 	}
 
@@ -51,13 +52,8 @@
 				ng-change="$ctrl.changedInputValue()" \
 				ng-model="$ctrl.ngModel" \
 				ng-disabled="$ctrl.ngDisabled" /> \
-			<span class="input-group-addon tw-currency-input-code p-l-1"> \
-				<a href=""  class="tw-rate-lock-link m-r-1" \
-					ng-if="$ctrl.showLock" \
-					ng-click="$ctrl.lockClick()"> \
-					<i class="icon icon-lock" ng-if="$ctrl.locked"></i> \
-					<i class="icon icon-unlock" ng-if="!$ctrl.locked"></i> \
-				</a> \
+			<span class="hello-world input-group-addon tw-currency-input-code p-l-1"> \
+				<span ng-transclude="addon"></span> \
 				{{ $ctrl.currency || $ctrl.currencyCode }} \
 			</span> \
 		</div> \
