@@ -7,7 +7,7 @@ Live demo http://transferwise.github.io/styleguide-components/
 It is recommended to use bower to import the latest version
 ```
 dependencies: {
-    "styleguide-components": "https://github.com/transferwise/styleguide-components.git#v1.2.0",
+    "tw-styleguide-components": "https://github.com/transferwise/styleguide-components/archive/1.4.0.tar.gz"
 }
 ```
 
