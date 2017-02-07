@@ -1021,6 +1021,21 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     }
     angular.module("tw.form-components").directive("twFileInput", TwFileInputDirective).controller("twUploadController", TwUploadController).directive("twUpload", TwUploadDirective);
 }(window.angular), function(angular) {
+    function TwAffix() {
+        return {
+            restrict: "A",
+            link: function(scope, element) {
+                if (!element.affix) return void console.log("twAffix requires bootstrap.js");
+                var tag = element[0], options = {};
+                (tag.getAttribute("data-offset-top") || tag.getAttribute("data-offset-bottom")) && (options.offset = {}), 
+                tag.getAttribute("data-offset-top") && Number(tag.getAttribute("data-offset-top")) && (options.offset.top = Number(tag.getAttribute("data-offset-top"))), 
+                tag.getAttribute("data-offset-bottom") && Number(tag.getAttribute("data-offset-bottom")) && (options.offset.bottom = Number(tag.getAttribute("data-offset-bottom"))), 
+                element.affix(options);
+            }
+        };
+    }
+    angular.module("tw.form-styling").directive("twAffix", TwAffix);
+}(window.angular), function(angular) {
     "use strict";
     function TwFormControlStyling() {
         return {
