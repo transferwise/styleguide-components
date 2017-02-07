@@ -1,5 +1,5 @@
 
-angular.module('my-app', ['tw.styleguide-components'])
+angular.module('my-app', ['tw.styleguide-components', 'webcam'])
 .config(['$compileProvider', function ($compileProvider) {
 	$compileProvider.debugInfoEnabled(false);
 }])
@@ -190,6 +190,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 
 			$ctrl.makeFancy = function() {
 				$ctrl.description = "Front of your ID document";
+				$ctrl.droppingText = "Drop file to start upload";
 				$ctrl.processingText = "Processing...";
 				$ctrl.successText = "Upload complete!";
 				$ctrl.failureText = "Upload failed!";

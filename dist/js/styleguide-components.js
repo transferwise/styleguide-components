@@ -882,6 +882,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 instructions: "@",
                 buttonText: "@",
                 cancelText: "@",
+                droppingText: "@",
                 processingText: "@",
                 successText: "@",
                 failureText: "@",
@@ -898,14 +899,18 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 maxSize: "="
             },
             link: twUploadLink,
-            template: '<div class="droppable" ng-class="{ \t\t\t\t\t\'droppable-sm\': $ctrl.size === \'sm\', \t\t\t\t\t\'droppable-md\': $ctrl.size === \'md\' || !$ctrl.size, \t\t\t\t\t\'droppable-lg\': $ctrl.size === \'lg\', \t\t\t\t\t\'droppable-dropping\': $ctrl.isDroppable, \t\t\t\t\t\'droppable-processing\': !$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError), \t\t\t\t\t\'droppable-complete\': $ctrl.isDone \t\t\t\t}"> \t\t\t\t<div class="droppable-default-card" aria-hidden="{{$ctrl.isDone}}"> \t\t\t\t\t<div class="droppable-card-content"> \t\t\t\t\t\t<div class="m-b-2"> \t\t\t\t\t\t\t<i class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></i> \t\t\t\t\t\t</div> \t\t\t\t\t\t<h4 class="m-b-1" ng-if="$ctrl.description">{{$ctrl.description}}</h4> \t\t\t\t\t\t<p class="m-b-2">{{$ctrl.instructions}}</p> \t\t\t\t\t\t<label class="btn btn-primary">{{$ctrl.buttonText}} \t\t\t\t\t\t\t<input tw-file-select type="file" \t\t\t\t\t\t\t\taccept="{{$ctrl.accept}}"" class="tw-droppable-input hidden" name="file-upload" \t\t\t\t\t\t\t\ton-user-input="$ctrl.onManualUpload" ng-model="$ctrl.inputFile"/> \t\t\t\t\t\t</label> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t\t<div class="droppable-processing-card droppable-card" \t\t\t\t\taria-hidden="{{$ctrl.isDone}}"> \t\t\t\t\t<div class="droppable-card-content"> \t\t\t\t\t\t<h4 class="m-b-2"> \t\t\t\t\t\t\t<span ng-if="$ctrl.isProcessing && $ctrl.processingText">{{$ctrl.processingText}}</span> \t\t\t\t\t\t\t<span ng-if="$ctrl.isSuccess && $ctrl.successText">{{$ctrl.successText}}</span> \t\t\t\t\t\t\t<span ng-if="$ctrl.isError && $ctrl.failureText">{{$ctrl.failureText}}</span> \t\t\t\t\t\t</h4> \t\t\t\t\t\t<tw-process size="sm" state="$ctrl.processingState" \t\t\t\t\t\t\tng-if="!$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"></tw-process> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t\t<div class="droppable-complete-card droppable-card" \t\t\t\t\taria-hidden="{{!$ctrl.isDone}}"> \t\t\t\t\t<div class="droppable-card-content">\t\t\t\t\t\t\t<div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError"> \t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="$ctrl.completeText">{{$ctrl.completeText}}</h4> \t\t\t\t\t\t\t<img ng-src="{{$ctrl.image}}" ng-if="$ctrl.isImage" class="thumbnail m-b-3" /> \t\t\t\t\t\t\t<i class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></i> \t\t\t\t\t\t\t<p class="text-ellipsis m-b-2">{{$ctrl.fileName}}</p> \t\t\t\t\t\t</div> \t\t\t\t\t\t<div ng-if="!$ctrl.hasTranscluded && $ctrl.isError"> \t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="$ctrl.isTooLarge">{{$ctrl.tooLargeMessage}}</h4> \t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="$ctrl.isWrongType">{{$ctrl.wrongTypeText}}</h4> \t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="!$ctrl.isTooLarge && $ctrl.errorMessage">{{$ctrl.errorMessage}}</h4> \t\t\t\t\t\t\t<i class="icon icon-alert icon-xxl text-danger m-b-1"></i> \t\t\t\t\t\t</div> \t\t\t\t\t\t<div ng-if="$ctrl.hasTranscluded" ng-transclude></div> \t\t\t\t\t\t<p ng-if="$ctrl.cancelText" class="m-t-2 m-b-0"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.clear()">{{$ctrl.cancelText}}</a> \t\t\t\t\t\t</p> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t\t<div class="droppable-dropping-card droppable-card"> \t\t\t\t\t<div class="droppable-card-content"> \t\t\t\t\t\t<h4 class="m-b-2">Drop file to start upload</h4> \t\t\t\t\t\t<div class="circle circle-sm"> \t\t\t\t\t\t\t<i class="icon icon-add"></i> \t\t\t\t\t\t</div> \t\t\t\t\t\t<p class="m-t-2 m-b-0"></p> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t</div>'
+            template: '<div class="droppable" ng-class="{ \t\t\t\t\t\'droppable-sm\': $ctrl.size === \'sm\', \t\t\t\t\t\'droppable-md\': $ctrl.size === \'md\' || !$ctrl.size, \t\t\t\t\t\'droppable-lg\': $ctrl.size === \'lg\', \t\t\t\t\t\'droppable-default\': !$ctrl.isDone && !$ctrl.isCapture && !$ctrl.isProcessing && !$ctrl.isSuccess && !$ctrl.isError, \t\t\t\t\t\'droppable-dropping\': $ctrl.isDroppable, \t\t\t\t\t\'droppable-capture\': $ctrl.isCapture, \t\t\t\t\t\'droppable-capture-preview\': $ctrl.isCapturePreview, \t\t\t\t\t\'droppable-processing\': !$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError), \t\t\t\t\t\'droppable-complete\': $ctrl.isDone \t\t\t\t}"> \t\t\t\t<div class="droppable-content"> \t\t\t\t\t<div class="droppable-default-card droppable-card" aria-hidden="{{$ctrl.isDone}}"> \t\t\t\t\t\t<div class="droppable-card-content"> \t\t\t\t\t\t\t<div class="m-b-2 m-t-3"> \t\t\t\t\t\t\t\t<i class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></i> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t<h4 class="m-b-1" ng-if="$ctrl.description">{{$ctrl.description}}</h4> \t\t\t\t\t\t\t<p class="m-b-2">{{$ctrl.instructions}}</p> \t\t\t\t\t\t\t<div class="btn-group m-b-3"> \t\t\t\t\t\t\t\t<label class="btn btn-primary m-b-2"> \t\t\t\t\t\t\t\t\t<i class="icon icon-pdf"></i>{{$ctrl.buttonText}} \t\t\t\t\t\t\t\t\t<input tw-file-select type="file" capture="camera" \t\t\t\t\t\t\t\t\t\taccept="{{$ctrl.accept}}"" class="tw-droppable-input hidden" name="file-upload" \t\t\t\t\t\t\t\t\t\ton-user-input="$ctrl.onManualUpload" ng-model="$ctrl.inputFile"/> \t\t\t\t\t\t\t\t</label> \t\t\t\t\t\t\t\t<button type="button" class="btn btn-primary" \t\t\t\t\t\t\t\t\tng-click="$ctrl.beginCapture()" \t\t\t\t\t\t\t\t\tng-if="$ctrl.isWebcamSupported"> \t\t\t\t\t\t\t\t\t<i class="icon icon-camera m-r-0"></i> \t\t\t\t\t\t\t\t</button> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t\t<div class="droppable-capture-card droppable-card" \t\t\t\t\t\taria-hidden="{{$ctrl.isCapture}}"> \t\t\t\t\t\t<div class="droppable-card-content" ng-if="$ctrl.webcamActivated"> \t\t\t\t\t\t\t<div class="tw-dropppable-responsive-video"> \t\t\t\t\t\t\t\t<div class="embed-responsive embed-responsive-4by3"> \t\t\t\t\t\t\t\t<webcam channel="$ctrl.webcamChannel" \t\t\t\t\t\t\t\t\ton-streaming="$ctrl.onWebcamSuccess()" \t\t\t\t\t\t\t\t\ton-error="$ctrl.onWebcamError(error)" \t\t\t\t\t\t\t\t\ton-stream="$ctrl.onStream(stream)"></webcam> \t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t<button class="btn btn-primary m-t-2" type="button" ng-click="$ctrl.captureWebcam()"> \t\t\t\t\t\t\t\t<i class="icon icon-camera m-r-0"></i> \t\t\t\t\t\t\t</button> \t\t\t\t\t\t\t<canvas class="tw-droppable-preview hidden" width="800" height="600"></canvas> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t\t<div class="droppable-processing-card droppable-card" \t\t\t\t\t\taria-hidden="{{$ctrl.isDone}}"> \t\t\t\t\t\t<div class="droppable-card-content"> \t\t\t\t\t\t\t<h4 class="m-b-2"> \t\t\t\t\t\t\t\t<span ng-if="$ctrl.isProcessing && $ctrl.processingText">{{$ctrl.processingText}}</span> \t\t\t\t\t\t\t\t<span ng-if="$ctrl.isSuccess && $ctrl.successText">{{$ctrl.successText}}</span> \t\t\t\t\t\t\t\t<span ng-if="$ctrl.isError && $ctrl.failureText">{{$ctrl.failureText}}</span> \t\t\t\t\t\t\t</h4> \t\t\t\t\t\t\t<tw-process size="sm" state="$ctrl.processingState" \t\t\t\t\t\t\t\tng-if="($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"></tw-process> \t\t\t\t\t\t\t<div class="circle circle-sm m-b-1" \t\t\t\t\t\t\t\tng-if="!($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"></div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t\t<div class="droppable-complete-card droppable-card" \t\t\t\t\t\taria-hidden="{{!$ctrl.isDone}}"> \t\t\t\t\t\t<div class="droppable-card-content">\t\t\t\t\t\t\t\t<div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError"> \t\t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="$ctrl.completeText">{{$ctrl.completeText}}</h4> \t\t\t\t\t\t\t\t<img ng-src="{{$ctrl.image}}" ng-if="$ctrl.isImage" class="thumbnail m-b-3" /> \t\t\t\t\t\t\t\t<i class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></i> \t\t\t\t\t\t\t\t<p class="text-ellipsis m-b-2" ng-if="$ctrl.fileName">{{$ctrl.fileName}}</p> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t<div ng-if="!$ctrl.hasTranscluded && $ctrl.isError"> \t\t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="$ctrl.isTooLarge">{{$ctrl.tooLargeMessage}}</h4> \t\t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="$ctrl.isWrongType">{{$ctrl.wrongTypeText}}</h4> \t\t\t\t\t\t\t\t<h4 class="m-b-2" ng-if="!$ctrl.isTooLarge && $ctrl.errorMessage">{{$ctrl.errorMessage}}</h4> \t\t\t\t\t\t\t\t<i class="icon icon-alert icon-xxl text-danger m-b-1"></i> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t<div ng-if="$ctrl.hasTranscluded" ng-transclude></div> \t\t\t\t\t\t\t<p ng-if="$ctrl.cancelText" class="m-t-2 m-b-0"> \t\t\t\t\t\t\t\t<a href="" ng-click="$ctrl.clear()">{{$ctrl.cancelText}}</a> \t\t\t\t\t\t\t</p> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t\t<div class="droppable-dropping-card droppable-card"> \t\t\t\t\t<div class="droppable-card-content"> \t\t\t\t\t\t<h4 class="m-b-2" ng-if="$ctrl.droppingText">{{$ctrl.droppingText}}</h4> \t\t\t\t\t\t<div class="circle circle-sm m-b-0"> \t\t\t\t\t\t\t<i class="icon icon-add"></i> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t</div>'
         };
     }
     function TwUploadController($timeout, $element, $http, $scope, $transclude, $q, $attrs) {
+        function isWebcamSupported() {
+            return navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+        }
         function reset() {
             $ctrl.isDroppable = !1, $ctrl.isProcessing = !1, $ctrl.isSuccess = !1, $ctrl.isError = !1, 
-            $ctrl.dragCounter = 0, $ctrl.isDone = !1, $ctrl.isTooLarge = !1, $ctrl.isWrongType = !1, 
-            $element[0].querySelector("input").value = null, setNgModel(null);
+            $ctrl.isCapture = !1, $ctrl.isCapturePreview = !1, $ctrl.dragCounter = 0, $ctrl.isDone = !1, 
+            $ctrl.isTooLarge = !1, $ctrl.isWrongType = !1, $element[0].querySelector("input").value = null, 
+            setNgModel(null);
         }
         function setNgModel(value) {
             if ("undefined" != typeof $attrs.ngModel) {
@@ -957,18 +962,28 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         function isTypeValid(file, accept) {
             return !0;
         }
+        function getImageData(videoObject) {
+            if (!videoObject) return !1;
+            var captureCanvas = document.querySelector(".tw-droppable-preview");
+            if (captureCanvas) {
+                captureCanvas.width = videoObject.width, captureCanvas.height = videoObject.height;
+                var canvasContext = captureCanvas.getContext("2d"), imageData = getVideoData($ctrl.videoSize.x, $ctrl.videoSize.y, $ctrl.videoSize.width, $ctrl.videoSize.height);
+                return canvasContext.putImageData(imageData, 0, 0), captureCanvas.toDataURL();
+            }
+        }
         var $ctrl = this, isImage = !1;
-        if ($ctrl.dragCounter = 0, $ctrl.isProcessing = !1, $ctrl.processingState = null, 
-        checkForTranscludedContent($transclude, $ctrl), $scope.$watch("$ctrl.icon", function() {
+        if ($ctrl.webcamActivated = !1, $ctrl.dragCounter = 0, $ctrl.isProcessing = !1, 
+        $ctrl.processingState = null, $ctrl.isWebcamSupported = isWebcamSupported(), checkForTranscludedContent($transclude, $ctrl), 
+        $scope.$watch("$ctrl.icon", function() {
             $ctrl.viewIcon = $ctrl.icon ? $ctrl.icon : "upload";
-        }), ($ctrl.processingText || $ctrl.successText || $ctrl.failureText) && (!$ctrl.processingText || !$ctrl.successText || !$ctrl.failureText)) throw new Error("Supply all of processing, success, and failure text, or supply none.");
+        }), ($ctrl.droppingText || $ctrl.processingText || $ctrl.successText || $ctrl.failureText) && (!$ctrl.droppingText || !$ctrl.processingText || !$ctrl.successText || !$ctrl.failureText)) throw new Error("Supply all of drop, processing, success, and failure text, or supply none.");
         $ctrl.onManualUpload = function() {
             var file = angular.element($element[0].querySelector(".tw-droppable-input"))[0].files[0];
             $ctrl.fileDropped(file);
         }, $ctrl.fileDropped = function(file) {
-            return reset(), isImage = file.type && file.type.indexOf("image") > -1, $ctrl.fileName = file.name, 
-            $ctrl.isProcessing = !0, $ctrl.processingState = null, triggerHandler($ctrl.onStart, file), 
-            isSizeValid(file, $ctrl.maxSize) ? isTypeValid(file, $ctrl.accept) ? void ($ctrl.httpOptions ? $q.all([ asyncPost(file), asyncFileRead(file) ]).then(function(response) {
+            return console.log(file), reset(), isImage = file.type && file.type.indexOf("image") > -1, 
+            $ctrl.fileName = file.name, $ctrl.isProcessing = !0, $ctrl.processingState = null, 
+            triggerHandler($ctrl.onStart, file), isSizeValid(file, $ctrl.maxSize) ? isTypeValid(file, $ctrl.accept) ? void ($ctrl.httpOptions ? $q.all([ asyncPost(file), asyncFileRead(file) ]).then(function(response) {
                 showDataImage(response[1]);
             }).then(asyncSuccess)["catch"](asyncFailure) : asyncFileRead(file).then(showDataImage).then(asyncSuccess)["catch"](asyncFailure)) : ($ctrl.isWrongType = !0, 
             void asyncFailure({
@@ -981,8 +996,37 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         }, $ctrl.onDragChange = function(enter) {
             enter ? ($ctrl.dragCounter++, $ctrl.dragCounter >= 1 && ($ctrl.isDroppable = !0)) : ($ctrl.dragCounter--, 
             $ctrl.dragCounter <= 0 && ($ctrl.isDroppable = !1));
+        }, $ctrl.beginCapture = function() {
+            reset(), $ctrl.isCapture = !0, $ctrl.webcamActivated = !0;
+        }, $ctrl.captureWebcam = function() {
+            reset(), $ctrl.isImage = !0, $ctrl.image = getImageData(videoObject), $ctrl.isProcessing = !0, 
+            $ctrl.processingState = null, $ctrl.httpOptions ? asyncPost($ctrl.image).then(asyncSuccess)["catch"](asyncFailure) : asyncSuccess();
         }, $ctrl.clear = function() {
             reset(), triggerHandler($ctrl.onCancel);
+        };
+        var videoObject = null;
+        $ctrl.videoSize = {
+            x: 0,
+            y: 0,
+            width: 25,
+            height: 25
+        }, $ctrl.webcamChannel = {}, $ctrl.webcamError = !1, $ctrl.onWebcamError = function(error) {
+            console.log("error"), $scope.$apply(function() {
+                $ctrl.webcamError = error;
+            });
+        }, $ctrl.onWebcamSuccess = function() {
+            videoObject = $ctrl.webcamChannel.video, $scope.$apply(function() {
+                $ctrl.videoSize.width = videoObject.width, $ctrl.videoSize.height = videoObject.height;
+            });
+        }, $ctrl.onStream = function(stream) {}, $ctrl.makeSnapshot = function() {
+            $ctrl.image = getImageData(videoObject);
+        };
+        var getVideoData = function(x, y, width, height) {
+            var hiddenCanvas = document.createElement("canvas");
+            hiddenCanvas.width = videoObject.width, hiddenCanvas.height = videoObject.height;
+            var canvasContext = hiddenCanvas.getContext("2d");
+            return canvasContext.drawImage(videoObject, 0, 0, videoObject.width, videoObject.height), 
+            canvasContext.getImageData(x, y, width, height);
         };
     }
     function twUploadLink(scope, element, attr) {

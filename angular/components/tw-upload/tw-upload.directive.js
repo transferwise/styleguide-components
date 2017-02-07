@@ -32,6 +32,7 @@
 				instructions: '@',
 				buttonText: '@',
 				cancelText: '@',
+				droppingText: '@',
 				processingText: '@',
 				successText: '@',
 				failureText: '@',
@@ -54,64 +55,95 @@
 					\'droppable-sm\': $ctrl.size === \'sm\', \
 					\'droppable-md\': $ctrl.size === \'md\' || !$ctrl.size, \
 					\'droppable-lg\': $ctrl.size === \'lg\', \
+					\'droppable-default\': !$ctrl.isDone && !$ctrl.isCapture && !$ctrl.isProcessing && !$ctrl.isSuccess && !$ctrl.isError, \
 					\'droppable-dropping\': $ctrl.isDroppable, \
+					\'droppable-capture\': $ctrl.isCapture, \
+					\'droppable-capture-preview\': $ctrl.isCapturePreview, \
 					\'droppable-processing\': !$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError), \
 					\'droppable-complete\': $ctrl.isDone \
 				}"> \
-				<div class="droppable-default-card" aria-hidden="{{$ctrl.isDone}}"> \
-					<div class="droppable-card-content"> \
-						<div class="m-b-2"> \
-							<i class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></i> \
+				<div class="droppable-content"> \
+					<div class="droppable-default-card droppable-card" aria-hidden="{{$ctrl.isDone}}"> \
+						<div class="droppable-card-content"> \
+							<div class="m-b-2 m-t-3"> \
+								<i class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></i> \
+							</div> \
+							<h4 class="m-b-1" ng-if="$ctrl.description">{{$ctrl.description}}</h4> \
+							<p class="m-b-2">{{$ctrl.instructions}}</p> \
+							<div class="btn-group m-b-3"> \
+								<label class="btn btn-primary m-b-2"> \
+									<i class="icon icon-pdf"></i>{{$ctrl.buttonText}} \
+									<input tw-file-select type="file" capture="camera" \
+										accept="{{$ctrl.accept}}"" class="tw-droppable-input hidden" name="file-upload" \
+										on-user-input="$ctrl.onManualUpload" ng-model="$ctrl.inputFile"/> \
+								</label> \
+								<button type="button" class="btn btn-primary" \
+									ng-click="$ctrl.beginCapture()" \
+									ng-if="$ctrl.isWebcamSupported"> \
+									<i class="icon icon-camera m-r-0"></i> \
+								</button> \
+							</div> \
 						</div> \
-						<h4 class="m-b-1" ng-if="$ctrl.description">{{$ctrl.description}}</h4> \
-						<p class="m-b-2">{{$ctrl.instructions}}</p> \
-						<label class="btn btn-primary">{{$ctrl.buttonText}} \
-							<input tw-file-select type="file" \
-								accept="{{$ctrl.accept}}"" class="tw-droppable-input hidden" name="file-upload" \
-								on-user-input="$ctrl.onManualUpload" ng-model="$ctrl.inputFile"/> \
-						</label> \
 					</div> \
-				</div> \
-				<div class="droppable-processing-card droppable-card" \
-					aria-hidden="{{$ctrl.isDone}}"> \
-					<div class="droppable-card-content"> \
-						<h4 class="m-b-2"> \
-							<span ng-if="$ctrl.isProcessing && $ctrl.processingText">{{$ctrl.processingText}}</span> \
-							<span ng-if="$ctrl.isSuccess && $ctrl.successText">{{$ctrl.successText}}</span> \
-							<span ng-if="$ctrl.isError && $ctrl.failureText">{{$ctrl.failureText}}</span> \
-						</h4> \
-						<tw-process size="sm" state="$ctrl.processingState" \
-							ng-if="!$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"></tw-process> \
+					<div class="droppable-capture-card droppable-card" \
+						aria-hidden="{{$ctrl.isCapture}}"> \
+						<div class="droppable-card-content" ng-if="$ctrl.webcamActivated"> \
+							<div class="tw-dropppable-responsive-video"> \
+								<div class="embed-responsive embed-responsive-4by3"> \
+								<webcam channel="$ctrl.webcamChannel" \
+									on-streaming="$ctrl.onWebcamSuccess()" \
+									on-error="$ctrl.onWebcamError(error)" \
+									on-stream="$ctrl.onStream(stream)"></webcam> \
+								</div> \
+							</div> \
+							<button class="btn btn-primary m-t-2" type="button" ng-click="$ctrl.captureWebcam()"> \
+								<i class="icon icon-camera m-r-0"></i> \
+							</button> \
+							<canvas class="tw-droppable-preview hidden" width="800" height="600"></canvas> \
+						</div> \
 					</div> \
-				</div> \
-				<div class="droppable-complete-card droppable-card" \
-					aria-hidden="{{!$ctrl.isDone}}"> \
-					<div class="droppable-card-content">	\
-						<div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError"> \
-							<h4 class="m-b-2" ng-if="$ctrl.completeText">{{$ctrl.completeText}}</h4> \
-							<img ng-src="{{$ctrl.image}}" ng-if="$ctrl.isImage" class="thumbnail m-b-3" /> \
-							<i class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></i> \
-							<p class="text-ellipsis m-b-2">{{$ctrl.fileName}}</p> \
+					<div class="droppable-processing-card droppable-card" \
+						aria-hidden="{{$ctrl.isDone}}"> \
+						<div class="droppable-card-content"> \
+							<h4 class="m-b-2"> \
+								<span ng-if="$ctrl.isProcessing && $ctrl.processingText">{{$ctrl.processingText}}</span> \
+								<span ng-if="$ctrl.isSuccess && $ctrl.successText">{{$ctrl.successText}}</span> \
+								<span ng-if="$ctrl.isError && $ctrl.failureText">{{$ctrl.failureText}}</span> \
+							</h4> \
+							<tw-process size="sm" state="$ctrl.processingState" \
+								ng-if="($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"></tw-process> \
+							<div class="circle circle-sm m-b-1" \
+								ng-if="!($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"></div> \
 						</div> \
-						<div ng-if="!$ctrl.hasTranscluded && $ctrl.isError"> \
-							<h4 class="m-b-2" ng-if="$ctrl.isTooLarge">{{$ctrl.tooLargeMessage}}</h4> \
-							<h4 class="m-b-2" ng-if="$ctrl.isWrongType">{{$ctrl.wrongTypeText}}</h4> \
-							<h4 class="m-b-2" ng-if="!$ctrl.isTooLarge && $ctrl.errorMessage">{{$ctrl.errorMessage}}</h4> \
-							<i class="icon icon-alert icon-xxl text-danger m-b-1"></i> \
+					</div> \
+					<div class="droppable-complete-card droppable-card" \
+						aria-hidden="{{!$ctrl.isDone}}"> \
+						<div class="droppable-card-content">	\
+							<div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError"> \
+								<h4 class="m-b-2" ng-if="$ctrl.completeText">{{$ctrl.completeText}}</h4> \
+								<img ng-src="{{$ctrl.image}}" ng-if="$ctrl.isImage" class="thumbnail m-b-3" /> \
+								<i class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></i> \
+								<p class="text-ellipsis m-b-2" ng-if="$ctrl.fileName">{{$ctrl.fileName}}</p> \
+							</div> \
+							<div ng-if="!$ctrl.hasTranscluded && $ctrl.isError"> \
+								<h4 class="m-b-2" ng-if="$ctrl.isTooLarge">{{$ctrl.tooLargeMessage}}</h4> \
+								<h4 class="m-b-2" ng-if="$ctrl.isWrongType">{{$ctrl.wrongTypeText}}</h4> \
+								<h4 class="m-b-2" ng-if="!$ctrl.isTooLarge && $ctrl.errorMessage">{{$ctrl.errorMessage}}</h4> \
+								<i class="icon icon-alert icon-xxl text-danger m-b-1"></i> \
+							</div> \
+							<div ng-if="$ctrl.hasTranscluded" ng-transclude></div> \
+							<p ng-if="$ctrl.cancelText" class="m-t-2 m-b-0"> \
+								<a href="" ng-click="$ctrl.clear()">{{$ctrl.cancelText}}</a> \
+							</p> \
 						</div> \
-						<div ng-if="$ctrl.hasTranscluded" ng-transclude></div> \
-						<p ng-if="$ctrl.cancelText" class="m-t-2 m-b-0"> \
-							<a href="" ng-click="$ctrl.clear()">{{$ctrl.cancelText}}</a> \
-						</p> \
 					</div> \
 				</div> \
 				<div class="droppable-dropping-card droppable-card"> \
 					<div class="droppable-card-content"> \
-						<h4 class="m-b-2">Drop file to start upload</h4> \
-						<div class="circle circle-sm"> \
+						<h4 class="m-b-2" ng-if="$ctrl.droppingText">{{$ctrl.droppingText}}</h4> \
+						<div class="circle circle-sm m-b-0"> \
 							<i class="icon icon-add"></i> \
 						</div> \
-						<p class="m-t-2 m-b-0"></p> \
 					</div> \
 				</div> \
 			</div>'
@@ -131,10 +163,12 @@
 		var asyncPromise;
 		var isImage = false;
 
+		$ctrl.webcamActivated = false;
 		$ctrl.dragCounter = 0;
 		$ctrl.isProcessing = false;
 
 		$ctrl.processingState = null;
+		$ctrl.isWebcamSupported = isWebcamSupported();
 
 		checkForTranscludedContent($transclude, $ctrl);
 
@@ -142,9 +176,9 @@
 			$ctrl.viewIcon = $ctrl.icon ? $ctrl.icon : 'upload';
 		});
 
-		if (($ctrl.processingText || $ctrl.successText || $ctrl.failureText) &&
-				(!$ctrl.processingText || !$ctrl.successText || !$ctrl.failureText)) {
-			throw new Error('Supply all of processing, success, and failure text, or supply none.');
+		if (($ctrl.droppingText || $ctrl.processingText || $ctrl.successText || $ctrl.failureText) &&
+				(!$ctrl.droppingText || !$ctrl.processingText || !$ctrl.successText || !$ctrl.failureText)) {
+			throw new Error('Supply all of drop, processing, success, and failure text, or supply none.');
 		}
 
 		$ctrl.onManualUpload = function() {
@@ -156,6 +190,7 @@
 		};
 
 		$ctrl.fileDropped = function(file) {
+			console.log(file);
 			reset();
 
 			isImage = (file.type && file.type.indexOf('image') > -1);
@@ -218,16 +253,50 @@
 			}
 		};
 
+		$ctrl.beginCapture = function() {
+			reset();
+			$ctrl.isCapture = true;
+			$ctrl.webcamActivated = true;
+		};
+
+		$ctrl.captureWebcam = function() {
+			reset();
+			$ctrl.isImage = true;
+			$ctrl.image = getImageData(videoObject);
+			//$ctrl.isCapturePreview = true;
+			$ctrl.isProcessing = true;
+			$ctrl.processingState = null;
+
+			// TODO client side validation. Perhaps refactor repetition
+			if ($ctrl.httpOptions) {
+				// TODO this sends as base64, perhaps we should send as binary?
+				asyncPost($ctrl.image)
+					.then(asyncSuccess)
+					.catch(asyncFailure);
+			} else {
+				asyncSuccess();
+			}
+		};
+
 		$ctrl.clear = function() {
 			reset();
 			triggerHandler($ctrl.onCancel);
 		};
+
+		function isWebcamSupported() {
+			return navigator.getUserMedia ||
+				navigator.webkitGetUserMedia ||
+				navigator.mozGetUserMedia ||
+				navigator.msGetUserMedia;
+		}
 
 		function reset() {
 			$ctrl.isDroppable = false;
 			$ctrl.isProcessing = false;
 			$ctrl.isSuccess = false;
 			$ctrl.isError = false;
+			$ctrl.isCapture = false;
+			$ctrl.isCapturePreview = false;
 			$ctrl.dragCounter = 0;
 			$ctrl.isDone = false;
 			$ctrl.isTooLarge = false;
@@ -344,6 +413,85 @@
 			return true;
 			// TODO validate file type
 			// $ctrl.isWrongType = true;
+		}
+
+
+		var videoObject = null;
+
+		$ctrl.videoSize = {x: 0, y: 0, width: 25, height: 25};
+
+		// Setup a channel to receive a video property
+		// with a reference to the video element
+		// See the HTML binding in main.html
+		$ctrl.webcamChannel = {};
+
+		$ctrl.webcamError = false;
+
+		$ctrl.onWebcamError = function(error) {
+			console.log('error');
+			$scope.$apply(
+				function() {
+				  $ctrl.webcamError = error;
+				}
+			);
+		};
+
+		$ctrl.onWebcamSuccess = function () {
+			// The video element contains the captured camera data
+			videoObject = $ctrl.webcamChannel.video;
+			$scope.$apply(function() {
+					$ctrl.videoSize.width = videoObject.width;
+					$ctrl.videoSize.height = videoObject.height;
+			});
+		};
+
+		$ctrl.onStream = function (stream) {
+		// You could do something manually with the stream.
+		};
+
+		$ctrl.makeSnapshot = function() {
+			$ctrl.image = getImageData(videoObject);
+		};
+
+		function getImageData(videoObject) {
+			if (!videoObject) {
+				return false;
+			}
+			var captureCanvas = document.querySelector('.tw-droppable-preview');
+			if (!captureCanvas) {
+				return;
+			}
+
+			captureCanvas.width = videoObject.width;
+			captureCanvas.height = videoObject.height;
+			var canvasContext = captureCanvas.getContext('2d');
+
+			var imageData = getVideoData(
+				$ctrl.videoSize.x, $ctrl.videoSize.y,
+				$ctrl.videoSize.width, $ctrl.videoSize.height
+			);
+			canvasContext.putImageData(imageData, 0, 0);
+
+			return captureCanvas.toDataURL();
+		}
+
+		var getVideoData = function getVideoData(x, y, width, height) {
+			var hiddenCanvas = document.createElement('canvas');
+			hiddenCanvas.width = videoObject.width;
+			hiddenCanvas.height = videoObject.height;
+			var canvasContext = hiddenCanvas.getContext('2d');
+			canvasContext.drawImage(videoObject, 0, 0, videoObject.width, videoObject.height);
+			return canvasContext.getImageData(x, y, width, height);
+		};
+
+		/**
+		* This function could be used to send the image data
+		* to a backend server that expects base64 encoded images.
+		*
+		* In this example, we simply store it in the scope for display.
+		*/
+		function sendSnapshotToServer(imgBase64) {
+			$scope.snapshotData = imgBase64;
 		}
 	}
 
