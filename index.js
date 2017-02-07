@@ -252,6 +252,9 @@ angular.module('my-app', ['tw.styleguide-components'])
 .directive('twToolTipDocs', function() {
 	return {templateUrl: 'partials/tw-tool-tip.html'};
 })
+.directive('twAffixDocs', function() {
+	return {templateUrl: 'partials/tw-affix.html'};
+})
 .directive('twProcessDocs', function() {
 	return {templateUrl: 'partials/tw-process.html'};
 });
