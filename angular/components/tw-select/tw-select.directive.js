@@ -201,19 +201,17 @@
 				return 'hidden';
 			}
 
-			switch(value) {
-				case 'xs':
-					return 'hidden-xs';
-				case 'sm':
-					return 'hidden-xs hidden-sm';
-				case 'md':
-					return 'hidden-xs hidden-sm hidden-md';
-				case 'lg':
-					return 'hidden-xs hidden-sm hidden-md hidden-lg';
-				case 'xl':
-					return 'hidden';
-			}
-			return '';
+			var classes = '',
+				validBreakpoints = {xs:true, sm:true, md:true, lg:true, xl:true},
+				breakpoints = value.split(',');
+				
+			breakpoints.forEach(function(breakpoint) {
+				if (validBreakpoints[breakpoint]) {
+					classes += 'hidden-' + breakpoint + ' ';
+				}
+			});
+
+			return classes;
 		}
 
 		function circleClasses(responsiveOption) {

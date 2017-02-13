@@ -613,6 +613,15 @@ describe('Directive: TwSelect', function() {
                 $scope.$digest();
                 checkVisibilityAtBreakpoints(element, 'xl');
             });
+            it('should be hideable for supplied grid widths', function() {
+                $scope.hideNote = 'xs,xl';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'xs,xl');
+
+                $scope.hideNote = 'md,sm,lg';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'sm,md,lg');
+            });
         });
         describe('secondary text', function() {
             beforeEach(function() {
@@ -653,6 +662,15 @@ describe('Directive: TwSelect', function() {
                 $scope.hideSecondary = 'xl';
                 $scope.$digest();
                 checkVisibilityAtBreakpoints(element, 'xl');
+            });
+            it('should be hideable for supplied grid widths', function() {
+                $scope.hideSecondary = 'xs,xl';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'xs,xl');
+
+                $scope.hideSecondary = 'md,sm,lg';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'sm,md,lg');
             });
         });
         describe('icon', function() {
@@ -695,6 +713,15 @@ describe('Directive: TwSelect', function() {
                 $scope.$digest();
                 checkVisibilityAtBreakpoints(element, 'xl');
             });
+            it('should be hideable for supplied grid widths', function() {
+                $scope.hideIcon = 'xs,xl';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'xs,xl');
+
+                $scope.hideIcon = 'md,sm,lg';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'sm,md,lg');
+            });
         });
         describe('currency flag', function() {
             beforeEach(function() {
@@ -736,6 +763,15 @@ describe('Directive: TwSelect', function() {
                 $scope.hideCurrency = 'xl';
                 $scope.$digest();
                 checkVisibilityAtBreakpoints(element, 'xl');
+            });
+            it('should be hideable for supplied grid widths', function() {
+                $scope.hideCurrency = 'xs,xl';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'xs,xl');
+
+                $scope.hideCurrency = 'md,sm,lg';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'sm,md,lg');
             });
         });
         describe('circle icon', function() {
@@ -994,35 +1030,13 @@ describe('Directive: TwSelect', function() {
     }
 
     function checkVisibilityAtBreakpoints(el, breakpoint) {
-      expect(el.hasClass('hidden')).toBe(breakpoint === 'xl');
-      expect(el.hasClass('hidden-xs')).toBe(breakpointsHidden[breakpoint]['xs'] ? true : false);
-      expect(el.hasClass('hidden-sm')).toBe(breakpointsHidden[breakpoint]['sm'] ? true : false);
-      expect(el.hasClass('hidden-md')).toBe(breakpointsHidden[breakpoint]['md'] ? true : false);
-      expect(el.hasClass('hidden-lg')).toBe(breakpointsHidden[breakpoint]['lg'] ? true : false);
-      expect(el.hasClass('hidden-xl')).toBe(false);
+      var breakpoints = breakpoint.split(',');
+      expect(el.hasClass('hidden-xs')).toBe(breakpoints.indexOf('xs') > -1 ? true : false);
+      expect(el.hasClass('hidden-sm')).toBe(breakpoints.indexOf('sm') > -1  ? true : false);
+      expect(el.hasClass('hidden-md')).toBe(breakpoints.indexOf('md') > -1  ? true : false);
+      expect(el.hasClass('hidden-lg')).toBe(breakpoints.indexOf('lg') > -1  ? true : false);
+      expect(el.hasClass('hidden-xl')).toBe(breakpoints.indexOf('xl') > -1  ? true : false);
     }
-
-    var breakpointsHidden = {
-      xs: {
-        xs: true
-      },
-      sm: {
-        xs: true,
-        sm: true
-      },
-      md: {
-        xs: true,
-        sm: true,
-        md: true
-      },
-      lg: {
-        xs: true,
-        sm: true,
-        md: true,
-        lg: true
-      },
-      xl: {}
-    };
 
     var SPECIAL_KEYS = {
         up: 38,

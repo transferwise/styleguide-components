@@ -630,23 +630,16 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         function responsiveClasses(value) {
             if ("boolean" == typeof value && value) return "hidden";
             if (value.toLowerCase && "true" === value.toLowerCase()) return "hidden";
-            switch (value) {
-              case "xs":
-                return "hidden-xs";
-
-              case "sm":
-                return "hidden-xs hidden-sm";
-
-              case "md":
-                return "hidden-xs hidden-sm hidden-md";
-
-              case "lg":
-                return "hidden-xs hidden-sm hidden-md hidden-lg";
-
-              case "xl":
-                return "hidden";
-            }
-            return "";
+            var classes = "", validBreakpoints = {
+                xs: !0,
+                sm: !0,
+                md: !0,
+                lg: !0,
+                xl: !0
+            }, breakpoints = value.split(",");
+            return breakpoints.forEach(function(breakpoint) {
+                validBreakpoints[breakpoint] && (classes += "hidden-" + breakpoint + " ");
+            }), classes;
         }
         function circleClasses(responsiveOption) {
             var classes = $ctrl.responsiveClasses(responsiveOption), secondaryClasses = $ctrl.responsiveClasses($ctrl.hideSecondary);

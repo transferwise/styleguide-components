@@ -188,11 +188,14 @@ angular.module('my-app', ['tw.styleguide-components'])
 		}
 
 		$ctrl.hideOptions = [
-			{value: 'xs', label: 'Hide on xs'},
-			{value: 'sm', label: 'Hide on sm and smaller'},
-			{value: 'md', label: 'Hide on md and smaller'},
-			{value: 'lg', label: 'Hide on lg and smaller'},
-			{value: 'xl', label: 'Hide on all'}
+			{value: 'true', label: 'All widths'},
+			{value: 'xs', label: 'xs grid'},
+			{value: 'sm', label: 'sm grid'},
+			{value: 'md', label: 'md grid'},
+			{value: 'lg', label: 'lg grid'},
+			{value: 'xl', label: 'xl grid'},
+			{value: 'xs,sm', label: 'xs and sm grid'},
+			{value: 'md,lg,xl', label: 'md, lg and xl grid'}
 		];
 	}
 })
