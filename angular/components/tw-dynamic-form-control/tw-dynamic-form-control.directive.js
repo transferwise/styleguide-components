@@ -122,6 +122,21 @@
 						ng-focus='$ctrl.focus()' \
 						ng-blur='$ctrl.blur()' /> \
 				</div> \
+				<div ng-switch-when='upload'> \
+					<tw-upload \
+						name='{{$ctrl.name}}' \
+						icon='upload' \
+						description='{{$ctrl.placeholder}}' \
+						instructions='Upload a file' \
+						button-text='Upload' \
+						accept='' \
+						ng-model='$ctrl.ngModel' \
+						ng-required='$ctrl.ngRequired' \
+						ng-disabled='$ctrl.ngDisabled' \
+						ng-change='$ctrl.change()' \
+						ng-focus='$ctrl.focus()' \
+						ng-blur='$ctrl.blur()' /> \
+				</div> \
 				<ng-transclude class='error-messages'></ng-transclude> \
 			</div>"
 		};
