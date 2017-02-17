@@ -19,7 +19,7 @@
                 currency="vm.model.components.currencySelected"
                 on-currency-change="vm.log('currency input value changed:' + vm.model.components.currencySelected)"
 
-                currencies="vm.select.options.currencySelect"
+                currencies="vm.currencySelect"
                 currency-filter-placeholder="{{ vm.amountCurrencySelect.currencyFilterPlaceholder }}"
 
                 custom-action-label="vm.amountCurrencySelect.customActionLabel"
@@ -56,7 +56,7 @@
                 currency="vm.model.components.currencySelected"
                 on-currency-change="vm.log('currency input value changed:' + vm.model.components.currencySelected)"
 
-                currencies="vm.select.options.currencySelect"
+                currencies="vm.currencySelect"
                 currency-filter-placeholder="{{ vm.amountCurrencySelect.currencyFilterPlaceholder }}"
 
                 custom-action-label="vm.amountCurrencySelect.customActionLabel"
@@ -85,7 +85,7 @@
     ng-min="{{ vm.amountCurrencySelect.min }}"</span><span ng-if="vm.amountCurrencySelect.max">
     ng-max="{{ vm.amountCurrencySelect.max }}"</span>
     ng-change="vm.log('amount input value changed:' + vm.model.components.amountCurrencySelect)"
-    currencies="{{ vm.select.options.currencySelect }}"
+    currencies="{{ vm.currencySelect }}"
     currency="'{{ vm.model.components.currencySelected | uppercase }}'"
     on-currency-change="vm.log('currency input value changed:' + vm.model.components.currencySelected)"<span ng-if="vm.amountCurrencySelect.placeholder">
     placeholder="{{ vm.amountCurrencySelect.placeholder }}"</span>
