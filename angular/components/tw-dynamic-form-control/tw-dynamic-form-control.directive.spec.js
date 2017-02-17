@@ -437,6 +437,27 @@ describe('Directive: TwDynamicFormControlDirective', function() {
 		});
 	});
 
+	describe('type: upload - validation', function() {
+		var directiveElem, ngModelController;
+		beforeEach(function() {
+			$scope.model = null;
+			formGroup = compileTemplate(
+				"<div class='form-group'> \
+					<label class='control-label'></label> \
+					<tw-dynamic-form-control type='upload' \
+						ng-model='model' \
+						required> \
+					</tw-dynamic-form-control> \
+				</div>"
+			);
+			directiveElem = formGroup.find('tw-dynamic-form-control');
+			ngModelController = directiveElem.controller('ngModel');
+		});
+		it('should render twUpload', function() {
+			expect(directiveElem.find('tw-upload').length).toBe(1);
+		});
+	});
+
 	function compileTemplate(template) {
 		return compileElement(angular.element(template));
 	}
