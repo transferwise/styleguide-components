@@ -76,8 +76,8 @@
 					dropdown-right="xs" \
 					dropdown-width="lg" \
 					hide-currency="xs" \
-					hide-note="xl" \
-					hide-secondary="xl" \
+					hide-note="true" \
+					hide-secondary="true" \
 					options="$ctrl.currencies" \
 					filter="{{ $ctrl.currencyFilterPlaceholder }}" \
 					ng-change="$ctrl.changedCurrency()"> \
