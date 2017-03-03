@@ -5,7 +5,8 @@ describe('Directive: TwSelect', function() {
         $rootScope,
         $scope,
         isolateScope,
-        directiveElement;
+        directiveElement,
+        element;
 
     var SELECT_SELECTOR = '.tw-select-hidden';
     var LIST_ITEMS_SELECTOR = '.tw-select-option-link';
@@ -547,7 +548,7 @@ describe('Directive: TwSelect', function() {
         });
         it('should filter case insensitvely', function() {
             filterInput.val("t").trigger('change');
-            var options = directiveElement.find(LIST_ITEMS_SELECTOR)
+            var options = directiveElement.find(LIST_ITEMS_SELECTOR);
             expect(options.length).toBe(2);
             expect(optionText(options[0])).toBe('Two');
             expect(optionText(options[1])).toBe('Three');
@@ -573,110 +574,249 @@ describe('Directive: TwSelect', function() {
             directiveElement = getCompiledDirectiveElement($scope);
         });
         describe('note text', function() {
+            beforeEach(function() {
+              $scope.ngModel = 'NOTE';
+              $scope.$digest();
+              element = directiveElement.find(SELECTED_NOTE_SELECTOR);
+            });
             it('should be displayed', function() {
-                $scope.ngModel = 'NOTE';
-                $scope.$digest();
-                var el = directiveElement.find(SELECTED_NOTE_SELECTOR)
-                expect(el.length).toBe(1);
+                expect(element.length).toBe(1);
+                checkVisible(element);
             });
             it('should be possible to hide it', function() {
-                $scope.ngModel = 'NOTE';
                 $scope.hideNote = true;
                 $scope.$digest();
-                var el = directiveElement.find(SELECTED_NOTE_SELECTOR)
-                expect(el.length).toBe(0);
+                expect(element.hasClass('hidden')).toBe(true);
+            });
+            it('should be hideable for xs grid and narrower', function() {
+                $scope.hideNote = 'xs';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'xs');
+            });
+            it('should be hideable for sm grid and narrower', function() {
+                $scope.hideNote = 'sm';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'sm');
+            });
+            it('should be hideable for md grid and narrower', function() {
+                $scope.hideNote = 'md';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'md');
+            });
+            it('should be hideable for lg grid and narrower', function() {
+                $scope.hideNote = 'lg';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'lg');
+            });
+            it('should be hideable for xl grid and narrower', function() {
+                $scope.hideNote = 'xl';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'xl');
+            });
+            it('should be hideable for supplied grid widths', function() {
+                $scope.hideNote = 'xs,xl';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'xs,xl');
+
+                $scope.hideNote = 'md,sm,lg';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'sm,md,lg');
             });
         });
         describe('secondary text', function() {
+            beforeEach(function() {
+              $scope.ngModel = 'SECONDARY';
+              $scope.$digest();
+              element = directiveElement.find(SELECTED_SECONDARY_SELECTOR);
+            });
             it('should be displayed', function() {
-                $scope.ngModel = 'SECONDARY';
-                $scope.$digest();
-                var el = directiveElement.find(SELECTED_SECONDARY_SELECTOR)
-                expect(el.length).toBe(1);
+                expect(element.length).toBe(1);
+                checkVisible(element);
             });
             it('should be possible to hide it', function() {
-                $scope.ngModel = 'SECONDARY';
                 $scope.hideSecondary = true;
                 $scope.$digest();
-                var el = directiveElement.find(SELECTED_SECONDARY_SELECTOR)
-                expect(el.length).toBe(0);
+                expect(element.hasClass('hidden')).toBe(true);
+            });
+            it('should be hideable for xs grid and narrower', function() {
+                $scope.hideSecondary = 'xs';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'xs');
+            });
+            it('should be hideable for sm grid and narrower', function() {
+                $scope.hideSecondary = 'sm';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'sm');
+            });
+            it('should be hideable for md grid and narrower', function() {
+                $scope.hideSecondary = 'md';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'md');
+            });
+            it('should be hideable for lg grid and narrower', function() {
+                $scope.hideSecondary = 'lg';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'lg');
+            });
+            it('should be hideable for xl grid and narrower', function() {
+                $scope.hideSecondary = 'xl';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'xl');
+            });
+            it('should be hideable for supplied grid widths', function() {
+                $scope.hideSecondary = 'xs,xl';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'xs,xl');
+
+                $scope.hideSecondary = 'md,sm,lg';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'sm,md,lg');
             });
         });
         describe('icon', function() {
+            beforeEach(function() {
+              $scope.ngModel = 'ICON';
+              $scope.$digest();
+              element = directiveElement.find(SELECTED_ICON_SELECTOR);
+            });
             it('should be displayed', function() {
-                $scope.ngModel = 'ICON';
-                $scope.$digest();
-                var el = directiveElement.find(SELECTED_ICON_SELECTOR)
-                expect(el.length).toBe(1);
-
+                expect(element.length).toBe(1);
+                checkVisible(element);
             });
             it('should be possible to hide it', function() {
-                $scope.ngModel = 'ICON';
                 $scope.hideIcon = true;
                 $scope.$digest();
-                var el = directiveElement.find(SELECTED_ICON_SELECTOR)
-                expect(el.length).toBe(0);
+                expect(element.hasClass('hidden')).toBe(true);
+            });
+            it('should be hideable for xs grid and narrower', function() {
+                $scope.hideIcon = 'xs';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'xs');
+            });
+            it('should be hideable for sm grid and narrower', function() {
+                $scope.hideIcon = 'sm';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'sm');
+            });
+            it('should be hideable for md grid and narrower', function() {
+                $scope.hideIcon = 'md';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'md');
+            });
+            it('should be hideable for lg grid and narrower', function() {
+                $scope.hideIcon = 'lg';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'lg');
+            });
+            it('should be hideable for xl grid and narrower', function() {
+                $scope.hideIcon = 'xl';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'xl');
+            });
+            it('should be hideable for supplied grid widths', function() {
+                $scope.hideIcon = 'xs,xl';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'xs,xl');
+
+                $scope.hideIcon = 'md,sm,lg';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'sm,md,lg');
             });
         });
         describe('currency flag', function() {
+            beforeEach(function() {
+              $scope.ngModel = 'CURRENCY_FLAG';
+              $scope.$digest();
+              element = directiveElement.find(SELECTED_CURRENCY_FLAG_SELECTOR);
+            });
             it('should be displayed', function() {
-                $scope.ngModel = 'CURRENCY_FLAG';
                 $scope.$digest();
-                var el = directiveElement.find(SELECTED_CURRENCY_FLAG_SELECTOR)
-                expect(el.length).toBe(1);
-
+                expect(element.length).toBe(1);
+                checkVisible(element);
             });
             it('should be possible to hide it', function() {
-                $scope.ngModel = 'CURRENCY_FLAG';
                 $scope.hideCurrency = true;
                 $scope.$digest();
-                var el = directiveElement.find(SELECTED_CURRENCY_FLAG_SELECTOR)
-                expect(el.length).toBe(0);
+                expect(element.hasClass('hidden')).toBe(true);
+            });
+            it('should be hideable for xs grid and narrower', function() {
+                $scope.hideCurrency = 'xs';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'xs');
+            });
+            it('should be hideable for sm grid and narrower', function() {
+                $scope.hideCurrency = 'sm';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'sm');
+            });
+            it('should be hideable for md grid and narrower', function() {
+                $scope.hideCurrency = 'md';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'md');
+            });
+            it('should be hideable for lg grid and narrower', function() {
+                $scope.hideCurrency = 'lg';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'lg');
+            });
+            it('should be hideable for xl grid and narrower', function() {
+                $scope.hideCurrency = 'xl';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'xl');
+            });
+            it('should be hideable for supplied grid widths', function() {
+                $scope.hideCurrency = 'xs,xl';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'xs,xl');
+
+                $scope.hideCurrency = 'md,sm,lg';
+                $scope.$digest();
+                checkVisibilityAtBreakpoints(element, 'sm,md,lg');
             });
         });
         describe('circle icon', function() {
             it('should be displayed', function() {
                 $scope.ngModel = 'CIRCLE_ICON';
                 $scope.$digest();
-                var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR)
+                var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR);
                 expect(el.length).toBe(1);
             });
             it('should be possible to hide it', function() {
                 $scope.ngModel = 'CIRCLE_ICON';
                 $scope.hideCircle = true;
                 $scope.$digest();
-                var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR)
-                expect(el.length).toBe(0);
+                var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR);
+                expect(el.hasClass('hidden')).toBe(true);
             });
         });
         describe('circle image', function() {
             it('should be displayed', function() {
                 $scope.ngModel = 'CIRCLE_IMAGE';
                 $scope.$digest();
-                var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR)
+                var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR);
                 expect(el.length).toBe(1);
             });
             it('should be possible to hide it', function() {
                 $scope.ngModel = 'CIRCLE_IMAGE';
                 $scope.hideCircle = true;
                 $scope.$digest();
-                var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR)
-                expect(el.length).toBe(0);
+                var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR);
+                expect(el.hasClass('hidden')).toBe(true);
             });
         });
         describe('circle text', function() {
             it('should be displayed', function() {
                 $scope.ngModel = 'CIRCLE_TEXT';
                 $scope.$digest();
-                var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR)
+                var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR);
                 expect(el.length).toBe(1);
             });
             it('should be possible to hide it', function() {
                 $scope.ngModel = 'CIRCLE_TEXT';
                 $scope.hideCircle = true;
                 $scope.$digest();
-                var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR)
-                expect(el.length).toBe(0);
+                var el = directiveElement.find(SELECTED_CIRCLE_SELECTOR);
+                expect(el.hasClass('hidden')).toBe(true);
             });
         });
     });
@@ -688,35 +828,35 @@ describe('Directive: TwSelect', function() {
             directiveElement = getCompiledDirectiveElement($scope);
         });
         it('should show note text', function() {
-            var el = directiveElement.find(OPTION_NOTE_SELECTOR)
+            var el = directiveElement.find(OPTION_NOTE_SELECTOR);
             expect(el.length).toBe(1);
         });
         it('should show secondary text', function() {
-            var el = directiveElement.find(OPTION_SECONDARY_SELECTOR)
+            var el = directiveElement.find(OPTION_SECONDARY_SELECTOR);
             expect(el.length).toBe(1);
         });
         it('should show currency flag', function() {
-            var el = directiveElement.find(OPTION_CURRENCY_FLAG_SELECTOR)
+            var el = directiveElement.find(OPTION_CURRENCY_FLAG_SELECTOR);
             expect(el.length).toBe(1);
         });
         it('should show icon', function() {
-            var el = directiveElement.find(OPTION_ICON_SELECTOR)
+            var el = directiveElement.find(OPTION_ICON_SELECTOR);
             expect(el.length).toBe(1);
         });
         it('should show circle image', function() {
-            var el = directiveElement.find(OPTION_CIRCLE_IMAGE_SELECTOR)
+            var el = directiveElement.find(OPTION_CIRCLE_IMAGE_SELECTOR);
             expect(el.length).toBe(1);
         });
         it('should show circle text', function() {
-            var el = directiveElement.find(OPTION_CIRCLE_TEXT_SELECTOR)
+            var el = directiveElement.find(OPTION_CIRCLE_TEXT_SELECTOR);
             expect(el.length).toBe(1);
         });
         it('should show circle icon', function() {
-            var el = directiveElement.find(OPTION_CIRCLE_ICON_SELECTOR)
+            var el = directiveElement.find(OPTION_CIRCLE_ICON_SELECTOR);
             expect(el.length).toBe(1);
         });
         it('should show disabled option', function() {
-            var el = directiveElement.find(OPTION_DISABLED_SELECTOR)
+            var el = directiveElement.find(OPTION_DISABLED_SELECTOR);
             expect(el.length).toBe(1);
         });
 
@@ -731,108 +871,107 @@ describe('Directive: TwSelect', function() {
         it('should show small selct', function() {
             $scope.size = 'sm';
             $scope.$digest();
-            var el = directiveElement.find('.btn-sm')
+            var el = directiveElement.find('.btn-sm');
             expect(el.length).toBe(1);
         });
         it('should show large select', function() {
             $scope.size = 'lg';
             $scope.$digest();
-            var el = directiveElement.find('.btn-lg')
+            var el = directiveElement.find('.btn-lg');
             expect(el.length).toBe(1);
         });
         it('should show inverse select', function() {
             $scope.inverse = true;
             $scope.$digest();
-            var el = directiveElement.find('.btn-input-inverse')
+            var el = directiveElement.find('.btn-input-inverse');
             expect(el.length).toBe(1);
         });
 
         it('should dropdown right aligned on xs small screens and wider', function() {
             $scope.dropdownRight = 'xs';
             $scope.$digest();
-            var el = directiveElement.find('.dropdown-menu-xs-right')
+            var el = directiveElement.find('.dropdown-menu-xs-right');
             expect(el.length).toBe(1);
         });
         it('should dropdown right aligned on sm small screens and wider', function() {
             $scope.dropdownRight = 'sm';
             $scope.$digest();
-            var el = directiveElement.find('.dropdown-menu-sm-right')
+            var el = directiveElement.find('.dropdown-menu-sm-right');
             expect(el.length).toBe(1);
         });
         it('should dropdown right aligned on md small screens and wider', function() {
             $scope.dropdownRight = 'md';
             $scope.$digest();
-            var el = directiveElement.find('.dropdown-menu-md-right')
+            var el = directiveElement.find('.dropdown-menu-md-right');
             expect(el.length).toBe(1);
         });
         it('should dropdown right aligned on lg small screens and wider', function() {
             $scope.dropdownRight = 'lg';
             $scope.$digest();
-            var el = directiveElement.find('.dropdown-menu-lg-right')
+            var el = directiveElement.find('.dropdown-menu-lg-right');
             expect(el.length).toBe(1);
         });
         it('should dropdown right aligned on xl small screens and wider', function() {
             $scope.dropdownRight = 'xl';
             $scope.$digest();
-            var el = directiveElement.find('.dropdown-menu-xl-right')
+            var el = directiveElement.find('.dropdown-menu-xl-right');
             expect(el.length).toBe(1);
         });
 
         it('should show sm dropdown width', function() {
             $scope.dropdownWidth = 'sm';
             $scope.$digest();
-            var el = directiveElement.find('.dropdown-menu-sm')
+            var el = directiveElement.find('.dropdown-menu-sm');
             expect(el.length).toBe(1);
         });
         it('should show md dropdown width', function() {
             $scope.dropdownWidth = 'md';
             $scope.$digest();
-            var el = directiveElement.find('.dropdown-menu-md')
+            var el = directiveElement.find('.dropdown-menu-md');
             expect(el.length).toBe(1);
         });
         it('should show lg dropdown width', function() {
             $scope.dropdownWidth = 'lg';
             $scope.$digest();
-            var el = directiveElement.find('.dropdown-menu-lg')
+            var el = directiveElement.find('.dropdown-menu-lg');
             expect(el.length).toBe(1);
         });
     });
 
-	describe('filter duplicates', function() {
-		var filterInput;
-		beforeEach(function () {
-			$scope.options = [{
-				value: '0',
-				label: 'Abel'
-			},{
-				value: '1',
-				label: 'Cain'
-			},{
-			    value: '1',
-                label: 'Cain'
-            }];
-			$scope.filter = 'Search';
-			var template = " \
-                <tw-select \
-                    options='options' \
-                    ng-model='ngModel' \
-                    filter='{{filter}}'> \
-                    <a href='' class='custom-action'> \
-                        Custom action \
-                    </a> \
-                </tw-select>";
-			directiveElement = getCompiledDirectiveElement($scope, template);
-			filterInput = directiveElement.find(FILTER_INPUT_SELECTOR);
-		});
+    describe('filter duplicates', function() {
+      var filterInput;
+      beforeEach(function () {
+        $scope.options = [{
+          value: '0',
+          label: 'Abel'
+        },{
+          value: '1',
+          label: 'Cain'
+        },{
+          value: '1',
+          label: 'Cain'
+        }];
+        $scope.filter = 'Search';
+        var template = " \
+          <tw-select \
+              options='options' \
+              ng-model='ngModel' \
+              filter='{{filter}}'> \
+              <a href='' class='custom-action'> \
+                  Custom action \
+              </a> \
+          </tw-select>";
+        directiveElement = getCompiledDirectiveElement($scope, template);
+        filterInput = directiveElement.find(FILTER_INPUT_SELECTOR);
+      });
 
-		it('should show one result, removing dupliactes', function() {
-			filterInput.val("ca").trigger('change');
-			var options = directiveElement.find(LIST_ITEMS_SELECTOR)
-			expect(options.length).toBe(1);
-			expect(optionText(options[0])).toBe('Cain');
-		});
-
-	});
+      it('should show one result, removing dupliactes', function() {
+        filterInput.val("ca").trigger('change');
+        var options = directiveElement.find(LIST_ITEMS_SELECTOR);
+        expect(options.length).toBe(1);
+        expect(optionText(options[0])).toBe('Cain');
+      });
+    });
 
     function getCompiledDirectiveElement($scope, template) {
         if (!template) {
@@ -847,11 +986,11 @@ describe('Directive: TwSelect', function() {
                     dropdown-right='{{dropdownRight}}' \
                     dropdown-width='{{dropdownWidth}}' \
                     inverse='inverse' \
-                    hide-note='hideNote' \
-                    hide-secondary='hideSecondary' \
-                    hide-icon='hideIcon' \
-                    hide-currency='hideCurrency' \
-                    hide-circle='hideCircle'> \
+                    hide-note='{{hideNote}}' \
+                    hide-secondary='{{hideSecondary}}' \
+                    hide-icon='{{hideIcon}}' \
+                    hide-currency='{{hideCurrency}}' \
+                    hide-circle='{{hideCircle}}'> \
                 </tw-select>";
         }
         var element = angular.element(template);
@@ -879,6 +1018,24 @@ describe('Directive: TwSelect', function() {
             keyCode: charCode,
             which: charCode
         };
+    }
+
+    function checkVisible(el) {
+      expect(el.hasClass('hidden')).toBe(false);
+      expect(el.hasClass('hidden-xs')).toBe(false);
+      expect(el.hasClass('hidden-sm')).toBe(false);
+      expect(el.hasClass('hidden-md')).toBe(false);
+      expect(el.hasClass('hidden-lg')).toBe(false);
+      expect(el.hasClass('hidden-xl')).toBe(false);
+    }
+
+    function checkVisibilityAtBreakpoints(el, breakpoint) {
+      var breakpoints = breakpoint.split(',');
+      expect(el.hasClass('hidden-xs')).toBe(breakpoints.indexOf('xs') > -1);
+      expect(el.hasClass('hidden-sm')).toBe(breakpoints.indexOf('sm') > -1);
+      expect(el.hasClass('hidden-md')).toBe(breakpoints.indexOf('md') > -1);
+      expect(el.hasClass('hidden-lg')).toBe(breakpoints.indexOf('lg') > -1);
+      expect(el.hasClass('hidden-xl')).toBe(breakpoints.indexOf('xl') > -1);
     }
 
     var SPECIAL_KEYS = {

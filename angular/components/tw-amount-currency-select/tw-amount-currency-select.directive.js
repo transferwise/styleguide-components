@@ -66,8 +66,7 @@
 				ng-model="$ctrl.ngModel" \
 				ng-disabled="$ctrl.ngDisabled" /> \
 			<span class="input-group-addon" \
-				ng-class="{\'input-lg\': $ctrl.size === \'lg\'}" ng-transclude="addon"> \
-			</span> \
+				ng-class="{\'input-lg\': $ctrl.size === \'lg\'}" ng-transclude="addon"></span> \
 			<span class="input-group-btn">  \
 				<tw-select \
 					ng-model="$ctrl.currency" \
@@ -75,9 +74,10 @@
 					size="{{ $ctrl.size }}" \
 					inverse="true" \
 					dropdown-right="xs" \
-					dropdown-width="md" \
-					hide-note="true" \
-					hide-secondary="true" \
+					dropdown-width="lg" \
+					hide-currency="xs" \
+					hide-note="xl" \
+					hide-secondary="xl" \
 					options="$ctrl.currencies" \
 					filter="{{ $ctrl.currencyFilterPlaceholder }}" \
 					ng-change="$ctrl.changedCurrency()"> \

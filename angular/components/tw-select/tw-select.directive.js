@@ -26,11 +26,11 @@
 				dropdownRight: '@',
 				dropdownWidth: '@',
 				inverse: '=',
-				hideNote: '=',
-				hideSecondary: '=',
-				hideIcon: '=',
-				hideCurrency: '=',
-				hideCircle: '='
+				hideNote: '@',
+				hideSecondary: '@',
+				hideIcon: '@',
+				hideCurrency: '@',
+				hideCircle: '@'
 			},
 			template: " \
 				<div class='btn-group btn-block dropdown tw-select' aria-hidden='false'> \
@@ -46,23 +46,33 @@
 						ng-focus='$ctrl.buttonFocus()' \
 						tw-focusable> \
 						<span class='tw-select-selected' ng-if='$ctrl.selected'> \
-							<span class='circle circle-inverse pull-xs-left circle-sm' ng-if='$ctrl.selected && $ctrl.selected.icon && $ctrl.selected.secondary'>\
-								 <i class='icon {{$ctrl.selected.icon}}'></i> \
+							<span class='circle circle-inverse pull-xs-left circle-sm' \
+								ng-if='$ctrl.selected && $ctrl.selected.icon && $ctrl.selected.secondary'>\
+								<i class='icon {{$ctrl.selected.icon}}'></i> \
 							</span> \
 							<span class='circle circle-inverse pull-xs-left'  \
-								ng-class='{\"circle-sm\": $ctrl.selected.secondary && !$ctrl.hideSecondary, \"circle-xs\": !$ctrl.selected.secondary || $ctrl.hideSecondary}' \
-								ng-if='($ctrl.selected.circleText || $ctrl.selected.circleImage || $ctrl.selected.circleIcon) && !$ctrl.hideCircle'> \
+								ng-class='$ctrl.circleClasses($ctrl.hideCircle)' \
+								ng-if='($ctrl.selected.circleText || $ctrl.selected.circleImage || $ctrl.selected.circleIcon)'> \
 								<span ng-if='$ctrl.selected.circleText'>{{$ctrl.selected.circleText}}</span> \
-								<img ng-if='$ctrl.selected.circleImage' ng-src='{{$ctrl.selected.circleImage}}' /> \
+								<img ng-if='$ctrl.selected.circleImage' \
+									ng-src='{{$ctrl.selected.circleImage}}' /> \
 								<i ng-if='$ctrl.selected.circleIcon' class='icon {{$ctrl.selected.circleIcon}}'></i> \
-							</span><span class='text-ellipsis'><i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}}' \
-								ng-if='$ctrl.selected && $ctrl.selected.currency && !$ctrl.hideCurrency' \
-								></i><i class='icon {{$ctrl.selected.icon}}' \
-								ng-if='$ctrl.selected && $ctrl.selected.icon && !$ctrl.selected.secondary &&  !$ctrl.hideIcon' \
-								></i><span class='tw-select-label'>{{$ctrl.selected.label}}</span><span \
-							ng-if='$ctrl.selected.note && !$ctrl.hideNote' class='tw-select-note small m-l-1'>{{$ctrl.selected.note}}</span><span \
-							ng-if='$ctrl.selected.secondary && !$ctrl.hideSecondary' class='tw-select-secondary small secondary text-ellipsis'>{{$ctrl.selected.secondary}}</span></span> \
-						</span> \
+							</span><span class='text-ellipsis'> \
+								<i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}}' \
+									ng-if='$ctrl.selected && $ctrl.selected.currency' \
+									ng-class='$ctrl.responsiveClasses($ctrl.hideCurrency)' \
+									></i><i class='icon {{$ctrl.selected.icon}}' \
+									ng-if='$ctrl.selected && $ctrl.selected.icon && !$ctrl.selected.secondary' \
+									ng-class='$ctrl.responsiveClasses($ctrl.hideIcon)' \
+									></i><span class='tw-select-label'>{{$ctrl.selected.label}}</span><span \
+									ng-if='$ctrl.selected.note' \
+									ng-class='$ctrl.responsiveClasses($ctrl.hideNote)' \
+									class='tw-select-note small m-l-1'>{{$ctrl.selected.note}}</span><span \
+									ng-if='$ctrl.selected.secondary' \
+									ng-class='$ctrl.responsiveClasses($ctrl.hideSecondary)' \
+									class='tw-select-secondary small secondary text-ellipsis'>{{$ctrl.selected.secondary}}</span> \
+								</span> \
+							</span> \
 						<span class='form-control-placeholder' ng-if='!$ctrl.selected'>{{$ctrl.placeholder}}</span> \
 						<span class='caret'></span> \
 					</button> \
@@ -174,10 +184,47 @@
 		$ctrl.filterChange = filterChange;
 		$ctrl.filterKeydown = filterKeydown;
 
+		$ctrl.responsiveClasses = responsiveClasses;
+		$ctrl.circleClasses = circleClasses;
+
 		$ctrl.getFilteredOptions = getFilteredOptions;
 
 		$ctrl.filterString = "";
 		$ctrl.filteredOptions = $ctrl.getFilteredOptions();
+
+		function responsiveClasses(value) {
+			if (typeof value === 'boolean' && value) {
+				return 'hidden';
+			}
+
+			if (value.toLowerCase && value.toLowerCase() === 'true') {
+				return 'hidden';
+			}
+
+			var classes = '',
+				validBreakpoints = {xs:true, sm:true, md:true, lg:true, xl:true},
+				breakpoints = value.split(',');
+				
+			breakpoints.forEach(function(breakpoint) {
+				if (validBreakpoints[breakpoint]) {
+					classes += 'hidden-' + breakpoint + ' ';
+				}
+			});
+
+			return classes;
+		}
+
+		function circleClasses(responsiveOption) {
+			var classes = $ctrl.responsiveClasses(responsiveOption);
+			var secondaryClasses = $ctrl.responsiveClasses($ctrl.hideSecondary);
+			// If secondary text line, and it won't be hidden at some point, use larger circle
+			if ($ctrl.selected.secondary && secondaryClasses.length === 0) {
+				classes += " circle-sm";
+			} else {
+				classes += " circle-xs";
+			}
+			return classes;
+		}
 
 		function buttonFocus() {
 			$element.triggerHandler('focus');
