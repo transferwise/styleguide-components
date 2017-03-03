@@ -260,7 +260,8 @@ angular.module('my-app', ['tw.styleguide-components'])
 			var $ctrl = this;
 			$ctrl.types = [
 				{'value': 'account', 'label': 'Account'},
-				{'value': 'profile', 'label': 'Profile'}
+				{'value': 'profile', 'label': 'Profile'},
+				{'value': 'verification', 'label': 'Verification'}
 			];
 			$ctrl.type = 'account';
 
