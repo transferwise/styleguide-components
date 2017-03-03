@@ -1031,11 +1031,11 @@ describe('Directive: TwSelect', function() {
 
     function checkVisibilityAtBreakpoints(el, breakpoint) {
       var breakpoints = breakpoint.split(',');
-      expect(el.hasClass('hidden-xs')).toBe(breakpoints.indexOf('xs') > -1 ? true : false);
-      expect(el.hasClass('hidden-sm')).toBe(breakpoints.indexOf('sm') > -1  ? true : false);
-      expect(el.hasClass('hidden-md')).toBe(breakpoints.indexOf('md') > -1  ? true : false);
-      expect(el.hasClass('hidden-lg')).toBe(breakpoints.indexOf('lg') > -1  ? true : false);
-      expect(el.hasClass('hidden-xl')).toBe(breakpoints.indexOf('xl') > -1  ? true : false);
+      expect(el.hasClass('hidden-xs')).toBe(breakpoints.indexOf('xs') > -1);
+      expect(el.hasClass('hidden-sm')).toBe(breakpoints.indexOf('sm') > -1);
+      expect(el.hasClass('hidden-md')).toBe(breakpoints.indexOf('md') > -1);
+      expect(el.hasClass('hidden-lg')).toBe(breakpoints.indexOf('lg') > -1);
+      expect(el.hasClass('hidden-xl')).toBe(breakpoints.indexOf('xl') > -1);
     }
 
     var SPECIAL_KEYS = {
