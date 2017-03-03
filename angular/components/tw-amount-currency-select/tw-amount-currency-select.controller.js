@@ -23,6 +23,7 @@
 				$ngModel.$setDirty();
 			}
 		});
+		
 		$scope.$watch('$ctrl.currency', function(newValue, oldValue) {
 			if (newValue && newValue !== oldValue) {
 				$ctrl.showDecimals = TwCurrencyData.getDecimals(newValue) > 0;
