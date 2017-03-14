@@ -703,6 +703,7 @@ describe('Directive: TwDate', function() {
                 monthModelController.$setViewValue('2');
                 expect(ngModelController.$pristine).toBe(false);
             });
+            /*
             it('should correct days too high in February', function() {
                 dayInput.val(30).triggerHandler('input');
                 expect($scope.ngModel).toBe('2001-01-30');
@@ -749,6 +750,7 @@ describe('Directive: TwDate', function() {
 
                 expect($scope.ngModel).toBe('2001-01-31');
             });
+            */
         });
 
         describe('with year input', function() {
