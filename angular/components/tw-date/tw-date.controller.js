@@ -296,7 +296,7 @@
 
 			if (day > lastUTCDayForMonthAndYear) {
 				// Using setViewValue does not update DOM, only model.
-				vm.day = parseInt(lastUTCDayForMonthAndYear, 10);
+				// vm.day = parseInt(lastUTCDayForMonthAndYear, 10);
 			}
 		}
 
