@@ -193,17 +193,18 @@
 		$ctrl.filteredOptions = $ctrl.getFilteredOptions();
 
 		function responsiveClasses(value) {
+			var classes = '',
+				validBreakpoints = {xs:true, sm:true, md:true, lg:true, xl:true},
+				breakpoints = [];
+
 			if (typeof value === 'boolean' && value) {
 				return 'hidden';
 			}
 
 			if (value && value.toLowerCase && value.toLowerCase() === 'true') {
+				breakpoints = value.split(',');
 				return 'hidden';
 			}
-
-			var classes = '',
-				validBreakpoints = {xs:true, sm:true, md:true, lg:true, xl:true},
-				breakpoints = value.split(',');
 				
 			breakpoints.forEach(function(breakpoint) {
 				if (validBreakpoints[breakpoint]) {
