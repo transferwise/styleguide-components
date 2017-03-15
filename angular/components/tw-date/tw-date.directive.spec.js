@@ -60,7 +60,7 @@ describe('Directive: TwDate', function() {
             });
             it('should return an updated date as an object', function() {
                 setDateUsingControls(element, '2000', '0', '1');
-                expect($scope.ngModel).toEqual(new Date(Date.UTC(2000, 0, 1)));
+                expect($scope.ngModel).toEqual(new Date(2000, 0, 1, 12, 0, 0));
             });
             it('should populate vm.months based on vm.locale if supported', function () {
                 if (isIntlSupportedForLocale('en')) {
@@ -182,7 +182,7 @@ describe('Directive: TwDate', function() {
                 });
                 it('should return updated date model correctly', function () {
                     setDateUsingControls(element, '1990', '6', '15');
-                    expect($scope.ngModel).toEqual(new Date(Date.UTC(1990, 6, 15)));
+                    expect($scope.ngModel).toEqual(new Date(1990, 6, 15, 12, 0, 0));
 
                 });
             });

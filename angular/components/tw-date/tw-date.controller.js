@@ -256,11 +256,7 @@
 		}
 
 		function combineDate() {
-			var date = new Date(Date.UTC(
-				Number(vm.year),
-				Number(vm.month),
-				Number(vm.day)
-			));
+			var date = new Date(Number(vm.year), Number(vm.month), Number(vm.day), 12, 0, 0);
 			// otherwise if year is <100, e.g 99 it becomes 1999
 			date.setFullYear(vm.year);
 			return date;
@@ -291,7 +287,7 @@
 				month = Number(vm.month),
 				year = Number(vm.year);
 
-			var lastUTCDateForMonthAndYear = new Date(Date.UTC(year, month + 1, 0)); // to get last day of month
+			var lastUTCDateForMonthAndYear = new Date(year, month + 1, 0, 12, 0, 0); // to get last day of month
 			var lastUTCDayForMonthAndYear = lastUTCDateForMonthAndYear.getUTCDate();
 
 			if (day > lastUTCDayForMonthAndYear) {
