@@ -44,15 +44,15 @@
 		$ctrl.dragCounter = 0;
 		$ctrl.isActive = false;
 
-		$ctrl.onManualUpload = function() {
+		$ctrl.onManualUpload = function(evt) {
 			if ($ctrl.onUpload && typeof $ctrl.onUpload === 'function') {
-				$ctrl.onUpload(angular.element(document.querySelector('#file-upload'))[0].files[0]);
+				$ctrl.onUpload(angular.element(document.querySelector('#file-upload'))[0].files[0], evt);
 			}
 		};
 
-		$ctrl.onDrop = function(file) {
+		$ctrl.onDrop = function(file, evt) {
 			if ($ctrl.onUpload && typeof $ctrl.onUpload === 'function') {
-				$ctrl.onUpload(file);
+				$ctrl.onUpload(file, evt);
 			}
 			$ctrl.isActive = false;
 			$ctrl.dropCounter = 0;
@@ -113,9 +113,9 @@
 	}
 
 	function TwFileSelectLink(scope, element) {
-		element.on('change', function () {
+		element.on('change', function (evt) {
 			if (scope.$ctrl.onUserInput && typeof scope.$ctrl.onUserInput === 'function') {
-				scope.$ctrl.onUserInput();
+				scope.$ctrl.onUserInput(evt);
 			}
 		});
 	}
