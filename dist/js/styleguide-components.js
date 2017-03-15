@@ -162,7 +162,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             return "string" == typeof value && !isNaN(Number(vm.month));
         }
         function combineDate() {
-            var date = new Date(Date.UTC(Number(vm.year), Number(vm.month), Number(vm.day)));
+            var date = new Date(Number(vm.year), Number(vm.month), Number(vm.day), 12, 0, 0);
             return date.setFullYear(vm.year), date;
         }
         function updateDateModelAndValidationClasses() {
@@ -174,8 +174,8 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             } else ngModel.$setViewValue(dateObj);
         }
         function adjustLastDay() {
-            var month = (Number(vm.day), Number(vm.month)), year = Number(vm.year), lastUTCDateForMonthAndYear = new Date(Date.UTC(year, month + 1, 0));
-            lastUTCDateForMonthAndYear.getUTCDate();
+            var day = Number(vm.day), month = Number(vm.month), year = Number(vm.year), lastUTCDateForMonthAndYear = new Date(year, month + 1, 0, 12, 0, 0), lastUTCDayForMonthAndYear = lastUTCDateForMonthAndYear.getUTCDate();
+            day > lastUTCDayForMonthAndYear && (vm.day = parseInt(lastUTCDayForMonthAndYear, 10));
         }
         var ngModel, vm = this, initialisedWithDate = !1;
         vm.updateDateModelAndValidationClasses = updateDateModelAndValidationClasses, vm.explodeDateModel = explodeDateModel, 
@@ -345,7 +345,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         });
     }
     angular.module("tw.form-components").directive("twDate", TwDateDirective);
-    var daySectionTemplate = " \t\t<label class='sr-only' for='day-{{::uniqueId}}'>Day</label> \t\t<input type='number' \t\t\tname='day' \t\t\tid='day-{{::uniqueId}}' \t\t\tclass='form-control tw-date-day' \t\t\tng-model='vm.day' \t\t\tng-change='vm.updateDateModelAndValidationClasses()' \t\t\tplaceholder='DD' \t\t\tmin='1' \t\t\tng-min='1' \t\t\tng-disabled='vm.dateDisabled' \t\t\tng-required='vm.dateRequired' \t\t\ttw-focusable />", monthSectionTemplate = "  \t\t<label class='sr-only' for='month-{{::uniqueId}}'>Month</label>\t\t<tw-select \t\t\tname='month' \t\t\tclass='tw-date-month' \t\t\tid='month-{{::uniqueId}}' \t\t\tng-model='vm.month' \t\t\tng-change='vm.updateDateModelAndValidationClasses()' \t\t\tng-required='vm.dateRequired' \t\t\tng-disabled='vm.dateDisabled' \t\t\toptions='vm.dateMonths'> \t\t</tw-select>", yearSectionTemplate = " \t\t<label class='sr-only' for='year-{{::uniqueId}}'>Year</label> \t\t<input type='number' \t\t\tid='year-{{::uniqueId}}' \t\t\tname='year' \t\t\tclass='form-control tw-date-year' \t\t\tplaceholder='YYYY' \t\t\tng-model='vm.year' \t\t\tng-change='vm.updateDateModelAndValidationClasses()' \t\t\tng-min='vm.dateRange.min.getFullYear()' \t\t\tng-max='vm.dateRange.max.getFullYear()' \t\t\tmaxlength='4' \t\t\tng-maxlength='4' \t\t\tng-disabled='vm.dateDisabled' \t\t\tng-required='vm.dateRequired' \t\t\ttw-focusable />", templateAsString = " \t\t<div class='row'> \t\t\t<div class='col-sm-5 tw-date-month-column' ng-if='vm.monthBeforeDay'>" + monthSectionTemplate + " \t\t\t</div> \t\t\t<div class='col-sm-3 tw-date-day-column'>" + daySectionTemplate + " \t\t\t</div> \t\t\t<div class='col-sm-5 tw-date-month-column' ng-if='!vm.monthBeforeDay'>" + monthSectionTemplate + " \t\t\t</div> \t\t\t<div class='col-sm-4 tw-date-year-column'>" + yearSectionTemplate + " \t\t\t</div> \t\t</div>";
+    var daySectionTemplate = " \t\t<label class='sr-only'>Day</label> \t\t<input type='number' \t\t\tname='day' \t\t\tclass='form-control tw-date-day' \t\t\tng-model='vm.day' \t\t\tng-change='vm.updateDateModelAndValidationClasses()' \t\t\tplaceholder='DD' \t\t\tmin='1' \t\t\tng-min='1' \t\t\tng-disabled='vm.dateDisabled' \t\t\tng-required='vm.dateRequired' \t\t\ttw-focusable />", monthSectionTemplate = "  \t\t<label class='sr-only'>Month</label>\t\t<tw-select \t\t\tname='month' \t\t\tclass='tw-date-month' \t\t\tng-model='vm.month' \t\t\tng-change='vm.updateDateModelAndValidationClasses()' \t\t\tng-required='vm.dateRequired' \t\t\tng-disabled='vm.dateDisabled' \t\t\toptions='vm.dateMonths'> \t\t</tw-select>", yearSectionTemplate = " \t\t<label class='sr-only'>Year</label> \t\t<input type='number' \t\t\tname='year' \t\t\tclass='form-control tw-date-year' \t\t\tplaceholder='YYYY' \t\t\tng-model='vm.year' \t\t\tng-change='vm.updateDateModelAndValidationClasses()' \t\t\tng-min='vm.dateRange.min.getFullYear()' \t\t\tng-max='vm.dateRange.max.getFullYear()' \t\t\tmaxlength='4' \t\t\tng-maxlength='4' \t\t\tng-disabled='vm.dateDisabled' \t\t\tng-required='vm.dateRequired' \t\t\ttw-focusable />", templateAsString = " \t\t<div class='row'> \t\t\t<div class='col-sm-5 tw-date-month-column' ng-if='vm.monthBeforeDay'>" + monthSectionTemplate + " \t\t\t</div> \t\t\t<div class='col-sm-3 tw-date-day-column'>" + daySectionTemplate + " \t\t\t</div> \t\t\t<div class='col-sm-5 tw-date-month-column' ng-if='!vm.monthBeforeDay'>" + monthSectionTemplate + " \t\t\t</div> \t\t\t<div class='col-sm-4 tw-date-year-column'>" + yearSectionTemplate + " \t\t\t</div> \t\t</div>";
 }(window.angular), function(angular) {
     function TwDynamicFormControl() {
         return {
@@ -629,7 +629,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     function TwSelectController($element, $scope, $transclude, $timeout) {
         function responsiveClasses(value) {
             if ("boolean" == typeof value && value) return "hidden";
-            if (value.toLowerCase && "true" === value.toLowerCase()) return "hidden";
+            if (value && value.toLowerCase && "true" === value.toLowerCase()) return "hidden";
             var classes = "", validBreakpoints = {
                 xs: !0,
                 sm: !0,

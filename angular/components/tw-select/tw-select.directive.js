@@ -197,7 +197,7 @@
 				return 'hidden';
 			}
 
-			if (value.toLowerCase && value.toLowerCase() === 'true') {
+			if (value && value.toLowerCase && value.toLowerCase() === 'true') {
 				return 'hidden';
 			}
 

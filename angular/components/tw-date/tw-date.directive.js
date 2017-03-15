@@ -96,10 +96,9 @@
 	}
 
 	var daySectionTemplate = " \
-		<label class='sr-only' for='day-{{::uniqueId}}'>Day</label> \
+		<label class='sr-only'>Day</label> \
 		<input type='number' \
 			name='day' \
-			id='day-{{::uniqueId}}' \
 			class='form-control tw-date-day' \
 			ng-model='vm.day' \
 			ng-change='vm.updateDateModelAndValidationClasses()' \
@@ -111,11 +110,10 @@
 			tw-focusable />";
 
 	var monthSectionTemplate = "  \
-		<label class='sr-only' for='month-{{::uniqueId}}'>Month</label>\
+		<label class='sr-only'>Month</label>\
 		<tw-select \
 			name='month' \
 			class='tw-date-month' \
-			id='month-{{::uniqueId}}' \
 			ng-model='vm.month' \
 			ng-change='vm.updateDateModelAndValidationClasses()' \
 			ng-required='vm.dateRequired' \
@@ -124,9 +122,8 @@
 		</tw-select>";
 
 	var yearSectionTemplate = " \
-		<label class='sr-only' for='year-{{::uniqueId}}'>Year</label> \
+		<label class='sr-only'>Year</label> \
 		<input type='number' \
-			id='year-{{::uniqueId}}' \
 			name='year' \
 			class='form-control tw-date-year' \
 			placeholder='YYYY' \
