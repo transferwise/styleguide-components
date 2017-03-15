@@ -625,18 +625,17 @@ angular.module("tw.form-components", []);
     }
     function TwSelectController($element, $scope, $transclude, $timeout) {
         function responsiveClasses(value) {
-            if ("boolean" == typeof value && value) return "hidden";
-            if (value && value.toLowerCase && "true" === value.toLowerCase()) return "hidden";
             var classes = "", validBreakpoints = {
                 xs: !0,
                 sm: !0,
                 md: !0,
                 lg: !0,
                 xl: !0
-            }, breakpoints = value.split(",");
-            return breakpoints.forEach(function(breakpoint) {
+            }, breakpoints = [];
+            return "boolean" == typeof value && value ? "hidden" : value && value.toLowerCase && "true" === value.toLowerCase() ? (breakpoints = value.split(","), 
+            "hidden") : (breakpoints.forEach(function(breakpoint) {
                 validBreakpoints[breakpoint] && (classes += "hidden-" + breakpoint + " ");
-            }), classes;
+            }), classes);
         }
         function circleClasses(responsiveOption) {
             var classes = $ctrl.responsiveClasses(responsiveOption), secondaryClasses = $ctrl.responsiveClasses($ctrl.hideSecondary);
