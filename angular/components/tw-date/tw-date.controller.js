@@ -132,9 +132,9 @@
 		function explodeDateModel(date) {
 			var dateObj = typeof date === 'string' ? new Date(date) : date;
 
-			vm.day = dateObj.getDate();
-			vm.month = dateObj.getMonth();
-			vm.year = dateObj.getFullYear();
+			vm.day = dateObj.getUTCDate();
+			vm.month = dateObj.getUTCMonth();
+			vm.year = dateObj.getUTCFullYear();
 		}
 
 		function validDate(date) {

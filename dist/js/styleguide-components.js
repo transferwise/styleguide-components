@@ -98,7 +98,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         }
         function explodeDateModel(date) {
             var dateObj = "string" == typeof date ? new Date(date) : date;
-            vm.day = dateObj.getDate(), vm.month = dateObj.getMonth(), vm.year = dateObj.getFullYear();
+            vm.day = dateObj.getUTCDate(), vm.month = dateObj.getUTCMonth(), vm.year = dateObj.getUTCFullYear();
         }
         function validDate(date) {
             return validDateObject(date) || validDateString(date);
@@ -635,8 +635,8 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 lg: !0,
                 xl: !0
             }, breakpoints = [];
-            return "boolean" == typeof value && value ? "hidden" : value && value.toLowerCase && "true" === value.toLowerCase() ? (breakpoints = value.split(","), 
-            "hidden") : (breakpoints.forEach(function(breakpoint) {
+            return "boolean" == typeof value && value ? "hidden" : value && value.toLowerCase && "true" === value.toLowerCase() ? "hidden" : (value && (breakpoints = value.split(",")), 
+            breakpoints.forEach(function(breakpoint) {
                 validBreakpoints[breakpoint] && (classes += "hidden-" + breakpoint + " ");
             }), classes);
         }
