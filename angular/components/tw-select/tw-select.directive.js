@@ -202,8 +202,11 @@
 			}
 
 			if (value && value.toLowerCase && value.toLowerCase() === 'true') {
-				breakpoints = value.split(',');
 				return 'hidden';
+			}
+
+			if (value) {
+				breakpoints = value.split(',');
 			}
 				
 			breakpoints.forEach(function(breakpoint) {
