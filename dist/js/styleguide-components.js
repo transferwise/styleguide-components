@@ -839,25 +839,25 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     }
     function TwUploadDroppableController() {
         var $ctrl = this;
-        $ctrl.dragCounter = 0, $ctrl.isActive = !1, $ctrl.onManualUpload = function() {
-            $ctrl.onUpload && "function" == typeof $ctrl.onUpload && $ctrl.onUpload(angular.element(document.querySelector("#file-upload"))[0].files[0]);
-        }, $ctrl.onDrop = function(file) {
-            $ctrl.onUpload && "function" == typeof $ctrl.onUpload && $ctrl.onUpload(file), $ctrl.isActive = !1, 
-            $ctrl.dropCounter = 0;
+        $ctrl.dragCounter = 0, $ctrl.isActive = !1, $ctrl.onManualUpload = function(event) {
+            $ctrl.onUpload && "function" == typeof $ctrl.onUpload && $ctrl.onUpload(angular.element(document.querySelector("#file-upload"))[0].files[0], event);
+        }, $ctrl.onDrop = function(file, event) {
+            $ctrl.onUpload && "function" == typeof $ctrl.onUpload && $ctrl.onUpload(file, event), 
+            $ctrl.isActive = !1, $ctrl.dropCounter = 0;
         }, $ctrl.onDragChange = function(enter) {
             enter ? ($ctrl.dragCounter++, 1 === $ctrl.dragCounter && ($ctrl.isActive = !0)) : ($ctrl.dragCounter--, 
             0 === $ctrl.dragCounter && ($ctrl.isActive = !1));
         };
     }
     function TwUploadDroppableLink(scope, element, attr) {
-        element[0].addEventListener("dragenter", function(evt) {
-            evt.preventDefault(), scope.$ctrl.onDragChange(!0), scope.$apply();
-        }, !1), element[0].addEventListener("dragover", function(evt) {
-            evt.preventDefault();
-        }, !1), element[0].addEventListener("dragleave", function(evt) {
-            evt.preventDefault(), scope.$ctrl.onDragChange(!1), scope.$apply();
-        }, !1), element[0].addEventListener("drop", function(evt) {
-            evt.preventDefault(), scope.$ctrl.onDrop(evt.dataTransfer.files[0]), scope.$apply();
+        element[0].addEventListener("dragenter", function(event) {
+            event.preventDefault(), scope.$ctrl.onDragChange(!0), scope.$apply();
+        }, !1), element[0].addEventListener("dragover", function(event) {
+            event.preventDefault();
+        }, !1), element[0].addEventListener("dragleave", function(event) {
+            event.preventDefault(), scope.$ctrl.onDragChange(!1), scope.$apply();
+        }, !1), element[0].addEventListener("drop", function(event) {
+            event.preventDefault(), scope.$ctrl.onDrop(event.dataTransfer.files[0]), scope.$apply();
         }, !1);
     }
     function TwFileSelectDirective() {
@@ -874,8 +874,8 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         };
     }
     function TwFileSelectLink(scope, element) {
-        element.on("change", function() {
-            scope.$ctrl.onUserInput && "function" == typeof scope.$ctrl.onUserInput && scope.$ctrl.onUserInput();
+        element.on("change", function(event) {
+            scope.$ctrl.onUserInput && "function" == typeof scope.$ctrl.onUserInput && scope.$ctrl.onUserInput(event);
         });
     }
     angular.module("tw.form-components").directive("twFileSelect", TwFileSelectDirective).controller("TwUploadDroppableController", TwUploadDroppableController).directive("twUploadDroppable", TwUploadDroppableDirective);
@@ -977,12 +977,12 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         checkForTranscludedContent($transclude, $ctrl), $scope.$watch("$ctrl.icon", function() {
             $ctrl.viewIcon = $ctrl.icon ? $ctrl.icon : "upload";
         }), ($ctrl.processingText || $ctrl.successText || $ctrl.failureText) && (!$ctrl.processingText || !$ctrl.successText || !$ctrl.failureText)) throw new Error("Supply all of processing, success, and failure text, or supply none.");
-        $ctrl.onManualUpload = function() {
+        $ctrl.onManualUpload = function(event) {
             var file = angular.element($element[0].querySelector(".tw-droppable-input"))[0].files[0];
-            $ctrl.fileDropped(file);
-        }, $ctrl.fileDropped = function(file) {
+            $ctrl.fileDropped(file, event);
+        }, $ctrl.fileDropped = function(file, event) {
             return reset(), isImage = file.type && file.type.indexOf("image") > -1, $ctrl.fileName = file.name, 
-            $ctrl.isProcessing = !0, $ctrl.processingState = null, triggerHandler($ctrl.onStart, file), 
+            $ctrl.isProcessing = !0, $ctrl.processingState = null, triggerHandler($ctrl.onStart, file, evt), 
             isSizeValid(file, $ctrl.maxSize) ? isTypeValid(file, $ctrl.accept) ? void ($ctrl.httpOptions ? $q.all([ asyncPost(file), asyncFileRead(file) ]).then(function(response) {
                 showDataImage(response[1]);
             }).then(asyncSuccess)["catch"](asyncFailure) : asyncFileRead(file).then(showDataImage).then(asyncSuccess)["catch"](asyncFailure)) : ($ctrl.isWrongType = !0, 
@@ -1008,7 +1008,8 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         }, !1), element[0].addEventListener("dragleave", function(event) {
             event.preventDefault(), scope.$ctrl.onDragChange(!1), scope.$apply();
         }, !1), element[0].addEventListener("drop", function(event) {
-            event.preventDefault(), scope.$ctrl.fileDropped(event.dataTransfer.files[0]), scope.$apply();
+            event.preventDefault(), scope.$ctrl.fileDropped(event.dataTransfer.files[0], event), 
+            scope.$apply();
         }, !1);
     }
     function triggerHandler(method, argument) {
@@ -1033,8 +1034,8 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         };
     }
     function TwFileInputLink(scope, element) {
-        element.on("change", function() {
-            scope.$ctrl.onUserInput && "function" == typeof scope.$ctrl.onUserInput && scope.$ctrl.onUserInput();
+        element.on("change", function(event) {
+            scope.$ctrl.onUserInput && "function" == typeof scope.$ctrl.onUserInput && scope.$ctrl.onUserInput(event);
         });
     }
     angular.module("tw.form-components").directive("twFileInput", TwFileInputDirective).controller("twUploadController", TwUploadController).directive("twUpload", TwUploadDirective);
