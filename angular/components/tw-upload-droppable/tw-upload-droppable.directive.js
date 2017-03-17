@@ -44,15 +44,15 @@
 		$ctrl.dragCounter = 0;
 		$ctrl.isActive = false;
 
-		$ctrl.onManualUpload = function() {
+		$ctrl.onManualUpload = function(event) {
 			if ($ctrl.onUpload && typeof $ctrl.onUpload === 'function') {
-				$ctrl.onUpload(angular.element(document.querySelector('#file-upload'))[0].files[0]);
+				$ctrl.onUpload(angular.element(document.querySelector('#file-upload'))[0].files[0], event);
 			}
 		};
 
-		$ctrl.onDrop = function(file) {
+		$ctrl.onDrop = function(file, event) {
 			if ($ctrl.onUpload && typeof $ctrl.onUpload === 'function') {
-				$ctrl.onUpload(file);
+				$ctrl.onUpload(file, event);
 			}
 			$ctrl.isActive = false;
 			$ctrl.dropCounter = 0;
@@ -75,25 +75,25 @@
 	}
 
 	function TwUploadDroppableLink(scope, element, attr) {
-		element[0].addEventListener('dragenter', function (evt) {
-			evt.preventDefault();
+		element[0].addEventListener('dragenter', function (event) {
+			event.preventDefault();
 			scope.$ctrl.onDragChange(true);
 			scope.$apply();
 		}, false);
 
-		element[0].addEventListener('dragover', function (evt) {
-			evt.preventDefault();
+		element[0].addEventListener('dragover', function (event) {
+			event.preventDefault();
 		},false);
 
-		element[0].addEventListener('dragleave', function (evt) {
-			evt.preventDefault();
+		element[0].addEventListener('dragleave', function (event) {
+			event.preventDefault();
 			scope.$ctrl.onDragChange(false);
 			scope.$apply();
 		}, false);
 
-		element[0].addEventListener('drop', function (evt) {
-			evt.preventDefault();
-			scope.$ctrl.onDrop(evt.dataTransfer.files[0]);
+		element[0].addEventListener('drop', function (event) {
+			event.preventDefault();
+			scope.$ctrl.onDrop(event.dataTransfer.files[0]);
 			scope.$apply();
 		}, false);
 	}
@@ -113,9 +113,9 @@
 	}
 
 	function TwFileSelectLink(scope, element) {
-		element.on('change', function () {
+		element.on('change', function (event) {
 			if (scope.$ctrl.onUserInput && typeof scope.$ctrl.onUserInput === 'function') {
-				scope.$ctrl.onUserInput();
+				scope.$ctrl.onUserInput(event);
 			}
 		});
 	}

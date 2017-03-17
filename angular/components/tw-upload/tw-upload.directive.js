@@ -147,15 +147,15 @@
 			throw new Error('Supply all of processing, success, and failure text, or supply none.');
 		}
 
-		$ctrl.onManualUpload = function() {
+		$ctrl.onManualUpload = function(event) {
 			var file = angular.element(
 				$element[0].querySelector('.tw-droppable-input')
 			)[0].files[0];
 
-			$ctrl.fileDropped(file);
+			$ctrl.fileDropped(file, event);
 		};
 
-		$ctrl.fileDropped = function(file) {
+		$ctrl.fileDropped = function(file, event) {
 			reset();
 
 			isImage = (file.type && file.type.indexOf('image') > -1);
@@ -164,7 +164,7 @@
 			$ctrl.isProcessing = true;
 			$ctrl.processingState = null;
 
-			triggerHandler($ctrl.onStart, file);
+			triggerHandler($ctrl.onStart, file, evt);
 
 			if (!isSizeValid(file, $ctrl.maxSize)) {
 				$ctrl.isTooLarge = true;
@@ -366,7 +366,7 @@
 
 		element[0].addEventListener('drop', function(event) {
 			event.preventDefault();
-			scope.$ctrl.fileDropped(event.dataTransfer.files[0]);
+			scope.$ctrl.fileDropped(event.dataTransfer.files[0], event);
 			scope.$apply();
 		}, false);
 	}
@@ -400,10 +400,10 @@
 	}
 
 	function TwFileInputLink(scope, element) {
-		element.on('change', function () {
+		element.on('change', function (event) {
 			if (scope.$ctrl.onUserInput &&
 					typeof scope.$ctrl.onUserInput === 'function') {
-				scope.$ctrl.onUserInput();
+				scope.$ctrl.onUserInput(event);
 			}
 		});
 	}
