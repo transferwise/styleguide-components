@@ -93,3 +93,26 @@ Usage:
 
 ### Examples
 To try a live example clone this project, run `npm install` and open index.html in the examples folder.
+
+## Releasing
+
+In order to release a new version, here are the steps necessary:
+
+1. **Build your files and commit them**
+
+    Simply running `npm start` will build them, then you should see changes in `/dist`, those are the files you should commit
+
+2. **Run the tests**
+
+    `npm test` will do the trick but make sure you run these after building the `/dist` files
+
+3. **Bump the version in `package.json`**
+
+    Recommended to stick to semver for this: http://semver.org
+
+4. **Send out a new release**
+
+    Go to https://github.com/transferwise/styleguide-components/releases/new, write a good title and description, ask someone what they think and then release 🚀
+
+
+
