@@ -7,8 +7,7 @@
     "bootstrap": "https://github.com/transferwise/bootstrap.git",
     "currency-flags": "https://github.com/transferwise/currency-flags.git",
     "angular": "~1.5.8",
-    "angular-mocks": "~1.5.8",
-    "timeshift": "https://github.com/plaa/TimeShift-js.git"
+    "angular-mocks": "~1.5.8"
   },
   "private": true
 }

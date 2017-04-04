@@ -256,9 +256,7 @@
 		}
 
 		function combineDate() {
-			var date = new Date(Number(vm.year), Number(vm.month), Number(vm.day), 12, 0, 0);
-			// otherwise if year is <100, e.g 99 it becomes 1999
-			date.setFullYear(vm.year);
+			var date = getUTCDate(Number(vm.year), Number(vm.month), Number(vm.day));
 			return date;
 		}
 
@@ -287,13 +285,27 @@
 				month = Number(vm.month),
 				year = Number(vm.year);
 
-			var lastUTCDateForMonthAndYear = new Date(year, month + 1, 0, 12, 0, 0); // to get last day of month
-			var lastUTCDayForMonthAndYear = lastUTCDateForMonthAndYear.getUTCDate();
+			var lastUTCDayForMonthAndYear = getLastDayOfMonth(year, month);
 
 			if (day > lastUTCDayForMonthAndYear) {
 				// Using setViewValue does not update DOM, only model.
 				vm.day = parseInt(lastUTCDayForMonthAndYear, 10);
 			}
+		}
+
+		function getLastDayOfMonth(year, month) {
+			var lastDay = getUTCDate(year, month + 1, 0);
+			return lastDay.getUTCDate();
+		}
+
+		function getUTCDate(year, month, day) {
+			var date = new Date();
+			date.setUTCFullYear(year, month, day);
+			date.setUTCHours(0);
+			date.setUTCMinutes(0);
+			date.setUTCSeconds(0);
+			date.setUTCMilliseconds(0);
+			return date;
 		}
 
 		init();
