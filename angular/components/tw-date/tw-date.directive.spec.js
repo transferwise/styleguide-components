@@ -688,7 +688,7 @@ describe('Directive: TwDate', function() {
             var monthModelController;
             beforeEach(function() {
                 monthModelController = monthInput.controller('ngModel');
-            })
+            });
 
             it('should update month and ngModel', function () {
                 // Months are 0 indexed, 2 = March
@@ -767,6 +767,23 @@ describe('Directive: TwDate', function() {
             it('should null ngModel when invalid', function () {
                 yearInput.val('a').triggerHandler('input');
                 expect($scope.ngModel).toBe(null);
+            });
+        });
+
+        describe('in New Zealand time zone', function() {
+            beforeEach(function() {
+                //Date = TimeShift.Date;
+            });
+            it('should update year and ngModel', function () {
+                var now = new Date();
+                TimeShift.setTimezoneOffset(-60);
+                var stillNow = new Date();
+                expect(now).toBe(stillNow);
+            });
+            xit('should update year and ngModel', function () {
+                TimeShift.setTimezoneOffset()
+                dayInput.val(40).triggerHandler('input');
+                expect($scope.ngModel).toBe('2001-01-31');
             });
         });
     });
