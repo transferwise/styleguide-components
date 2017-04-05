@@ -159,8 +159,8 @@ angular.module("tw.form-components", []);
             return "string" == typeof value && !isNaN(Number(vm.month));
         }
         function combineDate() {
-            var date = new Date(Number(vm.year), Number(vm.month), Number(vm.day), 12, 0, 0);
-            return date.setFullYear(vm.year), date;
+            var date = getUTCDate(Number(vm.year), Number(vm.month), Number(vm.day));
+            return date;
         }
         function updateDateModelAndValidationClasses() {
             if (vm.adjustLastDay(), !isExplodedDatePatternCorrect()) return void ngModel.$setViewValue(null);
@@ -171,8 +171,17 @@ angular.module("tw.form-components", []);
             } else ngModel.$setViewValue(dateObj);
         }
         function adjustLastDay() {
-            var day = Number(vm.day), month = Number(vm.month), year = Number(vm.year), lastUTCDateForMonthAndYear = new Date(year, month + 1, 0, 12, 0, 0), lastUTCDayForMonthAndYear = lastUTCDateForMonthAndYear.getUTCDate();
+            var day = Number(vm.day), month = Number(vm.month), year = Number(vm.year), lastUTCDayForMonthAndYear = getLastDayOfMonth(year, month);
             day > lastUTCDayForMonthAndYear && (vm.day = parseInt(lastUTCDayForMonthAndYear, 10));
+        }
+        function getLastDayOfMonth(year, month) {
+            var lastDay = getUTCDate(year, month + 1, 0);
+            return lastDay.getUTCDate();
+        }
+        function getUTCDate(year, month, day) {
+            var date = new Date();
+            return date.setUTCFullYear(year, month, day), date.setUTCHours(0), date.setUTCMinutes(0), 
+            date.setUTCSeconds(0), date.setUTCMilliseconds(0), date;
         }
         var ngModel, vm = this, initialisedWithDate = !1;
         vm.updateDateModelAndValidationClasses = updateDateModelAndValidationClasses, vm.explodeDateModel = explodeDateModel, 

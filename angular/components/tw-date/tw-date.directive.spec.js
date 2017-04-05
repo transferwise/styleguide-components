@@ -60,7 +60,7 @@ describe('Directive: TwDate', function() {
             });
             it('should return an updated date as an object', function() {
                 setDateUsingControls(element, '2000', '0', '1');
-                expect($scope.ngModel).toEqual(new Date(2000, 0, 1, 12, 0, 0));
+                expect($scope.ngModel).toEqual(getUTCDate(2000, 0, 1));
             });
             it('should populate vm.months based on vm.locale if supported', function () {
                 if (isIntlSupportedForLocale('en')) {
@@ -96,7 +96,7 @@ describe('Directive: TwDate', function() {
             describe('as valid Date instance', function () {
                 var dateModel;
                 beforeEach(function () {
-                    dateModel = new Date(1990, 7, 21);
+                    dateModel = getUTCDate(1990, 7, 21);
                     $scope.ngModel = dateModel;
                     element = getCompiledDirectiveElement($scope);
                 });
@@ -182,7 +182,7 @@ describe('Directive: TwDate', function() {
                 });
                 it('should return updated date model correctly', function () {
                     setDateUsingControls(element, '1990', '6', '15');
-                    expect($scope.ngModel).toEqual(new Date(1990, 6, 15, 12, 0, 0));
+                    expect($scope.ngModel).toEqual(getUTCDate(1990, 6, 15));
 
                 });
             });
@@ -688,7 +688,7 @@ describe('Directive: TwDate', function() {
             var monthModelController;
             beforeEach(function() {
                 monthModelController = monthInput.controller('ngModel');
-            })
+            });
 
             it('should update month and ngModel', function () {
                 // Months are 0 indexed, 2 = March
@@ -770,6 +770,16 @@ describe('Directive: TwDate', function() {
             });
         });
     });
+
+    function getUTCDate(year, month, day) {
+      var dateModel = new Date();
+      dateModel.setUTCFullYear(year, month, day);
+      dateModel.setUTCHours(0);
+      dateModel.setUTCMinutes(0);
+      dateModel.setUTCSeconds(0);
+      dateModel.setUTCMilliseconds(0);
+      return dateModel;
+    }
 
     function expectDateMonthsToBeLocalized(element, locale) {
         var vm = getViewModel(element);
