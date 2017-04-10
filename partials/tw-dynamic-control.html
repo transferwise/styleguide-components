@@ -16,6 +16,7 @@
 				type="{{vm.dynamic.type}}"
 				placeholder="{{vm.dynamic.placeholder}}"
 				options="vm.dynamic.options"
+				locale="{{vm.dynamic.locale}}"
 				ng-model="vm.model.dynamicFormControl"
 				ng-required="vm.dynamic.required"
 				ng-disabled="vm.dynamic.disabled"
@@ -56,15 +57,16 @@
 
 		<h5>Configuration</h5>
 <pre>&lt;tw-dynamic-form-control
-  type="{{vm.dynamic.type}}"
-  placeholder="{{vm.dynamic.placeholder}}"<span ng-if="vm.dynamic.type == 'radio' || vm.dynamic.type == 'select'">
-  options="{{vm.dynamic.options}}"</span>
+  type="{{vm.dynamic.type}}"<span ng-if="vm.dynamic.type !== 'radio' && vm.dynamic.type !== 'date'">
+  placeholder="{{vm.dynamic.placeholder}}"</span><span ng-if="vm.dynamic.type === 'radio' || vm.dynamic.type === 'select'">
+  options="{{vm.dynamic.options}}"</span><span ng-if="vm.dynamic.type === 'date'">
+  locale="{{vm.dynamic.locale}}"</span>
   ng-model="{{vm.model.dynamicFormControl}}"<span ng-if="vm.dynamic.required">
   ng-required="{{vm.dynamic.required}}"</span><span ng-if="vm.dynamic.disabled">
   ng-disabled="{{vm.dynamic.disabled}}"</span><span ng-if="vm.dynamic.type === 'text'"><span ng-if="vm.dynamic.minlength">
   ng-minlength="{{vm.dynamic.minlength}}"</span><span ng-if="vm.dynamic.maxlength">
   ng-maxlength="{{vm.dynamic.maxlength}}"</span><span ng-if="vm.dynamic.pattern">
-  ng-pattern="{{vm.dynamic.pattern}}"</span></span><span ng-if="vm.dynamic.type === 'number'"><span ng-if="vm.dynamic.min">
+  ng-pattern="{{vm.dynamic.pattern}}"</span></span><span ng-if="vm.dynamic.type === 'number' || vm.dynamic.type === 'date'"><span ng-if="vm.dynamic.min">
   ng-min="{{vm.dynamic.min}}"</span><span ng-if="vm.dynamic.max">
   ng-max="{{vm.dynamic.max}}"</span></span>
   ng-change='...'
@@ -80,11 +82,13 @@
 
 			<div class="form-group" ng-init="vm.dynamic.types = [
 				{'value': 'text', 'label': 'Text'},
+				{'value': 'password', 'label': 'Password'},
 				{'value': 'number', 'label': 'Number'},
 				{'value': 'select', 'label': 'Select'},
 				{'value': 'radio', 'label': 'Radio'},
 				{'value': 'checkbox', 'label': 'Checkbox'},
-				{'value': 'upload', 'label': 'Upload'}
+				{'value': 'upload', 'label': 'Upload'},
+				{'value': 'date', 'label': 'Date'}
 				]; vm.dynamic.type = 'text';">
 				<label class="control-label">
 					Type
@@ -178,14 +182,54 @@
 			</div>
 
 			<div class="form-group"
-				ng-if="vm.dynamic.type !== 'radio'">
+				ng-if="vm.dynamic.type === 'date'">
+				<label class="control-label">
+					Min/Max ('YYYY-mm-dd')
+				</label>
+				<div class="row">
+					<div class="col-xs-6">
+						<input type="text"
+							class="form-control"
+							placeholder="Min"
+							ng-model="vm.dynamic.min" />
+					</div>
+					<div class="col-xs-6">
+						<input type="text"
+							class="form-control"
+							placeholder="Max"
+							ng-model="vm.dynamic.max" />
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group" ng-if="vm.dynamic.type === 'date'"
+				ng-init="vm.dynamic.locales = [
+					{'value': 'en-GB', 'label': 'English UK'},
+					{'value': 'en-US', 'label': 'English US'},
+					{'value': 'fr-FR', 'label': 'French'},
+					{'value': 'es-ES', 'label': 'Spanish'},
+					{'value': 'es-US', 'label': 'Spanish US'},
+					{'value': 'pt-BR', 'label': 'Brazillian Portuguese'},
+					{'value': 'ss-SS', 'label': 'Unknown locale'}
+				]; vm.dynamic.locale='en-GB';">
+				<label class="control-label">
+					Locale
+				</label>
+				<tw-select
+					options="vm.dynamic.locales"
+					ng-model="vm.dynamic.locale"
+					ng-init="vm.dynamic.locale='en-GB'" />
+			</div>
+
+			<div class="form-group"
+				ng-if="vm.dynamic.type !== 'radio' && vm.dynamic.type !== 'date'">
 				<label class="control-label">
 					Placeholder
 				</label>
 				<input type="text"
 					class="form-control"
 					ng-model="vm.dynamic.placeholder"
-					ng-init="vm.dynamic.placeholder = 'Example'" />
+					ng-init="vm.dynamic.placeholder='Example'" />
 			</div>
 			<input type="submit" class="btn btn-primary btn-block" value="Submit form" />
 		</div>
