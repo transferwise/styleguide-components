@@ -12,6 +12,7 @@
 			scope: {
 				requirements: '=',
 				model: '=',
+				locae: '@',
 				onRefreshRequirements: '&'
 			},
 			controller: ['$scope', '$http', TwRequirementsFormController],
@@ -50,6 +51,7 @@
 										name='{{field.key}}' \
 										type='{{field.type | lowercase}}' \
 										placeholder='{{field.placeholder}}' \
+										locale='{{$ctrl.locale}}' \
 										options='field.valuesAllowed' \
 										ng-model='$ctrl.model[field.key]' \
 										ng-blur='$ctrl.onBlur(field)' \
