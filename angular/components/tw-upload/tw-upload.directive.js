@@ -164,7 +164,7 @@
 			$ctrl.isProcessing = true;
 			$ctrl.processingState = null;
 
-			triggerHandler($ctrl.onStart, file, evt);
+			triggerHandler($ctrl.onStart, file);
 
 			if (!isSizeValid(file, $ctrl.maxSize)) {
 				$ctrl.isTooLarge = true;

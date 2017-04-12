@@ -988,7 +988,7 @@ angular.module("tw.form-components", []);
             $ctrl.fileDropped(file, event);
         }, $ctrl.fileDropped = function(file, event) {
             return reset(), isImage = file.type && file.type.indexOf("image") > -1, $ctrl.fileName = file.name, 
-            $ctrl.isProcessing = !0, $ctrl.processingState = null, triggerHandler($ctrl.onStart, file, evt), 
+            $ctrl.isProcessing = !0, $ctrl.processingState = null, triggerHandler($ctrl.onStart, file), 
             isSizeValid(file, $ctrl.maxSize) ? isTypeValid(file, $ctrl.accept) ? void ($ctrl.httpOptions ? $q.all([ asyncPost(file), asyncFileRead(file) ]).then(function(response) {
                 showDataImage(response[1]);
             }).then(asyncSuccess)["catch"](asyncFailure) : asyncFileRead(file).then(showDataImage).then(asyncSuccess)["catch"](asyncFailure)) : ($ctrl.isWrongType = !0, 
