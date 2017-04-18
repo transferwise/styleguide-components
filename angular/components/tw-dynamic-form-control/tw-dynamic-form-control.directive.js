@@ -20,6 +20,7 @@
 				id: "@",
 				placeholder: "@",
 				step: "@",
+				locale: "@",
 				options: "=",
 				ngModel: "=",
 				ngRequired: "=",
@@ -137,40 +138,23 @@
 						ng-focus='$ctrl.focus()' \
 						ng-blur='$ctrl.blur()' /> \
 				</div> \
+				<div ng-switch-when='date'> \
+					<tw-date \
+						name='{{$ctrl.name}}' \
+						locale='{{$ctrl.locale}}' \
+						ng-min='$ctrl.ngMin' \
+						ng-max='$ctrl.ngMax' \
+						ng-model='$ctrl.ngModel' \
+						ng-required='$ctrl.ngRequired' \
+						ng-disabled='$ctrl.ngDisabled' \
+						ng-change='$ctrl.change()' \
+						ng-focus='$ctrl.focus()' \
+						ng-blur='$ctrl.blur()' /> \
+				</div> \
 				<ng-transclude class='error-messages'></ng-transclude> \
 			</div>"
 		};
 	}
-/*
-<div ng-switch-when='select'> \
-	<tw-select  \
-		name='{{$ctrl.name}}' \
-		id='{{$ctrl.id}}' \
-		class='tw-dynamic-select' \
-		options='$ctrl.options' \
-		placeholder='{{$ctrl.placeholder}}' \
-		ng-model='$ctrl.ngModel' \
-		ng-required='$ctrl.ngRequired' \
-		ng-disabled='$ctrl.ngDisabled' \
-		ng-change='$ctrl.change(); $ctrl.blur();' \
-		ng-blur='$ctrl.blur()'> \
-	</tw-select> \
-</div> \
-<select ng-switch-when='select' \
-	name='{{$ctrl.name}}' \
-	id='{{$ctrl.id}}' \
-	class='form-control tw-dynamic-select' \
-	ng-options='option.value as option.label for option in $ctrl.options' \
-	ng-model='$ctrl.ngModel' \
-	ng-required='$ctrl.ngRequired' \
-	ng-disabled='$ctrl.ngDisabled' \
-	ng-change='$ctrl.change(); $ctrl.blur();'> \
-	ng-blur='$ctrl.blur()'> \
-	<option ng-if='$ctrl.placeholder' value=''> \
-		{{$ctrl.placeholder}} \
-	</option> \
-</select> \
-*/
 
 	angular
 		.module('tw.form-components')

@@ -458,6 +458,47 @@ describe('Directive: TwDynamicFormControlDirective', function() {
 		});
 	});
 
+	describe('type: date - validation', function() {
+		var input, directiveElem, ngModelController;
+		beforeEach(function() {
+			$scope.model = null;
+			formGroup = compileTemplate(
+				"<div class='form-group'> \
+					<label class='control-label'></label> \
+					<tw-dynamic-form-control type='date' \
+						ng-model='model' \
+						locale='en-GB' \
+						ng-min='2016-04-01' \
+						ng-max='2017-03-24' \
+						required> \
+					</tw-dynamic-form-control> \
+				</div>"
+			);
+			directiveElem = formGroup.find('tw-dynamic-form-control');
+			ngModelController = directiveElem.controller('ngModel');
+		});
+
+		it('should set ngModel.$invalid when required value not set', function() {
+			expect(ngModelController.$invalid).toBe(true);
+			expect(directiveElem.hasClass('ng-invalid')).toBe(true);
+			expect(directiveElem.hasClass('ng-invalid-required')).toBe(true);
+		});
+		it('should set ngModel.$invalid when value is below ngMin', function() {
+			ngModelController.date = new Date('2010-01-01');
+			expect(ngModelController.$invalid).toBe(true);
+			expect(directiveElem.hasClass('ng-invalid')).toBe(true);
+			expect(directiveElem.hasClass('ng-invalid-min')).toBe(true);
+			expect(directiveElem.hasClass('ng-invalid-max')).toBe(false);
+		});
+		it('should set ngModel.$invalid when value is above ngMax', function() {
+			ngModelController.date = new Date('2020-01-01');
+			expect(ngModelController.$invalid).toBe(true);
+			expect(directiveElem.hasClass('ng-invalid')).toBe(true);
+			expect(directiveElem.hasClass('ng-invalid-min')).toBe(false);
+			expect(directiveElem.hasClass('ng-invalid-max')).toBe(true);
+		});
+	});
+
 	function compileTemplate(template) {
 		return compileElement(angular.element(template));
 	}
