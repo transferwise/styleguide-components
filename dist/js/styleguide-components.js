@@ -515,7 +515,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             scope: {
                 requirements: "=",
                 model: "=",
-                locae: "@",
+                locale: "@",
                 onRefreshRequirements: "&"
             },
             controller: [ "$scope", "$http", TwRequirementsFormController ],
@@ -526,7 +526,8 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     }
     function TwRequirementsFormController($scope, $http) {
         function init() {
-            $ctrl.model || ($ctrl.model = {}), $scope.$watch("$ctrl.requirements", function(newValue, oldValue) {
+            $ctrl.model || ($ctrl.model = {}), $ctrl.requirements && prepRequirements($ctrl.requirements), 
+            $scope.$watch("$ctrl.requirements", function(newValue, oldValue) {
                 angular.equals(newValue, oldValue) || (prepRequirements($ctrl.requirements), $ctrl.model.type = $ctrl.requirements.length ? $ctrl.requirements[0].type : null);
             });
         }
