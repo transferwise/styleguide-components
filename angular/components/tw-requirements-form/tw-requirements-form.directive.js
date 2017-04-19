@@ -12,7 +12,7 @@
 			scope: {
 				requirements: '=',
 				model: '=',
-				locae: '@',
+				locale: '@',
 				onRefreshRequirements: '&'
 			},
 			controller: ['$scope', '$http', TwRequirementsFormController],
@@ -97,6 +97,11 @@
 			if (!$ctrl.model) {
 				$ctrl.model = {};
 			}
+
+			if ($ctrl.requirements) {
+				prepRequirements($ctrl.requirements);
+			}
+
 			$scope.$watch('$ctrl.requirements', function(newValue, oldValue) {
 				if (!angular.equals(newValue, oldValue)) {
 					prepRequirements($ctrl.requirements);
