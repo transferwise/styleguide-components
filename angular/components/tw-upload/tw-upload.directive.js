@@ -33,8 +33,6 @@
 				buttonText: '@',
 				cancelText: '@',
 				processingText: '@',
-				successText: '@',
-				failureText: '@',
 				completeText: '@',
 				errorMessage: '@',
 				tooLargeMessage: '@',

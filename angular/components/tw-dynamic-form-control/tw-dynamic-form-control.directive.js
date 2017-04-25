@@ -19,8 +19,12 @@
 				name: "@",
 				id: "@",
 				placeholder: "@",
+				helpText: "@",
 				step: "@",
 				locale: "@",
+				uploadAccept: "@",
+				uploadIcon: "@",
+				uploadTooLargeMessage: "@",
 				options: "=",
 				ngModel: "=",
 				ngRequired: "=",
@@ -128,15 +132,14 @@
 					<tw-upload \
 						name='{{$ctrl.name}}' \
 						description='{{$ctrl.placeholder}}' \
-						icon='{{$ctrl.uploadOptions.icon}}' \
-						instructions='{{$ctrl.uploadOptions.instructions}}' \
-						button-text='{{$ctrl.uploadOptions.buttonText}}' \
-						processing-text='{{$ctrl.uploadOptions.processingText}}' \
+						icon='{{$ctrl.uploadIcon}}' \
+						instructions='{{$ctrl.helpText}}' \
 						complete-text='{{$ctrl.placeholder}}' \
+						too-large-message='{{$ctrl.uploadTooLargeMessage}}' \
+						accept='{{$ctrl.uploadAccept}}' \
+						button-text='{{$ctrl.uploadOptions.buttonText}}' \
 						cancel-text='{{$ctrl.uploadOptions.cancelText}}' \
-						too-larger-message='{{$ctrl.uploadOptions.tooLargeMessage}}' \
-						accept='{{$ctrl.uploadOptions.accept}}' \
-						max-size='$ctrl.uploadOptions.maxSize' \
+						max-size='$ctrl.ngMax' \
 						ng-model='$ctrl.ngModel' \
 						ng-required='$ctrl.ngRequired' \
 						ng-disabled='$ctrl.ngDisabled' \
