@@ -28,7 +28,7 @@
 				ng-change="vm.log('dynamic change')"
 				ng-focus="vm.log('dynamic focus')"
 				ng-blur="vm.log('dynamic blur')"
-				custom-parameters="vm.dynamic.customParameters"
+				upload-options="vm.dynamic.uploadOptions"
 				tw-validation />
 			<div class="error-messages">
 				<div class="error-required">
@@ -73,7 +73,7 @@
   ng-change='...'
   ng-focus='...'
   ng-blur='...'<span ng-if="vm.dynamic.type === 'upload'">
-  custom-parameters="{{vm.dynamic.customParameters}}"</span>
+  upload-options="{{vm.dynamic.uploadOptions}}"</span>
   tw-validation /&gt;</pre>
 	</div>
 	<div class="col-md-6">
@@ -237,12 +237,12 @@
 			<div class="form-group"
 				ng-if="vm.dynamic.type === 'upload'">
 				<label class="control-label">
-					Button Text
+					Upload Button Text
 				</label>
 				<input type="text"
 					class="form-control"
-					ng-model="vm.dynamic.customParameters.buttonText"
-					ng-init="vm.dynamic.customParameters.buttonText = 'Upload a file'" />
+					ng-model="vm.dynamic.uploadOptions.buttonText"
+					ng-init="vm.dynamic.uploadOptions.buttonText = 'Upload a file'" />
 			</div>
 			<input type="submit" class="btn btn-primary btn-block" value="Submit form" />
 		</div>

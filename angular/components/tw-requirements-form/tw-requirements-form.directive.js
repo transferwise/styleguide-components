@@ -12,6 +12,7 @@
 			scope: {
 				requirements: '=',
 				model: '=',
+				uploadOptions: '=',
 				locale: '@',
 				onRefreshRequirements: '&'
 			},
@@ -51,15 +52,23 @@
 										name='{{field.key}}' \
 										type='{{field.type | lowercase}}' \
 										placeholder='{{field.placeholder}}' \
+										help-text='{{field.helpText}}' \
 										locale='{{$ctrl.locale}}' \
+										upload-accept='{{field.accept}}' \
+										upload-icon='{{field.icon}}' \
+										upload-too-large-message='{{field.tooLargeMessage}}' \
 										options='field.valuesAllowed' \
+										upload-options='$ctrl.uploadOptions' \
 										ng-model='$ctrl.model[field.key]' \
 										ng-blur='$ctrl.onBlur(field)' \
 										ng-required='field.required' \
 										ng-disabled='field.disabled' \
 										ng-minlength='field.minLength' \
 										ng-maxlength='field.maxLength' \
+										ng-min='field.min' \
+										ng-max='field.max' \
 										ng-pattern='field.validationRegexp' \
+										upload-options='field.uploadOptions' \
 										tw-validation \> \
 										<!-- tw-dynamic-async-validator='field.validationAsync' --> \
 									</tw-dynamic-form-control> \
