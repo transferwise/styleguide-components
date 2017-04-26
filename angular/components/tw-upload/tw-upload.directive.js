@@ -38,6 +38,7 @@
 				completeText: '@',
 				errorMessage: '@',
 				tooLargeMessage: '@',
+				copyUploadUrlText: '@',
 				//wrongTypeText: '@',
 				size: '@',
 				accept: '@',
@@ -92,6 +93,17 @@
 							<img ng-src="{{$ctrl.image}}" ng-if="$ctrl.isImage" class="thumbnail m-b-3" /> \
 							<i class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></i> \
 							<p class="text-ellipsis m-b-2">{{$ctrl.fileName}}</p> \
+							\
+							<div class="input-group m-b-2" ng-if="$ctrl.copyUploadUrlText" style="max-width: 400px"> \
+								<input type="text" class="form-control" value="{{$ctrl.uploadUrl}}" readonly="readonly"/> \
+								<span class="input-group-btn"> \
+									<a class="btn" \
+										ng-class="$ctrl.copied ? \'btn-success\' : \'btn-primary\'" ng-click="$ctrl.copy()" \
+										ngclipboard data-clipboard-text="{{$ctrl.uploadUrl}}"> \
+											{{$ctrl.copyUploadUrlText}} \
+									</a> \
+								</span> \
+							</div> \
 						</div> \
 						<div ng-if="!$ctrl.hasTranscluded && $ctrl.isError"> \
 							<h4 class="m-b-2" ng-if="$ctrl.isTooLarge">{{$ctrl.tooLargeMessage}}</h4> \
@@ -191,6 +203,7 @@
 						asyncFileRead(file)
 					])
 					.then(function(response) {
+						showUploadUrl(response[0].data);
 						showDataImage(response[1]);
 					})
 					.then(asyncSuccess)
@@ -202,6 +215,13 @@
 					.then(asyncSuccess)
 					.catch(asyncFailure);
 			}
+		};
+
+		$ctrl.copy = function() {
+			$ctrl.copied = true;
+			$timeout(function() {
+				$ctrl.copied = false;
+			}, 500);
 		};
 
 		$ctrl.onDragChange = function(enter) {
@@ -222,6 +242,12 @@
 			reset();
 			triggerHandler($ctrl.onCancel);
 		};
+
+		function showUploadUrl(url) {
+			if ($ctrl.copyUploadUrlText) {
+				$ctrl.uploadUrl = url;
+			}
+		}
 
 		function reset() {
 			$ctrl.isDroppable = false;
