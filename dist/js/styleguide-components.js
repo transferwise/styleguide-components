@@ -995,7 +995,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             return reset(), isImage = file.type && file.type.indexOf("image") > -1, $ctrl.fileName = file.name, 
             $ctrl.isProcessing = !0, $ctrl.processingState = null, triggerHandler($ctrl.onStart, file), 
             isSizeValid(file, $ctrl.maxSize) ? isTypeValid(file, $ctrl.accept) ? void ($ctrl.httpOptions ? $q.all([ asyncPost(file), asyncFileRead(file) ]).then(function(response) {
-                showDataImage(response[1]);
+                return showDataImage(response[1]), response[0];
             }).then(asyncSuccess)["catch"](asyncFailure) : asyncFileRead(file).then(showDataImage).then(asyncSuccess)["catch"](asyncFailure)) : ($ctrl.isWrongType = !0, 
             void asyncFailure({
                 status: 415,
