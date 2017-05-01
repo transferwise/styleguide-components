@@ -116,7 +116,7 @@
 								\"dropdown-header\": option.header, \
 								\"tw-select-option\": !option.header && !option.disabled \
 							}'> \
-							<span ng-if='option.header'>{{option.header}}</span> \
+							<span ng-if='option.header' class='text-ellipsis'>{{option.header}}</span> \
 							<a href='' \
 								ng-if='!option.header' \
 								ng-click='$ctrl.optionClick(option, $event)' \
