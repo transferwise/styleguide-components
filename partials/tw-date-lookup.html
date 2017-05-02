@@ -1,0 +1,83 @@
+<h4 id="date-lookup">Tw Date Lookup</h4>
+<p>The date lookup is useful for selecting dates that are relatively recent, and
+	can be used in a pair for date ranges.</p>
+<p>If your date is likely to be further in the past (e.g. Date of birth), use
+	twDate instead.</p>
+<div class="row m-b-5">
+	<div class="col-sm-6">
+		<div class="form-group">
+			<label class="control-label">
+				Example date lookup
+			</label>
+			<tw-date-lookup
+				ng-model="vm.model.components.dateRange"
+				ng-disabled="vm.dateRange.disabled"
+				ng-min="vm.dateRange.min"
+				ng-max="vm.dateRange.max"
+				placeholder="{{vm.dateRange.placeholder}}"
+				locale="{{vm.dateRange.locale}}"
+				size="{{vm.dateRange.size}}"></tw-date-lookup>
+		</div>
+		<h5>Configuration</h5>
+		<pre>
+&lt;tw-date-lookup
+  placeholder="{{vm.dateRange.placeholder}}"
+  locale="{{vm.dateRange.locale}}"
+  ng-model={{vm.model.components.dateRange}}
+  ng-disabled="{{vm.dateRange.disabled}}"
+  ng-min={{vm.dateRange.min}}
+  ng-max={{vm.dateRange.max}}<span ng-if="vm.dateRange.size">
+  size={{vm.dateRange.size}}</span>&gt;
+&lt;/tw-date-lookup&gt;
+		</pre>
+	</div>
+	<div class="col-sm-6">
+		<div class="well">
+			<h5 class="page-header">Edit configuration</h5>
+			<div class="form-group"
+				ng-init="vm.dateRange.placeholder = 'Choose date...'">
+				<label class="control-label">Placeholder</label>
+				<input type="text"
+					class="form-control"
+					ng-model="vm.dateRange.placeholder" />
+			</div>
+			<div class="form-group"
+				ng-init="vm.dateRange.locale = 'en-GB'">
+				<label class="control-label">Locale</label>
+				<tw-select
+					options="vm.locales"
+					ng-model="vm.dateRange.locale"></tw-select>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Min Date</label>
+				<tw-date-lookup
+					ng-model="vm.dateRange.min"
+					ng-max="vm.dateRange.max"
+					locale="{{vm.dateRange.locale}}"></tw-date-lookup>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Max Date</label>
+				<tw-date-lookup
+					ng-model="vm.dateRange.max"
+					ng-min="vm.dateRange.min"
+					locale="{{vm.dateRange.locale}}"></tw-date-lookup>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Size</label>
+				<tw-select
+					placeholder="Size..."
+					ng-model="vm.dateRange.size"
+					options="[{value: 'sm', label: 'Small'},{value: '', label: 'Medium'},{value: 'lg', label: 'Large'}]"></tw-select>
+			</div>
+			<div class="form-group">
+				<div class="checkbox">
+					<label>
+						<tw-checkbox
+							ng-model="vm.dateRange.disabled"></tw-checkbox>
+						Disabled?
+					</label>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -5,9 +5,9 @@
 		.module('tw.form-components')
 		.controller('TwDateController', TwDateController);
 
-	TwDateController.$inject = ['$element', '$log', '$scope'];
+	TwDateController.$inject = ['$element', '$log', '$scope', 'TwDateService'];
 
-	function TwDateController($element, $log, $scope) {
+	function TwDateController($element, $log, $scope, TwDateService) {
 		var vm = this,
 			ngModel,
 			initialisedWithDate = false;
@@ -122,11 +122,7 @@
 			if (!vm.locale) {
 				vm.locale = DEFAULT_LOCALE_EN;
 			}
-			if (vm.locale.indexOf('US', vm.locale.length - 2) !== -1) {
-				vm.monthBeforeDay = true;
-			} else {
-				vm.monthBeforeDay = false;
-			}
+			vm.monthBeforeDay = TwDateService.isMonthBeforeDay(vm.locale);
 		}
 
 		function explodeDateModel(date) {
@@ -203,34 +199,9 @@
 		}
 
 		function getMonthsBasedOnIntlSupportForLocale() {
-			var monthNames;
-
-			if (isIntlSupportedForLocale(vm.locale)) {
-				monthNames = getMonthNamesForLocale();
-			} else {
-				$log.warn('i18n not supported for locale "' + vm.locale + '"');
-				monthNames = DEFAULT_MONTHS_EN;
-			}
+			var monthNames = TwDateService.getMonthNamesForLocale(vm.locale);
 
 			return extendMonthsWithIds(monthNames);
-		}
-
-		function isIntlSupportedForLocale(locale) {
-			return window.Intl &&
-				typeof window.Intl === 'object' &&
-				window.Intl.DateTimeFormat.supportedLocalesOf([locale]).length > 0;
-		}
-
-		function getMonthNamesForLocale() {
-			var months = [], date;
-			for(var i = 0; i < 12; i++) {
-				// Day in middle of month avoids timezone issues
-				date = new Date(Date.UTC(2000, i, 15));
-				var monthName = date.toLocaleDateString(vm.locale, {month: 'long'});
-				monthName = monthName[0].toUpperCase() + monthName.substring(1);
-				months.push(monthName);
-			}
-			return months;
 		}
 
 		function extendMonthsWithIds(monthNames) {
@@ -256,7 +227,11 @@
 		}
 
 		function combineDate() {
-			var date = getUTCDate(Number(vm.year), Number(vm.month), Number(vm.day));
+			var date = TwDateService.getUTCDate(
+				Number(vm.year),
+				Number(vm.month),
+				Number(vm.day)
+			);
 			return date;
 		}
 
@@ -285,27 +260,12 @@
 				month = Number(vm.month),
 				year = Number(vm.year);
 
-			var lastUTCDayForMonthAndYear = getLastDayOfMonth(year, month);
+			var lastUTCDayForMonthAndYear = TwDateService.getLastDayOfMonth(year, month);
 
 			if (day > lastUTCDayForMonthAndYear) {
 				// Using setViewValue does not update DOM, only model.
 				vm.day = parseInt(lastUTCDayForMonthAndYear, 10);
 			}
-		}
-
-		function getLastDayOfMonth(year, month) {
-			var lastDay = getUTCDate(year, month + 1, 0);
-			return lastDay.getUTCDate();
-		}
-
-		function getUTCDate(year, month, day) {
-			var date = new Date();
-			date.setUTCFullYear(year, month, day);
-			date.setUTCHours(0);
-			date.setUTCMinutes(0);
-			date.setUTCSeconds(0);
-			date.setUTCMilliseconds(0);
-			return date;
 		}
 
 		init();
