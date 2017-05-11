@@ -1,0 +1,13 @@
+{
+  "name": "tw-styleguide-components",
+  "version": "1.14.2",
+  "componentsDirectory": "components/",
+  "directory": "components",
+  "dependencies": {
+    "bootstrap": "https://github.com/transferwise/bootstrap.git",
+    "currency-flags": "https://github.com/transferwise/currency-flags.git",
+    "angular": "~1.5.8",
+    "angular-mocks": "~1.5.8"
+  },
+  "private": true
+}

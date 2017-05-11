@@ -1,0 +1,135 @@
+<h4 id="radio">TW Radio</h4>
+<hr />
+<form>
+<div class="row m-b-3">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="control-label">
+				TW Radio<span ng-if="vm.radio.required">*</span>
+			</label>
+			<div class="radio">
+				<label>
+					<tw-radio name="myRadio" tw-validation value="one"
+						ng-value="vm.radio.useNgValue ? 1 : null"
+						ng-model="vm.model.components.radio"
+						ng-required="vm.radio.required"
+						ng-disabled="vm.radio.disabled"
+						ng-click="vm.log('radio 1 click')"
+						ng-change="vm.log('radio 1 change')"
+						ng-blur="vm.log('radio 1 blur')"
+						ng-focus="vm.log('radio 1 focus')" />
+					Option 1
+				</label>
+			</div>
+			<div class="radio">
+				<label>
+					<tw-radio name="myRadio" tw-validation value="two"
+						ng-value="vm.radio.useNgValue ? 2 : null"
+						ng-model="vm.model.components.radio"
+						ng-required="vm.radio.required"
+						ng-disabled="vm.radio.disabled"
+						ng-click="vm.log('radio 2 click')"
+						ng-change="vm.log('radio 2 change')"
+						ng-blur="vm.log('radio 2 blur')"
+						ng-focus="vm.log('radio 2 focus')" />
+					Option 2
+				</label>
+			</div>
+		</div>
+		<h5>Configuration</h5>
+<pre>&lt;tw-radio
+  name="myRadio"<span ng-if="!vm.radio.useNgValue">
+  value="one"</span><span ng-if="vm.radio.useNgValue">
+  ng-value="1"</span>
+  ng-model="{{vm.model.components.radio}}"
+  ng-required="{{vm.radio.required}}"
+  ng-disabled="{{vm.radio.disabled}}"
+  ng-change="..."
+  ng-focus="..."
+  ng-blur="..."
+  tw-validation /&gt;</pre>
+	</div>
+	<div class="col-md-6">
+		<div class="well">
+			<h5 class="page-header">
+				Edit configuration
+			</h5>
+			<div class="form-group">
+				<label class="control-label">
+					Required?
+				</label>
+				<div class="checkbox">
+					<label>
+						<tw-checkbox ng-model="vm.radio.required" />
+						Is the control required?
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label">
+					Disabled?
+				</label>
+				<div class="checkbox">
+					<label>
+						<tw-checkbox ng-model="vm.radio.disabled" />
+						Is the control disabled?
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label">
+					Non string values?
+				</label>
+				<div class="checkbox">
+					<label>
+						<tw-checkbox ng-model="vm.radio.useNgValue" />
+						Uses ngValue
+					</label>
+				</div>
+			</div>
+			<input type="submit" class="btn btn-primary btn-block" value="Submit form" />
+		</div>
+	</div>
+</div>
+<table class="table">
+	<thead>
+		<tr>
+			<th colspan="2">Classes &amp; styles</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>.tw-radio-button</code></td>
+			<td><button class="tw-radio-button"><span class="tw-radio-check"></span></button></td>
+		</tr>
+		<tr>
+			<td><code>.tw-radio-button:focus</code></td>
+			<td><button class="tw-radio-button focus"><span class="tw-radio-check"></span></button></td>
+		</tr>
+		<tr>
+			<td><code>.tw-radio-button.checked</code></td>
+			<td><button class="tw-radio-button checked" ><span class="tw-radio-check"></span></button></td>
+		</tr>
+		<tr>
+			<td><code>.tw-radio-button[disabled]</code></td>
+			<td><button class="tw-radio-button" disabled><span class="tw-radio-check"></span></button></td>
+		</tr>
+		<tr>
+			<td><code>.tw-radio-button.checked[disabled]</code></td>
+			<td><button class="tw-radio-button checked" disabled><span class="tw-radio-check"></span></button></td>
+		</tr>
+		<tr>
+			<td><code>.tw-radio-button.has-error </code></td>
+			<td><button class="tw-radio-button has-error"><span class="tw-radio-check"></span></button></td>
+		</tr>
+		<tr>
+			<td><code>.tw-radio-button.has-error.checked</code></td>
+			<td><button class="tw-radio-button has-error checked"><span class="tw-radio-check"></span></button></td>
+		</tr>
+		<tr>
+			<td><code>.tw-radio-button.has-error.checked[disabled]</code></td>
+			<td><button class="tw-radio-button has-error checked" disabled><span class="tw-radio-check"></span></button></td>
+		</tr>
+	</tbody>
+</table>
+</form>

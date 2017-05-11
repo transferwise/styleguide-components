@@ -1,0 +1,39 @@
+<h4 id="focusable">TW Focusable</h4>
+<p><code>tw-focusable</code> is a simple attribute based directive that aids
+	styling during focus events.  Whenever an HTML element with tw-focusable
+	is focussed it will look for a parent <code>.form-group</code> then find
+	any <code>.control-label</code> inside of it, and apply a <code>.focus</code>
+	class.</p>
+<p>This attribute is automatically applied to controls using the standard
+	Bootstrap <code>.form-control</code> class, but can be particularly useful
+	for custom controls.  For example, our custom select box uses a button to
+	facillitate <code>:focus</code>, we can apply tw-focusable to make sure the
+	associated label receives the right focus state.</p>
+<p>Note: <code>[tw-focusable]</code> is built into custom components so
+	there's no need to add it.</p>
+<hr />
+<div class="m-b-3">
+	<div class="form-group">
+		<label class="control-label">Label</label>
+		<input type="text" class="form-control" tw-focusable />
+	</div>
+<pre>
+&lt;div class="form-group"&gt;
+  &lt;label class="control-label"&gt;Label&lt;/label&gt;
+  &lt;input type="text" class="form-control" tw-focusable /&gt;
+&lt;/div&gt;
+</pre>
+
+	<div class="form-group">
+		<label class="control-label">Label</label>
+		<div class="form-control" contenteditable tw-focusable />
+	</div>
+<pre>
+&lt;div class="form-group"&gt;
+  &lt;label class="control-label"&gt;Label&lt;/label&gt;
+  &lt;div contenteditable tw-focusable class="form-control" /&gt;
+&lt;/div&gt;
+</pre>
+
+</div>
+<hr class="m-b-5" />

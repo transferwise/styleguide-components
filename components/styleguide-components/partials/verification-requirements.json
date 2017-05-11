@@ -1,0 +1,27 @@
+[
+  {
+    "type": "verification",
+    "fields": [
+        {
+         "name": "National ID",
+         "group": [
+           {
+             "key": "id",
+             "type": "upload",
+             "required": true
+           }
+         ]
+       },
+      {
+        "name": "Social security number",
+        "group": [
+          {
+            "key": "ssn",
+            "type": "text",
+            "required": true
+          }
+        ]
+      }
+    ]
+  }
+]

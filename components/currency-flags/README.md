@@ -27,11 +27,9 @@ The `currency-flag` selector has a default `display` of `inline-block`, size of 
 ## How to add flags
 
 1. Clone repo
-
-2. Add correctly sized (`48x32`) `png` files to `src/flags`
-
-3. Run `npm start`
-
-4. Update version in `package.json`
-
-5. Commit and open a pull request
+1. Run `npm install`
+1. Add correctly sized (`48x32`) `png` files to `src/flags`
+1. Run `npm start`
+1. Update version in `package.json`
+1. Commit to a new branch, include css files changed by build process
+1. Open a pull request
