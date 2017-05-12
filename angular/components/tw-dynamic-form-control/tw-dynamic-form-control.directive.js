@@ -1,5 +1,5 @@
 (function(angular) {
-	//'use strict';
+	'use strict';
 
 	angular
 		.module('tw.form-components')
@@ -19,8 +19,12 @@
 				name: "@",
 				id: "@",
 				placeholder: "@",
+				helpText: "@",
 				step: "@",
 				locale: "@",
+				uploadAccept: "@",
+				uploadIcon: "@",
+				uploadTooLargeMessage: "@",
 				options: "=",
 				ngModel: "=",
 				ngRequired: "=",
@@ -29,7 +33,8 @@
 				ngMaxlength: "=",
 				ngMin: "=",
 				ngMax: "=",
-				ngPattern: "="
+				ngPattern: "=",
+				uploadOptions: "="
 			},
 			template:
 			"<div ng-switch='$ctrl.type'> \
@@ -126,11 +131,15 @@
 				<div ng-switch-when='upload'> \
 					<tw-upload \
 						name='{{$ctrl.name}}' \
-						icon='upload' \
 						description='{{$ctrl.placeholder}}' \
-						instructions='Upload a file' \
-						button-text='Upload' \
-						accept='' \
+						icon='{{$ctrl.uploadIcon}}' \
+						instructions='{{$ctrl.helpText}}' \
+						complete-text='{{$ctrl.placeholder}}' \
+						too-large-message='{{$ctrl.uploadTooLargeMessage}}' \
+						accept='{{$ctrl.uploadAccept}}' \
+						button-text='{{$ctrl.uploadOptions.buttonText}}' \
+						cancel-text='{{$ctrl.uploadOptions.cancelText}}' \
+						max-size='$ctrl.ngMax' \
 						ng-model='$ctrl.ngModel' \
 						ng-required='$ctrl.ngRequired' \
 						ng-disabled='$ctrl.ngDisabled' \

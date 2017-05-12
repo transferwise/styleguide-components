@@ -33,8 +33,6 @@
 				buttonText: '@',
 				cancelText: '@',
 				processingText: '@',
-				successText: '@',
-				failureText: '@',
 				completeText: '@',
 				errorMessage: '@',
 				tooLargeMessage: '@',
@@ -192,6 +190,7 @@
 					])
 					.then(function(response) {
 						showDataImage(response[1]);
+						return response[0];
 					})
 					.then(asyncSuccess)
 					.catch(asyncFailure);
