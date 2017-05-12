@@ -96,10 +96,20 @@
 			return false;
 		};
 
+		this.addYears = function(date, years) {
+			return this.addToDate(date, years, 0, 0);
+		};
+		this.addMonths = function(date, months) {
+			return this.addToDate(date, 0, months, 0);
+		};
 		this.addDays = function(date, days) {
+			return this.addToDate(date, 0, 0, days);
+		};
+
+		this.addToDate = function(date, years, months, days) {
 			return this.getUTCDate(
-				date.getUTCFullYear(),
-				date.getUTCMonth(),
+				date.getUTCFullYear() + years,
+				date.getUTCMonth() + months,
 				date.getUTCDate() + days
 			);
 		};

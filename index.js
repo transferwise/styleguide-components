@@ -55,11 +55,11 @@ angular.module('my-app', ['tw.styleguide-components'])
 		{'value': 'xx-XX', 'label': 'Unknown locale'}
 	];
 
-	var today = new Date();
-	var weekAgo = new Date();
-	this.dateRange = {
-		max: today,
-		min: new Date(weekAgo.setDate(weekAgo.getDate() - 7)),
+	var today = new Date('2000-01-10');
+	this.model = {
+		components: {
+			dateLookup: today
+		}
 	};
 }])
 .directive('validateRegexp', function($q) {

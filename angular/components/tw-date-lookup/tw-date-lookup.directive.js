@@ -9,7 +9,7 @@
 		return {
 			require: 'ngModel',
 			bindToController: true,
-			controller: ['$element', '$scope', 'TwDateService', TwDateLookupController],
+			controller: ['$element', '$scope', '$timeout', 'TwDateService', TwDateLookupController],
 			controllerAs: '$ctrl',
 			replace: false,
 			restrict: 'E',
@@ -29,48 +29,54 @@
 	}
 
 	var templateAsString = ' \
-		<div class="btn-group btn-block dropdown"> \
+		<div class="btn-group btn-block dropdown" \
+			ng-keydown="$ctrl.keyHandler($event)"> \
+			s: {{$ctrl.selectedDate}}/{{$ctrl.selectedMonth + 1}}/{{$ctrl.selectedYear}} \
+			v: {{$ctrl.day}}/{{$ctrl.month + 1}}/{{$ctrl.year}} \
 			<button class="btn btn-input dropdown-toggle tw-date-lookup-button" data-toggle="dropdown" \
 				ng-disabled="$ctrl.ngDisabled" \
+				ng-click="$ctrl.openLookup()" \
 				ng-class="{ \
 					\'btn-sm\': $ctrl.size === \'sm\', \
 					\'btn-lg\': $ctrl.size === \'lg\' \
-				}" \
-				ng-keydown="$ctrl.keyHandler($event)"> \
+				}"> \
 				<span ng-if="!$ctrl.ngModel" class="form-control-placeholder tw-date-lookup-placeholder"> \
 					{{$ctrl.placeholder}} \
 				</span> \
 				<span ng-if="$ctrl.ngModel" class="tw-date-lookup-selected"> \
 					<span ng-if="$ctrl.monthBeforeDay">{{$ctrl.monthsOfYear[$ctrl.selectedMonth]}}</span> \
-					{{$ctrl.selectedDate}} \
+					{{$ctrl.selectedDate}}<span ng-if="$ctrl.monthBeforeDay">,</span> \
 					<span ng-if="!$ctrl.monthBeforeDay">{{$ctrl.monthsOfYear[$ctrl.selectedMonth]}}</span> \
 					{{$ctrl.selectedYear}} \
 				</span> \
 				<span class="caret"></span> \
 			</button> \
 			<div class="dropdown-menu"> \
-				<div ng-if="$ctrl.mode === \'year\'"> \
+				\
+				<div ng-if="$ctrl.mode === \'year\'" class="tw-date-lookup-years"> \
 					<div class="text-xs-center p-t-1 p-b-2"> \
 						<div class="pull-xs-left p-b-2"> \
-							<a href="" ng-click="$ctrl.setYearOffset($event, -20)" class="text-no-decoration"> \
+							<a href="" ng-click="$ctrl.setYearOffset($event, -20)" \
+								class="text-no-decoration tw-date-lookup-previous-years"> \
 								<i class="icon icon-left icon-lg"></i> \
 							</a> \
 						</div> \
 						<div class="pull-xs-right p-b-2"> \
-							<a href="" ng-click="$ctrl.setYearOffset($event, 20)" class="text-no-decoration"> \
+							<a href="" ng-click="$ctrl.setYearOffset($event, 20)" \
+								class="text-no-decoration tw-date-lookup-next-years"> \
 								<i class="icon icon-right icon-lg"></i> \
 							</a> \
 						</div> \
 					</div> \
-					<table class="table table-condensed table-bordered table-calendar text-xs-center m-b-0"> \
+					<table class="table table-condensed table-bordered table-calendar m-b-0"> \
 						<tbody> \
 							<tr ng-repeat="row in [0,4,8,12,16]"> \
 								<td ng-repeat="col in [0,1,2,3]"> \
 									<a href="" \
 										ng-click="$ctrl.selectYear($event, $ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)" \
-										ng-disabled="$ctrl.isDisabled(1, 0, $ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)" \
-										ng-class="{\'table-calendar-selected\': $ctrl.selectedYear === ($ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)}" \
-										class="text-no-decoration"> \
+										ng-disabled="$ctrl.isYearDisabled($ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)" \
+										ng-class="{\'active\': $ctrl.selectedYear === ($ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)}" \
+										class="tw-date-lookup-year-option"> \
 										{{$ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset}} \
 									</a> \
 								</td> \
@@ -78,58 +84,66 @@
 						</tbody> \
 					</table> \
 				</div> \
-				<div ng-if="$ctrl.mode === \'month\'"> \
+				\
+				<div ng-if="$ctrl.mode === \'month\'" class="tw-date-lookup-months"> \
 					<div class="text-xs-center p-t-1 p-b-2"> \
 						<div class="pull-xs-left"> \
 							<a href="" ng-click="$ctrl.yearBefore($event)" class="text-no-decoration"> \
 								<i class="icon icon-left icon-lg"></i> \
 							</a> \
 						</div> \
-						<a href="" ng-click="$ctrl.switchToYears($event)">{{$ctrl.year}}</a> \
+						<a href="" ng-click="$ctrl.switchToYears($event)" \
+							class="tw-date-lookup-year-label"> \
+							{{$ctrl.year}} \
+						</a> \
 						<div class="pull-xs-right"> \
 							<a href="" ng-click="$ctrl.yearAfter($event)" class="text-no-decoration"> \
 								<i class="icon icon-right icon-lg"></i> \
 							</a> \
 						</div> \
 					</div> \
-					<table class="table table-condensed table-bordered table-calendar text-xs-center m-b-0"> \
+					<table class="table table-condensed table-bordered table-calendar m-b-0"> \
 						<tbody> \
 							<tr ng-repeat="row in [0,4,8]"> \
 								<td ng-repeat="col in [0,1,2,3]"> \
 									<a href="" \
-										ng-click="$ctrl.selectMonth($event, row+col)" \
-										ng-disabled="$ctrl.isDisabled(1, row + col, $ctrl.year)" \
-										ng-class="{\'table-calendar-selected\': $ctrl.selectedMonth === (row + col) && $ctrl.selectedYear === $ctrl.year}" \
-										class="text-no-decoration"> \
-										{{$ctrl.shortMonthsOfYear[row+col]}} \
+										ng-click="$ctrl.selectMonth($event, row+col, $ctrl.year)" \
+										ng-disabled="$ctrl.isMonthDisabled(row + col, $ctrl.year)" \
+										ng-class="{\'active\': $ctrl.selectedMonth === (row + col) && $ctrl.selectedYear === $ctrl.year}" \
+										class="tw-date-lookup-month-option"> \
+										{{$ctrl.shortMonthsOfYear[row+col] | limitTo:5}} \
 									</a> \
 								</td> \
 							</tr> \
 						</tbody> \
 					</table> \
 				</div> \
-				<div ng-if="$ctrl.mode === \'day\'"> \
+				\
+				<div ng-if="$ctrl.mode === \'day\'" class="tw-date-lookup-days"> \
 					<div class="text-xs-center p-t-1 p-b-2"> \
 						<div class="pull-xs-left"> \
-							<a href="" ng-click="$ctrl.monthBefore($event)" class="text-no-decoration"> \
+							<a href="" ng-click="$ctrl.monthBefore($event)" \
+								class="text-no-decoration tw-date-lookup-previous-month"> \
 								<i class="icon icon-left icon-lg"></i> \
 							</a> \
 						</div> \
-						<a href="" ng-click="$ctrl.switchToYears($event)"> \
+						<a href="" ng-click="$ctrl.switchToYears($event)" \
+							class="tw-date-lookup-month-label"> \
 							{{$ctrl.monthsOfYear[$ctrl.month]}} {{$ctrl.year}} \
 						</a> \
 						<div class="pull-xs-right"> \
-							<a href="" ng-click="$ctrl.monthAfter($event)" class="text-no-decoration"> \
+							<a href="" ng-click="$ctrl.monthAfter($event)" \
+								class="text-no-decoration tw-date-lookup-next-month"> \
 								<i class="icon icon-right icon-lg"></i> \
 							</a> \
 						</div> \
 					</div> \
-					<table class="table table-condensed table-bordered table-calendar text-xs-center m-b-0"> \
+					<table class="table table-condensed table-bordered table-calendar m-b-0"> \
 						<thead> \
 							<tr> \
-								<th ng-repeat="day in $ctrl.daysOfWeek track by $index" class="text-xs-center"> \
-									<span class="hidden-xs">{{day}}</span> \
-									<span class="visible-xs-inline-block">{{$ctrl.shortDaysOfWeek[$index]}}</span> \
+								<th ng-repeat="day in $ctrl.daysOfWeek track by $index"> \
+									<span class="hidden-xs">{{day | limitTo : 3}}</span> \
+									<span class="visible-xs-inline-block">{{$ctrl.shortDaysOfWeek[$index] | limitTo : 2}}</span> \
 								</th> \
 							</tr> \
 						</thead> \
@@ -137,15 +151,16 @@
 							<tr ng-repeat="week in $ctrl.weeks"> \
 								<td ng-repeat="day in week track by $index" \
 									ng-class="{ \
-										\'table-calendar-weekend\': $index > 4 \
+										\'default\': $index > 4 \
 									}"> \
-									<a href="" ng-if="day" \
-										ng-click="$ctrl.selectDate(day)" \
-										ng-disabled="$ctrl.isDisabled(day, $ctrl.month, $ctrl.year)" \
+									<a href="" title="{{day}} {{$ctrl.monthsOfYear[$ctrl.month]}} {{$ctrl.year}}" \
+										ng-if="day" \
+										ng-click="$ctrl.selectDay($event, day, $ctrl.month, $ctrl.year)" \
+										ng-disabled="$ctrl.isDayDisabled(day, $ctrl.month, $ctrl.year)" \
 										ng-class="{ \
-											\'table-calendar-selected\': $ctrl.isCurrentlySelected(day, $ctrl.month, $ctrl.year) \
+											\'active\': $ctrl.isCurrentlySelected(day, $ctrl.month, $ctrl.year) \
 										}" \
-										class="text-no-decoration" tabindex="0"> \
+										class="tw-date-lookup-day-option" tabindex="0"> \
 										{{day}} \
 									</a> \
 								</td> \
@@ -155,72 +170,128 @@
 				</div> \
 			</div> \
 		</div>';
-	/*
-	<div class="row text-xs-center"> \
-		<div class="col-xs-4 m-b-2" ng-repeat="month in $ctrl.monthsOfYear track by $index"> \
-			<button class="btn btn-info btn-block btn-sm" \
-				ng-click="$ctrl.selectMonth($event, $index)">{{month}}</button> \
-		</div> \
-	</div> \
 
-	<a href="" ng-click="$ctrl.yearBefore($event)" class="text-no-decoration"> \
-		<i class="icon icon-left icon-lg"></i> \
-	</a> \
-
-	<a href="" ng-click="$ctrl.yearAfter($event)" class="text-no-decoration"> \
-		<i class="icon icon-right icon-lg"></i> \
-	</a> \
-	*/
-	function TwDateLookupController($element, $scope, TwDateService) {
+	function TwDateLookupController($element, $scope, $timeout, TwDateService) {
 		var $ctrl = this,
 			ngModelCtrl,
 			minDay, minMonth, minYear,
 			maxDay, maxMonth, maxYear;
 
 		function init() {
-			$ctrl.mode = 'day';
 			$ctrl.yearOffset = 0;
 
 			ngModelCtrl = $element.controller('ngModel');
+
+			ngModelCtrl.$validators.required = function(value) {
+				return !($ctrl.ngRequired && !$ctrl.ngModel);
+			};
+			ngModelCtrl.$validators.min = function(value) {
+				return !$ctrl.ngMin || !$ctrl.ngModel || $ctrl.ngModel >= $ctrl.ngMin;
+			};
+			ngModelCtrl.$validators.max = function(value) {
+				return !$ctrl.ngMax || !$ctrl.ngModel || $ctrl.ngModel <= $ctrl.ngMax;
+			};
 
 			$scope.$watch('$ctrl.locale', function(newValue, oldValue) {
 				if (newValue && newValue !== oldValue) {
 					setLocale(newValue);
 				}
 			});
-			$scope.$watch('$ctrl.ngMin', function(newValue, oldValue) {
+			$scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
 				if (newValue && newValue !== oldValue) {
+					ngModelCtrl.$setDirty();
+					ngModelCtrl.$setTouched();
+					updateModelDate(newValue, true);
+				}
+			});
+			$scope.$watch('$ctrl.ngRequired', function(newValue, oldValue) {
+				if (newValue && newValue !== oldValue) {
+					ngModelCtrl.$validate();
+				}
+			});
+			$scope.$watch('$ctrl.ngMin', function(newValue, oldValue) {
+				if (newValue !== oldValue) {
 					updateMinDate($ctrl.ngMin);
 
-					// If selected value is less than new min, set to min
+					// If selected value is less than new min, set to min TODO?
 					if ($ctrl.ngModel < $ctrl.ngMin) {
-						updateModelDate($ctrl.ngMin);
+						updateModelDate(null);
 					}
+					ngModelCtrl.$validate();
 				}
 			});
 			$scope.$watch('$ctrl.ngMax', function(newValue, oldValue) {
-				if (newValue && newValue !== oldValue) {
+				if (newValue !== oldValue) {
 					updateMaxDate($ctrl.ngMax);
 
-					// If selected value is less than new min, set to min
+					// If selected value is less than new min, set to min TODO?
 					if ($ctrl.ngModel > $ctrl.ngMax) {
-						updateModelDate($ctrl.ngMax);
+						updateModelDate(null);
 					}
+					ngModelCtrl.$validate();
 				}
 			});
 
-			$ctrl.resetToToday();
+			if ($ctrl.ngModel && $ctrl.ngModel.getUTCDate) {
+				$ctrl.day = $ctrl.ngModel.getUTCDate();
+				$ctrl.month = $ctrl.ngModel.getUTCMonth();
+				$ctrl.year = $ctrl.ngModel.getUTCFullYear();
+			} else {
+				$ctrl.resetDate();
+			}
 			setLocale($ctrl.locale);
-			updateModelDate($ctrl.ngModel, true); // TODO maybe don't want to update viewModel on this call
+			updateModelDate($ctrl.ngModel, true); // Don't want to update viewModel on this call
 			updateMinDate($ctrl.ngMin);
 			updateMaxDate($ctrl.ngMax);
-			updateCalendar();
+			ngModelCtrl.$validate();
+
+			$ctrl.weeks = getTableStructure();
 		}
 
-		$ctrl.selectDate = function(day) {
-			$ctrl.day = day;
-			updateModelDate(TwDateService.getUTCDate($ctrl.year, $ctrl.month, day));
+		$ctrl.openLookup = function() {
+			ngModelCtrl.$setTouched();
+			$ctrl.mode = 'day';
+			if ($ctrl.ngModel && $ctrl.ngModel.getUTCDate) {
+				// Change view to selected month
+				$ctrl.day = $ctrl.ngModel.getUTCDate();
+				$ctrl.month = $ctrl.ngModel.getUTCMonth();
+				$ctrl.year = $ctrl.ngModel.getUTCFullYear();
+			} else {
+				$ctrl.resetDate();
+			}
+			$timeout(function () {
+				$element.find('.tw-date-lookup-month-label').focus();
+			});
 		};
+
+		$ctrl.selectDay = function($event, day, month, year) {
+			if ($ctrl.isDayDisabled(day, month, year)) {
+				// Don't close dropdown
+				$event.stopPropagation();
+				return;
+			}
+			$ctrl.day = day;
+			updateModelDate(TwDateService.getUTCDate(year, month, day));
+			resetFocus();
+		};
+		$ctrl.selectMonth = function($event, month, year) {
+			$event.stopPropagation();
+			if ($ctrl.isMonthDisabled(month, year)) {
+				return;
+			}
+			$ctrl.month = month;
+			$ctrl.weeks = getTableStructure();
+			$ctrl.mode = 'day';
+		};
+		$ctrl.selectYear = function($event, year) {
+			$event.stopPropagation();
+			if ($ctrl.isYearDisabled(year)) {
+				return;
+			}
+			$ctrl.year = year;
+			$ctrl.mode = 'month';
+		};
+
 		$ctrl.monthBefore = function($event) {
 			// Prevent dropdown closing
 			$event.stopPropagation();
@@ -255,12 +326,17 @@
 			$ctrl.year++;
 			$ctrl.weeks = getTableStructure();
 		};
-		$ctrl.resetToToday = function() {
-			var now = new Date();
+		$ctrl.resetDate = function() {
+			var focalDate = new Date();
+			focalDate = moveDateToWithinRange(focalDate, $ctrl.ngMin, $ctrl.ngMax);
 
-			$ctrl.day = now.getUTCDate();
-			$ctrl.month = now.getUTCMonth();
-			$ctrl.year = now.getUTCFullYear();
+			$ctrl.day = focalDate.getUTCDate();
+			$ctrl.month = focalDate.getUTCMonth();
+			$ctrl.year = focalDate.getUTCFullYear();
+
+			$ctrl.selectedDate = $ctrl.day;
+			$ctrl.selectedMonth = $ctrl.month;
+			$ctrl.selectedYear = $ctrl.year;
 
 			$ctrl.weeks = getTableStructure();
 		};
@@ -270,38 +346,42 @@
 				month === $ctrl.selectedMonth &&
 				year === $ctrl.selectedYear;
 		};
-		$ctrl.isDisabled = function(day, month, year) {
-			return (minYear && year < minYear ||
+		$ctrl.isDayDisabled = function(day, month, year) {
+			return $ctrl.isYearDisabled(year) ||
+				$ctrl.isMonthDisabled(month, year) ||
+				(year === minYear && month === minMonth && day < minDay) ||
+				(year === maxYear && month === maxMonth && day > maxDay);
+		};
+		$ctrl.isMonthDisabled = function(month, year) {
+			return $ctrl.isYearDisabled(year) ||
 				(year === minYear && month < minMonth) ||
-				(year === minYear && month === minMonth && day < minDay)) ||
-				(maxYear && year > maxYear ||
-				(year === maxYear && month > maxMonth) ||
-				(year === maxYear && month === maxMonth && day > maxDay));
+				(year === maxYear && month > maxMonth);
+		};
+		$ctrl.isYearDisabled = function(year) {
+			return (minYear && year < minYear) || (maxYear && year > maxYear);
 		};
 
 		$ctrl.switchToMonths = function($event) {
+			resetFocus($event.target);
+			findActiveLink();
 			$event.stopPropagation();
 			$ctrl.mode = 'month';
 		};
 		$ctrl.switchToYears = function($event) {
+			resetFocus($event.target);
+			findActiveLink();
 			$event.stopPropagation();
 			$ctrl.mode = 'year';
-		};
-		$ctrl.selectMonth = function($event, month) {
-			$event.stopPropagation();
-			$ctrl.month = month;
-			$ctrl.weeks = getTableStructure();
-			$ctrl.mode = 'day';
-		};
-		$ctrl.selectYear = function($event, year) {
-			$event.stopPropagation();
-			$ctrl.year = year;
-			$ctrl.mode = 'month';
 		};
 		$ctrl.setYearOffset = function($event, addtionalOffset) {
 			$event.stopPropagation();
 			$ctrl.yearOffset += addtionalOffset;
 		};
+
+		function resetFocus() {
+			// TODO remove jquery dependency
+			$element.find('button').focus();
+		}
 
 		function getTableStructure() {
 			var firstDayOfMonth = TwDateService.getWeekday($ctrl.year, $ctrl.month, 1);
@@ -347,18 +427,37 @@
 			$ctrl.shortDaysOfWeek = TwDateService.getDayNamesForLocale($ctrl.locale, 'narrow');
 		}
 
-		function updateCalendar() {
-			$ctrl.weeks = getTableStructure();
+		function moveDateToWithinRange(date, min, max) {
+			if (min && min > date) {
+				return min;
+			}
+			if (max && max < date) {
+				return max;
+			}
+			return date;
 		}
 
 		function updateModelDate(modelDate, dontSetVal) {
+			modelDate = moveDateToWithinRange(modelDate, $ctrl.ngMin, $ctrl.ngMax);
+
 			if (!dontSetVal) {
 				ngModelCtrl.$setViewValue(modelDate);
+				ngModelCtrl.$setDirty();
+				ngModelCtrl.$setTouched();
+			} else {
+				ngModelCtrl.$validate();
 			}
+
 			if (modelDate && modelDate.getUTCDate) {
 				$ctrl.selectedDate = modelDate.getUTCDate();
 				$ctrl.selectedMonth = modelDate.getUTCMonth();
 				$ctrl.selectedYear = modelDate.getUTCFullYear();
+
+				if ($ctrl.selectedMonth !== $ctrl.month || $ctrl.selectedYear !== $ctrl.year) {
+					$ctrl.month = $ctrl.selectedMonth;
+					$ctrl.year = $ctrl.selectedYear;
+					$ctrl.weeks = getTableStructure();
+				}
 			} else {
 				$ctrl.selectedDate = null;
 				$ctrl.selectedMonth = null;
@@ -393,51 +492,62 @@
 		// Keydown as keypress did not work in chrome/safari
 		$ctrl.keyHandler = function(event) {
 			var characterCode = event.which || event.charCode || event.keyCode;
+
 			if (!$ctrl.ngModel) {
-				$ctrl.resetToToday();
+				$ctrl.resetDate();
 				updateModelDate(
 					TwDateService.getUTCDate($ctrl.year, $ctrl.month, $ctrl.day)
 				);
-				//$ctrl.weeks = getTableStructure();
-				return; // TODO
+				return;
 			}
 
 			if (characterCode === 37) { // Left arrow key
-				moveLeft();
-				event.preventDefault(); // Prevent cursor jumping in input
+				moveLeft($ctrl.mode);
 			} else if (characterCode === 38) { // Up arrow key
-				moveUp();
-				event.preventDefault(); // Prevent cursor jumping in input
+				moveUp($ctrl.mode);
 			} else if (characterCode === 39) { // Right arrow key
-				moveRight();
-				event.preventDefault(); // Prevent cursor jumping in input
+				moveRight($ctrl.mode);
 			} else if (characterCode === 40) { // Down arrow key
-				moveDown();
-				event.preventDefault(); // Prevent cursor jumping around in input
+				moveDown($ctrl.mode);
 			}
+
+			findActiveLink();
+
 			return true;
 		};
 
-		function moveUp() {
-			// subtract 7 days
-			updateModelDate(TwDateService.addDays($ctrl.ngModel, -7));
-			// TODO Update month if necessary
-			//$ctrl.weeks = getTableStructure();
+		function findActiveLink() {
+			// Perform after current digest
+			$timeout(function () {
+				$element.find('a.active').focus();
+			});
 		}
-		function moveDown() {
-			// add 7 days
-			updateModelDate(TwDateService.addDays($ctrl.ngModel, 7));
-			//$ctrl.weeks = getTableStructure();
+
+		function moveUp(mode) {
+			adjustDate(mode, $ctrl.ngModel, -7, -4, -4);
 		}
-		function moveLeft() {
-			// subtract 1 day
-			updateModelDate(TwDateService.addDays($ctrl.ngModel, -1));
-			//$ctrl.weeks = getTableStructure();
+		function moveDown(mode) {
+			adjustDate(mode, $ctrl.ngModel, 7, 4, 4);
 		}
-		function moveRight() {
-			// add 1 day
-			updateModelDate(TwDateService.addDays($ctrl.ngModel, 1));
-			//$ctrl.weeks = getTableStructure();
+		function moveLeft(mode) {
+			adjustDate(mode, $ctrl.ngModel, -1, -1, -1);
+		}
+		function moveRight(mode) {
+			adjustDate(mode, $ctrl.ngModel, 1, 1, 1);
+		}
+
+		function adjustDate(mode, date, days, months, years) {
+			var newDate;
+			if (mode === 'day') {
+				newDate = TwDateService.addDays(date, days);
+			}
+			if (mode === 'month') {
+				newDate = TwDateService.addMonths(date, months);
+			}
+			if (mode === 'year') {
+				newDate = TwDateService.addYears(date, years);
+			}
+			updateModelDate(newDate);
 		}
 
 		init();

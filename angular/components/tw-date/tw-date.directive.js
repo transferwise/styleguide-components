@@ -129,8 +129,8 @@
 			placeholder='YYYY' \
 			ng-model='vm.year' \
 			ng-change='vm.updateDateModelAndValidationClasses()' \
-			ng-min='vm.dateRange.min.getFullYear()' \
-			ng-max='vm.dateRange.max.getFullYear()' \
+			ng-min='vm.min.getFullYear()' \
+			ng-max='vm.max.getFullYear()' \
 			maxlength='4' \
 			ng-maxlength='4' \
 			ng-disabled='vm.dateDisabled' \
