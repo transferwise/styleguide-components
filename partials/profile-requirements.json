@@ -29,10 +29,20 @@
             "displayFormat": null,
             "example": null,
             "minLength": 2,
-            "maxLength": null,
+            "maxLength": 10,
             "validationRegexp": null,
             "validationAsync": null,
             "valuesAllowed": null
+          }
+        ]
+      },
+      {
+        "name": "Last name",
+        "group": [
+          {
+            "key": "dateOfBirth",
+            "type": "date",
+            "required": true
           }
         ]
       }
