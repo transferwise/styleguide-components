@@ -1,6 +1,7 @@
 [
   {
     "type": "iban",
+    "label": "Iban label",
     "fields": [
         {
          "name": "Legal type",
