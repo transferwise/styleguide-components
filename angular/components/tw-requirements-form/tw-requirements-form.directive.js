@@ -35,6 +35,7 @@
 					class='tab-pane' \
 					id='{{requirementType.type}}' \
 					ng-class='{\"active\": $ctrl.model.type == requirementType.type}'> \
+					<p>{{requirementType.description}}</p> \
 					<div class='row'> \
 						<div class='form-group' \
 							ng-repeat='fieldGroup in requirementType.fields' \
