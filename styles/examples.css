@@ -24,33 +24,3 @@ pre {
   background-color: #d6f5e2;
   border-color: #2ed06e;
 }
-.text-no-decoration,
-.text-no-decoration:hover,
-.text-no-decoration:focus,
-.text-no-decoration:active {
-  text-decoration: none;
-}
-a[disabled] {
-  color: #d5d7d9 !important;
-  cursor: default;
-}
-.table-calendar td {
-  padding: 0 !important;
-}
-.table-calendar td > a {
-  display: block;
-  padding: 4px 0;
-  margin: 4px 2px;
-  border-radius: 3px;
-}
-.table-calendar-selected {
-  background-color: #37517e !important;
-  color: #FFF !important;
-}
-.table-calendar td > a:not([disabled]):hover {
-  background-color: #00b9FF !important;
-  color: #FFF !important;
-}
-.table-calendar-weekend {
-  background-color: #f5f7f9;
-}
