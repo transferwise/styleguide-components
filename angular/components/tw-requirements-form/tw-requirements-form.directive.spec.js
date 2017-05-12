@@ -121,6 +121,11 @@ describe('Directive: TwRequirementsForm', function() {
                 expect(activePane.length).toBe(1);
             });
 
+            it('has a description paragraph', function() {
+              var paragraph = activePane.find('p');
+              expect(paragraph.text().trim()).toBe($scope.requirements[1].description);
+            });
+
             describe('for form groups', function() {
                 beforeEach(function() {
                     formGroups = activePane.find('.form-group');
@@ -268,6 +273,7 @@ describe('Directive: TwRequirementsForm', function() {
           },
           {
             "type": "iban",
+            "description": "IBAN description",
             "fields": [
               {
                 "name": "Legal type",
