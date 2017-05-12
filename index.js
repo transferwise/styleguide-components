@@ -214,6 +214,10 @@ angular.module('my-app', ['tw.styleguide-components'])
 			{value: 'xs,sm', label: 'xs and sm grid'},
 			{value: 'md,lg,xl', label: 'md, lg and xl grid'}
 		];
+
+		$ctrl.log = function(message) {
+			console.log(message);
+		}
 	}
 })
 .directive('twUploadDocs', function() {

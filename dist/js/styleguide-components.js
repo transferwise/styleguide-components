@@ -319,32 +319,39 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     }
     function TwDateLookupController($element, $scope, $timeout, TwDateService) {
         function init() {
-            $ctrl.yearOffset = 0, ngModelCtrl = $element.controller("ngModel"), ngModelCtrl.$validators.required = function(value) {
-                return !($ctrl.ngRequired && !$ctrl.ngModel);
-            }, ngModelCtrl.$validators.min = function(value) {
-                return !$ctrl.ngMin || !$ctrl.ngModel || $ctrl.ngModel >= $ctrl.ngMin;
-            }, ngModelCtrl.$validators.max = function(value) {
-                return !$ctrl.ngMax || !$ctrl.ngModel || $ctrl.ngModel <= $ctrl.ngMax;
-            }, $scope.$watch("$ctrl.locale", function(newValue, oldValue) {
-                newValue && newValue !== oldValue && setLocale(newValue);
-            }), $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
-                newValue && newValue !== oldValue && (ngModelCtrl.$setDirty(), ngModelCtrl.$setTouched(), 
-                updateModelDate(newValue, !0));
-            }), $scope.$watch("$ctrl.ngRequired", function(newValue, oldValue) {
-                newValue && newValue !== oldValue && ngModelCtrl.$validate();
-            }), $scope.$watch("$ctrl.ngMin", function(newValue, oldValue) {
-                newValue !== oldValue && (updateMinDate($ctrl.ngMin), $ctrl.ngModel < $ctrl.ngMin && updateModelDate(null), 
-                ngModelCtrl.$validate());
-            }), $scope.$watch("$ctrl.ngMax", function(newValue, oldValue) {
-                newValue !== oldValue && (updateMaxDate($ctrl.ngMax), $ctrl.ngModel > $ctrl.ngMax && updateModelDate(null), 
-                ngModelCtrl.$validate());
-            }), $ctrl.ngModel && $ctrl.ngModel.getUTCDate ? ($ctrl.day = $ctrl.ngModel.getUTCDate(), 
-            $ctrl.month = $ctrl.ngModel.getUTCMonth(), $ctrl.year = $ctrl.ngModel.getUTCFullYear()) : $ctrl.resetDate(), 
+            $ctrl.yearOffset = 0, ngModelCtrl = $element.controller("ngModel"), addValidators(), 
+            addWatchers(), $element.find(".btn, .dropdown-menu").on("focusout", function() {
+                $timeout(function() {
+                    0 !== $element.find(".btn:focus").length || $element.find(".btn-group").hasClass("open") || $element.trigger("blur");
+                }, 150);
+            }), $ctrl.ngModel && $ctrl.ngModel.getUTCDate ? $ctrl.resetView($ctrl.ngModel) : $ctrl.resetView(), 
             setLocale($ctrl.locale), updateModelDate($ctrl.ngModel, !0), updateMinDate($ctrl.ngMin), 
             updateMaxDate($ctrl.ngMax), ngModelCtrl.$validate(), $ctrl.weeks = getTableStructure();
         }
         function resetFocus() {
             $element.find("button").focus();
+        }
+        function addValidators() {
+            ngModelCtrl.$validators.min = function(modelValue, viewValue) {
+                var value = modelValue || viewValue;
+                return !(value && value < $ctrl.ngMin) || (unsetModel(), !1);
+            }, ngModelCtrl.$validators.max = function(modelValue, viewValue) {
+                var value = modelValue || viewValue;
+                return !(value && value > $ctrl.ngMax) || (unsetModel(), !1);
+            };
+        }
+        function addWatchers() {
+            $scope.$watch("$ctrl.locale", function(newValue, oldValue) {
+                newValue && newValue !== oldValue && setLocale(newValue);
+            }), $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+                newValue && newValue !== oldValue && updateModelDate(newValue, !0);
+            }), $scope.$watch("$ctrl.ngRequired", function(newValue, oldValue) {
+                ngModelCtrl.$validate();
+            }), $scope.$watch("$ctrl.ngMin", function(newValue, oldValue) {
+                newValue !== oldValue && (updateMinDate($ctrl.ngMin), $ctrl.ngModel < $ctrl.ngMin && unsetModel());
+            }), $scope.$watch("$ctrl.ngMax", function(newValue, oldValue) {
+                newValue !== oldValue && (updateMaxDate($ctrl.ngMax), $ctrl.ngModel > $ctrl.ngMax && unsetModel());
+            });
         }
         function getTableStructure() {
             var firstDayOfMonth = TwDateService.getWeekday($ctrl.year, $ctrl.month, 1);
@@ -367,13 +374,13 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         function moveDateToWithinRange(date, min, max) {
             return min && min > date ? min : max && max < date ? max : date;
         }
+        function unsetModel() {
+            ngModelCtrl.$setViewValue(null), $ctrl.resetView(), ngModelCtrl.$setDirty(), ngModelCtrl.$setTouched();
+        }
         function updateModelDate(modelDate, dontSetVal) {
-            modelDate = moveDateToWithinRange(modelDate, $ctrl.ngMin, $ctrl.ngMax), dontSetVal ? ngModelCtrl.$validate() : (ngModelCtrl.$setViewValue(modelDate), 
-            ngModelCtrl.$setDirty(), ngModelCtrl.$setTouched()), modelDate && modelDate.getUTCDate ? ($ctrl.selectedDate = modelDate.getUTCDate(), 
-            $ctrl.selectedMonth = modelDate.getUTCMonth(), $ctrl.selectedYear = modelDate.getUTCFullYear(), 
-            $ctrl.selectedMonth === $ctrl.month && $ctrl.selectedYear === $ctrl.year || ($ctrl.month = $ctrl.selectedMonth, 
-            $ctrl.year = $ctrl.selectedYear, $ctrl.weeks = getTableStructure())) : ($ctrl.selectedDate = null, 
-            $ctrl.selectedMonth = null, $ctrl.selectedYear = null);
+            modelDate && (modelDate = moveDateToWithinRange(modelDate, $ctrl.ngMin, $ctrl.ngMax)), 
+            dontSetVal ? ngModelCtrl.$validate() : (ngModelCtrl.$setViewValue(modelDate), ngModelCtrl.$setDirty(), 
+            ngModelCtrl.$setTouched()), modelDate && modelDate.getUTCDate ? $ctrl.resetView(modelDate) : $ctrl.resetView();
         }
         function updateMinDate(minDate) {
             minDate && minDate.getUTCDate ? (minDay = minDate.getUTCDate(), minMonth = minDate.getUTCMonth(), 
@@ -401,14 +408,13 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             adjustDate(mode, $ctrl.ngModel, 1, 1, 1);
         }
         function adjustDate(mode, date, days, months, years) {
-            var newDate;
+            var newDate = date;
             "day" === mode && (newDate = TwDateService.addDays(date, days)), "month" === mode && (newDate = TwDateService.addMonths(date, months)), 
             "year" === mode && (newDate = TwDateService.addYears(date, years)), updateModelDate(newDate);
         }
         var ngModelCtrl, minDay, minMonth, minYear, maxDay, maxMonth, maxYear, $ctrl = this;
         $ctrl.openLookup = function() {
-            ngModelCtrl.$setTouched(), $ctrl.mode = "day", $ctrl.ngModel && $ctrl.ngModel.getUTCDate ? ($ctrl.day = $ctrl.ngModel.getUTCDate(), 
-            $ctrl.month = $ctrl.ngModel.getUTCMonth(), $ctrl.year = $ctrl.ngModel.getUTCFullYear()) : $ctrl.resetDate(), 
+            ngModelCtrl.$setTouched(), $ctrl.mode = "day", $ctrl.ngModel && $ctrl.ngModel.getUTCDate ? $ctrl.resetView($ctrl.ngModel) : $ctrl.resetView(), 
             $timeout(function() {
                 $element.find(".tw-date-lookup-month-label").focus();
             });
@@ -430,10 +436,9 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             $ctrl.weeks = getTableStructure();
         }, $ctrl.yearAfter = function($event) {
             $event.stopPropagation(), $ctrl.year++, $ctrl.weeks = getTableStructure();
-        }, $ctrl.resetDate = function() {
-            var focalDate = new Date();
-            focalDate = moveDateToWithinRange(focalDate, $ctrl.ngMin, $ctrl.ngMax), $ctrl.day = focalDate.getUTCDate(), 
-            $ctrl.month = focalDate.getUTCMonth(), $ctrl.year = focalDate.getUTCFullYear(), 
+        }, $ctrl.resetView = function(focalDate) {
+            focalDate || (focalDate = new Date()), focalDate = moveDateToWithinRange(focalDate, $ctrl.ngMin, $ctrl.ngMax), 
+            $ctrl.day = focalDate.getUTCDate(), $ctrl.month = focalDate.getUTCMonth(), $ctrl.year = focalDate.getUTCFullYear(), 
             $ctrl.selectedDate = $ctrl.day, $ctrl.selectedMonth = $ctrl.month, $ctrl.selectedYear = $ctrl.year, 
             $ctrl.weeks = getTableStructure();
         }, $ctrl.isCurrentlySelected = function(day, month, year) {
@@ -450,14 +455,20 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             resetFocus($event.target), findActiveLink(), $event.stopPropagation(), $ctrl.mode = "year";
         }, $ctrl.setYearOffset = function($event, addtionalOffset) {
             $event.stopPropagation(), $ctrl.yearOffset += addtionalOffset;
+        }, $ctrl.buttonFocus = function() {
+            $element.triggerHandler("focus");
+        }, $ctrl.blur = function() {
+            $element.triggerHandler("focus");
         }, $ctrl.keyHandler = function(event) {
+            if (!$ctrl.ngModel) return void updateModelDate(TwDateService.getUTCDate($ctrl.year, $ctrl.month, $ctrl.day));
             var characterCode = event.which || event.charCode || event.keyCode;
-            return $ctrl.ngModel ? (37 === characterCode ? moveLeft($ctrl.mode) : 38 === characterCode ? moveUp($ctrl.mode) : 39 === characterCode ? moveRight($ctrl.mode) : 40 === characterCode && moveDown($ctrl.mode), 
-            findActiveLink(), !0) : ($ctrl.resetDate(), void updateModelDate(TwDateService.getUTCDate($ctrl.year, $ctrl.month, $ctrl.day)));
+            return 37 === characterCode ? moveLeft($ctrl.mode) : 38 === characterCode ? (event.preventDefault(), 
+            moveUp($ctrl.mode)) : 39 === characterCode ? moveRight($ctrl.mode) : 40 === characterCode && (event.preventDefault(), 
+            moveDown($ctrl.mode)), findActiveLink(), !0;
         }, init();
     }
     angular.module("tw.form-components").directive("twDateLookup", TwDateLookupDirective);
-    var templateAsString = ' \t\t<div class="btn-group btn-block dropdown" \t\t\tng-keydown="$ctrl.keyHandler($event)"> \t\t\ts: {{$ctrl.selectedDate}}/{{$ctrl.selectedMonth + 1}}/{{$ctrl.selectedYear}} \t\t\tv: {{$ctrl.day}}/{{$ctrl.month + 1}}/{{$ctrl.year}} \t\t\t<button class="btn btn-input dropdown-toggle tw-date-lookup-button" data-toggle="dropdown" \t\t\t\tng-disabled="$ctrl.ngDisabled" \t\t\t\tng-click="$ctrl.openLookup()" \t\t\t\tng-class="{ \t\t\t\t\t\'btn-sm\': $ctrl.size === \'sm\', \t\t\t\t\t\'btn-lg\': $ctrl.size === \'lg\' \t\t\t\t}"> \t\t\t\t<span ng-if="!$ctrl.ngModel" class="form-control-placeholder tw-date-lookup-placeholder"> \t\t\t\t\t{{$ctrl.placeholder}} \t\t\t\t</span> \t\t\t\t<span ng-if="$ctrl.ngModel" class="tw-date-lookup-selected"> \t\t\t\t\t<span ng-if="$ctrl.monthBeforeDay">{{$ctrl.monthsOfYear[$ctrl.selectedMonth]}}</span> \t\t\t\t\t{{$ctrl.selectedDate}}<span ng-if="$ctrl.monthBeforeDay">,</span> \t\t\t\t\t<span ng-if="!$ctrl.monthBeforeDay">{{$ctrl.monthsOfYear[$ctrl.selectedMonth]}}</span> \t\t\t\t\t{{$ctrl.selectedYear}} \t\t\t\t</span> \t\t\t\t<span class="caret"></span> \t\t\t</button> \t\t\t<div class="dropdown-menu"> \t\t\t\t\t\t\t\t<div ng-if="$ctrl.mode === \'year\'" class="tw-date-lookup-years"> \t\t\t\t\t<div class="text-xs-center p-t-1 p-b-2"> \t\t\t\t\t\t<div class="pull-xs-left p-b-2"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.setYearOffset($event, -20)" \t\t\t\t\t\t\t\tclass="text-no-decoration tw-date-lookup-previous-years"> \t\t\t\t\t\t\t\t<i class="icon icon-left icon-lg"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</div> \t\t\t\t\t\t<div class="pull-xs-right p-b-2"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.setYearOffset($event, 20)" \t\t\t\t\t\t\t\tclass="text-no-decoration tw-date-lookup-next-years"> \t\t\t\t\t\t\t\t<i class="icon icon-right icon-lg"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t\t<table class="table table-condensed table-bordered table-calendar m-b-0"> \t\t\t\t\t\t<tbody> \t\t\t\t\t\t\t<tr ng-repeat="row in [0,4,8,12,16]"> \t\t\t\t\t\t\t\t<td ng-repeat="col in [0,1,2,3]"> \t\t\t\t\t\t\t\t\t<a href="" \t\t\t\t\t\t\t\t\t\tng-click="$ctrl.selectYear($event, $ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)" \t\t\t\t\t\t\t\t\t\tng-disabled="$ctrl.isYearDisabled($ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)" \t\t\t\t\t\t\t\t\t\tng-class="{\'active\': $ctrl.selectedYear === ($ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)}" \t\t\t\t\t\t\t\t\t\tclass="tw-date-lookup-year-option"> \t\t\t\t\t\t\t\t\t\t{{$ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset}} \t\t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t</td> \t\t\t\t\t\t\t</tr> \t\t\t\t\t\t</tbody> \t\t\t\t\t</table> \t\t\t\t</div> \t\t\t\t\t\t\t\t<div ng-if="$ctrl.mode === \'month\'" class="tw-date-lookup-months"> \t\t\t\t\t<div class="text-xs-center p-t-1 p-b-2"> \t\t\t\t\t\t<div class="pull-xs-left"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.yearBefore($event)" class="text-no-decoration"> \t\t\t\t\t\t\t\t<i class="icon icon-left icon-lg"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</div> \t\t\t\t\t\t<a href="" ng-click="$ctrl.switchToYears($event)" \t\t\t\t\t\t\tclass="tw-date-lookup-year-label"> \t\t\t\t\t\t\t{{$ctrl.year}} \t\t\t\t\t\t</a> \t\t\t\t\t\t<div class="pull-xs-right"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.yearAfter($event)" class="text-no-decoration"> \t\t\t\t\t\t\t\t<i class="icon icon-right icon-lg"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t\t<table class="table table-condensed table-bordered table-calendar m-b-0"> \t\t\t\t\t\t<tbody> \t\t\t\t\t\t\t<tr ng-repeat="row in [0,4,8]"> \t\t\t\t\t\t\t\t<td ng-repeat="col in [0,1,2,3]"> \t\t\t\t\t\t\t\t\t<a href="" \t\t\t\t\t\t\t\t\t\tng-click="$ctrl.selectMonth($event, row+col, $ctrl.year)" \t\t\t\t\t\t\t\t\t\tng-disabled="$ctrl.isMonthDisabled(row + col, $ctrl.year)" \t\t\t\t\t\t\t\t\t\tng-class="{\'active\': $ctrl.selectedMonth === (row + col) && $ctrl.selectedYear === $ctrl.year}" \t\t\t\t\t\t\t\t\t\tclass="tw-date-lookup-month-option"> \t\t\t\t\t\t\t\t\t\t{{$ctrl.shortMonthsOfYear[row+col] | limitTo:5}} \t\t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t</td> \t\t\t\t\t\t\t</tr> \t\t\t\t\t\t</tbody> \t\t\t\t\t</table> \t\t\t\t</div> \t\t\t\t\t\t\t\t<div ng-if="$ctrl.mode === \'day\'" class="tw-date-lookup-days"> \t\t\t\t\t<div class="text-xs-center p-t-1 p-b-2"> \t\t\t\t\t\t<div class="pull-xs-left"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.monthBefore($event)" \t\t\t\t\t\t\t\tclass="text-no-decoration tw-date-lookup-previous-month"> \t\t\t\t\t\t\t\t<i class="icon icon-left icon-lg"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</div> \t\t\t\t\t\t<a href="" ng-click="$ctrl.switchToYears($event)" \t\t\t\t\t\t\tclass="tw-date-lookup-month-label"> \t\t\t\t\t\t\t{{$ctrl.monthsOfYear[$ctrl.month]}} {{$ctrl.year}} \t\t\t\t\t\t</a> \t\t\t\t\t\t<div class="pull-xs-right"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.monthAfter($event)" \t\t\t\t\t\t\t\tclass="text-no-decoration tw-date-lookup-next-month"> \t\t\t\t\t\t\t\t<i class="icon icon-right icon-lg"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t\t<table class="table table-condensed table-bordered table-calendar m-b-0"> \t\t\t\t\t\t<thead> \t\t\t\t\t\t\t<tr> \t\t\t\t\t\t\t\t<th ng-repeat="day in $ctrl.daysOfWeek track by $index"> \t\t\t\t\t\t\t\t\t<span class="hidden-xs">{{day | limitTo : 3}}</span> \t\t\t\t\t\t\t\t\t<span class="visible-xs-inline-block">{{$ctrl.shortDaysOfWeek[$index] | limitTo : 2}}</span> \t\t\t\t\t\t\t\t</th> \t\t\t\t\t\t\t</tr> \t\t\t\t\t\t</thead> \t\t\t\t\t\t<tbody> \t\t\t\t\t\t\t<tr ng-repeat="week in $ctrl.weeks"> \t\t\t\t\t\t\t\t<td ng-repeat="day in week track by $index" \t\t\t\t\t\t\t\t\tng-class="{ \t\t\t\t\t\t\t\t\t\t\'default\': $index > 4 \t\t\t\t\t\t\t\t\t}"> \t\t\t\t\t\t\t\t\t<a href="" title="{{day}} {{$ctrl.monthsOfYear[$ctrl.month]}} {{$ctrl.year}}" \t\t\t\t\t\t\t\t\t\tng-if="day" \t\t\t\t\t\t\t\t\t\tng-click="$ctrl.selectDay($event, day, $ctrl.month, $ctrl.year)" \t\t\t\t\t\t\t\t\t\tng-disabled="$ctrl.isDayDisabled(day, $ctrl.month, $ctrl.year)" \t\t\t\t\t\t\t\t\t\tng-class="{ \t\t\t\t\t\t\t\t\t\t\t\'active\': $ctrl.isCurrentlySelected(day, $ctrl.month, $ctrl.year) \t\t\t\t\t\t\t\t\t\t}" \t\t\t\t\t\t\t\t\t\tclass="tw-date-lookup-day-option" tabindex="0"> \t\t\t\t\t\t\t\t\t\t{{day}} \t\t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t</td> \t\t\t\t\t\t\t</tr> \t\t\t\t\t\t</tbody> \t\t\t\t\t</table> \t\t\t\t</div> \t\t\t</div> \t\t</div>';
+    var templateAsString = ' \t\t<div class="btn-group btn-block dropdown" \t\t\tng-keydown="$ctrl.keyHandler($event)"> \t\t\t<button class="btn btn-input dropdown-toggle tw-date-lookup-button" data-toggle="dropdown" \t\t\t\tng-disabled="$ctrl.ngDisabled" \t\t\t\tng-click="$ctrl.openLookup()" \t\t\t\tng-focus="$ctrl.buttonFocus()" \t\t\t\tng-class="{ \t\t\t\t\t\'btn-sm\': $ctrl.size === \'sm\', \t\t\t\t\t\'btn-lg\': $ctrl.size === \'lg\' \t\t\t\t}"> \t\t\t\t<span ng-if="!$ctrl.ngModel" class="form-control-placeholder tw-date-lookup-placeholder"> \t\t\t\t\t{{$ctrl.placeholder}} \t\t\t\t</span> \t\t\t\t<span ng-if="$ctrl.ngModel" class="tw-date-lookup-selected"> \t\t\t\t\t<span ng-if="$ctrl.monthBeforeDay">{{$ctrl.monthsOfYear[$ctrl.selectedMonth]}}</span> \t\t\t\t\t{{$ctrl.selectedDate}}<span ng-if="$ctrl.monthBeforeDay">,</span> \t\t\t\t\t<span ng-if="!$ctrl.monthBeforeDay">{{$ctrl.monthsOfYear[$ctrl.selectedMonth]}}</span> \t\t\t\t\t{{$ctrl.selectedYear}} \t\t\t\t</span> \t\t\t\t<span class="caret"></span> \t\t\t</button> \t\t\t<div class="dropdown-menu"> \t\t\t\t\t\t\t\t<div ng-if="$ctrl.mode === \'year\'" class="tw-date-lookup-years"> \t\t\t\t\t<div class="text-xs-center p-t-1 p-b-2"> \t\t\t\t\t\t<div class="pull-xs-left p-b-2"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.setYearOffset($event, -20)" \t\t\t\t\t\t\t\tclass="text-no-decoration tw-date-lookup-previous-years"> \t\t\t\t\t\t\t\t<i class="icon icon-left icon-lg"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</div> \t\t\t\t\t\t<div class="pull-xs-right p-b-2"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.setYearOffset($event, 20)" \t\t\t\t\t\t\t\tclass="text-no-decoration tw-date-lookup-next-years"> \t\t\t\t\t\t\t\t<i class="icon icon-right icon-lg"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t\t<table class="table table-condensed table-bordered table-calendar m-b-0"> \t\t\t\t\t\t<tbody> \t\t\t\t\t\t\t<tr ng-repeat="row in [0,4,8,12,16]"> \t\t\t\t\t\t\t\t<td ng-repeat="col in [0,1,2,3]"> \t\t\t\t\t\t\t\t\t<a href="" \t\t\t\t\t\t\t\t\t\tng-click="$ctrl.selectYear($event, $ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)" \t\t\t\t\t\t\t\t\t\tng-disabled="$ctrl.isYearDisabled($ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)" \t\t\t\t\t\t\t\t\t\tng-class="{\'active\': $ctrl.selectedYear === ($ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)}" \t\t\t\t\t\t\t\t\t\tclass="tw-date-lookup-year-option"> \t\t\t\t\t\t\t\t\t\t{{$ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset}} \t\t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t</td> \t\t\t\t\t\t\t</tr> \t\t\t\t\t\t</tbody> \t\t\t\t\t</table> \t\t\t\t</div> \t\t\t\t\t\t\t\t<div ng-if="$ctrl.mode === \'month\'" class="tw-date-lookup-months"> \t\t\t\t\t<div class="text-xs-center p-t-1 p-b-2"> \t\t\t\t\t\t<div class="pull-xs-left"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.yearBefore($event)" class="text-no-decoration"> \t\t\t\t\t\t\t\t<i class="icon icon-left icon-lg"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</div> \t\t\t\t\t\t<a href="" ng-click="$ctrl.switchToYears($event)" \t\t\t\t\t\t\tclass="tw-date-lookup-year-label"> \t\t\t\t\t\t\t{{$ctrl.year}} \t\t\t\t\t\t</a> \t\t\t\t\t\t<div class="pull-xs-right"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.yearAfter($event)" class="text-no-decoration"> \t\t\t\t\t\t\t\t<i class="icon icon-right icon-lg"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t\t<table class="table table-condensed table-bordered table-calendar m-b-0"> \t\t\t\t\t\t<tbody> \t\t\t\t\t\t\t<tr ng-repeat="row in [0,4,8]"> \t\t\t\t\t\t\t\t<td ng-repeat="col in [0,1,2,3]"> \t\t\t\t\t\t\t\t\t<a href="" \t\t\t\t\t\t\t\t\t\tng-click="$ctrl.selectMonth($event, row+col, $ctrl.year)" \t\t\t\t\t\t\t\t\t\tng-disabled="$ctrl.isMonthDisabled(row + col, $ctrl.year)" \t\t\t\t\t\t\t\t\t\tng-class="{\'active\': $ctrl.selectedMonth === (row + col) && $ctrl.selectedYear === $ctrl.year}" \t\t\t\t\t\t\t\t\t\tclass="tw-date-lookup-month-option"> \t\t\t\t\t\t\t\t\t\t{{$ctrl.shortMonthsOfYear[row+col] | limitTo:5}} \t\t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t</td> \t\t\t\t\t\t\t</tr> \t\t\t\t\t\t</tbody> \t\t\t\t\t</table> \t\t\t\t</div> \t\t\t\t\t\t\t\t<div ng-if="$ctrl.mode === \'day\'" class="tw-date-lookup-days"> \t\t\t\t\t<div class="text-xs-center p-t-1 p-b-2"> \t\t\t\t\t\t<div class="pull-xs-left"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.monthBefore($event)" \t\t\t\t\t\t\t\tclass="text-no-decoration tw-date-lookup-previous-month"> \t\t\t\t\t\t\t\t<i class="icon icon-left icon-lg"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</div> \t\t\t\t\t\t<a href="" ng-click="$ctrl.switchToYears($event)" \t\t\t\t\t\t\tclass="tw-date-lookup-month-label"> \t\t\t\t\t\t\t{{$ctrl.monthsOfYear[$ctrl.month]}} {{$ctrl.year}} \t\t\t\t\t\t</a> \t\t\t\t\t\t<div class="pull-xs-right"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.monthAfter($event)" \t\t\t\t\t\t\t\tclass="text-no-decoration tw-date-lookup-next-month"> \t\t\t\t\t\t\t\t<i class="icon icon-right icon-lg"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t\t<table class="table table-condensed table-bordered table-calendar m-b-0"> \t\t\t\t\t\t<thead> \t\t\t\t\t\t\t<tr> \t\t\t\t\t\t\t\t<th ng-repeat="day in $ctrl.daysOfWeek track by $index"> \t\t\t\t\t\t\t\t\t<span class="hidden-xs">{{day | limitTo : 3}}</span> \t\t\t\t\t\t\t\t\t<span class="visible-xs-inline-block">{{$ctrl.shortDaysOfWeek[$index] | limitTo : 2}}</span> \t\t\t\t\t\t\t\t</th> \t\t\t\t\t\t\t</tr> \t\t\t\t\t\t</thead> \t\t\t\t\t\t<tbody> \t\t\t\t\t\t\t<tr ng-repeat="week in $ctrl.weeks"> \t\t\t\t\t\t\t\t<td ng-repeat="day in week track by $index" \t\t\t\t\t\t\t\t\tng-class="{ \t\t\t\t\t\t\t\t\t\t\'default\': $index > 4 \t\t\t\t\t\t\t\t\t}"> \t\t\t\t\t\t\t\t\t<a href="" title="{{day}} {{$ctrl.monthsOfYear[$ctrl.month]}} {{$ctrl.year}}" \t\t\t\t\t\t\t\t\t\tng-if="day" \t\t\t\t\t\t\t\t\t\tng-click="$ctrl.selectDay($event, day, $ctrl.month, $ctrl.year)" \t\t\t\t\t\t\t\t\t\tng-disabled="$ctrl.isDayDisabled(day, $ctrl.month, $ctrl.year)" \t\t\t\t\t\t\t\t\t\tng-class="{ \t\t\t\t\t\t\t\t\t\t\t\'active\': $ctrl.isCurrentlySelected(day, $ctrl.month, $ctrl.year) \t\t\t\t\t\t\t\t\t\t}" \t\t\t\t\t\t\t\t\t\tclass="tw-date-lookup-day-option" tabindex="0"> \t\t\t\t\t\t\t\t\t\t{{day}} \t\t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t</td> \t\t\t\t\t\t\t</tr> \t\t\t\t\t\t</tbody> \t\t\t\t\t</table> \t\t\t\t</div> \t\t\t</div> \t\t</div>';
 }(window.angular), function(angular) {
     "use strict";
     function TwDateDirective() {

@@ -15,6 +15,9 @@
 				ng-disabled="vm.dateLookup.disabled"
 				ng-min="vm.dateLookup.min"
 				ng-max="vm.dateLookup.max"
+				ng-change="vm.log('date lookup change: ' + vm.model.components.dateLookup)"
+				ng-focus="vm.log('date lookup focus')"
+				ng-blur="vm.log('date lookup blur')"
 				placeholder="{{vm.dateLookup.placeholder}}"
 				locale="{{vm.dateLookup.locale}}"
 				size="{{vm.dateLookup.size}}" tw-validation></tw-date-lookup>
@@ -28,7 +31,10 @@
   ng-required="{{vm.dateLookup.required}}"</span><span ng-if="vm.dateLookup.disabled">
   ng-disabled="{{vm.dateLookup.disabled}}"</span><span ng-if="vm.dateLookup.min">
   ng-min={{vm.dateLookup.min}}</span><span ng-if="vm.dateLookup.max">
-  ng-max={{vm.dateLookup.max}}</span><span ng-if="vm.dateLookup.size">
+  ng-max={{vm.dateLookup.max}}</span>
+  ng-change="..."
+  ng-focus="..."
+  ng-blur="..."<span ng-if="vm.dateLookup.size">
   size={{vm.dateLookup.size}}</span>&gt;
 &lt;/tw-date-lookup&gt;
 		</pre>

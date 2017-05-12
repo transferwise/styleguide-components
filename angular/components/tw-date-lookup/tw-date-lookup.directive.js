@@ -31,11 +31,10 @@
 	var templateAsString = ' \
 		<div class="btn-group btn-block dropdown" \
 			ng-keydown="$ctrl.keyHandler($event)"> \
-			s: {{$ctrl.selectedDate}}/{{$ctrl.selectedMonth + 1}}/{{$ctrl.selectedYear}} \
-			v: {{$ctrl.day}}/{{$ctrl.month + 1}}/{{$ctrl.year}} \
 			<button class="btn btn-input dropdown-toggle tw-date-lookup-button" data-toggle="dropdown" \
 				ng-disabled="$ctrl.ngDisabled" \
 				ng-click="$ctrl.openLookup()" \
+				ng-focus="$ctrl.buttonFocus()" \
 				ng-class="{ \
 					\'btn-sm\': $ctrl.size === \'sm\', \
 					\'btn-lg\': $ctrl.size === \'lg\' \
@@ -182,62 +181,23 @@
 
 			ngModelCtrl = $element.controller('ngModel');
 
-			ngModelCtrl.$validators.required = function(value) {
-				return !($ctrl.ngRequired && !$ctrl.ngModel);
-			};
-			ngModelCtrl.$validators.min = function(value) {
-				return !$ctrl.ngMin || !$ctrl.ngModel || $ctrl.ngModel >= $ctrl.ngMin;
-			};
-			ngModelCtrl.$validators.max = function(value) {
-				return !$ctrl.ngMax || !$ctrl.ngModel || $ctrl.ngModel <= $ctrl.ngMax;
-			};
+			addValidators();
+			addWatchers();
 
-			$scope.$watch('$ctrl.locale', function(newValue, oldValue) {
-				if (newValue && newValue !== oldValue) {
-					setLocale(newValue);
-				}
-			});
-			$scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
-				if (newValue && newValue !== oldValue) {
-					ngModelCtrl.$setDirty();
-					ngModelCtrl.$setTouched();
-					updateModelDate(newValue, true);
-				}
-			});
-			$scope.$watch('$ctrl.ngRequired', function(newValue, oldValue) {
-				if (newValue && newValue !== oldValue) {
-					ngModelCtrl.$validate();
-				}
-			});
-			$scope.$watch('$ctrl.ngMin', function(newValue, oldValue) {
-				if (newValue !== oldValue) {
-					updateMinDate($ctrl.ngMin);
-
-					// If selected value is less than new min, set to min TODO?
-					if ($ctrl.ngModel < $ctrl.ngMin) {
-						updateModelDate(null);
+			$element.find('.btn, .dropdown-menu').on('focusout', function() {
+				$timeout(function() {
+					// If button isn't focused and dropdown not open, blur
+					if ($element.find('.btn:focus').length === 0 &&
+						!$element.find('.btn-group').hasClass('open')) {
+						$element.trigger('blur');
 					}
-					ngModelCtrl.$validate();
-				}
-			});
-			$scope.$watch('$ctrl.ngMax', function(newValue, oldValue) {
-				if (newValue !== oldValue) {
-					updateMaxDate($ctrl.ngMax);
-
-					// If selected value is less than new min, set to min TODO?
-					if ($ctrl.ngModel > $ctrl.ngMax) {
-						updateModelDate(null);
-					}
-					ngModelCtrl.$validate();
-				}
+				}, 150); 	// need timeout because using dropdown.js,
 			});
 
 			if ($ctrl.ngModel && $ctrl.ngModel.getUTCDate) {
-				$ctrl.day = $ctrl.ngModel.getUTCDate();
-				$ctrl.month = $ctrl.ngModel.getUTCMonth();
-				$ctrl.year = $ctrl.ngModel.getUTCFullYear();
+				$ctrl.resetView($ctrl.ngModel);
 			} else {
-				$ctrl.resetDate();
+				$ctrl.resetView();
 			}
 			setLocale($ctrl.locale);
 			updateModelDate($ctrl.ngModel, true); // Don't want to update viewModel on this call
@@ -252,12 +212,9 @@
 			ngModelCtrl.$setTouched();
 			$ctrl.mode = 'day';
 			if ($ctrl.ngModel && $ctrl.ngModel.getUTCDate) {
-				// Change view to selected month
-				$ctrl.day = $ctrl.ngModel.getUTCDate();
-				$ctrl.month = $ctrl.ngModel.getUTCMonth();
-				$ctrl.year = $ctrl.ngModel.getUTCFullYear();
+				$ctrl.resetView($ctrl.ngModel);
 			} else {
-				$ctrl.resetDate();
+				$ctrl.resetView();
 			}
 			$timeout(function () {
 				$element.find('.tw-date-lookup-month-label').focus();
@@ -326,8 +283,10 @@
 			$ctrl.year++;
 			$ctrl.weeks = getTableStructure();
 		};
-		$ctrl.resetDate = function() {
-			var focalDate = new Date();
+		$ctrl.resetView = function(focalDate) {
+			if (!focalDate) {
+				focalDate = new Date();
+			}
 			focalDate = moveDateToWithinRange(focalDate, $ctrl.ngMin, $ctrl.ngMax);
 
 			$ctrl.day = focalDate.getUTCDate();
@@ -378,9 +337,71 @@
 			$ctrl.yearOffset += addtionalOffset;
 		};
 
+		$ctrl.buttonFocus = function() {
+			$element.triggerHandler('focus');
+		};
+		$ctrl.blur = function() {
+			$element.triggerHandler('focus');
+		};
+
 		function resetFocus() {
 			// TODO remove jquery dependency
 			$element.find('button').focus();
+		}
+
+		function addValidators() {
+			ngModelCtrl.$validators.min = function(modelValue, viewValue) {
+				var value = modelValue || viewValue;
+				if (value && value < $ctrl.ngMin) {
+					unsetModel();
+					return false;
+				}
+				return true;
+				//return !$ctrl.ngMin || !value || value >= $ctrl.ngMin;
+			};
+			ngModelCtrl.$validators.max = function(modelValue, viewValue) {
+				var value = modelValue || viewValue;
+				if (value && value > $ctrl.ngMax) {
+					unsetModel();
+					return false;
+				}
+				return true;
+				//return !$ctrl.ngMax || !value || value <= $ctrl.ngMax;
+			};
+		}
+
+		function addWatchers() {
+			$scope.$watch('$ctrl.locale', function(newValue, oldValue) {
+				if (newValue && newValue !== oldValue) {
+					setLocale(newValue);
+				}
+			});
+			$scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
+				if (newValue && newValue !== oldValue) {
+					updateModelDate(newValue, true);
+				}
+			});
+			$scope.$watch('$ctrl.ngRequired', function(newValue, oldValue) {
+				ngModelCtrl.$validate();
+			});
+			$scope.$watch('$ctrl.ngMin', function(newValue, oldValue) {
+				if (newValue !== oldValue) {
+					updateMinDate($ctrl.ngMin);
+
+					if ($ctrl.ngModel < $ctrl.ngMin) {
+						unsetModel();
+					}
+				}
+			});
+			$scope.$watch('$ctrl.ngMax', function(newValue, oldValue) {
+				if (newValue !== oldValue) {
+					updateMaxDate($ctrl.ngMax);
+
+					if ($ctrl.ngModel > $ctrl.ngMax) {
+						unsetModel();
+					}
+				}
+			});
 		}
 
 		function getTableStructure() {
@@ -437,8 +458,17 @@
 			return date;
 		}
 
+		function unsetModel() {
+			ngModelCtrl.$setViewValue(null);
+			$ctrl.resetView();
+			ngModelCtrl.$setDirty();
+			ngModelCtrl.$setTouched();
+		}
+
 		function updateModelDate(modelDate, dontSetVal) {
-			modelDate = moveDateToWithinRange(modelDate, $ctrl.ngMin, $ctrl.ngMax);
+			if (modelDate) {
+				modelDate = moveDateToWithinRange(modelDate, $ctrl.ngMin, $ctrl.ngMax);
+			}
 
 			if (!dontSetVal) {
 				ngModelCtrl.$setViewValue(modelDate);
@@ -449,19 +479,9 @@
 			}
 
 			if (modelDate && modelDate.getUTCDate) {
-				$ctrl.selectedDate = modelDate.getUTCDate();
-				$ctrl.selectedMonth = modelDate.getUTCMonth();
-				$ctrl.selectedYear = modelDate.getUTCFullYear();
-
-				if ($ctrl.selectedMonth !== $ctrl.month || $ctrl.selectedYear !== $ctrl.year) {
-					$ctrl.month = $ctrl.selectedMonth;
-					$ctrl.year = $ctrl.selectedYear;
-					$ctrl.weeks = getTableStructure();
-				}
+				$ctrl.resetView(modelDate);
 			} else {
-				$ctrl.selectedDate = null;
-				$ctrl.selectedMonth = null;
-				$ctrl.selectedYear = null;
+				$ctrl.resetView();
 			}
 		}
 
@@ -491,23 +511,24 @@
 
 		// Keydown as keypress did not work in chrome/safari
 		$ctrl.keyHandler = function(event) {
-			var characterCode = event.which || event.charCode || event.keyCode;
-
 			if (!$ctrl.ngModel) {
-				$ctrl.resetDate();
 				updateModelDate(
 					TwDateService.getUTCDate($ctrl.year, $ctrl.month, $ctrl.day)
 				);
 				return;
 			}
 
+			var characterCode = event.which || event.charCode || event.keyCode;
+
 			if (characterCode === 37) { // Left arrow key
 				moveLeft($ctrl.mode);
 			} else if (characterCode === 38) { // Up arrow key
+				event.preventDefault(); // Prevent browser scroll
 				moveUp($ctrl.mode);
 			} else if (characterCode === 39) { // Right arrow key
 				moveRight($ctrl.mode);
 			} else if (characterCode === 40) { // Down arrow key
+				event.preventDefault(); // Prevent browser scroll
 				moveDown($ctrl.mode);
 			}
 
@@ -537,7 +558,7 @@
 		}
 
 		function adjustDate(mode, date, days, months, years) {
-			var newDate;
+			var newDate = date;
 			if (mode === 'day') {
 				newDate = TwDateService.addDays(date, days);
 			}
