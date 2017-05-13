@@ -189,7 +189,10 @@
 					// If button isn't focused and dropdown not open, blur
 					if ($element.find('.btn:focus').length === 0 &&
 						!$element.find('.btn-group').hasClass('open')) {
-						$element.trigger('blur');
+						// TODO remove jquery dependency
+						$element.parents('.form-group').removeClass('focus');
+						// jqLite supprts triggerHandler
+						$element.triggerHandler('blur');
 					}
 				}, 150); 	// need timeout because using dropdown.js,
 			});
@@ -200,7 +203,8 @@
 				$ctrl.resetView();
 			}
 			setLocale($ctrl.locale);
-			updateModelDate($ctrl.ngModel, true); // Don't want to update viewModel on this call
+			 // Don't update viewModel on this call
+			updateModelDate($ctrl.ngModel, true);
 			updateMinDate($ctrl.ngMin);
 			updateMaxDate($ctrl.ngMax);
 			ngModelCtrl.$validate();
@@ -338,14 +342,18 @@
 		};
 
 		$ctrl.buttonFocus = function() {
+			// remove jquery dependency
+			$element.parents('.form-group').addClass('focus');
+			// jqLite supports triggerHandler
 			$element.triggerHandler('focus');
 		};
 		$ctrl.blur = function() {
+			// jqLite supports triggerHandler
 			$element.triggerHandler('focus');
 		};
 
 		function resetFocus() {
-			// TODO remove jquery dependency
+			// jqLite supports find by tag name
 			$element.find('button').focus();
 		}
 
@@ -357,7 +365,6 @@
 					return false;
 				}
 				return true;
-				//return !$ctrl.ngMin || !value || value >= $ctrl.ngMin;
 			};
 			ngModelCtrl.$validators.max = function(modelValue, viewValue) {
 				var value = modelValue || viewValue;
@@ -366,7 +373,6 @@
 					return false;
 				}
 				return true;
-				//return !$ctrl.ngMax || !value || value <= $ctrl.ngMax;
 			};
 		}
 

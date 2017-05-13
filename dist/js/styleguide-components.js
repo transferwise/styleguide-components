@@ -322,7 +322,8 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             $ctrl.yearOffset = 0, ngModelCtrl = $element.controller("ngModel"), addValidators(), 
             addWatchers(), $element.find(".btn, .dropdown-menu").on("focusout", function() {
                 $timeout(function() {
-                    0 !== $element.find(".btn:focus").length || $element.find(".btn-group").hasClass("open") || $element.trigger("blur");
+                    0 !== $element.find(".btn:focus").length || $element.find(".btn-group").hasClass("open") || ($element.parents(".form-group").removeClass("focus"), 
+                    $element.triggerHandler("blur"));
                 }, 150);
             }), $ctrl.ngModel && $ctrl.ngModel.getUTCDate ? $ctrl.resetView($ctrl.ngModel) : $ctrl.resetView(), 
             setLocale($ctrl.locale), updateModelDate($ctrl.ngModel, !0), updateMinDate($ctrl.ngMin), 
@@ -456,7 +457,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         }, $ctrl.setYearOffset = function($event, addtionalOffset) {
             $event.stopPropagation(), $ctrl.yearOffset += addtionalOffset;
         }, $ctrl.buttonFocus = function() {
-            $element.triggerHandler("focus");
+            $element.parents(".form-group").addClass("focus"), $element.triggerHandler("focus");
         }, $ctrl.blur = function() {
             $element.triggerHandler("focus");
         }, $ctrl.keyHandler = function(event) {
