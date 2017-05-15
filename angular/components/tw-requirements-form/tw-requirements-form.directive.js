@@ -63,8 +63,8 @@
 										ng-blur='$ctrl.onBlur(field)' \
 										ng-required='field.required' \
 										ng-disabled='field.disabled' \
-										ng-minlength='field.minLength' \
-										ng-maxlength='field.maxLength' \
+										tw-minlength='field.minLength' \
+										tw-maxlength='field.maxLength' \
 										ng-min='field.min' \
 										ng-max='field.max' \
 										ng-pattern='field.validationRegexp' \

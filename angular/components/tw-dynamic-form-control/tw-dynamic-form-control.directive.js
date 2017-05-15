@@ -29,8 +29,9 @@
 				ngModel: "=",
 				ngRequired: "=",
 				ngDisabled: "=",
-				ngMinlength: "=",
-				ngMaxlength: "=",
+				// ngMinlength/ngMaxlength have default behaviour that cannot be overridden
+				ngMinlength: "=twMinlength",
+				ngMaxlength: "=twMaxlength",
 				ngMin: "=",
 				ngMax: "=",
 				ngPattern: "=",
@@ -187,50 +188,60 @@
 			ngModelController.$setTouched();
 			$element.triggerHandler('blur');
 		};
+
+		ngModelController.$validators.minlength = function(modelValue, viewValue) {
+			var value = modelValue || viewValue;
+			if ($ctrl.type !== 'text' || !$ctrl.ngMinlength) {
+				return true;
+			}
+			return !value || value.length >= $ctrl.ngMinlength;
+		};
+		ngModelController.$validators.maxlength = function(modelValue, viewValue) {
+			var value = modelValue || viewValue;
+			if ($ctrl.type !== 'text' || !$ctrl.ngMaxlength) {
+				return true;
+			}
+			return !value || value.length <= $ctrl.ngMaxlength;
+		};
 	}
 
 	function TwDynamicFormControlLink(scope, element, attrs, ngModel) {
 		// Min and max do not work on custom elements, add manual validators
 		ngModel.$validators.min = function(modelValue, viewValue) {
+			var value = modelValue || viewValue;
 			if (typeof scope.$ctrl.ngMin === "undefined") {
 				return true;
 			}
-			if (typeof viewValue === "number" &&
+			if (typeof value === "number" &&
 				typeof scope.$ctrl.ngMin === "number" &&
-				viewValue < scope.$ctrl.ngMin) {
+				value < scope.$ctrl.ngMin) {
 				return false;
 			}
-			// TODO add comparisons for Date type controls
+			if (value &&
+				value.getUTCDate &&
+				scope.$ctrl.ngMin.getUTCDate &&
+				value < scope.$ctrl.ngMin) {
+				return false;
+			}
 			return true;
 		};
 		ngModel.$validators.max = function(modelValue, viewValue) {
+			var value = modelValue || viewValue;
 			if (typeof scope.$ctrl.ngMax === "undefined") {
 				return true;
 			}
-			if (typeof viewValue === "number" &&
+			if (typeof value === "number" &&
 				typeof scope.$ctrl.ngMax === "number" &&
-				viewValue > scope.$ctrl.ngMax) {
+				value > scope.$ctrl.ngMax) {
 				return false;
 			}
-			// TODO add comparisons for Date type controls
+			if (value &&
+				viewValue.getUTCDate &&
+				scope.$ctrl.ngMax.getUTCDate &&
+				value > scope.$ctrl.ngMax) {
+				return false;
+			}
 			return true;
 		};
-
-		/*
-		// Attempt to override minlength/maxlength so not applied if not text
-		// TODO doesn't work, must return bool!.
-		ngModel.$validators.minlength = function(modelValue, viewValue) {
-			if (scope.$ctrl.type !== 'text' || !scope.$ctrl.ngMinlength) {
-				return true;
-			}
-			return scope.$ctrl.ngMinlength();
-		};
-		ngModel.$validators.maxlength = function(modelValue, viewValue) {
-			if (scope.$ctrl.type !== 'text' || !scope.$ctrl.ngMaxlength) {
-				return true;
-			}
-			return scope.$ctrl.ngMaxlength();
-		};
-		*/
 	}
 })(window.angular);
