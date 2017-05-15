@@ -79,7 +79,7 @@ describe('Directive: TwDateLookup, ', function() {
         beforeEach(function () {
           element.find(BUTTON_SELECTOR)[0].click();
         });
-        it('should open on selected month and year', function () {
+        it('should open on current month and year', function () {
           var today = getToday();
           var year = today.getUTCFullYear();
           var month = ENGLISH_MONTHS[today.getUTCMonth()];
@@ -114,6 +114,21 @@ describe('Directive: TwDateLookup, ', function() {
       describe('as something other than a valid Date instance', function () {
         it('should ...', function () {
             // TODO
+        });
+      });
+    });
+
+    describe('in a timezone on a different day to UTC', function() {
+      describe('when no date is supplied', function () {
+        it('should open with the users day highlighted', function () {
+          // TODO
+          //spyOn(TwDateService, 'now').and.returnValue(new Date('2000-01-10T23:00:00+1000'));
+          //expect
+        });
+      });
+      describe('when the user selects a day', function () {
+        it('should set the model to the UTC date of that day', function () {
+          // TODO
         });
       });
     });
@@ -273,7 +288,7 @@ describe('Directive: TwDateLookup, ', function() {
         element = getCompiledDirectiveElement($scope);
         ngModelController = element.controller('ngModel');
       });
-      it('should set control to invalid', function() {
+      it('should set control to invalid-required', function() {
         $scope.ngRequired = true;
         $scope.$digest();
         expect(ngModelController.$invalid).toBe(true);
@@ -281,7 +296,7 @@ describe('Directive: TwDateLookup, ', function() {
         expect(element.hasClass('ng-invalid-required')).toBe(true);
       });
 
-      it('should set control to valid', function() {
+      it('should set control to valid required', function() {
         $scope.ngRequired = false;
         $scope.$digest();
         expect(ngModelController.$valid).toBe(true);
@@ -424,8 +439,6 @@ describe('Directive: TwDateLookup, ', function() {
 
     beforeEach(function() {
       $scope.ngModel = getUTCDate(2000, 0, 10);
-      //$scope.ngMin = getUTCDate(2000, 0, 2);
-      //$scope.ngMax = getUTCDate(2000, 0, 30);
       element = getCompiledDirectiveElement($scope);
       ngModelController = element.controller('ngModel');
       dropdownToggle = element.find('.dropdown');
@@ -446,10 +459,12 @@ describe('Directive: TwDateLookup, ', function() {
         var month = ENGLISH_MONTHS[$scope.ngModel.getUTCMonth()];
         expect(element.find(MONTH_LABEL_SELECTOR).text().trim()).toBe(month + ' ' + year);
       });
-      it('should show the correct days for the month', function () {
+      it('should show the correct number of days for the month', function () {
         var dayOptions = element.find(DAY_OPTIONS_SELECTOR);
-        var firstTableRowCells = element.find('.table-calendar tbody tr:first-child td');
         expect(dayOptions.length).toBe(31);
+      });
+      it('should show the first day on the correct day of the week', function () {
+        var firstTableRowCells = element.find('.table-calendar tbody tr:first-child td');
         // First day of Jan 2000 was Saturday (6th column)
         expect($(firstTableRowCells[5]).find('a').text().trim()).toBe('1');
       });
@@ -517,7 +532,6 @@ describe('Directive: TwDateLookup, ', function() {
 
     describe('when the user presses the left arrow key', function() {
       beforeEach(function() {
-        //element.find('.tw-date-lookup-month-label')
         element.find('a.active')
           .trigger({type: "keydown", keyCode: KEYS.left, which: KEYS.left});
       });
@@ -544,10 +558,6 @@ describe('Directive: TwDateLookup, ', function() {
       it('should select 7 days before current day', function() {
         expect($scope.ngModel).toEqual(getUTCDate(2000, 0, 3));
       });
-    });
-
-    it('should default to English day/month names', function () {
-      // TODO
     });
 
     describe('when clicking a valid date', function() {
@@ -678,7 +688,7 @@ describe('Directive: TwDateLookup, ', function() {
           });
           it('should highlight 1 years before current year', function() {
             expect($scope.ngModel).toEqual(getUTCDate(1999, 0, 1));
-            //expect(element.find('a.active').text().trim()).toEqual('1999');
+            expect(element.find('a.active').text().trim()).toEqual('1999');
           });
         });
 

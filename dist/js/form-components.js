@@ -322,9 +322,9 @@ angular.module("tw.form-components", []);
                     0 !== $element.find(".btn:focus").length || $element.find(".btn-group").hasClass("open") || ($element.parents(".form-group").removeClass("focus"), 
                     $element.triggerHandler("blur"));
                 }, 150);
-            }), $ctrl.ngModel && $ctrl.ngModel.getUTCDate ? $ctrl.resetView($ctrl.ngModel) : $ctrl.resetView(), 
-            setLocale($ctrl.locale), updateModelDate($ctrl.ngModel, !0), updateMinDate($ctrl.ngMin), 
-            updateMaxDate($ctrl.ngMax), ngModelCtrl.$validate(), $ctrl.weeks = getTableStructure();
+            }), $ctrl.resetView($ctrl.ngModel), setLocale($ctrl.locale), updateModelDate($ctrl.ngModel, !0), 
+            updateMinDate($ctrl.ngMin), updateMaxDate($ctrl.ngMax), ngModelCtrl.$validate(), 
+            $ctrl.weeks = getTableStructure();
         }
         function resetFocus() {
             $element.find("button").focus();
@@ -378,15 +378,15 @@ angular.module("tw.form-components", []);
         function updateModelDate(modelDate, dontSetVal) {
             modelDate && (modelDate = moveDateToWithinRange(modelDate, $ctrl.ngMin, $ctrl.ngMax)), 
             dontSetVal ? ngModelCtrl.$validate() : (ngModelCtrl.$setViewValue(modelDate), ngModelCtrl.$setDirty(), 
-            ngModelCtrl.$setTouched()), modelDate && modelDate.getUTCDate ? $ctrl.resetView(modelDate) : $ctrl.resetView();
+            ngModelCtrl.$setTouched()), $ctrl.resetView(modelDate);
         }
         function updateMinDate(minDate) {
-            minDate && minDate.getUTCDate ? (minDay = minDate.getUTCDate(), minMonth = minDate.getUTCMonth(), 
-            minYear = minDate.getUTCFullYear()) : (minDay = null, minMonth = null, minYear = null);
+            minDate && minDate.getUTCDate ? (minDay = minDate.getDate(), minMonth = minDate.getMonth(), 
+            minYear = minDate.getFullYear()) : (minDay = null, minMonth = null, minYear = null);
         }
         function updateMaxDate(maxDate) {
-            maxDate && maxDate.getUTCDate ? (maxDay = maxDate.getUTCDate(), maxMonth = maxDate.getUTCMonth(), 
-            maxYear = maxDate.getUTCFullYear()) : (maxDay = null, maxMonth = null, maxYear = null);
+            maxDate && maxDate.getUTCDate ? (maxDay = maxDate.getDate(), maxMonth = maxDate.getMonth(), 
+            maxYear = maxDate.getFullYear()) : (maxDay = null, maxMonth = null, maxYear = null);
         }
         function findActiveLink() {
             $timeout(function() {
@@ -412,8 +412,7 @@ angular.module("tw.form-components", []);
         }
         var ngModelCtrl, minDay, minMonth, minYear, maxDay, maxMonth, maxYear, $ctrl = this;
         $ctrl.openLookup = function() {
-            ngModelCtrl.$setTouched(), $ctrl.mode = "day", $ctrl.ngModel && $ctrl.ngModel.getUTCDate ? $ctrl.resetView($ctrl.ngModel) : $ctrl.resetView(), 
-            $timeout(function() {
+            ngModelCtrl.$setTouched(), $ctrl.mode = "day", $ctrl.resetView($ctrl.ngModel), $timeout(function() {
                 $element.find(".tw-date-lookup-month-label").focus();
             });
         }, $ctrl.selectDay = function($event, day, month, year) {
@@ -435,8 +434,8 @@ angular.module("tw.form-components", []);
         }, $ctrl.yearAfter = function($event) {
             $event.stopPropagation(), $ctrl.year++, $ctrl.weeks = getTableStructure();
         }, $ctrl.resetView = function(focalDate) {
-            focalDate || (focalDate = new Date()), focalDate = moveDateToWithinRange(focalDate, $ctrl.ngMin, $ctrl.ngMax), 
-            $ctrl.day = focalDate.getUTCDate(), $ctrl.month = focalDate.getUTCMonth(), $ctrl.year = focalDate.getUTCFullYear(), 
+            focalDate && focalDate.getUTCDate || (focalDate = new Date()), focalDate = moveDateToWithinRange(focalDate, $ctrl.ngMin, $ctrl.ngMax), 
+            $ctrl.day = focalDate.getDate(), $ctrl.month = focalDate.getMonth(), $ctrl.year = focalDate.getFullYear(), 
             $ctrl.selectedDate = $ctrl.day, $ctrl.selectedMonth = $ctrl.month, $ctrl.selectedYear = $ctrl.year, 
             $ctrl.weeks = getTableStructure();
         }, $ctrl.isCurrentlySelected = function(day, month, year) {
@@ -708,7 +707,7 @@ angular.module("tw.form-components", []);
         }
         function prepRegExp(field) {
             if (field.validationRegexp) try {
-                field.validationRegexp = new RegExp(ield.validationRegexp);
+                field.validationRegexp = new RegExp(field.validationRegexp);
             } catch (ex) {
                 console.log("API regexp is invalid"), field.validationRegexp = !1;
             } else field.validationRegexp = !1;

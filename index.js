@@ -55,10 +55,10 @@ angular.module('my-app', ['tw.styleguide-components'])
 		{'value': 'xx-XX', 'label': 'Unknown locale'}
 	];
 
-	var today = new Date('2000-01-10');
+	var initialDate = new Date('2000-01-10');
 	this.model = {
 		components: {
-			dateLookup: today
+			dateLookup: initialDate
 		}
 	};
 }])

@@ -197,11 +197,8 @@
 				}, 150); 	// need timeout because using dropdown.js,
 			});
 
-			if ($ctrl.ngModel && $ctrl.ngModel.getUTCDate) {
-				$ctrl.resetView($ctrl.ngModel);
-			} else {
-				$ctrl.resetView();
-			}
+
+			$ctrl.resetView($ctrl.ngModel);
 			setLocale($ctrl.locale);
 			 // Don't update viewModel on this call
 			updateModelDate($ctrl.ngModel, true);
@@ -215,11 +212,8 @@
 		$ctrl.openLookup = function() {
 			ngModelCtrl.$setTouched();
 			$ctrl.mode = 'day';
-			if ($ctrl.ngModel && $ctrl.ngModel.getUTCDate) {
-				$ctrl.resetView($ctrl.ngModel);
-			} else {
-				$ctrl.resetView();
-			}
+			$ctrl.resetView($ctrl.ngModel);
+
 			$timeout(function () {
 				$element.find('.tw-date-lookup-month-label').focus();
 			});
@@ -232,6 +226,7 @@
 				return;
 			}
 			$ctrl.day = day;
+			// Always set model to UTC dates
 			updateModelDate(TwDateService.getUTCDate(year, month, day));
 			resetFocus();
 		};
@@ -288,14 +283,17 @@
 			$ctrl.weeks = getTableStructure();
 		};
 		$ctrl.resetView = function(focalDate) {
-			if (!focalDate) {
+			if (!focalDate || !focalDate.getUTCDate) {
+				// We want date in user's timezone, not UTC
 				focalDate = new Date();
 			}
 			focalDate = moveDateToWithinRange(focalDate, $ctrl.ngMin, $ctrl.ngMax);
 
-			$ctrl.day = focalDate.getUTCDate();
-			$ctrl.month = focalDate.getUTCMonth();
-			$ctrl.year = focalDate.getUTCFullYear();
+			// We want user's timezone, so don't use UTC functions
+			// TODO this works for 'today', maybe not for supplied dates?
+			$ctrl.day = focalDate.getDate();
+			$ctrl.month = focalDate.getMonth();
+			$ctrl.year = focalDate.getFullYear();
 
 			$ctrl.selectedDate = $ctrl.day;
 			$ctrl.selectedMonth = $ctrl.month;
@@ -484,18 +482,16 @@
 				ngModelCtrl.$validate();
 			}
 
-			if (modelDate && modelDate.getUTCDate) {
-				$ctrl.resetView(modelDate);
-			} else {
-				$ctrl.resetView();
-			}
+			$ctrl.resetView(modelDate);
 		}
 
 		function updateMinDate(minDate) {
 			if (minDate && minDate.getUTCDate) {
-				minDay = minDate.getUTCDate();
-				minMonth = minDate.getUTCMonth();
-				minYear = minDate.getUTCFullYear();
+				// If supplied UTC date, timezoneless function is fine
+				// If supplied timzeone date, we want to resepct it.
+				minDay = minDate.getDate(); 				// minDate.getUTCDate();
+				minMonth = minDate.getMonth(); 			// minDate.getUTCMonth();
+				minYear = minDate.getFullYear();		// minDate.getUTCFullYear();
 			} else {
 				minDay = null;
 				minMonth = null;
@@ -505,9 +501,9 @@
 
 		function updateMaxDate(maxDate) {
 			if (maxDate && maxDate.getUTCDate) {
-				maxDay = maxDate.getUTCDate();
-				maxMonth = maxDate.getUTCMonth();
-				maxYear = maxDate.getUTCFullYear();
+				maxDay = maxDate.getDate();  				// maxDate.getUTCDate();
+				maxMonth = maxDate.getMonth();			// maxDate.getUTCMonth();
+				maxYear = maxDate.getFullYear();		// maxDate.getUTCFullYear();
 			} else {
 				maxDay = null;
 				maxMonth = null;
@@ -519,6 +515,7 @@
 		$ctrl.keyHandler = function(event) {
 			if (!$ctrl.ngModel) {
 				updateModelDate(
+					// Always set model to UTC dates
 					TwDateService.getUTCDate($ctrl.year, $ctrl.month, $ctrl.day)
 				);
 				return;

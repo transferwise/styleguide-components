@@ -154,7 +154,7 @@
 		function prepRegExp(field) {
 			if (field.validationRegexp) {
 				try {
-					field.validationRegexp = new RegExp(ield.validationRegexp);
+					field.validationRegexp = new RegExp(field.validationRegexp);
 				} catch(ex) {
 					console.log("API regexp is invalid");
 					field.validationRegexp = false;
