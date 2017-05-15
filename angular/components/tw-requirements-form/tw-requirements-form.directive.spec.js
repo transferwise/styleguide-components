@@ -41,9 +41,10 @@ describe('Directive: TwRequirementsForm', function() {
                 expect(navTabs.length).toBe($scope.requirements.length);
 
                 var label = "tab label";
-                var type1 = "unused type";
-                var type2 = "used type";
-                
+
+                var type1 = "Unused type";
+                var type2 = "Used type";
+
                 $scope.requirements[0].label = label;
                 $scope.requirements[0].type = type1;
                 $scope.requirements[1].type = type2;
