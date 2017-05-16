@@ -3,12 +3,13 @@
     "type": "verification",
     "fields": [
         {
-         "name": "National ID",
+         "name": "Front of your national ID",
          "group": [
            {
              "key": "id",
              "type": "upload",
-             "required": true
+             "required": true,
+             "placeholder": "Make sure the image is well lit and in focus. Max 1MB."
            }
          ]
        },
@@ -18,7 +19,8 @@
           {
             "key": "ssn",
             "type": "text",
-            "required": true
+            "required": true,
+            "placeholder": "All data is fully encrypted"
           }
         ]
       }

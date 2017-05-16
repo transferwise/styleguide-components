@@ -18,6 +18,7 @@
 				type: "@",
 				name: "@",
 				id: "@",
+				label: "@",
 				placeholder: "@",
 				helpText: "@",
 				step: "@",
@@ -132,14 +133,14 @@
 				<div ng-switch-when='upload'> \
 					<tw-upload \
 						name='{{$ctrl.name}}' \
-						description='{{$ctrl.placeholder}}' \
+						label='{{$ctrl.label}}' \
 						icon='{{$ctrl.uploadIcon}}' \
-						instructions='{{$ctrl.helpText}}' \
-						complete-text='{{$ctrl.placeholder}}' \
-						too-large-message='{{$ctrl.uploadTooLargeMessage}}' \
+						placeholder='{{$ctrl.placeholder}}' \
 						accept='{{$ctrl.uploadAccept}}' \
+						complete-text='{{$ctrl.label}}' \
 						button-text='{{$ctrl.uploadOptions.buttonText}}' \
 						cancel-text='{{$ctrl.uploadOptions.cancelText}}' \
+						too-large-message='{{$ctrl.uploadTooLargeMessage}}' \
 						max-size='$ctrl.ngMax' \
 						ng-model='$ctrl.ngModel' \
 						ng-required='$ctrl.ngRequired' \
