@@ -58,7 +58,7 @@ describe('Directive: TwRequirementsForm', function() {
             });
         });
 
-        fdescribe('in the content area', function() {
+        describe('in the content area', function() {
             var activePane, ibanFields, formGroups;
 
             beforeEach(function() {
@@ -125,7 +125,7 @@ describe('Directive: TwRequirementsForm', function() {
 
     function getMultipleRequirementsModel() {
         return {
-            type: "iban",
+            type: "iban_With_unDerscOres",
             legalType: "PRIVATE",
             IBAN: "ee1001010101010101",
             BIC: "3676543456"

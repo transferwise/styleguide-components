@@ -25,11 +25,10 @@
 				active='$ctrl.model.type'> \
 			</tw-tabs> \
 			<div class='tab-content'> \
-				<div ng-repeat='requirementType in $ctrl.requirements'\
+				<div ng-repeat='requirementType in $ctrl.requirements' \
 					ng-if='$ctrl.model.type == requirementType.type' \
-					class='tab-pane' \
-					id='{{requirementType.type}}' \
-					ng-class='{\"active\": $ctrl.model.type == requirementType.type}'> \
+					class='tab-pane active' \
+					id='{{requirementType.type}}'> \
 					<p>{{requirementType.description}}</p> \
 					<tw-dynamic-form-section \
 						fields='requirementType.fields' \
@@ -57,7 +56,6 @@
 			}
 
 			$scope.$watch('$ctrl.requirements', function(newValue, oldValue) {
-				console.log("change: " + newValue[0].label);
 				if (!angular.equals(newValue, oldValue)) {
 					TwRequirementsService.prepRequirements($ctrl.requirements);
 					$ctrl.model.type =
