@@ -25,7 +25,7 @@
 				<li ng-repeat='requirementType in $ctrl.requirements' \
 					ng-class='{\"active\": $ctrl.model.type === requirementType.type}'> \
 					<a href='' ng-click='$ctrl.switchTab(requirementType.type)'> \
-						{{$ctrl.getTabName(requirementType.type)}} \
+						{{requirementType.label || $ctrl.getTabName(requirementType.type)}} \
 					</a> \
 				</li> \
 			</ul> \
@@ -35,6 +35,7 @@
 					class='tab-pane' \
 					id='{{requirementType.type}}' \
 					ng-class='{\"active\": $ctrl.model.type == requirementType.type}'> \
+					<p>{{requirementType.description}}</p> \
 					<div class='row'> \
 						<div class='form-group' \
 							ng-repeat='fieldGroup in requirementType.fields' \

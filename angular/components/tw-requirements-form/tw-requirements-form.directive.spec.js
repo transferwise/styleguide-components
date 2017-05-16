@@ -36,6 +36,27 @@ describe('Directive: TwRequirementsForm', function() {
                 expect(navTabs.length).toBe($scope.requirements.length);
             });
 
+            it('use label as tab name if there is one', function() {
+                expect(navWrapper.length).toBe(1);
+                expect(navTabs.length).toBe($scope.requirements.length);
+
+                var label = "tab label";
+
+                var type1 = "Unused type";
+                var type2 = "Used type";
+
+                $scope.requirements[0].label = label;
+                $scope.requirements[0].type = type1;
+                $scope.requirements[1].type = type2;
+                $scope.$digest();
+
+
+                var tab = navTabs.eq(0);
+                expect(tab.text().trim()).toBe(label);
+                tab = navTabs.eq(1);
+                expect(tab.text().trim()).toBe(type2);
+            });
+
             it('formats the tab names correctly', function() {
                 expect(navWrapper.length).toBe(1);
                 expect(navTabs.length).toBe($scope.requirements.length);
@@ -99,6 +120,11 @@ describe('Directive: TwRequirementsForm', function() {
 
             it('has an active pane', function() {
                 expect(activePane.length).toBe(1);
+            });
+
+            it('has a description paragraph', function() {
+              var paragraph = activePane.find('p');
+              expect(paragraph.text().trim()).toBe($scope.requirements[1].description);
             });
 
             describe('for form groups', function() {
@@ -248,6 +274,7 @@ describe('Directive: TwRequirementsForm', function() {
           },
           {
             "type": "iban",
+            "description": "IBAN description",
             "fields": [
               {
                 "name": "Legal type",
