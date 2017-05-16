@@ -25,7 +25,7 @@
 	}])
 	.controller('PageController', ['$scope', '$http', function($scope, $http) {
 		var $ctrl = this;
-	
+
 		$ctrl.types = [
 			{'value': 'shareholder', 'label': 'Shareholders'},
 			{'value': 'account', 'label': 'Account'},
@@ -86,6 +86,7 @@
 		scope: {
 			requirements: "=",
 			model: "=",
+			addText: "@",
 			uploadOptions: "=",
 			locale: "@",
 			onRefreshRequirements: '&'
@@ -99,9 +100,7 @@
 			<div class="tab-content m-b-3"> \
 				<div ng-repeat="requirementType in $ctrl.requirements" \
 					ng-if="$ctrl.activeType == requirementType.type" \
-					class="tab-pane" \
-					id="{{requirementType.type}}" \
-					ng-class="{\'active\': $ctrl.activeType == requirementType.type}"> \
+					class="tab-pane active"> \
 					<p ng-if="requirementType.description"> \
 						{{requirementType.description}} \
 					</p> \
@@ -134,7 +133,7 @@
 							<div class="col-md-6"> \
 						  	<button type="button" ng-click="$ctrl.model.push({type: requirementType.type})" \
 									class="btn btn-default btn-block"> \
-									Add \
+									{{$ctrl.addText}} \
 								</button> \
 							</div> \
 						</div> \
@@ -163,6 +162,7 @@
 				<tw-hack-form
 					requirements="$ctrl.requirements"
 					model="$ctrl.model"
+					add-text="Add"
 					on-refresh-requirements=""
 					upload-options="{
 						buttonText: 'Choose file...',
