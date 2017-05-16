@@ -1095,37 +1095,6 @@ angular.module("tw.form-components", []);
     angular.module("tw.form-components").directive("twFileInput", TwFileInputDirective).controller("twUploadController", TwUploadController).directive("twUpload", TwUploadDirective);
 }(window.angular), function(angular) {
     "use strict";
-    function TwCurrencyData() {
-        var currencyDecimals = {
-            BIF: 0,
-            BYR: 0,
-            CLP: 0,
-            DJF: 0,
-            GNF: 0,
-            JPY: 0,
-            KMF: 0,
-            KRW: 0,
-            MGA: 0,
-            PYG: 0,
-            RWF: 0,
-            VND: 0,
-            VUV: 0,
-            XAF: 0,
-            XOF: 0,
-            XPF: 0,
-            BHD: 3,
-            JOD: 3,
-            KWD: 3,
-            OMR: 3,
-            TND: 3
-        };
-        this.getDecimals = function(currency) {
-            return currency.toUpperCase && "undefined" != typeof currencyDecimals[currency.toUpperCase()] ? currencyDecimals[currency.toUpperCase()] : 2;
-        };
-    }
-    angular.module("tw.form-components").service("TwCurrencyData", TwCurrencyData);
-}(window.angular), function(angular) {
-    "use strict";
     function TwRequirementsService() {
         function getFieldNamesFromRequirement(modelRequirement) {
             var names = modelRequirement.fields.map(function(fieldGroup) {
@@ -1166,4 +1135,35 @@ angular.module("tw.form-components", []);
         };
     }
     angular.module("tw.form-components").service("TwRequirementsService", TwRequirementsService);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwCurrencyData() {
+        var currencyDecimals = {
+            BIF: 0,
+            BYR: 0,
+            CLP: 0,
+            DJF: 0,
+            GNF: 0,
+            JPY: 0,
+            KMF: 0,
+            KRW: 0,
+            MGA: 0,
+            PYG: 0,
+            RWF: 0,
+            VND: 0,
+            VUV: 0,
+            XAF: 0,
+            XOF: 0,
+            XPF: 0,
+            BHD: 3,
+            JOD: 3,
+            KWD: 3,
+            OMR: 3,
+            TND: 3
+        };
+        this.getDecimals = function(currency) {
+            return currency.toUpperCase && "undefined" != typeof currencyDecimals[currency.toUpperCase()] ? currencyDecimals[currency.toUpperCase()] : 2;
+        };
+    }
+    angular.module("tw.form-components").service("TwCurrencyData", TwCurrencyData);
 }(window.angular);
