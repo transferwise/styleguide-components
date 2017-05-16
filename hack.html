@@ -25,9 +25,7 @@
 	}])
 	.controller('PageController', ['$scope', '$http', function($scope, $http) {
 		var $ctrl = this;
-		$ctrl.log = function(message) {
-			console.log(message);
-		};
+	
 		$ctrl.types = [
 			{'value': 'shareholder', 'label': 'Shareholders'},
 			{'value': 'account', 'label': 'Account'},
@@ -50,10 +48,7 @@
 				var $ctrl = this;
 
 				$ctrl.removeIndex = function(index) {
-					console.log(index);
-					console.log($ctrl.model);
 					$ctrl.model.splice(index, 1);
-					console.log($ctrl.model);
 				};
 
 				function init() {
