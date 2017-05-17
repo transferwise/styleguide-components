@@ -36,64 +36,14 @@ describe('Directive: TwRequirementsForm', function() {
                 expect(navTabs.length).toBe($scope.requirements.length);
             });
 
-            it('use label as tab name if there is one', function() {
-                expect(navWrapper.length).toBe(1);
-                expect(navTabs.length).toBe($scope.requirements.length);
-
-                var label = "tab label";
-
-                var type1 = "Unused type";
-                var type2 = "Used type";
-
-                $scope.requirements[0].label = label;
-                $scope.requirements[0].type = type1;
-                $scope.requirements[1].type = type2;
-                $scope.$digest();
-
-
+            it('should use label as tab name if there is one', function() {
                 var tab = navTabs.eq(0);
-                expect(tab.text().trim()).toBe(label);
-                tab = navTabs.eq(1);
-                expect(tab.text().trim()).toBe(type2);
+                expect(tab.text().trim()).toBe($scope.requirements[0].label);
             });
-
-            it('formats the tab names correctly', function() {
-                expect(navWrapper.length).toBe(1);
-                expect(navTabs.length).toBe($scope.requirements.length);
-
-                var testObjects = [
-                    {
-                      first: 'words_with_underscores',
-                      firstResult: 'Words with underscores',
-                      second: 'two_words',
-                      secondResult: 'Two words'
-                    },
-                    {
-                      first: 'woRds_With_underscores',
-                      firstResult: 'Words with underscores',
-                      second: 'two words',
-                      secondResult: 'Two words'
-                    },
-                    {
-                      first: '',
-                      firstResult: '',
-                      second: '_',
-                      secondResult: ''
-                    },
-                ];
-
-                testObjects.forEach(function(testObject) {
-                    $scope.requirements[0].type = testObject.first;
-                    $scope.requirements[1].type = testObject.second;
-
-                    var expectedResults = [testObject.firstResult, testObject.secondResult];
-                    $scope.$digest();
-
-                    for (var i = 0; i < $scope.requirements.length; i++) {
-                        var tab = navTabs.eq(i);
-                        expect(tab.text().trim()).toBe(expectedResults[i]);
-                    }
-                });
+            it('should use (formatted) type name as tab name if there no label', function() {
+                var tab = navTabs.eq(0);
+                tab = navTabs.eq(1);
+                expect(tab.text().trim()).toBe('Iban with underscores');
             });
 
             it('adds an active class to a tab if the model type matches the requirement type', function() {
@@ -105,8 +55,6 @@ describe('Directive: TwRequirementsForm', function() {
                         expect(tab.hasClass('active')).toBe(false);
                     }
                 }
-
-
             });
         });
 
@@ -177,7 +125,7 @@ describe('Directive: TwRequirementsForm', function() {
 
     function getMultipleRequirementsModel() {
         return {
-            type: "iban",
+            type: "iban_With_unDerscOres",
             legalType: "PRIVATE",
             IBAN: "ee1001010101010101",
             BIC: "3676543456"
@@ -188,6 +136,7 @@ describe('Directive: TwRequirementsForm', function() {
         return [
           {
             "type": "sort_code",
+            "label": "Use sort code",
             "fields": [
               {
                 "name": "Legal type",
@@ -273,7 +222,7 @@ describe('Directive: TwRequirementsForm', function() {
             ]
           },
           {
-            "type": "iban",
+            "type": "iban_With_unDerscOres",
             "description": "IBAN description",
             "fields": [
               {

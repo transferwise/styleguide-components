@@ -28,8 +28,10 @@
 				ngModel: '=',
 				name: '@',
 				icon: '@',
-				description: '@',
-				instructions: '@',
+				label: '@',
+				placeholder: '@',
+				description: '@', // DEPRECATED
+				instructions: '@', // DEPRECATED
 				buttonText: '@',
 				cancelText: '@',
 				processingText: '@',
@@ -61,8 +63,10 @@
 						<div class="m-b-2"> \
 							<i class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></i> \
 						</div> \
-						<h4 class="m-b-1" ng-if="$ctrl.description">{{$ctrl.description}}</h4> \
-						<p class="m-b-2">{{$ctrl.instructions}}</p> \
+						<h4 class="m-b-1" ng-if="$ctrl.label || $ctrl.description"> \
+							{{$ctrl.label || $ctrl.description}} \
+						</h4> \
+						<p class="m-b-2">{{$ctrl.placeholder || $ctrl.instructions}}</p> \
 						<label class="btn btn-primary">{{$ctrl.buttonText}} \
 							<input tw-file-select type="file" \
 								accept="{{$ctrl.accept}}"" class="tw-droppable-input hidden" name="file-upload" \
@@ -86,7 +90,9 @@
 					aria-hidden="{{!$ctrl.isDone}}"> \
 					<div class="droppable-card-content">	\
 						<div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError"> \
-							<h4 class="m-b-2" ng-if="$ctrl.completeText">{{$ctrl.completeText}}</h4> \
+							<h4 class="m-b-2" ng-if="$ctrl.completeText"> \
+								{{$ctrl.completeText}} \
+							</h4> \
 							<img ng-src="{{$ctrl.image}}" ng-if="$ctrl.isImage" class="thumbnail m-b-3" /> \
 							<i class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></i> \
 							<p class="text-ellipsis m-b-2">{{$ctrl.fileName}}</p> \
