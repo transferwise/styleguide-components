@@ -50,7 +50,7 @@
 				</span> \
 				<span class="caret"></span> \
 			</button> \
-			<div class="dropdown-menu"> \
+			<div class="dropdown-menu" style="min-width: 300px;"> \
 				\
 				<div ng-if="$ctrl.mode === \'year\'" class="tw-date-lookup-years"> \
 					<div class="text-xs-center p-t-1 p-b-2"> \
@@ -227,7 +227,7 @@
 			}
 			$ctrl.day = day;
 			// Always set model to UTC dates
-			updateModelDate(TwDateService.getUTCDate(year, month, day));
+			updateModelDate(TwDateService.getUTCDateFromParts(year, month, day));
 			resetFocus();
 		};
 		$ctrl.selectMonth = function($event, month, year) {
@@ -283,17 +283,25 @@
 			$ctrl.weeks = getTableStructure();
 		};
 		$ctrl.resetView = function(focalDate) {
+			var reset = false, rangeDate;
 			if (!focalDate || !focalDate.getUTCDate) {
 				// We want date in user's timezone, not UTC
-				focalDate = new Date();
+				focalDate = TwDateService.now();
+				reset = true;
 			}
-			focalDate = moveDateToWithinRange(focalDate, $ctrl.ngMin, $ctrl.ngMax);
+			rangeDate = moveDateToWithinRange(focalDate, $ctrl.ngMin, $ctrl.ngMax);
 
-			// We want user's timezone, so don't use UTC functions
-			// TODO this works for 'today', maybe not for supplied dates?
-			$ctrl.day = focalDate.getDate();
-			$ctrl.month = focalDate.getMonth();
-			$ctrl.year = focalDate.getFullYear();
+			if (reset && rangeDate === focalDate) {
+				// If showing today's date (& we didn't adjust it) we want user's timezone
+				$ctrl.day = TwDateService.getLocaleDate(focalDate);
+				$ctrl.month = TwDateService.getLocaleMonth(focalDate);
+				$ctrl.year = TwDateService.getLocaleFullYear(focalDate);
+			} else {
+				// If showing a provided date we should use UTC
+				$ctrl.day = TwDateService.getUTCDate(rangeDate);
+				$ctrl.month = TwDateService.getUTCMonth(rangeDate);
+				$ctrl.year = TwDateService.getUTCFullYear(rangeDate);
+			}
 
 			$ctrl.selectedDate = $ctrl.day;
 			$ctrl.selectedMonth = $ctrl.month;
@@ -516,7 +524,7 @@
 			if (!$ctrl.ngModel) {
 				updateModelDate(
 					// Always set model to UTC dates
-					TwDateService.getUTCDate($ctrl.year, $ctrl.month, $ctrl.day)
+					TwDateService.getUTCDateFromParts($ctrl.year, $ctrl.month, $ctrl.day)
 				);
 				return;
 			}
@@ -524,15 +532,15 @@
 			var characterCode = event.which || event.charCode || event.keyCode;
 
 			if (characterCode === 37) { // Left arrow key
-				moveLeft($ctrl.mode);
+				adjustDate($ctrl.mode, $ctrl.ngModel, -1, -1, -1);
 			} else if (characterCode === 38) { // Up arrow key
 				event.preventDefault(); // Prevent browser scroll
-				moveUp($ctrl.mode);
+				adjustDate($ctrl.mode, $ctrl.ngModel, -7, -4, -4);
 			} else if (characterCode === 39) { // Right arrow key
-				moveRight($ctrl.mode);
+				adjustDate($ctrl.mode, $ctrl.ngModel, 1, 1, 1);
 			} else if (characterCode === 40) { // Down arrow key
 				event.preventDefault(); // Prevent browser scroll
-				moveDown($ctrl.mode);
+				adjustDate($ctrl.mode, $ctrl.ngModel, 7, 4, 4);
 			}
 
 			findActiveLink();
@@ -545,19 +553,6 @@
 			$timeout(function () {
 				$element.find('a.active').focus();
 			});
-		}
-
-		function moveUp(mode) {
-			adjustDate(mode, $ctrl.ngModel, -7, -4, -4);
-		}
-		function moveDown(mode) {
-			adjustDate(mode, $ctrl.ngModel, 7, 4, 4);
-		}
-		function moveLeft(mode) {
-			adjustDate(mode, $ctrl.ngModel, -1, -1, -1);
-		}
-		function moveRight(mode) {
-			adjustDate(mode, $ctrl.ngModel, 1, 1, 1);
 		}
 
 		function adjustDate(mode, date, days, months, years) {

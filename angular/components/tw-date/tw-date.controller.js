@@ -227,7 +227,7 @@
 		}
 
 		function combineDate() {
-			var date = TwDateService.getUTCDate(
+			var date = TwDateService.getUTCDateFromParts(
 				Number(vm.year),
 				Number(vm.month),
 				Number(vm.day)

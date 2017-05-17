@@ -4,13 +4,15 @@ describe('Directive: TwDateLookup, ', function() {
   var $compile,
       $rootScope,
       $scope,
-      element;
+      element,
+      TwDateService;
 
   beforeEach(module('tw.form-components'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');
     $compile = $injector.get('$compile');
+    TwDateService = $injector.get('TwDateService');
     $scope = $rootScope.$new();
   }));
 
@@ -118,17 +120,54 @@ describe('Directive: TwDateLookup, ', function() {
       });
     });
 
-    describe('in a timezone on a different day to UTC', function() {
-      describe('when no date is supplied', function () {
+    fdescribe('in a timezone on a different day to UTC', function() {
+      beforeEach(function () {
+        //spyOn(TwDateService, 'now').and.returnValue(
+          //new Date(getUTCDate(2000,1,31) + )
+        //);
+        spyOn(TwDateService, 'getLocaleDate').and.returnValue(1);
+        spyOn(TwDateService, 'getLocaleMonth').and.returnValue(1);
+        spyOn(TwDateService, 'getLocaleFullYear').and.returnValue(2000);
+        spyOn(TwDateService, 'getUTCDate').and.returnValue(31);
+        spyOn(TwDateService, 'getUTCMonth').and.returnValue(0);
+        spyOn(TwDateService, 'getUTCFullYear').and.returnValue(2000);
+
+        element = getCompiledDirectiveElement($scope);
+        element.find(BUTTON_SELECTOR)[0].click();
+      });
+      describe('and no date is supplied', function () {
+        it('should open on the correct month for the users' , function () {
+          expect(element.find(MONTH_LABEL_SELECTOR).text().trim()).toBe('February 2000');
+        });
         it('should open with the users day highlighted', function () {
-          // TODO
-          //spyOn(TwDateService, 'now').and.returnValue(new Date('2000-01-10T23:00:00+1000'));
-          //expect
+          expect(element.find('a.active').text().trim()).toBe('1');
         });
       });
-      describe('when the user selects a day', function () {
-        it('should set the model to the UTC date of that day', function () {
-          // TODO
+      describe('and a UTC date is supplied', function () {
+        beforeEach(function() {
+          $scope.ngModel = getUTCDate(2000,1,31);
+          element = getCompiledDirectiveElement($scope);
+          element.find(BUTTON_SELECTOR)[0].click();
+        });
+        it('should open on the UTC month of the date' , function () {
+          expect(element.find(MONTH_LABEL_SELECTOR).text().trim()).toBe('January 2000');
+        });
+        it('should open with the UTC day highlighted', function () {
+          expect(element.find('a.active').text().trim()).toBe('31');
+        });
+      });
+      describe('and a UTC date is supplied below min', function () {
+        beforeEach(function() {
+          $scope.ngModel = getUTCDate(2000,1,31);
+          $scope.ngMin = getUTCDate(2000,3,10);
+          element = getCompiledDirectiveElement($scope);
+          element.find(BUTTON_SELECTOR)[0].click();
+        });
+        it('should open on the UTC of min date' , function () {
+          expect(element.find(MONTH_LABEL_SELECTOR).text().trim()).toBe('April 2000');
+        });
+        it('should open with the UTC of min date highlighted', function () {
+          expect(element.find('a.active').text().trim()).toBe('10');
         });
       });
     });

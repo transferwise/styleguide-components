@@ -31,12 +31,40 @@
 			'Sunday'
 		];
 
+		this.now = function() {
+			return new Date();
+		};
+		this.getLocaleDate = function(date) {
+			if (!date) { date = new Date(); }
+			return date.getDate();
+		};
+		this.getLocaleMonth = function(date) {
+			if (!date) { date = new Date(); }
+			return date.getMonth();
+		};
+		this.getLocaleFullYear = function(date) {
+			if (!date) { date = new Date(); }
+			return date.getFullYear();
+		};
+		this.getUTCDate = function(date) {
+			if (!date) { date = new Date(); }
+			return date.getUTCDate();
+		};
+		this.getUTCMonth = function(date) {
+			if (!date) { date = new Date(); }
+			return date.getUTCMonth();
+		};
+		this.getUTCFullYear = function(date) {
+			if (!date) { date = new Date(); }
+			return date.getUTCFullYear();
+		};
+
 		this.getLastDayOfMonth = function(year, month) {
-			var lastDay = this.getUTCDate(year, month + 1, 0);
+			var lastDay = this.getUTCDateFromParts(year, month + 1, 0);
 			return lastDay.getUTCDate();
 		};
 
-		this.getUTCDate = function(year, month, day) {
+		this.getUTCDateFromParts = function(year, month, day) {
 			var date = new Date();
 			date.setUTCFullYear(year, month, day);
 			date.setUTCHours(0);
@@ -57,7 +85,7 @@
 			var days = [], date;
 			for(var i = 1; i <= 7; i++) {
 				// Day in middle of month avoids timezone issues
-				date = this.getUTCDate(2001, 0, i); // First day of millenium was monday
+				date = this.getUTCDateFromParts(2001, 0, i); // First day of millenium was monday
 				var dayName = date.toLocaleDateString(locale, {weekday: format});
 				dayName = dayName[0].toUpperCase() + dayName.substring(1);
 				days.push(dayName);
@@ -85,7 +113,7 @@
 		};
 
 		this.getWeekday = function(year, month, day) {
-			var utcDate = this.getUTCDate(year, month, day);
+			var utcDate = this.getUTCDateFromParts(year, month, day);
 			return utcDate.getUTCDay();
 		};
 
@@ -107,7 +135,7 @@
 		};
 
 		this.addToDate = function(date, years, months, days) {
-			return this.getUTCDate(
+			return this.getUTCDateFromParts(
 				date.getUTCFullYear() + years,
 				date.getUTCMonth() + months,
 				date.getUTCDate() + days
