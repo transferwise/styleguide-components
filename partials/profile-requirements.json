@@ -2,8 +2,14 @@
   {
     "type": "profile",
     "fields": [
-        {
+      {
+         "heading": "Personal details",
+         "description": "Please make sure these details match the name you use for your bank account.",
+         "group": []
+      },
+      {
          "name": "First name",
+         "width": "md",
          "group": [
            {
              "key": "firstName",
@@ -16,12 +22,14 @@
              "maxLength": null,
              "validationRegexp": null,
              "validationAsync": null,
-             "valuesAllowed": null
-           }
-         ]
-       },
+             "valuesAllowed": null,
+             "width": "md"
+          }
+        ]
+      },
       {
         "name": "Last name",
+        "width": "md",
         "group": [
           {
             "key": "lastName",
@@ -40,10 +48,50 @@
       },
       {
         "name": "Date of birth",
+        "width": "md",
         "group": [
           {
             "key": "dateOfBirth",
             "type": "date",
+            "required": true
+          }
+        ]
+      },
+      {
+         "heading": "Address details",
+         "group": []
+      },
+      {
+        "name": "Address 1",
+        "group": [
+          {
+            "key": "address",
+            "placeholder": "Enter your house number and street",
+            "type": "text",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "City",
+        "width": "md",
+        "group": [
+          {
+            "key": "city",
+            "placeholder": "Enter city",
+            "type": "text",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "Post code",
+        "width": "md",
+        "group": [
+          {
+            "key": "postcode",
+            "placeholder": "Enter your postcode",
+            "type": "text",
             "required": true
           }
         ]

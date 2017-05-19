@@ -9,11 +9,13 @@
 		return {
 			restrict: 'E',
 			scope: {
-				requirements: '=',
 				model: '=',
-				uploadOptions: '=',
+				requirements: '<',
+				uploadOptions: '<',
 				locale: '@',
-				onRefreshRequirements: '&'
+				onRefreshRequirements: '&',
+				validationMessages: '<',
+				fieldErrors: '<'
 			},
 			controller: ['$scope', 'TwRequirementsService', TwRequirementsFormController],
 			controllerAs : '$ctrl',
@@ -35,7 +37,9 @@
 						model='$ctrl.model' \
 						upload-options='$ctrl.uploadOptions' \
 						locale='{{$ctrl.locale}}' \
-						onRefreshRequirements='$ctrl.onRefreshRequirements()'> \
+						onRefreshRequirements='$ctrl.onRefreshRequirements()' \
+						validation-messages='$ctrl.validationMessages' \
+						field-errors='$ctrl.fieldErrors'> \
 					</tw-dynamic-form-section> \
 				</div> \
 			</div>"

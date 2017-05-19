@@ -9,68 +9,77 @@
 		return {
 			restrict: 'E',
 			scope: {
-				fields: '=',
 				model: '=',
-				uploadOptions: '=',
+				fields: '<',
+				uploadOptions: '<',
 				locale: '@',
-				onRefreshRequirements: '&'
+				onRefreshRequirements: '&',
+				validationMessages: '<',
+				fieldErrors: '<'
 			},
 			controller: ['$scope', TwDynamicFormSectionController],
 			controllerAs : '$ctrl',
 			bindToController: true,
 			template: " \
-				<div class='row'> \
-					<div class='form-group' \
-						ng-repeat='fieldGroup in $ctrl.fields' \
+				<div class='row row-equal-height'> \
+					<div ng-repeat='fieldGroup in $ctrl.fields' \
 						ng-class='{ \
-							\"col-sm-6\": fieldGroup.maxlength && fieldGroup.maxlength <= 10, \
-							\"col-sm-12\": !fieldGroup.maxlength || fieldGroup.maxlength > 10 \
+							\"col-sm-4\": fieldGroup.width === \"sm\", \
+							\"col-sm-6\": fieldGroup.width === \"md\" || fieldGroup.maxlength && fieldGroup.maxlength <= 10, \
+							\"col-sm-12\": fieldGroup.width === \"lg\" || !fieldGroup.maxlength || fieldGroup.maxlength > 10 \
 						}'> \
-						<label class='control-label' ng-if='fieldGroup.type !== \"upload\"'> \
-							{{fieldGroup.name}} \
-						</label> \
-						<div class='row'> \
-							<div class='col-xs-{{field.columns}}' \
-								ng-repeat='field in fieldGroup.group'> \
-								<tw-dynamic-form-control \
-									name='{{field.key}}' \
-									label='{{fieldGroup.name}}' \
-									type='{{field.type | lowercase}}' \
-									placeholder='{{field.placeholder || field.example}}' \
-									help-text='{{field.helpText}}' \
-									locale='{{$ctrl.locale}}' \
-									upload-accept='{{field.accept}}' \
-									upload-icon='{{field.icon}}' \
-									upload-too-large-message='{{field.tooLargeMessage}}' \
-									options='field.valuesAllowed' \
-									upload-options='$ctrl.uploadOptions' \
-									ng-model='$ctrl.model[field.key]' \
-									ng-blur='$ctrl.onBlur(field)' \
-									ng-required='field.required' \
-									ng-disabled='field.disabled' \
-									tw-minlength='field.minLength' \
-									tw-maxlength='field.maxLength' \
-									ng-min='field.min' \
-									ng-max='field.max' \
-									ng-pattern='field.validationRegexp' \
-									tw-validation \> \
-									<!-- tw-dynamic-async-validator='field.validationAsync' --> \
-								</tw-dynamic-form-control> \
-								<div class='error-messages'> \
-									<div class='error-minlength'>Minimum {{field.minlength}} characters</div> \
-									<div class='error-maxlength'>Maximum {{field.maxlength}} characters</div> \
-									<div class='error-required'>{{fieldGroup.name}} is required</div> \
-									<div class='error-pattern'>Incorrect format</div> \
-								</div> \
-								<div ng-if='field.tooltip' \
-									class='help-block'> \
-									<a role='button' \
-										tabindex='0' \
-										data-toggle='popover' \
-										data-placement='top' \
-										title='{{field.tooltip}}'> \
-										<span class='glyphicon glyphicon-question-sign'></span> \
-									</a> \
+						<div class='form-group' style='width: 100%;' \
+							ng-class='{\"has-error\": $ctrl.fieldErrors[fieldGroup.key]}'> \
+							<label class='control-label' \
+								ng-if='fieldGroup.type !== \"upload\"'> \
+								{{fieldGroup.name}} \
+							</label> \
+							<div class='row'> \
+								<div class='col-xs-{{field.columns}}' \
+									ng-repeat='field in fieldGroup.group'> \
+									<tw-dynamic-form-control \
+										name='{{field.key}}' \
+										label='{{fieldGroup.name}}' \
+										type='{{field.type | lowercase}}' \
+										placeholder='{{field.placeholder || field.example}}' \
+										help-text='{{field.helpText}}' \
+										locale='{{$ctrl.locale}}' \
+										upload-accept='{{field.accept}}' \
+										upload-icon='{{field.icon}}' \
+										upload-too-large-message='{{field.tooLargeMessage}}' \
+										options='field.valuesAllowed' \
+										upload-options='$ctrl.uploadOptions' \
+										ng-model='$ctrl.model[field.key]' \
+										ng-blur='$ctrl.onBlur(field)' \
+										ng-required='field.required' \
+										ng-disabled='field.disabled' \
+										tw-minlength='field.minLength' \
+										tw-maxlength='field.maxLength' \
+										ng-min='field.min' \
+										ng-max='field.max' \
+										ng-pattern='field.validationRegexp' \
+										tw-validation \> \
+										<!-- tw-dynamic-async-validator='field.validationAsync' --> \
+									</tw-dynamic-form-control> \
+									<div class='error-messages'> \
+										<div ng-repeat='(validationType, validationMessage) in $ctrl.validationMessages' \
+											class='error-{{validationType}}'> \
+											{{validationMessage}} \
+										</div> \
+										<div ng-if='$ctrl.fieldErrors[field.key]'> \
+											{{ $ctrl.fieldErrors[field.key] }} \
+										</div> \
+									</div> \
+									<div ng-if='field.tooltip' \
+										class='help-block'> \
+										<a role='button' \
+											tabindex='0' \
+											data-toggle='popover' \
+											data-placement='top' \
+											title='{{field.tooltip}}'> \
+											<span class='glyphicon glyphicon-question-sign'></span> \
+										</a> \
+									</div> \
 								</div> \
 							</div> \
 						</div> \
@@ -99,6 +108,17 @@
 			});
 
 			// TODO can we add asyncvalidator here? - prob not
+
+			if (!$ctrl.validationMessages) {
+				$ctrl.validationMessages = {
+					'required': 'Required',
+					'pattern': 'Incorrect format',
+					'min': 'The value is too low',
+					'max': 'The value is too high',
+					'minlength': 'The value is too short',
+					'maxlength': 'The value is too long'
+				};
+			}
 		}
 
 		/**
@@ -120,6 +140,9 @@
 
 		function prepFields(fields) {
 			fields.forEach(function(fieldGroup) {
+				if (fieldGroup.group.length) {
+					fieldGroup.key = fieldGroup.group[0].key;
+				}
 				fieldGroup.group.forEach(function(field) {
 					if (field.type === 'upload') {
 						fieldGroup.type = 'upload';

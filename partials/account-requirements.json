@@ -59,6 +59,7 @@
       },
       {
         "name": "Bank code (BIC/SWIFT)",
+        "width": "sm",
         "group": [
           {
             "key": "BIC",
