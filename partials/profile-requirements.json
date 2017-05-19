@@ -10,6 +10,7 @@
              "type": "text",
              "required": true,
              "displayFormat": null,
+             "placeholder": "Enter your first name",
              "example": null,
              "minLength": 2,
              "maxLength": null,
@@ -27,12 +28,23 @@
             "type": "text",
             "required": true,
             "displayFormat": null,
+            "placeholder": "Enter your family name",
             "example": null,
             "minLength": 2,
-            "maxLength": null,
+            "maxLength": 10,
             "validationRegexp": null,
             "validationAsync": null,
             "valuesAllowed": null
+          }
+        ]
+      },
+      {
+        "name": "Date of birth",
+        "group": [
+          {
+            "key": "dateOfBirth",
+            "type": "date",
+            "required": true
           }
         ]
       }
