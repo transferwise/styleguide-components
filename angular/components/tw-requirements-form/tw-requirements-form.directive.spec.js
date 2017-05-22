@@ -111,12 +111,55 @@ describe('Directive: TwRequirementsForm', function() {
                 });
             });
         });
+    });
 
-
+    describe('validation', function() {
+        beforeEach(function() {
+            $scope.model = {
+              type: 'sort_code',
+              sortCode: '101010'
+            }
+            $scope.requirements = getMultipleRequirements();
+            $scope.isValid = null;
+            $scope.fieldErrors = {
+                sortCode: "Sort code not found"
+            }
+            directiveElement = getCompiledDirectiveElement();
+        });
+        it('should show error state on the field associated with supplied error key', function() {
+            var sortFormGroup = directiveElement.find('.tw-form-group-sortCode');
+            expect(sortFormGroup.hasClass('has-error')).toBe(true);
+        });
+        it('should not show error state on other fields', function() {
+            expect(directiveElement.find('.has-error').length).toBe(1);
+        });
+        it('should show supplied error message on the correct field', function() {
+            var errorBlock =
+              directiveElement.find('.tw-form-group-sortCode .error-provided');
+            expect(errorBlock.text().trim()).toBe($scope.fieldErrors.sortCode);
+        });
+        it('should not show provided errors on other fields', function() {
+            expect(directiveElement.find('.error-provided').length).toBe(1);
+        });
+        it('should set isValid false if not all fields are valid', function() {
+            expect($scope.isValid).toBe(false);
+        });
+        it('should set isValid true when all fields are valid', function() {
+            var accountNumberInput = directiveElement.find('.tw-form-group-accountNumber input');
+            accountNumberInput.val('12345677').trigger('input');
+            expect($scope.isValid).toBe(true);
+        });
     });
 
     function getCompiledDirectiveElement() {
-        var template = "<tw-requirements-form model='model' requirements='requirements'></tw-requirements-form>"
+        var template = " \
+          <tw-requirements-form \
+            model='model' \
+            requirements='requirements' \
+            validation-messages='validationMessages' \
+            field-errors='fieldErrors' \
+            is-valid='isValid'> \
+          </tw-requirements-form>";
         var compiledElement = $compile(template)($scope);
 
         $scope.$digest();
