@@ -3,11 +3,6 @@
     "type": "profile",
     "fields": [
       {
-         "heading": "Personal details",
-         "description": "Please make sure these details match the name you use for your bank account.",
-         "group": []
-      },
-      {
          "name": "First name",
          "width": "md",
          "group": [
@@ -56,10 +51,6 @@
             "required": true
           }
         ]
-      },
-      {
-         "heading": "Address details",
-         "group": []
       },
       {
         "name": "Address 1",

@@ -15,7 +15,8 @@
 				locale: '@',
 				onRefreshRequirements: '&',
 				validationMessages: '<',
-				fieldErrors: '<'
+				fieldErrors: '<',
+				isValid: '=?'
 			},
 			controller: ['$scope', 'TwRequirementsService', TwRequirementsFormController],
 			controllerAs : '$ctrl',
@@ -26,7 +27,7 @@
 				tabs='$ctrl.requirements' \
 				active='$ctrl.model.type'> \
 			</tw-tabs> \
-			<div class='tab-content'> \
+			<div class='tab-content' ng-form='twForm'> \
 				<div ng-repeat='requirementType in $ctrl.requirements' \
 					ng-if='$ctrl.model.type == requirementType.type' \
 					class='tab-pane active' \
@@ -59,16 +60,31 @@
 				TwRequirementsService.prepRequirements($ctrl.requirements);
 			}
 
-			$scope.$watch('$ctrl.requirements', function(newValue, oldValue) {
-				if (!angular.equals(newValue, oldValue)) {
+			$scope.$watch('$ctrl.requirements', function(newRequirements, oldRequirements) {
+				if (!angular.equals(newRequirements, oldRequirements)) {
 					TwRequirementsService.prepRequirements($ctrl.requirements);
-					$ctrl.model.type =
+					var oldType = $ctrl.model.type;
+					var newType =
 						$ctrl.requirements.length ? $ctrl.requirements[0].type : null;
+
+					$ctrl.model.type = newType;
+
+					if (oldRequirements && newRequirements) {
+						TwRequirementsService.cleanModel(
+							$ctrl.model,
+							oldRequirements, oldType,
+							newRequirements, newType
+						);
+					}
 				}
 			});
 
 			$scope.$watch('$ctrl.model.type', function(newType, oldType) {
 				switchTab(newType, oldType);
+			});
+
+			$scope.$watch('twForm.$valid', function(validity) {
+				$ctrl.isValid = validity;
 			});
 
 			// TODO can we add asyncvalidator here? - prob not
@@ -92,18 +108,24 @@
 		};
 
 		function switchTab(newType, oldType) {
-			var oldRequirements = TwRequirementsService.findRequirementByType(oldType, $ctrl.requirements);
-			var newRequirements = TwRequirementsService.findRequirementByType(newType, $ctrl.requirements);
+			var oldRequirementType = TwRequirementsService.findRequirementByType(
+				oldType, $ctrl.requirements
+			);
+			var newRequirementType = TwRequirementsService.findRequirementByType(
+				newType, $ctrl.requirements
+			);
 
-			if (!oldRequirements || !newRequirements) {
-				$ctrl.model = {type: newType};
-				return;
+			if (!oldRequirementType || !newRequirementType) {
+				if (!$ctrl.model) {
+						$ctrl.model = {};
+				}
+				$ctrl.model.type = newType;
 			}
 
 			TwRequirementsService.cleanRequirementsModel(
 				$ctrl.model,
-				oldRequirements,
-				newRequirements
+				oldRequirementType,
+				newRequirementType
 			);
 		}
 

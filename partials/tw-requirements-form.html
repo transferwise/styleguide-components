@@ -38,7 +38,8 @@
 			}"
 			field-errors="{
 				firstName: 'This name is not allowed'
-			}"></tw-requirements-form>
+			}"
+			is-valid='$ctrl.isValid'></tw-requirements-form>
 
 		<h5>Configuration</h5>
 <pre>&lt;tw-requirements-form
@@ -59,6 +60,7 @@
   }"
   error-messages="{
     firstName: 'This name is not allowed'
-  }"&gt;&lt;/tw-requirements-form&gt;</pre>
+  }"
+  is-valid='{{$ctrl.isValid}}'&gt;&lt;/tw-requirements-form&gt;</pre>
 	</div>
 </form>

@@ -17,16 +17,29 @@
 			});
 		};
 
+		this.cleanModel = function(
+			model,
+			oldRequirements, oldType,
+			newRequirements, newType
+		) {
+			var oldRequirementType = this.findRequirementByType(oldType, oldRequirements);
+			var newRequirementType = this.findRequirementByType(newType, newRequirements);
+
+			this.cleanRequirementsModel(model, oldRequirementType, newRequirementType);
+		};
+
 		this.findRequirementByType = function(type, requirements) {
 			if (!requirements) {
 				return false;
 			}
+
 			for (var i=0; i < requirements.length; i++) {
 				var modelType = requirements[i];
 				if (modelType.type === type) {
 					return modelType;
 				}
 			}
+
 			return false;
 		};
 
@@ -37,6 +50,10 @@
 		};
 
 		function getFieldNamesFromRequirement(modelRequirement) {
+			if (!modelRequirement.fields) {
+				console.log(modelRequirement);
+				return [];
+			}
 			var names = modelRequirement.fields.map(function(fieldGroup) {
 				return fieldGroup.group.map(function(field) {
 					return field.key;

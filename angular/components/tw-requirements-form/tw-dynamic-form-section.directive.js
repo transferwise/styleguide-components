@@ -15,20 +15,21 @@
 				locale: '@',
 				onRefreshRequirements: '&',
 				validationMessages: '<',
-				fieldErrors: '<'
+				fieldErrors: '<',
+				isValid: '=?'
 			},
 			controller: ['$scope', TwDynamicFormSectionController],
 			controllerAs : '$ctrl',
 			bindToController: true,
 			template: " \
-				<div class='row row-equal-height'> \
+				<div class='row row-equal-height' ng-form='twFormSection'> \
 					<div ng-repeat='fieldGroup in $ctrl.fields' \
 						ng-class='{ \
 							\"col-sm-4\": fieldGroup.width === \"sm\", \
 							\"col-sm-6\": fieldGroup.width === \"md\" || fieldGroup.maxlength && fieldGroup.maxlength <= 10, \
 							\"col-sm-12\": fieldGroup.width === \"lg\" || !fieldGroup.maxlength || fieldGroup.maxlength > 10 \
 						}'> \
-						<div class='form-group' style='width: 100%;' \
+						<div class='form-group tw-form-group-{{fieldGroup.key}}' style='width: 100%;' \
 							ng-class='{\"has-error\": $ctrl.fieldErrors[fieldGroup.key]}'> \
 							<label class='control-label' \
 								ng-if='fieldGroup.type !== \"upload\"'> \
@@ -66,7 +67,7 @@
 											class='error-{{validationType}}'> \
 											{{validationMessage}} \
 										</div> \
-										<div ng-if='$ctrl.fieldErrors[field.key]'> \
+										<div class='error-provided' ng-if='$ctrl.fieldErrors[field.key]'> \
 											{{ $ctrl.fieldErrors[field.key] }} \
 										</div> \
 									</div> \
@@ -105,6 +106,10 @@
 				if (!angular.equals(newValue, oldValue)) {
 					prepFields($ctrl.fields);
 				}
+			});
+
+			$scope.$watch('twFormSection.$valid', function(validity) {
+				$ctrl.isValid = validity;
 			});
 
 			// TODO can we add asyncvalidator here? - prob not
