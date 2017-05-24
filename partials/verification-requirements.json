@@ -2,23 +2,38 @@
   {
     "type": "verification",
     "fields": [
-        {
-         "name": "National ID",
-         "group": [
-           {
-             "key": "id",
-             "type": "upload",
-             "required": true
-           }
-         ]
-       },
+      {
+        "name": "Front of your national ID",
+        "maxlength": 10,
+        "group": [
+          {
+            "key": "frontId",
+            "type": "upload",
+            "required": true,
+            "placeholder": "Make sure the image is well lit and in focus. Max 1MB."
+          }
+        ]
+      },
+      {
+        "name": "Back of your national ID",
+        "maxlength": 10,
+        "group": [
+          {
+            "key": "backId",
+            "type": "upload",
+            "required": true,
+            "placeholder": "Make sure the image is well lit and in focus. Max 1MB."
+          }
+        ]
+      },
       {
         "name": "Social security number",
         "group": [
           {
             "key": "ssn",
             "type": "text",
-            "required": true
+            "required": true,
+            "placeholder": "All data is fully encrypted"
           }
         ]
       }

@@ -1,8 +1,8 @@
 [
   {
     "type": "iban",
-    "label": "Iban label",
-    "description": "Description of a label",
+    "label": "Iban",
+    "description": "Description of this option.  Perhaps further information that explains when this option can be used.",
     "fields": [
         {
          "name": "Legal type",
@@ -38,6 +38,7 @@
             "type": "text",
             "required": true,
             "displayFormat": "**** **** **** **** **** **** **** ****",
+            "placeholder": "16 or 20 digits",
             "example": "SE89370400440532013000",
             "minLength": 2,
             "maxLength": null,
@@ -58,6 +59,7 @@
       },
       {
         "name": "Bank code (BIC/SWIFT)",
+        "width": "sm",
         "group": [
           {
             "key": "BIC",
@@ -120,4 +122,4 @@
       }
     ]
   }
-] 
+]

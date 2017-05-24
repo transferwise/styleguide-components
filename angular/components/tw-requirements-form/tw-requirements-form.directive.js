@@ -8,100 +8,48 @@
 	function TwRequirementsForm() {
 		return {
 			restrict: 'E',
-			//replace: true,
 			scope: {
-				requirements: '=',
 				model: '=',
-				uploadOptions: '=',
+				requirements: '<',
+				uploadOptions: '<',
 				locale: '@',
-				onRefreshRequirements: '&'
+				onRefreshRequirements: '&',
+				validationMessages: '<',
+				fieldErrors: '<',
+				isValid: '=?'
 			},
-			controller: ['$scope', '$http', TwRequirementsFormController],
+			controller: ['$scope', 'TwRequirementsService', TwRequirementsFormController],
 			controllerAs : '$ctrl',
 			bindToController: true,
 			template: " \
-			<ul ng-if='$ctrl.requirements && $ctrl.requirements.length > 1' \
-				class='nav nav-tabs m-b-3'> \
-				<li ng-repeat='requirementType in $ctrl.requirements' \
-					ng-class='{\"active\": $ctrl.model.type === requirementType.type}'> \
-					<a href='' ng-click='$ctrl.switchTab(requirementType.type)'> \
-						{{requirementType.label || $ctrl.getTabName(requirementType.type)}} \
-					</a> \
-				</li> \
-			</ul> \
-			<div class='tab-content'> \
-				<div ng-repeat='requirementType in $ctrl.requirements'\
+			<tw-tabs \
+				ng-if='$ctrl.requirements.length > 1' \
+				tabs='$ctrl.requirements' \
+				active='$ctrl.model.type'> \
+			</tw-tabs> \
+			<div class='tab-content' ng-form='twForm'> \
+				<div ng-repeat='requirementType in $ctrl.requirements' \
 					ng-if='$ctrl.model.type == requirementType.type' \
-					class='tab-pane' \
-					id='{{requirementType.type}}' \
-					ng-class='{\"active\": $ctrl.model.type == requirementType.type}'> \
+					class='tab-pane active' \
+					id='{{requirementType.type}}'> \
 					<p>{{requirementType.description}}</p> \
-					<div class='row'> \
-						<div class='form-group' \
-							ng-repeat='fieldGroup in requirementType.fields' \
-							ng-class='{ \
-								\"col-sm-6\": fieldGroup.maxlength && fieldGroup.maxlength <= 10, \
-								\"col-sm-12\": !fieldGroup.maxlength || fieldGroup.maxlength > 10 \
-							}'> \
-							<label class='control-label'> \
-								{{fieldGroup.name}} \
-							</label> \
-							<div class='row'> \
-								<div class='col-xs-{{field.columns}}' \
-									ng-repeat='field in fieldGroup.group'> \
-									<tw-dynamic-form-control \
-										name='{{field.key}}' \
-										type='{{field.type | lowercase}}' \
-										placeholder='{{field.placeholder}}' \
-										help-text='{{field.helpText}}' \
-										locale='{{$ctrl.locale}}' \
-										upload-accept='{{field.accept}}' \
-										upload-icon='{{field.icon}}' \
-										upload-too-large-message='{{field.tooLargeMessage}}' \
-										options='field.valuesAllowed' \
-										upload-options='$ctrl.uploadOptions' \
-										ng-model='$ctrl.model[field.key]' \
-										ng-blur='$ctrl.onBlur(field)' \
-										ng-required='field.required' \
-										ng-disabled='field.disabled' \
-										tw-minlength='field.minLength' \
-										tw-maxlength='field.maxLength' \
-										ng-min='field.min' \
-										ng-max='field.max' \
-										ng-pattern='field.validationRegexp' \
-										upload-options='field.uploadOptions' \
-										tw-validation \> \
-										<!-- tw-dynamic-async-validator='field.validationAsync' --> \
-									</tw-dynamic-form-control> \
-									<div class='error-messages'> \
-										<div class='error-minlength'>Minimum {{field.minlength}} characters</div> \
-										<div class='error-maxlength'>Maximum {{field.maxlength}} characters</div> \
-										<div class='error-required'>{{fieldGroup.name}} is required</div> \
-										<div class='error-pattern'>Incorrect format</div> \
-									</div> \
-									<div ng-if='field.tooltip' \
-										class='help-block'> \
-										<a role='button' \
-											tabindex='0' \
-											data-toggle='popover' \
-											data-placement='top' \
-											title='{{field.tooltip}}'> \
-											<span class='glyphicon glyphicon-question-sign'></span> \
-										</a> \
-									</div> \
-								</div> \
-							</div> \
-						</div> \
-					</div> \
+					<tw-dynamic-form-section \
+						fields='requirementType.fields' \
+						model='$ctrl.model' \
+						upload-options='$ctrl.uploadOptions' \
+						locale='{{$ctrl.locale}}' \
+						onRefreshRequirements='$ctrl.onRefreshRequirements()' \
+						validation-messages='$ctrl.validationMessages' \
+						field-errors='$ctrl.fieldErrors'> \
+					</tw-dynamic-form-section> \
 				</div> \
 			</div>"
 		};
 	}
 
-	function TwRequirementsFormController($scope, $http) {
+	function TwRequirementsFormController($scope, TwRequirementsService) {
 		var $ctrl = this;
 		$ctrl.switchTab = switchTab;
-		$ctrl.getTabName = getTabName;
 
 		function init() {
 			if (!$ctrl.model) {
@@ -109,15 +57,34 @@
 			}
 
 			if ($ctrl.requirements) {
-				prepRequirements($ctrl.requirements);
+				TwRequirementsService.prepRequirements($ctrl.requirements);
 			}
 
-			$scope.$watch('$ctrl.requirements', function(newValue, oldValue) {
-				if (!angular.equals(newValue, oldValue)) {
-					prepRequirements($ctrl.requirements);
-					$ctrl.model.type =
+			$scope.$watch('$ctrl.requirements', function(newRequirements, oldRequirements) {
+				if (!angular.equals(newRequirements, oldRequirements)) {
+					TwRequirementsService.prepRequirements($ctrl.requirements);
+					var oldType = $ctrl.model.type;
+					var newType =
 						$ctrl.requirements.length ? $ctrl.requirements[0].type : null;
+
+					$ctrl.model.type = newType;
+
+					if (oldRequirements && newRequirements) {
+						TwRequirementsService.cleanModel(
+							$ctrl.model,
+							oldRequirements, oldType,
+							newRequirements, newType
+						);
+					}
 				}
+			});
+
+			$scope.$watch('$ctrl.model.type', function(newType, oldType) {
+				switchTab(newType, oldType);
+			});
+
+			$scope.$watch('twForm.$valid', function(validity) {
+				$ctrl.isValid = validity;
 			});
 
 			// TODO can we add asyncvalidator here? - prob not
@@ -140,114 +107,26 @@
 			}
 		};
 
-		function prepRequirements(types) {
-			types.forEach(function(type) {
-				type.fields.forEach(function(fieldGroup) {
-					fieldGroup.group.forEach(function(field) {
-						prepRegExp(field);
-						prepValuesAsync(field);
-						prepValuesAllowed(field);
-					});
-				});
-			});
-		}
+		function switchTab(newType, oldType) {
+			var oldRequirementType = TwRequirementsService.findRequirementByType(
+				oldType, $ctrl.requirements
+			);
+			var newRequirementType = TwRequirementsService.findRequirementByType(
+				newType, $ctrl.requirements
+			);
 
-		function prepRegExp(field) {
-			if (field.validationRegexp) {
-				try {
-					field.validationRegexp = new RegExp(field.validationRegexp);
-				} catch(ex) {
-					console.log("API regexp is invalid");
-					field.validationRegexp = false;
+			if (!oldRequirementType || !newRequirementType) {
+				if (!$ctrl.model) {
+						$ctrl.model = {};
 				}
-			} else {
-				field.validationRegexp = false;
-			}
-		}
-		function prepValuesAsync(field) {
-			if (!field.valuesAsync) {
-				return;
-			}
-			var postData = {};
-			if (field.valuesAsync.params &&
-				field.valuesAsync.params.length) {
-				postData = getParamValuesFromModel($ctrl.model, field.valuesAsync.params);
+				$ctrl.model.type = newType;
 			}
 
-			$http.post(field.valuesAsync.url, postData).then(function(response) {
-				field.valuesAllowed = response.data;
-				prepValuesAllowed(field);
-			}).catch(function() {
-				// TODO - RETRY?
-			});
-		}
-
-		function prepValuesAllowed(field) {
-			if (!angular.isArray(field.valuesAllowed)) {
-				return;
-			}
-			field.valuesAllowed.forEach(function(valueAllowed) {
-				valueAllowed.value = valueAllowed.key;
-				valueAllowed.label = valueAllowed.name;
-			});
-		}
-
-		function switchTab(newType) {
-			var oldRequirements = findRequirementByType($ctrl.model.type);
-			var newRequirements = findRequirementByType(newType);
-			$ctrl.model.type = newType;
-
-			removeObsoletePropertiesFromModel(oldRequirements, newRequirements);
-		}
-
-		function getTabName(tabType) {
-			if (tabType && tabType.length > 0) {
-				var tabNameWithSpaces = tabType.toLowerCase().split('_').join(' '); // String.replace method only replaces first instance
-				return tabNameWithSpaces.charAt(0).toUpperCase() + tabNameWithSpaces.slice(1);
-			} else {
-				return '';
-			}
-		}
-
-		function removeObsoletePropertiesFromModel(oldRequirements, newRequirements) {
-			var oldFieldNames = getFieldNamesFromRequirement(oldRequirements);
-			var newFieldNames = getFieldNamesFromRequirement(newRequirements);
-			var obsoleteFieldNames = oldFieldNames.filter(function(fieldName) {
-				return newFieldNames.indexOf(fieldName) < 0;
-			});
-			obsoleteFieldNames.forEach(function(fieldName) {
-				delete $ctrl.model[fieldName];
-			});
-		}
-
-		function findRequirementByType(type) {
-			for (var i=0; i < $ctrl.requirements.length; i++) {
-				var modelType = $ctrl.requirements[i];
-				if (modelType.type === type) {
-					return modelType;
-				}
-			}
-		}
-
-		function getFieldNamesFromRequirement(modelRequirement) {
-			var names = modelRequirement.fields.map(function(fieldGroup) {
-				return fieldGroup.group.map(function(field) {
-					return field.key;
-				});
-			});
-			return Array.prototype.concat.apply([], names);
-		}
-
-		function getParamValuesFromModel(model, params) {
-			var data = {};
-			params.forEach(function(param) {
-				if (model[param.key]) {
-					data[param.parameterName] = model[param.key];
-				} else if (param.required) {
-					// TODO Problem, parameter is required, but data is missing.
-				}
-			});
-			return data;
+			TwRequirementsService.cleanRequirementsModel(
+				$ctrl.model,
+				oldRequirementType,
+				newRequirementType
+			);
 		}
 
 		init();

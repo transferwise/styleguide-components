@@ -36,64 +36,14 @@ describe('Directive: TwRequirementsForm', function() {
                 expect(navTabs.length).toBe($scope.requirements.length);
             });
 
-            it('use label as tab name if there is one', function() {
-                expect(navWrapper.length).toBe(1);
-                expect(navTabs.length).toBe($scope.requirements.length);
-
-                var label = "tab label";
-
-                var type1 = "Unused type";
-                var type2 = "Used type";
-
-                $scope.requirements[0].label = label;
-                $scope.requirements[0].type = type1;
-                $scope.requirements[1].type = type2;
-                $scope.$digest();
-
-
+            it('should use label as tab name if there is one', function() {
                 var tab = navTabs.eq(0);
-                expect(tab.text().trim()).toBe(label);
-                tab = navTabs.eq(1);
-                expect(tab.text().trim()).toBe(type2);
+                expect(tab.text().trim()).toBe($scope.requirements[0].label);
             });
-
-            it('formats the tab names correctly', function() {
-                expect(navWrapper.length).toBe(1);
-                expect(navTabs.length).toBe($scope.requirements.length);
-
-                var testObjects = [
-                    {
-                      first: 'words_with_underscores',
-                      firstResult: 'Words with underscores',
-                      second: 'two_words',
-                      secondResult: 'Two words'
-                    },
-                    {
-                      first: 'woRds_With_underscores',
-                      firstResult: 'Words with underscores',
-                      second: 'two words',
-                      secondResult: 'Two words'
-                    },
-                    {
-                      first: '',
-                      firstResult: '',
-                      second: '_',
-                      secondResult: ''
-                    },
-                ];
-
-                testObjects.forEach(function(testObject) {
-                    $scope.requirements[0].type = testObject.first;
-                    $scope.requirements[1].type = testObject.second;
-
-                    var expectedResults = [testObject.firstResult, testObject.secondResult];
-                    $scope.$digest();
-
-                    for (var i = 0; i < $scope.requirements.length; i++) {
-                        var tab = navTabs.eq(i);
-                        expect(tab.text().trim()).toBe(expectedResults[i]);
-                    }
-                });
+            it('should use (formatted) type name as tab name if there no label', function() {
+                var tab = navTabs.eq(0);
+                tab = navTabs.eq(1);
+                expect(tab.text().trim()).toBe('Iban with underscores');
             });
 
             it('adds an active class to a tab if the model type matches the requirement type', function() {
@@ -105,8 +55,6 @@ describe('Directive: TwRequirementsForm', function() {
                         expect(tab.hasClass('active')).toBe(false);
                     }
                 }
-
-
             });
         });
 
@@ -163,12 +111,55 @@ describe('Directive: TwRequirementsForm', function() {
                 });
             });
         });
+    });
 
-
+    describe('validation', function() {
+        beforeEach(function() {
+            $scope.model = {
+              type: 'sort_code',
+              sortCode: '101010'
+            }
+            $scope.requirements = getMultipleRequirements();
+            $scope.isValid = null;
+            $scope.fieldErrors = {
+                sortCode: "Sort code not found"
+            }
+            directiveElement = getCompiledDirectiveElement();
+        });
+        it('should show error state on the field associated with supplied error key', function() {
+            var sortFormGroup = directiveElement.find('.tw-form-group-sortCode');
+            expect(sortFormGroup.hasClass('has-error')).toBe(true);
+        });
+        it('should not show error state on other fields', function() {
+            expect(directiveElement.find('.has-error').length).toBe(1);
+        });
+        it('should show supplied error message on the correct field', function() {
+            var errorBlock =
+              directiveElement.find('.tw-form-group-sortCode .error-provided');
+            expect(errorBlock.text().trim()).toBe($scope.fieldErrors.sortCode);
+        });
+        it('should not show provided errors on other fields', function() {
+            expect(directiveElement.find('.error-provided').length).toBe(1);
+        });
+        it('should set isValid false if not all fields are valid', function() {
+            expect($scope.isValid).toBe(false);
+        });
+        it('should set isValid true when all fields are valid', function() {
+            var accountNumberInput = directiveElement.find('.tw-form-group-accountNumber input');
+            accountNumberInput.val('12345677').trigger('input');
+            expect($scope.isValid).toBe(true);
+        });
     });
 
     function getCompiledDirectiveElement() {
-        var template = "<tw-requirements-form model='model' requirements='requirements'></tw-requirements-form>"
+        var template = " \
+          <tw-requirements-form \
+            model='model' \
+            requirements='requirements' \
+            validation-messages='validationMessages' \
+            field-errors='fieldErrors' \
+            is-valid='isValid'> \
+          </tw-requirements-form>";
         var compiledElement = $compile(template)($scope);
 
         $scope.$digest();
@@ -177,7 +168,7 @@ describe('Directive: TwRequirementsForm', function() {
 
     function getMultipleRequirementsModel() {
         return {
-            type: "iban",
+            type: "iban_With_unDerscOres",
             legalType: "PRIVATE",
             IBAN: "ee1001010101010101",
             BIC: "3676543456"
@@ -188,6 +179,7 @@ describe('Directive: TwRequirementsForm', function() {
         return [
           {
             "type": "sort_code",
+            "label": "Use sort code",
             "fields": [
               {
                 "name": "Legal type",
@@ -273,7 +265,7 @@ describe('Directive: TwRequirementsForm', function() {
             ]
           },
           {
-            "type": "iban",
+            "type": "iban_With_unDerscOres",
             "description": "IBAN description",
             "fields": [
               {
@@ -365,6 +357,6 @@ describe('Directive: TwRequirementsForm', function() {
               }
             ]
           }
-        ];
+       ];
     }
 });

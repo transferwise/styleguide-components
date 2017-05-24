@@ -1,0 +1,68 @@
+[
+  {
+    "type": "shareholder",
+    "label": "Shareholders",
+    "description": "Add all owners with a 25% or more share in the business.",
+    "repeatable": true,
+    "fields": [
+      {
+         "name": "First name",
+         "maxlength": 6,
+         "group": [
+           {
+             "key": "firstName",
+             "type": "text",
+             "required": true,
+             "placeholder": "e.g. John"
+           }
+         ]
+      },
+      {
+         "name": "Last name",
+         "maxlength": 6,
+         "group": [
+           {
+             "key": "lastName",
+             "type": "text",
+             "required": true,
+             "placeholder": "e.g. Smith"
+           }
+         ]
+      },
+      {
+        "name": "Date of birth",
+        "maxlength": 6,
+        "group": [
+          {
+            "key": "dateOfBirth",
+            "type": "date",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "Country of residence",
+        "maxlength": 6,
+        "group": [
+          {
+            "key": "country",
+            "type": "select",
+            "required": true,
+            "valuesAllowed": [{
+              "key": "UK",
+              "name": "United Kingdom"
+            },{
+              "key": "US",
+              "name": "United States of America"
+            }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "noShareholder",
+    "label": "No shareholders",
+    "fields": []
+  }
+]

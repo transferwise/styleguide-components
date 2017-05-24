@@ -111,7 +111,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 .directive('twRadioDocs', function() {
 	return {templateUrl: 'partials/tw-radio.html'};
 })
-.component('twSelectDocs',  {
+.component('twSelectDocs', {
 	templateUrl: 'partials/tw-select.html',
 	bindings: {
 		model: '='
@@ -220,11 +220,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 		}
 	}
 })
-.directive('twUploadDocs', function() {
-	return {
-		controllerAs: '$ctrl',
-		bindToController: true,
-		scope: {},
+.component('twUploadDocs', {
 		controller: ['$timeout', '$q', '$http', function($timeout, $q, $http) {
 			var $ctrl = this;
 			$ctrl.onStart = function(file) {
@@ -262,7 +258,6 @@ angular.module('my-app', ['tw.styleguide-components'])
 			];
 		}],
 		templateUrl: 'partials/tw-upload.html'
-	};
 })
 .directive('twDateDocs', function() {
 	return {templateUrl: 'partials/tw-date.html'};
@@ -276,30 +271,28 @@ angular.module('my-app', ['tw.styleguide-components'])
 .directive('twDynamicControlDocs', function() {
 	return {templateUrl: 'partials/tw-dynamic-control.html'};
 })
-.directive('twRequirementsFormDocs', function() {
-	return {
-		controllerAs: "$ctrl",
-		bindToController: true,
-		controller: ['$scope', '$http', function($scope, $http) {
-			var $ctrl = this;
-			$ctrl.types = [
-				{'value': 'account', 'label': 'Account'},
-				{'value': 'profile', 'label': 'Profile'},
-				{'value': 'verification', 'label': 'Verification'}
-			];
-			$ctrl.type = 'account';
+.component('twRequirementsFormDocs', {
+	controller: ['$scope', '$http', function($scope, $http) {
+		var $ctrl = this;
+		$ctrl.types = [
+			{'value': 'account', 'label': 'Account'},
+			{'value': 'profile', 'label': 'Profile'},
+			{'value': 'verification', 'label': 'Verification'}
+		];
+		$ctrl.type = 'profile';
 
-			$scope.$watch('$ctrl.type', function(newVal) {
-				$http.get('partials/'+newVal+'-requirements.json').then(function(response) {
-					$ctrl.requirements = response.data;
-				});
+		$ctrl.model.firstName = '01010101010';
+
+		$scope.$watch('$ctrl.type', function(newVal) {
+			$http.get('partials/'+newVal+'-requirements.json').then(function(response) {
+				$ctrl.requirements = response.data;
 			});
-		}],
-		scope: {
-			model: "="
-		},
-		templateUrl: 'partials/tw-requirements-form.html'
-	};
+		});
+	}],
+	bindings: {
+		model: "="
+	},
+	templateUrl: 'partials/tw-requirements-form.html'
 })
 .directive('twValidationDocs', function() {
 	return {templateUrl: 'partials/tw-validation.html'};

@@ -2,31 +2,36 @@
   {
     "type": "profile",
     "fields": [
-        {
+      {
          "name": "First name",
+         "width": "md",
          "group": [
            {
              "key": "firstName",
              "type": "text",
              "required": true,
              "displayFormat": null,
+             "placeholder": "Enter your first name",
              "example": null,
              "minLength": 2,
              "maxLength": null,
              "validationRegexp": null,
              "validationAsync": null,
-             "valuesAllowed": null
-           }
-         ]
-       },
+             "valuesAllowed": null,
+             "width": "md"
+          }
+        ]
+      },
       {
         "name": "Last name",
+        "width": "md",
         "group": [
           {
             "key": "lastName",
             "type": "text",
             "required": true,
             "displayFormat": null,
+            "placeholder": "Enter your family name",
             "example": null,
             "minLength": 2,
             "maxLength": 10,
@@ -37,11 +42,47 @@
         ]
       },
       {
-        "name": "Last name",
+        "name": "Date of birth",
+        "width": "md",
         "group": [
           {
             "key": "dateOfBirth",
             "type": "date",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "Address 1",
+        "group": [
+          {
+            "key": "address",
+            "placeholder": "Enter your house number and street",
+            "type": "text",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "City",
+        "width": "md",
+        "group": [
+          {
+            "key": "city",
+            "placeholder": "Enter city",
+            "type": "text",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "Post code",
+        "width": "md",
+        "group": [
+          {
+            "key": "postcode",
+            "placeholder": "Enter your postcode",
+            "type": "text",
             "required": true
           }
         ]
