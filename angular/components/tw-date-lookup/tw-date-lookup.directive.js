@@ -184,9 +184,14 @@
 			addValidators();
 			addWatchers();
 
+			ngModelCtrl.$formatters.push(function(newDate) {
+				updateCalendarView(newDate);
+				return newDate;
+			});
+
 			$element.find('.btn, .dropdown-menu').on('focusout', function() {
 				$timeout(function() {
-					// If button isn't focused and dropdown not open, blur
+					// If button isn't focused and dropdown not , blur
 					if ($element.find('.btn:focus').length === 0 &&
 						!$element.find('.btn-group').hasClass('open')) {
 						// TODO remove jquery dependency
@@ -197,22 +202,24 @@
 				}, 150); 	// need timeout because using dropdown.js,
 			});
 
-
-			$ctrl.resetView($ctrl.ngModel);
 			setLocale($ctrl.locale);
-			 // Don't update viewModel on this call
-			updateModelDate($ctrl.ngModel, true);
-			updateMinDate($ctrl.ngMin);
-			updateMaxDate($ctrl.ngMax);
-			ngModelCtrl.$validate();
 
-			$ctrl.weeks = getTableStructure();
+			updateMinDateView($ctrl.ngMin);
+			updateMaxDateView($ctrl.ngMax);
 		}
 
 		$ctrl.openLookup = function() {
 			ngModelCtrl.$setTouched();
 			$ctrl.mode = 'day';
-			$ctrl.resetView($ctrl.ngModel);
+
+			var viewDate = $ctrl.ngModel;
+			if ($ctrl.ngMin && $ctrl.ngModel < $ctrl.ngMin) {
+				viewDate = $ctrl.ngMin;
+			}
+			if ($ctrl.ngMax && $ctrl.ngModel > $ctrl.ngMax) {
+				viewDate = $ctrl.ngMax;
+			}
+			updateCalendarView(viewDate);
 
 			$timeout(function () {
 				$element.find('.tw-date-lookup-month-label').focus();
@@ -221,15 +228,16 @@
 
 		$ctrl.selectDay = function($event, day, month, year) {
 			if ($ctrl.isDayDisabled(day, month, year)) {
-				// Don't close dropdown
+				// Don't close dropdown, don't set model
 				$event.stopPropagation();
 				return;
 			}
 			$ctrl.day = day;
 			// Always set model to UTC dates
-			updateModelDate(TwDateService.getUTCDateFromParts(year, month, day));
+			setModel(TwDateService.getUTCDateFromParts(year, month, day));
 			resetFocus();
 		};
+
 		$ctrl.selectMonth = function($event, month, year) {
 			$event.stopPropagation();
 			if ($ctrl.isMonthDisabled(month, year)) {
@@ -239,6 +247,7 @@
 			$ctrl.weeks = getTableStructure();
 			$ctrl.mode = 'day';
 		};
+
 		$ctrl.selectYear = function($event, year) {
 			$event.stopPropagation();
 			if ($ctrl.isYearDisabled(year)) {
@@ -259,12 +268,14 @@
 			}
 			$ctrl.weeks = getTableStructure();
 		};
+
 		$ctrl.yearBefore = function($event) {
 			// Prevent dropdown closing
 			$event.stopPropagation();
 			$ctrl.year--;
 			$ctrl.weeks = getTableStructure();
 		};
+
 		$ctrl.monthAfter = function($event) {
 			// Prevent dropdown closing
 			$event.stopPropagation();
@@ -276,37 +287,11 @@
 			}
 			$ctrl.weeks = getTableStructure();
 		};
+
 		$ctrl.yearAfter = function($event) {
 			// Prevent dropdown closing
 			$event.stopPropagation();
 			$ctrl.year++;
-			$ctrl.weeks = getTableStructure();
-		};
-		$ctrl.resetView = function(focalDate) {
-			var reset = false, rangeDate;
-			if (!focalDate || !focalDate.getUTCDate) {
-				// We want date in user's timezone, not UTC
-				focalDate = TwDateService.now();
-				reset = true;
-			}
-			rangeDate = moveDateToWithinRange(focalDate, $ctrl.ngMin, $ctrl.ngMax);
-
-			if (reset && rangeDate === focalDate) {
-				// If showing today's date (& we didn't adjust it) we want user's timezone
-				$ctrl.day = TwDateService.getLocaleDate(focalDate);
-				$ctrl.month = TwDateService.getLocaleMonth(focalDate);
-				$ctrl.year = TwDateService.getLocaleFullYear(focalDate);
-			} else {
-				// If showing a provided date we should use UTC
-				$ctrl.day = TwDateService.getUTCDate(rangeDate);
-				$ctrl.month = TwDateService.getUTCMonth(rangeDate);
-				$ctrl.year = TwDateService.getUTCFullYear(rangeDate);
-			}
-
-			$ctrl.selectedDate = $ctrl.day;
-			$ctrl.selectedMonth = $ctrl.month;
-			$ctrl.selectedYear = $ctrl.year;
-
 			$ctrl.weeks = getTableStructure();
 		};
 
@@ -315,17 +300,20 @@
 				month === $ctrl.selectedMonth &&
 				year === $ctrl.selectedYear;
 		};
+
 		$ctrl.isDayDisabled = function(day, month, year) {
 			return $ctrl.isYearDisabled(year) ||
 				$ctrl.isMonthDisabled(month, year) ||
 				(year === minYear && month === minMonth && day < minDay) ||
 				(year === maxYear && month === maxMonth && day > maxDay);
 		};
+
 		$ctrl.isMonthDisabled = function(month, year) {
 			return $ctrl.isYearDisabled(year) ||
 				(year === minYear && month < minMonth) ||
 				(year === maxYear && month > maxMonth);
 		};
+
 		$ctrl.isYearDisabled = function(year) {
 			return (minYear && year < minYear) || (maxYear && year > maxYear);
 		};
@@ -336,23 +324,26 @@
 			$event.stopPropagation();
 			$ctrl.mode = 'month';
 		};
+
 		$ctrl.switchToYears = function($event) {
 			resetFocus($event.target);
 			findActiveLink();
 			$event.stopPropagation();
 			$ctrl.mode = 'year';
 		};
+
 		$ctrl.setYearOffset = function($event, addtionalOffset) {
 			$event.stopPropagation();
 			$ctrl.yearOffset += addtionalOffset;
 		};
 
 		$ctrl.buttonFocus = function() {
-			// remove jquery dependency
+			// TODO remove jquery dependency
 			$element.parents('.form-group').addClass('focus');
 			// jqLite supports triggerHandler
 			$element.triggerHandler('focus');
 		};
+
 		$ctrl.blur = function() {
 			// jqLite supports triggerHandler
 			$element.triggerHandler('focus');
@@ -367,7 +358,8 @@
 			ngModelCtrl.$validators.min = function(modelValue, viewValue) {
 				var value = modelValue || viewValue;
 				if (value && value < $ctrl.ngMin) {
-					unsetModel();
+					// TODO remove jquery dependency
+					$element.parents('.form-group').addClass('has-error');
 					return false;
 				}
 				return true;
@@ -375,7 +367,8 @@
 			ngModelCtrl.$validators.max = function(modelValue, viewValue) {
 				var value = modelValue || viewValue;
 				if (value && value > $ctrl.ngMax) {
-					unsetModel();
+					// TODO remove jquery dependency
+					$element.parents('.form-group').addClass('has-error');
 					return false;
 				}
 				return true;
@@ -388,32 +381,46 @@
 					setLocale(newValue);
 				}
 			});
-			$scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
-				if (newValue && newValue !== oldValue) {
-					updateModelDate(newValue, true);
-				}
-			});
+
 			$scope.$watch('$ctrl.ngRequired', function(newValue, oldValue) {
 				ngModelCtrl.$validate();
 			});
+
 			$scope.$watch('$ctrl.ngMin', function(newValue, oldValue) {
 				if (newValue !== oldValue) {
-					updateMinDate($ctrl.ngMin);
-
-					if ($ctrl.ngModel < $ctrl.ngMin) {
-						unsetModel();
-					}
+					updateMinDateView($ctrl.ngMin);
+					ngModelCtrl.$validate();
 				}
 			});
+
 			$scope.$watch('$ctrl.ngMax', function(newValue, oldValue) {
 				if (newValue !== oldValue) {
-					updateMaxDate($ctrl.ngMax);
-
-					if ($ctrl.ngModel > $ctrl.ngMax) {
-						unsetModel();
-					}
+					updateMaxDateView($ctrl.ngMax);
+					ngModelCtrl.$validate();
 				}
 			});
+
+			$scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
+				if (newValue) {
+					$ctrl.selectedDate = TwDateService.getUTCDate(newValue);
+					$ctrl.selectedMonth = TwDateService.getUTCMonth(newValue);
+					$ctrl.selectedYear = TwDateService.getUTCFullYear(newValue);
+				}
+			});
+		}
+
+		function updateCalendarView(viewDate) {
+			if (!viewDate || !viewDate.getUTCDate) {
+				// We want user's 'today' in UTC
+				viewDate = TwDateService.getLocaleToday();
+			}
+
+			// Provided dates should use UTC
+			$ctrl.day = TwDateService.getUTCDate(viewDate);
+			$ctrl.month = TwDateService.getUTCMonth(viewDate);
+			$ctrl.year = TwDateService.getUTCFullYear(viewDate);
+
+			$ctrl.weeks = getTableStructure();
 		}
 
 		function getTableStructure() {
@@ -461,6 +468,9 @@
 		}
 
 		function moveDateToWithinRange(date, min, max) {
+			if (!date) {
+				date = TwDateService.getLocaleToday();
+			}
 			if (min && min > date) {
 				return min;
 			}
@@ -470,36 +480,20 @@
 			return date;
 		}
 
-		function unsetModel() {
-			ngModelCtrl.$setViewValue(null);
-			$ctrl.resetView();
+		function setModel(modelDate) {
+			modelDate = moveDateToWithinRange(modelDate, $ctrl.ngMin, $ctrl.ngMax);
+
+			ngModelCtrl.$setViewValue(modelDate);
 			ngModelCtrl.$setDirty();
-			ngModelCtrl.$setTouched();
+
+			updateCalendarView(modelDate);
 		}
 
-		function updateModelDate(modelDate, dontSetVal) {
-			if (modelDate) {
-				modelDate = moveDateToWithinRange(modelDate, $ctrl.ngMin, $ctrl.ngMax);
-			}
-
-			if (!dontSetVal) {
-				ngModelCtrl.$setViewValue(modelDate);
-				ngModelCtrl.$setDirty();
-				ngModelCtrl.$setTouched();
-			} else {
-				ngModelCtrl.$validate();
-			}
-
-			$ctrl.resetView(modelDate);
-		}
-
-		function updateMinDate(minDate) {
+		function updateMinDateView(minDate) {
 			if (minDate && minDate.getUTCDate) {
-				// If supplied UTC date, timezoneless function is fine
-				// If supplied timzeone date, we want to resepct it.
-				minDay = minDate.getDate(); 				// minDate.getUTCDate();
-				minMonth = minDate.getMonth(); 			// minDate.getUTCMonth();
-				minYear = minDate.getFullYear();		// minDate.getUTCFullYear();
+				minDay = TwDateService.getUTCDate(minDate);
+				minMonth = TwDateService.getUTCMonth(minDate);
+				minYear = TwDateService.getUTCFullYear(minDate);
 			} else {
 				minDay = null;
 				minMonth = null;
@@ -507,11 +501,11 @@
 			}
 		}
 
-		function updateMaxDate(maxDate) {
+		function updateMaxDateView(maxDate) {
 			if (maxDate && maxDate.getUTCDate) {
-				maxDay = maxDate.getDate();  				// maxDate.getUTCDate();
-				maxMonth = maxDate.getMonth();			// maxDate.getUTCMonth();
-				maxYear = maxDate.getFullYear();		// maxDate.getUTCFullYear();
+				maxDay = TwDateService.getUTCDate(maxDate);
+				maxMonth = TwDateService.getUTCMonth(maxDate);
+				maxYear = TwDateService.getUTCFullYear(maxDate);
 			} else {
 				maxDay = null;
 				maxMonth = null;
@@ -522,7 +516,7 @@
 		// Keydown as keypress did not work in chrome/safari
 		$ctrl.keyHandler = function(event) {
 			if (!$ctrl.ngModel) {
-				updateModelDate(
+				setModel(
 					// Always set model to UTC dates
 					TwDateService.getUTCDateFromParts($ctrl.year, $ctrl.month, $ctrl.day)
 				);
@@ -566,7 +560,7 @@
 			if (mode === 'year') {
 				newDate = TwDateService.addYears(date, years);
 			}
-			updateModelDate(newDate);
+			setModel(newDate);
 		}
 
 		init();

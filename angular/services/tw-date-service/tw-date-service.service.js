@@ -31,9 +31,6 @@
 			'Sunday'
 		];
 
-		this.now = function() {
-			return new Date();
-		};
 		this.getLocaleDate = function(date) {
 			if (!date) { date = new Date(); }
 			return date.getDate();
@@ -46,6 +43,16 @@
 			if (!date) { date = new Date(); }
 			return date.getFullYear();
 		};
+		// get UTC date for users current day
+		this.getLocaleToday = function() {
+			var now = new Date();
+			return this.getUTCDateFromParts(
+				this.getLocaleFullYear(now),
+				this.getLocaleMonth(now),
+				this.getLocaleDate(now)
+			);
+		};
+
 		this.getUTCDate = function(date) {
 			if (!date) { date = new Date(); }
 			return date.getUTCDate();
@@ -58,6 +65,15 @@
 			if (!date) { date = new Date(); }
 			return date.getUTCFullYear();
 		};
+		this.getUTCToday = function() {
+			var now = new Date();
+			return this.getUTCDateFromParts(
+				this.getUTCFullYear(now),
+				this.getUTCMonth(now),
+				this.getUTCDate(now)
+			);
+		};
+
 
 		this.getLastDayOfMonth = function(year, month) {
 			var lastDay = this.getUTCDateFromParts(year, month + 1, 0);
@@ -75,39 +91,26 @@
 		};
 
 		this.getDayNamesForLocale = function(locale, format) {
-			if (!format) {
-				format = 'long';  // or 'narrow' or 'short'
-			}
-			if (!isIntlSupportedForLocale(locale)) {
-				return DEFAULT_DAYS_EN;
-			}
+			format = getValidDateFormat(format);
+			locale = getValidLocale(locale);
 
 			var days = [], date;
 			for(var i = 1; i <= 7; i++) {
-				// Day in middle of month avoids timezone issues
-				date = this.getUTCDateFromParts(2001, 0, i); // First day of millenium was monday
-				var dayName = date.toLocaleDateString(locale, {weekday: format});
-				dayName = dayName[0].toUpperCase() + dayName.substring(1);
-				days.push(dayName);
+				date = this.getUTCDateFromParts(2001, 0, i); // This day was a monday
+				days.push(getLocalisedDateName(date, locale, {weekday: format}));
 			}
 			return days;
 		};
 
 		this.getMonthNamesForLocale = function(locale, format) {
-			if (!format) {
-				format = 'long';  // or 'narrow' or 'short'
-			}
-			if (!isIntlSupportedForLocale(locale)) {
-				return DEFAULT_MONTHS_EN;
-			}
+			format = getValidDateFormat(format);
+			locale = getValidLocale(locale);
 
 			var months = [], date;
 			for(var i = 0; i < 12; i++) {
 				// Day in middle of month avoids timezone issues
-				date = new Date(Date.UTC(2000, i, 15));
-				var monthName = date.toLocaleDateString(locale, {month: format});
-				monthName = monthName[0].toUpperCase() + monthName.substring(1);
-				months.push(monthName);
+				date = this.getUTCDateFromParts(2000, i, 15);
+				months.push(getLocalisedDateName(date, locale, {month: format}));
 			}
 			return months;
 		};
@@ -141,6 +144,27 @@
 				date.getUTCDate() + days
 			);
 		};
+
+		function getLocalisedDateName(date, locale, formattingObject) {
+			// Strip out any numbers, in case browser (cough...Safari) doesn't respect format
+			var name = date.toLocaleDateString(locale, formattingObject).replace(/[0-9]|\s/g, '');
+			return name[0].toUpperCase() + name.substring(1);
+		}
+
+		function getValidDateFormat(format) {
+			var validFormats = ['narrow', 'short', 'long'];
+			if (!format || validFormats.indexOf(format) < 0) {
+				return 'long';
+			}
+			return format;
+		}
+
+		function getValidLocale(locale) {
+			if (!isIntlSupportedForLocale(locale)) {
+				return DEFAULT_MONTHS_EN;
+			}
+			return locale;
+		}
 
 		function isIntlSupportedForLocale(locale) {
 			return window.Intl &&

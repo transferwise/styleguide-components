@@ -120,32 +120,26 @@ describe('Directive: TwDateLookup, ', function() {
       });
     });
 
-    fdescribe('in a timezone on a different day to UTC', function() {
+    describe('in a timezone on a different day to UTC', function() {
       beforeEach(function () {
-        //spyOn(TwDateService, 'now').and.returnValue(
-          //new Date(getUTCDate(2000,1,31) + )
-        //);
-        spyOn(TwDateService, 'getLocaleDate').and.returnValue(1);
-        spyOn(TwDateService, 'getLocaleMonth').and.returnValue(1);
-        spyOn(TwDateService, 'getLocaleFullYear').and.returnValue(2000);
-        spyOn(TwDateService, 'getUTCDate').and.returnValue(31);
-        spyOn(TwDateService, 'getUTCMonth').and.returnValue(0);
-        spyOn(TwDateService, 'getUTCFullYear').and.returnValue(2000);
-
-        element = getCompiledDirectiveElement($scope);
-        element.find(BUTTON_SELECTOR)[0].click();
+        spyOn(TwDateService, 'getLocaleToday').and.returnValue(getUTCDate(2000,1,1));
+        spyOn(TwDateService, 'getUTCToday').and.returnValue(getUTCDate(2000,0,31));
       });
       describe('and no date is supplied', function () {
-        it('should open on the correct month for the users' , function () {
+        beforeEach(function() {
+          element = getCompiledDirectiveElement($scope);
+          element.find(BUTTON_SELECTOR)[0].click();
+        });
+        it('should open on the correct month for the user' , function () {
           expect(element.find(MONTH_LABEL_SELECTOR).text().trim()).toBe('February 2000');
         });
-        it('should open with the users day highlighted', function () {
-          expect(element.find('a.active').text().trim()).toBe('1');
+        it('should not open with a day highlighted', function () {
+          expect(element.find('a.active').text().trim()).toBe('');
         });
       });
       describe('and a UTC date is supplied', function () {
         beforeEach(function() {
-          $scope.ngModel = getUTCDate(2000,1,31);
+          $scope.ngModel = getUTCDate(2000,0,31);
           element = getCompiledDirectiveElement($scope);
           element.find(BUTTON_SELECTOR)[0].click();
         });
@@ -158,7 +152,7 @@ describe('Directive: TwDateLookup, ', function() {
       });
       describe('and a UTC date is supplied below min', function () {
         beforeEach(function() {
-          $scope.ngModel = getUTCDate(2000,1,31);
+          $scope.ngModel = getUTCDate(2000,0,31);
           $scope.ngMin = getUTCDate(2000,3,10);
           element = getCompiledDirectiveElement($scope);
           element.find(BUTTON_SELECTOR)[0].click();
@@ -166,8 +160,8 @@ describe('Directive: TwDateLookup, ', function() {
         it('should open on the UTC of min date' , function () {
           expect(element.find(MONTH_LABEL_SELECTOR).text().trim()).toBe('April 2000');
         });
-        it('should open with the UTC of min date highlighted', function () {
-          expect(element.find('a.active').text().trim()).toBe('10');
+        it('should not have a date highlighted', function () {
+          expect(element.find('a.active').text().trim()).toBe('');
         });
       });
     });
@@ -232,55 +226,86 @@ describe('Directive: TwDateLookup, ', function() {
     });
 
     describe('when ngMin and ngMax are supplied', function () {
-      var ngModelController;
+      var ngModelController, formGroup, template;
       describe('as a valid date object', function () {
         beforeEach(function() {
-          $scope.ngModel = null;
-          $scope.ngRequired = false;
           $scope.ngMin = getUTCDate(1990, 0, 1);
           $scope.ngMax = getUTCDate(2015, 11, 31);
-          element = getCompiledDirectiveElement($scope);
-          ngModelController = element.controller('ngModel');
+          template = " \
+            <div class='form-group'> \
+              <label class='control-label'>Label</label> \
+              <tw-date-lookup \
+                ng-model='ngModel' \
+                ng-min='ngMin' \
+                ng-max='ngMax'> \
+              </tw-date-lookup> \
+            </div>";
         });
-        it('and ngModel is null, should not set invalid min/max', function() {
-          expect(ngModelController.$valid).toBe(true);
-          expect(element.hasClass('ng-invalid-min')).toBe(false);
-          expect(element.hasClass('ng-invalid-max')).toBe(false);
+        describe('and ngModel is null', function () {
+          beforeEach(function() {
+            $scope.ngModel = null;
+            formGroup = getCompiledDirectiveElement($scope, template);
+            element = formGroup.find('tw-date-lookup');
+            ngModelController = element.controller('ngModel');
+          });
+          it('and ngModel is null, should not set invalid min/max', function() {
+
+            expect(ngModelController.$valid).toBe(true);
+            expect(element.hasClass('ng-invalid-min')).toBe(false);
+            expect(element.hasClass('ng-invalid-max')).toBe(false);
+          });
         });
         describe('and ngModel is earlier than min', function () {
           beforeEach(function() {
             $scope.ngModel = getUTCDate(1980, 0, 1);
-            $scope.$digest();
+            formGroup = getCompiledDirectiveElement($scope, template);
+            element = formGroup.find('tw-date-lookup');
+            ngModelController = element.controller('ngModel');
           });
-          it('should unset ngModel', function() {
-            expect($scope.ngModel).toBe(null);
+          it('should not change ngModel', function() {
+            expect($scope.ngModel).toEqual(getUTCDate(1980, 0, 1));
           });
-          it('should not set ngModel invalid', function() {
-            expect(ngModelController.$valid).toBe(true);
-            expect(element.hasClass('ng-invalid-min')).toBe(false);
+          it('should set ngModel invalid', function() {
+            expect(element.hasClass('ng-invalid')).toBe(true);
+            expect(element.hasClass('ng-invalid-min')).toBe(true);
+          });
+          it('should show error state on form-group', function() {
+            expect(formGroup.hasClass('has-error')).toBe(true);
           });
         });
         describe('and ngModel is later than max', function () {
           beforeEach(function() {
             $scope.ngModel = getUTCDate(2020, 0, 1);
-            $scope.$digest();
+            formGroup = getCompiledDirectiveElement($scope, template);
+            element = formGroup.find('tw-date-lookup');
+            ngModelController = element.controller('ngModel');
           });
-          it('should unset ngModel', function() {
-            expect($scope.ngModel).toBe(null);
+          it('should not change ngModel', function() {
+            expect($scope.ngModel).toEqual(getUTCDate(2020, 0, 1));
           });
-          it('should not set ngModel to invalid', function() {
-            expect(ngModelController.$valid).toBe(true);
-            expect(element.hasClass('ng-invalid-max')).toBe(false);
+          it('should set ngModel to invalid', function() {
+            expect(ngModelController.$invalid).toBe(true);
+            expect(element.hasClass('ng-invalid')).toBe(true);
+            expect(element.hasClass('ng-invalid-max')).toBe(true);
+          });
+          it('should show error state on form-group', function() {
+            expect(formGroup.hasClass('has-error')).toBe(true);
           });
         });
-        it('and ngModel is between min and max, should set ngModel to valid', function() {
-          $scope.ngModel = getUTCDate(2000, 0, 1);
-          $scope.$digest();
-          expect($scope.ngModel).toEqual(getUTCDate(2000, 0, 1));
-          expect(ngModelController.$valid).toBe(true);
-          expect(element.hasClass('ng-invalid')).toBe(false);
-          expect(element.hasClass('ng-invalid-min')).toBe(false);
-          expect(element.hasClass('ng-invalid-max')).toBe(false);
+        describe('and ngModel is between min and max', function () {
+          beforeEach(function() {
+            $scope.ngModel = getUTCDate(2000, 0, 1);
+            formGroup = getCompiledDirectiveElement($scope, template);
+            element = formGroup.find('tw-date-lookup');
+            ngModelController = element.controller('ngModel');
+          });
+          it('should set ngModel to valid', function() {
+            expect($scope.ngModel).toEqual(getUTCDate(2000, 0, 1));
+            expect(ngModelController.$valid).toBe(true);
+            expect(element.hasClass('ng-valid')).toBe(true);
+            expect(element.hasClass('ng-valid-min')).toBe(true);
+            expect(element.hasClass('ng-valid-max')).toBe(true);
+          });
         });
       });
       describe('as invalid Date objects', function () {
@@ -384,11 +409,11 @@ describe('Directive: TwDateLookup, ', function() {
           $scope.$digest();
         });
         it('should unset ngModel', function() {
-          expect($scope.ngModel).toBe(null);
+          expect($scope.ngModel).toBeUndefined(); //.toBe(null);
         });
-        it('should not set control as invalid', function() {
-          expect(element.hasClass('ng-invalid')).toBe(false);
-          expect(element.hasClass('ng-invalid-min')).toBe(false);
+        it('should set control as invalid', function() {
+          expect(element.hasClass('ng-invalid')).toBe(true);
+          expect(element.hasClass('ng-invalid-min')).toBe(true);
         });
       });
     });
@@ -421,11 +446,8 @@ describe('Directive: TwDateLookup, ', function() {
         it('should unset ngModel', function() {
           expect($scope.ngModel).toBeUndefined();
         });
-        it('should remain valid', function() {
-          expect(element.hasClass('ng-invalid-max')).toBe(false);
-        });
-        it('should become invalid-required', function() {
-          expect(element.hasClass('ng-invalid-required')).toBe(true);
+        it('should set control invalid', function() {
+          expect(element.hasClass('ng-invalid-max')).toBe(true);
         });
       });
     });

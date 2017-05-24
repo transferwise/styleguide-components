@@ -320,14 +320,14 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     function TwDateLookupController($element, $scope, $timeout, TwDateService) {
         function init() {
             $ctrl.yearOffset = 0, ngModelCtrl = $element.controller("ngModel"), addValidators(), 
-            addWatchers(), $element.find(".btn, .dropdown-menu").on("focusout", function() {
+            addWatchers(), ngModelCtrl.$formatters.push(function(newDate) {
+                return updateCalendarView(newDate), newDate;
+            }), $element.find(".btn, .dropdown-menu").on("focusout", function() {
                 $timeout(function() {
                     0 !== $element.find(".btn:focus").length || $element.find(".btn-group").hasClass("open") || ($element.parents(".form-group").removeClass("focus"), 
                     $element.triggerHandler("blur"));
                 }, 150);
-            }), $ctrl.resetView($ctrl.ngModel), setLocale($ctrl.locale), updateModelDate($ctrl.ngModel, !0), 
-            updateMinDate($ctrl.ngMin), updateMaxDate($ctrl.ngMax), ngModelCtrl.$validate(), 
-            $ctrl.weeks = getTableStructure();
+            }), setLocale($ctrl.locale), updateMinDateView($ctrl.ngMin), updateMaxDateView($ctrl.ngMax);
         }
         function resetFocus() {
             $element.find("button").focus();
@@ -335,24 +335,32 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         function addValidators() {
             ngModelCtrl.$validators.min = function(modelValue, viewValue) {
                 var value = modelValue || viewValue;
-                return !(value && value < $ctrl.ngMin) || (unsetModel(), !1);
+                return !(value && value < $ctrl.ngMin) || ($element.parents(".form-group").addClass("has-error"), 
+                !1);
             }, ngModelCtrl.$validators.max = function(modelValue, viewValue) {
                 var value = modelValue || viewValue;
-                return !(value && value > $ctrl.ngMax) || (unsetModel(), !1);
+                return !(value && value > $ctrl.ngMax) || ($element.parents(".form-group").addClass("has-error"), 
+                !1);
             };
         }
         function addWatchers() {
             $scope.$watch("$ctrl.locale", function(newValue, oldValue) {
                 newValue && newValue !== oldValue && setLocale(newValue);
-            }), $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
-                newValue && newValue !== oldValue && updateModelDate(newValue, !0);
             }), $scope.$watch("$ctrl.ngRequired", function(newValue, oldValue) {
                 ngModelCtrl.$validate();
             }), $scope.$watch("$ctrl.ngMin", function(newValue, oldValue) {
-                newValue !== oldValue && (updateMinDate($ctrl.ngMin), $ctrl.ngModel < $ctrl.ngMin && unsetModel());
+                newValue !== oldValue && (updateMinDateView($ctrl.ngMin), ngModelCtrl.$validate());
             }), $scope.$watch("$ctrl.ngMax", function(newValue, oldValue) {
-                newValue !== oldValue && (updateMaxDate($ctrl.ngMax), $ctrl.ngModel > $ctrl.ngMax && unsetModel());
+                newValue !== oldValue && (updateMaxDateView($ctrl.ngMax), ngModelCtrl.$validate());
+            }), $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+                newValue && ($ctrl.selectedDate = TwDateService.getUTCDate(newValue), $ctrl.selectedMonth = TwDateService.getUTCMonth(newValue), 
+                $ctrl.selectedYear = TwDateService.getUTCFullYear(newValue));
             });
+        }
+        function updateCalendarView(viewDate) {
+            viewDate && viewDate.getUTCDate || (viewDate = TwDateService.getLocaleToday()), 
+            $ctrl.day = TwDateService.getUTCDate(viewDate), $ctrl.month = TwDateService.getUTCMonth(viewDate), 
+            $ctrl.year = TwDateService.getUTCFullYear(viewDate), $ctrl.weeks = getTableStructure();
         }
         function getTableStructure() {
             var firstDayOfMonth = TwDateService.getWeekday($ctrl.year, $ctrl.month, 1);
@@ -373,23 +381,21 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             $ctrl.daysOfWeek = TwDateService.getDayNamesForLocale($ctrl.locale, "short"), $ctrl.shortDaysOfWeek = TwDateService.getDayNamesForLocale($ctrl.locale, "narrow");
         }
         function moveDateToWithinRange(date, min, max) {
-            return min && min > date ? min : max && max < date ? max : date;
+            return date || (date = TwDateService.getLocaleToday()), min && min > date ? min : max && max < date ? max : date;
         }
-        function unsetModel() {
-            ngModelCtrl.$setViewValue(null), $ctrl.resetView(), ngModelCtrl.$setDirty(), ngModelCtrl.$setTouched();
+        function setModel(modelDate) {
+            modelDate = moveDateToWithinRange(modelDate, $ctrl.ngMin, $ctrl.ngMax), ngModelCtrl.$setViewValue(modelDate), 
+            ngModelCtrl.$setDirty(), updateCalendarView(modelDate);
         }
-        function updateModelDate(modelDate, dontSetVal) {
-            modelDate && (modelDate = moveDateToWithinRange(modelDate, $ctrl.ngMin, $ctrl.ngMax)), 
-            dontSetVal ? ngModelCtrl.$validate() : (ngModelCtrl.$setViewValue(modelDate), ngModelCtrl.$setDirty(), 
-            ngModelCtrl.$setTouched()), $ctrl.resetView(modelDate);
+        function updateMinDateView(minDate) {
+            minDate && minDate.getUTCDate ? (minDay = TwDateService.getUTCDate(minDate), minMonth = TwDateService.getUTCMonth(minDate), 
+            minYear = TwDateService.getUTCFullYear(minDate)) : (minDay = null, minMonth = null, 
+            minYear = null);
         }
-        function updateMinDate(minDate) {
-            minDate && minDate.getUTCDate ? (minDay = minDate.getDate(), minMonth = minDate.getMonth(), 
-            minYear = minDate.getFullYear()) : (minDay = null, minMonth = null, minYear = null);
-        }
-        function updateMaxDate(maxDate) {
-            maxDate && maxDate.getUTCDate ? (maxDay = maxDate.getDate(), maxMonth = maxDate.getMonth(), 
-            maxYear = maxDate.getFullYear()) : (maxDay = null, maxMonth = null, maxYear = null);
+        function updateMaxDateView(maxDate) {
+            maxDate && maxDate.getUTCDate ? (maxDay = TwDateService.getUTCDate(maxDate), maxMonth = TwDateService.getUTCMonth(maxDate), 
+            maxYear = TwDateService.getUTCFullYear(maxDate)) : (maxDay = null, maxMonth = null, 
+            maxYear = null);
         }
         function findActiveLink() {
             $timeout(function() {
@@ -399,16 +405,19 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         function adjustDate(mode, date, days, months, years) {
             var newDate = date;
             "day" === mode && (newDate = TwDateService.addDays(date, days)), "month" === mode && (newDate = TwDateService.addMonths(date, months)), 
-            "year" === mode && (newDate = TwDateService.addYears(date, years)), updateModelDate(newDate);
+            "year" === mode && (newDate = TwDateService.addYears(date, years)), setModel(newDate);
         }
         var ngModelCtrl, minDay, minMonth, minYear, maxDay, maxMonth, maxYear, $ctrl = this;
         $ctrl.openLookup = function() {
-            ngModelCtrl.$setTouched(), $ctrl.mode = "day", $ctrl.resetView($ctrl.ngModel), $timeout(function() {
+            ngModelCtrl.$setTouched(), $ctrl.mode = "day";
+            var viewDate = $ctrl.ngModel;
+            $ctrl.ngMin && $ctrl.ngModel < $ctrl.ngMin && (viewDate = $ctrl.ngMin), $ctrl.ngMax && $ctrl.ngModel > $ctrl.ngMax && (viewDate = $ctrl.ngMax), 
+            updateCalendarView(viewDate), $timeout(function() {
                 $element.find(".tw-date-lookup-month-label").focus();
             });
         }, $ctrl.selectDay = function($event, day, month, year) {
             return $ctrl.isDayDisabled(day, month, year) ? void $event.stopPropagation() : ($ctrl.day = day, 
-            updateModelDate(TwDateService.getUTCDateFromParts(year, month, day)), void resetFocus());
+            setModel(TwDateService.getUTCDateFromParts(year, month, day)), void resetFocus());
         }, $ctrl.selectMonth = function($event, month, year) {
             $event.stopPropagation(), $ctrl.isMonthDisabled(month, year) || ($ctrl.month = month, 
             $ctrl.weeks = getTableStructure(), $ctrl.mode = "day");
@@ -424,14 +433,6 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             $ctrl.weeks = getTableStructure();
         }, $ctrl.yearAfter = function($event) {
             $event.stopPropagation(), $ctrl.year++, $ctrl.weeks = getTableStructure();
-        }, $ctrl.resetView = function(focalDate) {
-            var rangeDate, reset = !1;
-            focalDate && focalDate.getUTCDate || (focalDate = TwDateService.now(), reset = !0), 
-            rangeDate = moveDateToWithinRange(focalDate, $ctrl.ngMin, $ctrl.ngMax), reset && rangeDate === focalDate ? ($ctrl.day = TwDateService.getLocaleDate(focalDate), 
-            $ctrl.month = TwDateService.getLocaleMonth(focalDate), $ctrl.year = TwDateService.getLocaleFullYear(focalDate)) : ($ctrl.day = TwDateService.getUTCDate(rangeDate), 
-            $ctrl.month = TwDateService.getUTCMonth(rangeDate), $ctrl.year = TwDateService.getUTCFullYear(rangeDate)), 
-            $ctrl.selectedDate = $ctrl.day, $ctrl.selectedMonth = $ctrl.month, $ctrl.selectedYear = $ctrl.year, 
-            $ctrl.weeks = getTableStructure();
         }, $ctrl.isCurrentlySelected = function(day, month, year) {
             return day === $ctrl.selectedDate && month === $ctrl.selectedMonth && year === $ctrl.selectedYear;
         }, $ctrl.isDayDisabled = function(day, month, year) {
@@ -451,7 +452,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         }, $ctrl.blur = function() {
             $element.triggerHandler("focus");
         }, $ctrl.keyHandler = function(event) {
-            if (!$ctrl.ngModel) return void updateModelDate(TwDateService.getUTCDateFromParts($ctrl.year, $ctrl.month, $ctrl.day));
+            if (!$ctrl.ngModel) return void setModel(TwDateService.getUTCDateFromParts($ctrl.year, $ctrl.month, $ctrl.day));
             var characterCode = event.which || event.charCode || event.keyCode;
             return 37 === characterCode ? adjustDate($ctrl.mode, $ctrl.ngModel, -1, -1, -1) : 38 === characterCode ? (event.preventDefault(), 
             adjustDate($ctrl.mode, $ctrl.ngModel, -7, -4, -4)) : 39 === characterCode ? adjustDate($ctrl.mode, $ctrl.ngModel, 1, 1, 1) : 40 === characterCode && (event.preventDefault(), 
@@ -1373,24 +1374,39 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
 }(window.angular), function(angular) {
     "use strict";
     function TwDateService() {
+        function getLocalisedDateName(date, locale, formattingObject) {
+            var name = date.toLocaleDateString(locale, formattingObject).replace(/[0-9]|\s/g, "");
+            return name[0].toUpperCase() + name.substring(1);
+        }
+        function getValidDateFormat(format) {
+            var validFormats = [ "narrow", "short", "long" ];
+            return !format || validFormats.indexOf(format) < 0 ? "long" : format;
+        }
+        function getValidLocale(locale) {
+            return isIntlSupportedForLocale(locale) ? locale : DEFAULT_MONTHS_EN;
+        }
         function isIntlSupportedForLocale(locale) {
             return window.Intl && "object" == typeof window.Intl && window.Intl.DateTimeFormat.supportedLocalesOf([ locale ]).length > 0;
         }
-        var DEFAULT_MONTHS_EN = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ], DEFAULT_DAYS_EN = [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" ];
-        this.now = function() {
-            return new Date();
-        }, this.getLocaleDate = function(date) {
+        var DEFAULT_MONTHS_EN = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+        this.getLocaleDate = function(date) {
             return date || (date = new Date()), date.getDate();
         }, this.getLocaleMonth = function(date) {
             return date || (date = new Date()), date.getMonth();
         }, this.getLocaleFullYear = function(date) {
             return date || (date = new Date()), date.getFullYear();
+        }, this.getLocaleToday = function() {
+            var now = new Date();
+            return this.getUTCDateFromParts(this.getLocaleFullYear(now), this.getLocaleMonth(now), this.getLocaleDate(now));
         }, this.getUTCDate = function(date) {
             return date || (date = new Date()), date.getUTCDate();
         }, this.getUTCMonth = function(date) {
             return date || (date = new Date()), date.getUTCMonth();
         }, this.getUTCFullYear = function(date) {
             return date || (date = new Date()), date.getUTCFullYear();
+        }, this.getUTCToday = function() {
+            var now = new Date();
+            return this.getUTCDateFromParts(this.getUTCFullYear(now), this.getUTCMonth(now), this.getUTCDate(now));
         }, this.getLastDayOfMonth = function(year, month) {
             var lastDay = this.getUTCDateFromParts(year, month + 1, 0);
             return lastDay.getUTCDate();
@@ -1399,24 +1415,18 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             return date.setUTCFullYear(year, month, day), date.setUTCHours(0), date.setUTCMinutes(0), 
             date.setUTCSeconds(0), date.setUTCMilliseconds(0), date;
         }, this.getDayNamesForLocale = function(locale, format) {
-            if (format || (format = "long"), !isIntlSupportedForLocale(locale)) return DEFAULT_DAYS_EN;
-            for (var date, days = [], i = 1; i <= 7; i++) {
-                date = this.getUTCDateFromParts(2001, 0, i);
-                var dayName = date.toLocaleDateString(locale, {
-                    weekday: format
-                });
-                dayName = dayName[0].toUpperCase() + dayName.substring(1), days.push(dayName);
-            }
+            format = getValidDateFormat(format), locale = getValidLocale(locale);
+            for (var date, days = [], i = 1; i <= 7; i++) date = this.getUTCDateFromParts(2001, 0, i), 
+            days.push(getLocalisedDateName(date, locale, {
+                weekday: format
+            }));
             return days;
         }, this.getMonthNamesForLocale = function(locale, format) {
-            if (format || (format = "long"), !isIntlSupportedForLocale(locale)) return DEFAULT_MONTHS_EN;
-            for (var date, months = [], i = 0; i < 12; i++) {
-                date = new Date(Date.UTC(2e3, i, 15));
-                var monthName = date.toLocaleDateString(locale, {
-                    month: format
-                });
-                monthName = monthName[0].toUpperCase() + monthName.substring(1), months.push(monthName);
-            }
+            format = getValidDateFormat(format), locale = getValidLocale(locale);
+            for (var date, months = [], i = 0; i < 12; i++) date = this.getUTCDateFromParts(2e3, i, 15), 
+            months.push(getLocalisedDateName(date, locale, {
+                month: format
+            }));
             return months;
         }, this.getWeekday = function(year, month, day) {
             var utcDate = this.getUTCDateFromParts(year, month, day);
