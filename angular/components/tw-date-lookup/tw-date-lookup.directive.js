@@ -191,7 +191,7 @@
 
 			$element.find('.btn, .dropdown-menu').on('focusout', function() {
 				$timeout(function() {
-					// If button isn't focused and dropdown not , blur
+					// If button isn't focused and dropdown not open, then blur
 					if ($element.find('.btn:focus').length === 0 &&
 						!$element.find('.btn-group').hasClass('open')) {
 						// TODO remove jquery dependency
