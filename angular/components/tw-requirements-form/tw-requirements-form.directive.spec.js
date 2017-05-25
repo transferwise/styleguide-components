@@ -357,6 +357,6 @@ describe('Directive: TwRequirementsForm', function() {
               }
             ]
           }
-        ];
+       ];
     }
 });

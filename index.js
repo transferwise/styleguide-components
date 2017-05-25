@@ -44,6 +44,23 @@ angular.module('my-app', ['tw.styleguide-components'])
 		{value: 2, label: 'Two'},
 		{value: 3, label: 'Three'}
 	];
+
+	this.locales = [
+		{'value': 'en-GB', 'label': 'English UK'},
+		{'value': 'en-US', 'label': 'English US'},
+		{'value': 'fr-FR', 'label': 'French'},
+		{'value': 'es-ES', 'label': 'Spanish'},
+		{'value': 'es-US', 'label': 'Spanish US'},
+		{'value': 'pt-BR', 'label': 'Brazillian Portuguese'},
+		{'value': 'xx-XX', 'label': 'Unknown locale'}
+	];
+
+	var initialDate = new Date('2000-01-10');
+	this.model = {
+		components: {
+			dateLookup: initialDate
+		}
+	};
 }])
 .directive('validateRegexp', function($q) {
 	return {
@@ -197,6 +214,10 @@ angular.module('my-app', ['tw.styleguide-components'])
 			{value: 'xs,sm', label: 'xs and sm grid'},
 			{value: 'md,lg,xl', label: 'md, lg and xl grid'}
 		];
+
+		$ctrl.log = function(message) {
+			console.log(message);
+		}
 	}
 })
 .component('twUploadDocs', {
@@ -240,6 +261,9 @@ angular.module('my-app', ['tw.styleguide-components'])
 })
 .directive('twDateDocs', function() {
 	return {templateUrl: 'partials/tw-date.html'};
+})
+.directive('twDateLookupDocs', function() {
+	return {templateUrl: 'partials/tw-date-lookup.html'};
 })
 .directive('twCurrencyInputDocs', function() {
 	return {templateUrl: 'partials/tw-currency-input.html'};
