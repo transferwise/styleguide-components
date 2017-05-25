@@ -121,7 +121,7 @@ describe('Directive: TwRequirementsForm', function() {
             }
             $scope.requirements = getMultipleRequirements();
             $scope.isValid = null;
-            $scope.fieldErrors = {
+            $scope.errorMessages = {
                 sortCode: "Sort code not found"
             }
             directiveElement = getCompiledDirectiveElement();
@@ -136,7 +136,7 @@ describe('Directive: TwRequirementsForm', function() {
         it('should show supplied error message on the correct field', function() {
             var errorBlock =
               directiveElement.find('.tw-form-group-sortCode .error-provided');
-            expect(errorBlock.text().trim()).toBe($scope.fieldErrors.sortCode);
+            expect(errorBlock.text().trim()).toBe($scope.errorMessages.sortCode);
         });
         it('should not show provided errors on other fields', function() {
             expect(directiveElement.find('.error-provided').length).toBe(1);
@@ -157,7 +157,7 @@ describe('Directive: TwRequirementsForm', function() {
             model='model' \
             requirements='requirements' \
             validation-messages='validationMessages' \
-            field-errors='fieldErrors' \
+            error-messages='errorMessages' \
             is-valid='isValid'> \
           </tw-requirements-form>";
         var compiledElement = $compile(template)($scope);

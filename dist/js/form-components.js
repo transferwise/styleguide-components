@@ -666,30 +666,31 @@ angular.module("tw.form-components", []);
     angular.module("tw.form-components").directive("twRadio", TwRadioDirective);
 }(window.angular), function(angular) {
     "use strict";
-    function TwDynamicFormSection() {
+    function TwFieldset() {
         return {
             restrict: "E",
             scope: {
+                legend: "@",
                 model: "=",
                 fields: "<",
                 uploadOptions: "<",
                 locale: "@",
                 onRefreshRequirements: "&",
                 validationMessages: "<",
-                fieldErrors: "<",
+                errorMessages: "<",
                 isValid: "=?"
             },
-            controller: [ "$scope", TwDynamicFormSectionController ],
+            controller: [ "$scope", TwFieldsetController ],
             controllerAs: "$ctrl",
             bindToController: !0,
-            template: " \t\t\t\t<div class='row row-equal-height' ng-form='twFormSection'> \t\t\t\t\t<div ng-repeat='fieldGroup in $ctrl.fields' \t\t\t\t\t\tng-class='{ \t\t\t\t\t\t\t\"col-sm-4\": fieldGroup.width === \"sm\", \t\t\t\t\t\t\t\"col-sm-6\": fieldGroup.width === \"md\" || fieldGroup.maxlength && fieldGroup.maxlength <= 10, \t\t\t\t\t\t\t\"col-sm-12\": fieldGroup.width === \"lg\" || !fieldGroup.maxlength || fieldGroup.maxlength > 10 \t\t\t\t\t\t}'> \t\t\t\t\t\t<div class='form-group tw-form-group-{{fieldGroup.key}}' style='width: 100%;' \t\t\t\t\t\t\tng-class='{\"has-error\": $ctrl.fieldErrors[fieldGroup.key]}'> \t\t\t\t\t\t\t<label class='control-label' \t\t\t\t\t\t\t\tng-if='fieldGroup.type !== \"upload\"'> \t\t\t\t\t\t\t\t{{fieldGroup.name}} \t\t\t\t\t\t\t</label> \t\t\t\t\t\t\t<div class='row'> \t\t\t\t\t\t\t\t<div class='col-xs-{{field.columns}}' \t\t\t\t\t\t\t\t\tng-repeat='field in fieldGroup.group'> \t\t\t\t\t\t\t\t\t<tw-dynamic-form-control \t\t\t\t\t\t\t\t\t\tname='{{field.key}}' \t\t\t\t\t\t\t\t\t\tlabel='{{fieldGroup.name}}' \t\t\t\t\t\t\t\t\t\ttype='{{field.type | lowercase}}' \t\t\t\t\t\t\t\t\t\tplaceholder='{{field.placeholder || field.example}}' \t\t\t\t\t\t\t\t\t\thelp-text='{{field.helpText}}' \t\t\t\t\t\t\t\t\t\tlocale='{{$ctrl.locale}}' \t\t\t\t\t\t\t\t\t\tupload-accept='{{field.accept}}' \t\t\t\t\t\t\t\t\t\tupload-icon='{{field.icon}}' \t\t\t\t\t\t\t\t\t\tupload-too-large-message='{{field.tooLargeMessage}}' \t\t\t\t\t\t\t\t\t\toptions='field.valuesAllowed' \t\t\t\t\t\t\t\t\t\tupload-options='$ctrl.uploadOptions' \t\t\t\t\t\t\t\t\t\tng-model='$ctrl.model[field.key]' \t\t\t\t\t\t\t\t\t\tng-blur='$ctrl.onBlur(field)' \t\t\t\t\t\t\t\t\t\tng-required='field.required' \t\t\t\t\t\t\t\t\t\tng-disabled='field.disabled' \t\t\t\t\t\t\t\t\t\ttw-minlength='field.minLength' \t\t\t\t\t\t\t\t\t\ttw-maxlength='field.maxLength' \t\t\t\t\t\t\t\t\t\tng-min='field.min' \t\t\t\t\t\t\t\t\t\tng-max='field.max' \t\t\t\t\t\t\t\t\t\tng-pattern='field.validationRegexp' \t\t\t\t\t\t\t\t\t\ttw-validation > \t\t\t\t\t\t\t\t\t\t<!-- tw-dynamic-async-validator='field.validationAsync' --> \t\t\t\t\t\t\t\t\t</tw-dynamic-form-control> \t\t\t\t\t\t\t\t\t<div class='error-messages'> \t\t\t\t\t\t\t\t\t\t<div ng-repeat='(validationType, validationMessage) in $ctrl.validationMessages' \t\t\t\t\t\t\t\t\t\t\tclass='error-{{validationType}}'> \t\t\t\t\t\t\t\t\t\t\t{{validationMessage}} \t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t<div class='error-provided' ng-if='$ctrl.fieldErrors[field.key]'> \t\t\t\t\t\t\t\t\t\t\t{{ $ctrl.fieldErrors[field.key] }} \t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t<div ng-if='field.tooltip' \t\t\t\t\t\t\t\t\t\tclass='help-block'> \t\t\t\t\t\t\t\t\t\t<a role='button' \t\t\t\t\t\t\t\t\t\t\ttabindex='0' \t\t\t\t\t\t\t\t\t\t\tdata-toggle='popover' \t\t\t\t\t\t\t\t\t\t\tdata-placement='top' \t\t\t\t\t\t\t\t\t\t\ttitle='{{field.tooltip}}'> \t\t\t\t\t\t\t\t\t\t\t<span class='glyphicon glyphicon-question-sign'></span> \t\t\t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t</div>"
+            template: " \t\t\t\t<fieldset ng-form='twFieldset'> \t\t\t\t\t<legend ng-if='$ctrl.legend'>{{$ctrl.legend}}</legend> \t\t\t\t\t<div class='row row-equal-height'> \t\t\t\t\t\t<div ng-repeat='fieldGroup in $ctrl.fields' \t\t\t\t\t\t\tng-class='{ \t\t\t\t\t\t\t\t\"col-sm-4\": fieldGroup.width === \"sm\", \t\t\t\t\t\t\t\t\"col-sm-6\": fieldGroup.width === \"md\" || fieldGroup.maxlength && fieldGroup.maxlength <= 10, \t\t\t\t\t\t\t\t\"col-sm-12\": fieldGroup.width === \"lg\" || !fieldGroup.maxlength || fieldGroup.maxlength > 10 \t\t\t\t\t\t\t}'> \t\t\t\t\t\t\t<div class='form-group tw-form-group-{{fieldGroup.key}}' style='width: 100%;' \t\t\t\t\t\t\t\tng-class='{\"has-error\": $ctrl.errorMessages[fieldGroup.key]}'> \t\t\t\t\t\t\t\t<label class='control-label' \t\t\t\t\t\t\t\t\tng-if='fieldGroup.type !== \"upload\"'> \t\t\t\t\t\t\t\t\t{{fieldGroup.name}} \t\t\t\t\t\t\t\t</label> \t\t\t\t\t\t\t\t<div class='row'> \t\t\t\t\t\t\t\t\t<div class='col-xs-{{field.columns}}' \t\t\t\t\t\t\t\t\t\tng-repeat='field in fieldGroup.group'> \t\t\t\t\t\t\t\t\t\t<tw-dynamic-form-control \t\t\t\t\t\t\t\t\t\t\tname='{{field.key}}' \t\t\t\t\t\t\t\t\t\t\tlabel='{{fieldGroup.name}}' \t\t\t\t\t\t\t\t\t\t\ttype='{{field.type | lowercase}}' \t\t\t\t\t\t\t\t\t\t\tplaceholder='{{field.placeholder || field.example}}' \t\t\t\t\t\t\t\t\t\t\thelp-text='{{field.helpText}}' \t\t\t\t\t\t\t\t\t\t\tlocale='{{$ctrl.locale}}' \t\t\t\t\t\t\t\t\t\t\tupload-accept='{{field.accept}}' \t\t\t\t\t\t\t\t\t\t\tupload-icon='{{field.icon}}' \t\t\t\t\t\t\t\t\t\t\tupload-too-large-message='{{field.tooLargeMessage}}' \t\t\t\t\t\t\t\t\t\t\toptions='field.valuesAllowed' \t\t\t\t\t\t\t\t\t\t\tupload-options='$ctrl.uploadOptions' \t\t\t\t\t\t\t\t\t\t\tng-model='$ctrl.model[field.key]' \t\t\t\t\t\t\t\t\t\t\tng-blur='$ctrl.onBlur(field)' \t\t\t\t\t\t\t\t\t\t\tng-required='field.required' \t\t\t\t\t\t\t\t\t\t\tng-disabled='field.disabled' \t\t\t\t\t\t\t\t\t\t\ttw-minlength='field.minLength' \t\t\t\t\t\t\t\t\t\t\ttw-maxlength='field.maxLength' \t\t\t\t\t\t\t\t\t\t\tng-min='field.min' \t\t\t\t\t\t\t\t\t\t\tng-max='field.max' \t\t\t\t\t\t\t\t\t\t\tng-pattern='field.validationRegexp' \t\t\t\t\t\t\t\t\t\t\ttw-validation > \t\t\t\t\t\t\t\t\t\t\t<!-- tw-dynamic-async-validator='field.validationAsync' --> \t\t\t\t\t\t\t\t\t\t</tw-dynamic-form-control> \t\t\t\t\t\t\t\t\t\t<div class='error-messages'> \t\t\t\t\t\t\t\t\t\t\t<div ng-repeat='(validationType, validationMessage) in $ctrl.validationMessages' \t\t\t\t\t\t\t\t\t\t\t\tclass='error-{{validationType}}'> \t\t\t\t\t\t\t\t\t\t\t\t{{validationMessage}} \t\t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t\t<div class='error-provided' ng-if='$ctrl.errorMessages[field.key]'> \t\t\t\t\t\t\t\t\t\t\t\t{{ $ctrl.errorMessages[field.key] }} \t\t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t<div ng-if='field.tooltip' \t\t\t\t\t\t\t\t\t\t\tclass='help-block'> \t\t\t\t\t\t\t\t\t\t\t<a role='button' \t\t\t\t\t\t\t\t\t\t\t\ttabindex='0' \t\t\t\t\t\t\t\t\t\t\t\tdata-toggle='popover' \t\t\t\t\t\t\t\t\t\t\t\tdata-placement='top' \t\t\t\t\t\t\t\t\t\t\t\ttitle='{{field.tooltip}}'> \t\t\t\t\t\t\t\t\t\t\t\t<span class='glyphicon glyphicon-question-sign'></span> \t\t\t\t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t</fieldset>"
         };
     }
-    function TwDynamicFormSectionController($scope) {
+    function TwFieldsetController($scope) {
         function init() {
             $ctrl.model || ($ctrl.model = {}), $ctrl.fields && prepFields($ctrl.fields), $scope.$watch("$ctrl.fields", function(newValue, oldValue) {
                 angular.equals(newValue, oldValue) || prepFields($ctrl.fields);
-            }), $scope.$watch("twFormSection.$valid", function(validity) {
+            }), $scope.$watch("twFieldset.$valid", function(validity) {
                 $ctrl.isValid = validity;
             }), $ctrl.validationMessages || ($ctrl.validationMessages = {
                 required: "Required",
@@ -740,7 +741,7 @@ angular.module("tw.form-components", []);
             !field.refreshRequirementsOnChange;
         }, init();
     }
-    angular.module("tw.form-components").directive("twDynamicFormSection", TwDynamicFormSection);
+    angular.module("tw.form-components").directive("twFieldset", TwFieldset);
 }(window.angular), function(angular) {
     "use strict";
     function TwRequirementsForm() {
@@ -753,13 +754,13 @@ angular.module("tw.form-components", []);
                 locale: "@",
                 onRefreshRequirements: "&",
                 validationMessages: "<",
-                fieldErrors: "<",
+                errorMessages: "<",
                 isValid: "=?"
             },
             controller: [ "$scope", "TwRequirementsService", TwRequirementsFormController ],
             controllerAs: "$ctrl",
             bindToController: !0,
-            template: " \t\t\t<tw-tabs \t\t\t\tng-if='$ctrl.requirements.length > 1' \t\t\t\ttabs='$ctrl.requirements' \t\t\t\tactive='$ctrl.model.type'> \t\t\t</tw-tabs> \t\t\t<div class='tab-content' ng-form='twForm'> \t\t\t\t<div ng-repeat='requirementType in $ctrl.requirements' \t\t\t\t\tng-if='$ctrl.model.type == requirementType.type' \t\t\t\t\tclass='tab-pane active' \t\t\t\t\tid='{{requirementType.type}}'> \t\t\t\t\t<p>{{requirementType.description}}</p> \t\t\t\t\t<tw-dynamic-form-section \t\t\t\t\t\tfields='requirementType.fields' \t\t\t\t\t\tmodel='$ctrl.model' \t\t\t\t\t\tupload-options='$ctrl.uploadOptions' \t\t\t\t\t\tlocale='{{$ctrl.locale}}' \t\t\t\t\t\tonRefreshRequirements='$ctrl.onRefreshRequirements()' \t\t\t\t\t\tvalidation-messages='$ctrl.validationMessages' \t\t\t\t\t\tfield-errors='$ctrl.fieldErrors'> \t\t\t\t\t</tw-dynamic-form-section> \t\t\t\t</div> \t\t\t</div>"
+            template: " \t\t\t<tw-tabs \t\t\t\tng-if='$ctrl.requirements.length > 1' \t\t\t\ttabs='$ctrl.requirements' \t\t\t\tactive='$ctrl.model.type'> \t\t\t</tw-tabs> \t\t\t<div class='tab-content' ng-form='twForm'> \t\t\t\t<div ng-repeat='requirementType in $ctrl.requirements' \t\t\t\t\tng-if='$ctrl.model.type == requirementType.type' \t\t\t\t\tclass='tab-pane active' \t\t\t\t\tid='{{requirementType.type}}'> \t\t\t\t\t<p>{{requirementType.description}}</p> \t\t\t\t\t<tw-fieldset \t\t\t\t\t\tfields='requirementType.fields' \t\t\t\t\t\tmodel='$ctrl.model' \t\t\t\t\t\tupload-options='$ctrl.uploadOptions' \t\t\t\t\t\tlocale='{{$ctrl.locale}}' \t\t\t\t\t\tonRefreshRequirements='$ctrl.onRefreshRequirements()' \t\t\t\t\t\tvalidation-messages='$ctrl.validationMessages' \t\t\t\t\t\terror-messages='$ctrl.errorMessages'> \t\t\t\t\t</tw-fieldset> \t\t\t\t</div> \t\t\t</div>"
         };
     }
     function TwRequirementsFormController($scope, TwRequirementsService) {
@@ -1261,7 +1262,7 @@ angular.module("tw.form-components", []);
     "use strict";
     function TwRequirementsService() {
         function getFieldNamesFromRequirement(modelRequirement) {
-            if (!modelRequirement.fields) return console.log(modelRequirement), [];
+            if (!modelRequirement.fields) return [];
             var names = modelRequirement.fields.map(function(fieldGroup) {
                 return fieldGroup.group.map(function(field) {
                     return field.key;

@@ -15,7 +15,7 @@
 				locale: '@',
 				onRefreshRequirements: '&',
 				validationMessages: '<',
-				fieldErrors: '<',
+				errorMessages: '<',
 				isValid: '=?'
 			},
 			controller: ['$scope', 'TwRequirementsService', TwRequirementsFormController],
@@ -33,15 +33,15 @@
 					class='tab-pane active' \
 					id='{{requirementType.type}}'> \
 					<p>{{requirementType.description}}</p> \
-					<tw-dynamic-form-section \
+					<tw-fieldset \
 						fields='requirementType.fields' \
 						model='$ctrl.model' \
 						upload-options='$ctrl.uploadOptions' \
 						locale='{{$ctrl.locale}}' \
 						onRefreshRequirements='$ctrl.onRefreshRequirements()' \
 						validation-messages='$ctrl.validationMessages' \
-						field-errors='$ctrl.fieldErrors'> \
-					</tw-dynamic-form-section> \
+						error-messages='$ctrl.errorMessages'> \
+					</tw-fieldset> \
 				</div> \
 			</div>"
 		};
