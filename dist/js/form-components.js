@@ -1323,6 +1323,7 @@ angular.module("tw.form-components", []);
             XAF: 0,
             XOF: 0,
             XPF: 0,
+            HUF: 0,
             BHD: 3,
             JOD: 3,
             KWD: 3,

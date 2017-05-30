@@ -23,6 +23,8 @@
 			'XAF': 0,
 			'XOF': 0,
 			'XPF': 0,
+			// technically HUF does have decimals, but due to the exchange rate banks do not accept decimal amounts
+			'HUF': 0,
 
 			'BHD': 3,
 			'JOD': 3,
