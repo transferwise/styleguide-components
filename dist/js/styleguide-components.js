@@ -1315,6 +1315,58 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     }
     angular.module("tw.form-styling").directive("twPopOver", TwPopOver);
 }(window.angular), function(angular) {
+    "use strict";
+    function TwPresentationPattern() {
+        return {
+            restrict: "A",
+            require: "ngModel",
+            controller: [ "$element", "$timeout", function($element, $timeout) {
+                function listener() {
+                    var rawValue = $element.val();
+                    $element.val(format(rawValue));
+                }
+                function unformat(value) {
+                    if (!value) return value;
+                    var regex = new RegExp(separator, "g");
+                    return value.replace(regex, "");
+                }
+                function format(value) {
+                    value = unformat(value);
+                    var presentationValue = "";
+                    return sectionLengths.forEach(function(sectionLength, index) {
+                        presentationValue += value.substring(0, sectionLength), value = value.substring(sectionLength, value.length), 
+                        index + 1 < sectionLengths.length && value.length && (presentationValue += separator);
+                    }), presentationValue += value;
+                }
+                function setCursorPosition(element, position) {
+                    element.setSelectionRange(position, position);
+                }
+                var ngModelController = $element.controller("ngModel");
+                console.log("presentation pattern");
+                var pattern = $element.attr("tw-presentation-pattern"), separator = "-", sectionLengths = pattern.split("-").map(function(val) {
+                    return parseInt(val, 10);
+                });
+                console.log(pattern), console.log(separator), console.log(sectionLengths), ngModelController.$render = function() {
+                    $element.val(format(ngModelController.$viewValue));
+                }, ngModelController.$parsers.push(function(value) {
+                    return unformat(value);
+                }), $element.bind("change", listener), $element.bind("keydown", function(event) {
+                    console.log("keydown"), console.log(ngModelController.$modelValue), console.log(ngModelController.$viewValue), 
+                    console.log(ngModelController.$valid);
+                }), $element.bind("keypress", function(event) {
+                    console.log("keypress"), console.log(ngModelController.$modelValue), console.log(ngModelController.$viewValue), 
+                    console.log(ngModelController.$valid);
+                }), $element.bind("keyup", function(event) {
+                    console.log("keyup"), console.log(ngModelController.$modelValue), console.log(ngModelController.$viewValue), 
+                    console.log(ngModelController.$valid), ngModelController.$setViewValue(format(ngModelController.$modelValue));
+                }), $element.bind("paste cut", function() {
+                    $timeout(listener), setCursorPosition($element[0], $element.val().length);
+                });
+            } ]
+        };
+    }
+    angular.module("tw.form-styling").directive("twPresentationPattern", TwPresentationPattern);
+}(window.angular), function(angular) {
     function TwToolTip() {
         return {
             restrict: "A",

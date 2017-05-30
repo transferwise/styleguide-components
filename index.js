@@ -300,6 +300,9 @@ angular.module('my-app', ['tw.styleguide-components'])
 .directive('twFocusableDocs', function() {
 	return {templateUrl: 'partials/tw-focusable.html'};
 })
+.directive('twPresentationPatternDocs', function() {
+	return {templateUrl: 'partials/tw-presentation-pattern.html'};
+})
 .directive('twPopOverDocs', function() {
 	return {templateUrl: 'partials/tw-pop-over.html'};
 })

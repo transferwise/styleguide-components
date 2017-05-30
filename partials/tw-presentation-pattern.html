@@ -1,0 +1,23 @@
+<h4 id="presentation-pattern">TW Presentation Pattern</h4>
+<p><code>tw-presentation-pattern</code> is a simple attribute based directive
+	that formats test entered into controls.</p>
+<hr />
+<div class="m-b-3">
+	<div class="form-group">
+		<label class="control-label">Presentation pattern</label>
+		<input type="text" class="form-control"
+			ng-model="vm.model.presentationPattern"
+			ng-maxlength="9"
+			tw-focusable
+			tw-presentation-pattern="2-3-4" />
+	</div>
+	<button class="btn btn-default"
+		ng-click="vm.model.presentationPattern = '123456789'">
+		Set to '123456789'
+	</button>
+<pre>
+&lt;input type="text" class="form-control" tw-presentation-pattern="2-3-4" /&gt;
+</pre>
+
+</div>
+<hr class="m-b-5" />
