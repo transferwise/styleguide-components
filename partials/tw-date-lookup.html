@@ -20,7 +20,9 @@
 				ng-blur="vm.log('date lookup blur')"
 				placeholder="{{vm.dateLookup.placeholder}}"
 				locale="{{vm.dateLookup.locale}}"
-				size="{{vm.dateLookup.size}}" tw-validation></tw-date-lookup>
+				size="{{vm.dateLookup.size}}"
+				label="{{vm.dateLookup.label}}"
+				tw-validation></tw-date-lookup>
 		</div>
 		<h5>Configuration</h5>
 		<pre>
@@ -78,6 +80,12 @@
 					placeholder="Size..."
 					ng-model="vm.dateLookup.size"
 					options="[{value: 'sm', label: 'Small'},{value: '', label: 'Medium'},{value: 'lg', label: 'Large'}]"></tw-select>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Inline label</label>
+				<input type="text"
+					class="form-control"
+					ng-model="vm.dateLookup.label" />
 			</div>
 			<div class="form-group">
 				<div class="checkbox">

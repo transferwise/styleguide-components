@@ -23,7 +23,8 @@
 				ngDisabled: '=',
 				placeholder: '@',
 				size: '@',
-				locale: '@'
+				locale: '@',
+				label: '@'
 			}
 		};
 	}
@@ -39,13 +40,17 @@
 					\'btn-sm\': $ctrl.size === \'sm\', \
 					\'btn-lg\': $ctrl.size === \'lg\' \
 				}"> \
-				<span ng-if="!$ctrl.ngModel" class="form-control-placeholder tw-date-lookup-placeholder"> \
+				<span ng-if="!$ctrl.ngModel" \
+					class="form-control-placeholder tw-date-lookup-placeholder"> \
 					{{$ctrl.placeholder}} \
 				</span> \
-				<span ng-if="$ctrl.ngModel" class="tw-date-lookup-selected"> \
-					<span ng-if="$ctrl.monthBeforeDay">{{$ctrl.monthsOfYear[$ctrl.selectedMonth]}}</span> \
-					{{$ctrl.selectedDate}}<span ng-if="$ctrl.monthBeforeDay">,</span> \
-					<span ng-if="!$ctrl.monthBeforeDay">{{$ctrl.monthsOfYear[$ctrl.selectedMonth]}}</span> \
+				<span ng-if="$ctrl.label && $ctrl.ngModel" \
+					class="control-label small m-r-1" style="font-size: 14px;" \
+					>{{$ctrl.label}}</span \
+				><span ng-if="$ctrl.ngModel" class="tw-date-lookup-selected" \
+					><span ng-if="$ctrl.monthBeforeDay">{{$ctrl.monthsOfYear[$ctrl.selectedMonth]}} </span \
+					>{{$ctrl.selectedDate}}<span ng-if="$ctrl.monthBeforeDay">,</span \
+					><span ng-if="!$ctrl.monthBeforeDay"> {{$ctrl.monthsOfYear[$ctrl.selectedMonth]}}</span> \
 					{{$ctrl.selectedYear}} \
 				</span> \
 				<span class="caret"></span> \
