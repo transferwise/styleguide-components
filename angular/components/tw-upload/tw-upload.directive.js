@@ -46,7 +46,8 @@
 				onSuccess: '=',
 				onFailure: '=',
 				onCancel: '=',
-				maxSize: '='
+				maxSize: '=',
+				multiple: '='
 			},
 			link: twUploadLink,
 			template:
@@ -93,9 +94,28 @@
 							<h4 class="m-b-2" ng-if="$ctrl.completeText"> \
 								{{$ctrl.completeText}} \
 							</h4> \
-							<img ng-src="{{$ctrl.image}}" ng-if="$ctrl.isImage" class="thumbnail m-b-3" /> \
-							<i class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></i> \
-							<p class="text-ellipsis m-b-2">{{$ctrl.fileName}}</p> \
+							<div ng-if="$ctrl.file"> \
+								<img ng-src="{{$ctrl.file.dataUrl}}" ng-if="$ctrl.file.isImage" class="thumbnail m-b-3" /> \
+								<i class="icon icon-pdf icon-xxl" ng-if="!$ctrl.file.isImage"></i> \
+								<p class="text-ellipsis m-b-2" style="max-width: 200px;"> \
+									<a href="" class="text-no-decoration" ng-if="!$ctrl.file.posted" \
+										ng-click="$ctrl.removeFile($ctrl.fileIndex)"> \
+										<i class="icon icon-trash"></i> \
+									</a> \
+									{{$ctrl.file.name}} \
+								</p> \
+							</div> \
+							<div ng-if="$ctrl.files.length > 1" style="overflow-x: auto; white-space: nowrap; vertical-align: middle;"> \
+								<div ng-repeat="file in $ctrl.files track by $index" \
+									ng-click="$ctrl.file = file; $ctrl.fileIndex = $index;" \
+									ng-class="{\'bg-primary\': file.name === $ctrl.file.name}" \
+									style="display: inline-block; border-radius: 3px;"> \
+									<img ng-src="{{file.dataUrl}}" ng-if="file.isImage" \
+										class="thumbnail m-a-1" \
+										style="max-width: 40px; max-height: 40xp; /> \
+									<i class="icon icon-pdf icon-xxl" ng-if="!file.isImage"></i> \
+								</div> \
+							</div> \
 						</div> \
 						<div ng-if="!$ctrl.hasTranscluded && $ctrl.isError"> \
 							<h4 class="m-b-2" ng-if="$ctrl.isTooLarge">{{$ctrl.tooLargeMessage}}</h4> \
@@ -104,9 +124,16 @@
 							<i class="icon icon-alert icon-xxl text-danger m-b-1"></i> \
 						</div> \
 						<div ng-if="$ctrl.hasTranscluded" ng-transclude></div> \
-						<p ng-if="$ctrl.cancelText" class="m-t-2 m-b-0"> \
+						<p ng-if="(!$ctrl.multiple || $ctrl.isError) && $ctrl.cancelText" class="m-t-2 m-b-0"> \
 							<a href="" ng-click="$ctrl.clear()">{{$ctrl.cancelText}}</a> \
 						</p> \
+						\
+						<label ng-if="$ctrl.multiple && !$ctrl.isError" class="btn btn-primary">{{$ctrl.buttonText}} \
+							<input tw-file-select type="file" \
+								accept="{{$ctrl.accept}}"" class="tw-droppable-input hidden" name="file-upload" \
+								on-user-input="$ctrl.onManualUpload" ng-model="$ctrl.inputFile"/> \
+						</label> \
+						\
 					</div> \
 				</div> \
 				<div class="droppable-dropping-card droppable-card"> \
@@ -118,9 +145,20 @@
 						<p class="m-t-2 m-b-0"></p> \
 					</div> \
 				</div> \
-			</div>'
+			</div><pre>{{$ctrl.files | json}}<br />{{$ctrl.ngModel | json}}</pre>'
 		};
 	}
+/*
+
+<div class="" style="overflow-x: auto; white-space: nowrap;"> \
+	<div ng-repeat="file in $ctrl.files track by $index" style="display: inline-block;"> \
+		<a href="" ng-if="!file.posted" ng-click="$ctrl.removeFile($index)" class="close pull-xs-right">&times;</a> \
+		<img ng-src="{{file.dataUrl}}" ng-if="file.isImage" class="thumbnail m-b-3" /> \
+		<i class="icon icon-pdf icon-xxl" ng-if="!file.isImage"></i> \
+		<p class="text-ellipsis m-b-2" style="max-width: 200px;">{{file.name}}</p> \
+	</div> \
+</div> \
+*/
 
 	function TwUploadController(
 		$timeout,
@@ -133,7 +171,9 @@
 	{
 		var $ctrl = this;
 		var asyncPromise;
-		var isImage = false;
+		//var isImage = false;
+
+		$ctrl.files = [];
 
 		$ctrl.dragCounter = 0;
 		$ctrl.isProcessing = false;
@@ -152,18 +192,22 @@
 		}
 
 		$ctrl.onManualUpload = function(event) {
-			var file = angular.element(
-				$element[0].querySelector('.tw-droppable-input')
-			)[0].files[0];
-
+			var file = event.target.files[0];
 			$ctrl.fileDropped(file, event);
 		};
 
 		$ctrl.fileDropped = function(file, event) {
-			reset();
+			resetView();
+			if (!$ctrl.multiple) {
+				resetModel();
+			}
 
-			isImage = (file.type && file.type.indexOf('image') > -1);
-			$ctrl.fileName = file.name;
+			var fileObject = {
+				isImage: (file.type && file.type.indexOf('image') > -1),
+				name: file.name,
+				type: file.type,
+				posted: $ctrl.httpOptions ? true : false
+			};
 
 			$ctrl.isProcessing = true;
 			$ctrl.processingState = null;
@@ -195,7 +239,7 @@
 						asyncFileRead(file)
 					])
 					.then(function(response) {
-						showDataImage(response[1]);
+						showDataImage(response[1], fileObject);
 						return response[0];
 					})
 					.then(asyncSuccess)
@@ -203,7 +247,9 @@
 			} else {
 				// Post on form submit
 				asyncFileRead(file)
-					.then(showDataImage)
+					.then(function(dataUrl) {
+						showDataImage(dataUrl, fileObject);
+					})
 					.then(asyncSuccess)
 					.catch(asyncFailure);
 			}
@@ -224,11 +270,32 @@
 		};
 
 		$ctrl.clear = function() {
-			reset();
+			resetView();
+			resetModel();
 			triggerHandler($ctrl.onCancel);
 		};
 
-		function reset() {
+		$ctrl.removeFile = function(index) {
+			console.log("remove: " + index);
+			$ctrl.files = removeIndexFromList($ctrl.files, index);
+			$ctrl.ngModel = removeIndexFromList($ctrl.ngModel, index);
+
+			if ($ctrl.files.length === 0) {
+				resetView();
+				resetModel();
+				$ctrl.file = false;
+				$ctrl.fileIndex = false;
+			} else {
+				$ctrl.file = $ctrl.files[$ctrl.files.length];
+				$ctrl.fileIndex = $ctrl.files.length;
+			}
+		};
+
+		function removeIndexFromList(list, index) {
+			return list.slice(0,index).concat(list.slice(index+1));
+		}
+
+		function resetView() {
 			$ctrl.isDroppable = false;
 			$ctrl.isProcessing = false;
 			$ctrl.isSuccess = false;
@@ -238,7 +305,14 @@
 			$ctrl.isTooLarge = false;
 			$ctrl.isWrongType = false;
 			$element[0].querySelector('input').value = null;
-			setNgModel(null);
+		}
+
+		function resetModel() {
+			if ($ctrl.multiple) {
+				setNgModel([]);
+			} else {
+				setNgModel(null);
+			}
 		}
 
 		function setNgModel(value) {
@@ -248,7 +322,17 @@
 				if (!$ngModel.$setViewValue) {
 					return;
 				}
-				$ngModel.$setViewValue(value);
+
+				if ($ctrl.multiple) {
+					var newValue = $ctrl.ngModel;
+					if (!angular.isArray(newValue)) {
+						newValue = [];
+					}
+					newValue.push(value);
+					$ngModel.$setViewValue(newValue);
+				} else {
+					$ngModel.$setViewValue(value);
+				}
 			}
 		}
 
@@ -294,13 +378,14 @@
 			return deferred.promise;
 		}
 
-		function showDataImage(dataUrl) {
+		function showDataImage(dataUrl, fileObject) {
+			// TODO validate it's not already in the collection
 			setNgModel(dataUrl);
-			// Only set isImage at this point to avoid trying to show another file type
-			$ctrl.isImage = isImage;
-			if (isImage) {
-				$ctrl.image = dataUrl;
-			}
+			fileObject.dataUrl = dataUrl;
+			// TODO Ideally we would do this after we've animated out the view.
+			$ctrl.file = fileObject;
+			$ctrl.files.push(fileObject);
+			$ctrl.fileIndex = $ctrl.files.length;
 		}
 
 		function asyncSuccess(response) {

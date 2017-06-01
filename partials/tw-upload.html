@@ -48,6 +48,7 @@
 			<tw-upload
 				ng-if="!$ctrl.customComplete"
 				ng-model="$ctrl.ngModel"
+				multiple="$ctrl.multiple"
 				name="$ctrl.name"
 				icon="{{$ctrl.icon}}"
 				size="{{$ctrl.size}}"
@@ -77,6 +78,7 @@
 			<tw-upload
 				ng-if="$ctrl.customComplete"
 				ng-model="$ctrl.ngModel"
+				multiple="$ctrl.multiple"
 				name="$ctrl.name"
 				icon="{{$ctrl.icon}}"
 				size="{{$ctrl.size}}"
@@ -150,7 +152,7 @@
 </pre>
 	</div>
 	<div class="col-md-6">
-		<div class="well">
+		<div class="well" ng-init="$ctrl.multiple = true; $ctrl.showNgModel = true;">
 			<h5 class="page-header">
 				Edit configuration
 				<button type="button" class="btn btn-sm btn-default pull-xs-right" ng-click="$ctrl.makeFancy()">Make fancy</button>
@@ -169,7 +171,7 @@
 				<input type="text" class="form-control" ng-model="$ctrl.instructions" />
 			</div>
 
-			<div class="form-group" ng-init="$ctrl.buttonText = 'Or choose file'">
+			<div class="form-group" ng-init="$ctrl.buttonText = 'Choose file'">
 				<label class="control-label">
 					Button text
 				</label>
@@ -247,6 +249,12 @@
 					<label>
 						<tw-checkbox ng-model="$ctrl.customComplete" />
 					 	Custom complete screen?
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<tw-checkbox ng-model="$ctrl.multiple" />
+					 Support multiple files
 					</label>
 				</div>
 			</div>
