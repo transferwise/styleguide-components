@@ -51,6 +51,10 @@
 					$ctrl.model.splice(index, 1);
 				};
 
+				$ctrl.repeatErrors = [{
+					firstName: "Bad!"
+				}];
+
 				function init() {
 					$scope.$watch('$ctrl.requirements', function(newValue, oldValue) {
 						if (!angular.equals(newValue, oldValue)) {
@@ -104,13 +108,13 @@
 					<p ng-if="requirementType.description"> \
 						{{requirementType.description}} \
 					</p> \
-					<tw-dynamic-form-section \
+					<tw-fieldset \
 						ng-if="!requirementType.repeatable" \
 						fields="requirementType.fields" \
 						model="$ctrl.model" \
 						upload-options="$ctrl.uploadOptions" \
 						locale="{{$ctrl.locale}}"> \
-					</tw-dynamic-form-section> \
+					</tw-fieldset> \
 					<div ng-if="requirementType.repeatable"> \
 						<div ng-repeat="iterator in $ctrl.model track by $index" \
 							class="m-b-1"> \
@@ -122,12 +126,13 @@
 									&times; \
 								</button> \
 							</h5> \
-							<tw-dynamic-form-section \
+							<tw-fieldset \
 								fields="requirementType.fields" \
+								error-messages="$ctrl.repeatErrors[$index]" \
 								model="iterator" \
 								upload-options="$ctrl.uploadOptions" \
 								locale="{{$ctrl.locale}}"> \
-							</tw-dynamic-form-section> \
+							</tw-fieldset> \
 						</div> \
 						<div class="row"> \
 							<div class="col-md-6"> \
