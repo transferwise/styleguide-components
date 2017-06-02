@@ -44,6 +44,23 @@ angular.module('my-app', ['tw.styleguide-components'])
 		{value: 2, label: 'Two'},
 		{value: 3, label: 'Three'}
 	];
+
+	this.locales = [
+		{'value': 'en-GB', 'label': 'English UK'},
+		{'value': 'en-US', 'label': 'English US'},
+		{'value': 'fr-FR', 'label': 'French'},
+		{'value': 'es-ES', 'label': 'Spanish'},
+		{'value': 'es-US', 'label': 'Spanish US'},
+		{'value': 'pt-BR', 'label': 'Brazillian Portuguese'},
+		{'value': 'xx-XX', 'label': 'Unknown locale'}
+	];
+
+	var initialDate = new Date('2000-01-10');
+	this.model = {
+		components: {
+			dateLookup: initialDate
+		}
+	};
 }])
 .directive('validateRegexp', function($q) {
 	return {
@@ -94,7 +111,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 .directive('twRadioDocs', function() {
 	return {templateUrl: 'partials/tw-radio.html'};
 })
-.component('twSelectDocs',  {
+.component('twSelectDocs', {
 	templateUrl: 'partials/tw-select.html',
 	bindings: {
 		model: '='
@@ -197,13 +214,13 @@ angular.module('my-app', ['tw.styleguide-components'])
 			{value: 'xs,sm', label: 'xs and sm grid'},
 			{value: 'md,lg,xl', label: 'md, lg and xl grid'}
 		];
+
+		$ctrl.log = function(message) {
+			console.log(message);
+		}
 	}
 })
-.directive('twUploadDocs', function() {
-	return {
-		controllerAs: '$ctrl',
-		bindToController: true,
-		scope: {},
+.component('twUploadDocs', {
 		controller: ['$timeout', '$q', '$http', function($timeout, $q, $http) {
 			var $ctrl = this;
 			$ctrl.onStart = function(file) {
@@ -241,10 +258,12 @@ angular.module('my-app', ['tw.styleguide-components'])
 			];
 		}],
 		templateUrl: 'partials/tw-upload.html'
-	};
 })
 .directive('twDateDocs', function() {
 	return {templateUrl: 'partials/tw-date.html'};
+})
+.directive('twDateLookupDocs', function() {
+	return {templateUrl: 'partials/tw-date-lookup.html'};
 })
 .directive('twCurrencyInputDocs', function() {
 	return {templateUrl: 'partials/tw-currency-input.html'};
@@ -252,30 +271,28 @@ angular.module('my-app', ['tw.styleguide-components'])
 .directive('twDynamicControlDocs', function() {
 	return {templateUrl: 'partials/tw-dynamic-control.html'};
 })
-.directive('twRequirementsFormDocs', function() {
-	return {
-		controllerAs: "$ctrl",
-		bindToController: true,
-		controller: ['$scope', '$http', function($scope, $http) {
-			var $ctrl = this;
-			$ctrl.types = [
-				{'value': 'account', 'label': 'Account'},
-				{'value': 'profile', 'label': 'Profile'},
-				{'value': 'verification', 'label': 'Verification'}
-			];
-			$ctrl.type = 'account';
+.component('twRequirementsFormDocs', {
+	controller: ['$scope', '$http', function($scope, $http) {
+		var $ctrl = this;
+		$ctrl.types = [
+			{'value': 'account', 'label': 'Account'},
+			{'value': 'profile', 'label': 'Profile'},
+			{'value': 'verification', 'label': 'Verification'}
+		];
+		$ctrl.type = 'profile';
 
-			$scope.$watch('$ctrl.type', function(newVal) {
-				$http.get('partials/'+newVal+'-requirements.json').then(function(response) {
-					$ctrl.requirements = response.data;
-				});
+		$ctrl.model.firstName = '01010101010';
+
+		$scope.$watch('$ctrl.type', function(newVal) {
+			$http.get('partials/'+newVal+'-requirements.json').then(function(response) {
+				$ctrl.requirements = response.data;
 			});
-		}],
-		scope: {
-			model: "="
-		},
-		templateUrl: 'partials/tw-requirements-form.html'
-	};
+		});
+	}],
+	bindings: {
+		model: "="
+	},
+	templateUrl: 'partials/tw-requirements-form.html'
 })
 .directive('twValidationDocs', function() {
 	return {templateUrl: 'partials/tw-validation.html'};

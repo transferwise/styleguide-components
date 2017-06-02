@@ -53,7 +53,7 @@ angular.module("tw.form-components", []);
     TwCurrencyInputController.$inject = [ "$element", "$scope", "$timeout", "TwCurrencyData" ];
 }(window.angular), function(angular) {
     "use strict";
-    function TwDateController($element, $log, $scope) {
+    function TwDateController($element, $log, $scope, TwDateService) {
         function init() {
             if (vm.ngModel) applyDateModelIfValidOrThrowError(), initialisedWithDate = !0; else {
                 if (vm.modelType) {
@@ -91,7 +91,7 @@ angular.module("tw.form-components", []);
             vm.dateDisabled = void 0 !== vm.ngDisabled ? vm.ngDisabled : void 0 !== vm.disabled;
         }
         function setDateLocale() {
-            vm.locale || (vm.locale = DEFAULT_LOCALE_EN), vm.locale.indexOf("US", vm.locale.length - 2) !== -1 ? vm.monthBeforeDay = !0 : vm.monthBeforeDay = !1;
+            vm.locale || (vm.locale = DEFAULT_LOCALE_EN), vm.monthBeforeDay = TwDateService.isMonthBeforeDay(vm.locale);
         }
         function explodeDateModel(date) {
             var dateObj = "string" == typeof date ? new Date(date) : date;
@@ -124,22 +124,8 @@ angular.module("tw.form-components", []);
             });
         }
         function getMonthsBasedOnIntlSupportForLocale() {
-            var monthNames;
-            return isIntlSupportedForLocale(vm.locale) ? monthNames = getMonthNamesForLocale() : ($log.warn('i18n not supported for locale "' + vm.locale + '"'), 
-            monthNames = DEFAULT_MONTHS_EN), extendMonthsWithIds(monthNames);
-        }
-        function isIntlSupportedForLocale(locale) {
-            return window.Intl && "object" == typeof window.Intl && window.Intl.DateTimeFormat.supportedLocalesOf([ locale ]).length > 0;
-        }
-        function getMonthNamesForLocale() {
-            for (var date, months = [], i = 0; i < 12; i++) {
-                date = new Date(Date.UTC(2e3, i, 15));
-                var monthName = date.toLocaleDateString(vm.locale, {
-                    month: "long"
-                });
-                monthName = monthName[0].toUpperCase() + monthName.substring(1), months.push(monthName);
-            }
-            return months;
+            var monthNames = TwDateService.getMonthNamesForLocale(vm.locale);
+            return extendMonthsWithIds(monthNames);
         }
         function extendMonthsWithIds(monthNames) {
             return monthNames.map(function(monthName, index) {
@@ -159,7 +145,7 @@ angular.module("tw.form-components", []);
             return "string" == typeof value && !isNaN(Number(vm.month));
         }
         function combineDate() {
-            var date = getUTCDate(Number(vm.year), Number(vm.month), Number(vm.day));
+            var date = TwDateService.getUTCDateFromParts(Number(vm.year), Number(vm.month), Number(vm.day));
             return date;
         }
         function updateDateModelAndValidationClasses() {
@@ -171,26 +157,17 @@ angular.module("tw.form-components", []);
             } else ngModel.$setViewValue(dateObj);
         }
         function adjustLastDay() {
-            var day = Number(vm.day), month = Number(vm.month), year = Number(vm.year), lastUTCDayForMonthAndYear = getLastDayOfMonth(year, month);
+            var day = Number(vm.day), month = Number(vm.month), year = Number(vm.year), lastUTCDayForMonthAndYear = TwDateService.getLastDayOfMonth(year, month);
             day > lastUTCDayForMonthAndYear && (vm.day = parseInt(lastUTCDayForMonthAndYear, 10));
-        }
-        function getLastDayOfMonth(year, month) {
-            var lastDay = getUTCDate(year, month + 1, 0);
-            return lastDay.getUTCDate();
-        }
-        function getUTCDate(year, month, day) {
-            var date = new Date();
-            return date.setUTCFullYear(year, month, day), date.setUTCHours(0), date.setUTCMinutes(0), 
-            date.setUTCSeconds(0), date.setUTCMilliseconds(0), date;
         }
         var ngModel, vm = this, initialisedWithDate = !1;
         vm.updateDateModelAndValidationClasses = updateDateModelAndValidationClasses, vm.explodeDateModel = explodeDateModel, 
         vm.combineDate = combineDate, vm.adjustLastDay = adjustLastDay, vm.validDate = validDate;
-        var DEFAULT_LOCALE_EN = "en", DEFAULT_MONTHS_EN = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ], STRING_TYPE = "string", OBJECT_TYPE = "object";
+        var DEFAULT_LOCALE_EN = "en", STRING_TYPE = "string", OBJECT_TYPE = "object";
         init();
     }
     angular.module("tw.form-components").controller("TwDateController", TwDateController), 
-    TwDateController.$inject = [ "$element", "$log", "$scope" ];
+    TwDateController.$inject = [ "$element", "$log", "$scope", "TwDateService" ];
 }(window.angular), function(angular) {
     "use strict";
     function TwAmountCurrencySelectDirective() {
@@ -315,6 +292,175 @@ angular.module("tw.form-components", []);
     var templateAsString = ' \t\t<div class="input-group" ng-class="{ \t\t\t\'input-group-sm\': $ctrl.size === \'sm\', \t\t\t\'input-group-lg\': $ctrl.size === \'lg\', \t\t\tdisabled: $ctrl.ngDisabled \t\t}"> \t\t\t<input \t\t\t\ttype="tel" \t\t\t\tautocomplete="off" \t\t\t\tname="amount" \t\t\t\tstep="any" \t\t\t\tclass="form-control p-r-0" \t\t\t\tplaceholder="{{$ctrl.placeholder}}" \t\t\t\tshow-decimals="$ctrl.showDecimals" \t\t\t\ttw-focusable \t\t\t\ttw-number-input-formatter \t\t\t\tng-change="$ctrl.changedInputValue()" \t\t\t\tng-model="$ctrl.ngModel" \t\t\t\tng-disabled="$ctrl.ngDisabled" /> \t\t\t<span class="hello-world input-group-addon tw-currency-input-code p-l-1"> \t\t\t\t<span ng-transclude="addon"></span> \t\t\t\t{{ $ctrl.currency || $ctrl.currencyCode }} \t\t\t</span> \t\t</div> \t';
 }(window.angular), function(angular) {
     "use strict";
+    function TwDateLookupDirective() {
+        return {
+            require: "ngModel",
+            bindToController: !0,
+            controller: [ "$element", "$scope", "$timeout", "TwDateService", TwDateLookupController ],
+            controllerAs: "$ctrl",
+            replace: !1,
+            restrict: "E",
+            template: templateAsString,
+            scope: {
+                ngModel: "=",
+                ngChange: "&",
+                ngMin: "=",
+                ngMax: "=",
+                ngRequired: "=",
+                ngDisabled: "=",
+                placeholder: "@",
+                size: "@",
+                locale: "@",
+                label: "@"
+            }
+        };
+    }
+    function TwDateLookupController($element, $scope, $timeout, TwDateService) {
+        function init() {
+            $ctrl.yearOffset = 0, ngModelCtrl = $element.controller("ngModel"), addValidators(), 
+            addWatchers(), ngModelCtrl.$formatters.push(function(newDate) {
+                return updateCalendarView(newDate), newDate;
+            }), $element.find(".btn, .dropdown-menu").on("focusout", function() {
+                $timeout(function() {
+                    0 !== $element.find(".btn:focus").length || $element.find(".btn-group").hasClass("open") || ($element.parents(".form-group").removeClass("focus"), 
+                    $element.triggerHandler("blur"));
+                }, 150);
+            }), setLocale($ctrl.locale), updateMinDateView($ctrl.ngMin), updateMaxDateView($ctrl.ngMax);
+        }
+        function resetFocus() {
+            $element.find("button").focus();
+        }
+        function addValidators() {
+            ngModelCtrl.$validators.min = function(modelValue, viewValue) {
+                var value = modelValue || viewValue;
+                return !(value && value < $ctrl.ngMin) || ($element.parents(".form-group").addClass("has-error"), 
+                !1);
+            }, ngModelCtrl.$validators.max = function(modelValue, viewValue) {
+                var value = modelValue || viewValue;
+                return !(value && value > $ctrl.ngMax) || ($element.parents(".form-group").addClass("has-error"), 
+                !1);
+            };
+        }
+        function addWatchers() {
+            $scope.$watch("$ctrl.locale", function(newValue, oldValue) {
+                newValue && newValue !== oldValue && setLocale(newValue);
+            }), $scope.$watch("$ctrl.ngRequired", function(newValue, oldValue) {
+                ngModelCtrl.$validate();
+            }), $scope.$watch("$ctrl.ngMin", function(newValue, oldValue) {
+                newValue !== oldValue && (updateMinDateView($ctrl.ngMin), ngModelCtrl.$validate());
+            }), $scope.$watch("$ctrl.ngMax", function(newValue, oldValue) {
+                newValue !== oldValue && (updateMaxDateView($ctrl.ngMax), ngModelCtrl.$validate());
+            }), $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+                newValue && ($ctrl.selectedDate = TwDateService.getUTCDate(newValue), $ctrl.selectedMonth = TwDateService.getUTCMonth(newValue), 
+                $ctrl.selectedYear = TwDateService.getUTCFullYear(newValue));
+            });
+        }
+        function updateCalendarView(viewDate) {
+            viewDate && viewDate.getUTCDate || (viewDate = TwDateService.getLocaleToday()), 
+            $ctrl.day = TwDateService.getUTCDate(viewDate), $ctrl.month = TwDateService.getUTCMonth(viewDate), 
+            $ctrl.year = TwDateService.getUTCFullYear(viewDate), $ctrl.weeks = getTableStructure();
+        }
+        function getTableStructure() {
+            var firstDayOfMonth = TwDateService.getWeekday($ctrl.year, $ctrl.month, 1);
+            0 === firstDayOfMonth && (firstDayOfMonth = 7);
+            for (var daysInMonth = TwDateService.getLastDayOfMonth($ctrl.year, $ctrl.month), week = [], weeks = [], i = 1; i < firstDayOfMonth; i++) week.push(!1);
+            for (i = 1; i <= daysInMonth; i++) week.push(i), (firstDayOfMonth + i - 1) % 7 === 0 && (weeks.push(week), 
+            week = []);
+            if (week.length) {
+                for (i = week.length; i < 7; i++) week.push(!1);
+                weeks.push(week);
+            }
+            return weeks;
+        }
+        function setLocale(locale) {
+            locale || ($ctrl.locale = "en-GB"), $ctrl.monthBeforeDay = TwDateService.isMonthBeforeDay($ctrl.locale), 
+            $ctrl.monthsOfYear = TwDateService.getMonthNamesForLocale($ctrl.locale, "long"), 
+            $ctrl.shortMonthsOfYear = TwDateService.getMonthNamesForLocale($ctrl.locale, "short"), 
+            $ctrl.daysOfWeek = TwDateService.getDayNamesForLocale($ctrl.locale, "short"), $ctrl.shortDaysOfWeek = TwDateService.getDayNamesForLocale($ctrl.locale, "narrow");
+        }
+        function moveDateToWithinRange(date, min, max) {
+            return date || (date = TwDateService.getLocaleToday()), min && min > date ? min : max && max < date ? max : date;
+        }
+        function setModel(modelDate) {
+            modelDate = moveDateToWithinRange(modelDate, $ctrl.ngMin, $ctrl.ngMax), ngModelCtrl.$setViewValue(modelDate), 
+            ngModelCtrl.$setDirty(), updateCalendarView(modelDate);
+        }
+        function updateMinDateView(minDate) {
+            minDate && minDate.getUTCDate ? (minDay = TwDateService.getUTCDate(minDate), minMonth = TwDateService.getUTCMonth(minDate), 
+            minYear = TwDateService.getUTCFullYear(minDate)) : (minDay = null, minMonth = null, 
+            minYear = null);
+        }
+        function updateMaxDateView(maxDate) {
+            maxDate && maxDate.getUTCDate ? (maxDay = TwDateService.getUTCDate(maxDate), maxMonth = TwDateService.getUTCMonth(maxDate), 
+            maxYear = TwDateService.getUTCFullYear(maxDate)) : (maxDay = null, maxMonth = null, 
+            maxYear = null);
+        }
+        function findActiveLink() {
+            $timeout(function() {
+                $element.find("a.active").focus();
+            });
+        }
+        function adjustDate(mode, date, days, months, years) {
+            var newDate = date;
+            "day" === mode && (newDate = TwDateService.addDays(date, days)), "month" === mode && (newDate = TwDateService.addMonths(date, months)), 
+            "year" === mode && (newDate = TwDateService.addYears(date, years)), setModel(newDate);
+        }
+        var ngModelCtrl, minDay, minMonth, minYear, maxDay, maxMonth, maxYear, $ctrl = this;
+        $ctrl.openLookup = function() {
+            ngModelCtrl.$setTouched(), $ctrl.mode = "day";
+            var viewDate = $ctrl.ngModel;
+            $ctrl.ngMin && $ctrl.ngModel < $ctrl.ngMin && (viewDate = $ctrl.ngMin), $ctrl.ngMax && $ctrl.ngModel > $ctrl.ngMax && (viewDate = $ctrl.ngMax), 
+            updateCalendarView(viewDate), $timeout(function() {
+                $element.find(".tw-date-lookup-month-label").focus();
+            });
+        }, $ctrl.selectDay = function($event, day, month, year) {
+            return $ctrl.isDayDisabled(day, month, year) ? void $event.stopPropagation() : ($ctrl.day = day, 
+            setModel(TwDateService.getUTCDateFromParts(year, month, day)), void resetFocus());
+        }, $ctrl.selectMonth = function($event, month, year) {
+            $event.stopPropagation(), $ctrl.isMonthDisabled(month, year) || ($ctrl.month = month, 
+            $ctrl.weeks = getTableStructure(), $ctrl.mode = "day");
+        }, $ctrl.selectYear = function($event, year) {
+            $event.stopPropagation(), $ctrl.isYearDisabled(year) || ($ctrl.year = year, $ctrl.mode = "month");
+        }, $ctrl.monthBefore = function($event) {
+            $event.stopPropagation(), 0 === $ctrl.month ? ($ctrl.year--, $ctrl.month = 11) : $ctrl.month--, 
+            $ctrl.weeks = getTableStructure();
+        }, $ctrl.yearBefore = function($event) {
+            $event.stopPropagation(), $ctrl.year--, $ctrl.weeks = getTableStructure();
+        }, $ctrl.monthAfter = function($event) {
+            $event.stopPropagation(), 11 === $ctrl.month ? ($ctrl.year++, $ctrl.month = 0) : $ctrl.month++, 
+            $ctrl.weeks = getTableStructure();
+        }, $ctrl.yearAfter = function($event) {
+            $event.stopPropagation(), $ctrl.year++, $ctrl.weeks = getTableStructure();
+        }, $ctrl.isCurrentlySelected = function(day, month, year) {
+            return day === $ctrl.selectedDate && month === $ctrl.selectedMonth && year === $ctrl.selectedYear;
+        }, $ctrl.isDayDisabled = function(day, month, year) {
+            return $ctrl.isYearDisabled(year) || $ctrl.isMonthDisabled(month, year) || year === minYear && month === minMonth && day < minDay || year === maxYear && month === maxMonth && day > maxDay;
+        }, $ctrl.isMonthDisabled = function(month, year) {
+            return $ctrl.isYearDisabled(year) || year === minYear && month < minMonth || year === maxYear && month > maxMonth;
+        }, $ctrl.isYearDisabled = function(year) {
+            return minYear && year < minYear || maxYear && year > maxYear;
+        }, $ctrl.switchToMonths = function($event) {
+            resetFocus($event.target), findActiveLink(), $event.stopPropagation(), $ctrl.mode = "month";
+        }, $ctrl.switchToYears = function($event) {
+            resetFocus($event.target), findActiveLink(), $event.stopPropagation(), $ctrl.mode = "year";
+        }, $ctrl.setYearOffset = function($event, addtionalOffset) {
+            $event.stopPropagation(), $ctrl.yearOffset += addtionalOffset;
+        }, $ctrl.buttonFocus = function() {
+            $element.parents(".form-group").addClass("focus"), $element.triggerHandler("focus");
+        }, $ctrl.blur = function() {
+            $element.triggerHandler("focus");
+        }, $ctrl.keyHandler = function(event) {
+            if (!$ctrl.ngModel) return void setModel(TwDateService.getUTCDateFromParts($ctrl.year, $ctrl.month, $ctrl.day));
+            var characterCode = event.which || event.charCode || event.keyCode;
+            return 37 === characterCode ? adjustDate($ctrl.mode, $ctrl.ngModel, -1, -1, -1) : 38 === characterCode ? (event.preventDefault(), 
+            adjustDate($ctrl.mode, $ctrl.ngModel, -7, -4, -4)) : 39 === characterCode ? adjustDate($ctrl.mode, $ctrl.ngModel, 1, 1, 1) : 40 === characterCode && (event.preventDefault(), 
+            adjustDate($ctrl.mode, $ctrl.ngModel, 7, 4, 4)), findActiveLink(), !0;
+        }, init();
+    }
+    angular.module("tw.form-components").directive("twDateLookup", TwDateLookupDirective);
+    var templateAsString = ' \t\t<div class="btn-group btn-block dropdown" \t\t\tng-keydown="$ctrl.keyHandler($event)"> \t\t\t<button class="btn btn-input dropdown-toggle tw-date-lookup-button" data-toggle="dropdown" \t\t\t\tng-disabled="$ctrl.ngDisabled" \t\t\t\tng-click="$ctrl.openLookup()" \t\t\t\tng-focus="$ctrl.buttonFocus()" \t\t\t\tng-class="{ \t\t\t\t\t\'btn-sm\': $ctrl.size === \'sm\', \t\t\t\t\t\'btn-lg\': $ctrl.size === \'lg\' \t\t\t\t}"> \t\t\t\t<span ng-if="!$ctrl.ngModel" \t\t\t\t\tclass="form-control-placeholder tw-date-lookup-placeholder"> \t\t\t\t\t{{$ctrl.placeholder}} \t\t\t\t</span> \t\t\t\t<span ng-if="$ctrl.label && $ctrl.ngModel" \t\t\t\t\tclass="control-label small m-r-1" style="font-size: 14px;" \t\t\t\t\t>{{$ctrl.label}}</span \t\t\t\t><span ng-if="$ctrl.ngModel" class="tw-date-lookup-selected" \t\t\t\t\t><span ng-if="$ctrl.monthBeforeDay">{{$ctrl.monthsOfYear[$ctrl.selectedMonth]}} </span \t\t\t\t\t>{{$ctrl.selectedDate}}<span ng-if="$ctrl.monthBeforeDay">,</span \t\t\t\t\t><span ng-if="!$ctrl.monthBeforeDay"> {{$ctrl.monthsOfYear[$ctrl.selectedMonth]}}</span> \t\t\t\t\t{{$ctrl.selectedYear}} \t\t\t\t</span> \t\t\t\t<span class="caret"></span> \t\t\t</button> \t\t\t<div class="dropdown-menu" style="min-width: 300px;"> \t\t\t\t\t\t\t\t<div ng-if="$ctrl.mode === \'year\'" class="tw-date-lookup-years"> \t\t\t\t\t<div class="text-xs-center p-t-1 p-b-2"> \t\t\t\t\t\t<div class="pull-xs-left p-b-2"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.setYearOffset($event, -20)" \t\t\t\t\t\t\t\tclass="text-no-decoration tw-date-lookup-previous-years"> \t\t\t\t\t\t\t\t<i class="icon icon-left icon-lg"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</div> \t\t\t\t\t\t<div class="pull-xs-right p-b-2"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.setYearOffset($event, 20)" \t\t\t\t\t\t\t\tclass="text-no-decoration tw-date-lookup-next-years"> \t\t\t\t\t\t\t\t<i class="icon icon-right icon-lg"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t\t<table class="table table-condensed table-bordered table-calendar m-b-0"> \t\t\t\t\t\t<tbody> \t\t\t\t\t\t\t<tr ng-repeat="row in [0,4,8,12,16]"> \t\t\t\t\t\t\t\t<td ng-repeat="col in [0,1,2,3]"> \t\t\t\t\t\t\t\t\t<a href="" \t\t\t\t\t\t\t\t\t\tng-click="$ctrl.selectYear($event, $ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)" \t\t\t\t\t\t\t\t\t\tng-disabled="$ctrl.isYearDisabled($ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)" \t\t\t\t\t\t\t\t\t\tng-class="{\'active\': $ctrl.selectedYear === ($ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)}" \t\t\t\t\t\t\t\t\t\tclass="tw-date-lookup-year-option"> \t\t\t\t\t\t\t\t\t\t{{$ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset}} \t\t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t</td> \t\t\t\t\t\t\t</tr> \t\t\t\t\t\t</tbody> \t\t\t\t\t</table> \t\t\t\t</div> \t\t\t\t\t\t\t\t<div ng-if="$ctrl.mode === \'month\'" class="tw-date-lookup-months"> \t\t\t\t\t<div class="text-xs-center p-t-1 p-b-2"> \t\t\t\t\t\t<div class="pull-xs-left"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.yearBefore($event)" class="text-no-decoration"> \t\t\t\t\t\t\t\t<i class="icon icon-left icon-lg"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</div> \t\t\t\t\t\t<a href="" ng-click="$ctrl.switchToYears($event)" \t\t\t\t\t\t\tclass="tw-date-lookup-year-label"> \t\t\t\t\t\t\t{{$ctrl.year}} \t\t\t\t\t\t</a> \t\t\t\t\t\t<div class="pull-xs-right"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.yearAfter($event)" class="text-no-decoration"> \t\t\t\t\t\t\t\t<i class="icon icon-right icon-lg"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t\t<table class="table table-condensed table-bordered table-calendar m-b-0"> \t\t\t\t\t\t<tbody> \t\t\t\t\t\t\t<tr ng-repeat="row in [0,4,8]"> \t\t\t\t\t\t\t\t<td ng-repeat="col in [0,1,2,3]"> \t\t\t\t\t\t\t\t\t<a href="" \t\t\t\t\t\t\t\t\t\tng-click="$ctrl.selectMonth($event, row+col, $ctrl.year)" \t\t\t\t\t\t\t\t\t\tng-disabled="$ctrl.isMonthDisabled(row + col, $ctrl.year)" \t\t\t\t\t\t\t\t\t\tng-class="{\'active\': $ctrl.selectedMonth === (row + col) && $ctrl.selectedYear === $ctrl.year}" \t\t\t\t\t\t\t\t\t\tclass="tw-date-lookup-month-option"> \t\t\t\t\t\t\t\t\t\t{{$ctrl.shortMonthsOfYear[row+col] | limitTo:5}} \t\t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t</td> \t\t\t\t\t\t\t</tr> \t\t\t\t\t\t</tbody> \t\t\t\t\t</table> \t\t\t\t</div> \t\t\t\t\t\t\t\t<div ng-if="$ctrl.mode === \'day\'" class="tw-date-lookup-days"> \t\t\t\t\t<div class="text-xs-center p-t-1 p-b-2"> \t\t\t\t\t\t<div class="pull-xs-left"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.monthBefore($event)" \t\t\t\t\t\t\t\tclass="text-no-decoration tw-date-lookup-previous-month"> \t\t\t\t\t\t\t\t<i class="icon icon-left icon-lg"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</div> \t\t\t\t\t\t<a href="" ng-click="$ctrl.switchToYears($event)" \t\t\t\t\t\t\tclass="tw-date-lookup-month-label"> \t\t\t\t\t\t\t{{$ctrl.monthsOfYear[$ctrl.month]}} {{$ctrl.year}} \t\t\t\t\t\t</a> \t\t\t\t\t\t<div class="pull-xs-right"> \t\t\t\t\t\t\t<a href="" ng-click="$ctrl.monthAfter($event)" \t\t\t\t\t\t\t\tclass="text-no-decoration tw-date-lookup-next-month"> \t\t\t\t\t\t\t\t<i class="icon icon-right icon-lg"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t\t<table class="table table-condensed table-bordered table-calendar m-b-0"> \t\t\t\t\t\t<thead> \t\t\t\t\t\t\t<tr> \t\t\t\t\t\t\t\t<th ng-repeat="day in $ctrl.daysOfWeek track by $index"> \t\t\t\t\t\t\t\t\t<span class="hidden-xs">{{day | limitTo : 3}}</span> \t\t\t\t\t\t\t\t\t<span class="visible-xs-inline-block">{{$ctrl.shortDaysOfWeek[$index] | limitTo : 2}}</span> \t\t\t\t\t\t\t\t</th> \t\t\t\t\t\t\t</tr> \t\t\t\t\t\t</thead> \t\t\t\t\t\t<tbody> \t\t\t\t\t\t\t<tr ng-repeat="week in $ctrl.weeks"> \t\t\t\t\t\t\t\t<td ng-repeat="day in week track by $index" \t\t\t\t\t\t\t\t\tng-class="{ \t\t\t\t\t\t\t\t\t\t\'default\': $index > 4 \t\t\t\t\t\t\t\t\t}"> \t\t\t\t\t\t\t\t\t<a href="" title="{{day}} {{$ctrl.monthsOfYear[$ctrl.month]}} {{$ctrl.year}}" \t\t\t\t\t\t\t\t\t\tng-if="day" \t\t\t\t\t\t\t\t\t\tng-click="$ctrl.selectDay($event, day, $ctrl.month, $ctrl.year)" \t\t\t\t\t\t\t\t\t\tng-disabled="$ctrl.isDayDisabled(day, $ctrl.month, $ctrl.year)" \t\t\t\t\t\t\t\t\t\tng-class="{ \t\t\t\t\t\t\t\t\t\t\t\'active\': $ctrl.isCurrentlySelected(day, $ctrl.month, $ctrl.year) \t\t\t\t\t\t\t\t\t\t}" \t\t\t\t\t\t\t\t\t\tclass="tw-date-lookup-day-option" tabindex="0"> \t\t\t\t\t\t\t\t\t\t{{day}} \t\t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t</td> \t\t\t\t\t\t\t</tr> \t\t\t\t\t\t</tbody> \t\t\t\t\t</table> \t\t\t\t</div> \t\t\t</div> \t\t</div>';
+}(window.angular), function(angular) {
+    "use strict";
     function TwDateDirective() {
         var directive = {
             require: "ngModel",
@@ -351,7 +497,7 @@ angular.module("tw.form-components", []);
         });
     }
     angular.module("tw.form-components").directive("twDate", TwDateDirective);
-    var daySectionTemplate = " \t\t<label class='sr-only'>Day</label> \t\t<input type='number' \t\t\tname='day' \t\t\tclass='form-control tw-date-day' \t\t\tng-model='vm.day' \t\t\tng-change='vm.updateDateModelAndValidationClasses()' \t\t\tplaceholder='DD' \t\t\tmin='1' \t\t\tng-min='1' \t\t\tng-disabled='vm.dateDisabled' \t\t\tng-required='vm.dateRequired' \t\t\ttw-focusable />", monthSectionTemplate = "  \t\t<label class='sr-only'>Month</label>\t\t<tw-select \t\t\tname='month' \t\t\tclass='tw-date-month' \t\t\tng-model='vm.month' \t\t\tng-change='vm.updateDateModelAndValidationClasses()' \t\t\tng-required='vm.dateRequired' \t\t\tng-disabled='vm.dateDisabled' \t\t\toptions='vm.dateMonths'> \t\t</tw-select>", yearSectionTemplate = " \t\t<label class='sr-only'>Year</label> \t\t<input type='number' \t\t\tname='year' \t\t\tclass='form-control tw-date-year' \t\t\tplaceholder='YYYY' \t\t\tng-model='vm.year' \t\t\tng-change='vm.updateDateModelAndValidationClasses()' \t\t\tng-min='vm.dateRange.min.getFullYear()' \t\t\tng-max='vm.dateRange.max.getFullYear()' \t\t\tmaxlength='4' \t\t\tng-maxlength='4' \t\t\tng-disabled='vm.dateDisabled' \t\t\tng-required='vm.dateRequired' \t\t\ttw-focusable />", templateAsString = " \t\t<div class='row'> \t\t\t<div class='col-sm-5 tw-date-month-column' ng-if='vm.monthBeforeDay'>" + monthSectionTemplate + " \t\t\t</div> \t\t\t<div class='col-sm-3 tw-date-day-column'>" + daySectionTemplate + " \t\t\t</div> \t\t\t<div class='col-sm-5 tw-date-month-column' ng-if='!vm.monthBeforeDay'>" + monthSectionTemplate + " \t\t\t</div> \t\t\t<div class='col-sm-4 tw-date-year-column'>" + yearSectionTemplate + " \t\t\t</div> \t\t</div>";
+    var daySectionTemplate = " \t\t<label class='sr-only'>Day</label> \t\t<input type='number' \t\t\tname='day' \t\t\tclass='form-control tw-date-day' \t\t\tng-model='vm.day' \t\t\tng-change='vm.updateDateModelAndValidationClasses()' \t\t\tplaceholder='DD' \t\t\tmin='1' \t\t\tng-min='1' \t\t\tng-disabled='vm.dateDisabled' \t\t\tng-required='vm.dateRequired' \t\t\ttw-focusable />", monthSectionTemplate = "  \t\t<label class='sr-only'>Month</label>\t\t<tw-select \t\t\tname='month' \t\t\tclass='tw-date-month' \t\t\tng-model='vm.month' \t\t\tng-change='vm.updateDateModelAndValidationClasses()' \t\t\tng-required='vm.dateRequired' \t\t\tng-disabled='vm.dateDisabled' \t\t\toptions='vm.dateMonths'> \t\t</tw-select>", yearSectionTemplate = " \t\t<label class='sr-only'>Year</label> \t\t<input type='number' \t\t\tname='year' \t\t\tclass='form-control tw-date-year' \t\t\tplaceholder='YYYY' \t\t\tng-model='vm.year' \t\t\tng-change='vm.updateDateModelAndValidationClasses()' \t\t\tng-min='vm.min.getFullYear()' \t\t\tng-max='vm.max.getFullYear()' \t\t\tmaxlength='4' \t\t\tng-maxlength='4' \t\t\tng-disabled='vm.dateDisabled' \t\t\tng-required='vm.dateRequired' \t\t\ttw-focusable />", templateAsString = " \t\t<div class='row'> \t\t\t<div class='col-sm-5 tw-date-month-column' ng-if='vm.monthBeforeDay'>" + monthSectionTemplate + " \t\t\t</div> \t\t\t<div class='col-sm-3 tw-date-day-column'>" + daySectionTemplate + " \t\t\t</div> \t\t\t<div class='col-sm-5 tw-date-month-column' ng-if='!vm.monthBeforeDay'>" + monthSectionTemplate + " \t\t\t</div> \t\t\t<div class='col-sm-4 tw-date-year-column'>" + yearSectionTemplate + " \t\t\t</div> \t\t</div>";
 }(window.angular), function(angular) {
     "use strict";
     function TwDynamicFormControl() {
@@ -525,27 +671,39 @@ angular.module("tw.form-components", []);
         return {
             restrict: "E",
             scope: {
-                fields: "=",
                 model: "=",
-                uploadOptions: "=",
+                fields: "<",
+                uploadOptions: "<",
                 locale: "@",
-                onRefreshRequirements: "&"
+                onRefreshRequirements: "&",
+                validationMessages: "<",
+                fieldErrors: "<",
+                isValid: "=?"
             },
             controller: [ "$scope", TwDynamicFormSectionController ],
             controllerAs: "$ctrl",
             bindToController: !0,
-            template: " \t\t\t\t<div class='row'> \t\t\t\t\t<div class='form-group' \t\t\t\t\t\tng-repeat='fieldGroup in $ctrl.fields' \t\t\t\t\t\tng-class='{ \t\t\t\t\t\t\t\"col-sm-6\": fieldGroup.maxlength && fieldGroup.maxlength <= 10, \t\t\t\t\t\t\t\"col-sm-12\": !fieldGroup.maxlength || fieldGroup.maxlength > 10 \t\t\t\t\t\t}'> \t\t\t\t\t\t<label class='control-label' ng-if='fieldGroup.type !== \"upload\"'> \t\t\t\t\t\t\t{{fieldGroup.name}} \t\t\t\t\t\t</label> \t\t\t\t\t\t<div class='row'> \t\t\t\t\t\t\t<div class='col-xs-{{field.columns}}' \t\t\t\t\t\t\t\tng-repeat='field in fieldGroup.group'> \t\t\t\t\t\t\t\t<tw-dynamic-form-control \t\t\t\t\t\t\t\t\tname='{{field.key}}' \t\t\t\t\t\t\t\t\tlabel='{{fieldGroup.name}}' \t\t\t\t\t\t\t\t\ttype='{{field.type | lowercase}}' \t\t\t\t\t\t\t\t\tplaceholder='{{field.placeholder || field.example}}' \t\t\t\t\t\t\t\t\thelp-text='{{field.helpText}}' \t\t\t\t\t\t\t\t\tlocale='{{$ctrl.locale}}' \t\t\t\t\t\t\t\t\tupload-accept='{{field.accept}}' \t\t\t\t\t\t\t\t\tupload-icon='{{field.icon}}' \t\t\t\t\t\t\t\t\tupload-too-large-message='{{field.tooLargeMessage}}' \t\t\t\t\t\t\t\t\toptions='field.valuesAllowed' \t\t\t\t\t\t\t\t\tupload-options='$ctrl.uploadOptions' \t\t\t\t\t\t\t\t\tng-model='$ctrl.model[field.key]' \t\t\t\t\t\t\t\t\tng-blur='$ctrl.onBlur(field)' \t\t\t\t\t\t\t\t\tng-required='field.required' \t\t\t\t\t\t\t\t\tng-disabled='field.disabled' \t\t\t\t\t\t\t\t\ttw-minlength='field.minLength' \t\t\t\t\t\t\t\t\ttw-maxlength='field.maxLength' \t\t\t\t\t\t\t\t\tng-min='field.min' \t\t\t\t\t\t\t\t\tng-max='field.max' \t\t\t\t\t\t\t\t\tng-pattern='field.validationRegexp' \t\t\t\t\t\t\t\t\ttw-validation > \t\t\t\t\t\t\t\t\t<!-- tw-dynamic-async-validator='field.validationAsync' --> \t\t\t\t\t\t\t\t</tw-dynamic-form-control> \t\t\t\t\t\t\t\t<div class='error-messages'> \t\t\t\t\t\t\t\t\t<div class='error-minlength'>Minimum {{field.minlength}} characters</div> \t\t\t\t\t\t\t\t\t<div class='error-maxlength'>Maximum {{field.maxlength}} characters</div> \t\t\t\t\t\t\t\t\t<div class='error-required'>{{fieldGroup.name}} is required</div> \t\t\t\t\t\t\t\t\t<div class='error-pattern'>Incorrect format</div> \t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t<div ng-if='field.tooltip' \t\t\t\t\t\t\t\t\tclass='help-block'> \t\t\t\t\t\t\t\t\t<a role='button' \t\t\t\t\t\t\t\t\t\ttabindex='0' \t\t\t\t\t\t\t\t\t\tdata-toggle='popover' \t\t\t\t\t\t\t\t\t\tdata-placement='top' \t\t\t\t\t\t\t\t\t\ttitle='{{field.tooltip}}'> \t\t\t\t\t\t\t\t\t\t<span class='glyphicon glyphicon-question-sign'></span> \t\t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t</div>"
+            template: " \t\t\t\t<div class='row row-equal-height' ng-form='twFormSection'> \t\t\t\t\t<div ng-repeat='fieldGroup in $ctrl.fields' \t\t\t\t\t\tng-class='{ \t\t\t\t\t\t\t\"col-sm-4\": fieldGroup.width === \"sm\", \t\t\t\t\t\t\t\"col-sm-6\": fieldGroup.width === \"md\" || fieldGroup.maxlength && fieldGroup.maxlength <= 10, \t\t\t\t\t\t\t\"col-sm-12\": fieldGroup.width === \"lg\" || !fieldGroup.maxlength || fieldGroup.maxlength > 10 \t\t\t\t\t\t}'> \t\t\t\t\t\t<div class='form-group tw-form-group-{{fieldGroup.key}}' style='width: 100%;' \t\t\t\t\t\t\tng-class='{\"has-error\": $ctrl.fieldErrors[fieldGroup.key]}'> \t\t\t\t\t\t\t<label class='control-label' \t\t\t\t\t\t\t\tng-if='fieldGroup.type !== \"upload\"'> \t\t\t\t\t\t\t\t{{fieldGroup.name}} \t\t\t\t\t\t\t</label> \t\t\t\t\t\t\t<div class='row'> \t\t\t\t\t\t\t\t<div class='col-xs-{{field.columns}}' \t\t\t\t\t\t\t\t\tng-repeat='field in fieldGroup.group'> \t\t\t\t\t\t\t\t\t<tw-dynamic-form-control \t\t\t\t\t\t\t\t\t\tname='{{field.key}}' \t\t\t\t\t\t\t\t\t\tlabel='{{fieldGroup.name}}' \t\t\t\t\t\t\t\t\t\ttype='{{field.type | lowercase}}' \t\t\t\t\t\t\t\t\t\tplaceholder='{{field.placeholder || field.example}}' \t\t\t\t\t\t\t\t\t\thelp-text='{{field.helpText}}' \t\t\t\t\t\t\t\t\t\tlocale='{{$ctrl.locale}}' \t\t\t\t\t\t\t\t\t\tupload-accept='{{field.accept}}' \t\t\t\t\t\t\t\t\t\tupload-icon='{{field.icon}}' \t\t\t\t\t\t\t\t\t\tupload-too-large-message='{{field.tooLargeMessage}}' \t\t\t\t\t\t\t\t\t\toptions='field.valuesAllowed' \t\t\t\t\t\t\t\t\t\tupload-options='$ctrl.uploadOptions' \t\t\t\t\t\t\t\t\t\tng-model='$ctrl.model[field.key]' \t\t\t\t\t\t\t\t\t\tng-blur='$ctrl.onBlur(field)' \t\t\t\t\t\t\t\t\t\tng-required='field.required' \t\t\t\t\t\t\t\t\t\tng-disabled='field.disabled' \t\t\t\t\t\t\t\t\t\ttw-minlength='field.minLength' \t\t\t\t\t\t\t\t\t\ttw-maxlength='field.maxLength' \t\t\t\t\t\t\t\t\t\tng-min='field.min' \t\t\t\t\t\t\t\t\t\tng-max='field.max' \t\t\t\t\t\t\t\t\t\tng-pattern='field.validationRegexp' \t\t\t\t\t\t\t\t\t\ttw-validation > \t\t\t\t\t\t\t\t\t\t<!-- tw-dynamic-async-validator='field.validationAsync' --> \t\t\t\t\t\t\t\t\t</tw-dynamic-form-control> \t\t\t\t\t\t\t\t\t<div class='error-messages'> \t\t\t\t\t\t\t\t\t\t<div ng-repeat='(validationType, validationMessage) in $ctrl.validationMessages' \t\t\t\t\t\t\t\t\t\t\tclass='error-{{validationType}}'> \t\t\t\t\t\t\t\t\t\t\t{{validationMessage}} \t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t<div class='error-provided' ng-if='$ctrl.fieldErrors[field.key]'> \t\t\t\t\t\t\t\t\t\t\t{{ $ctrl.fieldErrors[field.key] }} \t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t<div ng-if='field.tooltip' \t\t\t\t\t\t\t\t\t\tclass='help-block'> \t\t\t\t\t\t\t\t\t\t<a role='button' \t\t\t\t\t\t\t\t\t\t\ttabindex='0' \t\t\t\t\t\t\t\t\t\t\tdata-toggle='popover' \t\t\t\t\t\t\t\t\t\t\tdata-placement='top' \t\t\t\t\t\t\t\t\t\t\ttitle='{{field.tooltip}}'> \t\t\t\t\t\t\t\t\t\t\t<span class='glyphicon glyphicon-question-sign'></span> \t\t\t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t</div>"
         };
     }
     function TwDynamicFormSectionController($scope) {
         function init() {
             $ctrl.model || ($ctrl.model = {}), $ctrl.fields && prepFields($ctrl.fields), $scope.$watch("$ctrl.fields", function(newValue, oldValue) {
                 angular.equals(newValue, oldValue) || prepFields($ctrl.fields);
+            }), $scope.$watch("twFormSection.$valid", function(validity) {
+                $ctrl.isValid = validity;
+            }), $ctrl.validationMessages || ($ctrl.validationMessages = {
+                required: "Required",
+                pattern: "Incorrect format",
+                min: "The value is too low",
+                max: "The value is too high",
+                minlength: "The value is too short",
+                maxlength: "The value is too long"
             });
         }
         function prepFields(fields) {
             fields.forEach(function(fieldGroup) {
-                fieldGroup.group.forEach(function(field) {
+                fieldGroup.group.length && (fieldGroup.key = fieldGroup.group[0].key), fieldGroup.group.forEach(function(field) {
                     "upload" === field.type && (fieldGroup.type = "upload"), prepRegExp(field), prepValuesAsync(field), 
                     prepValuesAllowed(field);
                 });
@@ -553,7 +711,7 @@ angular.module("tw.form-components", []);
         }
         function prepRegExp(field) {
             if (field.validationRegexp) try {
-                field.validationRegexp = new RegExp(ield.validationRegexp);
+                field.validationRegexp = new RegExp(field.validationRegexp);
             } catch (ex) {
                 console.log("API regexp is invalid"), field.validationRegexp = !1;
             } else field.validationRegexp = !1;
@@ -590,33 +748,40 @@ angular.module("tw.form-components", []);
         return {
             restrict: "E",
             scope: {
-                requirements: "=",
                 model: "=",
-                uploadOptions: "=",
+                requirements: "<",
+                uploadOptions: "<",
                 locale: "@",
-                onRefreshRequirements: "&"
+                onRefreshRequirements: "&",
+                validationMessages: "<",
+                fieldErrors: "<",
+                isValid: "=?"
             },
             controller: [ "$scope", "TwRequirementsService", TwRequirementsFormController ],
             controllerAs: "$ctrl",
             bindToController: !0,
-            template: " \t\t\t<tw-tabs \t\t\t\tng-if='$ctrl.requirements.length > 1' \t\t\t\ttabs='$ctrl.requirements' \t\t\t\tactive='$ctrl.model.type'> \t\t\t</tw-tabs> \t\t\t<div class='tab-content'> \t\t\t\t<div ng-repeat='requirementType in $ctrl.requirements' \t\t\t\t\tng-if='$ctrl.model.type == requirementType.type' \t\t\t\t\tclass='tab-pane active' \t\t\t\t\tid='{{requirementType.type}}'> \t\t\t\t\t<p>{{requirementType.description}}</p> \t\t\t\t\t<tw-dynamic-form-section \t\t\t\t\t\tfields='requirementType.fields' \t\t\t\t\t\tmodel='$ctrl.model' \t\t\t\t\t\tupload-options='$ctrl.uploadOptions' \t\t\t\t\t\tlocale='{{$ctrl.locale}}' \t\t\t\t\t\tonRefreshRequirements='$ctrl.onRefreshRequirements()'> \t\t\t\t\t</tw-dynamic-form-section> \t\t\t\t</div> \t\t\t</div>"
+            template: " \t\t\t<tw-tabs \t\t\t\tng-if='$ctrl.requirements.length > 1' \t\t\t\ttabs='$ctrl.requirements' \t\t\t\tactive='$ctrl.model.type'> \t\t\t</tw-tabs> \t\t\t<div class='tab-content' ng-form='twForm'> \t\t\t\t<div ng-repeat='requirementType in $ctrl.requirements' \t\t\t\t\tng-if='$ctrl.model.type == requirementType.type' \t\t\t\t\tclass='tab-pane active' \t\t\t\t\tid='{{requirementType.type}}'> \t\t\t\t\t<p>{{requirementType.description}}</p> \t\t\t\t\t<tw-dynamic-form-section \t\t\t\t\t\tfields='requirementType.fields' \t\t\t\t\t\tmodel='$ctrl.model' \t\t\t\t\t\tupload-options='$ctrl.uploadOptions' \t\t\t\t\t\tlocale='{{$ctrl.locale}}' \t\t\t\t\t\tonRefreshRequirements='$ctrl.onRefreshRequirements()' \t\t\t\t\t\tvalidation-messages='$ctrl.validationMessages' \t\t\t\t\t\tfield-errors='$ctrl.fieldErrors'> \t\t\t\t\t</tw-dynamic-form-section> \t\t\t\t</div> \t\t\t</div>"
         };
     }
     function TwRequirementsFormController($scope, TwRequirementsService) {
         function init() {
             $ctrl.model || ($ctrl.model = {}), $ctrl.requirements && TwRequirementsService.prepRequirements($ctrl.requirements), 
-            $scope.$watch("$ctrl.requirements", function(newValue, oldValue) {
-                angular.equals(newValue, oldValue) || (TwRequirementsService.prepRequirements($ctrl.requirements), 
-                $ctrl.model.type = $ctrl.requirements.length ? $ctrl.requirements[0].type : null);
+            $scope.$watch("$ctrl.requirements", function(newRequirements, oldRequirements) {
+                if (!angular.equals(newRequirements, oldRequirements)) {
+                    TwRequirementsService.prepRequirements($ctrl.requirements);
+                    var oldType = $ctrl.model.type, newType = $ctrl.requirements.length ? $ctrl.requirements[0].type : null;
+                    $ctrl.model.type = newType, oldRequirements && newRequirements && TwRequirementsService.cleanModel($ctrl.model, oldRequirements, oldType, newRequirements, newType);
+                }
             }), $scope.$watch("$ctrl.model.type", function(newType, oldType) {
                 switchTab(newType, oldType);
+            }), $scope.$watch("twForm.$valid", function(validity) {
+                $ctrl.isValid = validity;
             });
         }
         function switchTab(newType, oldType) {
-            var oldRequirements = TwRequirementsService.findRequirementByType(oldType, $ctrl.requirements), newRequirements = TwRequirementsService.findRequirementByType(newType, $ctrl.requirements);
-            return oldRequirements && newRequirements ? void TwRequirementsService.cleanRequirementsModel($ctrl.model, oldRequirements, newRequirements) : void ($ctrl.model = {
-                type: newType
-            });
+            var oldRequirementType = TwRequirementsService.findRequirementByType(oldType, $ctrl.requirements), newRequirementType = TwRequirementsService.findRequirementByType(newType, $ctrl.requirements);
+            oldRequirementType && newRequirementType || ($ctrl.model || ($ctrl.model = {}), 
+            $ctrl.model.type = newType), TwRequirementsService.cleanRequirementsModel($ctrl.model, oldRequirementType, newRequirementType);
         }
         var $ctrl = this;
         $ctrl.switchTab = switchTab, $ctrl.onBlur = function(field) {
@@ -1097,6 +1262,7 @@ angular.module("tw.form-components", []);
     "use strict";
     function TwRequirementsService() {
         function getFieldNamesFromRequirement(modelRequirement) {
+            if (!modelRequirement.fields) return console.log(modelRequirement), [];
             var names = modelRequirement.fields.map(function(fieldGroup) {
                 return fieldGroup.group.map(function(field) {
                     return field.key;
@@ -1121,6 +1287,9 @@ angular.module("tw.form-components", []);
             obsoleteFieldNames.forEach(function(fieldName) {
                 delete model[fieldName];
             });
+        }, this.cleanModel = function(model, oldRequirements, oldType, newRequirements, newType) {
+            var oldRequirementType = this.findRequirementByType(oldType, oldRequirements), newRequirementType = this.findRequirementByType(newType, newRequirements);
+            this.cleanRequirementsModel(model, oldRequirementType, newRequirementType);
         }, this.findRequirementByType = function(type, requirements) {
             if (!requirements) return !1;
             for (var i = 0; i < requirements.length; i++) {
@@ -1155,6 +1324,7 @@ angular.module("tw.form-components", []);
             XAF: 0,
             XOF: 0,
             XPF: 0,
+            HUF: 0,
             BHD: 3,
             JOD: 3,
             KWD: 3,
@@ -1166,4 +1336,77 @@ angular.module("tw.form-components", []);
         };
     }
     angular.module("tw.form-components").service("TwCurrencyData", TwCurrencyData);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwDateService() {
+        function getLocalisedDateName(date, locale, formattingObject) {
+            var name = date.toLocaleDateString(locale, formattingObject).replace(/[0-9]|\s/g, "");
+            return name[0].toUpperCase() + name.substring(1);
+        }
+        function getValidDateFormat(format) {
+            var validFormats = [ "narrow", "short", "long" ];
+            return !format || validFormats.indexOf(format) < 0 ? "long" : format;
+        }
+        function getValidLocale(locale) {
+            return isIntlSupportedForLocale(locale) ? locale : DEFAULT_MONTHS_EN;
+        }
+        function isIntlSupportedForLocale(locale) {
+            return window.Intl && "object" == typeof window.Intl && window.Intl.DateTimeFormat.supportedLocalesOf([ locale ]).length > 0;
+        }
+        var DEFAULT_MONTHS_EN = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+        this.getLocaleDate = function(date) {
+            return date || (date = new Date()), date.getDate();
+        }, this.getLocaleMonth = function(date) {
+            return date || (date = new Date()), date.getMonth();
+        }, this.getLocaleFullYear = function(date) {
+            return date || (date = new Date()), date.getFullYear();
+        }, this.getLocaleToday = function() {
+            var now = new Date();
+            return this.getUTCDateFromParts(this.getLocaleFullYear(now), this.getLocaleMonth(now), this.getLocaleDate(now));
+        }, this.getUTCDate = function(date) {
+            return date || (date = new Date()), date.getUTCDate();
+        }, this.getUTCMonth = function(date) {
+            return date || (date = new Date()), date.getUTCMonth();
+        }, this.getUTCFullYear = function(date) {
+            return date || (date = new Date()), date.getUTCFullYear();
+        }, this.getUTCToday = function() {
+            var now = new Date();
+            return this.getUTCDateFromParts(this.getUTCFullYear(now), this.getUTCMonth(now), this.getUTCDate(now));
+        }, this.getLastDayOfMonth = function(year, month) {
+            var lastDay = this.getUTCDateFromParts(year, month + 1, 0);
+            return lastDay.getUTCDate();
+        }, this.getUTCDateFromParts = function(year, month, day) {
+            var date = new Date();
+            return date.setUTCFullYear(year, month, day), date.setUTCHours(0), date.setUTCMinutes(0), 
+            date.setUTCSeconds(0), date.setUTCMilliseconds(0), date;
+        }, this.getDayNamesForLocale = function(locale, format) {
+            format = getValidDateFormat(format), locale = getValidLocale(locale);
+            for (var date, days = [], i = 1; i <= 7; i++) date = this.getUTCDateFromParts(2001, 0, i), 
+            days.push(getLocalisedDateName(date, locale, {
+                weekday: format
+            }));
+            return days;
+        }, this.getMonthNamesForLocale = function(locale, format) {
+            format = getValidDateFormat(format), locale = getValidLocale(locale);
+            for (var date, months = [], i = 0; i < 12; i++) date = this.getUTCDateFromParts(2e3, i, 15), 
+            months.push(getLocalisedDateName(date, locale, {
+                month: format
+            }));
+            return months;
+        }, this.getWeekday = function(year, month, day) {
+            var utcDate = this.getUTCDateFromParts(year, month, day);
+            return utcDate.getUTCDay();
+        }, this.isMonthBeforeDay = function(locale) {
+            return locale.indexOf("US", locale.length - 2) !== -1;
+        }, this.addYears = function(date, years) {
+            return this.addToDate(date, years, 0, 0);
+        }, this.addMonths = function(date, months) {
+            return this.addToDate(date, 0, months, 0);
+        }, this.addDays = function(date, days) {
+            return this.addToDate(date, 0, 0, days);
+        }, this.addToDate = function(date, years, months, days) {
+            return this.getUTCDateFromParts(date.getUTCFullYear() + years, date.getUTCMonth() + months, date.getUTCDate() + days);
+        };
+    }
+    angular.module("tw.form-components").service("TwDateService", TwDateService);
 }(window.angular);

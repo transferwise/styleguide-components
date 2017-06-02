@@ -1,0 +1,108 @@
+<h4 id="date-lookup">Tw Date Lookup</h4>
+<p>The date lookup is useful for selecting dates that are relatively recent, and
+	can be used in a pair for date ranges.</p>
+<p>If your date is likely to be further in the past (e.g. Date of birth), use
+	twDate instead.</p>
+<div class="row m-b-5">
+	<div class="col-sm-6">
+		<div class="form-group">
+			<label class="control-label">
+				Example date lookup
+			</label>
+			<tw-date-lookup
+				ng-model="vm.model.components.dateLookup"
+				ng-required="vm.dateLookup.required"
+				ng-disabled="vm.dateLookup.disabled"
+				ng-min="vm.dateLookup.min"
+				ng-max="vm.dateLookup.max"
+				ng-change="vm.log('date lookup change: ' + vm.model.components.dateLookup)"
+				ng-focus="vm.log('date lookup focus')"
+				ng-blur="vm.log('date lookup blur')"
+				placeholder="{{vm.dateLookup.placeholder}}"
+				locale="{{vm.dateLookup.locale}}"
+				size="{{vm.dateLookup.size}}"
+				label="{{vm.dateLookup.label}}"
+				tw-validation></tw-date-lookup>
+		</div>
+		<h5>Configuration</h5>
+		<pre>
+&lt;tw-date-lookup
+  placeholder="{{vm.dateLookup.placeholder}}"
+  locale="{{vm.dateLookup.locale}}"
+  ng-model={{vm.model.components.dateLookup}}<span ng-if="vm.dateLookup.required">
+  ng-required="{{vm.dateLookup.required}}"</span><span ng-if="vm.dateLookup.disabled">
+  ng-disabled="{{vm.dateLookup.disabled}}"</span><span ng-if="vm.dateLookup.min">
+  ng-min={{vm.dateLookup.min}}</span><span ng-if="vm.dateLookup.max">
+  ng-max={{vm.dateLookup.max}}</span>
+  ng-change="..."
+  ng-focus="..."
+  ng-blur="..."<span ng-if="vm.dateLookup.size">
+  size={{vm.dateLookup.size}}</span>&gt;
+&lt;/tw-date-lookup&gt;
+		</pre>
+	</div>
+	<div class="col-sm-6">
+		<div class="well">
+			<h5 class="page-header">Edit configuration</h5>
+			<div class="form-group"
+				ng-init="vm.dateLookup.placeholder = 'Choose date...'">
+				<label class="control-label">Placeholder</label>
+				<input type="text"
+					class="form-control"
+					ng-model="vm.dateLookup.placeholder" />
+			</div>
+			<div class="form-group"
+				ng-init="vm.dateLookup.locale = 'en-GB'">
+				<label class="control-label">Locale</label>
+				<tw-select
+					options="vm.locales"
+					ng-model="vm.dateLookup.locale"></tw-select>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Min Date</label>
+				<tw-date-lookup
+					ng-model="vm.dateLookup.min"
+					ng-max="vm.dateLookup.max"
+					placeholder="Choose min date..."
+					locale="{{vm.dateLookup.locale}}"></tw-date-lookup>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Max Date</label>
+				<tw-date-lookup
+					ng-model="vm.dateLookup.max"
+					ng-min="vm.dateLookup.min"
+					placeholder="Choose max date..."
+					locale="{{vm.dateLookup.locale}}"></tw-date-lookup>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Size</label>
+				<tw-select
+					placeholder="Size..."
+					ng-model="vm.dateLookup.size"
+					options="[{value: 'sm', label: 'Small'},{value: '', label: 'Medium'},{value: 'lg', label: 'Large'}]"></tw-select>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Inline label</label>
+				<input type="text"
+					class="form-control"
+					ng-model="vm.dateLookup.label" />
+			</div>
+			<div class="form-group">
+				<div class="checkbox">
+					<label>
+						<tw-checkbox
+							ng-model="vm.dateLookup.disabled"></tw-checkbox>
+						Disabled?
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<tw-checkbox
+							ng-model="vm.dateLookup.required"></tw-checkbox>
+						Required?
+					</label>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
