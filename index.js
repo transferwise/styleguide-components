@@ -77,7 +77,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 		}
 	};
 })
-.directive('errorMessages', function() {
+.directive('docsErrorMessages', function() {
 	return {
 		replace: true,
 		template: " \
@@ -90,7 +90,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 		</div>"
 	};
 })
-.directive('statusMessages', function() {
+.directive('docsStatusMessages', function() {
 	return {
 		replace: true,
 		template: " \
@@ -288,6 +288,26 @@ angular.module('my-app', ['tw.styleguide-components'])
 				$ctrl.requirements = response.data;
 			});
 		});
+
+		$ctrl.addError = function() {
+			var key = getFirstRequirementKey($ctrl.requirements);
+			$ctrl.errorMessages = {};
+			$ctrl.errorMessages[key] = "Server doesn't like this value";
+		};
+
+		function getFirstRequirementKey(requirements) {
+			var key;
+			$ctrl.requirements.forEach(function(requirementType) {
+				requirementType.fields.forEach(function(fieldGroup) {
+					fieldGroup.group.forEach(function(field) {
+						if (!key) {
+							key = field.key;
+						}
+					})
+				});
+			});
+			return key;
+		}
 	}],
 	bindings: {
 		model: "="

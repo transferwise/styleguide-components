@@ -3,7 +3,7 @@
 	It accepts a model object which it permutes based on a set of requirements.
 	The requirements object should match that returned by the TransferWise API</p>
 <hr />
-<form>
+<form novalidate>
 	<div class="well">
 		<h5 class="page-header">
 			Edit configuration
@@ -36,10 +36,17 @@
 				min: 'The value is too low',
 				max: 'The value is too high'
 			}"
-			field-errors="{
-				firstName: 'This name is not allowed'
-			}"
+			error-messages="$ctrl.errorMessages"
 			is-valid="$ctrl.isValid"></tw-requirements-form>
+		<hr />
+		<div class="btn-toolbar m-b-panel">
+			<button type="submit" class="btn btn-primary">
+				Submit form
+			</button>
+			<button type="button" class="btn btn-default" ng-click="$ctrl.addError()">
+				Add a server error
+			</button>
+		</div>
 
 		<h5>Configuration</h5>
 <pre>&lt;tw-requirements-form
@@ -57,10 +64,8 @@
     maxlength: 'The value is too long',
     min: 'The value is too low',
     max: 'The value is too high'
-  }"
-  error-messages="{
-    firstName: 'This name is not allowed'
-  }"
+  }"<span ng-if="$ctrl.errorMessages">
+  error-messages="{{$ctrl.errorMessages | json}}"</span>
   is-valid='{{$ctrl.isValid}}'&gt;&lt;/tw-requirements-form&gt;</pre>
 	</div>
 </form>

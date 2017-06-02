@@ -51,7 +51,6 @@
 
 		function getFieldNamesFromRequirement(modelRequirement) {
 			if (!modelRequirement.fields) {
-				console.log(modelRequirement);
 				return [];
 			}
 			var names = modelRequirement.fields.map(function(fieldGroup) {
