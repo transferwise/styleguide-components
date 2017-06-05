@@ -1346,7 +1346,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                     var presentationValue = "";
                     return sectionLengths.forEach(function(sectionLength, index) {
                         presentationValue += value.substring(0, sectionLength), value = value.substring(sectionLength, value.length), 
-                        index + 1 < sectionLengths.length && value.length && (console.log("ADD"), presentationValue += separator);
+                        index + 1 < sectionLengths.length && value.length && (presentationValue += separator);
                     }), presentationValue += value;
                 }
                 function separatorsBeforeCursor(value, cursorPosition, separator) {
@@ -1361,40 +1361,42 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 }
                 function modifyValue(event) {
                     var key = event.keyCode || event.which, pos = getCursorPosition(event.target), separatorsBeforeChange = separatorsBeforeCursor($element.val(), pos, separator);
-                    return reservedKeys.indexOf(key) >= 0 ? void console.log("reserved!") : void $timeout(function() {
+                    reservedKeys.indexOf(key) >= 0 || $timeout(function() {
                         listener();
-                        var nextPos = 8 === key ? pos - separator.length : pos + separator.length, value = $element.val(), separatorsAfterChange = separatorsBeforeCursor($element.val(), nextPos, separator);
-                        8 === key && (cursorIsAfterSeparator(value, pos, separator) ? $element.val(format(removeCharacterAndSeparator(value, pos, separator))) : cursorIsAfterSeparatorPlusOne(value, pos, separator) && $element.val(format(removeCharacterAndSeparator(value, pos - 1, separator)))), 
+                        var nextPos = key === keys.backspace ? pos - separator.length : pos + separator.length, value = $element.val(), separatorsAfterChange = separatorsBeforeCursor($element.val(), nextPos, separator);
+                        if (key === keys.backspace) if (cursorIsAfterSeparator(value, pos, separator)) $element.val(format(unformat(value))); else if (cursorIsAfterSeparatorPlusOne(value, pos, separator)) {
+                            console.log("delete after + 1  val: " + value + " pos:" + pos + " sep: " + separator);
+                            var newVal = format(removeCharacterAndSeparator(value, pos - 1, separator));
+                            $element.val(format(unformat(newVal)));
+                        }
                         setCursorPosition(event.target, nextPos + (separatorsAfterChange - separatorsBeforeChange) * separator.length);
                     });
                 }
-                var ngModelController = $element.controller("ngModel");
-                console.log("presentation pattern");
-                var pattern = $element.attr("tw-presentation-pattern"), separator = "-/", sectionLengths = pattern.split("-").map(function(val) {
+                var ngModelController = $element.controller("ngModel"), pattern = $element.attr("tw-presentation-pattern"), separator = "-", sectionLengths = pattern.split("-").map(function(val) {
                     return parseInt(val, 10);
                 });
                 console.log(pattern), console.log(separator), console.log(sectionLengths), ngModelController.$render = function() {
                     $element.val(format(ngModelController.$viewValue));
-                }, ngModelController.$parsers.push(function(value) {
+                }, ngModelController.$formatters.push(format), ngModelController.$parsers.push(function(value) {
                     return unformat(value);
-                }), ngModelController.$validators.custom = function(newValue) {
-                    return console.log("Validating: " + newValue), !0;
-                }, $timeout(function() {
-                    ngModelController.$validators.maxlength = function(newValue) {
-                        return console.log("Max Validating: " + newValue), newValue.length <= 9;
-                    };
+                }), $timeout(function() {
+                    var originalMinLength = ngModelController.$validators.minlength, originalMaxLength = ngModelController.$validators.maxlength;
+                    originalMinLength && (ngModelController.$validators.minlength = function(modelValue, viewValue) {
+                        return originalMinLength(modelValue, unformat(viewValue));
+                    }), originalMaxLength && (ngModelController.$validators.maxlength = function(modelValue, viewValue) {
+                        return originalMaxLength(modelValue, unformat(viewValue));
+                    });
                 }), $element.bind("change", listener), $element.bind("keydown", function(event) {
-                    console.log("keydown: " + event.which), console.log(ngModelController.$modelValue), 
-                    console.log(ngModelController.$viewValue), console.log(ngModelController.$valid), 
                     modifyValue(event);
-                }), $element.bind("keypress", function(event) {
-                    console.log("keypress"), console.log(ngModelController.$modelValue), console.log(ngModelController.$viewValue), 
-                    console.log(ngModelController.$valid);
-                }), $element.bind("keyup", function(event) {
-                    console.log("keyup"), console.log(ngModelController.$modelValue), console.log(ngModelController.$viewValue), 
-                    console.log(ngModelController.$valid);
-                }), $element.bind("paste cut", function() {
-                    $timeout(listener), setCursorPosition($element[0], $element.val().length);
+                }), $element.bind("keypress", function(event) {}), $element.bind("keyup", function(event) {}), 
+                $element.bind("paste cut", function() {
+                    $timeout(function() {
+                        listener(), setCursorPosition($element[0], $element.val().length);
+                    });
+                }), $element.bind("copy", function() {
+                    $timeout(function() {
+                        setCursorPosition($element[0], $element.val().length);
+                    });
                 });
                 var keys = {
                     cmd: 224,

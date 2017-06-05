@@ -11,10 +11,10 @@
       require: 'ngModel',
       controller: ['$element', '$timeout', function($element, $timeout) {
         var ngModelController = $element.controller('ngModel');
-        console.log("presentation pattern");
 
         var pattern = $element.attr('tw-presentation-pattern');   // '2-2-2'
-        var separator = '-/';
+        // TODO multi-character separators, custom separators
+        var separator = '-';
         var sectionLengths = pattern.split('-').map(function(val) {
           return parseInt(val, 10);
         });
@@ -23,32 +23,44 @@
         console.log(separator);
         console.log(sectionLengths);
 
-        //ngModelController.$formatters.push(format);
-
         ngModelController.$render = function() {
           $element.val(format(ngModelController.$viewValue));
         };
 
+        //ngModelController.$formatters.push(function(value) {
+        //  console.log("formatting, " + value + " - " + unformat(value));
+        //  return format(value);
+        //});
+        // Need formatter for external model changes
+        ngModelController.$formatters.push(format);
+
         ngModelController.$parsers.push(function(value) {
+          //console.log("parsing, " + value + " - " + unformat(value));
           return unformat(value);
         });
 
-        ngModelController.$validators.custom = function(newValue) {
-          console.log("Validating: " + newValue);
-          return true;
-        };
-        // Override maxlength
+        // min/max length validators use viewValue which is still formatted.
+        // After instantiation override them, to unformat view value.
         $timeout(function () {
-          ngModelController.$validators.maxlength = function(newValue) {
-            console.log("Max Validating: " + newValue);
-            return newValue.length <= 9; // TODO
-          };
-        });
+          var originalMinLength = ngModelController.$validators.minlength,
+              originalMaxLength = ngModelController.$validators.maxlength;
 
+          if (originalMinLength) {
+            ngModelController.$validators.minlength = function(modelValue, viewValue) {
+              return originalMinLength(modelValue, unformat(viewValue));
+            };
+          }
+          if (originalMaxLength) {
+            ngModelController.$validators.maxlength = function(modelValue, viewValue) {
+              return originalMaxLength(modelValue, unformat(viewValue));
+            };
+          }
+        });
 
         function listener() {
           var rawValue = $element.val();
-          //ngModelController.$setViewValue(rawValue);
+          // We want visible value to change so we set val rather than $setViewValue
+          //ngModelController.$setViewValue(format(rawValue));
           $element.val(format(rawValue));
         }
 
@@ -71,7 +83,6 @@
             presentationValue += value.substring(0, sectionLength);
             value = value.substring(sectionLength, value.length);
             if (index + 1 < sectionLengths.length && value.length) {
-              console.log("ADD");
               presentationValue += separator;
             }
           });
@@ -94,33 +105,28 @@
 
         $element.bind('change', listener);
         $element.bind('keydown', function(event) {
-          console.log("keydown: " + event.which);
-          console.log(ngModelController.$modelValue);
-          console.log(ngModelController.$viewValue);
-          console.log(ngModelController.$valid);
-
           modifyValue(event);
         });
 
+        // keypress is not triggered by special keys
         $element.bind('keypress', function(event) {
-          console.log("keypress");
-          console.log(ngModelController.$modelValue);
-          console.log(ngModelController.$viewValue);
-          console.log(ngModelController.$valid);
+          //virtualDomApproach($element, event);
         });
 
         $element.bind('keyup', function(event) {
-          console.log("keyup");
-          console.log(ngModelController.$modelValue);
-          console.log(ngModelController.$viewValue);
-          console.log(ngModelController.$valid);
-          //modifyValue(event);
-          //ngModelController.$setViewValue(format(ngModelController.$modelValue));
+          //console.log("keyup: " + event.keyCode);
         });
 
         $element.bind('paste cut', function() {
-          $timeout(listener);
-          setCursorPosition($element[0], $element.val().length); // TODO check this
+          $timeout(function() {
+            listener();
+            setCursorPosition($element[0], $element.val().length); // TODO check this
+          });
+        });
+        $element.bind('copy', function() {
+          $timeout(function() {
+            setCursorPosition($element[0], $element.val().length); // TODO check this
+          });
         });
 
         function modifyValue(event) {
@@ -134,33 +140,36 @@
           // This lets us support copy and paste too
           //if (key === 91 || key === 224 || (15 < key && key < 19) || (37 <= key && key <= 40)) {
           if (reservedKeys.indexOf(key) >= 0) {
-            console.log("reserved!");
             return;
           }
-          // TODO problem: validators receive separators, so they belive value is too long
+
           $timeout(function() {
             listener();
+
             // If deleting move back
-            var nextPos = key === 8 ? pos - separator.length : pos + separator.length;
+            var nextPos = key === keys.backspace ? pos - separator.length : pos + separator.length;
             var value = $element.val();
             var separatorsAfterChange = separatorsBeforeCursor(
               $element.val(), nextPos, separator
             );
-            if (key === 8) {
+
+            if (key === keys.backspace) {
               if (cursorIsAfterSeparator(value, pos, separator)) {
+                $element.val(format(unformat(value)));
+
+              } else if (cursorIsAfterSeparatorPlusOne(value, pos, separator)) {
+                // TODO this case actually fires when cursor straight after separator
+
                 //ngModelController.$setViewValue(
                 //  format(removeCharacterAndSeparator(value, pos, separator))
                 //);
-                $element.val(
-                  format(removeCharacterAndSeparator(value, pos, separator))
-                );
-              } else if (cursorIsAfterSeparatorPlusOne(value, pos, separator)) {
-                //ngModelController.$setViewValue(
-                //  format(removeCharacterAndSeparator(value, pos, separator))
-                //)
-                $element.val(
-                  format(removeCharacterAndSeparator(value, pos - 1, separator))
-                );
+                console.log("delete after + 1  val: " + value + " pos:" + pos + " sep: " +separator);
+
+                // Remove another char
+                var newVal = format(removeCharacterAndSeparator(value, pos - 1, separator));
+                $element.val(format(unformat(newVal)));
+
+                // TODO model does not update straight away in this case
               }
             }
             setCursorPosition(
@@ -211,6 +220,21 @@
       return value.substring(0, position - separator.length) +
         value.substring(position, value.length);
     }
-
+    /*
+    function virtualDomApproach($element, event) {
+      var oldVal = $element.val();
+      if (event.charCode) {
+        var newChar = String.fromCharCode(event.charCode);
+        $element.val(oldVal + newChar);
+        event.preventDefault();
+      } else if (event.charCode === 0) {
+        // 0 for special keys
+        if (event.keyCode === keys.backspace) {
+          $element.val(oldVal.substring(0, oldVal.length - 1));
+          event.preventDefault();
+        }
+      }
+    }
+    */
   }
 })(window.angular);

@@ -7,11 +7,12 @@
     <label class="control-label">Presentation pattern</label>
     <input type="text" class="form-control"
       ng-model="vm.model.presentationPattern"
+      ng-minlength="5"
       ng-maxlength="9"
       tw-focusable
       tw-validation
       tw-presentation-pattern="2-3-4" />
-    <error-messages></error-messages>
+    <docs-error-messages></docs-error-messages>
   </div>
   <button class="btn btn-default"
     ng-click="vm.model.presentationPattern = '123456789'">
