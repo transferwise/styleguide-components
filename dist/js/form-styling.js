@@ -99,12 +99,11 @@ angular.module("tw.form-styling", []);
                 function modifyValue(event) {
                     var key = event.keyCode || event.which, pos = getCursorPosition(event.target), separatorsBeforeChange = separatorsBeforeCursor($element.val(), pos, separator);
                     reservedKeys.indexOf(key) >= 0 || $timeout(function() {
-                        listener();
+                        $element.val(format(unformat($element.val())));
                         var nextPos = key === keys.backspace ? pos - separator.length : pos + separator.length, value = $element.val(), separatorsAfterChange = separatorsBeforeCursor($element.val(), nextPos, separator);
-                        if (key === keys.backspace) if (cursorIsAfterSeparator(value, pos, separator)) $element.val(format(unformat(value))); else if (cursorIsAfterSeparatorPlusOne(value, pos, separator)) {
-                            console.log("delete after + 1  val: " + value + " pos:" + pos + " sep: " + separator);
-                            var newVal = format(removeCharacterAndSeparator(value, pos - 1, separator));
-                            $element.val(format(unformat(newVal)));
+                        if (key === keys.backspace && cursorIsAfterSeparatorPlusOne(value, pos, separator)) {
+                            var newVal = removeCharacterAndSeparator(value, pos - 1, separator);
+                            newVal = format(unformat(newVal)), $element.val(newVal), ngModelController.$setViewValue(newVal);
                         }
                         setCursorPosition(event.target, nextPos + (separatorsAfterChange - separatorsBeforeChange) * separator.length);
                     });
@@ -114,9 +113,8 @@ angular.module("tw.form-styling", []);
                 });
                 console.log(pattern), console.log(separator), console.log(sectionLengths), ngModelController.$render = function() {
                     $element.val(format(ngModelController.$viewValue));
-                }, ngModelController.$formatters.push(format), ngModelController.$parsers.push(function(value) {
-                    return unformat(value);
-                }), $timeout(function() {
+                }, ngModelController.$formatters.push(format), ngModelController.$parsers.push(unformat), 
+                $timeout(function() {
                     var originalMinLength = ngModelController.$validators.minlength, originalMaxLength = ngModelController.$validators.maxlength;
                     originalMinLength && (ngModelController.$validators.minlength = function(modelValue, viewValue) {
                         return originalMinLength(modelValue, unformat(viewValue));

@@ -27,17 +27,20 @@
           $element.val(format(ngModelController.$viewValue));
         };
 
-        //ngModelController.$formatters.push(function(value) {
-        //  console.log("formatting, " + value + " - " + unformat(value));
-        //  return format(value);
-        //});
-        // Need formatter for external model changes
-        ngModelController.$formatters.push(format);
-
+        /*
+        ngModelController.$formatters.push(function(value) {
+          console.log("formatting, " + value + " - " + unformat(value));
+          return format(value);
+        });
         ngModelController.$parsers.push(function(value) {
           //console.log("parsing, " + value + " - " + unformat(value));
           return unformat(value);
         });
+        */
+
+        // Need formatter for external model changes
+        ngModelController.$formatters.push(format);
+        ngModelController.$parsers.push(unformat);
 
         // min/max length validators use viewValue which is still formatted.
         // After instantiation override them, to unformat view value.
@@ -60,7 +63,6 @@
         function listener() {
           var rawValue = $element.val();
           // We want visible value to change so we set val rather than $setViewValue
-          //ngModelController.$setViewValue(format(rawValue));
           $element.val(format(rawValue));
         }
 
@@ -144,7 +146,8 @@
           }
 
           $timeout(function() {
-            listener();
+            //listener();
+            $element.val(format(unformat($element.val())));
 
             // If deleting move back
             var nextPos = key === keys.backspace ? pos - separator.length : pos + separator.length;
@@ -154,23 +157,20 @@
             );
 
             if (key === keys.backspace) {
-              if (cursorIsAfterSeparator(value, pos, separator)) {
-                $element.val(format(unformat(value)));
-
-              } else if (cursorIsAfterSeparatorPlusOne(value, pos, separator)) {
+              if (cursorIsAfterSeparatorPlusOne(value, pos, separator)) {
                 // TODO this case actually fires when cursor straight after separator
-
-                //ngModelController.$setViewValue(
-                //  format(removeCharacterAndSeparator(value, pos, separator))
-                //);
-                console.log("delete after + 1  val: " + value + " pos:" + pos + " sep: " +separator);
+                // Probably because we formatted already
 
                 // Remove another char
-                var newVal = format(removeCharacterAndSeparator(value, pos - 1, separator));
-                $element.val(format(unformat(newVal)));
-
-                // TODO model does not update straight away in this case
+                var newVal = removeCharacterAndSeparator(value, pos - 1, separator);
+                newVal = format(unformat(newVal));
+                $element.val(newVal);
+                // Also trigger model update, not sure why necessary...
+                ngModelController.$setViewValue(newVal);
               }
+            } else {
+              // We want visible value to change so we set val rather than $setViewValue
+              //$element.val(format(unformat($element.val())));
             }
             setCursorPosition(
               event.target,
