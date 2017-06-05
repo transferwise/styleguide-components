@@ -11,19 +11,28 @@
       ng-maxlength="9"
       tw-focusable
       tw-validation
-      tw-presentation-pattern="2-3-4" />
+      tw-presentation-pattern="2-3-4"
+      tw-presentation-separator="-" />
     <docs-error-messages></docs-error-messages>
   </div>
-  <button class="btn btn-default"
-    ng-click="vm.model.presentationPattern = '123456789'">
-    Set to '123456789'
-  </button>
+  <div class="btn-toolbar m-b-2">
+    <button class="btn btn-default"
+      ng-click="vm.model.presentationPattern = '123456789'">
+      Set to '123456789'
+    </button>
+    <button class="btn btn-default"
+      ng-click="vm.model.presentationPattern = '1234567890'">
+      Set to '1234567890'
+    </button>
+  </div>
 <pre>
 &lt;input type="text"
   class="form-control"
   ng-model="{{vm.model.presentationPattern}}"
+  ng-minlength="5"
   ng-maxlength="9"
   tw-presentation-pattern="2-3-4"
+  tw-presentation-separator="-"
   tw-validation
   tw-focusable /&gt;
 </pre>

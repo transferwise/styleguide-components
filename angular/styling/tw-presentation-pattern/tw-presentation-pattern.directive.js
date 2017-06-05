@@ -14,7 +14,11 @@
 
         var pattern = $element.attr('tw-presentation-pattern');   // '2-2-2'
         // TODO multi-character separators, custom separators
+
         var separator = '-';
+        if ($element.attr('tw-presentation-separator')) {
+          separator = $element.attr('tw-presentation-separator');
+        }
         var sectionLengths = pattern.split('-').map(function(val) {
           return parseInt(val, 10);
         });
@@ -146,7 +150,6 @@
           }
 
           $timeout(function() {
-            //listener();
             $element.val(format(unformat($element.val())));
 
             // If deleting move back

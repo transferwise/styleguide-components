@@ -1371,7 +1371,9 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                         setCursorPosition(event.target, nextPos + (separatorsAfterChange - separatorsBeforeChange) * separator.length);
                     });
                 }
-                var ngModelController = $element.controller("ngModel"), pattern = $element.attr("tw-presentation-pattern"), separator = "-", sectionLengths = pattern.split("-").map(function(val) {
+                var ngModelController = $element.controller("ngModel"), pattern = $element.attr("tw-presentation-pattern"), separator = "-";
+                $element.attr("tw-presentation-separator") && (separator = $element.attr("tw-presentation-separator"));
+                var sectionLengths = pattern.split("-").map(function(val) {
                     return parseInt(val, 10);
                 });
                 console.log(pattern), console.log(separator), console.log(sectionLengths), ngModelController.$render = function() {
