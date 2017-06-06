@@ -320,8 +320,20 @@ angular.module('my-app', ['tw.styleguide-components'])
 .directive('twFocusableDocs', function() {
 	return {templateUrl: 'partials/tw-focusable.html'};
 })
-.directive('twPresentationPatternDocs', function() {
-	return {templateUrl: 'partials/tw-presentation-pattern.html'};
+.component('twPresentationPatternDocs', {
+	controller: function() {
+		this.patterns = [
+			{value: '**** **** **** ****', label: 'Credit card number', note: '**** **** **** ****'},
+			{value: '**-**-**', label: 'Sort code', note: '**-**-**'},
+			{value: '***.***.***-**', label: 'Brazilian CPF ID', note: '***.***.***-**'},
+			{value: '**.***.*** - *', label: 'Chilean RUT ID', note: '**.***.*** - *'},
+		];
+		//this.pattern = '**.***.*** - *';
+	},
+	bindings: {
+		model: "="
+	},
+	templateUrl: 'partials/tw-presentation-pattern.html'
 })
 .directive('twPopOverDocs', function() {
 	return {templateUrl: 'partials/tw-pop-over.html'};

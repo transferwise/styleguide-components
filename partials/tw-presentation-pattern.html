@@ -6,36 +6,38 @@
   <div class="form-group">
     <label class="control-label">Presentation pattern</label>
     <input type="text" class="form-control"
-      ng-model="vm.model.presentationPattern"
+      ng-model="$ctrl.model"
       ng-minlength="5"
       ng-maxlength="9"
+      ng-required="true"
       tw-focusable
       tw-validation
-      tw-presentation-pattern="2-3-4"
-      tw-presentation-separator="-" />
+      tw-presentation-pattern="{{$ctrl.pattern}}" />
     <docs-error-messages></docs-error-messages>
   </div>
   <div class="btn-toolbar m-b-2">
     <button class="btn btn-default"
-      ng-click="vm.model.presentationPattern = '123456789'">
+      ng-click="$ctrl.model = '123456789'">
       Set to '123456789'
     </button>
     <button class="btn btn-default"
-      ng-click="vm.model.presentationPattern = '1234567890'">
+      ng-click="$ctrl.model = '1234567890'">
       Set to '1234567890'
     </button>
   </div>
 <pre>
 &lt;input type="text"
   class="form-control"
-  ng-model="{{vm.model.presentationPattern}}"
+  ng-model="{{$ctrl.model}}"
   ng-minlength="5"
   ng-maxlength="9"
-  tw-presentation-pattern="2-3-4"
-  tw-presentation-separator="-"
+  ng-required="true"
+  tw-presentation-pattern="{{$ctrl.pattern}}"
   tw-validation
   tw-focusable /&gt;
 </pre>
+
+<tw-select options="$ctrl.patterns" ng-model="$ctrl.pattern"></tw-select>
 
 </div>
 <hr class="m-b-5" />

@@ -56,39 +56,49 @@ angular.module("tw.form-styling", []);
 }(window.angular), function(angular) {
     "use strict";
     function TwPresentationPattern() {
-        function cursorIsAfterSeparator(value, position, separator) {
-            return value.substring(position - separator.length - 1, position - 1) === separator;
+        function cursorIsAfterSeparatorPattern(pattern, pos) {
+            return pattern[pos - 1] && "*" !== pattern[pos - 1];
         }
-        function cursorIsAfterSeparatorPlusOne(value, position, separator) {
-            return cursorIsAfterSeparator(value, position + 1, separator);
+        function removeCharacter(value, position) {
+            return value.substring(0, position - 1) + value.substring(position, value.length);
         }
-        function removeCharacterAndSeparator(value, position, separator) {
-            return value.substring(0, position - separator.length) + value.substring(position, value.length);
+        function patternise(pattern, value) {
+            console.log("patternise: " + value);
+            for (var newValue = "", separators = 0, i = 0; i < pattern.length; i++) i >= value.length + separators || ("*" === pattern[i] ? (console.log("1 " + i + ", " + separators), 
+            newValue += value[i - separators]) : (console.log("2"), newValue += pattern[i], 
+            separators++));
+            return value.substring(pattern.length - separators, value.length) && (newValue += value.substring(pattern.length - separators, value.length)), 
+            console.log("patternise end: " + newValue), newValue;
+        }
+        function unpatternise(pattern, value) {
+            console.log("unpatternise: " + value);
+            for (var i = 0; i < pattern.length; i++) "*" !== pattern[i] && (value = value.replace(pattern[i], ""));
+            return value;
         }
         return {
             restrict: "A",
             require: "ngModel",
-            controller: [ "$element", "$timeout", function($element, $timeout) {
+            scope: {
+                twPresentationPattern: "@"
+            },
+            controller: [ "$element", "$timeout", "$scope", "$attrs", "$parse", function($element, $timeout, $scope, $attrs, $parse) {
                 function listener() {
                     var rawValue = $element.val();
-                    $element.val(format(rawValue));
+                    console.log("listener"), $element.val(format(rawValue));
                 }
                 function unformat(value) {
                     if (!value) return value;
-                    var regex = new RegExp(separator, "g");
-                    return value.replace(regex, "");
+                    var pattern = $element.attr("tw-presentation-pattern");
+                    return unpatternise(pattern, value);
                 }
                 function format(value) {
                     if (value = unformat(value), !value) return "";
-                    var presentationValue = "";
-                    return sectionLengths.forEach(function(sectionLength, index) {
-                        presentationValue += value.substring(0, sectionLength), value = value.substring(sectionLength, value.length), 
-                        index + 1 < sectionLengths.length && value.length && (presentationValue += separator);
-                    }), presentationValue += value;
+                    var pattern = $element.attr("tw-presentation-pattern");
+                    return patternise(pattern, value);
                 }
-                function separatorsBeforeCursor(value, cursorPosition, separator) {
-                    var charsBeforeCursor = value.substring(0, cursorPosition), charsWithoutSeparators = unformat(charsBeforeCursor);
-                    return (charsBeforeCursor.length - charsWithoutSeparators.length) / separator.length;
+                function separatorsBeforeCursorPattern(pattern, position) {
+                    for (var separators = 0, i = 0; i < position; i++) i >= pattern.length || "*" !== pattern[i] && separators++;
+                    return separators;
                 }
                 function getCursorPosition(element) {
                     return element.selectionStart;
@@ -97,23 +107,23 @@ angular.module("tw.form-styling", []);
                     element.setSelectionRange(position, position);
                 }
                 function modifyValue(event) {
-                    var key = event.keyCode || event.which, pos = getCursorPosition(event.target), separatorsBeforeChange = separatorsBeforeCursor($element.val(), pos, separator);
+                    var key = event.keyCode || event.which, pos = getCursorPosition(event.target), pattern = $element.attr("tw-presentation-pattern"), separatorsBeforeChange = separatorsBeforeCursorPattern(pattern, pos);
                     reservedKeys.indexOf(key) >= 0 || $timeout(function() {
-                        $element.val(format(unformat($element.val())));
-                        var nextPos = key === keys.backspace ? pos - separator.length : pos + separator.length, value = $element.val(), separatorsAfterChange = separatorsBeforeCursor($element.val(), nextPos, separator);
-                        if (key === keys.backspace && cursorIsAfterSeparatorPlusOne(value, pos, separator)) {
-                            var newVal = removeCharacterAndSeparator(value, pos - 1, separator);
-                            newVal = format(unformat(newVal)), $element.val(newVal), ngModelController.$setViewValue(newVal);
-                        }
-                        setCursorPosition(event.target, nextPos + (separatorsAfterChange - separatorsBeforeChange) * separator.length);
+                        var nextPos = key === keys.backspace ? pos - 1 : pos + 1, value = $element.val(), separatorsAfterChange = separatorsBeforeCursorPattern(pattern, nextPos);
+                        if (key === keys.backspace) {
+                            if (console.log("backspace"), cursorIsAfterSeparatorPattern(pattern, pos)) {
+                                var newVal;
+                                newVal = removeCharacter(value, pos - 1), console.log("after remove: " + newVal), 
+                                newVal = format(unformat(newVal)), $element.val(newVal), ngModelController.$setViewValue(newVal);
+                            }
+                        } else console.log("timeout"), $element.val(format(unformat($element.val())));
+                        setCursorPosition(event.target, nextPos + (separatorsAfterChange - separatorsBeforeChange));
                     });
                 }
-                var ngModelController = $element.controller("ngModel"), pattern = $element.attr("tw-presentation-pattern"), separator = "-";
-                $element.attr("tw-presentation-separator") && (separator = $element.attr("tw-presentation-separator"));
-                var sectionLengths = pattern.split("-").map(function(val) {
-                    return parseInt(val, 10);
-                });
-                console.log(pattern), console.log(separator), console.log(sectionLengths), ngModelController.$render = function() {
+                var ngModelController = $element.controller("ngModel");
+                console.log($attrs), $scope.$watch($scope.twPresentationPattern, function(newValue, oldValue) {
+                    console.log(newValue);
+                }), ngModelController.$render = function() {
                     $element.val(format(ngModelController.$viewValue));
                 }, ngModelController.$formatters.push(format), ngModelController.$parsers.push(unformat), 
                 $timeout(function() {
@@ -125,8 +135,7 @@ angular.module("tw.form-styling", []);
                     });
                 }), $element.bind("change", listener), $element.bind("keydown", function(event) {
                     modifyValue(event);
-                }), $element.bind("keypress", function(event) {}), $element.bind("keyup", function(event) {}), 
-                $element.bind("paste cut", function() {
+                }), $element.bind("paste cut", function() {
                     $timeout(function() {
                         listener(), setCursorPosition($element[0], $element.val().length);
                     });

@@ -9,38 +9,43 @@
     return {
       restrict: 'A',
       require: 'ngModel',
-      controller: ['$element', '$timeout', function($element, $timeout) {
+      scope: {
+        twPresentationPattern: '@'
+      },
+      controller: ['$element', '$timeout', '$scope', '$attrs', '$parse', function($element, $timeout, $scope, $attrs, $parse) {
+        var $ctrl = this;
         var ngModelController = $element.controller('ngModel');
 
-        var pattern = $element.attr('tw-presentation-pattern');   // '2-2-2'
-        // TODO multi-character separators, custom separators
+        //var pattern = $element.attr('tw-presentation-pattern');
+        console.log($attrs);
 
-        var separator = '-';
-        if ($element.attr('tw-presentation-separator')) {
-          separator = $element.attr('tw-presentation-separator');
-        }
-        var sectionLengths = pattern.split('-').map(function(val) {
-          return parseInt(val, 10);
+        $scope.$watch($scope.twPresentationPattern, function(newValue, oldValue) {
+          console.log(newValue);
+          //var val = $element.val();
+          //$element.val(patternise(new, unpatternise(old, val)));
         });
 
-        console.log(pattern);
-        console.log(separator);
-        console.log(sectionLengths);
+
+
+        //$scope.$watch('$attrs.twPresentationPattern', function(newValue, oldValue) {
+          //var value = $element.val();
+          /*
+          console.log(newValue);
+          console.log(oldValue);
+          if (oldValue) {
+            value = unpatternise(oldValue, value);
+          }
+          if (newValue) {
+            value = patternise(newValue, value);
+          }
+          */
+          //$element.val(value);
+        //});
+
 
         ngModelController.$render = function() {
           $element.val(format(ngModelController.$viewValue));
         };
-
-        /*
-        ngModelController.$formatters.push(function(value) {
-          console.log("formatting, " + value + " - " + unformat(value));
-          return format(value);
-        });
-        ngModelController.$parsers.push(function(value) {
-          //console.log("parsing, " + value + " - " + unformat(value));
-          return unformat(value);
-        });
-        */
 
         // Need formatter for external model changes
         ngModelController.$formatters.push(format);
@@ -67,6 +72,7 @@
         function listener() {
           var rawValue = $element.val();
           // We want visible value to change so we set val rather than $setViewValue
+          console.log("listener");
           $element.val(format(rawValue));
         }
 
@@ -74,8 +80,8 @@
           if (!value) {
             return value;
           }
-          var regex = new RegExp(separator, "g");
-          return value.replace(regex, '');
+          var pattern = $element.attr('tw-presentation-pattern');
+          return unpatternise(pattern, value);
         }
 
         function format(value) {
@@ -83,23 +89,21 @@
           if (!value) {
             return "";
           }
-
-          var presentationValue = "";
-          sectionLengths.forEach(function(sectionLength, index) {
-            presentationValue += value.substring(0, sectionLength);
-            value = value.substring(sectionLength, value.length);
-            if (index + 1 < sectionLengths.length && value.length) {
-              presentationValue += separator;
-            }
-          });
-          presentationValue += value;
-          return presentationValue;
+          var pattern = $element.attr('tw-presentation-pattern');
+          return patternise(pattern, value);
         }
 
-        function separatorsBeforeCursor(value, cursorPosition, separator) {
-          var charsBeforeCursor = value.substring(0, cursorPosition);
-          var charsWithoutSeparators = unformat(charsBeforeCursor);
-          return ((charsBeforeCursor.length - charsWithoutSeparators.length) / separator.length);
+        function separatorsBeforeCursorPattern(pattern, position) {
+          var separators = 0;
+          for(var i = 0; i < position; i++) {
+            if (i >= pattern.length) {
+              continue;
+            }
+            if (pattern[i] !== "*") {
+              separators++;
+            }
+          }
+          return separators;
         }
 
         function getCursorPosition(element) {
@@ -114,14 +118,18 @@
           modifyValue(event);
         });
 
+        /*
         // keypress is not triggered by special keys
         $element.bind('keypress', function(event) {
           //virtualDomApproach($element, event);
+          //modifyValue(event);
         });
 
         $element.bind('keyup', function(event) {
           //console.log("keyup: " + event.keyCode);
+          //modifyValue(event);
         });
+        */
 
         $element.bind('paste cut', function() {
           $timeout(function() {
@@ -138,9 +146,9 @@
         function modifyValue(event) {
           var key = event.keyCode || event.which;
           var pos = getCursorPosition(event.target);
-          var separatorsBeforeChange = separatorsBeforeCursor(
-            $element.val(), pos, separator
-          );
+
+          var pattern = $element.attr('tw-presentation-pattern');
+          var separatorsBeforeChange = separatorsBeforeCursorPattern(pattern, pos);
 
           // If the keys include the CTRL, CMD, SHIFT, ALT, or META keys, or the arrow keys, do nothing.
           // This lets us support copy and paste too
@@ -150,34 +158,36 @@
           }
 
           $timeout(function() {
-            $element.val(format(unformat($element.val())));
-
             // If deleting move back
-            var nextPos = key === keys.backspace ? pos - separator.length : pos + separator.length;
+            //var nextPos = key === keys.backspace ? pos - separator.length : pos + separator.length;
+            var nextPos = key === keys.backspace ? pos - 1 : pos + 1;
             var value = $element.val();
-            var separatorsAfterChange = separatorsBeforeCursor(
-              $element.val(), nextPos, separator
-            );
+
+            var separatorsAfterChange = separatorsBeforeCursorPattern(pattern, nextPos);
 
             if (key === keys.backspace) {
-              if (cursorIsAfterSeparatorPlusOne(value, pos, separator)) {
-                // TODO this case actually fires when cursor straight after separator
-                // Probably because we formatted already
-
+              console.log("backspace");
+              if (cursorIsAfterSeparatorPattern(pattern, pos)) {
                 // Remove another char
-                var newVal = removeCharacterAndSeparator(value, pos - 1, separator);
+                var newVal;
+                // TODO need to go further if more than one separator in a row.
+                newVal = removeCharacter(value, pos - 1);
+                console.log("after remove: " + newVal);
                 newVal = format(unformat(newVal));
                 $element.val(newVal);
                 // Also trigger model update, not sure why necessary...
                 ngModelController.$setViewValue(newVal);
               }
             } else {
+              console.log("timeout");
               // We want visible value to change so we set val rather than $setViewValue
-              //$element.val(format(unformat($element.val())));
+              $element.val(format(unformat($element.val())));
             }
+
+            // TODO if next two chars are separators this doesn't work.
             setCursorPosition(
               event.target,
-              nextPos + ((separatorsAfterChange - separatorsBeforeChange) * separator.length)
+              nextPos + (separatorsAfterChange - separatorsBeforeChange)
             );
           }); // Have to do this or changes don't get picked up properly
         }
@@ -213,31 +223,53 @@
       }]
     };
 
-    function cursorIsAfterSeparator(value, position, separator) {
-      return value.substring(position - separator.length - 1, position - 1) === separator;
+    function cursorIsAfterSeparatorPattern(pattern, pos) {
+      return pattern[pos - 1] && pattern[pos - 1] !== "*";
     }
-    function cursorIsAfterSeparatorPlusOne(value, position, separator) {
-      return cursorIsAfterSeparator(value, position + 1, separator);
-    }
-    function removeCharacterAndSeparator(value, position, separator) {
-      return value.substring(0, position - separator.length) +
+
+    function removeCharacter(value, position) {
+      return value.substring(0, position - 1) +
         value.substring(position, value.length);
     }
-    /*
-    function virtualDomApproach($element, event) {
-      var oldVal = $element.val();
-      if (event.charCode) {
-        var newChar = String.fromCharCode(event.charCode);
-        $element.val(oldVal + newChar);
-        event.preventDefault();
-      } else if (event.charCode === 0) {
-        // 0 for special keys
-        if (event.keyCode === keys.backspace) {
-          $element.val(oldVal.substring(0, oldVal.length - 1));
-          event.preventDefault();
+
+    // TODO better approach
+    function patternise(pattern, value) {
+      console.log("patternise: "+ value);
+      var newValue = "";
+      var separators = 0;
+      for(var i = 0; i < pattern.length; i++) {
+        if (i >= value.length + separators) {
+          continue;
+        }
+
+        if (pattern[i] === '*') {
+          console.log("1 " + i + ", " + separators);
+          //if (value[i - separators]) {
+            newValue += value[i - separators];
+          //}
+        }	else {
+          console.log("2");
+          newValue += pattern[i];
+          separators++;
         }
       }
+      if (value.substring(pattern.length - separators, value.length)) {
+        newValue += value.substring(pattern.length - separators, value.length);
+      }
+      console.log("patternise end: "+ newValue);
+      return newValue;
     }
-    */
+    function unpatternise(pattern, value) {
+      console.log("unpatternise: "+ value);
+
+      for(var i = 0; i < pattern.length; i++) {
+        if (pattern[i] !== '*') {
+          value = value.replace(pattern[i], "");
+        }
+      }
+
+      return value;
+    }
+
   }
 })(window.angular);
