@@ -48,6 +48,7 @@
             "key": "country",
             "type": "select",
             "required": true,
+            "placeholder": "Please select...",
             "valuesAllowed": [{
               "key": "UK",
               "name": "United Kingdom"
