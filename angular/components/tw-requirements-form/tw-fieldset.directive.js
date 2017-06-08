@@ -62,7 +62,7 @@
 											ng-min='field.min' \
 											ng-max='field.max' \
 											ng-pattern='field.validationRegexp' \
-											tw-validation \> \
+											tw-validation> \
 											<!-- tw-dynamic-async-validator='field.validationAsync' --> \
 										</tw-dynamic-form-control> \
 										<div class='error-messages'> \

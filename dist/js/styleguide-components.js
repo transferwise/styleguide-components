@@ -687,7 +687,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             controller: [ "$scope", TwFieldsetController ],
             controllerAs: "$ctrl",
             bindToController: !0,
-            template: " \t\t\t\t<fieldset ng-form='twFieldset'> \t\t\t\t\t<legend ng-if='$ctrl.legend'>{{$ctrl.legend}}</legend> \t\t\t\t\t<div class='row row-equal-height'> \t\t\t\t\t\t<div ng-repeat='fieldGroup in $ctrl.fields' \t\t\t\t\t\t\tng-class='{ \t\t\t\t\t\t\t\t\"col-sm-4\": fieldGroup.width === \"sm\", \t\t\t\t\t\t\t\t\"col-sm-6\": fieldGroup.width === \"md\" || fieldGroup.maxlength && fieldGroup.maxlength <= 10, \t\t\t\t\t\t\t\t\"col-sm-12\": fieldGroup.width === \"lg\" || !fieldGroup.maxlength || fieldGroup.maxlength > 10 \t\t\t\t\t\t\t}'> \t\t\t\t\t\t\t<div class='form-group tw-form-group-{{fieldGroup.key}}' style='width: 100%;' \t\t\t\t\t\t\t\tng-class='{\"has-error\": $ctrl.errorMessages[fieldGroup.key]}'> \t\t\t\t\t\t\t\t<label class='control-label' \t\t\t\t\t\t\t\t\tng-if='fieldGroup.type !== \"upload\"'> \t\t\t\t\t\t\t\t\t{{fieldGroup.name}} \t\t\t\t\t\t\t\t</label> \t\t\t\t\t\t\t\t<div class='row'> \t\t\t\t\t\t\t\t\t<div class='col-xs-{{field.columns}}' \t\t\t\t\t\t\t\t\t\tng-repeat='field in fieldGroup.group'> \t\t\t\t\t\t\t\t\t\t<tw-dynamic-form-control \t\t\t\t\t\t\t\t\t\t\tname='{{field.key}}' \t\t\t\t\t\t\t\t\t\t\tlabel='{{fieldGroup.name}}' \t\t\t\t\t\t\t\t\t\t\ttype='{{field.type | lowercase}}' \t\t\t\t\t\t\t\t\t\t\tplaceholder='{{field.placeholder || field.example}}' \t\t\t\t\t\t\t\t\t\t\thelp-text='{{field.helpText}}' \t\t\t\t\t\t\t\t\t\t\tlocale='{{$ctrl.locale}}' \t\t\t\t\t\t\t\t\t\t\tupload-accept='{{field.accept}}' \t\t\t\t\t\t\t\t\t\t\tupload-icon='{{field.icon}}' \t\t\t\t\t\t\t\t\t\t\tupload-too-large-message='{{field.tooLargeMessage}}' \t\t\t\t\t\t\t\t\t\t\toptions='field.valuesAllowed' \t\t\t\t\t\t\t\t\t\t\tupload-options='$ctrl.uploadOptions' \t\t\t\t\t\t\t\t\t\t\tng-model='$ctrl.model[field.key]' \t\t\t\t\t\t\t\t\t\t\tng-blur='$ctrl.onBlur(field)' \t\t\t\t\t\t\t\t\t\t\tng-required='field.required' \t\t\t\t\t\t\t\t\t\t\tng-disabled='field.disabled' \t\t\t\t\t\t\t\t\t\t\ttw-minlength='field.minLength' \t\t\t\t\t\t\t\t\t\t\ttw-maxlength='field.maxLength' \t\t\t\t\t\t\t\t\t\t\tng-min='field.min' \t\t\t\t\t\t\t\t\t\t\tng-max='field.max' \t\t\t\t\t\t\t\t\t\t\tng-pattern='field.validationRegexp' \t\t\t\t\t\t\t\t\t\t\ttw-validation > \t\t\t\t\t\t\t\t\t\t\t<!-- tw-dynamic-async-validator='field.validationAsync' --> \t\t\t\t\t\t\t\t\t\t</tw-dynamic-form-control> \t\t\t\t\t\t\t\t\t\t<div class='error-messages'> \t\t\t\t\t\t\t\t\t\t\t<div ng-repeat='(validationType, validationMessage) in $ctrl.validationMessages' \t\t\t\t\t\t\t\t\t\t\t\tclass='error-{{validationType}}'> \t\t\t\t\t\t\t\t\t\t\t\t{{validationMessage}} \t\t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t\t<div class='error-provided' ng-if='$ctrl.errorMessages[field.key]'> \t\t\t\t\t\t\t\t\t\t\t\t{{ $ctrl.errorMessages[field.key] }} \t\t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t<div ng-if='field.tooltip' \t\t\t\t\t\t\t\t\t\t\tclass='help-block'> \t\t\t\t\t\t\t\t\t\t\t<a role='button' \t\t\t\t\t\t\t\t\t\t\t\ttabindex='0' \t\t\t\t\t\t\t\t\t\t\t\tdata-toggle='popover' \t\t\t\t\t\t\t\t\t\t\t\tdata-placement='top' \t\t\t\t\t\t\t\t\t\t\t\ttitle='{{field.tooltip}}'> \t\t\t\t\t\t\t\t\t\t\t\t<span class='glyphicon glyphicon-question-sign'></span> \t\t\t\t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t</fieldset>"
+            template: " \t\t\t\t<fieldset ng-form='twFieldset'> \t\t\t\t\t<legend ng-if='$ctrl.legend'>{{$ctrl.legend}}</legend> \t\t\t\t\t<div class='row row-equal-height'> \t\t\t\t\t\t<div ng-repeat='fieldGroup in $ctrl.fields' \t\t\t\t\t\t\tng-class='{ \t\t\t\t\t\t\t\t\"col-sm-4\": fieldGroup.width === \"sm\", \t\t\t\t\t\t\t\t\"col-sm-6\": fieldGroup.width === \"md\" || fieldGroup.maxlength && fieldGroup.maxlength <= 10, \t\t\t\t\t\t\t\t\"col-sm-12\": fieldGroup.width === \"lg\" || !fieldGroup.maxlength || fieldGroup.maxlength > 10 \t\t\t\t\t\t\t}'> \t\t\t\t\t\t\t<div class='form-group tw-form-group-{{fieldGroup.key}}' style='width: 100%;' \t\t\t\t\t\t\t\tng-class='{\"has-error\": $ctrl.errorMessages[fieldGroup.key]}'> \t\t\t\t\t\t\t\t<label class='control-label' \t\t\t\t\t\t\t\t\tng-if='fieldGroup.type !== \"upload\"'> \t\t\t\t\t\t\t\t\t{{fieldGroup.name}} \t\t\t\t\t\t\t\t</label> \t\t\t\t\t\t\t\t<div class='row'> \t\t\t\t\t\t\t\t\t<div class='col-xs-{{field.columns}}' \t\t\t\t\t\t\t\t\t\tng-repeat='field in fieldGroup.group'> \t\t\t\t\t\t\t\t\t\t<tw-dynamic-form-control \t\t\t\t\t\t\t\t\t\t\tname='{{field.key}}' \t\t\t\t\t\t\t\t\t\t\tlabel='{{fieldGroup.name}}' \t\t\t\t\t\t\t\t\t\t\ttype='{{field.type | lowercase}}' \t\t\t\t\t\t\t\t\t\t\tplaceholder='{{field.placeholder || field.example}}' \t\t\t\t\t\t\t\t\t\t\thelp-text='{{field.helpText}}' \t\t\t\t\t\t\t\t\t\t\tlocale='{{$ctrl.locale}}' \t\t\t\t\t\t\t\t\t\t\tupload-accept='{{field.accept}}' \t\t\t\t\t\t\t\t\t\t\tupload-icon='{{field.icon}}' \t\t\t\t\t\t\t\t\t\t\tupload-too-large-message='{{field.tooLargeMessage}}' \t\t\t\t\t\t\t\t\t\t\toptions='field.valuesAllowed' \t\t\t\t\t\t\t\t\t\t\tupload-options='$ctrl.uploadOptions' \t\t\t\t\t\t\t\t\t\t\tng-model='$ctrl.model[field.key]' \t\t\t\t\t\t\t\t\t\t\tng-blur='$ctrl.onBlur(field)' \t\t\t\t\t\t\t\t\t\t\tng-required='field.required' \t\t\t\t\t\t\t\t\t\t\tng-disabled='field.disabled' \t\t\t\t\t\t\t\t\t\t\ttw-minlength='field.minLength' \t\t\t\t\t\t\t\t\t\t\ttw-maxlength='field.maxLength' \t\t\t\t\t\t\t\t\t\t\tng-min='field.min' \t\t\t\t\t\t\t\t\t\t\tng-max='field.max' \t\t\t\t\t\t\t\t\t\t\tng-pattern='field.validationRegexp' \t\t\t\t\t\t\t\t\t\t\ttw-validation> \t\t\t\t\t\t\t\t\t\t\t<!-- tw-dynamic-async-validator='field.validationAsync' --> \t\t\t\t\t\t\t\t\t\t</tw-dynamic-form-control> \t\t\t\t\t\t\t\t\t\t<div class='error-messages'> \t\t\t\t\t\t\t\t\t\t\t<div ng-repeat='(validationType, validationMessage) in $ctrl.validationMessages' \t\t\t\t\t\t\t\t\t\t\t\tclass='error-{{validationType}}'> \t\t\t\t\t\t\t\t\t\t\t\t{{validationMessage}} \t\t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t\t<div class='error-provided' ng-if='$ctrl.errorMessages[field.key]'> \t\t\t\t\t\t\t\t\t\t\t\t{{ $ctrl.errorMessages[field.key] }} \t\t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t<div ng-if='field.tooltip' \t\t\t\t\t\t\t\t\t\t\tclass='help-block'> \t\t\t\t\t\t\t\t\t\t\t<a role='button' \t\t\t\t\t\t\t\t\t\t\t\ttabindex='0' \t\t\t\t\t\t\t\t\t\t\t\tdata-toggle='popover' \t\t\t\t\t\t\t\t\t\t\t\tdata-placement='top' \t\t\t\t\t\t\t\t\t\t\t\ttitle='{{field.tooltip}}'> \t\t\t\t\t\t\t\t\t\t\t\t<span class='glyphicon glyphicon-question-sign'></span> \t\t\t\t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t</fieldset>"
         };
     }
     function TwFieldsetController($scope) {
@@ -1319,16 +1319,18 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
 }(window.angular), function(angular) {
     "use strict";
     function TwPresentationPattern() {
-        function getPositionAfterBackspace(pattern, position) {
-            var separators = separatorsBeforeCursor(pattern, position);
-            return position - separators - 1;
+        function getPositionAfterBackspace(pattern, element, initialPosition, selectionEnd) {
+            var separators = separatorsBeforeCursor(pattern, initialPosition), adjust = initialPosition === selectionEnd ? 1 : 0;
+            return console.log("adjust: init " + initialPosition + " end " + selectionEnd + " sep " + separators + " adj " + adjust), 
+            initialPosition - separators - adjust;
         }
-        function getPositionAfterKeypress(pattern, position) {
-            var separators = separatorsAfterCursor(pattern, position);
-            return position + separators + 1;
+        function getPositionAfterKeypress(pattern, element, initialPosition) {
+            var separators = separatorsAfterCursor(pattern, initialPosition);
+            return console.log("getPosAfterPress: " + initialPosition + " sep " + separators), 
+            initialPosition + separators + 1;
         }
         function separatorsAfterCursor(pattern, position) {
-            for (var separators = 0, i = position; i < pattern.length; i++) "*" !== pattern[i] && separators++;
+            for (var separators = 0; pattern[position + separators] && "*" !== pattern[position + separators]; ) separators++;
             return separators;
         }
         function separatorsBeforeCursor(pattern, position) {
@@ -1337,11 +1339,6 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         }
         function removeCharacters(value, first, last) {
             return value.substring(0, first - 1) + value.substring(last - 1, value.length);
-        }
-        function newCursorPosition(element, pattern, value) {
-            for (var separators = 0, moveCursor = 0, cursorPosition = getCursorPosition(element), i = 0; i < pattern.length && i <= value.length + separators; i++) "*" === pattern[i] ? value[i - separators] && (moveCursor = 0) : (separators++, 
-            i < cursorPosition && moveCursor++);
-            moveCursor && (console.log("moveCursor"), setCursorPosition(element, cursorPosition + moveCursor));
         }
         function getCursorPosition(element) {
             return console.log("getPos " + element.selectionStart), element.selectionStart;
@@ -1357,8 +1354,12 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             },
             controller: [ "$element", "$timeout", "$scope", "$attrs", "$parse", "TwTextFormatting", function($element, $timeout, $scope, $attrs, $parse, TwTextFormatting) {
                 function listener() {
-                    var rawValue = $element.val();
-                    console.log("listener"), $element.val(format(unformat(rawValue)));
+                    console.log("listener"), reformatControl($element);
+                }
+                function reformatControl($element, originalValue) {
+                    originalValue || (originalValue = $element.val());
+                    var newValue = format(unformat(originalValue));
+                    return newValue !== originalValue && $element.val(newValue), newValue;
                 }
                 function unformat(value) {
                     if (console.log("unformat"), !value) return value;
@@ -1367,26 +1368,28 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 }
                 function format(value) {
                     if (console.log("format"), !value) return "";
-                    var pattern = $element.attr("tw-presentation-pattern"), newValue = TwTextFormatting.formatUsingPattern(value, pattern);
-                    return newCursorPosition($element[0], pattern, value), newValue;
+                    var pattern = $element.attr("tw-presentation-pattern");
+                    return TwTextFormatting.formatUsingPattern(value, pattern);
                 }
                 function modifyValue(event) {
                     console.log("keypress");
                     var key = event.keyCode || event.which;
                     if (!(reservedKeys.indexOf(key) >= 0)) {
-                        var pos = getCursorPosition(event.target);
-                        console.log("initialPos: " + pos), $timeout(function() {
-                            var pattern = $element.attr("tw-presentation-pattern"), value = (key === keys.backspace ? pos - 1 : pos + 1, 
-                            $element.val());
-                            getCursorPosition(event.target);
+                        var initialPosition = getCursorPosition(event.target), initialSelectionEnd = event.target.selectionEnd, pattern = $element.attr("tw-presentation-pattern"), separators = separatorsBeforeCursor(pattern, initialPosition);
+                        console.log("initialPos: " + initialPosition), $timeout(function() {
+                            console.log("timeout");
+                            var value = $element.val();
                             if (key === keys.backspace) {
                                 console.log("backspace");
-                                var separators = separatorsBeforeCursor(pattern, pos), newVal = value;
-                                separators && (newVal = removeCharacters(value, pos - separators, pos), console.log("after remove: " + newVal)), 
-                                newVal = format(unformat(newVal)), $element.val(newVal), ngModelController.$setViewValue(newVal), 
-                                setCursorPosition(event.target, getPositionAfterBackspace(pattern, pos));
-                            } else console.log("timeout"), $element.val(format(unformat($element.val()))), console.log("newPos: " + getPositionAfterKeypress(pattern, pos)), 
-                            setCursorPosition(event.target, getPositionAfterKeypress(pattern, pos));
+                                var newVal = value;
+                                separators && (newVal = removeCharacters(value, initialPosition - separators, initialPosition), 
+                                console.log("after remove: " + newVal)), newVal = reformatControl($element, newVal), 
+                                ngModelController.$setViewValue(newVal), setCursorPosition(event.target, getPositionAfterBackspace(pattern, $element[0], initialPosition, initialSelectionEnd));
+                            } else {
+                                console.log("keyhandler"), reformatControl($element);
+                                var newPosition = getPositionAfterKeypress(pattern, $element[0], initialPosition);
+                                console.log("newPos: " + newPosition), setCursorPosition(event.target, newPosition);
+                            }
                         });
                     }
                 }
@@ -1410,11 +1413,11 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                     modifyValue(event);
                 }), $element.bind("paste cut", function() {
                     $timeout(function() {
-                        listener(), setCursorPosition($element[0], $element.val().length);
+                        listener(), console.log("paste cut"), setCursorPosition($element[0], $element.val().length);
                     });
                 }), $element.bind("copy", function() {
                     $timeout(function() {
-                        setCursorPosition($element[0], $element.val().length);
+                        console.log("paste copy"), setCursorPosition($element[0], $element.val().length);
                     });
                 });
                 var keys = {

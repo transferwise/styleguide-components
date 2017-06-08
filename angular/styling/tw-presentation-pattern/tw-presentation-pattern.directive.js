@@ -56,7 +56,8 @@
         });
         ngModelController.$parsers.push(function(value) {
           console.log("parsers");
-          //$element.val(format(unformat($element.val())));
+
+          //reformatControl($element)
           return unformat(value);
         });
 
@@ -82,10 +83,22 @@
 
         // Used on change and paste
         function listener() {
-          var rawValue = $element.val();
           // We want visible value to change so we set val rather than $setViewValue
           console.log("listener");
-          $element.val(format(unformat(rawValue)));
+          reformatControl($element);
+        }
+
+
+        function reformatControl($element, originalValue) {
+          if (!originalValue) {
+            originalValue = $element.val();
+          }
+          var newValue = format(unformat(originalValue));
+          // Don't reset value unless we need to.
+          if (newValue !== originalValue) {
+            $element.val(newValue);
+          }
+          return newValue;
         }
 
         function unformat(value) {
@@ -95,7 +108,6 @@
           }
           var pattern = $element.attr('tw-presentation-pattern');
           return TwTextFormatting.unformatUsingPattern(value, pattern);
-          //return unpatternise(TwTextFormatting, pattern, value);
         }
 
         function format(value) {
@@ -104,13 +116,8 @@
             return "";
           }
           var pattern = $element.attr('tw-presentation-pattern');
-
-          var newValue = TwTextFormatting.formatUsingPattern(value, pattern);
-
-          newCursorPosition($element[0], pattern, value);
-
-          return newValue;
-          //return patternise(TwTextFormatting, pattern, value, $element[0]);
+          //newCursorPosition($element[0], pattern, value);
+          return TwTextFormatting.formatUsingPattern(value, pattern);
         }
 
 
@@ -135,11 +142,13 @@
         $element.bind('paste cut', function() {
           $timeout(function() {
             listener();
+            console.log('paste cut');
             setCursorPosition($element[0], $element.val().length); // TODO check this
           });
         });
         $element.bind('copy', function() {
           $timeout(function() {
+            console.log('paste copy');
             setCursorPosition($element[0], $element.val().length); // TODO check this
           });
         });
@@ -155,45 +164,44 @@
             return;
           }
 
-          var pos = getCursorPosition(event.target);
-          console.log("initialPos: "+pos);
+          var initialPosition = getCursorPosition(event.target);
+          var initialSelectionEnd = event.target.selectionEnd;
+
+          var pattern = $element.attr('tw-presentation-pattern');
+          var separators = separatorsBeforeCursor(pattern, initialPosition);
+
+          console.log("initialPos: "+initialPosition);
 
           $timeout(function() {
-            var pattern = $element.attr('tw-presentation-pattern');
-            var nextPos = key === keys.backspace ? pos - 1 : pos + 1;
+
+            console.log("timeout");
             var value = $element.val();
-            var newPos = getCursorPosition(event.target);
 
             // If deleting move back
             if (key === keys.backspace) {
               console.log("backspace");
-              var separators = separatorsBeforeCursor(pattern, pos);
               var newVal = value;
               if (separators) {
                 // Remove another char
-                newVal = removeCharacters(value, pos - separators, pos);
+                newVal = removeCharacters(value, initialPosition - separators, initialPosition);
                 console.log("after remove: " + newVal);
               }
-
-              newVal = format(unformat(newVal));
-              $element.val(newVal);
+              newVal = reformatControl($element, newVal);
               // Also trigger model update, not sure why necessary...
               ngModelController.$setViewValue(newVal);
 
               setCursorPosition(
                 event.target,
-                getPositionAfterBackspace(pattern, pos)
+                getPositionAfterBackspace(pattern, $element[0], initialPosition, initialSelectionEnd)
               );
             } else {
-              console.log("timeout");
+              console.log("keyhandler");
               // The parser has already called this, but doing it after appends the next separator
-              $element.val(format(unformat($element.val())));
+              reformatControl($element);
 
-              console.log("newPos: " + getPositionAfterKeypress(pattern, pos));
-              setCursorPosition(
-                event.target,
-                getPositionAfterKeypress(pattern, pos)
-              );
+              var newPosition = getPositionAfterKeypress(pattern, $element[0], initialPosition);
+              console.log("newPos: " + newPosition);
+              setCursorPosition(event.target, newPosition);
             }
           }); // Have to do this or changes don't get picked up properly
         }
@@ -229,21 +237,26 @@
       }]
     };
 
-    function getPositionAfterBackspace(pattern, position) {
-      var separators = separatorsBeforeCursor(pattern, position);
-      return position - separators - 1;
+
+    function getPositionAfterBackspace(pattern, element, initialPosition, selectionEnd) {
+      var separators = separatorsBeforeCursor(pattern, initialPosition);
+      // If a range was selected, we don't delete a character before cursor
+      var adjust = (initialPosition === selectionEnd ? 1 : 0);
+      console.log("adjust: init " + initialPosition + " end " + selectionEnd + " sep " + separators + " adj " + adjust);
+      return initialPosition - separators - adjust;
     }
-    function getPositionAfterKeypress(pattern, position) {
-      var separators = separatorsAfterCursor(pattern, position);
-      return position + separators + 1;
+    function getPositionAfterKeypress(pattern, element, initialPosition) {
+      var separators = separatorsAfterCursor(pattern, initialPosition);
+      console.log("getPosAfterPress: " + initialPosition + " sep " + separators);
+      return initialPosition + separators + 1;
+
     }
 
     function separatorsAfterCursor(pattern, position) {
       var separators = 0;
-      for(var i = position; i < pattern.length; i++) {
-        if (pattern[i] !== "*") {
-          separators++;
-        }
+      while (pattern[position + separators] &&
+        pattern[position + separators] !== "*") {
+        separators++;
       }
       return separators;
     }
@@ -266,6 +279,7 @@
         value.substring(last - 1, value.length);
     }
 
+    /*
     function newCursorPosition(element, pattern, value) {
       var separators = 0;
       var moveCursor = 0;
@@ -290,6 +304,7 @@
         setCursorPosition(element, cursorPosition + moveCursor);
       }
     }
+    */
 
 
     function getCursorPosition(element) {
