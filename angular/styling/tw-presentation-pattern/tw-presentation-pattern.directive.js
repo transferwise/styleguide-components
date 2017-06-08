@@ -172,6 +172,8 @@
 
           console.log("initialPos: "+initialPosition);
 
+
+
           $timeout(function() {
 
             console.log("timeout");
@@ -181,11 +183,16 @@
             if (key === keys.backspace) {
               console.log("backspace");
               var newVal = value;
-              if (separators) {
+              if (separators > 1) {
                 // Remove another char
-                newVal = removeCharacters(value, initialPosition - separators, initialPosition);
-                console.log("after remove: " + newVal);
+                console.log("remove multiple: " + newVal);
+                newVal = removeCharacters(value, initialPosition - separators, initialPosition - 1);
+              } else if (separators === 1) {
+                // TODO not working
+                console.log("remove single: " + newVal);
+                newVal = removeCharacters(value, initialPosition - separators - 2, initialPosition - 2);
               }
+              console.log("newVal: " + newVal);
               newVal = reformatControl($element, newVal);
               // Also trigger model update, not sure why necessary...
               ngModelController.$setViewValue(newVal);
@@ -275,6 +282,7 @@
         value.substring(position, value.length);
     }
     function removeCharacters(value, first, last) {
+      console.log("remove val " + value + " first " + first + " last " + last);
       return value.substring(0, first - 1) +
         value.substring(last - 1, value.length);
     }

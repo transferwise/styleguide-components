@@ -1338,7 +1338,8 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             return separators;
         }
         function removeCharacters(value, first, last) {
-            return value.substring(0, first - 1) + value.substring(last - 1, value.length);
+            return console.log("remove val " + value + " first " + first + " last " + last), 
+            value.substring(0, first - 1) + value.substring(last - 1, value.length);
         }
         function getCursorPosition(element) {
             return console.log("getPos " + element.selectionStart), element.selectionStart;
@@ -1382,9 +1383,10 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                             if (key === keys.backspace) {
                                 console.log("backspace");
                                 var newVal = value;
-                                separators && (newVal = removeCharacters(value, initialPosition - separators, initialPosition), 
-                                console.log("after remove: " + newVal)), newVal = reformatControl($element, newVal), 
-                                ngModelController.$setViewValue(newVal), setCursorPosition(event.target, getPositionAfterBackspace(pattern, $element[0], initialPosition, initialSelectionEnd));
+                                separators > 1 ? (console.log("remove multiple: " + newVal), newVal = removeCharacters(value, initialPosition - separators, initialPosition - 1)) : 1 === separators && (console.log("remove single: " + newVal), 
+                                newVal = removeCharacters(value, initialPosition - separators - 2, initialPosition - 2)), 
+                                console.log("newVal: " + newVal), newVal = reformatControl($element, newVal), ngModelController.$setViewValue(newVal), 
+                                setCursorPosition(event.target, getPositionAfterBackspace(pattern, $element[0], initialPosition, initialSelectionEnd));
                             } else {
                                 console.log("keyhandler"), reformatControl($element);
                                 var newPosition = getPositionAfterKeypress(pattern, $element[0], initialPosition);
