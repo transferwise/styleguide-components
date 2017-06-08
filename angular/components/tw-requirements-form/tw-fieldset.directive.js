@@ -26,7 +26,7 @@
 				<fieldset ng-form='twFieldset'> \
 					<legend ng-if='$ctrl.legend'>{{$ctrl.legend}}</legend> \
 					<div class='row row-equal-height'> \
-						<div ng-repeat='fieldGroup in $ctrl.fields' \
+						<div ng-repeat='fieldGroup in $ctrl.fields' class='col-xs-12' \
 							ng-class='{ \
 								\"col-sm-4\": fieldGroup.width === \"sm\", \
 								\"col-sm-6\": fieldGroup.width === \"md\" || fieldGroup.maxlength && fieldGroup.maxlength <= 10, \
