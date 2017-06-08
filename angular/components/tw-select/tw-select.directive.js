@@ -495,7 +495,7 @@
 
 	function setDefaultIfRequired($ngModel, $ctrl, $element, $attrs) {
 		// If required and model empty, select first option with value
-		if (($ctrl.ngRequired || $attrs.required) && !isValidModel($ctrl.ngModel)) {
+		if (($ctrl.ngRequired || $attrs.required) && !isValidModel($ctrl.ngModel) && !$ctrl.placeholder) {
 			for (var i = 0; i < $ctrl.options.length; i++) {
 				if (isValidModel($ctrl.options[i].value)) {
 					selectOption($ngModel, $ctrl, $ctrl.options[i]);
