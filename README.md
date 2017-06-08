@@ -121,7 +121,7 @@ In order to release a new version, here are the steps necessary:
 
 5. **Update the documentation**
 
-    To update the version hosted on http://transferwise.github.io/styleguide-components/, run the following:
+    To update the version hosted on http://transferwise.github.io/styleguide-components/, run the following inside the styleguide-components directory:
     If this is your first time:
     ```
         git clone git@github.com:transferwise/styleguide-components.git gh-pages
