@@ -324,7 +324,8 @@ angular.module('my-app', ['tw.styleguide-components'])
 	controller: function() {
 		this.patterns = [
 			{value: '**** **** **** ****', label: 'Credit card number', note: '**** **** **** ****'},
-			{value: '**-**-**', label: 'Sort code', note: '**-**-**'},
+			{value: '**-**-**', label: 'UK sort code', note: '**-**-**'},
+			{value: '(+**) **** *** ***', label: 'UK phone number', note: '(+**) **** *** ***'},
 			{value: '***.***.***-**', label: 'Brazilian CPF ID', note: '***.***.***-**'},
 			{value: '**.***.*** - *', label: 'Chilean RUT ID', note: '**.***.*** - *'},
 		];

@@ -12,7 +12,8 @@
       scope: {
         twPresentationPattern: '@'
       },
-      controller: ['$element', '$timeout', '$scope', '$attrs', '$parse', function($element, $timeout, $scope, $attrs, $parse) {
+      controller: ['$element', '$timeout', '$scope', '$attrs', '$parse', 'TwTextFormatting',
+        function($element, $timeout, $scope, $attrs, $parse, TwTextFormatting) {
         var $ctrl = this;
         var ngModelController = $element.controller('ngModel');
 
@@ -22,7 +23,7 @@
         $scope.$watch($scope.twPresentationPattern, function(newValue, oldValue) {
           console.log(newValue);
           //var val = $element.val();
-          //$element.val(patternise(new, unpatternise(old, val)));
+          //$element.val(format(new, unformat(old, val)));
         });
 
 
@@ -33,10 +34,10 @@
           console.log(newValue);
           console.log(oldValue);
           if (oldValue) {
-            value = unpatternise(oldValue, value);
+            value = unformat(oldValue, value);
           }
           if (newValue) {
-            value = patternise(newValue, value);
+            value = format(newValue, value);
           }
           */
           //$element.val(value);
@@ -44,12 +45,20 @@
 
 
         ngModelController.$render = function() {
+          console.log("render");
           $element.val(format(ngModelController.$viewValue));
         };
 
         // Need formatter for external model changes
-        ngModelController.$formatters.push(format);
-        ngModelController.$parsers.push(unformat);
+        ngModelController.$formatters.push(function(value) {
+          console.log("formatters");
+          return format(value);
+        });
+        ngModelController.$parsers.push(function(value) {
+          console.log("parsers");
+          //$element.val(format(unformat($element.val())));
+          return unformat(value);
+        });
 
         // min/max length validators use viewValue which is still formatted.
         // After instantiation override them, to unformat view value.
@@ -59,59 +68,51 @@
 
           if (originalMinLength) {
             ngModelController.$validators.minlength = function(modelValue, viewValue) {
+              console.log("minlength");
               return originalMinLength(modelValue, unformat(viewValue));
             };
           }
           if (originalMaxLength) {
             ngModelController.$validators.maxlength = function(modelValue, viewValue) {
+              console.log("maxlength");
               return originalMaxLength(modelValue, unformat(viewValue));
             };
           }
         });
 
+        // Used on change and paste
         function listener() {
           var rawValue = $element.val();
           // We want visible value to change so we set val rather than $setViewValue
           console.log("listener");
-          $element.val(format(rawValue));
+          $element.val(format(unformat(rawValue)));
         }
 
         function unformat(value) {
+          console.log("unformat");
           if (!value) {
             return value;
           }
           var pattern = $element.attr('tw-presentation-pattern');
-          return unpatternise(pattern, value);
+          return TwTextFormatting.unformatUsingPattern(value, pattern);
+          //return unpatternise(TwTextFormatting, pattern, value);
         }
 
         function format(value) {
-          value = unformat(value);
+          console.log("format");
           if (!value) {
             return "";
           }
           var pattern = $element.attr('tw-presentation-pattern');
-          return patternise(pattern, value);
+
+          var newValue = TwTextFormatting.formatUsingPattern(value, pattern);
+
+          newCursorPosition($element[0], pattern, value);
+
+          return newValue;
+          //return patternise(TwTextFormatting, pattern, value, $element[0]);
         }
 
-        function separatorsBeforeCursorPattern(pattern, position) {
-          var separators = 0;
-          for(var i = 0; i < position; i++) {
-            if (i >= pattern.length) {
-              continue;
-            }
-            if (pattern[i] !== "*") {
-              separators++;
-            }
-          }
-          return separators;
-        }
-
-        function getCursorPosition(element) {
-          return element.selectionStart;
-        }
-        function setCursorPosition(element, position) {
-          element.setSelectionRange(position, position);
-        }
 
         $element.bind('change', listener);
         $element.bind('keydown', function(event) {
@@ -144,11 +145,8 @@
         });
 
         function modifyValue(event) {
+          console.log("keypress");
           var key = event.keyCode || event.which;
-          var pos = getCursorPosition(event.target);
-
-          var pattern = $element.attr('tw-presentation-pattern');
-          var separatorsBeforeChange = separatorsBeforeCursorPattern(pattern, pos);
 
           // If the keys include the CTRL, CMD, SHIFT, ALT, or META keys, or the arrow keys, do nothing.
           // This lets us support copy and paste too
@@ -157,38 +155,46 @@
             return;
           }
 
+          var pos = getCursorPosition(event.target);
+          console.log("initialPos: "+pos);
+
           $timeout(function() {
-            // If deleting move back
-            //var nextPos = key === keys.backspace ? pos - separator.length : pos + separator.length;
+            var pattern = $element.attr('tw-presentation-pattern');
             var nextPos = key === keys.backspace ? pos - 1 : pos + 1;
             var value = $element.val();
+            var newPos = getCursorPosition(event.target);
 
-            var separatorsAfterChange = separatorsBeforeCursorPattern(pattern, nextPos);
-
+            // If deleting move back
             if (key === keys.backspace) {
               console.log("backspace");
-              if (cursorIsAfterSeparatorPattern(pattern, pos)) {
+              var separators = separatorsBeforeCursor(pattern, pos);
+              var newVal = value;
+              if (separators) {
                 // Remove another char
-                var newVal;
-                // TODO need to go further if more than one separator in a row.
-                newVal = removeCharacter(value, pos - 1);
+                newVal = removeCharacters(value, pos - separators, pos);
                 console.log("after remove: " + newVal);
-                newVal = format(unformat(newVal));
-                $element.val(newVal);
-                // Also trigger model update, not sure why necessary...
-                ngModelController.$setViewValue(newVal);
               }
+
+              newVal = format(unformat(newVal));
+              $element.val(newVal);
+              // Also trigger model update, not sure why necessary...
+              ngModelController.$setViewValue(newVal);
+
+              setCursorPosition(
+                event.target,
+                getPositionAfterBackspace(pattern, pos)
+              );
             } else {
               console.log("timeout");
-              // We want visible value to change so we set val rather than $setViewValue
+              // The parser has already called this, but doing it after appends the next separator
               $element.val(format(unformat($element.val())));
-            }
 
-            // TODO if next two chars are separators this doesn't work.
-            setCursorPosition(
-              event.target,
-              nextPos + (separatorsAfterChange - separatorsBeforeChange)
-            );
+              console.log("newPos: " + getPositionAfterKeypress(pattern, pos));
+              setCursorPosition(
+                event.target,
+                getPositionAfterKeypress(pattern, pos)
+              );
+            }
           }); // Have to do this or changes don't get picked up properly
         }
 
@@ -223,52 +229,76 @@
       }]
     };
 
-    function cursorIsAfterSeparatorPattern(pattern, pos) {
-      return pattern[pos - 1] && pattern[pos - 1] !== "*";
+    function getPositionAfterBackspace(pattern, position) {
+      var separators = separatorsBeforeCursor(pattern, position);
+      return position - separators - 1;
+    }
+    function getPositionAfterKeypress(pattern, position) {
+      var separators = separatorsAfterCursor(pattern, position);
+      return position + separators + 1;
+    }
+
+    function separatorsAfterCursor(pattern, position) {
+      var separators = 0;
+      for(var i = position; i < pattern.length; i++) {
+        if (pattern[i] !== "*") {
+          separators++;
+        }
+      }
+      return separators;
+    }
+
+    function separatorsBeforeCursor(pattern, position) {
+      var separators = 0;
+      while (pattern[position - separators - 1] &&
+        pattern[position - separators - 1] !== "*") {
+        separators++;
+      }
+      return separators;
     }
 
     function removeCharacter(value, position) {
       return value.substring(0, position - 1) +
         value.substring(position, value.length);
     }
-
-    // TODO better approach
-    function patternise(pattern, value) {
-      console.log("patternise: "+ value);
-      var newValue = "";
-      var separators = 0;
-      for(var i = 0; i < pattern.length; i++) {
-        if (i >= value.length + separators) {
-          continue;
-        }
-
-        if (pattern[i] === '*') {
-          console.log("1 " + i + ", " + separators);
-          //if (value[i - separators]) {
-            newValue += value[i - separators];
-          //}
-        }	else {
-          console.log("2");
-          newValue += pattern[i];
-          separators++;
-        }
-      }
-      if (value.substring(pattern.length - separators, value.length)) {
-        newValue += value.substring(pattern.length - separators, value.length);
-      }
-      console.log("patternise end: "+ newValue);
-      return newValue;
+    function removeCharacters(value, first, last) {
+      return value.substring(0, first - 1) +
+        value.substring(last - 1, value.length);
     }
-    function unpatternise(pattern, value) {
-      console.log("unpatternise: "+ value);
 
-      for(var i = 0; i < pattern.length; i++) {
-        if (pattern[i] !== '*') {
-          value = value.replace(pattern[i], "");
+    function newCursorPosition(element, pattern, value) {
+      var separators = 0;
+      var moveCursor = 0;
+      var cursorPosition = getCursorPosition(element);
+
+      for(var i = 0; i < pattern.length && i <= value.length + separators; i++) {
+        if (pattern[i] === '*') {
+          if (value[i - separators]) {
+            moveCursor = 0;
+          }
+        }	else {
+          separators++;
+          if (i < cursorPosition) {
+            moveCursor++;
+          }
         }
       }
 
-      return value;
+      if (moveCursor) {
+        // TODO move this outside
+        console.log("moveCursor");
+        setCursorPosition(element, cursorPosition + moveCursor);
+      }
+    }
+
+
+    function getCursorPosition(element) {
+      console.log("getPos " + element.selectionStart);
+      return element.selectionStart;
+    }
+    function setCursorPosition(element, position) {
+      console.log("setPos " + position);
+      element.setSelectionRange(position, position);
     }
 
   }

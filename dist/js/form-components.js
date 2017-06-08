@@ -1410,4 +1410,18 @@ angular.module("tw.form-components", []);
         };
     }
     angular.module("tw.form-components").service("TwDateService", TwDateService);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwTextFormatting() {
+        this.formatUsingPattern = function(value, pattern) {
+            for (var newValue = "", separators = 0, i = 0; i < pattern.length && i <= value.length + separators; i++) "*" === pattern[i] ? value[i - separators] && (newValue += value[i - separators]) : (newValue += pattern[i], 
+            separators++);
+            return value.substring(pattern.length - separators, value.length) && (newValue += value.substring(pattern.length - separators, value.length)), 
+            newValue;
+        }, this.unformatUsingPattern = function(value, pattern) {
+            for (var i = 0; i < pattern.length; i++) if ("*" !== pattern[i]) for (;value.indexOf(pattern[i]) >= 0; ) value = value.replace(pattern[i], "");
+            return value;
+        };
+    }
+    angular.module("tw.form-styling").service("TwTextFormatting", TwTextFormatting);
 }(window.angular);

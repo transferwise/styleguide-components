@@ -1319,24 +1319,35 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
 }(window.angular), function(angular) {
     "use strict";
     function TwPresentationPattern() {
-        function cursorIsAfterSeparatorPattern(pattern, pos) {
-            return pattern[pos - 1] && "*" !== pattern[pos - 1];
+        function getPositionAfterBackspace(pattern, position) {
+            var separators = separatorsBeforeCursor(pattern, position);
+            return position - separators - 1;
         }
-        function removeCharacter(value, position) {
-            return value.substring(0, position - 1) + value.substring(position, value.length);
+        function getPositionAfterKeypress(pattern, position) {
+            var separators = separatorsAfterCursor(pattern, position);
+            return position + separators + 1;
         }
-        function patternise(pattern, value) {
-            console.log("patternise: " + value);
-            for (var newValue = "", separators = 0, i = 0; i < pattern.length; i++) i >= value.length + separators || ("*" === pattern[i] ? (console.log("1 " + i + ", " + separators), 
-            newValue += value[i - separators]) : (console.log("2"), newValue += pattern[i], 
-            separators++));
-            return value.substring(pattern.length - separators, value.length) && (newValue += value.substring(pattern.length - separators, value.length)), 
-            console.log("patternise end: " + newValue), newValue;
+        function separatorsAfterCursor(pattern, position) {
+            for (var separators = 0, i = position; i < pattern.length; i++) "*" !== pattern[i] && separators++;
+            return separators;
         }
-        function unpatternise(pattern, value) {
-            console.log("unpatternise: " + value);
-            for (var i = 0; i < pattern.length; i++) "*" !== pattern[i] && (value = value.replace(pattern[i], ""));
-            return value;
+        function separatorsBeforeCursor(pattern, position) {
+            for (var separators = 0; pattern[position - separators - 1] && "*" !== pattern[position - separators - 1]; ) separators++;
+            return separators;
+        }
+        function removeCharacters(value, first, last) {
+            return value.substring(0, first - 1) + value.substring(last - 1, value.length);
+        }
+        function newCursorPosition(element, pattern, value) {
+            for (var separators = 0, moveCursor = 0, cursorPosition = getCursorPosition(element), i = 0; i < pattern.length && i <= value.length + separators; i++) "*" === pattern[i] ? value[i - separators] && (moveCursor = 0) : (separators++, 
+            i < cursorPosition && moveCursor++);
+            moveCursor && (console.log("moveCursor"), setCursorPosition(element, cursorPosition + moveCursor));
+        }
+        function getCursorPosition(element) {
+            return console.log("getPos " + element.selectionStart), element.selectionStart;
+        }
+        function setCursorPosition(element, position) {
+            console.log("setPos " + position), element.setSelectionRange(position, position);
         }
         return {
             restrict: "A",
@@ -1344,57 +1355,56 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             scope: {
                 twPresentationPattern: "@"
             },
-            controller: [ "$element", "$timeout", "$scope", "$attrs", "$parse", function($element, $timeout, $scope, $attrs, $parse) {
+            controller: [ "$element", "$timeout", "$scope", "$attrs", "$parse", "TwTextFormatting", function($element, $timeout, $scope, $attrs, $parse, TwTextFormatting) {
                 function listener() {
                     var rawValue = $element.val();
-                    console.log("listener"), $element.val(format(rawValue));
+                    console.log("listener"), $element.val(format(unformat(rawValue)));
                 }
                 function unformat(value) {
-                    if (!value) return value;
+                    if (console.log("unformat"), !value) return value;
                     var pattern = $element.attr("tw-presentation-pattern");
-                    return unpatternise(pattern, value);
+                    return TwTextFormatting.unformatUsingPattern(value, pattern);
                 }
                 function format(value) {
-                    if (value = unformat(value), !value) return "";
-                    var pattern = $element.attr("tw-presentation-pattern");
-                    return patternise(pattern, value);
-                }
-                function separatorsBeforeCursorPattern(pattern, position) {
-                    for (var separators = 0, i = 0; i < position; i++) i >= pattern.length || "*" !== pattern[i] && separators++;
-                    return separators;
-                }
-                function getCursorPosition(element) {
-                    return element.selectionStart;
-                }
-                function setCursorPosition(element, position) {
-                    element.setSelectionRange(position, position);
+                    if (console.log("format"), !value) return "";
+                    var pattern = $element.attr("tw-presentation-pattern"), newValue = TwTextFormatting.formatUsingPattern(value, pattern);
+                    return newCursorPosition($element[0], pattern, value), newValue;
                 }
                 function modifyValue(event) {
-                    var key = event.keyCode || event.which, pos = getCursorPosition(event.target), pattern = $element.attr("tw-presentation-pattern"), separatorsBeforeChange = separatorsBeforeCursorPattern(pattern, pos);
-                    reservedKeys.indexOf(key) >= 0 || $timeout(function() {
-                        var nextPos = key === keys.backspace ? pos - 1 : pos + 1, value = $element.val(), separatorsAfterChange = separatorsBeforeCursorPattern(pattern, nextPos);
-                        if (key === keys.backspace) {
-                            if (console.log("backspace"), cursorIsAfterSeparatorPattern(pattern, pos)) {
-                                var newVal;
-                                newVal = removeCharacter(value, pos - 1), console.log("after remove: " + newVal), 
-                                newVal = format(unformat(newVal)), $element.val(newVal), ngModelController.$setViewValue(newVal);
-                            }
-                        } else console.log("timeout"), $element.val(format(unformat($element.val())));
-                        setCursorPosition(event.target, nextPos + (separatorsAfterChange - separatorsBeforeChange));
-                    });
+                    console.log("keypress");
+                    var key = event.keyCode || event.which;
+                    if (!(reservedKeys.indexOf(key) >= 0)) {
+                        var pos = getCursorPosition(event.target);
+                        console.log("initialPos: " + pos), $timeout(function() {
+                            var pattern = $element.attr("tw-presentation-pattern"), value = (key === keys.backspace ? pos - 1 : pos + 1, 
+                            $element.val());
+                            getCursorPosition(event.target);
+                            if (key === keys.backspace) {
+                                console.log("backspace");
+                                var separators = separatorsBeforeCursor(pattern, pos), newVal = value;
+                                separators && (newVal = removeCharacters(value, pos - separators, pos), console.log("after remove: " + newVal)), 
+                                newVal = format(unformat(newVal)), $element.val(newVal), ngModelController.$setViewValue(newVal), 
+                                setCursorPosition(event.target, getPositionAfterBackspace(pattern, pos));
+                            } else console.log("timeout"), $element.val(format(unformat($element.val()))), console.log("newPos: " + getPositionAfterKeypress(pattern, pos)), 
+                            setCursorPosition(event.target, getPositionAfterKeypress(pattern, pos));
+                        });
+                    }
                 }
                 var ngModelController = $element.controller("ngModel");
                 console.log($attrs), $scope.$watch($scope.twPresentationPattern, function(newValue, oldValue) {
                     console.log(newValue);
                 }), ngModelController.$render = function() {
-                    $element.val(format(ngModelController.$viewValue));
-                }, ngModelController.$formatters.push(format), ngModelController.$parsers.push(unformat), 
-                $timeout(function() {
+                    console.log("render"), $element.val(format(ngModelController.$viewValue));
+                }, ngModelController.$formatters.push(function(value) {
+                    return console.log("formatters"), format(value);
+                }), ngModelController.$parsers.push(function(value) {
+                    return console.log("parsers"), unformat(value);
+                }), $timeout(function() {
                     var originalMinLength = ngModelController.$validators.minlength, originalMaxLength = ngModelController.$validators.maxlength;
                     originalMinLength && (ngModelController.$validators.minlength = function(modelValue, viewValue) {
-                        return originalMinLength(modelValue, unformat(viewValue));
+                        return console.log("minlength"), originalMinLength(modelValue, unformat(viewValue));
                     }), originalMaxLength && (ngModelController.$validators.maxlength = function(modelValue, viewValue) {
-                        return originalMaxLength(modelValue, unformat(viewValue));
+                        return console.log("maxlength"), originalMaxLength(modelValue, unformat(viewValue));
                     });
                 }), $element.bind("change", listener), $element.bind("keydown", function(event) {
                     modifyValue(event);
@@ -1655,4 +1665,25 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         };
     }
     angular.module("tw.form-components").service("TwDateService", TwDateService);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwTextFormatting() {
+        this.formatUsingPattern = function(value, pattern) {
+            for (var newValue = "", separators = 0, i = 0; i < pattern.length && i <= value.length + separators; i++) "*" === pattern[i] ? value[i - separators] && (newValue += value[i - separators]) : (newValue += pattern[i], 
+            separators++);
+            return value.substring(pattern.length - separators, value.length) && (newValue += value.substring(pattern.length - separators, value.length)), 
+            newValue;
+        }, this.unformatUsingPattern = function(value, pattern) {
+            for (var i = 0; i < pattern.length; i++) if ("*" !== pattern[i]) for (;value.indexOf(pattern[i]) >= 0; ) value = value.replace(pattern[i], "");
+            return value;
+        };
+    }
+    angular.module("tw.form-styling").service("TwTextFormatting", TwTextFormatting);
+}(window.angular), function(angular) {
+    "use strict";
+    angular.module("tw.form-styling").filter("twPresentationPattern", [ "TwTextFormatting", function(TwTextFormatting) {
+        return function(input, pattern) {
+            return console.log("filter! " + pattern), input = input || "", pattern ? TwTextFormatting.formatUsingPattern(input, pattern) : input;
+        };
+    } ]);
 }(window.angular);
