@@ -51,9 +51,11 @@
 					$ctrl.model.splice(index, 1);
 				};
 
-				$ctrl.repeatErrors = [{
-					firstName: "Bad!"
-				}];
+				$ctrl.addServerError = function() {
+					$ctrl.repeatErrors = [
+						{ firstName: "Incorrect first name!", lastName: "Incorrect last name!" }
+					];
+				};
 
 				function init() {
 					$scope.$watch('$ctrl.requirements', function(newValue, oldValue) {
@@ -136,11 +138,18 @@
 						</div> \
 						<div class="row"> \
 							<div class="col-md-6"> \
-						  	<button type="button" ng-click="$ctrl.model.push({type: requirementType.type})" \
+							<button type="button" ng-click="$ctrl.model.push({type: requirementType.type})" \
 									class="btn btn-default btn-block"> \
 									{{$ctrl.addText}} \
 								</button> \
-							</div> \
+							</div> \		\
+							<div class="col-md-6"> \
+							<button type="button" ng-click="$ctrl.addServerError()" \
+									class="btn btn-warning btn-block"> \
+									Add server errors \
+								</button> \
+							</div> \					\
+							<div class="col-md-6"> \
 						</div> \
 					</div> \
 				</div> \

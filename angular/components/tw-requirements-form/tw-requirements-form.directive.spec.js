@@ -4,9 +4,7 @@ describe('Directive: TwRequirementsForm', function() {
     var $compile,
         $rootScope,
         $scope,
-        directiveElement,
-        MODEL,
-        REQUIREMENTS;
+        directiveElement;
 
     beforeEach(module('tw.form-components'));
 

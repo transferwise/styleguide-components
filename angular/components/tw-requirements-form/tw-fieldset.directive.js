@@ -55,6 +55,7 @@
 											upload-options='$ctrl.uploadOptions' \
 											ng-model='$ctrl.model[field.key]' \
 											ng-blur='$ctrl.onBlur(field)' \
+											ng-change='$ctrl.onChange(field)' \
 											ng-required='field.required' \
 											ng-disabled='field.disabled' \
 											tw-minlength='field.minLength' \
@@ -130,9 +131,6 @@
 			}
 		}
 
-		/**
-		 * Perform the refreshRequirementsOnChange check on blur
-		 */
 		$ctrl.onBlur = function(field) {
 			if (!field.refreshRequirementsOnChange) {
 				return;
@@ -146,6 +144,16 @@
 				$ctrl.onRefreshRequirements();
 			}
 		};
+
+		$ctrl.onChange = function(field) {
+			removeFieldError(field.key);
+		};
+
+		function removeFieldError(fieldKey) {
+			if ($ctrl.errorMessages) {
+				delete $ctrl.errorMessages[fieldKey];
+			}
+		}
 
 		function prepFields(fields) {
 			fields.forEach(function(fieldGroup) {
