@@ -151,7 +151,6 @@
               // Remove preceding separators
               if (separators > 1) {
                 if (isRange) {
-                  // TODO curso position wrong after this
                   newVal = removeCharacters(value, initialPosition - separators + 1, initialPosition - 1);
                 } else {
                   newVal = removeCharacters(value, initialPosition - separators, initialPosition - 1);
@@ -162,6 +161,7 @@
                   newVal = removeCharacters(value, initialPosition, initialPosition);
                 } else {
                   console.log('sep 1 cursor');
+                  // TODO if we're not at the end of the string, cursor goes to wrong place
                   newVal = removeCharacters(value, initialPosition - 1, initialPosition);
                 }
               }
@@ -220,18 +220,14 @@
 
     function getPositionAfterBackspace(pattern, element, initialPosition, selectionEnd) {
       var separators = separatorsBeforeCursor(pattern, initialPosition);
-      // If a range was selected, we don't delete a character before cursor
       var isRange = (initialPosition !== selectionEnd);
-      var adjust = isRange ? 0 : 1;
-      var proposedPosition = initialPosition - separators - adjust;
-      var separatorsAfterCursor = separatorsAfterCursor(pattern, proposedPosition);
-
-      console.log("adjust: init " + initialPosition + " end " + selectionEnd + " sep " + separators + " adj " + adjust);
-      return proposedPosition + separatorsAfterCursor;
+      // If a range was selected, we don't delete a character before cursor
+      var proposedPosition = initialPosition - separators - (isRange ? 0 : 1);
+      var separatorsFollowing = separatorsAfterCursor(pattern, proposedPosition);
+      return proposedPosition + separatorsFollowing;
     }
     function getPositionAfterKeypress(pattern, element, initialPosition) {
       var separators = separatorsAfterCursor(pattern, initialPosition);
-      console.log("getPosAfterPress: " + initialPosition + " sep " + separators);
       return initialPosition + separators + 1;
     }
 

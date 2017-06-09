@@ -57,14 +57,12 @@ angular.module("tw.form-styling", []);
     "use strict";
     function TwPresentationPattern() {
         function getPositionAfterBackspace(pattern, element, initialPosition, selectionEnd) {
-            var separators = separatorsBeforeCursor(pattern, initialPosition), isRange = initialPosition !== selectionEnd, adjust = isRange ? 0 : 1, proposedPosition = initialPosition - separators - adjust, separatorsAfterCursor = separatorsAfterCursor(pattern, proposedPosition);
-            return console.log("adjust: init " + initialPosition + " end " + selectionEnd + " sep " + separators + " adj " + adjust), 
-            proposedPosition + separatorsAfterCursor;
+            var separators = separatorsBeforeCursor(pattern, initialPosition), isRange = initialPosition !== selectionEnd, proposedPosition = initialPosition - separators - (isRange ? 0 : 1), separatorsFollowing = separatorsAfterCursor(pattern, proposedPosition);
+            return proposedPosition + separatorsFollowing;
         }
         function getPositionAfterKeypress(pattern, element, initialPosition) {
             var separators = separatorsAfterCursor(pattern, initialPosition);
-            return console.log("getPosAfterPress: " + initialPosition + " sep " + separators), 
-            initialPosition + separators + 1;
+            return initialPosition + separators + 1;
         }
         function separatorsAfterCursor(pattern, position) {
             for (var separators = 0; pattern[position + separators] && "*" !== pattern[position + separators]; ) separators++;
