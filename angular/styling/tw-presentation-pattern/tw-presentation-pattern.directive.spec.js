@@ -76,6 +76,103 @@ fdescribe('Directive: TwDateLookup, ', function() {
         });
       });
     });
+
+    describe('when cursor', function() {
+      describe('follows a character', function() {
+        describe('and type a character', function() {
+
+        });
+        describe('and press backspace', function() {
+
+        });
+      });
+
+      describe('follows a single separator', function() {
+        describe('and type a character', function() {
+
+        });
+        describe('and press backspace', function() {
+
+        });
+      });
+      describe('precedes a single separator', function() {
+        describe('and type a character', function() {
+
+        });
+        describe('and press backspace', function() {
+
+        });
+      });
+
+      describe('follows a longer separator', function() {
+        describe('and type a character', function() {
+
+        });
+        describe('and press backspace', function() {
+
+        });
+      });
+      describe('precedes a longer separator', function() {
+        describe('and type a character', function() {
+
+        });
+        describe('and press backspace', function() {
+
+        });
+      });
+
+      describe('is inside a longer separator', function() {
+        describe('and type a character', function() {
+
+        });
+        describe('and press backspace', function() {
+
+        });
+      });
+    });
+
+    describe('when cursor selection', function() {
+      describe('follows a character', function() {
+        describe('and type a character', function() {
+
+        });
+        describe('and press backspace', function() {
+
+        });
+      });
+      describe('follows a single separator', function() {
+        describe('and type a character', function() {
+
+        });
+        describe('and press backspace', function() {
+
+        });
+      });
+      describe('precedes a single separator', function() {
+        describe('and type a character', function() {
+
+        });
+        describe('and press backspace', function() {
+
+        });
+      });
+      describe('follows a longer separator', function() {
+        describe('and type a character', function() {
+
+        });
+        describe('and press backspace', function() {
+
+        });
+      });
+      describe('precedes a longer separator', function() {
+        describe('and type a character', function() {
+
+        });
+        describe('and press backspace', function() {
+
+        });
+      });
+    });
   });
 
   function typeCharacter(element, character) {

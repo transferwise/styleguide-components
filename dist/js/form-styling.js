@@ -56,31 +56,30 @@ angular.module("tw.form-styling", []);
 }(window.angular), function(angular) {
     "use strict";
     function TwPresentationPattern() {
-        function getPositionAfterBackspace(pattern, element, initialPosition, selectionEnd) {
-            var separators = separatorsBeforeCursor(pattern, initialPosition), isRange = initialPosition !== selectionEnd, proposedPosition = initialPosition - separators - (isRange ? 0 : 1), separatorsFollowing = separatorsAfterCursor(pattern, proposedPosition);
-            return proposedPosition + separatorsFollowing;
+        function getPositionAfterBackspace(pattern, element, selectionStart, selectionEnd) {
+            var separatorsBefore = countSeparatorsBeforeCursor(pattern, selectionStart), isRange = selectionStart !== selectionEnd, proposedPosition = selectionStart - separatorsBefore - (isRange ? 0 : 1), separatorsAfter = countSeparatorsAfterCursor(pattern, proposedPosition);
+            return proposedPosition + separatorsAfter;
         }
-        function getPositionAfterKeypress(pattern, element, initialPosition) {
-            var separators = separatorsAfterCursor(pattern, initialPosition);
-            return initialPosition + separators + 1;
+        function getPositionAfterKeypress(pattern, element, position) {
+            var separatorsAfter = countSeparatorsAfterCursor(pattern, position);
+            return position + separatorsAfter + 1;
         }
-        function separatorsAfterCursor(pattern, position) {
+        function countSeparatorsAfterCursor(pattern, position) {
             for (var separators = 0; pattern[position + separators] && "*" !== pattern[position + separators]; ) separators++;
             return separators;
         }
-        function separatorsBeforeCursor(pattern, position) {
+        function countSeparatorsBeforeCursor(pattern, position) {
             for (var separators = 0; pattern[position - separators - 1] && "*" !== pattern[position - separators - 1]; ) separators++;
             return separators;
         }
         function removeCharacters(value, first, last) {
-            return console.log("remove val " + value + " first " + first + " last " + last), 
-            value.substring(0, first - 1) + value.substring(last - 1, value.length);
+            return value.substring(0, first - 1) + value.substring(last - 1, value.length);
         }
         function getCursorPosition(element) {
-            return console.log("getPos " + element.selectionStart), element.selectionStart;
+            return element.selectionStart;
         }
         function setCursorPosition(element, position) {
-            console.log("setPos " + position), element.setSelectionRange(position, position);
+            element.setSelectionRange(position, position);
         }
         return {
             restrict: "A",
@@ -111,21 +110,21 @@ angular.module("tw.form-styling", []);
                     console.log("keypress");
                     var key = event.keyCode || event.which;
                     if (!(reservedKeys.indexOf(key) >= 0)) {
-                        var initialPosition = getCursorPosition(event.target), initialSelectionEnd = event.target.selectionEnd, isRange = initialPosition !== initialSelectionEnd, pattern = $element.attr("tw-presentation-pattern"), separators = separatorsBeforeCursor(pattern, initialPosition);
-                        console.log("initialPos: " + initialPosition), $timeout(function() {
-                            console.log("timeout");
+                        var selectionStart = getCursorPosition(event.target), selectionEnd = event.target.selectionEnd, isRange = selectionStart !== selectionEnd, pattern = $element.attr("tw-presentation-pattern"), separators = countSeparatorsBeforeCursor(pattern, selectionStart);
+                        $timeout(function() {
                             var value = $element.val();
                             if (key === keys.backspace) {
-                                console.log("backspace");
                                 var newVal = value;
-                                separators > 1 ? newVal = isRange ? removeCharacters(value, initialPosition - separators + 1, initialPosition - 1) : removeCharacters(value, initialPosition - separators, initialPosition - 1) : 1 === separators && (isRange ? (console.log("sep 1 range"), 
-                                newVal = removeCharacters(value, initialPosition, initialPosition)) : (console.log("sep 1 cursor"), 
-                                newVal = removeCharacters(value, initialPosition - 1, initialPosition))), $element.val(format(unformat(newVal))), 
-                                ngModelController.$setViewValue(newVal), setCursorPosition(event.target, getPositionAfterBackspace(pattern, $element[0], initialPosition, initialSelectionEnd));
+                                if (separators) {
+                                    var adjust = separators > 1 ? 1 : 0;
+                                    newVal = isRange ? removeCharacters(value, selectionStart - separators + 1, selectionStart - adjust) : removeCharacters(value, selectionStart - separators, selectionStart - adjust);
+                                }
+                                $element.val(format(unformat(newVal))), ngModelController.$setViewValue(newVal), 
+                                setCursorPosition(event.target, getPositionAfterBackspace(pattern, $element[0], selectionStart, selectionEnd));
                             } else {
-                                console.log("keyhandler"), reformatControl($element);
-                                var newPosition = getPositionAfterKeypress(pattern, $element[0], initialPosition + 1);
-                                console.log("newPos: " + newPosition), setCursorPosition(event.target, newPosition);
+                                reformatControl($element);
+                                var newPosition = getPositionAfterKeypress(pattern, $element[0], selectionStart + 1);
+                                setCursorPosition(event.target, newPosition);
                             }
                         });
                     }
@@ -148,13 +147,22 @@ angular.module("tw.form-styling", []);
                     });
                 }), $element.bind("change", listener), $element.bind("keydown", function(event) {
                     modifyValue(event);
-                }), $element.bind("paste cut", function() {
+                }), $element.bind("paste", function(event) {
+                    var selectionStart = $element[0].selectionStart, originalLength = $element.val().length;
                     $timeout(function() {
-                        listener(), console.log("paste cut"), setCursorPosition($element[0], $element.val().length);
+                        console.log("paste");
+                        var newLength = $element.val().length, newPosition = selectionStart + (newLength - originalLength);
+                        $element[0].setSelectionRange(newPosition, newPosition), listener();
+                    });
+                }), $element.bind("cut", function() {
+                    var selectionStart = $element[0].selectionStart;
+                    $timeout(function() {
+                        listener(), $element[0].setSelectionRange(selectionStart, selectionStart);
                     });
                 }), $element.bind("copy", function() {
+                    var selectionStart = $element[0].selectionStart, selectionEnd = $element[0].selectionEnd;
                     $timeout(function() {
-                        console.log("paste copy"), setCursorPosition($element[0], $element.val().length);
+                        $element[0].setSelectionRange(selectionStart, selectionEnd);
                     });
                 });
                 var keys = {

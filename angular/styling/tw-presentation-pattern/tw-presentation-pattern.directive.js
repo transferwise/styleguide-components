@@ -94,7 +94,6 @@
             return "";
           }
           var pattern = $element.attr('tw-presentation-pattern');
-          //newCursorPosition($element[0], pattern, value);
           return TwTextFormatting.formatUsingPattern(value, pattern);
         }
 
@@ -103,17 +102,38 @@
           modifyValue(event);
         });
 
-        $element.bind('paste cut', function() {
+        $element.bind('paste', function(event) {
+          var selectionStart = $element[0].selectionStart;
+          var originalLength = $element.val().length;
           $timeout(function() {
+            console.log('paste');
+            // TODO is separators are inserted into pasted value, curso won't
+            // be in quite the right place, tricky to solve...
+            var newLength = $element.val().length;
+            var newPosition = selectionStart + (newLength - originalLength);
+            $element[0].setSelectionRange(newPosition, newPosition);
             listener();
-            console.log('paste cut');
-            setCursorPosition($element[0], $element.val().length); // TODO check this
           });
         });
-        $element.bind('copy', function() {
+
+        $element.bind('cut', function() {
+          // Reset cursor position 
+          var selectionStart = $element[0].selectionStart;
           $timeout(function() {
-            console.log('paste copy');
-            setCursorPosition($element[0], $element.val().length); // TODO check this
+            listener();
+            // TODO could move the cursor right if there are following separators
+            $element[0].setSelectionRange(selectionStart, selectionStart);
+          });
+        });
+
+
+        $element.bind('copy', function() {
+          // Reset selection as otherwise lost
+          var selectionStart = $element[0].selectionStart;
+          var selectionEnd = $element[0].selectionEnd;
+
+          $timeout(function() {
+            $element[0].setSelectionRange(selectionStart, selectionEnd);
           });
         });
 
@@ -128,41 +148,28 @@
             return;
           }
 
-          var initialPosition = getCursorPosition(event.target);
-          var initialSelectionEnd = event.target.selectionEnd;
+          var selectionStart = getCursorPosition(event.target);
+          var selectionEnd = event.target.selectionEnd;
 
-          var isRange = (initialPosition !== initialSelectionEnd);
+          var isRange = (selectionStart !== selectionEnd);
 
           var pattern = $element.attr('tw-presentation-pattern');
-          var separators = separatorsBeforeCursor(pattern, initialPosition);
-
-          console.log("initialPos: "+initialPosition);
+          var separators = countSeparatorsBeforeCursor(pattern, selectionStart);
 
           // timeout runs after native input behaviour completed
           $timeout(function() {
-
-            console.log("timeout");
             var value = $element.val();
 
             // If deleting move back
             if (key === keys.backspace) {
-              console.log("backspace");
               var newVal = value;
-              // Remove preceding separators
-              if (separators > 1) {
+              if (separators) {
+                // If we have more separators, we must remove one less character
+                var adjust = (separators > 1 ? 1 : 0);
                 if (isRange) {
-                  newVal = removeCharacters(value, initialPosition - separators + 1, initialPosition - 1);
+                  newVal = removeCharacters(value, selectionStart - separators + 1, selectionStart - adjust);
                 } else {
-                  newVal = removeCharacters(value, initialPosition - separators, initialPosition - 1);
-                }
-              } else if (separators === 1) {
-                if (isRange) {
-                  console.log('sep 1 range');
-                  newVal = removeCharacters(value, initialPosition, initialPosition);
-                } else {
-                  console.log('sep 1 cursor');
-                  // TODO if we're not at the end of the string, cursor goes to wrong place
-                  newVal = removeCharacters(value, initialPosition - 1, initialPosition);
+                  newVal = removeCharacters(value, selectionStart - separators, selectionStart - adjust);
                 }
               }
               $element.val(format(unformat(newVal)));
@@ -172,18 +179,17 @@
 
               setCursorPosition(
                 event.target,
-                getPositionAfterBackspace(pattern, $element[0], initialPosition, initialSelectionEnd)
+                getPositionAfterBackspace(pattern, $element[0], selectionStart, selectionEnd)
               );
             } else {
-              console.log("keyhandler");
               // The parser has already called this, but doing it after appends the next separator
               reformatControl($element);
 
-              var newPosition = getPositionAfterKeypress(pattern, $element[0], initialPosition + 1);
-              console.log("newPos: " + newPosition);
+              var newPosition = getPositionAfterKeypress(pattern, $element[0], selectionStart + 1);
+
               setCursorPosition(event.target, newPosition);
             }
-          }); // Have to do this or changes don't get picked up properly
+          });
         }
 
         var keys = {
@@ -218,20 +224,20 @@
     };
 
 
-    function getPositionAfterBackspace(pattern, element, initialPosition, selectionEnd) {
-      var separators = separatorsBeforeCursor(pattern, initialPosition);
-      var isRange = (initialPosition !== selectionEnd);
+    function getPositionAfterBackspace(pattern, element, selectionStart, selectionEnd) {
+      var separatorsBefore = countSeparatorsBeforeCursor(pattern, selectionStart);
+      var isRange = (selectionStart !== selectionEnd);
       // If a range was selected, we don't delete a character before cursor
-      var proposedPosition = initialPosition - separators - (isRange ? 0 : 1);
-      var separatorsFollowing = separatorsAfterCursor(pattern, proposedPosition);
-      return proposedPosition + separatorsFollowing;
+      var proposedPosition = selectionStart - separatorsBefore - (isRange ? 0 : 1);
+      var separatorsAfter = countSeparatorsAfterCursor(pattern, proposedPosition);
+      return proposedPosition + separatorsAfter;
     }
-    function getPositionAfterKeypress(pattern, element, initialPosition) {
-      var separators = separatorsAfterCursor(pattern, initialPosition);
-      return initialPosition + separators + 1;
+    function getPositionAfterKeypress(pattern, element, position) {
+      var separatorsAfter = countSeparatorsAfterCursor(pattern, position);
+      return position + separatorsAfter + 1;
     }
 
-    function separatorsAfterCursor(pattern, position) {
+    function countSeparatorsAfterCursor(pattern, position) {
       var separators = 0;
       while (pattern[position + separators] &&
         pattern[position + separators] !== "*") {
@@ -240,7 +246,7 @@
       return separators;
     }
 
-    function separatorsBeforeCursor(pattern, position) {
+    function countSeparatorsBeforeCursor(pattern, position) {
       var separators = 0;
       while (pattern[position - separators - 1] &&
         pattern[position - separators - 1] !== "*") {
@@ -254,45 +260,14 @@
         value.substring(position, value.length);
     }
     function removeCharacters(value, first, last) {
-      console.log("remove val " + value + " first " + first + " last " + last);
       return value.substring(0, first - 1) +
         value.substring(last - 1, value.length);
     }
 
-    /*
-    function newCursorPosition(element, pattern, value) {
-      var separators = 0;
-      var moveCursor = 0;
-      var cursorPosition = getCursorPosition(element);
-
-      for(var i = 0; i < pattern.length && i <= value.length + separators; i++) {
-        if (pattern[i] === '*') {
-          if (value[i - separators]) {
-            moveCursor = 0;
-          }
-        }	else {
-          separators++;
-          if (i < cursorPosition) {
-            moveCursor++;
-          }
-        }
-      }
-
-      if (moveCursor) {
-        // TODO move this outside
-        console.log("moveCursor");
-        setCursorPosition(element, cursorPosition + moveCursor);
-      }
-    }
-    */
-
-
     function getCursorPosition(element) {
-      console.log("getPos " + element.selectionStart);
       return element.selectionStart;
     }
     function setCursorPosition(element, position) {
-      console.log("setPos " + position);
       element.setSelectionRange(position, position);
     }
 
