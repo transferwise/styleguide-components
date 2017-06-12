@@ -6,7 +6,8 @@
     "pretest": "bower install",
     "test": "grunt karma",
     "prestart": "bower install",
-    "start": "grunt"
+    "start": "grunt",
+    "dev": "live-server --port=8181"
   },
   "repository": {
     "type": "git",
