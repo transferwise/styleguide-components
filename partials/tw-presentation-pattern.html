@@ -9,7 +9,7 @@
     <input type="text" class="form-control"
       ng-model="$ctrl.model"
       ng-minlength="5"
-      ng-maxlength="9"
+      ng-maxlength="$ctrl.maxlength"
       ng-required="true"
       tw-focusable
       tw-validation
@@ -31,7 +31,7 @@
   class="form-control"
   ng-model="{{$ctrl.model}}"
   ng-minlength="5"
-  ng-maxlength="9"
+  ng-maxlength="{{$ctrl.maxlength}}"
   ng-required="true"
   tw-presentation-pattern="{{$ctrl.pattern}}"
   tw-validation
@@ -41,10 +41,13 @@
   <label class="control-label">Pattern</label>
   <tw-select options="$ctrl.patterns"
     ng-model="$ctrl.pattern"
-    ng-change="$ctrl.model = ''"></tw-select>
+    ng-change="$ctrl.changePattern()"></tw-select>
 </div>
 
-{{$ctrl.model | twPresentationPattern:$ctrl.pattern }}
+<dl>
+  <dt>Presentation filter</dt>
+  <dd>{{$ctrl.model | twPresentationPattern:$ctrl.pattern }}</dd>
+</dl>
 <pre>
 <code ng-non-bindable>{{</code> "{{$ctrl.model}}" | twPresentationPattern : "{{$ctrl.pattern}}" <code ng-non-bindable>}}</code>
 </pre>

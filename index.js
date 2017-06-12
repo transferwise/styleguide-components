@@ -322,7 +322,8 @@ angular.module('my-app', ['tw.styleguide-components'])
 })
 .component('twPresentationPatternDocs', {
 	controller: function() {
-		this.patterns = [
+		var $ctrl = this;
+		$ctrl.patterns = [
 			{value: '**** **** **** ****', label: 'Credit card number', note: '**** **** **** ****'},
 			{value: '** - ** - **', label: 'UK sort code', note: '** - ** - **'},
 			{value: '(+**) **** *** ***', label: 'UK phone number', note: '(+**) **** *** ***'},
@@ -330,6 +331,13 @@ angular.module('my-app', ['tw.styleguide-components'])
 			{value: '**.***.*** - *', label: 'Chilean RUT ID', note: '**.***.*** - *'},
 		];
 		//this.pattern = '**.***.*** - *';
+		$ctrl.maxlength = 9;
+		$ctrl.changePattern = function() {
+			// Would be nice to unformat the model and reformat,
+			// but we don't know old separators to remove
+			$ctrl.model = "";
+			$ctrl.maxlength = ($ctrl.pattern && $ctrl.pattern.match(/\*/g) || []).length;
+		};
 	},
 	bindings: {
 		model: "="

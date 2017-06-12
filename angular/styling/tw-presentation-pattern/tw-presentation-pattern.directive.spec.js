@@ -78,9 +78,28 @@ fdescribe('Directive: TwDateLookup, ', function() {
     });
 
     describe('when cursor', function() {
-      describe('follows a character', function() {
-        describe('and type a character', function() {
+      beforeEach(function () {
+        $scope.pattern = "***/**///**";
+        $scope.ngModel = "1234567";
+        $element = getCompiledDirectiveElement($scope);
 
+        $scope.$apply();
+      });
+      describe('follows a character', function() {
+        beforeEach(function() {
+          $element[0].setSelectionRange(1, 1);
+        });
+        describe('and type a character', function() {
+          beforeEach(function() {
+            typeCharacter($element, "8");
+          });
+          it('should position the typed character after the cursor', function() {
+            //expect($element.val()).toBe("18234567");
+            expect($scope.ngModel).toBe("18234567")
+          });
+          it('should position the cursor after the types character', function() {
+            expect($element[0]selectionStart).toBe(2)
+          });
         });
         describe('and press backspace', function() {
 
