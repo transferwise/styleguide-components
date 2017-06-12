@@ -746,7 +746,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         }
         var $ctrl = this;
         $ctrl.onBlur = function(field) {
-            !field.refreshRequirementsOnChange;
+            removeFieldError(field.key), !field.refreshRequirementsOnChange;
         }, $ctrl.onChange = function(field) {
             removeFieldError(field.key);
         }, init();

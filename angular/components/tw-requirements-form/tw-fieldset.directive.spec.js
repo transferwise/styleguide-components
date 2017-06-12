@@ -32,11 +32,18 @@ describe('Directive: TwFieldset', function() {
 			expect(errorBlock.text().trim()).toBe($scope.errorMessages.sortCode);
 		});
 		it('should remove supplied error message from the correct field onChange event', function() {
-            var input = directiveElement.find('input');
-            input.val('1010102').triggerHandler('input');
+			var input = directiveElement.find('input');
+			input.val('1010102').triggerHandler('input');
 
 			var errorBlock = directiveElement.find('.tw-form-group-sortCode .error-provided');
 			expect(errorBlock.text().trim()).not.toBeTruthy();
+		});
+		it('should remove supplied error message from the correct field onBlur event', function() {
+			var dynamicForm = directiveElement.find('.form-control');
+			dynamicForm.triggerHandler('blur');
+
+			var errorBlock = directiveElement.find('.tw-form-group-sortCode .error-provided');
+			expect(errorBlock.text().trim()).toBe('');
 		});
 	});
 

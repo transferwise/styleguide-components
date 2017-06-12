@@ -132,6 +132,8 @@
 		}
 
 		$ctrl.onBlur = function(field) {
+			removeFieldError(field.key);
+
 			if (!field.refreshRequirementsOnChange) {
 				return;
 			}
