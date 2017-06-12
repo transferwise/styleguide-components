@@ -5,6 +5,7 @@ fdescribe('Directive: TwDateLookup, ', function() {
       $rootScope,
       $scope,
       $element,
+      element,
       TwDateService;
 
   beforeEach(module('tw.form-styling'));
@@ -22,18 +23,19 @@ fdescribe('Directive: TwDateLookup, ', function() {
           $scope.pattern = "**-**-**";
           $scope.ngModel = null;
           $element = getCompiledDirectiveElement($scope);
+          element = $element[0];
           $element.focus();
           typeCharacter($element, "1");
           $scope.$apply();
         });
-        it('should show the character', function () {
+        fit('should show the character', function () {
           expect($element.val()).toBe("1");
         });
         it('should bind the character to the model', function () {
           expect($scope.ngModel).toBe("1");
         });
         it('should position the cursor after the character', function () {
-          expect($element[0].selectionStart).toBe(1);
+          expect(element.selectionStart).toBe(1);
         });
       });
 
@@ -42,6 +44,7 @@ fdescribe('Directive: TwDateLookup, ', function() {
           $scope.pattern = "(**) **-**";
           $scope.ngModel = null;
           $element = getCompiledDirectiveElement($scope);
+          element = $element[0];
           $element.focus();
           typeCharacter($element, "1");
           $scope.$apply();
@@ -53,7 +56,7 @@ fdescribe('Directive: TwDateLookup, ', function() {
           expect($scope.ngModel).toBe("1");
         });
         it('should position the cursor after the separator and character', function () {
-          expect($element[0].selectionStart).toBe(2);
+          expect(element.selectionStart).toBe(2);
         });
       });
 
@@ -62,6 +65,7 @@ fdescribe('Directive: TwDateLookup, ', function() {
           $scope.pattern = "(+**) **-**";
           $scope.ngModel = null;
           $element = getCompiledDirectiveElement($scope);
+          element = $element[0];
           $element.focus();
           typeCharacter($element, "1");
         });
@@ -72,7 +76,7 @@ fdescribe('Directive: TwDateLookup, ', function() {
           expect($scope.ngModel).toBe("1");
         });
         it('should position the cursor after the separators and character', function () {
-          expect($element[0].selectionStart).toBe(3);
+          expect(element.selectionStart).toBe(3);
         });
       });
     });
@@ -82,23 +86,24 @@ fdescribe('Directive: TwDateLookup, ', function() {
         $scope.pattern = "***/**///**";
         $scope.ngModel = "1234567";
         $element = getCompiledDirectiveElement($scope);
+        element = $element[0];
 
         $scope.$apply();
       });
       describe('follows a character', function() {
         beforeEach(function() {
-          $element[0].setSelectionRange(1, 1);
+          element.setSelectionRange(1, 1);
         });
         describe('and type a character', function() {
           beforeEach(function() {
             typeCharacter($element, "8");
           });
           it('should position the typed character after the cursor', function() {
-            //expect($element.val()).toBe("18234567");
+            expect($element.val()).toBe("182/34///567");
             expect($scope.ngModel).toBe("18234567")
           });
           it('should position the cursor after the types character', function() {
-            expect($element[0]selectionStart).toBe(2)
+            expect(element.selectionStart).toBe(2)
           });
         });
         describe('and press backspace', function() {
@@ -107,16 +112,40 @@ fdescribe('Directive: TwDateLookup, ', function() {
       });
 
       describe('follows a single separator', function() {
+        beforeEach(function() {
+          element.setSelectionRange(4, 4);
+        });
         describe('and type a character', function() {
-
+          beforeEach(function() {
+            typeCharacter($element, "8");
+          });
+          it('should position the typed character after the cursor', function() {
+            expect($element.val()).toBe("123/84///567");
+            expect($scope.ngModel).toBe("12384567")
+          });
+          it('should position the cursor after the types character', function() {
+            expect(element.selectionStart).toBe(5)
+          });
         });
         describe('and press backspace', function() {
 
         });
       });
       describe('precedes a single separator', function() {
+        beforeEach(function() {
+          element.setSelectionRange(3, 3);
+        });
         describe('and type a character', function() {
-
+          beforeEach(function() {
+            typeCharacter($element, "8");
+          });
+          it('should position the typed character after the cursor', function() {
+            expect($element.val()).toBe("123/84///567");
+            expect($scope.ngModel).toBe("12384567")
+          });
+          it('should position the cursor after the types character', function() {
+            expect(element.selectionStart).toBe(5)
+          });
         });
         describe('and press backspace', function() {
 
@@ -196,10 +225,22 @@ fdescribe('Directive: TwDateLookup, ', function() {
 
   function typeCharacter(element, character) {
     var keyCode = character.charCodeAt(0);
-    var keyboardEvent = angular.element.Event('keydown');
+    var cursorPosition = element.selectionStart;
+    var originalValue = element.value || '';
+    element.trigger(getKeyEvent('keydown'), keyCode);
+    element.trigger(getKeyEvent('keypress'), keyCode);
+    element.value =
+      originalValue.substring(0, cursorPosition) +
+      character +
+      originalValue.substring(cursorPosition, originalValue.length);
+    element.trigger(getKeyEvent('keyup'), keyCode);
+  }
+
+  function getKeyEvent(eventType, keyCode) {
+    var keyboardEvent = angular.element.Event(eventType);
     keyboardEvent.which = keyCode;
     keyboardEvent.keyCode = keyCode;
-    element.trigger(keyboardEvent);
+    return keyboardEvent;
   }
 
   function getCompiledDirectiveElement(scope, template) {
@@ -218,8 +259,4 @@ fdescribe('Directive: TwDateLookup, ', function() {
     scope.$digest();
     return compiledElement;
   }
-
-  //function getViewModel(element) {
-  //  return element.isolateScope().$ctrl;
-  //}
 });

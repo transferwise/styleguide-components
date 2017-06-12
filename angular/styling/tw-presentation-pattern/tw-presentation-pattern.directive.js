@@ -117,7 +117,7 @@
         });
 
         $element.bind('cut', function() {
-          // Reset cursor position 
+          // Reset cursor position
           var selectionStart = $element[0].selectionStart;
           $timeout(function() {
             listener();
@@ -138,13 +138,12 @@
         });
 
         function modifyValue(event) {
-          console.log("keypress");
           var key = event.keyCode || event.which;
 
           // If the keys include the CTRL, CMD, SHIFT, ALT, or META keys, or the arrow keys, do nothing.
           // This lets us support copy and paste too
           //if (key === 91 || key === 224 || (15 < key && key < 19) || (37 <= key && key <= 40)) {
-          if (reservedKeys.indexOf(key) >= 0) {
+          if (reservedKeys.indexOf(key) >= 0 || event.metaKey || event.ctrlKey) {
             return;
           }
 
@@ -194,6 +193,8 @@
 
         var keys = {
           cmd: 224,
+          cmdLeft: 91,
+          cmdRight: 93,
           backspace: 8,
           tab: 9,
           enter: 13,
@@ -211,6 +212,8 @@
 
         var reservedKeys = [
           keys.cmd,
+          keys.cmdLeft,
+          keys.cmdRight,
           keys.enter,
           keys.shift,
           keys.ctrl,

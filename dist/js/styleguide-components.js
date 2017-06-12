@@ -1370,9 +1370,8 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                     return TwTextFormatting.formatUsingPattern(value, pattern);
                 }
                 function modifyValue(event) {
-                    console.log("keypress");
                     var key = event.keyCode || event.which;
-                    if (!(reservedKeys.indexOf(key) >= 0)) {
+                    if (!(reservedKeys.indexOf(key) >= 0 || event.metaKey || event.ctrlKey)) {
                         var selectionStart = getCursorPosition(event.target), selectionEnd = event.target.selectionEnd, isRange = selectionStart !== selectionEnd, pattern = $element.attr("tw-presentation-pattern"), separators = countSeparatorsBeforeCursor(pattern, selectionStart);
                         $timeout(function() {
                             var value = $element.val();
@@ -1430,6 +1429,8 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 });
                 var keys = {
                     cmd: 224,
+                    cmdLeft: 91,
+                    cmdRight: 93,
                     backspace: 8,
                     tab: 9,
                     enter: 13,
@@ -1443,7 +1444,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                     right: 39,
                     down: 40,
                     "delete": 46
-                }, reservedKeys = [ keys.cmd, keys.enter, keys.shift, keys.ctrl, keys.alt, keys.left, keys.up, keys.right, keys.down ];
+                }, reservedKeys = [ keys.cmd, keys.cmdLeft, keys.cmdRight, keys.enter, keys.shift, keys.ctrl, keys.alt, keys.left, keys.up, keys.right, keys.down ];
             } ]
         };
     }
