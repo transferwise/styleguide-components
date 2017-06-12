@@ -94,9 +94,9 @@ Usage:
 ### Examples
 To try a live example clone this project, run `npm install` and open index.html in the examples folder.
 
-For live reload you can run the following (any available port of your choice):
+For live reload on port 8181, you can run the following:
 ```
-live-server --port=8181
+npm run dev
 ```
 
 ## Releasing
@@ -136,4 +136,3 @@ In order to release a new version, here are the steps necessary:
         git commit -m "Update docs"
         git push origin gh-pages
     ```
-
