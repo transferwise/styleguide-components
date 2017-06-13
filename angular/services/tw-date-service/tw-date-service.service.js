@@ -161,15 +161,18 @@
 
 		function getValidLocale(locale) {
 			if (!isIntlSupportedForLocale(locale)) {
-				return DEFAULT_MONTHS_EN;
+				return "en-GB";
 			}
 			return locale;
 		}
 
 		function isIntlSupportedForLocale(locale) {
-			return window.Intl &&
-				typeof window.Intl === 'object' &&
-				window.Intl.DateTimeFormat.supportedLocalesOf([locale]).length > 0;
+			try {
+				var supportedLocales = window.Intl.DateTimeFormat.supportedLocalesOf([locale]);
+				return supportedLocales.length > 0;
+			} catch(error) {
+				return false;
+			}
 		}
 	}
 })(window.angular);
