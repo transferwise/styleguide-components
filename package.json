@@ -1,12 +1,13 @@
 {
   "name": "tw-styleguide-components",
-  "version": "1.17.0",
+  "version": "1.17.2",
   "description": "TransfeWise Styleguide Components",
   "scripts": {
     "pretest": "bower install",
     "test": "grunt karma",
     "prestart": "bower install",
-    "start": "grunt"
+    "start": "grunt",
+    "dev": "live-server --port=8181"
   },
   "repository": {
     "type": "git",

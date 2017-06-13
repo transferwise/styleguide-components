@@ -228,17 +228,17 @@ describe('Directive: TwSelect', function() {
     });
 
     describe('placeholder', function() {
-        it('should not display in options if ngModel is ngRequired', function() {
+        it('should display in options if present', function() {
             $scope.options = OPTIONS;
-            $scope.ngRequired = true;
-            directiveElement = getCompiledDirectiveElement($scope);
-            expect(directiveElement.find('li a').length).toBe(OPTIONS.length);
-        });
-        it('should display in options if ngModel not ngRequired', function() {
-            $scope.options = OPTIONS;
-            $scope.ngRequired = false;
+            $scope.placeholder = 'Please choose...';
             directiveElement = getCompiledDirectiveElement($scope);
             expect(directiveElement.find('li a').length).toBe(OPTIONS.length + 1);
+        });
+        it('should not display in options if not present', function() {
+            $scope.options = OPTIONS;
+            $scope.placeholder = null;
+            directiveElement = getCompiledDirectiveElement($scope);
+            expect(directiveElement.find('li a').length).toBe(OPTIONS.length);
         });
     });
 
@@ -979,7 +979,7 @@ describe('Directive: TwSelect', function() {
                 <tw-select \
                     name='{{name}}' \
                     options='options' \
-                    placeholder='please choose' \
+                    placeholder='{{placeholder}}' \
                     ng-model='ngModel' \
                     ng-required='ngRequired' \
                     size='{{size}}' \

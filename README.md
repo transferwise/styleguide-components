@@ -94,9 +94,9 @@ Usage:
 ### Examples
 To try a live example clone this project, run `npm install` and open index.html in the examples folder.
 
-For live reload you can run the following (any available port of your choice):
+For live reload on port 8181, you can run the following:
 ```
-live-server --port=8181
+npm run dev
 ```
 
 ## Releasing
@@ -121,7 +121,7 @@ In order to release a new version, here are the steps necessary:
 
 5. **Update the documentation**
 
-    To update the version hosted on http://transferwise.github.io/styleguide-components/, run the following:
+    To update the version hosted on http://transferwise.github.io/styleguide-components/, run the following inside the styleguide-components directory:
     If this is your first time:
     ```
         git clone git@github.com:transferwise/styleguide-components.git gh-pages
@@ -136,4 +136,3 @@ In order to release a new version, here are the steps necessary:
         git commit -m "Update docs"
         git push origin gh-pages
     ```
-
