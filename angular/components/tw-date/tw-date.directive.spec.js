@@ -296,6 +296,30 @@ describe('Directive: TwDate', function() {
             }
         });
 
+        describe('when locale not passed', function() {
+            beforeEach(function() {
+                $scope.ngModel = null;
+                $scope.locale = null;
+                element = getCompiledDirectiveElement($scope);
+            });
+
+            it('should populate vm.dateMonths with default English months', function () {
+                expectDateMonthsToBeDefault(element);
+            });
+        });
+
+        describe('when incorrect locale  passed', function() {
+            beforeEach(function() {
+                $scope.ngModel = null;
+                $scope.locale = "Incorrect";
+                element = getCompiledDirectiveElement($scope);
+            });
+
+            it('should populate vm.dateMonths with default English months', function () {
+                expectDateMonthsToBeDefault(element);
+            });
+        });
+
         describe('when ngMin, ngMax input $scope are passed', function () {
             var ngModelController;
             describe('as valid strings', function () {
@@ -604,7 +628,7 @@ describe('Directive: TwDate', function() {
                 expect(yearInput.is(':disabled')).toBe(false);
             });
         });
-        describe('twLocale', function() {
+        describe('locale', function() {
             var oldLocale = LOCALES.es,
                 newLocale = LOCALES.fr;
 

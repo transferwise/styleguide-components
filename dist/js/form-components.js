@@ -1349,12 +1349,16 @@ angular.module("tw.form-components", []);
             return !format || validFormats.indexOf(format) < 0 ? "long" : format;
         }
         function getValidLocale(locale) {
-            return isIntlSupportedForLocale(locale) ? locale : DEFAULT_MONTHS_EN;
+            return isIntlSupportedForLocale(locale) ? locale : "en-GB";
         }
         function isIntlSupportedForLocale(locale) {
-            return window.Intl && "object" == typeof window.Intl && window.Intl.DateTimeFormat.supportedLocalesOf([ locale ]).length > 0;
+            try {
+                var supportedLocales = window.Intl.DateTimeFormat.supportedLocalesOf([ locale ]);
+                return supportedLocales.length > 0;
+            } catch (error) {
+                return !1;
+            }
         }
-        var DEFAULT_MONTHS_EN = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
         this.getLocaleDate = function(date) {
             return date || (date = new Date()), date.getDate();
         }, this.getLocaleMonth = function(date) {
