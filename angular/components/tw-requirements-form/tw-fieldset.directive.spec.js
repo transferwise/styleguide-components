@@ -82,16 +82,6 @@ describe('Directive: TwFieldset', function() {
                   "minLength": 6,
                   "maxLength": 8,
                   "validationRegexp": null,
-                  "validationAsync": {
-                    "url": "https://api.transferwise.com/v1/validators/sort-code",
-                    "params": [
-                      {
-                        "key": "sortCode",
-                        "parameterName": "sortCode",
-                        "required": true
-                      }
-                    ]
-                  },
                   "valuesAllowed": null
                 }
               ]
