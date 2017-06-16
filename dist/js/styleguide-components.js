@@ -1326,6 +1326,21 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         };
     }
     function TwPresentationPatternController($element, $timeout, TwTextFormatting) {
+        function init() {
+            ngModelController = $element.controller("ngModel"), element = $element[0], ngModelController.$render = function() {
+                element.value = format(ngModelController.$viewValue);
+            }, ngModelController.$formatters.push(format), ngModelController.$parsers.push(unformat), 
+            element.addEventListener("change", onChange), element.addEventListener("keydown", onKeydown), 
+            element.addEventListener("paste", onPaste), element.addEventListener("cut", onCut), 
+            element.addEventListener("copy", onCopy), $timeout(function() {
+                var originalMinLength = ngModelController.$validators.minlength, originalMaxLength = ngModelController.$validators.maxlength;
+                originalMinLength && (ngModelController.$validators.minlength = function(modelValue, viewValue) {
+                    return originalMinLength(modelValue, unformat(viewValue));
+                }), originalMaxLength && (ngModelController.$validators.maxlength = function(modelValue, viewValue) {
+                    return originalMaxLength(modelValue, unformat(viewValue));
+                });
+            }), resetUndoStack(element.value);
+        }
         function reformatControl(element, originalValue) {
             originalValue || (originalValue = element.value);
             var newValue = format(unformat(originalValue));
@@ -1335,40 +1350,55 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             return value ? TwTextFormatting.unformatUsingPattern(value, getPattern(element)) : value;
         }
         function format(value) {
-            return value ? TwTextFormatting.formatUsingPattern(value, getPattern(element)) : "";
+            if (!value) return "";
+            var formatted = TwTextFormatting.formatUsingPattern(value, getPattern(element));
+            return addToUndoStack(formatted), formatted;
         }
         function onChange() {
             reformatControl(element);
         }
         function onPaste(event) {
             var selectionStart = element.selectionStart, clipboardData = (element.value.length, 
-            event.clipboardData || window.clipboardData), pastedData = clipboardData.getData("Text"), pattern = getPattern(element), separatorsInPaste = countSeparatorsInRange(pattern, selectionStart, selectionStart + pastedData.length);
+            event.clipboardData || window.clipboardData), pastedData = clipboardData.getData("Text"), pattern = getPattern(element), separatorsInPaste = countSeparatorsInPaste(pattern, selectionStart, selectionStart, pastedData);
             $timeout(function() {
-                var newPosition = selectionStart + pastedData.length + separatorsInPaste - 1;
+                var newPosition = selectionStart + pastedData.length + separatorsInPaste;
                 onChange(), element.setSelectionRange(newPosition, newPosition);
             });
         }
         function onKeydown(event) {
-            var key = event.keyCode || event.which;
-            if (!(reservedKeys.indexOf(key) >= 0 || event.metaKey || event.ctrlKey)) {
-                var selectionStart = event.target.selectionStart, selectionEnd = event.target.selectionEnd, pattern = getPattern(element);
-                $timeout(function() {
-                    if (key === keys.backspace) {
-                        var newVal = doBackspace(element, pattern, selectionStart, selectionEnd);
-                        ngModelController.$setViewValue(newVal);
-                    } else doKeypress(element, pattern, selectionStart, selectionEnd);
-                });
-            }
+            var key = event.keyCode || event.which, selectionStart = event.target.selectionStart, selectionEnd = event.target.selectionEnd;
+            if (reservedKeys.indexOf(key) >= 0 || event.metaKey || event.ctrlKey) return key === keys.z && (event.metaKey || event.ctrlKey) && (event.preventDefault(), 
+            event.stopPropagation(), undo()), void (key === keys.y && (event.metaKey || event.ctrlKey) && (event.preventDefault(), 
+            event.stopPropagation(), redo()));
+            var pattern = getPattern(element);
+            $timeout(function() {
+                var newVal;
+                key === keys.backspace ? (newVal = doBackspace(element, pattern, selectionStart, selectionEnd), 
+                ngModelController.$setViewValue(newVal)) : key === keys["delete"] ? (newVal = doDelete(element, pattern, selectionStart, selectionEnd), 
+                ngModelController.$setViewValue(newVal)) : doKeypress(element, pattern, selectionStart, selectionEnd);
+            });
         }
         function doBackspace(element, pattern, selectionStart, selectionEnd) {
-            var separatorsBeforeCursor = countSeparatorsBeforeCursor(pattern, selectionStart), newVal = element.value;
+            var removeStart, removeEnd, separatorsBeforeCursor = countSeparatorsBeforeCursor(pattern, selectionStart), newVal = element.value;
             if (separatorsBeforeCursor) {
                 var adjust = separatorsBeforeCursor > 1 ? 1 : 0;
-                newVal = selectionStart !== selectionEnd ? removeCharacters(element.value, selectionStart - separatorsBeforeCursor + 1, selectionStart - adjust) : removeCharacters(element.value, selectionStart - separatorsBeforeCursor, selectionStart - adjust);
+                selectionStart !== selectionEnd ? (removeStart = selectionStart - separatorsBeforeCursor + 1, 
+                removeEnd = selectionStart - adjust) : (removeStart = selectionStart - separatorsBeforeCursor, 
+                removeEnd = selectionStart - adjust), newVal = removeCharacters(element.value, removeStart, removeEnd);
             }
             element.value = format(unformat(newVal));
             var newPosition = getPositionAfterBackspace(pattern, element, selectionStart, selectionEnd);
             return element.setSelectionRange(newPosition, newPosition), newVal;
+        }
+        function doDelete(element, pattern, selectionStart, selectionEnd) {
+            var removeStart, removeEnd, separatorsAfterCursor = countSeparatorsAfterCursor(pattern, selectionStart), newVal = element.value;
+            if (separatorsAfterCursor) {
+                var adjust = separatorsAfterCursor > 1 ? 0 : 1;
+                selectionStart !== selectionEnd ? (removeStart = selectionStart + adjust, removeEnd = selectionStart + separatorsAfterCursor + adjust) : (removeStart = selectionStart + separatorsAfterCursor, 
+                removeEnd = selectionStart + separatorsAfterCursor + 1), newVal = removeCharacters(element.value, removeStart, removeEnd);
+            }
+            return element.value = format(unformat(newVal)), element.setSelectionRange(selectionStart, selectionStart), 
+            newVal;
         }
         function doKeypress(element, pattern, selectionStart, selectionEnd) {
             reformatControl(element);
@@ -1392,21 +1422,22 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         function getPattern(element) {
             return element.getAttribute("tw-presentation-pattern");
         }
-        var ngModelController = $element.controller("ngModel"), element = $element[0];
-        ngModelController.$render = function() {
-            element.value = format(ngModelController.$viewValue);
-        }, ngModelController.$formatters.push(format), ngModelController.$parsers.push(unformat), 
-        $timeout(function() {
-            var originalMinLength = ngModelController.$validators.minlength, originalMaxLength = ngModelController.$validators.maxlength;
-            originalMinLength && (ngModelController.$validators.minlength = function(modelValue, viewValue) {
-                return originalMinLength(modelValue, unformat(viewValue));
-            }), originalMaxLength && (ngModelController.$validators.maxlength = function(modelValue, viewValue) {
-                return originalMaxLength(modelValue, unformat(viewValue));
-            });
-        }), element.addEventListener("change", onChange), element.addEventListener("keydown", onKeydown), 
-        element.addEventListener("paste", onPaste), element.addEventListener("cut", onCut), 
-        element.addEventListener("copy", onCopy);
-        var keys = {
+        function resetUndoStack(value) {
+            undoStack = [ value ], undoStackPointer = 0;
+        }
+        function addToUndoStack(value) {
+            undoStack.length - 1 > undoStackPointer && (undoStack = undoStack.slice(0, undoStackPointer + 1)), 
+            undoStack[undoStackPointer] !== value && (undoStack.push(value), undoStackPointer++);
+        }
+        function undo() {
+            undoStackPointer >= 0 && "undefined" != typeof undoStack[undoStackPointer - 1] && (undoStackPointer--, 
+            element.value = undoStack[undoStackPointer]);
+        }
+        function redo() {
+            undoStackPointer < undoStack.length && "undefined" != typeof undoStack[undoStackPointer + 1] && (undoStackPointer++, 
+            element.value = undoStack[undoStackPointer]);
+        }
+        var ngModelController, element, undoStack, undoStackPointer, keys = {
             cmd: 224,
             cmdLeft: 91,
             cmdRight: 93,
@@ -1422,8 +1453,11 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             up: 38,
             right: 39,
             down: 40,
-            "delete": 46
+            "delete": 46,
+            y: 89,
+            z: 90
         }, reservedKeys = [ keys.cmd, keys.cmdLeft, keys.cmdRight, keys.enter, keys.shift, keys.ctrl, keys.alt, keys.left, keys.up, keys.right, keys.down ];
+        init();
     }
     function getPositionAfterBackspace(pattern, element, selectionStart, selectionEnd) {
         var separatorsBefore = countSeparatorsBeforeCursor(pattern, selectionStart), isRange = selectionStart !== selectionEnd, proposedPosition = selectionStart - separatorsBefore - (isRange ? 0 : 1);
@@ -1431,11 +1465,13 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     }
     function getPositionAfterKeypress(pattern, element, selectionStart, selectionEnd) {
         var separatorsAfter;
-        return separatorsAfter = selectionStart !== selectionEnd ? countSeparatorsAfterCursor(pattern, selectionStart) : countSeparatorsAfterCursor(pattern, selectionStart + 1), 
+        return selectionStart !== selectionEnd ? separatorsAfter = countSeparatorsAfterCursor(pattern, selectionStart) : (separatorsAfter = countSeparatorsAfterCursor(pattern, selectionStart), 
+        0 === separatorsAfter && (separatorsAfter = countSeparatorsAfterCursor(pattern, selectionStart + 1))), 
         selectionStart + 1 + separatorsAfter;
     }
-    function countSeparatorsInRange(pattern, selectionStart, selectionEnd) {
-        for (var section = pattern.substring(selectionStart, selectionEnd), separators = 0, i = 0; i < section.length; i++) "*" !== section[i] && separators++;
+    function countSeparatorsInPaste(pattern, selectionStart, selectionEnd, pasteData) {
+        for (var separators = 0, i = 0, toAllocate = pasteData.length; toAllocate; ) "*" === pattern[selectionStart + i] || "undefined" == typeof pattern[selectionStart + i] ? toAllocate-- : separators++, 
+        i++;
         return separators;
     }
     function countSeparatorsAfterCursor(pattern, position) {
@@ -1696,7 +1732,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     "use strict";
     angular.module("tw.form-styling").filter("twPresentationPattern", [ "TwTextFormatting", function(TwTextFormatting) {
         return function(input, pattern) {
-            return console.log("filter! " + pattern), input = input || "", pattern ? TwTextFormatting.formatUsingPattern(input, pattern) : input;
+            return input = input || "", pattern ? TwTextFormatting.formatUsingPattern(input, pattern) : input;
         };
     } ]);
 }(window.angular);

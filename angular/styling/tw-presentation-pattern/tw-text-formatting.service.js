@@ -22,6 +22,7 @@
           separators++;
         }
       }
+      // Add remaining characters on the end without formatting
       if (value.substring(pattern.length - separators, value.length)) {
         newValue += value.substring(pattern.length - separators, value.length);
       }

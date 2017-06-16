@@ -19,34 +19,46 @@
   }
 
   function TwPresentationPatternController($element, $timeout, TwTextFormatting) {
-    var ngModelController = $element.controller('ngModel');
-    var element = $element[0];
+    var ngModelController, element, undoStack, undoStackPointer;
 
-    ngModelController.$render = function() {
-      element.value = format(ngModelController.$viewValue);
-    };
+    function init() {
+      ngModelController = $element.controller('ngModel');
+      element = $element[0];
 
-    // We need the formatter for external model changes
-    ngModelController.$formatters.push(format);
-    ngModelController.$parsers.push(unformat);
+      ngModelController.$render = function() {
+        element.value = format(ngModelController.$viewValue);
+      };
 
-    // min/max length validators use viewValue which is still formatted.
-    // After instantiation override them to unformat view value.
-    $timeout(function () {
-      var originalMinLength = ngModelController.$validators.minlength,
-          originalMaxLength = ngModelController.$validators.maxlength;
+      // We need the formatter for external model changes
+      ngModelController.$formatters.push(format);
+      ngModelController.$parsers.push(unformat);
 
-      if (originalMinLength) {
-        ngModelController.$validators.minlength = function(modelValue, viewValue) {
-          return originalMinLength(modelValue, unformat(viewValue));
-        };
-      }
-      if (originalMaxLength) {
-        ngModelController.$validators.maxlength = function(modelValue, viewValue) {
-          return originalMaxLength(modelValue, unformat(viewValue));
-        };
-      }
-    });
+      element.addEventListener('change', onChange);
+      element.addEventListener('keydown', onKeydown);
+      element.addEventListener('paste', onPaste);
+      element.addEventListener('cut', onCut);
+      element.addEventListener('copy', onCopy);
+
+      // min/max length validators use viewValue which is still formatted.
+      // After instantiation override them to unformat view value.
+      $timeout(function () {
+        var originalMinLength = ngModelController.$validators.minlength,
+            originalMaxLength = ngModelController.$validators.maxlength;
+
+        if (originalMinLength) {
+          ngModelController.$validators.minlength = function(modelValue, viewValue) {
+            return originalMinLength(modelValue, unformat(viewValue));
+          };
+        }
+        if (originalMaxLength) {
+          ngModelController.$validators.maxlength = function(modelValue, viewValue) {
+            return originalMaxLength(modelValue, unformat(viewValue));
+          };
+        }
+      });
+
+      resetUndoStack(element.value);
+    }
 
     function reformatControl(element, originalValue) {
       if (!originalValue) {
@@ -71,14 +83,11 @@
       if (!value) {
         return "";
       }
-      return TwTextFormatting.formatUsingPattern(value, getPattern(element));
+      var formatted = TwTextFormatting.formatUsingPattern(value, getPattern(element));
+      addToUndoStack(formatted);
+      return formatted;
     }
 
-    element.addEventListener('change', onChange);
-    element.addEventListener('keydown', onKeydown);
-    element.addEventListener('paste', onPaste);
-    element.addEventListener('cut', onCut);
-    element.addEventListener('copy', onCopy);
 
     function onChange() {
       // We want visible value to change so we set val rather than $setViewValue
@@ -93,12 +102,11 @@
       var pastedData = clipboardData.getData('Text');
       var pattern = getPattern(element);
 
-      var separatorsInPaste = countSeparatorsInRange(
-        pattern, selectionStart, selectionStart + pastedData.length
+      var separatorsInPaste = countSeparatorsInPaste(
+        pattern, selectionStart, selectionStart, pastedData
       );
-
       $timeout(function() {
-        var newPosition = selectionStart + pastedData.length + separatorsInPaste - 1;
+        var newPosition = selectionStart + pastedData.length + separatorsInPaste;
         onChange();
         element.setSelectionRange(newPosition, newPosition);
       });
@@ -107,21 +115,36 @@
     function onKeydown(event) {
       var key = event.keyCode || event.which;
 
-      if (reservedKeys.indexOf(key) >= 0 || event.metaKey || event.ctrlKey) {
-        // TODO undo can change value, we must reformat.
-        return;
-      }
-
       var selectionStart = event.target.selectionStart;
       var selectionEnd = event.target.selectionEnd;
+
+      if (reservedKeys.indexOf(key) >= 0 || event.metaKey || event.ctrlKey) {
+        if (key === keys.z && (event.metaKey || event.ctrlKey)) {
+          event.preventDefault();
+          event.stopPropagation();
+          undo();
+        }
+        if (key === keys.y && (event.metaKey || event.ctrlKey)) {
+          event.preventDefault();
+          event.stopPropagation();
+          redo();
+        }
+        return;
+      }
 
       var pattern = getPattern(element);
 
       // timeout runs after native input behaviour completed
       $timeout(function() {
+        var newVal;
         // If deleting move back
         if (key === keys.backspace) {
-          var newVal = doBackspace(element, pattern, selectionStart, selectionEnd);
+          newVal = doBackspace(element, pattern, selectionStart, selectionEnd);
+
+          // Also trigger model update, not sure why necessary...
+          ngModelController.$setViewValue(newVal);
+        } else if (key === keys.delete) {
+          newVal = doDelete(element, pattern, selectionStart, selectionEnd);
 
           // Also trigger model update, not sure why necessary...
           ngModelController.$setViewValue(newVal);
@@ -134,25 +157,23 @@
     function doBackspace(element, pattern, selectionStart, selectionEnd) {
       var separatorsBeforeCursor = countSeparatorsBeforeCursor(pattern, selectionStart);
       var newVal = element.value;
+      var removeStart, removeEnd;
+
       if (separatorsBeforeCursor) {
         // If we have more separators, we must remove one less character
         var adjust = (separatorsBeforeCursor > 1 ? 1 : 0);
 
         if (selectionStart !== selectionEnd) {
           // A range is selected, remove one less character from start
-          newVal = removeCharacters(
-            element.value,
-            selectionStart - separatorsBeforeCursor + 1,
-            selectionStart - adjust
-          );
+          removeStart = selectionStart - separatorsBeforeCursor + 1;
+          removeEnd = selectionStart - adjust;
         } else {
-          newVal = removeCharacters(
-            element.value,
-            selectionStart - separatorsBeforeCursor,
-            selectionStart - adjust
-          );
+          removeStart = selectionStart - separatorsBeforeCursor;
+          removeEnd = selectionStart - adjust;
         }
+        newVal = removeCharacters(element.value, removeStart, removeEnd);
       }
+
       element.value = format(unformat(newVal));
 
       var newPosition = getPositionAfterBackspace(
@@ -164,6 +185,34 @@
       return newVal;
     }
 
+    function doDelete(element, pattern, selectionStart, selectionEnd) {
+      var separatorsAfterCursor = countSeparatorsAfterCursor(pattern, selectionStart);
+      var newVal = element.value;
+      var removeStart, removeEnd;
+
+      if (separatorsAfterCursor) {
+        // If we have more separators, we must remove one less character
+        var adjust = (separatorsAfterCursor > 1 ? 0 : 1);
+
+        if (selectionStart !== selectionEnd) {
+          // A range is selected, remove one less character from start
+          removeStart = selectionStart + adjust;
+          removeEnd = selectionStart + separatorsAfterCursor + adjust;
+        } else {
+          // Remove the character after the separators
+          removeStart = selectionStart + separatorsAfterCursor;
+          removeEnd = selectionStart + separatorsAfterCursor + 1;
+        }
+
+        newVal = removeCharacters(element.value, removeStart, removeEnd);
+      }
+
+      element.value = format(unformat(newVal));
+      element.setSelectionRange(selectionStart, selectionStart);
+
+      return newVal;
+    }
+
     function doKeypress(element, pattern, selectionStart, selectionEnd) {
       // The parser already called this, but doing it after appends the next separator
       reformatControl(element);
@@ -171,7 +220,6 @@
       var newPosition = getPositionAfterKeypress(
         pattern, element, selectionStart, selectionEnd
       );
-
       element.setSelectionRange(newPosition, newPosition);
     }
 
@@ -201,6 +249,35 @@
       return element.getAttribute('tw-presentation-pattern');
     }
 
+    function resetUndoStack(value) {
+      undoStack = [value];
+      undoStackPointer = 0;
+    }
+    function addToUndoStack(value) {
+      if (undoStack.length - 1 > undoStackPointer) {
+        undoStack = undoStack.slice(0, undoStackPointer + 1);
+      }
+      if (undoStack[undoStackPointer] !== value) {
+        undoStack.push(value);
+        undoStackPointer++;
+      }
+    }
+    function undo() {
+      if (undoStackPointer >= 0 &&
+        typeof undoStack[undoStackPointer - 1] !== "undefined") {
+        undoStackPointer--;
+        element.value = undoStack[undoStackPointer];
+      }
+    }
+    function redo() {
+      if (undoStackPointer < undoStack.length &&
+        typeof undoStack[undoStackPointer + 1] !== "undefined") {
+
+        undoStackPointer++;
+        element.value = undoStack[undoStackPointer];
+      }
+    }
+
     var keys = {
       cmd: 224,
       cmdLeft: 91,
@@ -218,6 +295,8 @@
       right: 39,
       down: 40,
       delete: 46,
+      y: 89,
+      z: 90
     };
 
     var reservedKeys = [
@@ -233,6 +312,8 @@
       keys.right,
       keys.down
     ];
+
+    init();
   }
 
   function getPositionAfterBackspace(pattern, element, selectionStart, selectionEnd) {
@@ -248,18 +329,37 @@
     if (selectionStart !== selectionEnd) {
       separatorsAfter = countSeparatorsAfterCursor(pattern, selectionStart);
     } else {
-      separatorsAfter = countSeparatorsAfterCursor(pattern, selectionStart + 1);
+      // TODO this works but is hard to understand
+      separatorsAfter = countSeparatorsAfterCursor(pattern, selectionStart);
+      if (separatorsAfter === 0) {
+        separatorsAfter = countSeparatorsAfterCursor(pattern, selectionStart + 1);
+      }
     }
     return selectionStart + 1 + separatorsAfter;
   }
-
+  /*
   function countSeparatorsInRange(pattern, selectionStart, selectionEnd) {
-    var section = pattern.substring(selectionStart, selectionEnd);
+    //var section = pattern.substring(selectionStart, selectionEnd);
     var separators = 0;
-    for (var i = 0; i < section.length; i++) {
-      if (section[i] !== "*") {
+    for (var i = selectionStart; i <= selectionEnd; i++) {
+      if (pattern[i] !== "*") {
         separators++;
       }
+    }
+    return separators;
+  }
+  */
+  function countSeparatorsInPaste(pattern, selectionStart, selectionEnd, pasteData) {
+    var separators = 0;
+    var i = 0;
+    var toAllocate = pasteData.length;
+    while(toAllocate) {
+      if (pattern[selectionStart + i] === "*" || typeof pattern[selectionStart + i] === "undefined") {
+        toAllocate--;
+      } else {
+        separators++;
+      }
+      i++;
     }
     return separators;
   }
