@@ -1,6 +1,6 @@
 'use strict';
 
-fdescribe('Directive: TwPresentationPattern, ', function() {
+describe('Directive: TwPresentationPattern, ', function() {
   var $compile,
       $rootScope,
       $scope,
