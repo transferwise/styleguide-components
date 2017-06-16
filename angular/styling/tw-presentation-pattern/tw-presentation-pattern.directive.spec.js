@@ -1,6 +1,6 @@
 'use strict';
 
-fdescribe('Directive: TwDateLookup, ', function() {
+fdescribe('Directive: TwPresentationPattern, ', function() {
   var $compile,
       $rootScope,
       $scope,
@@ -880,6 +880,83 @@ fdescribe('Directive: TwDateLookup, ', function() {
           });
         });
       });
+
+      describe('when using undo/redo ', function() {
+        beforeEach(function () {
+          $scope.pattern = "***/**/-/**";
+          $scope.ngModel = "";
+          $element = getCompiledDirectiveElement($scope);
+          input = $element[0];
+        });
+
+        it('undo should go back to previous value', function () {
+          typeCharacter(input, "1");
+          $timeout.flush();
+          typeCharacter(input, "2");
+          $timeout.flush();
+          typeUndo(input);
+          $scope.$apply();
+
+          expect(input.value).toBe("1");
+          expect($scope.ngModel).toBe("1");
+        });
+
+        it('undo should only go back to first value', function () {
+          typeCharacter(input, "1");
+          $timeout.flush();
+          typeCharacter(input, "2");
+          $timeout.flush();
+          typeUndo(input);
+          typeUndo(input);
+          typeUndo(input);
+          $scope.$apply();
+
+          expect(input.value).toBe("");
+          expect($scope.ngModel).toBe("");
+        });
+
+        it('redo should go forwards to value before undo', function () {
+          typeCharacter(input, "1");
+          $timeout.flush();
+          typeCharacter(input, "2");
+          $timeout.flush();
+          typeUndo(input);
+          typeRedo(input);
+          $scope.$apply();
+
+          expect(input.value).toBe("12");
+          expect($scope.ngModel).toBe("12");
+        });
+
+        it('repeated redo should not go beyond last value', function () {
+          typeCharacter(input, "1");
+          $timeout.flush();
+          typeCharacter(input, "2");
+          $timeout.flush();
+          typeUndo(input);
+          typeRedo(input);
+          typeRedo(input);
+          $scope.$apply();
+
+          expect(input.value).toBe("12");
+          expect($scope.ngModel).toBe("12");
+        });
+
+        it('typing new character after undo should cancel any redo', function () {
+          typeCharacter(input, "1");
+          $timeout.flush();
+          typeCharacter(input, "2");
+          $timeout.flush();
+          typeUndo(input);
+          typeCharacter(input, "3");
+          $timeout.flush();
+          typeRedo(input);
+          $scope.$apply();
+
+          expect(input.value).toBe("13");
+          expect($scope.ngModel).toBe("13");
+        });
+      });
     }
   });
 
@@ -969,24 +1046,42 @@ fdescribe('Directive: TwDateLookup, ', function() {
     angular.element(input).trigger('input');
   }
 
+  function typeUndo(input) {
+    triggerMetaEvent(input, 90); // z
+  }
+  function typeRedo(input) {
+    triggerMetaEvent(input, 89); // y
+  }
+
+  function triggerMetaEvent(input, keyCode) {
+    var keydown = getKeyEvent('keydown', keyCode);
+    var keypress = getKeyEvent('keypress', keyCode);
+    var keyup = getKeyEvent('keyup', keyCode);
+
+    //keydown.metaKey = true;
+    //keypress.metaKey = true;
+    //keyup.metaKey = true;
+
+    keydown.ctrlKey = true;
+    keypress.ctrlKey = true;
+    keyup.ctrlKey = true;
+
+    input.dispatchEvent(keydown);
+    input.dispatchEvent(keypress);
+    input.dispatchEvent(keyup);
+    angular.element(input).trigger('input');
+  }
+
   function getKeyEvent(eventType, keyCode) {
     var keyboardEvent = new Event(eventType);
     keyboardEvent.which = String.fromCharCode(keyCode);
     keyboardEvent.keyCode = keyCode;
     keyboardEvent.charCode = keyCode;
-    //Object.defineProperty(keyboardEvent, 'isTrusted', { get: function() { return true } });
-    //keyboardEvent.isTrusted = true;
     return keyboardEvent;
   }
 
   function pasteString(input, pasteValue) {
     var pasteEvent = new Event("paste");
-    /*pasteEvent.clipboardData = {
-      getData: function() {
-        return pasteValue;
-      }
-    };*/
-    //window.clipboardData.setData(pasteValue);
     window.clipboardData = {
       getData: function() {
         return pasteValue;
