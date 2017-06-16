@@ -28,6 +28,7 @@
 				uploadTooLargeMessage: "@",
 				options: "=",
 				ngModel: "=",
+				ngChange: "&",
 				ngRequired: "=",
 				ngDisabled: "=",
 				// ngMinlength/ngMaxlength have default behaviour that cannot be overridden
