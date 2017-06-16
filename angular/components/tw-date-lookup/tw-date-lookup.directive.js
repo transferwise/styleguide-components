@@ -47,11 +47,8 @@
 				<span ng-if="$ctrl.label && $ctrl.ngModel" \
 					class="control-label small m-r-1" style="font-size: 14px;" \
 					>{{$ctrl.label}}</span \
-				><span ng-if="$ctrl.ngModel" class="tw-date-lookup-selected" \
-					><span ng-if="$ctrl.monthBeforeDay">{{$ctrl.monthsOfYear[$ctrl.selectedMonth]}} </span \
-					>{{$ctrl.selectedDate}}<span ng-if="$ctrl.monthBeforeDay">,</span \
-					><span ng-if="!$ctrl.monthBeforeDay"> {{$ctrl.monthsOfYear[$ctrl.selectedMonth]}}</span> \
-					{{$ctrl.selectedYear}} \
+				><span ng-if="$ctrl.ngModel" class="tw-date-lookup-selected">\
+					{{$ctrl.selectedDateFormatted}}\
 				</span> \
 				<span class="caret"></span> \
 			</button> \
@@ -133,7 +130,7 @@
 						</div> \
 						<a href="" ng-click="$ctrl.switchToYears($event)" \
 							class="tw-date-lookup-month-label"> \
-							{{$ctrl.monthsOfYear[$ctrl.month]}} {{$ctrl.year}} \
+							{{$ctrl.yearMonthFormatted}} \
 						</a> \
 						<div class="pull-xs-right"> \
 							<a href="" ng-click="$ctrl.monthAfter($event)" \
@@ -241,6 +238,7 @@
 			// Always set model to UTC dates
 			setModel(TwDateService.getUTCDateFromParts(year, month, day));
 			resetFocus();
+			updateCalendarDatePresentation();
 		};
 
 		$ctrl.selectMonth = function($event, month, year) {
@@ -251,6 +249,7 @@
 			$ctrl.month = month;
 			$ctrl.weeks = getTableStructure();
 			$ctrl.mode = 'day';
+			updateCalendarDatePresentation();
 		};
 
 		$ctrl.selectYear = function($event, year) {
@@ -260,6 +259,7 @@
 			}
 			$ctrl.year = year;
 			$ctrl.mode = 'month';
+			updateCalendarDatePresentation();
 		};
 
 		$ctrl.monthBefore = function($event) {
@@ -272,6 +272,7 @@
 				$ctrl.month--;
 			}
 			$ctrl.weeks = getTableStructure();
+			updateCalendarDatePresentation();
 		};
 
 		$ctrl.yearBefore = function($event) {
@@ -279,6 +280,7 @@
 			$event.stopPropagation();
 			$ctrl.year--;
 			$ctrl.weeks = getTableStructure();
+			updateCalendarDatePresentation();
 		};
 
 		$ctrl.monthAfter = function($event) {
@@ -291,6 +293,7 @@
 				$ctrl.month++;
 			}
 			$ctrl.weeks = getTableStructure();
+			updateCalendarDatePresentation();
 		};
 
 		$ctrl.yearAfter = function($event) {
@@ -298,6 +301,7 @@
 			$event.stopPropagation();
 			$ctrl.year++;
 			$ctrl.weeks = getTableStructure();
+			updateCalendarDatePresentation();
 		};
 
 		$ctrl.isCurrentlySelected = function(day, month, year) {
@@ -410,6 +414,7 @@
 					$ctrl.selectedDate = TwDateService.getUTCDate(newValue);
 					$ctrl.selectedMonth = TwDateService.getUTCMonth(newValue);
 					$ctrl.selectedYear = TwDateService.getUTCFullYear(newValue);
+					updateSelectedDatePresentation();
 				}
 			});
 		}
@@ -426,6 +431,8 @@
 			$ctrl.year = TwDateService.getUTCFullYear(viewDate);
 
 			$ctrl.weeks = getTableStructure();
+
+			updateCalendarDatePresentation();
 		}
 
 		function getTableStructure() {
@@ -470,6 +477,20 @@
 			$ctrl.shortMonthsOfYear = TwDateService.getMonthNamesForLocale($ctrl.locale, 'short');
 			$ctrl.daysOfWeek = TwDateService.getDayNamesForLocale($ctrl.locale, 'short');
 			$ctrl.shortDaysOfWeek = TwDateService.getDayNamesForLocale($ctrl.locale, 'narrow');
+			updateSelectedDatePresentation();
+		}
+
+		function updateSelectedDatePresentation(){
+            $ctrl.selectedDateFormatted = TwDateService.getYearMonthDatePresentation($ctrl.selectedYear,
+                                                                                    $ctrl.monthsOfYear[$ctrl.selectedMonth],
+                                                                                    $ctrl.selectedDate,
+                                                                                    $ctrl.locale);
+		}
+
+		function updateCalendarDatePresentation(){
+			$ctrl.yearMonthFormatted = TwDateService.getYearAndMonthPresentation($ctrl.year,
+                                                                                $ctrl.monthsOfYear[$ctrl.month],
+                                                                                $ctrl.locale);
 		}
 
 		function moveDateToWithinRange(date, min, max) {
@@ -487,7 +508,6 @@
 
 		function setModel(modelDate) {
 			modelDate = moveDateToWithinRange(modelDate, $ctrl.ngMin, $ctrl.ngMax);
-
 			ngModelCtrl.$setViewValue(modelDate);
 			ngModelCtrl.$setDirty();
 
