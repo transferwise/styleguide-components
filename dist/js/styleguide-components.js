@@ -1324,14 +1324,14 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     angular.module("tw.form-styling").directive("twPopOver", TwPopOver);
 }(window.angular), function(angular) {
     "use strict";
-    function TwPresentationPattern() {
+    function TwTextFormat() {
         return {
             restrict: "A",
             require: "ngModel",
-            controller: [ "$element", "$timeout", "TwTextFormatting", TwPresentationPatternController ]
+            controller: [ "$element", "$timeout", "TwTextFormatService", TwTextFormatController ]
         };
     }
-    function TwPresentationPatternController($element, $timeout, TwTextFormatting) {
+    function TwTextFormatController($element, $timeout, TwTextFormatService) {
         function init() {
             ngModelController = $element.controller("ngModel"), element = $element[0], ngModelController.$render = function() {
                 element.value = format(ngModelController.$viewValue);
@@ -1353,11 +1353,11 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             return newValue !== originalValue && (element.value = newValue), newValue;
         }
         function unformat(value) {
-            return value ? TwTextFormatting.unformatUsingPattern(value, getPattern(element)) : value;
+            return value ? TwTextFormatService.unformatUsingPattern(value, getPattern(element)) : value;
         }
         function format(value) {
             if (!value) return "";
-            var formatted = TwTextFormatting.formatUsingPattern(value, getPattern(element));
+            var formatted = TwTextFormatService.formatUsingPattern(value, getPattern(element));
             return addToUndoStack(formatted), formatted;
         }
         function onChange() {
@@ -1426,7 +1426,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             });
         }
         function getPattern(element) {
-            return element.getAttribute("tw-presentation-pattern");
+            return element.getAttribute("tw-text-format");
         }
         function resetUndoStack(value) {
             undoStack = [ value ], undoStackPointer = 0;
@@ -1491,7 +1491,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     function removeCharacters(value, first, last) {
         return value.substring(0, first - 1) + value.substring(last - 1, value.length);
     }
-    angular.module("tw.form-styling").directive("twPresentationPattern", TwPresentationPattern);
+    angular.module("tw.form-styling").directive("twTextFormat", TwTextFormat);
 }(window.angular), function(angular) {
     function TwToolTip() {
         return {
@@ -1726,7 +1726,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     angular.module("tw.form-components").service("TwDateService", TwDateService);
 }(window.angular), function(angular) {
     "use strict";
-    function TwTextFormatting() {
+    function TwTextFormatService() {
         this.formatUsingPattern = function(value, pattern) {
             for (var newValue = "", separators = 0, i = 0; i < pattern.length && i <= value.length + separators; i++) "*" === pattern[i] ? value[i - separators] && (newValue += value[i - separators]) : (newValue += pattern[i], 
             separators++);
@@ -1737,12 +1737,12 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             return value;
         };
     }
-    angular.module("tw.form-styling").service("TwTextFormatting", TwTextFormatting);
+    angular.module("tw.form-styling").service("TwTextFormatService", TwTextFormatService);
 }(window.angular), function(angular) {
     "use strict";
-    angular.module("tw.form-styling").filter("twPresentationPattern", [ "TwTextFormatting", function(TwTextFormatting) {
+    angular.module("tw.form-styling").filter("twTextFormat", [ "TwTextFormatService", function(TwTextFormatService) {
         return function(input, pattern) {
-            return input = input || "", pattern ? TwTextFormatting.formatUsingPattern(input, pattern) : input;
+            return input = input || "", pattern ? TwTextFormatService.formatUsingPattern(input, pattern) : input;
         };
     } ]);
 }(window.angular);

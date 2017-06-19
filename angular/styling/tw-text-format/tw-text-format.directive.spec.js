@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: TwPresentationPattern, ', function() {
+describe('Directive: TwTextFormat, ', function() {
   var $compile,
       $rootScope,
       $scope,
@@ -1101,7 +1101,7 @@ describe('Directive: TwPresentationPattern, ', function() {
     if (!template) {
       template = " \
         <input type='text' \
-          tw-presentation-pattern='" + scope.pattern + "' \
+          tw-text-format='" + scope.pattern + "' \
           ng-model='ngModel' \
           ng-required='ngRequired' \
           ng-minlength='ngMinlength' \

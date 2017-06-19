@@ -3,9 +3,9 @@
 
   angular
     .module('tw.form-styling')
-    .service('TwTextFormatting', TwTextFormatting);
+    .service('TwTextFormatService', TwTextFormatService);
 
-  function TwTextFormatting() {
+  function TwTextFormatService() {
 
     this.formatUsingPattern = function(value, pattern) {
       var newValue = "";

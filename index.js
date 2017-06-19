@@ -320,7 +320,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 .directive('twFocusableDocs', function() {
 	return {templateUrl: 'partials/tw-focusable.html'};
 })
-.component('twPresentationPatternDocs', {
+.component('twTextFormatDocs', {
 	controller: function() {
 		var $ctrl = this;
 		$ctrl.patterns = [
@@ -342,7 +342,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 	bindings: {
 		model: "="
 	},
-	templateUrl: 'partials/tw-presentation-pattern.html'
+	templateUrl: 'partials/tw-text-format.html'
 })
 .directive('twPopOverDocs', function() {
 	return {templateUrl: 'partials/tw-pop-over.html'};

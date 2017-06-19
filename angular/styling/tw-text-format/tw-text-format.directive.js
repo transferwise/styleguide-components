@@ -3,22 +3,22 @@
 
   angular
     .module('tw.form-styling')
-    .directive('twPresentationPattern', TwPresentationPattern);
+    .directive('twTextFormat', TwTextFormat);
 
-  function TwPresentationPattern() {
+  function TwTextFormat() {
     return {
       restrict: 'A',
       require: 'ngModel',
       controller: [
         '$element',
         '$timeout',
-        'TwTextFormatting',
-        TwPresentationPatternController
+        'TwTextFormatService',
+        TwTextFormatController
       ]
     };
   }
 
-  function TwPresentationPatternController($element, $timeout, TwTextFormatting) {
+  function TwTextFormatController($element, $timeout, TwTextFormatService) {
     var ngModelController, element, undoStack, undoStackPointer;
 
     function init() {
@@ -65,6 +65,7 @@
         originalValue = element.value;
       }
       var newValue = format(unformat(originalValue));
+
       // Don't reset value unless we need to.
       if (newValue !== originalValue) {
         element.value = newValue;
@@ -76,21 +77,20 @@
       if (!value) {
         return value;
       }
-      return TwTextFormatting.unformatUsingPattern(value, getPattern(element));
+      return TwTextFormatService.unformatUsingPattern(value, getPattern(element));
     }
 
     function format(value) {
       if (!value) {
         return "";
       }
-      var formatted = TwTextFormatting.formatUsingPattern(value, getPattern(element));
+      var formatted = TwTextFormatService.formatUsingPattern(value, getPattern(element));
       addToUndoStack(formatted);
       return formatted;
     }
 
 
     function onChange() {
-      // We want visible value to change so we set val rather than $setViewValue
       reformatControl(element);
     }
 
@@ -224,7 +224,6 @@
     }
 
     function onCut(event) {
-      // Reset cursor position
       var selectionStart = element.selectionStart;
       $timeout(function() {
         onChange();
@@ -246,9 +245,14 @@
     }
 
     function getPattern(element) {
-      return element.getAttribute('tw-presentation-pattern');
+      return element.getAttribute('tw-text-format');
     }
 
+    /**
+     * Browsers seem to implement undo as an async function, it wasn't
+     * possible to get adequate behaviour using the default event, so we build
+     * our own undo stack.
+     */
     function resetUndoStack(value) {
       undoStack = [value];
       undoStackPointer = 0;
@@ -337,18 +341,7 @@
     }
     return selectionStart + 1 + separatorsAfter;
   }
-  /*
-  function countSeparatorsInRange(pattern, selectionStart, selectionEnd) {
-    //var section = pattern.substring(selectionStart, selectionEnd);
-    var separators = 0;
-    for (var i = selectionStart; i <= selectionEnd; i++) {
-      if (pattern[i] !== "*") {
-        separators++;
-      }
-    }
-    return separators;
-  }
-  */
+
   function countSeparatorsInPaste(pattern, selectionStart, selectionEnd, pasteData) {
     var separators = 0;
     var i = 0;

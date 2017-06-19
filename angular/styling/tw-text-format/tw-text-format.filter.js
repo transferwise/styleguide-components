@@ -3,13 +3,13 @@
 
   angular
     .module('tw.form-styling')
-    .filter('twPresentationPattern', ['TwTextFormatting', function(TwTextFormatting) {
+    .filter('twTextFormat', ['TwTextFormatService', function(TwTextFormatService) {
       return function(input, pattern) {
         input = input || '';
         if (!pattern) {
           return input;
         }
-        return TwTextFormatting.formatUsingPattern(input, pattern);
+        return TwTextFormatService.formatUsingPattern(input, pattern);
       };
     }]);
 })(window.angular);

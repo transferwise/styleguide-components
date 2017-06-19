@@ -1422,7 +1422,7 @@ angular.module("tw.form-components", []);
     angular.module("tw.form-components").service("TwDateService", TwDateService);
 }(window.angular), function(angular) {
     "use strict";
-    function TwTextFormatting() {
+    function TwTextFormatService() {
         this.formatUsingPattern = function(value, pattern) {
             for (var newValue = "", separators = 0, i = 0; i < pattern.length && i <= value.length + separators; i++) "*" === pattern[i] ? value[i - separators] && (newValue += value[i - separators]) : (newValue += pattern[i], 
             separators++);
@@ -1433,5 +1433,5 @@ angular.module("tw.form-components", []);
             return value;
         };
     }
-    angular.module("tw.form-styling").service("TwTextFormatting", TwTextFormatting);
+    angular.module("tw.form-styling").service("TwTextFormatService", TwTextFormatService);
 }(window.angular);
