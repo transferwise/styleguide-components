@@ -1,19 +1,33 @@
 angular.module("tw.layout-components", []);
 !function(angular) {
     "use strict";
-    function TwExpandableCards() {
+    function Card() {
+        return {
+            restrict: "E",
+            scope: {},
+            require: "^CardContainer",
+            transclude: !0,
+            template: ' \t\t\t\t<div class="card"> \t\t\t\t\t<div ng-translude></div> \t\t\t\t</div> \t\t\t',
+            link: function($scope, $element, $attrs, $ctrl) {
+                $ctrl.addCard($scope.card);
+            }
+        };
+    }
+    function CardContainer() {
         return {
             restrict: "E",
             scope: {},
             transclude: !0,
             controller: function() {
-                this.tabs = [];
+                this.cards = [], this.addCard = function(card) {
+                    this.cards.push(card);
+                };
             },
-            controllerAs: "tabs",
-            template: ' \t\t   \t  \t<div class="tabs"> \t\t   \t  \t  \t<ul class="tabs__list"></ul> \t\t   \t  \t  \t<div class="tabs__content" ng-transclude></div> \t\t   \t  \t</div> \t\t   \t'
+            controllerAs: "ContainerController",
+            template: ' \t\t\t\t<div class="card-container"> \t\t\t\t\t<ul class="card-list"> \t\t\t\t\t\t<li ng-repeat="card in ContainerController.cards">             \t\t\t\t<h6 href="" ng-bind="tab.label"             \t\t\t\t\tng-click="ContainerController.expand($index);">boop</h6>           \t\t\t\t</li> \t\t\t\t\t</ul>\t\t\t\t\t</div> \t\t\t'
         };
     }
-    angular.module("tw.layout-components").directive("twExpandableCards", TwExpandableCards);
+    angular.module("tw.layout-components").directive("twExpandableCard", Card).directive("twExpandableCards", CardContainer);
 }(window.angular), function(angular) {
     "use strict";
     function TwRequirementsService() {
