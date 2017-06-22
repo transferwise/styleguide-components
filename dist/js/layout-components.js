@@ -4,23 +4,14 @@ angular.module("tw.layout-components", []);
     function TwExpandableCards() {
         return {
             restrict: "E",
-            scope: {
-                tabs: "=",
-                active: "=",
-                onChange: "&"
+            scope: {},
+            transclude: !0,
+            controller: function() {
+                this.tabs = [];
             },
-            controller: TwExpandableCardsController,
-            controllerAs: "$ctrl",
-            bindToController: !0,
-            template: " \t\t\t<ul ng-if='$ctrl.tabs.length > 0' \t\t\t\tclass='nav nav-tabs m-b-3'> \t\t\t\t<li ng-repeat='tab in $ctrl.tabs track by $index' \t\t\t\t\tng-class='{\"active\": $ctrl.active === tab.type}'> \t\t\t\t\t<a href='' ng-click='$ctrl.switchTab(tab.type)'> \t\t\t\t\t\t{{tab.label}} \t\t\t\t\t</a> \t\t\t\t</li> \t\t\t</ul>"
+            controllerAs: "tabs",
+            template: ' \t\t   \t  \t<div class="tabs"> \t\t   \t  \t  \t<ul class="tabs__list"></ul> \t\t   \t  \t  \t<div class="tabs__content" ng-transclude></div> \t\t   \t  \t</div> \t\t   \t'
         };
-    }
-    function TwExpandableCardsController() {
-        function switchTab(tab) {
-            $ctrl.active = tab, $ctrl.onChange && $ctrl.onChange(tab);
-        }
-        var $ctrl = this;
-        $ctrl.switchTab = switchTab, !$ctrl.active && $ctrl.tabs.length && ($ctrl.active = $ctrl.tabs[0].type);
     }
     angular.module("tw.layout-components").directive("twExpandableCards", TwExpandableCards);
 }(window.angular), function(angular) {
