@@ -1,7 +1,8 @@
 angular.module("tw.form-validation", []);
 angular.module("tw.form-styling", []);
 angular.module("tw.form-components", []);
-angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styling', 'tw.form-components']);
+angular.module("tw.layout-components", []);
+angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styling', 'tw.form-components', 'tw.layout-components']);
 !function(angular) {
     "use strict";
     function TwAmountCurrencySelectController($element, $scope, $timeout, TwCurrencyData) {
@@ -1268,6 +1269,30 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         });
     }
     angular.module("tw.form-components").directive("twFileInput", TwFileInputDirective).controller("twUploadController", TwUploadController).directive("twUpload", TwUploadDirective);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwExpandableCards() {
+        return {
+            restrict: "E",
+            scope: {
+                tabs: "=",
+                active: "=",
+                onChange: "&"
+            },
+            controller: TwExpandableCardsController,
+            controllerAs: "$ctrl",
+            bindToController: !0,
+            template: " \t\t\t<ul ng-if='$ctrl.tabs.length > 0' \t\t\t\tclass='nav nav-tabs m-b-3'> \t\t\t\t<li ng-repeat='tab in $ctrl.tabs track by $index' \t\t\t\t\tng-class='{\"active\": $ctrl.active === tab.type}'> \t\t\t\t\t<a href='' ng-click='$ctrl.switchTab(tab.type)'> \t\t\t\t\t\t{{tab.label}} \t\t\t\t\t</a> \t\t\t\t</li> \t\t\t</ul>"
+        };
+    }
+    function TwExpandableCardsController() {
+        function switchTab(tab) {
+            $ctrl.active = tab, $ctrl.onChange && $ctrl.onChange(tab);
+        }
+        var $ctrl = this;
+        $ctrl.switchTab = switchTab, !$ctrl.active && $ctrl.tabs.length && ($ctrl.active = $ctrl.tabs[0].type);
+    }
+    angular.module("tw.layout-components").directive("twExpandableCards", TwExpandableCards);
 }(window.angular), function(angular) {
     function TwAffix() {
         return {
