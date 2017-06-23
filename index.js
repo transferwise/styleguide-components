@@ -332,6 +332,6 @@ angular.module('my-app', ['tw.styleguide-components'])
 .directive('twProcessDocs', function() {
 	return {templateUrl: 'partials/tw-process.html'};
 })
-.directive('twExpandableCardsDocs', function(){
-	return {templateUrl: 'partials/tw-expandable-cards.html'};
+.directive('twActivityCards', function(){
+	return {templateUrl: 'partials/tw-activity-card-container.html'};
 });

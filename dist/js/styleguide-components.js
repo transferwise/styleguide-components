@@ -1271,57 +1271,39 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     angular.module("tw.form-components").directive("twFileInput", TwFileInputDirective).controller("twUploadController", TwUploadController).directive("twUpload", TwUploadDirective);
 }(window.angular), function(angular) {
     "use strict";
+    function Repeat() {
+        return {
+            transclude: !0,
+            template: ' \t\t\t\t<div class="well p-l-panel p-r-panel"  ng-if="true"> \t\t\t\t\t<div class="media"> \t\t\t\t\t\t<div class="media-left"> \t\t\t\t\t\t\t<div class="circle circle-sm circle-responsive invisible"> \t\t\t\t\t\t\t\t<i class="icon icon-transfer"></i> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t</div> \t\t\t\t\t\t<div class="media-body"> \t\t\t\t\t\t\t<repeat-transfer \t\t\t\t\t\t\t\tsource="transfer.source" \t\t\t\t\t\t\t\ttarget="transfer.target" \t\t\t\t\t\t\t\tsource-amount="{{transfer.sourceAmount}}" \t\t\t\t\t\t\t\ttarget-amount="{{transfer.targetAmount}}" \t\t\t\t\t\t\t\treceiving-account="transfer.account.id" \t\t\t\t\t\t\t\tcurrencies="$ctrl.currencies"> \t\t\t\t\t\t\t</repeat-transfer> \t\t\t\t\t\t\t<div ng-transclude></div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t</div>'
+        };
+    }
+    function Expanded() {
+        return {
+            transclude: !0,
+            template: ' \t\t\t\t<div \tclass="collapse" \t\t\t\t\t\tng-attr-aria-expanded="{{$ctrl.active === transfer.id}}" \t\t\t\t\t\tng-class="{\'in\': $ctrl.active === transfer.id}" \t\t\t\t\t\tng-if="$ctrl.active === transfer.id"> \t\t\t\t\t<div class="p-l-panel p-r-panel p-b-panel"> \t\t\t\t\t\t<div class="media"> \t\t\t\t\t\t\t<div class="media-left"> \t\t\t\t\t\t\t\t<div class="circle circle-sm circle-inverse circle-responsive invisible"> \t\t\t\t\t\t\t\t\t<transfer-type-icon type="transfer.type"></transfer-type-icon> \t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t<div class="media-body"> \t\t\t\t\t\t\t<hr class="m-t-0 hidden-xs hidden-sm" /> \t\t\t\t\t\t\t<a \thref="" ng-click="$ctrl.close(transfer.id)" \t\t\t\t\t\t\t\tclass="visible-xs-inline-block visible-sm-inline-block text-no-decoration m-t-1" \t\t\t\t\t\t\t\tstyle="margin-left: -8px;"> \t\t\t\t\t\t\t<i class="icon icon-left-arrow icon-xxl"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t<div ng-transclude></div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t</div>'
+        };
+    }
+    function Collapsed() {
+        return {
+            transclude: !0,
+            template: ' \t\t\t\t<div class="p-a-panel" role="button" \t\t\t\t\tng-click="$ctrl.activate(transfer.id, $event)"> \t\t\t\t\t<div class="media"> \t\t\t\t\t\t<div class="media-left"> \t\t\t\t\t\t\t<div class="circle circle-sm circle-responsive" ng-class="{ \t\t\t\t\t\t\t\t\'circle-inverse\': !$ctrl.inactive || (transfer.id === $ctrl.active)}"> \t\t\t\t\t\t\t\t\t<transfer-type-icon type="transfer.type"></transfer-type-icon> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t</div> \t\t\t\t\t\t<div class="media-body" ng-transclude></div> \t\t\t\t\t\t<div class="media-right hidden-xs hidden"> \t\t\t\t\t\t\t<div class="btn-group pull-xs-right"> \t\t\t\t\t\t\t\t<a href="" role="button" class="dropdown-toggle" \t\t\t\t\t\t\t\t\tdata-toggle="dropdown" aria-expanded="false"> \t\t\t\t\t\t\t\t\t<div class="pips"> \t\t\t\t\t\t\t\t\t\t<div class="pip"></div> \t\t\t\t\t\t\t\t\t\t<div class="pip"></div> \t\t\t\t\t\t\t\t\t\t<div class="pip"></div> \t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t<ul class="dropdown-menu dropdown-menu-right" role="menu"> \t\t\t\t\t\t\t\t\t<li><a href="">Repeat</a></li> \t\t\t\t\t\t\t\t\t<li><a href="">View details</a></li> \t\t\t\t\t\t\t\t</ul> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t</div>'
+        };
+    }
     function Card() {
         return {
-            restrict: "E",
-            scope: {
-                label: "@"
-            },
-            require: "^twExpandableCards",
             transclude: !0,
-            template: ' \t\t\t<li \tclass="list-group-item p-a-0" \t\t\t\t\tng-class="{ \t\t\t\t\t\t\'list-group-item-danger\': transfer.status === \'PAUSED\', \t\t\t\t\t\t\'list-group-item-warning\': transfer.status === \'AWAITING_FUNDS\', \t\t\t\t\t\t\'list-group-item-info\': transfer.status === \'PROCESSING\' || transfer.status === \'FUNDED\', \t\t\t\t\t\t\'list-group-item-success\': transfer.status === \'PAID_OUT\', \t\t\t\t\t\t\'active\': $ctrl.active === transfer.id, \t\t\t\t\t\t\'disabled\': transfer.status === \'CANCELLED\' \t\t\t\t\t}"> \t\t\t\t\t<div class="p-a-panel" role="button" \t\t\t\t\t\tng-click="$ctrl.activate(transfer.id, $event)"> \t\t\t\t\t\t<div class="media"> \t\t\t\t\t\t\t<div class="media-left"> \t\t\t\t\t\t\t\t<div class="circle circle-sm circle-responsive" ng-class="{ \t\t\t\t\t\t\t\t\t\'circle-inverse\': !$ctrl.inactive || (transfer.id === $ctrl.active)}"> \t\t\t\t\t\t\t\t\t\t<transfer-type-icon type="transfer.type"></transfer-type-icon> \t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t<div class="media-body" ng-transclude></div> \t\t\t\t\t\t\t<div class="media-right hidden-xs hidden"> \t\t\t\t\t\t\t\t<div class="btn-group pull-xs-right"> \t\t\t\t\t\t\t\t\t<a href="" role="button" class="dropdown-toggle" \t\t\t\t\t\t\t\t\t\tdata-toggle="dropdown" aria-expanded="false"> \t\t\t\t\t\t\t\t\t\t<div class="pips"> \t\t\t\t\t\t\t\t\t\t\t<div class="pip"></div> \t\t\t\t\t\t\t\t\t\t\t<div class="pip"></div> \t\t\t\t\t\t\t\t\t\t\t<div class="pip"></div> \t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t\t<ul class="dropdown-menu dropdown-menu-right" role="menu"> \t\t\t\t\t\t\t\t\t\t<li><a href="">Repeat</a></li> \t\t\t\t\t\t\t\t\t\t<li><a href="">View details</a></li> \t\t\t\t\t\t\t\t\t</ul> \t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t</li>',
-            link: function($scope, $element, $attrs, $ctrl) {
-                $scope.card = {
-                    label: $scope.label
-                }, $ctrl.addCard($scope.card);
-            }
+            template: " \t\t\t<li \tclass=\"list-group-item p-a-0\" \t\t\t\t\tng-class=\"{ \t\t\t\t\t\t'list-group-item-danger': transfer.status === 'PAUSED', \t\t\t\t\t\t'list-group-item-warning': transfer.status === 'AWAITING_FUNDS', \t\t\t\t\t\t'list-group-item-info': transfer.status === 'PROCESSING' || transfer.status === 'FUNDED', \t\t\t\t\t\t'list-group-item-success': transfer.status === 'PAID_OUT', \t\t\t\t\t\t'active': $ctrl.active === transfer.id, \t\t\t\t\t\t'disabled': transfer.status === 'CANCELLED' \t\t\t\t\t}\"> \t\t\t\t<div ng-transclude></div> \t\t\t</li>"
         };
     }
     function CardContainer() {
         return {
-            restrict: "E",
-            controllerAs: "$ctrl",
-            replace: !1,
-            scope: {
-                transfers: "=",
-                currencies: "=",
-                inactive: "="
-            },
-            transclude: !0,
-            template: '<div ng-transclude class="list-group panel-list-group list-group-slide-out" \t\t\t\tng-class="{\'list-group-inactive\': $ctrl.inactive}"></div>',
+            controllerAs: "ContainerController",
             bindToController: !0,
-            controller: [ "$scope", "$window", "$location", "$rootScope", "$timeout", function($scope, $window, $location, $rootScope, $timeout) {
-                this.cards = [], this.addCard = function(card) {
-                    this.cards.push(card);
-                };
-                var $ctrl = this;
-                $ctrl.activate = function(id, $event) {
-                    $ctrl.updateHash(id);
-                }, $ctrl.close = function(id) {
-                    $ctrl.updateHash(id);
-                }, $ctrl.updateHash = function(id) {
-                    $ctrl.active === id ? $location.hash("") : $location.hash(id);
-                }, $ctrl.updateOpenItem = function(id) {
-                    id = !isNaN(parseInt(id)) && parseInt(id), $ctrl.active === id ? $ctrl.active = !1 : $ctrl.active = id;
-                }, $rootScope.$on("$locationChangeSuccess", function(event) {
-                    $ctrl.updateOpenItem($location.hash());
-                }), $ctrl.canRepeat = function(transfer) {
-                    return "CARD" !== transfer.type && "REQUEST" !== transfer.type && ("CANCELLED" === transfer.status || "COMPLETED" === transfer.status);
-                };
-            } ]
+            transclude: !0,
+            template: '<div ng-transclude class="list-group panel-list-group list-group-slide-out" \t\t\t\t\t\t\tng-class="{\'list-group-inactive\': $ctrl.inactive}"></div>'
         };
     }
-    angular.module("tw.layout-components").directive("twExpandableCard", Card).directive("twExpandableCards", CardContainer);
+    angular.module("tw.layout-components").directive("twActivityCardRepeat", Repeat).directive("twActivityCardExpanded", Expanded).directive("twActivityCardCollapsed", Collapsed).directive("twActivityCard", Card).directive("twActivityCardContainer", CardContainer);
 }(window.angular), function(angular) {
     function TwAffix() {
         return {
