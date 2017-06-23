@@ -1274,30 +1274,362 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     function Card() {
         return {
             restrict: "E",
-            scope: {},
-            require: "^CardContainer",
+            scope: {
+                label: "@"
+            },
+            require: "^twExpandableCards",
             transclude: !0,
-            template: ' \t\t\t\t<div class="card"> \t\t\t\t\t<div ng-translude></div> \t\t\t\t</div> \t\t\t',
+            template: " \t\t\t<div \tng-transclude class=\"list-group-item p-a-0\" \t\t\t\t\tng-class=\"{ \t\t\t\t\t\t'list-group-item-danger': transfer.status === 'PAUSED', \t\t\t\t\t\t'list-group-item-warning': transfer.status === 'AWAITING_FUNDS', \t\t\t\t\t\t'list-group-item-info': transfer.status === 'PROCESSING' || transfer.status === 'FUNDED', \t\t\t\t\t\t'list-group-item-success': transfer.status === 'PAID_OUT', \t\t\t\t\t\t'active': $ctrl.active === transfer.id, \t\t\t\t\t\t'disabled': transfer.status === 'CANCELLED' \t\t\t\t\t}\"> \t\t\t</div>",
             link: function($scope, $element, $attrs, $ctrl) {
-                $ctrl.addCard($scope.card);
+                $scope.card = {
+                    label: $scope.label
+                }, $ctrl.addCard($scope.card);
             }
         };
     }
     function CardContainer() {
         return {
             restrict: "E",
-            scope: {},
+            controllerAs: "$ctrl",
+            replace: !1,
+            scope: {
+                transfers: "=",
+                currencies: "=",
+                inactive: "="
+            },
             transclude: !0,
-            controller: function() {
+            template: '<div ng-transclude class="list-group panel-list-group list-group-slide-out" \t\t\t\tng-class="{\'list-group-inactive\': $ctrl.inactive}"></div>',
+            bindToController: !0,
+            controller: [ "$scope", "$window", "$location", "$rootScope", "$timeout", function($scope, $window, $location, $rootScope, $timeout) {
                 this.cards = [], this.addCard = function(card) {
                     this.cards.push(card);
                 };
-            },
-            controllerAs: "ContainerController",
-            template: ' \t\t\t\t<div class="card-container"> \t\t\t\t\t<ul class="card-list"> \t\t\t\t\t\t<li ng-repeat="card in ContainerController.cards">             \t\t\t\t<h6 href="" ng-bind="tab.label"             \t\t\t\t\tng-click="ContainerController.expand($index);">boop</h6>           \t\t\t\t</li> \t\t\t\t\t</ul>\t\t\t\t\t</div> \t\t\t'
+                var $ctrl = this;
+                $ctrl.activate = function(id, $event) {
+                    $ctrl.updateHash(id);
+                }, $ctrl.close = function(id) {
+                    $ctrl.updateHash(id);
+                }, $ctrl.updateHash = function(id) {
+                    $ctrl.active === id ? $location.hash("") : $location.hash(id);
+                }, $ctrl.updateOpenItem = function(id) {
+                    id = !isNaN(parseInt(id)) && parseInt(id), $ctrl.active === id ? $ctrl.active = !1 : $ctrl.active = id;
+                }, $rootScope.$on("$locationChangeSuccess", function(event) {
+                    $ctrl.updateOpenItem($location.hash());
+                }), $ctrl.canRepeat = function(transfer) {
+                    return "CARD" !== transfer.type && "REQUEST" !== transfer.type && ("CANCELLED" === transfer.status || "COMPLETED" === transfer.status);
+                };
+            } ]
         };
     }
-    angular.module("tw.layout-components").directive("twExpandableCard", Card).directive("twExpandableCards", CardContainer);
+    function TransferService($q) {
+        this.list = function(filters) {
+            var transfers = this.transfers;
+            return angular.forEach(filters, function(filterValue, filterKey) {
+                transfers = transfers.filter(function(transfer) {
+                    return angular.isArray(filterValue) ? transfer[filterKey] && filterValue.indexOf(transfer[filterKey]) >= 0 : transfer[filterKey] === filterValue;
+                });
+            }), $q.when(transfers);
+        }, this.transfers = [ {
+            id: 1,
+            type: "REQUEST",
+            source: "GBP",
+            target: "USD",
+            fixed: "RATE",
+            sourceAmount: 10,
+            targetAmount: 12.34,
+            sourceAccount: {
+                name: "Mike Marter",
+                shortString: "Account ending 1234"
+            },
+            targetAccount: {
+                name: "Steve Pole",
+                shortString: "Account ending 1234"
+            },
+            status: "PAUSED",
+            reason: "We received your money. There was a problem with your documents.",
+            reference: "Ref123",
+            fee: .5,
+            rate: 1.2345,
+            created: "2016-06-30T12:34:56Z",
+            updated: "2016-07-01T12:34:56Z"
+        }, {
+            id: 2,
+            type: "TRANSFER",
+            source: "GBP",
+            target: "USD",
+            fixed: "TARGET",
+            sourceAmount: 10,
+            targetAmount: 12.34,
+            sourceAccount: {
+                name: "Steve Pole",
+                type: "CARD",
+                shortString: "Debit card ending 4321"
+            },
+            targetAccount: {
+                name: "Steve Pole",
+                type: "WALLET",
+                shortString: "USD balance"
+            },
+            status: "PROCESSING",
+            reason: "We received your money. We're processing your transfer.",
+            reference: "Ref123",
+            fee: .5,
+            rate: 1.2345,
+            created: "2016-06-30T12:34:56Z",
+            updated: "2016-07-01T12:34:56Z"
+        }, {
+            id: 3,
+            type: "TRANSFER",
+            source: "GBP",
+            target: "USD",
+            fixed: "SOURCE",
+            sourceAmount: 10,
+            targetAmount: 12.34,
+            sourceAccount: {
+                name: "Steve Pole",
+                type: "CARD",
+                shortString: "Debit card ending 4321"
+            },
+            targetAccount: {
+                name: "Steve Pole",
+                type: "WALLET",
+                shortString: "USD balance"
+            },
+            status: "CONVERTING",
+            reason: "Converting",
+            reference: "Ref123",
+            fee: 5.5,
+            rate: 1.2345,
+            created: "2016-06-30T12:34:56Z",
+            updated: "2016-07-01T12:34:56Z"
+        }, {
+            id: 4,
+            type: "TRANSFER",
+            source: "GBP",
+            target: "USD",
+            fixed: "SOURCE",
+            sourceAmount: 10,
+            targetAmount: 12.34,
+            sourceAccount: {
+                name: "Steve Pole",
+                type: "ACCOUNT",
+                shortString: "Account ending 9876"
+            },
+            targetAccount: {
+                name: "Mike Marter",
+                shortString: "Account ending 1234"
+            },
+            status: "AWAITING_FUNDS",
+            reason: "Waiting for you to pay in.",
+            reference: "Ref123",
+            fee: .5,
+            rate: 1.2345,
+            created: "2016-06-30T12:34:56Z",
+            updated: "2016-07-01T12:34:56Z",
+            batch: 1
+        }, {
+            id: 5,
+            type: "TRANSFER",
+            source: "GBP",
+            target: "USD",
+            fixed: "SOURCE",
+            sourceAmount: 1e7,
+            targetAmount: 12345e3,
+            sourceAccount: {
+                name: "Steve Pole",
+                type: "ACCOUNT",
+                shortString: "Account ending 9876"
+            },
+            targetAccount: {
+                name: "Mike Marter",
+                shortString: "Account ending 1234"
+            },
+            status: "FUNDED",
+            reason: "We're waiting for your money to arrive in our account.",
+            reference: "Ref123",
+            fee: 50,
+            rate: 1.2345,
+            created: "2016-06-30T12:34:56Z",
+            updated: "2016-07-01T12:34:56Z",
+            batch: 1
+        }, {
+            id: 6,
+            type: "TRANSFER",
+            source: "GBP",
+            target: "USD",
+            fixed: "SOURCE",
+            sourceAmount: 100,
+            targetAmount: 123.45,
+            sourceAccount: {
+                name: "Steve Pole",
+                type: "CARD",
+                shortString: "Debite card ending 4321"
+            },
+            targetAccount: {
+                name: "Steve Pole",
+                type: "ACCOUNT",
+                shortString: "Account ending 1234"
+            },
+            status: "PAID_OUT",
+            reason: "We've sent out your money, it may take some time to arrive in the account.",
+            reference: "Ref123",
+            fee: .5,
+            rate: 1.2345,
+            created: "2016-06-30T12:34:56Z",
+            updated: "2016-07-01T12:34:56Z",
+            completed: "2016-07-01T12:34:56Z"
+        }, {
+            id: 7,
+            type: "TRANSFER",
+            source: "GBP",
+            target: "GBP",
+            fixed: "SOURCE",
+            sourceAmount: 2.5,
+            targetAmount: 2.5,
+            sourceAccount: {
+                name: "Steve Pole",
+                type: "CARD",
+                shortString: "Debit card ending 4321"
+            },
+            targetAccount: {
+                name: "Peet's coffee",
+                type: "MERCHANT",
+                shortString: "Merchant account"
+            },
+            status: "COMPLETED",
+            reference: "Ref123",
+            fee: 0,
+            rate: 1,
+            created: "2016-06-30T12:34:56Z",
+            updated: "2016-07-01T12:34:56Z",
+            completed: "2016-07-01T12:34:56Z"
+        }, {
+            id: 8,
+            type: "REQUEST",
+            source: "GBP",
+            target: "GBP",
+            fixed: "SOURCE",
+            sourceAmount: 2.5,
+            targetAmount: 2.5,
+            sourceAccount: {
+                name: "Kish Patel",
+                type: "ACCOUNT",
+                shortString: "Account ending 1234"
+            },
+            targetAccount: {
+                name: "Steve Pole",
+                type: "WALLET",
+                shortString: "GBP balance"
+            },
+            status: "COMPLETED",
+            reference: "Ref123",
+            fee: 0,
+            rate: 1,
+            created: "2016-06-12T12:34:56Z",
+            updated: "2016-06-12T12:34:56Z",
+            completed: "2016-06-12T12:34:56Z"
+        }, {
+            id: 9,
+            type: "TRANSFER",
+            source: "GBP",
+            target: "EUR",
+            fixed: "SOURCE",
+            sourceAmount: 1e7,
+            targetAmount: 11987e3,
+            sourceAccount: {
+                name: "Steve Pole",
+                type: "ACCOUNT",
+                shortString: "Account ending 9876"
+            },
+            targetAccount: {
+                name: "Steve Pole",
+                type: "ACCOUNT",
+                shortString: "Account ending 1234"
+            },
+            status: "CANCELLED",
+            reference: "NewHouse",
+            fee: 500,
+            rate: 1.1987,
+            created: "2016-06-09T12:34:56Z",
+            updated: "2016-06-10T12:34:56Z"
+        }, {
+            id: 10,
+            type: "TRANSFER",
+            source: "GBP",
+            target: "GBP",
+            fixed: "SOURCE",
+            sourceAmount: 100,
+            targetAmount: 100,
+            sourceAccount: {
+                name: "Steve Pole",
+                type: "CARD",
+                shortString: "Debit card ending 4321"
+            },
+            targetAccount: {
+                name: "Steve Pole",
+                type: "WALLET",
+                shortString: "GBP balance"
+            },
+            status: "COMPLETED",
+            reference: "Ref123",
+            fee: 0,
+            rate: 1,
+            created: "2016-03-30T12:34:56Z",
+            updated: "2016-04-01T12:34:56Z",
+            completed: "2016-04-01T12:34:56Z"
+        }, {
+            id: 11,
+            type: "TRANSFER",
+            source: "EUR",
+            target: "GBP",
+            fixed: "SOURCE",
+            sourceAmount: 100,
+            targetAmount: 91.23,
+            sourceAccount: {
+                name: "Steve Pole",
+                type: "WALLET",
+                shortString: "EUR balance"
+            },
+            targetAccount: {
+                name: "Steve Pole",
+                type: "WALLET",
+                shortString: "GBP balance"
+            },
+            status: "COMPLETED",
+            reference: "Ref123",
+            fee: .5,
+            rate: .9123,
+            created: "2016-03-30T12:34:56Z",
+            updated: "2016-04-01T12:34:56Z",
+            completed: "2016-04-01T12:34:56Z"
+        }, {
+            id: 12,
+            type: "REWARD",
+            source: "GBP",
+            target: "GBP",
+            fixed: "SOURCE",
+            sourceAmount: 10,
+            targetAmount: 10,
+            sourceAccount: {
+                name: "TransferWise",
+                type: "WALLET",
+                shortString: "Referral program"
+            },
+            targetAccount: {
+                name: "Steve Pole",
+                type: "WALLET",
+                shortString: "GBP balance"
+            },
+            status: "COMPLETED",
+            reference: "Referral Bonus",
+            fee: 0,
+            rate: 1,
+            created: "2016-03-30T12:34:56Z",
+            updated: "2016-04-01T12:34:56Z",
+            completed: "2016-04-01T12:34:56Z"
+        } ];
+    }
+    angular.module("tw.layout-components").directive("twExpandableCard", Card).directive("twExpandableCards", CardContainer).service("TransferService", [ "$q", TransferService ]);
 }(window.angular), function(angular) {
     function TwAffix() {
         return {
