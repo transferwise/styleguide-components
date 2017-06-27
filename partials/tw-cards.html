@@ -1,0 +1,57 @@
+<h4 id="cards">Cards</h4>
+<p>These are cards that have information about an activity and provide
+    more detail when they're expanded.</p>
+<p>They expand differently on mobile</p>
+<hr />
+
+<tw-cards>
+    <tw-card
+        status = "COMPLETE"
+        icon = "TOPUP"
+        form = "true"
+    >
+        <collapsed>
+            <h3>this is the header of collapsed</h3>
+            <p> this is some info of collapsed </p>
+        </collapsed>
+        <expandin>
+            <p>this is info that's been expanded in</p>
+        </expandin>
+        <card-form>
+            <p> click this button to repeat the transfer </p>
+        </card-form>
+    </tw-card>
+    <tw-card
+        status = "BLOCKED"
+        icon = "TRANSFER"
+        form = "false"
+        expanded = "true"
+    >
+        <collapsed>
+            <h3>this is the header of collapsed</h3>
+            <p> this is some info of collapsed </p>
+        </collapsed>
+        <expandin>
+            <p>this is info that's been expanded in</p>
+        </expandin>
+        <card-form>
+            <p> click this button to repeat the transfer </p>
+        </card-form>
+    </tw-card>
+    <tw-card
+        status = "PENDING"
+        icon = "TRANSFER"
+        form = "true"
+    >
+        <collapsed>
+            <h3>this is the header of collapsed</h3>
+            <p> this is some info of collapsed </p>
+        </collapsed>
+        <expandin>
+            <p>this is info that's been expanded in</p>
+        </expandin>
+        <card-form>
+            <p> click this button to repeat the transfer </p>
+        </card-form>
+    </tw-card>
+</tw-cards>

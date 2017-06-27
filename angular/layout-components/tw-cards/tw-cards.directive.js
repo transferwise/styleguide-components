@@ -1,10 +1,14 @@
 (function(angular) {
     'use strict';
 
+    // ask about
+    // - colouring
+    // - where tests go / e2e, frone-end ? jenkins ?
+
     angular
         .module('tw.layout-components')
-        .directive('twActivityCardContainer', CardContainer)
-        .directive('twActivityCard', Card);
+        .directive('twCards', CardContainer)
+        .directive('twCard', Card);
 
     function CardController() {
         var $ctrl = this;
@@ -15,26 +19,32 @@
 
     function Card() {
         return {
-            require: {cardContainerController: '^twActivityCardContainer'},
+            require: {cardContainerController: '^twCards'},
             controllerAs: '$ctrl',
             bindToController: true,
             scope: {
                 status: '@',
                 icon: '@',
                 form: '<',
-                expanded: '=',
-                index: '<'
+                index: '<',
+                expanded: '=?'
             },
             transclude: {
-                collapsedCard: 'twActivityCardCollapsed',
-                expandedCard: 'twActivityCardExpanded',
-                formCard: 'twActivityCardForm'
+                collapsedCard: 'collapsed',
+                expandedCard: '?expandin',
+                formCard: '?cardForm'
             },
             controller: [CardController],
             template: templateStr,
             link: function ($scope, $element, $attrs, $ctrl) {
                 $ctrl.cardContainerController.addCard($scope.$ctrl);
                 $scope.$ctrl.index = $ctrl.cardContainerController.cards.length - 1;
+
+                if($scope.$ctrl.expanded == null){
+                    $scope.$ctrl.expanded = false;
+                } else {
+                    $ctrl.cardContainerController.expandedIdx = $scope.$ctrl.index;
+                }
             }
         };
     }
@@ -43,9 +53,8 @@
         '<div class="p-a-panel" role="button" ng-click="$ctrl.toggle($ctrl.index)"> \
             <div class="media"> \
                 <div class="media-left"> \
-                    <div class="circle circle-sm circle-responsive" ng-class="{ \
-                        \'circle-inverse\': !$ctrl.expanded }"> \
-                            <transfer-type-icon type="$ctrl.icon"></transfer-type-icon> \
+                    <div class="circle circle-sm circle-responsive circle-inverse"> \
+                        <transfer-type-icon type="$ctrl.icon"></transfer-type-icon> \
                     </div> \
                 </div> \
                 <div class="media-body" ng-transclude="collapsedCard"></div> \
