@@ -1271,39 +1271,60 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     angular.module("tw.form-components").directive("twFileInput", TwFileInputDirective).controller("twUploadController", TwUploadController).directive("twUpload", TwUploadDirective);
 }(window.angular), function(angular) {
     "use strict";
-    function Repeat() {
-        return {
-            transclude: !0,
-            template: ' \t\t\t\t<div class="well p-l-panel p-r-panel"  > \t\t\t\t\t<div class="media"> \t\t\t\t\t\t<div class="media-left"> \t\t\t\t\t\t\t<div class="circle circle-sm circle-responsive invisible"> \t\t\t\t\t\t\t\t<i class="icon icon-transfer"></i> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t</div> \t\t\t\t\t\t<div class="media-body"> \t\t\t\t\t\t\t<repeat-transfer \t\t\t\t\t\t\t\tsource="transfer.source" \t\t\t\t\t\t\t\ttarget="transfer.target" \t\t\t\t\t\t\t\tsource-amount="{{transfer.sourceAmount}}" \t\t\t\t\t\t\t\ttarget-amount="{{transfer.targetAmount}}" \t\t\t\t\t\t\t\treceiving-account="transfer.account.id" \t\t\t\t\t\t\t\tcurrencies="$ctrl.currencies"> \t\t\t\t\t\t\t</repeat-transfer> \t\t\t\t\t\t\t<div ng-transclude></div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t</div>'
-        };
-    }
-    function Expanded() {
-        return {
-            transclude: !0,
-            template: ' \t\t\t\t<div \tclass="collapse" \t\t\t\t\t\tng-attr-aria-expanded="{{$ctrl.active === transfer.id}}" \t\t\t\t\t\tng-class="{\'in\': $ctrl.active === transfer.id}" \t\t\t\t\t\tng-if="$ctrl.active === transfer.id"> \t\t\t\t\t<div class="p-l-panel p-r-panel p-b-panel"> \t\t\t\t\t\t<div class="media"> \t\t\t\t\t\t\t<div class="media-left"> \t\t\t\t\t\t\t\t<div class="circle circle-sm circle-inverse circle-responsive invisible"> \t\t\t\t\t\t\t\t\t<transfer-type-icon type="transfer.type"></transfer-type-icon> \t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t<div class="media-body"> \t\t\t\t\t\t\t<hr class="m-t-0 hidden-xs hidden-sm" /> \t\t\t\t\t\t\t<a \thref="" ng-click="$ctrl.close(transfer.id)" \t\t\t\t\t\t\t\tclass="visible-xs-inline-block visible-sm-inline-block text-no-decoration m-t-1" \t\t\t\t\t\t\t\tstyle="margin-left: -8px;"> \t\t\t\t\t\t\t<i class="icon icon-left-arrow icon-xxl"></i> \t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t<div ng-transclude></div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t</div>'
-        };
-    }
-    function Collapsed() {
-        return {
-            transclude: !0,
-            template: ' \t\t\t\t<div class="p-a-panel" role="button" \t\t\t\t\tng-click="$ctrl.activate(transfer.id, $event)"> \t\t\t\t\t<div class="media"> \t\t\t\t\t\t<div class="media-left"> \t\t\t\t\t\t\t<div class="circle circle-sm circle-responsive" ng-class="{ \t\t\t\t\t\t\t\t\'circle-inverse\': !$ctrl.inactive || (transfer.id === $ctrl.active)}"> \t\t\t\t\t\t\t\t\t<transfer-type-icon type="transfer.type"></transfer-type-icon> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t</div> \t\t\t\t\t\t<div class="media-body" ng-transclude></div> \t\t\t\t\t\t<div class="media-right hidden-xs hidden"> \t\t\t\t\t\t\t<div class="btn-group pull-xs-right"> \t\t\t\t\t\t\t\t<a href="" role="button" class="dropdown-toggle" \t\t\t\t\t\t\t\t\tdata-toggle="dropdown" aria-expanded="false"> \t\t\t\t\t\t\t\t\t<div class="pips"> \t\t\t\t\t\t\t\t\t\t<div class="pip"></div> \t\t\t\t\t\t\t\t\t\t<div class="pip"></div> \t\t\t\t\t\t\t\t\t\t<div class="pip"></div> \t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t<ul class="dropdown-menu dropdown-menu-right" role="menu"> \t\t\t\t\t\t\t\t\t<li><a href="">Repeat</a></li> \t\t\t\t\t\t\t\t\t<li><a href="">View details</a></li> \t\t\t\t\t\t\t\t</ul> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t</div>'
+    function CardController() {
+        var $ctrl = this;
+        $ctrl.toggle = function(index) {
+            $ctrl.cardContainerController.toggle(index);
         };
     }
     function Card() {
         return {
-            transclude: !0,
-            template: " \t\t\t<li \tclass=\"list-group-item p-a-0\" \t\t\t\t\tng-class=\"{ \t\t\t\t\t\t'list-group-item-danger': transfer.status === 'PAUSED', \t\t\t\t\t\t'list-group-item-warning': transfer.status === 'AWAITING_FUNDS', \t\t\t\t\t\t'list-group-item-info': transfer.status === 'PROCESSING' || transfer.status === 'FUNDED', \t\t\t\t\t\t'list-group-item-success': transfer.status === 'PAID_OUT', \t\t\t\t\t\t'active': $ctrl.active === transfer.id, \t\t\t\t\t\t'disabled': transfer.status === 'CANCELLED' \t\t\t\t\t}\"> \t\t\t\t<div ng-transclude></div> \t\t\t</li>"
+            require: {
+                cardContainerController: "^twActivityCardContainer"
+            },
+            controllerAs: "$ctrl",
+            bindToController: !0,
+            scope: {
+                status: "@",
+                icon: "@",
+                form: "<",
+                expanded: "=",
+                index: "<"
+            },
+            transclude: {
+                collapsedCard: "twActivityCardCollapsed",
+                expandedCard: "twActivityCardExpanded",
+                formCard: "twActivityCardForm"
+            },
+            controller: [ CardController ],
+            template: templateStr,
+            link: function($scope, $element, $attrs, $ctrl) {
+                $ctrl.cardContainerController.addCard($scope.$ctrl), $scope.$ctrl.index = $ctrl.cardContainerController.cards.length - 1;
+            }
+        };
+    }
+    function CardContainerController() {
+        var $ctrl = this;
+        $ctrl.cards = [], $ctrl.expandedIdx = null, $ctrl.addCard = function(expanded) {
+            $ctrl.cards.push(expanded);
+        }, $ctrl.toggle = function(index) {
+            null != $ctrl.expandedIdx && $ctrl.expandedIdx !== index && ($ctrl.cards[$ctrl.expandedIdx].expanded = !1, 
+            $ctrl.expandedIdx = null), $ctrl.cards[index].expanded ? $ctrl.cards[index].expanded = !1 : ($ctrl.expandedIdx = index, 
+            $ctrl.cards[index].expanded = !0);
         };
     }
     function CardContainer() {
         return {
-            controllerAs: "ContainerController",
+            scope: {},
+            controllerAs: "$ctrl",
+            controller: [ CardContainerController ],
             bindToController: !0,
             transclude: !0,
-            template: '<div ng-transclude class="list-group panel-list-group list-group-slide-out" \t\t\t\t\t\t\tng-class="{\'list-group-inactive\': $ctrl.inactive}"></div>'
+            template: '<ul ng-transclude class="list-group panel-list-group list-group-slide-out"                             ng-class="{\'list-group-inactive\': $ctrl.inactive}">                         </ul>'
         };
     }
-    angular.module("tw.layout-components").directive("twActivityCardRepeat", Repeat).directive("twActivityCardExpanded", Expanded).directive("twActivityCardCollapsed", Collapsed).directive("twActivityCard", Card).directive("twActivityCardContainer", CardContainer);
+    angular.module("tw.layout-components").directive("twActivityCardContainer", CardContainer).directive("twActivityCard", Card);
+    var collapsedCardTemplate = '<div class="p-a-panel" role="button" ng-click="$ctrl.toggle($ctrl.index)">             <div class="media">                 <div class="media-left">                     <div class="circle circle-sm circle-responsive" ng-class="{                         \'circle-inverse\': !$ctrl.expanded }">                             <transfer-type-icon type="$ctrl.icon"></transfer-type-icon>                     </div>                 </div>                 <div class="media-body" ng-transclude="collapsedCard"></div>             </div>         </div>', expandedCardTemplate = '<div   class="collapse"                 ng-attr-aria-expanded = { $ctrl.expanded }                 ng-class="{\'in\': $ctrl.expanded }"                 ng-if = "$ctrl.expanded" >             <div class="p-l-panel p-r-panel p-b-panel">                 <div class="media">                     <div class="media-left">                         <div class="circle circle-sm circle-inverse circle-responsive invisible">                             <transfer-type-icon type = "$ctrl.icon" ></transfer-type-icon>                         </div>                     </div>                 <div class="media-body">                     <hr class="m-t-0 hidden-xs hidden-sm" />                     <a  href="" ng-click="$ctrl.toggle($ctrl.index)"                         class="visible-xs-inline-block visible-sm-inline-block text-no-decoration m-t-1"                         style="margin-left: -8px;">                         <i class="icon icon-left-arrow icon-xxl"></i>                     </a>                     <div ng-transclude="expandedCard"></div>                 </div>             </div>         </div>', formCardTemplate = '<div class="well p-l-panel p-r-panel" ng-if="$ctrl.form">             <div class="media">                 <div class="media-left">                     <div class="circle circle-sm circle-responsive invisible">                         <i class="icon icon-transfer"></i>                     </div>                 </div>                 <div class="media-body" ng-transclude="formCard"></div>             </div>         </div>', templateStr = "<li    class=\"list-group-item p-a-0\"                 ng-class=\"{                     'list-group-item-danger': $ctrl.status === 'BLOCKED','list-group-item-info': $ctrl.status === 'PENDING' || $ctrl.status === 'INITIATED'                         || $ctrl.status === 'CONFIRMED' || $ctrl.status === 'RECEIVED',                     'list-group-item-success': $ctrl.status === 'COMPLETE',                     'active': $ctrl.expanded,                     'disabled': $ctrl.status === 'CANCELLED'                 }\">" + collapsedCardTemplate + expandedCardTemplate + formCardTemplate + "</li>";
 }(window.angular), function(angular) {
     function TwAffix() {
         return {
