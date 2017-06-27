@@ -6,9 +6,9 @@
 
 <tw-cards>
     <tw-card
-        status = "COMPLETE"
         icon = "TOPUP"
         form = "true"
+        colour = "blue"
     >
         <collapsed>
             <h3>this is the header of collapsed</h3>
@@ -22,7 +22,7 @@
         </card-form>
     </tw-card>
     <tw-card
-        status = "BLOCKED"
+        colour = "red"
         icon = "TRANSFER"
         form = "false"
         expanded = "true"
@@ -39,9 +39,10 @@
         </card-form>
     </tw-card>
     <tw-card
-        status = "PENDING"
+        colour = "green"
         icon = "TRANSFER"
         form = "true"
+        disabled = "true"
     >
         <collapsed>
             <h3>this is the header of collapsed</h3>

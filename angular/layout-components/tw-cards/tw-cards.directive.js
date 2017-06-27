@@ -1,9 +1,12 @@
 (function(angular) {
     'use strict';
 
+    // to do
+    // - testing
+
     // ask about
-    // - colouring
-    // - where tests go / e2e, frone-end ? jenkins ?
+    // - new disabled functionality
+    // - disabled styling
 
     angular
         .module('tw.layout-components')
@@ -23,15 +26,16 @@
             controllerAs: '$ctrl',
             bindToController: true,
             scope: {
-                status: '@',
+                colour: '@',
                 icon: '@',
                 form: '<',
                 index: '<',
-                expanded: '=?'
+                expanded: '=?',
+                disabled: '=?'
             },
             transclude: {
                 collapsedCard: 'collapsed',
-                expandedCard: '?expandin',
+                expandedCard: 'expandin',
                 formCard: '?cardForm'
             },
             controller: [CardController],
@@ -44,6 +48,9 @@
                     $scope.$ctrl.expanded = false;
                 } else {
                     $ctrl.cardContainerController.expandedIdx = $scope.$ctrl.index;
+                }
+                if($scope.$ctrl.disabled == null){
+                    $scope.$ctrl.disabled = false;
                 }
             }
         };
@@ -100,13 +107,12 @@
     var templateStr = 
         '<li    class="list-group-item p-a-0" \
                 ng-class="{ \
-                    \'list-group-item-danger\': $ctrl.status === \'BLOCKED\',' + 
-                    // \'list-group-item-warning\': transfer.status === \'AWAITING_FUNDS\', \
-                    '\'list-group-item-info\': $ctrl.status === \'PENDING\' || $ctrl.status === \'INITIATED\' \
-                        || $ctrl.status === \'CONFIRMED\' || $ctrl.status === \'RECEIVED\', \
-                    \'list-group-item-success\': $ctrl.status === \'COMPLETE\', \
+                    \'list-group-item-danger\': $ctrl.colour === \'red\', \
+                    \'list-group-item-warning\': $ctrl.colour === \'yellow\', \
+                    \'list-group-item-info\': $ctrl.colour === \'blue\', \
+                    \'list-group-item-success\': $ctrl.colour === \'green\', \
                     \'active\': $ctrl.expanded, \
-                    \'disabled\': $ctrl.status === \'CANCELLED\' \
+                    \'disabled\': $ctrl.disabled \
                 }">'
             + collapsedCardTemplate + expandedCardTemplate + formCardTemplate + 
         '</li>';
