@@ -1,13 +1,6 @@
 (function(angular) {
     'use strict';
 
-    // to do
-    // - testing
-
-    // ask about
-    // - new disabled functionality
-    // - disabled styling
-
     angular
         .module('tw.layout-components')
         .directive('twCards', CardContainer)
@@ -25,13 +18,15 @@
             require: {cardContainerController: '^twCards'},
             controllerAs: '$ctrl',
             bindToController: true,
+            replace: true,
             scope: {
                 colour: '@',
                 icon: '@',
                 form: '<',
                 index: '<',
                 expanded: '=?',
-                disabled: '=?'
+                disabled: '=?',
+                inactive: '<'
             },
             transclude: {
                 collapsedCard: 'collapsed',
@@ -43,6 +38,7 @@
             link: function ($scope, $element, $attrs, $ctrl) {
                 $ctrl.cardContainerController.addCard($scope.$ctrl);
                 $scope.$ctrl.index = $ctrl.cardContainerController.cards.length - 1;
+                $scope.$ctrl.inactive = $ctrl.cardContainerController.inactive;
 
                 if($scope.$ctrl.expanded == null){
                     $scope.$ctrl.expanded = false;
@@ -60,7 +56,8 @@
         '<div class="p-a-panel" role="button" ng-click="$ctrl.toggle($ctrl.index)"> \
             <div class="media"> \
                 <div class="media-left"> \
-                    <div class="circle circle-sm circle-responsive circle-inverse"> \
+                    <div class="circle circle-sm circle-responsive" ng-class="{ \
+                            \'circle-inverse\': !$ctrl.inactive }"> \
                         <transfer-type-icon type="$ctrl.icon"></transfer-type-icon> \
                     </div> \
                 </div> \
