@@ -52,6 +52,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 		{'value': 'es-ES', 'label': 'Spanish'},
 		{'value': 'es-US', 'label': 'Spanish US'},
 		{'value': 'pt-BR', 'label': 'Brazillian Portuguese'},
+		{'value': 'ja-JP', 'label': 'Japanese'},
 		{'value': 'xx-XX', 'label': 'Unknown locale'}
 	];
 
