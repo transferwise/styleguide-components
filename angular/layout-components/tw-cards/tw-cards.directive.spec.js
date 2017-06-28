@@ -7,6 +7,61 @@ describe('Directive: TwCards', function() {
         isolateScope,
         directiveElement;
 
+    beforeEach(module('tw.layout-components'));
+
+    beforeEach(inject(function($injector) {
+        $rootScope = $injector.get('$rootScope');
+        $compile = $injector.get('$compile');
+        $scope = $rootScope.$new();
+    }));
+
+    describe('transclusion, collapsed', function() {
+        beforeEach(function() {
+            var template = " \
+                <tw-cards> \
+                    <tw-card \
+                        icon='TRANSFER' \
+                        colour='blue'> \
+                        <collapsed> \
+                            <a class='transcluded-content'></a> \
+                        </collapsed> \
+                        <expandin> \
+                            <a class='transcluded-content'></a> \
+                        </expandin> \
+                    </tw-card> \
+                </tw-cards>";
+            directiveElement = getCompiledDirectiveElement($scope, template);
+        });
+        it('should render transcluded content of collapsed card', function() {
+            var transcluded = directiveElement.find('.transcluded-content');
+            expect(transcluded.length).toBe(1);
+        });
+    });
+
+    describe('transclusion, expanded', function() {
+        beforeEach(function() {
+            var template = " \
+                <tw-cards> \
+                    <tw-card \
+                        icon='TRANSFER' \
+                        colour='blue' \
+                        expanded='true'> \
+                        <collapsed> \
+                            <a class='transcluded-content'></a> \
+                        </collapsed> \
+                        <expandin> \
+                            <a class='transcluded-content'></a> \
+                        </expandin> \
+                    </tw-card> \
+                </tw-cards>";
+            directiveElement = getCompiledDirectiveElement($scope, template);
+        });
+        it('should render transcluded content of fully expanded card', function() {
+            var transcluded = directiveElement.find('.transcluded-content');
+            expect(transcluded.length).toBe(2);
+        });
+    });
+
     function getCompiledDirectiveElement($scope, template) {
         if (!template) {
             template = ' \

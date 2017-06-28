@@ -33,7 +33,7 @@
                 expandedCard: 'expandin',
                 formCard: '?cardForm'
             },
-            controller: [CardController],
+            controller: CardController,
             template: templateStr,
             link: function ($scope, $element, $attrs, $ctrl) {
                 $ctrl.cardContainerController.addCard($scope.$ctrl);
@@ -67,9 +67,9 @@
 
     var expandedCardTemplate = 
         '<div   class="collapse" \
-                ng-attr-aria-expanded = { $ctrl.expanded } \
+                ng-attr-aria-expanded="{{ $ctrl.expanded }}" \
                 ng-class="{\'in\': $ctrl.expanded }" \
-                ng-if = "$ctrl.expanded" > \
+                ng-if="$ctrl.expanded" > \
             <div class="p-l-panel p-r-panel p-b-panel"> \
                 <div class="media"> \
                     <div class="media-left"> \
@@ -142,7 +142,7 @@
                 inactive: '=?'
             },
             controllerAs: '$ctrl',
-            controller: [CardContainerController],
+            controller: CardContainerController,
             bindToController: true,
             transclude: true,
             template:   '<ul ng-transclude class="list-group panel-list-group list-group-slide-out" \

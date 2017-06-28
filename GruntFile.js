@@ -128,8 +128,7 @@ module.exports = function(grunt) {
             layoutComponents: {
                 src: [
                     'angular/layout-components/**/*.controller.js',
-                    'angular/layout-components/**/*.directive.js',
-                    'angular/**/*.service.js'
+                    'angular/layout-components/**/*.directive.js'
                 ],
                 dest: 'dist/js/layout-components.js',
                 options: {
