@@ -40,12 +40,12 @@
                 $scope.$ctrl.index = $ctrl.cardContainerController.cards.length - 1;
                 $scope.$ctrl.inactive = $ctrl.cardContainerController.inactive;
 
-                if($scope.$ctrl.expanded == null){
+                if ($scope.$ctrl.expanded == null){
                     $scope.$ctrl.expanded = false;
                 } else {
                     $ctrl.cardContainerController.expandedIdx = $scope.$ctrl.index;
                 }
-                if($scope.$ctrl.disabled == null){
+                if ($scope.$ctrl.disabled == null){
                     $scope.$ctrl.disabled = false;
                 }
             }
@@ -123,11 +123,11 @@
             $ctrl.cards.push(expanded);
         };
         $ctrl.toggle = function(index) {
-            if($ctrl.expandedIdx != null && $ctrl.expandedIdx !== index){
+            if ($ctrl.expandedIdx != null && $ctrl.expandedIdx !== index){
                 $ctrl.cards[$ctrl.expandedIdx].expanded = false;
                 $ctrl.expandedIdx = null;
             }
-            if($ctrl.cards[index].expanded){
+            if ($ctrl.cards[index].expanded){
                 $ctrl.cards[index].expanded = false;
             } else {
                 $ctrl.expandedIdx = index;
