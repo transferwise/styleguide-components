@@ -1318,7 +1318,9 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     }
     function CardContainer() {
         return {
-            scope: {},
+            scope: {
+                inactive: "=?"
+            },
             controllerAs: "$ctrl",
             controller: [ CardContainerController ],
             bindToController: !0,

@@ -141,7 +141,9 @@
 
     function CardContainer() {
         return {
-            scope: {},
+            scope: {
+                inactive: '=?'
+            },
             controllerAs: '$ctrl',
             controller: [CardContainerController],
             bindToController: true,
