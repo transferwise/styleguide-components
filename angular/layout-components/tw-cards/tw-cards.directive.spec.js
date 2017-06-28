@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: TwCards', function() {
+fdescribe('Directive: TwCards', function() {
     var $compile,
         $rootScope,
         $scope,
@@ -15,68 +15,46 @@ describe('Directive: TwCards', function() {
         $scope = $rootScope.$new();
     }));
 
-    describe('transclusion, collapsed', function() {
-        beforeEach(function() {
-            var template = " \
-                <tw-cards> \
-                    <tw-card \
-                        icon='TRANSFER' \
-                        colour='blue'> \
-                        <collapsed> \
-                            <a class='transcluded-content'></a> \
-                        </collapsed> \
-                        <expandin> \
-                            <a class='transcluded-content'></a> \
-                        </expandin> \
-                    </tw-card> \
-                </tw-cards>";
+    var template = " \
+        <tw-cards> \
+            <tw-card \
+                icon='TRANSFER' \
+                colour='blue' \
+                expanded='expanded'> \
+                <collapsed> \
+                    <a class='collapsed-content'></a> \
+                </collapsed> \
+                <expandin> \
+                    <a class='expanded-content'></a> \
+                </expandin> \
+            </tw-card> \
+        </tw-cards>";
+
+    describe('transclusion of collapsed content', function() {
+        beforeEach(function() { 
+            $scope.expanded = false;
             directiveElement = getCompiledDirectiveElement($scope, template);
         });
-        it('should render transcluded content of collapsed card', function() {
-            var transcluded = directiveElement.find('.transcluded-content');
-            expect(transcluded.length).toBe(1);
+        it('should render transcluded only content of collapsed card', function() {
+            var collapsed = directiveElement.find('.collapsed-content');
+            expect(collapsed.length).toBe(1);
         });
     });
 
-    describe('transclusion, expanded', function() {
+    describe('transclusion of expanded & collapsed content', function() {
         beforeEach(function() {
-            var template = " \
-                <tw-cards> \
-                    <tw-card \
-                        icon='TRANSFER' \
-                        colour='blue' \
-                        expanded='true'> \
-                        <collapsed> \
-                            <a class='transcluded-content'></a> \
-                        </collapsed> \
-                        <expandin> \
-                            <a class='transcluded-content'></a> \
-                        </expandin> \
-                    </tw-card> \
-                </tw-cards>";
+            $scope.expanded = true;
             directiveElement = getCompiledDirectiveElement($scope, template);
         });
         it('should render transcluded content of fully expanded card', function() {
-            var transcluded = directiveElement.find('.transcluded-content');
-            expect(transcluded.length).toBe(2);
+            var collapsed = directiveElement.find('.collapsed-content');
+            expect(collapsed.length).toBe(1);
+            var expanded = directiveElement.find('.expanded-content');
+            expect(expanded.length).toBe(1);
         });
     });
 
     function getCompiledDirectiveElement($scope, template) {
-        if (!template) {
-            template = ' \
-                <tw-cards> \
-                    <tw-card \
-                    	icon = "TRANSFER" \
-                    	colour = "blue" \
-                    	form = "true" \
-                    > \
-                    	<collapsed>one</collapsed> \
-                    	<expandin>two</expandin> \
-                    	<card-form>three</card-form> \
-                    </tw-card> \
-                </tw-cards>';
-        }
         var element = angular.element(template);
         // append to document so we can test document.activeElement
         angular.element(document.body).append(element);
