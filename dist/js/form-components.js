@@ -1465,7 +1465,39 @@ angular.module("tw.form-components", []);
         }, this.unformatUsingPattern = function(value, pattern) {
             for (var i = 0; i < pattern.length; i++) if ("*" !== pattern[i]) for (;value.indexOf(pattern[i]) >= 0; ) value = value.replace(pattern[i], "");
             return value;
+        }, this.countSeparatorsBeforeCursor = function(pattern, position) {
+            for (var separators = 0; pattern[position - separators - 1] && "*" !== pattern[position - separators - 1]; ) separators++;
+            return separators;
+        }, this.countSeparatorsAfterCursor = function(pattern, position) {
+            for (var separators = 0; pattern[position + separators] && "*" !== pattern[position + separators]; ) separators++;
+            return separators;
+        }, this.countSeparatorsInAppendedValue = function(pattern, position, value) {
+            for (var separators = 0, i = 0, toAllocate = value.length; toAllocate; ) "*" === pattern[position + i] || "undefined" == typeof pattern[position + i] ? toAllocate-- : separators++, 
+            i++;
+            return separators;
         };
     }
     angular.module("tw.form-styling").service("TwTextFormatService", TwTextFormatService);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwUndoStackFactory() {
+        this["new"] = function() {
+            return new UndoStack();
+        };
+    }
+    function UndoStack() {
+        var pointer = 0, stack = [];
+        this.reset = function(value) {
+            stack = [ value ], pointer = 0;
+        }, this.add = function(value) {
+            stack.length - 1 > pointer && (stack = stack.slice(0, pointer + 1)), stack[pointer] !== value && (stack.push(value), 
+            pointer++);
+        }, this.undo = function() {
+            return pointer >= 0 && "undefined" != typeof stack[pointer - 1] && pointer--, stack[pointer];
+        }, this.redo = function() {
+            return pointer < stack.length && "undefined" != typeof stack[pointer + 1] && pointer++, 
+            stack[pointer];
+        };
+    }
+    angular.module("tw.form-styling").service("TwUndoStackFactory", TwUndoStackFactory);
 }(window.angular);

@@ -40,5 +40,39 @@
       }
       return value;
     };
+
+    this.countSeparatorsBeforeCursor = function(pattern, position) {
+      var separators = 0;
+      while (pattern[position - separators - 1] &&
+        pattern[position - separators - 1] !== "*") {
+        separators++;
+      }
+      return separators;
+    };
+
+    this.countSeparatorsAfterCursor = function(pattern, position) {
+      var separators = 0;
+      while (pattern[position + separators] &&
+        pattern[position + separators] !== "*") {
+        separators++;
+      }
+      return separators;
+    };
+
+    this.countSeparatorsInAppendedValue = function(pattern, position, value) {
+      var separators = 0;
+      var i = 0;
+      var toAllocate = value.length;
+      while(toAllocate) {
+        if (pattern[position + i] === "*" ||
+          typeof pattern[position + i] === "undefined") {
+          toAllocate--;
+        } else {
+          separators++;
+        }
+        i++;
+      }
+      return separators;
+    };
   }
 })(window.angular);
