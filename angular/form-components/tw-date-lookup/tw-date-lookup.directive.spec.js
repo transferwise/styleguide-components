@@ -34,7 +34,8 @@ describe('Directive: TwDateLookup, ', function() {
     en: 'en-GB',
     fr: 'fr-FR',
     es: 'es-ES',
-    us: 'en-US'
+    us: 'en-US',
+    jp: 'ja-JP'
   };
 
   var BUTTON_SELECTOR = '.tw-date-lookup-button',
@@ -191,7 +192,7 @@ describe('Directive: TwDateLookup, ', function() {
     describe('when ngDisabled==true', function () {
       it('should be disabled', function () {
         $scope.ngModel = null;
-        $scope.ngDisabled = true
+        $scope.ngDisabled = true;
         element = getCompiledDirectiveElement($scope);
         expect(element.find(BUTTON_SELECTOR).attr('disabled')).toBeDefined();
       });
@@ -315,7 +316,7 @@ describe('Directive: TwDateLookup, ', function() {
           $scope.ngMax = new Date('invalid');
           element = getCompiledDirectiveElement($scope);
           ngModelController = element.controller('ngModel');
-        })
+        });
         it('should set ngModel to valid', function() {
           $scope.ngModel = new Date('2000-01-01');
           $scope.$digest();
@@ -491,6 +492,11 @@ describe('Directive: TwDateLookup, ', function() {
         $scope.locale = LOCALES.us;
         $scope.$digest();
         expect(selectedDate.text().trim().replace(/\s\s+/g, ' ')).toEqual('January 1, 2000');
+      });
+      it('should show date in Japanese format', function () {
+          $scope.locale = LOCALES.jp;
+          $scope.$digest();
+          expect(selectedDate.text().trim().replace(/\s\s+/g, ' ')).toEqual('2000年1月1日');
       });
     });
   });
