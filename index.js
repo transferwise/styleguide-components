@@ -277,7 +277,8 @@ angular.module('my-app', ['tw.styleguide-components'])
 		$ctrl.types = [
 			{'value': 'account', 'label': 'Account'},
 			{'value': 'profile', 'label': 'Profile'},
-			{'value': 'verification', 'label': 'Verification'}
+			{'value': 'verification', 'label': 'Verification'},
+			{'value': 'pay-in', 'label': 'Pay in'}
 		];
 		$ctrl.type = 'profile';
 
@@ -324,20 +325,70 @@ angular.module('my-app', ['tw.styleguide-components'])
 	controller: function() {
 		var $ctrl = this;
 		$ctrl.patterns = [
-			{value: '**** **** **** ****', label: 'Credit card number', note: '**** **** **** ****'},
-			{value: '** - ** - **', label: 'UK sort code', note: '** - ** - **'},
-			{value: '(+**) **** *** ***', label: 'UK phone number', note: '(+**) **** *** ***'},
-			{value: '***.***.***-**', label: 'Brazilian CPF ID', note: '***.***.***-**'},
-			{value: '**.***.*** - *', label: 'Chilean RUT ID', note: '**.***.*** - *'},
+			{
+				value: {
+					pattern: '**** **** **** ****',
+					minlength: 16,
+					maxlength: 20,
+					placeholder: 'Number on the front of your card',
+					helpText: 'Credit/debit cards have either 16 or 20 digits'
+				},
+				label: 'Credit card number',
+				note: '**** **** **** ****'
+			},
+			{
+				value: {
+					pattern: '** / **',
+					minlength: 4,
+					maxlength: 4,
+					placeholder: 'MM / YY',
+					helpText: 'Month, then year'
+				},
+				label: 'Card expiry',
+				note: '** / **'
+			},
+			{
+				value: {
+					pattern: '** - ** - **',
+					minlength: 6,
+					maxlength: 7,
+					placeholder: '** - ** - **',
+					helpText: 'UK sort codes have 6 or 7 digits'
+				},
+				label: 'UK sort code',
+				note: '** - ** - **',
+			},
+			{
+				value: {
+					pattern: '(+**) **** *** ***',
+					minlength: 10,
+					maxlength: 12,
+					placeholder: '(+**) **** *** ***'
+				},
+				label: 'UK phone number',
+				note: '(+**) **** *** ***',
+			},
+			{
+				value: {
+					pattern: '***.***.***-**',
+					minlength: 11,
+					maxlength: 11,
+					placeholder: '***.***.***-**'
+				},
+				label: 'Brazilian CPF ID',
+				note: '***.***.***-**',
+			},
+			{
+				value: {
+					pattern: '**.***.*** - *',
+					minlength: 9,
+					maxlength: 9,
+					placeholder: '**.***.*** - *'
+				},
+				label: 'Chilean RUT ID',
+				note: '**.***.*** - *',
+			},
 		];
-		//this.pattern = '**.***.*** - *';
-		$ctrl.maxlength = 9;
-		$ctrl.changePattern = function() {
-			// Would be nice to unformat the model and reformat,
-			// but we don't know old separators to remove
-			$ctrl.model = "";
-			$ctrl.maxlength = ($ctrl.pattern && $ctrl.pattern.match(/\*/g) || []).length;
-		};
 	},
 	bindings: {
 		model: "="

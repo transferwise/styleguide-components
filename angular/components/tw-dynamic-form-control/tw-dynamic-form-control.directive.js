@@ -26,18 +26,19 @@
 				uploadAccept: "@",
 				uploadIcon: "@",
 				uploadTooLargeMessage: "@",
-				options: "=",
+				options: "<",
 				ngModel: "=",
 				ngChange: "&",
-				ngRequired: "=",
-				ngDisabled: "=",
+				ngRequired: "<",
+				ngDisabled: "<",
 				// ngMinlength/ngMaxlength have default behaviour that cannot be overridden
-				ngMinlength: "=twMinlength",
-				ngMaxlength: "=twMaxlength",
-				ngMin: "=",
-				ngMax: "=",
-				ngPattern: "=",
-				uploadOptions: "="
+				ngMinlength: "<twMinlength",
+				ngMaxlength: "<twMaxlength",
+				ngMin: "<",
+				ngMax: "<",
+				ngPattern: "<",
+				uploadOptions: "<",
+				textFormat: "<"
 			},
 			template:
 			"<div ng-switch='$ctrl.type'> \
@@ -55,7 +56,8 @@
 					ng-focus='$ctrl.focus()' \
 					ng-blur='$ctrl.blur()' \
 					ng-minlength='$ctrl.ngMinlength' \
-					ng-maxlength='$ctrl.ngMaxlength' />  \
+					ng-maxlength='$ctrl.ngMaxlength' \
+					tw-text-format='{{$ctrl.textFormat}}' />  \
 				<input ng-switch-when='password'  \
 					name='{{$ctrl.name}}'  \
 					type='password' \

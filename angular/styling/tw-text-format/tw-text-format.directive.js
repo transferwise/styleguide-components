@@ -9,25 +9,56 @@
     return {
       restrict: 'A',
       require: 'ngModel',
+      bindToController: true,
+      controllerAs: '$ctrl',
+      scope: {
+        ngModel: '<',
+        twTextFormat: "@"
+      },
       controller: [
         '$element',
         '$timeout',
+        '$scope',
         'TwTextFormatService',
         TwTextFormatController
       ]
     };
   }
 
-  function TwTextFormatController($element, $timeout, TwTextFormatService) {
-    var ngModelController, element, undoStack, undoStackPointer;
+  function TwTextFormatController($element, $timeout, $scope, TwTextFormatService) {
+    var ngModelController, element, undoStack, $ctrl = this;
 
     function init() {
+      undoStack = new UndoStack();
+
       ngModelController = $element.controller('ngModel');
       element = $element[0];
 
-      ngModelController.$render = function() {
-        element.value = format(ngModelController.$viewValue);
-      };
+      $scope.$watch('$ctrl.twTextFormat', function(newPattern, oldPattern) {
+        if (newPattern === oldPattern) {
+          return;
+        }
+        var viewValue = element.value;
+        if (oldPattern) {
+          viewValue = TwTextFormatService.unformatUsingPattern(viewValue, oldPattern);
+        }
+        if (newPattern) {
+          viewValue = TwTextFormatService.formatUsingPattern(viewValue, newPattern);
+        }
+        undoStack.reset(viewValue);
+        element.value = viewValue;
+      });
+
+      $scope.$watch('$ctrl.ngModel', function(newModel, oldModel) {
+        if (newModel === oldModel) {
+          return;
+        }
+        // Preserve selection range after formatting
+        var selectionStart = element.selectionStart,
+          selectionEnd = element.selectionEnd;
+        reformatControl(element, newModel, true);
+        element.setSelectionRange(selectionStart, selectionEnd);
+      });
 
       // We need the formatter for external model changes
       ngModelController.$formatters.push(format);
@@ -57,7 +88,7 @@
         }
       });
 
-      resetUndoStack(element.value);
+      undoStack.reset(element.value);
     }
 
     function reformatControl(element, originalValue) {
@@ -77,21 +108,20 @@
       if (!value) {
         return value;
       }
-      return TwTextFormatService.unformatUsingPattern(value, getPattern(element));
+      return TwTextFormatService.unformatUsingPattern(value, $ctrl.twTextFormat);
     }
 
     function format(value) {
       if (!value) {
         return "";
       }
-      var formatted = TwTextFormatService.formatUsingPattern(value, getPattern(element));
-      addToUndoStack(formatted);
+      var formatted = TwTextFormatService.formatUsingPattern(value, $ctrl.twTextFormat);
       return formatted;
     }
 
-
     function onChange() {
-      reformatControl(element);
+      var formatted = reformatControl(element);
+      undoStack.add(formatted);
     }
 
     function onPaste(event) {
@@ -100,14 +130,15 @@
 
       var clipboardData = event.clipboardData || window.clipboardData;
       var pastedData = clipboardData.getData('Text');
-      var pattern = getPattern(element);
 
       var separatorsInPaste = countSeparatorsInPaste(
-        pattern, selectionStart, selectionStart, pastedData
+        $ctrl.twTextFormat, selectionStart, selectionStart, pastedData
       );
+
       $timeout(function() {
         var newPosition = selectionStart + pastedData.length + separatorsInPaste;
-        onChange();
+        var formatted = reformatControl(element);
+        undoStack.add(formatted);
         element.setSelectionRange(newPosition, newPosition);
       });
     }
@@ -122,17 +153,17 @@
         if (key === keys.z && (event.metaKey || event.ctrlKey)) {
           event.preventDefault();
           event.stopPropagation();
-          undo();
+          element.value = undoStack.undo();
         }
         if (key === keys.y && (event.metaKey || event.ctrlKey)) {
           event.preventDefault();
           event.stopPropagation();
-          redo();
+          element.value = undoStack.redo();
         }
         return;
       }
 
-      var pattern = getPattern(element);
+      var pattern = $ctrl.twTextFormat;
 
       // timeout runs after native input behaviour completed
       $timeout(function() {
@@ -155,9 +186,9 @@
     }
 
     function doBackspace(element, pattern, selectionStart, selectionEnd) {
-      var separatorsBeforeCursor = countSeparatorsBeforeCursor(pattern, selectionStart);
-      var newVal = element.value;
-      var removeStart, removeEnd;
+      var removeStart, removeEnd,
+        newVal = element.value,
+        separatorsBeforeCursor = countSeparatorsBeforeCursor(pattern, selectionStart);
 
       if (separatorsBeforeCursor) {
         // If we have more separators, we must remove one less character
@@ -175,6 +206,7 @@
       }
 
       element.value = format(unformat(newVal));
+      undoStack.add(element.value);
 
       var newPosition = getPositionAfterBackspace(
         pattern, element, selectionStart, selectionEnd
@@ -186,9 +218,9 @@
     }
 
     function doDelete(element, pattern, selectionStart, selectionEnd) {
-      var separatorsAfterCursor = countSeparatorsAfterCursor(pattern, selectionStart);
-      var newVal = element.value;
-      var removeStart, removeEnd;
+      var removeStart, removeEnd,
+        newVal = element.value,
+        separatorsAfterCursor = countSeparatorsAfterCursor(pattern, selectionStart);
 
       if (separatorsAfterCursor) {
         // If we have more separators, we must remove one less character
@@ -208,6 +240,7 @@
       }
 
       element.value = format(unformat(newVal));
+      undoStack.add(element.value);
       element.setSelectionRange(selectionStart, selectionStart);
 
       return newVal;
@@ -215,7 +248,8 @@
 
     function doKeypress(element, pattern, selectionStart, selectionEnd) {
       // The parser already called this, but doing it after appends the next separator
-      reformatControl(element);
+      var formatted = reformatControl(element);
+      undoStack.add(formatted);
 
       var newPosition = getPositionAfterKeypress(
         pattern, element, selectionStart, selectionEnd
@@ -226,10 +260,14 @@
     function onCut(event) {
       var selectionStart = element.selectionStart;
       $timeout(function() {
-        onChange();
-        var pattern = getPattern(element);
+        var formatted = reformatControl(element);
+        undoStack.add(formatted);
+
         // Also move cursor to the right of any separators
-        var newPosition = selectionStart + countSeparatorsAfterCursor(pattern, selectionStart);
+        var newPosition = selectionStart + countSeparatorsAfterCursor(
+          $ctrl.twTextFormat,
+          selectionStart
+        );
         element.setSelectionRange(newPosition, newPosition);
       });
     }
@@ -242,44 +280,6 @@
       $timeout(function() {
         element.setSelectionRange(selectionStart, selectionEnd);
       });
-    }
-
-    function getPattern(element) {
-      return element.getAttribute('tw-text-format');
-    }
-
-    /**
-     * Browsers seem to implement undo as an async function, it wasn't
-     * possible to get adequate behaviour using the default event, so we build
-     * our own undo stack.
-     */
-    function resetUndoStack(value) {
-      undoStack = [value];
-      undoStackPointer = 0;
-    }
-    function addToUndoStack(value) {
-      if (undoStack.length - 1 > undoStackPointer) {
-        undoStack = undoStack.slice(0, undoStackPointer + 1);
-      }
-      if (undoStack[undoStackPointer] !== value) {
-        undoStack.push(value);
-        undoStackPointer++;
-      }
-    }
-    function undo() {
-      if (undoStackPointer >= 0 &&
-        typeof undoStack[undoStackPointer - 1] !== "undefined") {
-        undoStackPointer--;
-        element.value = undoStack[undoStackPointer];
-      }
-    }
-    function redo() {
-      if (undoStackPointer < undoStack.length &&
-        typeof undoStack[undoStackPointer + 1] !== "undefined") {
-
-        undoStackPointer++;
-        element.value = undoStack[undoStackPointer];
-      }
     }
 
     var keys = {
@@ -347,7 +347,8 @@
     var i = 0;
     var toAllocate = pasteData.length;
     while(toAllocate) {
-      if (pattern[selectionStart + i] === "*" || typeof pattern[selectionStart + i] === "undefined") {
+      if (pattern[selectionStart + i] === "*" ||
+        typeof pattern[selectionStart + i] === "undefined") {
         toAllocate--;
       } else {
         separators++;
@@ -378,6 +379,48 @@
   function removeCharacters(value, first, last) {
     return value.substring(0, first - 1) +
       value.substring(last - 1, value.length);
+  }
+
+
+  /**
+   * Browsers seem to implement undo as an async function, it wasn't
+   * possible to get adequate behaviour using the default event, so we build
+   * our own undo stack.
+   */
+  function UndoStack() {
+    var pointer = 0;
+    var stack = [];
+
+    this.reset = function(value) {
+      stack = [value];
+      pointer = 0;
+    };
+
+    this.add = function(value) {
+      if (stack.length - 1 > pointer) {
+        stack = stack.slice(0, pointer + 1);
+      }
+      if (stack[pointer] !== value) {
+        stack.push(value);
+        pointer++;
+      }
+    };
+
+    this.undo = function() {
+      if (pointer >= 0 &&
+        typeof stack[pointer - 1] !== "undefined") {
+        pointer--;
+      }
+      return stack[pointer];
+    };
+
+    this.redo = function() {
+      if (pointer < stack.length &&
+        typeof stack[pointer + 1] !== "undefined") {
+        pointer++;
+      }
+      return stack[pointer];
+    };
   }
 
 })(window.angular);

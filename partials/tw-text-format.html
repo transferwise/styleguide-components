@@ -9,21 +9,26 @@
       <label class="control-label">Text format</label>
       <input type="text" class="form-control"
         ng-model="$ctrl.model"
-        ng-minlength="5"
-        ng-maxlength="$ctrl.maxlength"
+        ng-minlength="$ctrl.pattern.minlength"
+        ng-maxlength="$ctrl.pattern.maxlength"
         ng-required="true"
+        placeholder="{{$ctrl.pattern.placeholder}}"
         tw-focusable
         tw-validation
-        tw-text-format="{{$ctrl.pattern}}" />
+        tw-text-format="{{$ctrl.pattern.pattern}}" />
+      <div class="help-block" ng-if="$ctrl.pattern.helpText">
+        {{$ctrl.pattern.helpText}}
+      </div>
       <docs-error-messages></docs-error-messages>
     </div>
 <pre>
 &lt;input type="text"
   class="form-control"
   ng-model="{{$ctrl.model}}"
-  ng-minlength="5"
+  ng-minlength="{{$ctrl.minlengths[$ctrl.pattern]}}"
   ng-maxlength="{{$ctrl.maxlength}}"
   ng-required="true"
+  placeholder="{{$ctrl.placeholders[$ctrl.pattern]}}"
   tw-text-format="{{$ctrl.pattern}}"
   tw-validation
   tw-focusable /&gt;
