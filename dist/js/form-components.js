@@ -1330,10 +1330,10 @@ angular.module("tw.form-components", []);
             cards[index].enlarged = !0);
         }, this.addCard = function(scope) {
             cards.push(scope);
-        }, this.getEI = function() {
+        }, this.getExpandedIndex = function() {
             return expandedIndex;
-        }, this.updateEI = function(newEI) {
-            expandedIndex = newEI;
+        }, this.updateExpandedIndex = function(newExpandedIndex) {
+            expandedIndex = newExpandedIndex;
         }, this.getCard = function(index) {
             return cards[index];
         }, this.getLength = function() {

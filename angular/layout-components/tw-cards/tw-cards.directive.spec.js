@@ -17,7 +17,7 @@ fdescribe('Directive: TwCards', function() {
 
     var cardTemplate = "\
         <tw-card \
-            colour='blue' \
+            state='info' \
             enlarged='enlarged'> \
             <card-icon>T</card-icon> \
             <collapsed> \

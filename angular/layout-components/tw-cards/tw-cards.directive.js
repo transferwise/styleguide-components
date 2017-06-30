@@ -10,8 +10,8 @@
         var $ctrl = this;
         $ctrl.toggle = TwCardsService.toggle;
         $ctrl.addCard = TwCardsService.addCard;
-        $ctrl.getEI = TwCardsService.getEI;
-        $ctrl.updateEI = TwCardsService.updateEI;
+        $ctrl.getExpandedIndex = TwCardsService.getExpandedIndex;
+        $ctrl.updateExpandedIndex = TwCardsService.updateExpandedIndex;
         $ctrl.getCard = TwCardsService.getCard;
         $ctrl.getLength = TwCardsService.getLength;
     }
@@ -23,7 +23,7 @@
             bindToController: true,
             replace: true,
             scope: {
-                colour: '@',
+                state: '@',
                 form: '<',
                 index: '<',
                 enlarged: '<?',
@@ -47,8 +47,8 @@
                 crdctrl.inactive = $ctrl.cardContainerController.inactive;
 
                 if (crdctrl.enlarged === true && 
-                    crdctrl.getEI() === -1) { // only takes first pre-expanded card
-                    crdctrl.updateEI(crdctrl.index);
+                    crdctrl.getExpandedIndex() === -1) { // only takes first pre-expanded card
+                    crdctrl.updateExpandedIndex(crdctrl.index);
                 } else {
                     crdctrl.enlarged = false;
                 }
@@ -105,12 +105,8 @@
         </div>';
 
     var templateStr = 
-        '<li    class="list-group-item p-a-0" \
+        '<li    class="list-group-item p-a-0 list-group-item-{{$ctrl.state}}" \
                 ng-class="{ \
-                    \'list-group-item-danger\': $ctrl.colour === \'red\', \
-                    \'list-group-item-warning\': $ctrl.colour === \'yellow\', \
-                    \'list-group-item-info\': $ctrl.colour === \'blue\', \
-                    \'list-group-item-success\': $ctrl.colour === \'green\', \
                     \'active\': $ctrl.enlarged, \
                     \'disabled\': $ctrl.disabled \
                 }">'

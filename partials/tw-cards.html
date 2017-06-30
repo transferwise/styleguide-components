@@ -6,36 +6,29 @@
 
 <tw-cards>
     <tw-card
-        form = "false"
-        colour = "red"
-        enlarged = "true"
+        form="false"
+        state="danger"
+        enlarged="true"
     >
         <card-icon>T</card-icon>
         <collapsed>
             <div class="media">
                 <div class="media-body">
-                    <p class="list-group-item-heading text-max-width">
-                        <span class="ng-isolate-scope">
-                            <span class="hidden-xs">
-                                <span class="ng-scope">Transfer<span class="visible-xl-inline h5 ng-binding"> £10.00 </span>from</span>
-                            </span>
-                            <strong class="ng-binding ng-scope">Mike Marter</strong>
-                        </span>
+                    <p class="list-group-item-heading text-max-width hidden-xs">
+                        <span>Transfer<span class="visible-xl-inline h5"> £10.00 </span>from</span>
+                        <strong >Mike Marter</strong>
                     </p>
-                    <p class="small m-b-0 text-max-width">
-                        <transfer-status-message class="ng-isolate-scope">
-                            <span class="list-group-item-text ng-binding ng-scope">
-                                We received your money. There was a problem with your documents.
-                            </span>
-                        </transfer-status-message>
+                    <p class="small m-b-0 text-max-width list-group-item-text">
+                        We received your money. There was a problem with your documents.
                     </p>
                 </div>
                 <div class="media-right text-xs-right">
-                    <p class="m-y-0 ng-binding h5">
-                        <span class="sr-only">Sent</span>£10.00<span class="hidden-xs ng-binding"> GBP</span>
+                    <p class="m-y-0 h5">
+                        <span class="sr-only">Sent</span>£10.00<span class="hidden-xs"> GBP</span>
                     </p>
-                    <p class="m-y-0 ng-binding">
-                        <span class="sr-only">Received</span><span class="ng-scope"> exactly</span> $12.34 <span class="hidden-xs ng-binding">USD</span>
+                    <p class="m-y-0 small">
+                        <span class="sr-only">Received</span> exactly $12.34 
+                        <span class="hidden-xs">USD</span>
                     </p>
                 </div>
             </div>
@@ -43,74 +36,59 @@
         <expanded>
             <div>
                 <div class="m-t-1 m-b-3 visible-xs-block visible-sm-block">
-                    <p class="h2 m-b-0">
-                        <transfer-status-message transfer="$ctrl.transfer" class="ng-isolate-scope">
-                            <span class="list-group-item-text ng-binding ng-scope">We received your money. There was a problem with your documents.</span>
-                        </transfer-status-message>
+                    <p class="h2 m-b-0 list-group-item-text">
+                        We received your money. There was a problem with your documents.
                     </p>
                 </div>
-                <div class="ng-isolate-scope">
-                    <div class="ng-scope">
-                        <ul class="sequence sequence-hollow sequence-pulse m-l-1 sequence-danger">
-                            <li><p class="small p-b-1">You set up a transfer to TransferWise</p></li>
-                            <li class="active">
-                                <p class="m-b-1 text-danger">The money is on it's way to TransferWise</p>
-                                <p class="small p-b-1">Although you have instructed your bank to us the money, it will take
-                                    several hours for them to process the transfer and pay out.  We cannot
-                                    process the transfer until it arrives in our account.</p>
-                            </li>
-                            <li><p class="small p-b-1 ng-binding">We receive the money and transfer it to Steve Pole</p></li>
-                            <li><p class="small p-b-1 ng-binding">Steve Pole's bank process the transfer</p></li>
-                            <li><p class="small p-b-1 ng-binding">The money appears in Steve Pole's account.</p></li>
-                        </ul>
-                    </div>
-                </div>
+                    <ul class="sequence sequence-hollow sequence-pulse m-l-1 sequence-danger">
+                        <li><p class="small p-b-1">You set up a transfer to TransferWise</p></li>
+                        <li class="active">
+                            <p class="m-b-1 text-danger">The money is on it's way to TransferWise</p>
+                            <p class="small p-b-1">Although you have instructed your bank to us the money, it will take
+                                several hours for them to process the transfer and pay out.  We cannot
+                                process the transfer until it arrives in our account.</p>
+                        </li>
+                        <li><p class="small p-b-1">We receive the money and transfer it to Steve Pole</p></li>
+                        <li><p class="small p-b-1">Steve Pole's bank process the transfer</p></li>
+                        <li><p class="small p-b-1">The money appears in Steve Pole's account.</p></li>
+                    </ul>
                 <div class="row">
                     <div class="col-sm-12 col-lg-3 m-b-0">
-                        <a class="" href="/examples/details.html">
-                            View details
-                        </a>
+                        <a href="/examples/details.html">View details</a>
                     </div>
                 </div>
-                <hr class="hidden-xs hidden-sm hidden-md ng-scope">
-                <div class="m-t-2 btn-toolbar ng-isolate-scope">
-                    <button class="btn btn-primary ng-scope">Fix this transfer</button>
+                <hr class="hidden-xs hidden-sm hidden-md">
+                <div class="m-t-2 btn-toolbar">
+                    <button class="btn btn-primary ">Fix this transfer</button>
                     <button class="btn btn-danger pull-md-right m-b-0">Cancel transfer</button>
                 </div>
             </div>
         </expanded>
     </tw-card>
     <tw-card
-        colour = "blue"
-        form = "false"
-        enlarged = "true"
+        state="info"
+        form="false"
+        enlarged="true"
     >
-        <card-icon>
-            S
-        </card-icon>
+        <card-icon>S</card-icon>
         <collapsed>
             <div class="media">
                 <div class="media-body">
-                    <p class="list-group-item-heading text-max-width">
-                        <span class="ng-isolate-scope">
-                            <span class="hidden-xs">
-                                <span class="ng-scope">Transfer to</span>
-                            </span>
-                            <strong class="ng-binding ng-scope">Steve Pole</strong>
-                        </span>
+                    <p class="list-group-item-heading text-max-width hidden-xs">   
+                        Transfer to <strong>Steve Pole</strong>
                     </p>
-                    <p class="small m-b-0 text-max-width">
-                        <transfer-status-message class="ng-isolate-scope">
-                            <span class="list-group-item-text ng-binding ng-scope">We received your money. We're processing your transfer.</span>
-                        </transfer-status-message>
+                    <p class="small m-b-0 text-max-width list-group-item-text">
+                        We received your money. We're processing your transfer.
                     </p>
                 </div>
                 <div class="media-right text-xs-right">
-                    <p class="m-y-0 ng-binding small">
-                        <span class="sr-only">Sent</span> £10.00 <span class="hidden-xs ng-binding">GBP</span>
+                    <p class="m-y-0 small">
+                        <span class="sr-only">Sent</span> £10.00 
+                        <span class="hidden-xs">GBP</span>
                     </p>
-                    <p class="m-y-0 ng-binding h5">
-                        <span class="sr-only">Received</span> $12.34 <span class="hidden-xs ng-binding">USD</span>
+                    <p class="m-y-0 h5">
+                        <span class="sr-only">Received</span> $12.34 
+                        <span class="hidden-xs">USD</span>
                     </p>
                 </div>
             </div>
@@ -118,37 +96,31 @@
         <expanded>
             <div>
                 <div class="m-t-1 m-b-3 visible-xs-block visible-sm-block">
-                    <p class="h2 m-b-0">
-                        <transfer-status-message class="ng-isolate-scope">
-                            <span class="list-group-item-text ng-binding ng-scope">We received your money. We're processing your transfer.</span>
-                        </transfer-status-message>
+                    <p class="h2 m-b-0 list-group-item-text">
+                        We received your money. We're processing your transfer.
                     </p>
                 </div>
-                <div class="ng-isolate-scope">
-                    <div class="ng-scope">
-                        <ul class="sequence sequence-hollow sequence-pulse m-l-1 sequence-info">
-                            <li><p class="small p-b-1">You set up a transfer to TransferWise</p></li>
-                            <li class="active">
-                                <p class="m-b-1 text-info">The money is on it's way to TransferWise</p>
-                                <p class="small p-b-1">Although you have instructed your bank to us the money, it will take
-                                    several hours for them to process the transfer and pay out. We cannot
-                                    process the transfer until it arrives in our account.</p>
-                            </li>
-                            <li><p class="small p-b-1 ng-binding">We receive the money and transfer it to Steve Pole</p></li>
-                            <li><p class="small p-b-1 ng-binding">Steve Pole's bank process the transfer</p></li>
-                            <li><p class="small p-b-1 ng-binding">The money appears in Steve Pole's account.</p></li>
-                        </ul>
-                    </div>
+                <div>
+                    <ul class="sequence sequence-hollow sequence-pulse m-l-1 sequence-info">
+                        <li><p class="small p-b-1">You set up a transfer to TransferWise</p></li>
+                        <li class="active">
+                            <p class="m-b-1 text-info">The money is on it's way to TransferWise</p>
+                            <p class="small p-b-1">Although you have instructed your bank to us the money, it will take
+                                several hours for them to process the transfer and pay out. We cannot
+                                process the transfer until it arrives in our account.</p>
+                        </li>
+                        <li><p class="small p-b-1">We receive the money and transfer it to Steve Pole</p></li>
+                        <li><p class="small p-b-1">Steve Pole's bank process the transfer</p></li>
+                        <li><p class="small p-b-1">The money appears in Steve Pole's account.</p></li>
+                    </ul>
                 </div>
                 <div class="row">
                     <div class="col-sm-12 col-lg-3 m-b-0">
-                        <a class="" href="/examples/details.html">
-                            View details
-                        </a>
+                        <a href="/examples/details.html">View details</a>
                     </div>
                 </div>
-                <hr class="hidden-xs hidden-sm hidden-md ng-scope">
-                <div class="m-t-2 btn-toolbar ng-isolate-scope">
+                <hr class="hidden-xs hidden-sm hidden-md">
+                <div class="m-t-2 btn-toolbar">
                     <button class="btn btn-danger pull-md-right m-b-0">
                         Cancel transfer
                     </button>
@@ -157,34 +129,28 @@
         </expanded>
     </tw-card>
     <tw-card
-        colour = "yellow"
-        form = "false"
+        state="warning"
+        form="false"
     >
-        <card-icon>
-            U
-        </card-icon>
+        <card-icon>U</card-icon>
         <collapsed>
             <div class="media">
                 <div class="media-body">
                     <p class="list-group-item-heading text-max-width">
-                        <span class="ng-isolate-scope">
-                            <span class="hidden-xs">
-                                <span class="ng-scope">Transfer to</span>
-                            </span>
-                            <strong class="ng-binding ng-scope"> Mike Marter</strong>
+                        <span class="hidden-xs">Transfer to</span>
+                        <strong> Mike Marter</strong>
                     </p>
-                    <p class="small m-b-0 text-max-width">
-                        <transfer-status-message class="ng-isolate-scope">
-                            <span class="list-group-item-text ng-binding ng-scope">Waiting for you to pay in.</span>
-                        </transfer-status-message>
+                    <p class="small m-b-0 text-max-width list-group-item-text">
+                        Waiting for you to pay in.
                     </p>
                 </div>
                 <div class="media-right text-xs-right">
-                    <p class="m-y-0 ng-binding h5">
-                        <span class="sr-only">Sent</span> £10.00 <span class="hidden-xs ng-binding">GBP</span>
+                    <p class="m-y-0  h5">
+                        <span class="sr-only">Sent</span> £10.00 <span class="hidden-xs ">GBP</span>
                     </p>
-                    <p class="m-y-0 ng-binding small">
-                        <span class="sr-only">Received</span><span class="ng-scope"> about</span> $12.34 <span class="hidden-xs ng-binding">USD</span>
+                    <p class="m-y-0 small">
+                        <span class="sr-only">Received</span> about
+                         $12.34 <span class="hidden-xs ">USD</span>
                     </p>
                 </div>
             </div>
@@ -192,76 +158,62 @@
         <expanded>
             <div>
                 <div class="m-t-1 m-b-3 visible-xs-block visible-sm-block">
-                    <p class="h2 m-b-0">
-                        <transfer-status-message class="ng-isolate-scope">
-                            <span class="list-group-item-text ng-binding ng-scope">Waiting for you to pay in.</span>
-                        </transfer-status-message>
+                    <p class="h2 m-b-0 list-group-item-text">
+                        Waiting for you to pay in.
                     </p>
                 </div>
-                <div class="ng-isolate-scope">
-                    <div class="ng-scope">
-                        <ul class="sequence sequence-hollow sequence-pulse m-l-1 sequence-warning">
-                            <li><p class="small p-b-1">You set up a transfer to TransferWise</p></li>
-                            <li class="active">
-                                <p class=" m-b-1">The money is on it's way to TransferWise</p>
-                                <p class="small p-b-1">Although you have instructed your bank to us the money, it will take
-                                    several hours for them to process the transfer and pay out. We cannot
-                                    process the transfer until it arrives in our account.</p>
-                            </li>
-                            <li><p class="small p-b-1 ng-binding">We receive the money and transfer it to Mike Marter</p></li>
-                            <li><p class="small p-b-1 ng-binding">Mike Marter's bank process the transfer</p></li>
-                            <li><p class="small p-b-1 ng-binding">The money appears in Mike Marter's account.</p></li>
-                        </ul>
-                    </div>
+                <div>
+                    <ul class="sequence sequence-hollow sequence-pulse m-l-1 sequence-warning">
+                        <li><p class="small p-b-1">You set up a transfer to TransferWise</p></li>
+                        <li class="active">
+                            <p class=" m-b-1">The money is on it's way to TransferWise</p>
+                            <p class="small p-b-1">Although you have instructed your bank to us the money, it will take
+                                several hours for them to process the transfer and pay out. We cannot
+                                process the transfer until it arrives in our account.</p>
+                        </li>
+                        <li><p class="small p-b-1 ">We receive the money and transfer it to Mike Marter</p></li>
+                        <li><p class="small p-b-1 ">Mike Marter's bank process the transfer</p></li>
+                        <li><p class="small p-b-1 ">The money appears in Mike Marter's account.</p></li>
+                    </ul>
                 </div>
                 <div class="row">
                     <div class="col-sm-12 col-lg-3 m-b-0">
-                        <a class="" href="/examples/details.html">
-                            View details
-                        </a>
+                        <a href="/examples/details.html">View details</a>
                     </div>
                 </div>
-                <hr class="hidden-xs hidden-sm hidden-md ng-scope">
-                <div class="m-t-2 btn-toolbar ng-isolate-scope" transfer="$ctrl.transfer">
-                    <button class="btn btn-primary ng-scope">Pay for this transfer</button>
-                    <button class="btn btn-primary ng-scope">I've already paid</button>
+                <hr class="hidden-xs hidden-sm hidden-md ">
+                <div class="m-t-2 btn-toolbar " transfer="$ctrl.transfer">
+                    <button class="btn btn-primary ">Pay for this transfer</button>
+                    <button class="btn btn-primary ">I've already paid</button>
                     <button class="btn btn-danger pull-md-right m-b-0">Cancel transfer</button>
                 </div>
             </div>
         </expanded>
     </tw-card>
 </tw-cards>
-<tw-cards inactive = "true">
+<tw-cards inactive="true">
     <tw-card
-        form = "true"
-        colour = "none"
+        form="true"
+        state="none"
     >
-        <card-icon>
-            V
-        </card-icon>
+        <card-icon>V</card-icon>
         <collapsed>
             <div class="media">
                 <div class="media-body">
                     <p class="list-group-item-heading text-max-width">
-                        <span class="ng-isolate-scope">
-                            <span class="hidden-xs">
-                                <span class="ng-scope">Transfer to </span>
-                            </span>
-                            <strong class="ng-binding ng-scope">Peet's coffee</strong>
-                        </span>
+                        <span class="hidden-xs">Transfer to </span>
+                        <strong>Peet's coffee</strong>
                     </p>
-                    <p class="small m-b-0 text-max-width">
-                        <transfer-status-message class="ng-isolate-scope">
-                            <span class="list-group-item-text ng-binding ng-scope" title="01 July 2016 1:34 PM">Completed 01 July 2016</span>
-                        </transfer-status-message>
+                    <p class="small m-b-0 text-max-width list-group-item-text" title="01 July 2016 1:34 PM">
+                        Completed 01 July 2016
                     </p>
                 </div>
                 <div class="media-right text-xs-right">
-                    <p class="m-y-0 ng-binding h5">
-                        <span class="sr-only">Sent</span> £2.50 <span class="hidden-xs ng-binding">GBP</span>
+                    <p class="m-y-0 h5">
+                        <span class="sr-only">Sent</span> £2.50 <span class="hidden-xs ">GBP</span>
                     </p>
-                    <p class="m-y-0 ng-binding small">
-                        <span class="sr-only">Received</span> £2.50 <span class="hidden-xs ng-binding">GBP</span>
+                    <p class="m-y-0 small">
+                        <span class="sr-only">Received</span> £2.50 <span class="hidden-xs ">GBP</span>
                     </p>
                 </div>
             </div>
@@ -269,78 +221,67 @@
         <expanded>
             <div>
                 <div class="m-t-1 m-b-3 visible-xs-block visible-sm-block">
-                    <p class="h2 m-b-0">
-                        <transfer-status-message class="ng-isolate-scope">
-                            <span class="list-group-item-text ng-binding ng-scope" title="01 July 2016 1:34 PM">Completed 01 July 2016</span>
-                        </transfer-status-message>
+                    <p class="h2 m-b-0 list-group-item-text" title="01 July 2016 1:34 PM">
+                        Completed 01 July 2016
                     </p>
                 </div>
-                <div class="ng-isolate-scope">
-                    <div class="ng-scope">
-                        <div class="row">
-                            <dl class="col-sm-6">
-                                <dt>Sent to</dt>
-                                <dd class="ng-binding">Merchant account</dd>
-                            </dl>
-                            <dl class="col-sm-6">
-                                <dt>Reference</dt>
-                                <dd class="ng-binding">Ref123</dd>
-                            </dl>
-                        </div>
-                        <div class="row">
-                            <dl class="col-sm-6">
-                                <dt>Exchange rate</dt>
-                                <dd class="ng-binding">1.0000</dd>
-                            </dl>
-                            <dl class="col-sm-6">
-                                <dt>Fee</dt>
-                                <dd class="ng-binding">
-                                    0.00
-                                    GBP
-                                </dd>
-                            </dl>
-                        </div>
-                        <div class="row">
-                            <dl class="col-sm-6">
-                                <dt>Transfer number</dt>
-                                <dd>123456789</dd>
-                            </dl>
-                        </div>
+                <div>
+                    <div class="row">
+                        <dl class="col-sm-6">
+                            <dt>Sent to</dt>
+                            <dd>Merchant account</dd>
+                        </dl>
+                        <dl class="col-sm-6">
+                            <dt>Reference</dt>
+                            <dd>Ref123</dd>
+                        </dl>
+                    </div>
+                    <div class="row">
+                        <dl class="col-sm-6">
+                            <dt>Exchange rate</dt>
+                            <dd>1.0000</dd>
+                        </dl>
+                        <dl class="col-sm-6">
+                            <dt>Fee</dt>
+                            <dd>0.00 GBP</dd>
+                        </dl>
+                    </div>
+                    <div class="row">
+                        <dl class="col-sm-6">
+                            <dt>Transfer number</dt>
+                            <dd>123456789</dd>
+                        </dl>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12 col-lg-3 m-b-0">
-                        <a class="" href="/examples/details.html">View details</a>
+                        <a href="/examples/details.html">View details</a>
                     </div>
                 </div>
             </div>
         </expanded>
         <card-form>
-            <div class="row ng-isolate-scope">
+            <div class="row ">
                 <div class="col-sm-6 col-lg-4">
                     <div class="form-group m-b-0">
                         <label class="control-label">Send</label>
-                        <currency-input class="ng-isolate-scope">
-                            <div class="input-group">
-                                <span class="input-group-addon ng-binding">£</span>
-                                <input class="form-control text-xs-right p-r-0 ng-pristine ng-untouched ng-valid ng-not-empty" type="text">
-                                <span class="input-group-addon p-l-1 ng-binding">USD</span>
-                            </div>
-                        </currency-input>
-                        <div class="help-block m-b-0 ng-binding">Rate £1 = £1.2345</div>
+                        <div class="input-group">
+                            <span class="input-group-addon ">£</span>
+                            <input class="form-control text-xs-right p-r-0" type="text">
+                            <span class="input-group-addon p-l-1 ">USD</span>
+                        </div>
+                        <div class="help-block m-b-0 ">Rate £1 = £1.2345</div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-4 m-b-0">
                     <div class="form-group m-b-0">
-                        <label class="control-label">Receive<span class="ng-scope"> about </span></label>
-                        <currency-input class="ng-isolate-scope">
-                            <div class="input-group">
-                                <span class="input-group-addon ng-binding">£</span>
-                                <input class="form-control text-xs-right p-r-0 ng-pristine ng-untouched ng-valid ng-not-empty" type="text">
-                                <span class="input-group-addon p-l-1 ng-binding">USD</span>
-                            </div>
-                        </currency-input>
-                        <div class="help-block m-b-0 ng-binding">Fee £1.00 USD</div>
+                        <label class="control-label">Receive about </label>
+                        <div class="input-group">
+                            <span class="input-group-addon ">£</span>
+                            <input class="form-control text-xs-right p-r-0" type="text">
+                            <span class="input-group-addon p-l-1 ">USD</span>
+                        </div>
+                        <div class="help-block m-b-0 ">Fee £1.00 USD</div>
                     </div>
                 </div>
                 <div class="col-sm-12 col-lg-4 p-t-3 m-b-0">
@@ -350,37 +291,27 @@
         </card-form>
     </tw-card>
     <tw-card
-        colour = "none"
-        form = "true"
+        state="none"
+        form="true"
     >
-        <card-icon>
-            W
-        </card-icon>
+        <card-icon>W</card-icon>
         <collapsed>
             <div class="media">
                 <div class="media-body">
                     <p class="list-group-item-heading text-max-width">
-                        <span class="ng-isolate-scope">
-                            <span class="hidden-xs">
-                                <span class="ng-scope">Reward payment to your</span>
-                            </span>
-                            <strong class="ng-binding ng-scope">GBP balance</strong>
-                        </span>
+                        <span class="hidden-xs">Reward payment to your </span>
+                        <strong>GBP balance</strong>
                     </p>
-                    <p class="small m-b-0 text-max-width">
-                        <transfer-status-message class="ng-isolate-scope">
-                            <span class="list-group-item-text ng-binding ng-scope" title="01 April 2016 1:34 PM">
-                                Completed 01 April 2016
-                            </span>
-                        </transfer-status-message>
+                    <p class="small m-b-0 text-max-width list-group-item-text" title="01 April 2016 1:34 PM">
+                        Completed 01 April 2016
                     </p>
                 </div>
                 <div class="media-right text-xs-right">
-                    <p class="m-y-0 ng-binding h5">
-                        <span class="sr-only">Sent</span> £10.00 <span class="hidden-xs ng-binding">GBP</span>
+                    <p class="m-y-0  h5">
+                        <span class="sr-only">Sent</span> £10.00 <span class="hidden-xs ">GBP</span>
                     </p>
-                    <p class="m-y-0 ng-binding small">
-                        <span class="sr-only">Received</span> £10.00 <span class="hidden-xs ng-binding">GBP</span>
+                    <p class="m-y-0  small">
+                        <span class="sr-only">Received</span> £10.00 <span class="hidden-xs ">GBP</span>
                     </p>
                 </div>
             </div>
@@ -388,81 +319,67 @@
         <expanded>
             <div>
                 <div class="m-t-1 m-b-3 visible-xs-block visible-sm-block">
-                    <p class="h2 m-b-0">
-                        <transfer-status-message class="ng-isolate-scope">
-                            <span class="list-group-item-text ng-binding ng-scope" title="01 April 2016 1:34 PM">
-                                Completed 01 April 2016
-                            </span>
-                        </transfer-status-message>
+                    <p class="h2 m-b-0 list-group-item-text" title="01 April 2016 1:34 PM">
+                        Completed 01 April 2016
                     </p>
                 </div>
-                <div class="ng-isolate-scope">
-                    <div class="ng-scope">
-                        <div class="row">
-                            <dl class="col-sm-6">
-                                <dt>Sent to</dt>
-                                <dd class="ng-binding">GBP balance</dd>
-                            </dl>
-                            <dl class="col-sm-6">
-                                <dt>Reference</dt>
-                                <dd class="ng-binding">Referral Bonus</dd>
-                            </dl>
-                        </div>
-                        <div class="row">
-                            <dl class="col-sm-6">
-                                <dt>Exchange rate</dt>
-                                <dd class="ng-binding">1.0000</dd>
-                            </dl>
-                            <dl class="col-sm-6">
-                                <dt>Fee</dt>
-                                <dd class="ng-binding">0.00 GBP</dd>
-                            </dl>
-                        </div>
-                        <div class="row">
-                            <dl class="col-sm-6">
-                                <dt>Transfer number</dt>
-                                <dd>123456789</dd>
-                            </dl>
-                        </div>
+                <div>
+                    <div class="row">
+                        <dl class="col-sm-6">
+                            <dt>Sent to</dt>
+                            <dd>GBP balance</dd>
+                        </dl>
+                        <dl class="col-sm-6">
+                            <dt>Reference</dt>
+                            <dd>Referral Bonus</dd>
+                        </dl>
+                    </div>
+                    <div class="row">
+                        <dl class="col-sm-6">
+                            <dt>Exchange rate</dt>
+                            <dd>1.0000</dd>
+                        </dl>
+                        <dl class="col-sm-6">
+                            <dt>Fee</dt>
+                            <dd>0.00 GBP</dd>
+                        </dl>
+                    </div>
+                    <div class="row">
+                        <dl class="col-sm-6">
+                            <dt>Transfer number</dt>
+                            <dd>123456789</dd>
+                        </dl>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12 col-lg-3 m-b-0">
-                        <a class="" href="/examples/details.html">
-                            View details
-                        </a>
+                        <a href="/examples/details.html">View details</a>
                     </div>
                 </div>
             </div>
         </expanded>
         <card-form>
-            <div class="row ng-isolate-scope">
+            <div class="row ">
                 <div class="col-sm-6 col-lg-4">
                     <div class="form-group m-b-0">
                         <label class="control-label">Send</label>
-                        <currency-input class="ng-isolate-scope">
-                            <div class="input-group">
-                                <span class="input-group-addon ng-binding">£</span>
-                                <input class="form-control text-xs-right p-r-0 ng-pristine ng-untouched ng-valid ng-not-empty" type="text">
-                                <span class="input-group-addon p-l-1 ng-binding">USD</span>
-                            </div>
-                        </currency-input>
-                        <div class="help-block m-b-0 ng-binding">Rate £1 = £1.2345</div>
+                        <div class="input-group">
+                            <span class="input-group-addon ">£</span>
+                            <input class="form-control text-xs-right p-r-0" type="text">
+                            <span class="input-group-addon p-l-1 ">USD</span>
+                        </div>
+                        <div class="help-block m-b-0 ">Rate £1 = £1.2345</div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-4 m-b-0">
                     <div class="form-group m-b-0">
-                        <label class="control-label">Receive
-                            <span class="ng-scope">about</span>
-                        </label>
-                        <currency-input class="ng-isolate-scope">
-                            <div class="input-group">
-                                <span class="input-group-addon ng-binding">£</span>
-                                <input class="form-control text-xs-right p-r-0 ng-pristine ng-untouched ng-valid ng-not-empty" type="text">
-                                <span class="input-group-addon p-l-1 ng-binding">USD</span>
-                            </div>
-                        </currency-input>
-                        <div class="help-block m-b-0 ng-binding">Fee £1.00 USD</div>
+                        <label class="control-label">Receive about </label>
+                        <div class="input-group">
+                            <span class="input-group-addon ">£</span>
+                            <input class="form-control text-xs-right p-r-0" type="text">
+                            <span class="input-group-addon p-l-1 ">USD</span>
+                        </div>
+                        <div class="help-block m-b-0 ">Fee £1.00 USD</div>
                     </div>
                 </div>
                 <div class="col-sm-12 col-lg-4 p-t-3 m-b-0">
@@ -472,38 +389,28 @@
         </card-form>
     </tw-card>
     <tw-card
-        colour = "none"
-        form = "true"
-        disabled = "true"
+        state="none"
+        form="true"
+        disabled="true"
     >
-        <card-icon>
-            X
-        </card-icon>
+        <card-icon>X</card-icon>
         <collapsed>
             <div class="media">
                 <div class="media-body">
                     <p class="list-group-item-heading text-max-width">
-                        <span class="ng-isolate-scope">
-                            <span class="hidden-xs">
-                                <span class="ng-scope">Transfer to</span>
-                            </span>
-                            <strong class="ng-binding ng-scope">Steve Pole</strong>
-                        </span>
+                        <span class="hidden-xs">Transfer to</span>
+                        <strong>Steve Pole</strong>
                     </p>
-                    <p class="small m-b-0 text-max-width">
-                        <transfer-status-message transfer="$ctrl.transfer" class="ng-isolate-scope">
-                            <span class="list-group-item-text ng-binding ng-scope" title="10 June 2016 1:34 PM">
-                                Cancelled 10 June 2016
-                            </span>
-                        </transfer-status-message>
+                    <p class="small m-b-0 text-max-width list-group-item-text" title="10 June 2016 1:34 PM">
+                        Cancelled 10 June 2016
                     </p>
                 </div>
                 <div class="media-right text-xs-right">
-                    <p class="m-y-0 ng-binding h5">
-                        <span class="sr-only">Sent</span>£10,000,000.00<span class="hidden-xs ng-binding">GBP</span>
+                    <p class="m-y-0  h5">
+                        <span class="sr-only">Sent</span>£10,000,000.00<span class="hidden-xs ">GBP</span>
                     </p>
-                    <p class="m-y-0 ng-binding small">
-                        <span class="sr-only">Received</span>€11,987,000.00<span class="hidden-xs ng-binding">GBP</span>
+                    <p class="m-y-0  small">
+                        <span class="sr-only">Received</span>€11,987,000.00<span class="hidden-xs ">GBP</span>
                     </p>
                 </div>
             </div>
@@ -511,81 +418,67 @@
         <expanded>
             <div>
                 <div class="m-t-1 m-b-3 visible-xs-block visible-sm-block">
-                    <p class="h2 m-b-0">
-                            <transfer-status-message class="ng-isolate-scope">
-                                <span class="list-group-item-text ng-binding ng-scope" title="10 June 2016 1:34 PM">
-                                    Cancelled 10 June 2016
-                                </span>
-                            </transfer-status-message>
+                    <p class="h2 m-b-0 list-group-item-text" title="10 June 2016 1:34 PM">
+                        Cancelled 10 June 2016
                     </p>
                 </div>
-                <div class="ng-isolate-scope">
-                    <div class="ng-scope">
-                        <div class="row">
-                            <dl class="col-sm-6">
-                                <dt>Sent to</dt>
-                                <dd class="ng-binding">Account ending 1234</dd>
-                            </dl>
-                            <dl class="col-sm-6">
-                                <dt>Reference</dt>
-                                <dd class="ng-binding">NewHouse</dd>
-                            </dl>
-                        </div>
-                        <div class="row">
-                            <dl class="col-sm-6">
-                                <dt>Exchange rate</dt>
-                                <dd class="ng-binding">1.1987</dd>
-                            </dl>
-                            <dl class="col-sm-6">
-                                <dt>Fee</dt>
-                                <dd class="ng-binding">500.00 GBP</dd>
-                            </dl>
-                        </div>
-                        <div class="row">
-                            <dl class="col-sm-6">
-                                <dt>Transfer number</dt>
-                                <dd>123456789</dd>
-                            </dl>
-                        </div>
+                <div>
+                    <div class="row">
+                        <dl class="col-sm-6">
+                            <dt>Sent to</dt>
+                            <dd>Account ending 1234</dd>
+                        </dl>
+                        <dl class="col-sm-6">
+                            <dt>Reference</dt>
+                            <dd>NewHouse</dd>
+                        </dl>
+                    </div>
+                    <div class="row">
+                        <dl class="col-sm-6">
+                            <dt>Exchange rate</dt>
+                            <dd>1.1987</dd>
+                        </dl>
+                        <dl class="col-sm-6">
+                            <dt>Fee</dt>
+                            <dd>500.00 GBP</dd>
+                        </dl>
+                    </div>
+                    <div class="row">
+                        <dl class="col-sm-6">
+                            <dt>Transfer number</dt>
+                            <dd>123456789</dd>
+                        </dl>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12 col-lg-3 m-b-0">
-                        <a class="" href="/examples/details.html">
-                            View details
-                        </a>
+                        <a href="/examples/details.html">View details</a>
                     </div>
                 </div>
             </div>
         </expanded>
         <card-form>
-            <div class="row ng-isolate-scope">
+            <div class="row ">
                 <div class="col-sm-6 col-lg-4">
                     <div class="form-group m-b-0">
                         <label class="control-label">Send</label>
-                        <currency-input class="ng-isolate-scope">
-                            <div class="input-group">
-                                <span class="input-group-addon ng-binding">£</span>
-                                <input class="form-control text-xs-right p-r-0 ng-pristine ng-untouched ng-valid ng-not-empty" type="text">
-                                <span class="input-group-addon p-l-1 ng-binding">USD</span>
-                            </div>
-                        </currency-input>
-                        <div class="help-block m-b-0 ng-binding">Rate £1 = £1.2345</div>
+                        <div class="input-group">
+                            <span class="input-group-addon ">£</span>
+                            <input class="form-control text-xs-right p-r-0" type="text">
+                            <span class="input-group-addon p-l-1 ">USD</span>
+                        </div>
+                        <div class="help-block m-b-0 ">Rate £1 = £1.2345</div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-4 m-b-0">
                     <div class="form-group m-b-0">
-                        <label class="control-label">Receive
-                            <span class="ng-scope">about</span>
-                        </label>
-                        <currency-input class="ng-isolate-scope">
-                            <div class="input-group">
-                                <span class="input-group-addon ng-binding">£</span>
-                                <input class="form-control text-xs-right p-r-0 ng-pristine ng-untouched ng-valid ng-not-empty" type="text">
-                                <span class="input-group-addon p-l-1 ng-binding">USD</span>
-                            </div>
-                        </currency-input>
-                        <div class="help-block m-b-0 ng-binding">Fee £1.00 USD</div>
+                        <label class="control-label">Receive about</label>
+                        <div class="input-group">
+                            <span class="input-group-addon ">£</span>
+                            <input class="form-control text-xs-right p-r-0" type="text">
+                            <span class="input-group-addon p-l-1 ">USD</span>
+                        </div>
+                        <div class="help-block m-b-0 ">Fee £1.00 USD</div>
                     </div>
                 </div>
                 <div class="col-sm-12 col-lg-4 p-t-3 m-b-0">
