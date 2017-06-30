@@ -1351,8 +1351,11 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         function init() {
             undoStack = TwUndoStackFactory["new"](), keydownCount = 0, ngModelController = $element.controller("ngModel"), 
             element = $element[0], $scope.$watch("$ctrl.twTextFormat", onPatternChange), $scope.$watch("$ctrl.ngModel", onModelChange), 
-            ngModelController.$formatters.push(format), ngModelController.$parsers.push(unformat), 
-            element.addEventListener("change", onChange), element.addEventListener("keydown", onKeydown), 
+            onPatternChange($ctrl.twTextFormat), ngModelController.$formatters.push(function(value) {
+                return TwTextFormatService.formatUsingPattern(value, pattern);
+            }), ngModelController.$parsers.push(function(value) {
+                return TwTextFormatService.unformatUsingPattern(value, pattern);
+            }), element.addEventListener("change", onChange), element.addEventListener("keydown", onKeydown), 
             element.addEventListener("paste", onPaste), element.addEventListener("cut", onCut), 
             element.addEventListener("copy", onCopy), replaceLengthValidators(ngModelController), 
             undoStack.reset(element.value);
@@ -1364,35 +1367,27 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             }
         }
         function onPatternChange(newPattern, oldPattern) {
-            if (newPattern !== oldPattern) {
-                var viewValue = element.value;
-                oldPattern && (viewValue = TwTextFormatService.unformatUsingPattern(viewValue, oldPattern)), 
-                newPattern && (viewValue = TwTextFormatService.formatUsingPattern(viewValue, newPattern)), 
-                undoStack.reset(viewValue), element.value = viewValue;
-            }
+            if (newPattern === oldPattern) return void (pattern = newPattern);
+            pattern = newPattern && newPattern.indexOf("||") > 0 ? newPattern.substring(0, newPattern.indexOf("||")) : newPattern;
+            var viewValue = element.value;
+            oldPattern && (viewValue = TwTextFormatService.unformatUsingPattern(viewValue, oldPattern)), 
+            newPattern && (viewValue = TwTextFormatService.formatUsingPattern(viewValue, pattern)), 
+            undoStack.reset(viewValue), element.value = viewValue;
         }
         function replaceLengthValidators(ngModelController) {
             $timeout(function() {
                 var originalMinLength = ngModelController.$validators.minlength, originalMaxLength = ngModelController.$validators.maxlength;
                 originalMinLength && (ngModelController.$validators.minlength = function(modelValue, viewValue) {
-                    return originalMinLength(modelValue, unformat(viewValue));
+                    return originalMinLength(modelValue, TwTextFormatService.unformatUsingPattern(viewValue, pattern));
                 }), originalMaxLength && (ngModelController.$validators.maxlength = function(modelValue, viewValue) {
-                    return originalMaxLength(modelValue, unformat(viewValue));
+                    return originalMaxLength(modelValue, TwTextFormatService.unformatUsingPattern(viewValue, pattern));
                 });
             });
         }
         function reformatControl(element, originalValue) {
             originalValue || (originalValue = element.value);
-            var newValue = format(unformat(originalValue));
+            var newValue = TwTextFormatService.reformatUsingPattern(originalValue, pattern);
             return newValue !== originalValue && (element.value = newValue), newValue;
-        }
-        function unformat(value) {
-            return value ? TwTextFormatService.unformatUsingPattern(value, $ctrl.twTextFormat) : value;
-        }
-        function format(value) {
-            if (!value) return "";
-            var formatted = TwTextFormatService.formatUsingPattern(value, $ctrl.twTextFormat);
-            return formatted;
         }
         function onChange() {
             var formatted = reformatControl(element);
@@ -1400,7 +1395,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         }
         function onPaste(event) {
             var selectionStart = element.selectionStart, clipboardData = (element.value.length, 
-            event.clipboardData || window.clipboardData), pastedData = clipboardData.getData("Text"), separatorsInPaste = TwTextFormatService.countSeparatorsInAppendedValue($ctrl.twTextFormat, selectionStart, pastedData);
+            event.clipboardData || window.clipboardData), pastedData = clipboardData.getData("Text"), separatorsInPaste = TwTextFormatService.countSeparatorsInAppendedValue(pattern, selectionStart, pastedData);
             $timeout(function() {
                 var newPosition = selectionStart + pastedData.length + separatorsInPaste, formatted = reformatControl(element);
                 undoStack.add(formatted), element.setSelectionRange(newPosition, newPosition);
@@ -1412,7 +1407,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             return reservedKeys.indexOf(key) >= 0 || event.metaKey || event.ctrlKey ? (key === keys.z && (event.metaKey || event.ctrlKey) && (event.preventDefault(), 
             event.stopPropagation(), element.value = undoStack.undo()), void (key === keys.y && (event.metaKey || event.ctrlKey) && (event.preventDefault(), 
             event.stopPropagation(), element.value = undoStack.redo()))) : void $timeout(function() {
-                afterKeydown(key, currentKeydownCount, element, $ctrl.twTextFormat, selectionStart, selectionEnd);
+                afterKeydown(key, currentKeydownCount, element, pattern, selectionStart, selectionEnd);
             });
         }
         function afterKeydown(key, currentKeydownCount, element, pattern, selectionStart, selectionEnd) {
@@ -1435,7 +1430,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 removeEnd = selectionStart - adjust) : (removeStart = selectionStart - separatorsBeforeCursor, 
                 removeEnd = selectionStart - adjust), newVal = removeCharacters(element.value, removeStart, removeEnd);
             }
-            return format(unformat(newVal));
+            return TwTextFormatService.reformatUsingPattern(newVal, pattern);
         }
         function doDelete(element, pattern, selectionStart, selectionEnd) {
             return element.value = getFormattedValueAfterDelete(element, pattern, selectionStart, selectionEnd), 
@@ -1449,7 +1444,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 selectionStart !== selectionEnd ? (removeStart = selectionStart + adjust, removeEnd = selectionStart + separatorsAfterCursor + adjust) : (removeStart = selectionStart + separatorsAfterCursor, 
                 removeEnd = selectionStart + separatorsAfterCursor + 1), newVal = removeCharacters(element.value, removeStart, removeEnd);
             }
-            return format(unformat(newVal));
+            return TwTextFormatService.reformatUsingPattern(newVal, pattern);
         }
         function doKeypress(element, pattern, selectionStart, selectionEnd) {
             var formatted = reformatControl(element);
@@ -1462,7 +1457,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             $timeout(function() {
                 var formatted = reformatControl(element);
                 undoStack.add(formatted);
-                var newPosition = selectionStart + TwTextFormatService.countSeparatorsAfterCursor($ctrl.twTextFormat, selectionStart);
+                var newPosition = selectionStart + TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart);
                 element.setSelectionRange(newPosition, newPosition);
             });
         }
@@ -1485,7 +1480,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         function removeCharacters(value, first, last) {
             return value.substring(0, first - 1) + value.substring(last - 1, value.length);
         }
-        var ngModelController, element, undoStack, keydownCount, $ctrl = this, keys = {
+        var ngModelController, element, undoStack, keydownCount, pattern = "", $ctrl = this, keys = {
             cmd: 224,
             cmdLeft: 91,
             cmdRight: 93,
@@ -1768,13 +1763,18 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     "use strict";
     function TwTextFormatService() {
         this.formatUsingPattern = function(value, pattern) {
+            if (value || (value = ""), "string" != typeof pattern) return value;
             for (var newValue = "", separators = 0, i = 0; i < pattern.length && i <= value.length + separators; i++) "*" === pattern[i] ? value[i - separators] && (newValue += value[i - separators]) : (newValue += pattern[i], 
             separators++);
             return value.substring(pattern.length - separators, value.length) && (newValue += value.substring(pattern.length - separators, value.length)), 
             newValue;
         }, this.unformatUsingPattern = function(value, pattern) {
+            if (!value) return "";
+            if ("string" != typeof pattern) return value;
             for (var i = 0; i < pattern.length; i++) if ("*" !== pattern[i]) for (;value.indexOf(pattern[i]) >= 0; ) value = value.replace(pattern[i], "");
             return value;
+        }, this.reformatUsingPattern = function(value, newPattern, oldPattern) {
+            return "undefined" == typeof oldPattern && (oldPattern = newPattern), this.formatUsingPattern(this.unformatUsingPattern(value, oldPattern), newPattern);
         }, this.countSeparatorsBeforeCursor = function(pattern, position) {
             for (var separators = 0; pattern[position - separators - 1] && "*" !== pattern[position - separators - 1]; ) separators++;
             return separators;
@@ -1784,6 +1784,9 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         }, this.countSeparatorsInAppendedValue = function(pattern, position, value) {
             for (var separators = 0, i = 0, toAllocate = value.length; toAllocate; ) "*" === pattern[position + i] || "undefined" == typeof pattern[position + i] ? toAllocate-- : separators++, 
             i++;
+            return separators;
+        }, this.countSeparatorsInPattern = function(pattern) {
+            for (var separators = 0, i = 0; i < pattern.length; i++) "*" !== pattern[i] && separators++;
             return separators;
         };
     }

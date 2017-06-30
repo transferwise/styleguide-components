@@ -328,7 +328,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 		$ctrl.patterns = [
 			{
 				value: {
-					pattern: '**** **** **** ****',
+					format: '**** **** **** ****',
 					minlength: 16,
 					maxlength: 20,
 					placeholder: 'Number on the front of your card',
@@ -339,7 +339,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 			},
 			{
 				value: {
-					pattern: '** / **',
+					format: '** / **',
 					minlength: 4,
 					maxlength: 4,
 					placeholder: 'MM / YY',
@@ -350,7 +350,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 			},
 			{
 				value: {
-					pattern: '** - ** - **',
+					format: '** - ** - **',
 					minlength: 6,
 					maxlength: 7,
 					placeholder: '** - ** - **',
@@ -361,7 +361,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 			},
 			{
 				value: {
-					pattern: '(+**) **** *** ***',
+					format: '(+**) **** *** ***',
 					minlength: 10,
 					maxlength: 12,
 					placeholder: '(+**) **** *** ***'
@@ -371,7 +371,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 			},
 			{
 				value: {
-					pattern: '***.***.***-**',
+					format: '***.***.***-**',
 					minlength: 11,
 					maxlength: 11,
 					placeholder: '***.***.***-**'
@@ -381,7 +381,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 			},
 			{
 				value: {
-					pattern: '**.***.*** - *',
+					format: '**.***.*** - *',
 					minlength: 9,
 					maxlength: 9,
 					placeholder: '**.***.*** - *'

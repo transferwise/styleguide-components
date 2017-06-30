@@ -8,6 +8,12 @@
   function TwTextFormatService() {
 
     this.formatUsingPattern = function(value, pattern) {
+      if (!value) {
+        value = "";
+      }
+      if (typeof pattern !== "string") {
+        return value;
+      }
       var newValue = "";
       var separators = 0;
       var moveCursor = 0;
@@ -30,6 +36,12 @@
     };
 
     this.unformatUsingPattern = function(value, pattern) {
+      if (!value) {
+        return "";  // return value
+      }
+      if (typeof pattern !== "string") {
+        return value;
+      }
       for(var i = 0; i < pattern.length; i++) {
         if (pattern[i] !== '*') {
           // TODO Not very efficient, regex tricky because of special characters
@@ -39,6 +51,16 @@
         }
       }
       return value;
+    };
+
+    this.reformatUsingPattern = function(value, newPattern, oldPattern) {
+      if (typeof oldPattern === "undefined") {
+        oldPattern = newPattern;
+      }
+      return this.formatUsingPattern(
+        this.unformatUsingPattern(value, oldPattern),
+        newPattern
+      );
     };
 
     this.countSeparatorsBeforeCursor = function(pattern, position) {
@@ -59,6 +81,7 @@
       return separators;
     };
 
+    // How long will a value be after separators have been inserted
     this.countSeparatorsInAppendedValue = function(pattern, position, value) {
       var separators = 0;
       var i = 0;
@@ -71,6 +94,16 @@
           separators++;
         }
         i++;
+      }
+      return separators;
+    };
+
+    this.countSeparatorsInPattern = function(pattern) {
+      var separators = 0;
+      for(var i = 0; i < pattern.length; i++) {
+        if (pattern[i] !== "*") {
+          separators++;
+        }
       }
       return separators;
     };

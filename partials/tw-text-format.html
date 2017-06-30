@@ -15,7 +15,7 @@
         placeholder="{{$ctrl.pattern.placeholder}}"
         tw-focusable
         tw-validation
-        tw-text-format="{{$ctrl.pattern.pattern}}" />
+        tw-text-format="{{$ctrl.pattern.format}}" />
       <div class="help-block" ng-if="$ctrl.pattern.helpText">
         {{$ctrl.pattern.helpText}}
       </div>
@@ -25,11 +25,11 @@
 &lt;input type="text"
   class="form-control"
   ng-model="{{$ctrl.model}}"
-  ng-minlength="{{$ctrl.minlengths[$ctrl.pattern]}}"
-  ng-maxlength="{{$ctrl.maxlength}}"
+  ng-minlength="{{$ctrl.pattern.minlength}}"
+  ng-maxlength="{{$ctrl.pattern.maxlength}}"
   ng-required="true"
-  placeholder="{{$ctrl.placeholders[$ctrl.pattern]}}"
-  tw-text-format="{{$ctrl.pattern}}"
+  placeholder="{{$ctrl.pattern.placeholder}}"
+  tw-text-format="{{$ctrl.pattern.format}}"
   tw-validation
   tw-focusable /&gt;
 </pre>
@@ -63,12 +63,12 @@
     filter to format the value in the same way.</p>
   <dl>
     <dt>Text filter</dt>
-    <dd>{{$ctrl.model | twTextFormat:$ctrl.pattern }}</dd>
+    <dd>{{$ctrl.model | twTextFormat:$ctrl.pattern.format }}</dd>
   </dl>
 <pre>
 &lt;dl&gt;
   &lt;dt&gt;Text filter&lt;/dt&gt;
-  &lt;dd&gt;<code ng-non-bindable>{{</code> "{{$ctrl.model}}" | twTextFormat : "{{$ctrl.pattern}}" <code ng-non-bindable>}}</code>&lt;/dd&gt;
+  &lt;dd&gt;<code ng-non-bindable>{{</code> "{{$ctrl.model}}" | twTextFormat : "{{$ctrl.pattern.format}}" <code ng-non-bindable>}}</code>&lt;/dd&gt;
 &lt;/dl&gt;
 </pre>
 

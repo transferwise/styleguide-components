@@ -960,6 +960,18 @@ describe('Directive: TwTextFormat, ', function() {
     }
   });
 
+  describe('Given an OR pattern (**-**||***-**) is supplied', function() {
+    beforeEach(function () {
+      $scope.pattern = "**-**||***-**";
+      $scope.ngModel = "123456";
+      $element = getCompiledDirectiveElement($scope);
+      input = $element[0];
+    });
+    it('should use the first option', function () {
+      expect(input.value).toBe("12-3456");
+    });
+  });
+
   /**
    * Neither Firefox or Phantom correctly supports cursor position in tests
    * e.g. this fails:

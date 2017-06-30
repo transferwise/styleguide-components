@@ -1458,13 +1458,18 @@ angular.module("tw.form-components", []);
     "use strict";
     function TwTextFormatService() {
         this.formatUsingPattern = function(value, pattern) {
+            if (value || (value = ""), "string" != typeof pattern) return value;
             for (var newValue = "", separators = 0, i = 0; i < pattern.length && i <= value.length + separators; i++) "*" === pattern[i] ? value[i - separators] && (newValue += value[i - separators]) : (newValue += pattern[i], 
             separators++);
             return value.substring(pattern.length - separators, value.length) && (newValue += value.substring(pattern.length - separators, value.length)), 
             newValue;
         }, this.unformatUsingPattern = function(value, pattern) {
+            if (!value) return "";
+            if ("string" != typeof pattern) return value;
             for (var i = 0; i < pattern.length; i++) if ("*" !== pattern[i]) for (;value.indexOf(pattern[i]) >= 0; ) value = value.replace(pattern[i], "");
             return value;
+        }, this.reformatUsingPattern = function(value, newPattern, oldPattern) {
+            return "undefined" == typeof oldPattern && (oldPattern = newPattern), this.formatUsingPattern(this.unformatUsingPattern(value, oldPattern), newPattern);
         }, this.countSeparatorsBeforeCursor = function(pattern, position) {
             for (var separators = 0; pattern[position - separators - 1] && "*" !== pattern[position - separators - 1]; ) separators++;
             return separators;
@@ -1474,6 +1479,9 @@ angular.module("tw.form-components", []);
         }, this.countSeparatorsInAppendedValue = function(pattern, position, value) {
             for (var separators = 0, i = 0, toAllocate = value.length; toAllocate; ) "*" === pattern[position + i] || "undefined" == typeof pattern[position + i] ? toAllocate-- : separators++, 
             i++;
+            return separators;
+        }, this.countSeparatorsInPattern = function(pattern) {
+            for (var separators = 0, i = 0; i < pattern.length; i++) "*" !== pattern[i] && separators++;
             return separators;
         };
     }
