@@ -11,7 +11,6 @@
 
     function CollExample(){
         return {
-            // require: {CardController: '^twCard'},
             transclude: {
                 collBody: '?middle',
                 collRight: 'right'
@@ -26,7 +25,6 @@
 
     function ExpExample(){
         return {
-            // require: {CardController: '^twCard'},
             transclude: {
                 expHead: 'heading',
                 expBody: '?middle',
@@ -44,7 +42,6 @@
 
     function FrmExample(){
         return {
-            // require: {CardController: '^twCard'},
             template: ' \
                 <div class="row "> \
                     <div class="col-sm-6 col-lg-4"> \
@@ -197,9 +194,9 @@
             controller: CardContainerController,
             bindToController: true,
             transclude: true,
-            template:   '<ul ng-transclude class="list-group panel-list-group list-group-slide-out" \
+            template:   '<div class="well"><ul ng-transclude class="list-group panel-list-group list-group-slide-out" \
                             ng-class="{\'list-group-inactive\': $ctrl.inactive}"> \
-                        </ul>',
+                        </ul></div>',
         };
     }
 
