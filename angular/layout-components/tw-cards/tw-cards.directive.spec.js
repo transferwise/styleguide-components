@@ -18,7 +18,7 @@ describe('Directive: TwCards', function() {
     var cardTemplate = "\
         <tw-card \
             state='info' \
-            enlarged='enlarged'> \
+            open='open'> \
             <card-icon>T</card-icon> \
             <collapsed> \
                 <a class='collapsed-content'></a> \
@@ -35,7 +35,7 @@ describe('Directive: TwCards', function() {
 
     describe('transclusion of collapsed content', function() {
         beforeEach(function() { 
-            $scope.enlarged = false;
+            $scope.open = false;
             directiveElement = getCompiledDirectiveElement($scope, cardSetTemplate());
         });
         it('should render transcluded only content of collapsed card', function() {
@@ -46,36 +46,36 @@ describe('Directive: TwCards', function() {
 
     describe('transclusion of expanded & collapsed content', function() {
         beforeEach(function() {
-            $scope.enlarged = true;
+            $scope.open = true;
             directiveElement = getCompiledDirectiveElement($scope, cardSetTemplate());
         });
         it('should render transcluded content of fully expanded card', function() {
             var collapsed = directiveElement.find('.collapsed-content');
             expect(collapsed.length).toBe(1);
-            var enlarged = directiveElement.find('.expanded-content');
-            expect(enlarged.length).toBe(1);
+            var open = directiveElement.find('.expanded-content');
+            expect(open.length).toBe(1);
         });
     });
 
     describe('expansion of one of two pre-expanded cards', function() {
         beforeEach(function() {
-            $scope.enlarged = true;
+            $scope.open = true;
             directiveElement = getCompiledDirectiveElement($scope, cardSetTemplate(cardTemplate + cardTemplate));
         });
         it('only expand one card', function() {
-            var enlarged = directiveElement.find('.expanded-content');
-            expect(enlarged.length).toBe(1); // as opposed to two
+            var open = directiveElement.find('.expanded-content');
+            expect(open.length).toBe(1); // as opposed to two
         });
     });
 
     describe('expansion of one of two pre-expanded cards in two different sets', function() {
         beforeEach(function() {
-            $scope.enlarged = true;
+            $scope.open = true;
             directiveElement = getCompiledDirectiveElement($scope, cardSetTemplate() + cardSetTemplate());
         });
         it('only expand one card', function() {
-            var enlarged = directiveElement.find('.expanded-content');
-            expect(enlarged.length).toBe(1); // as opposed to two
+            var open = directiveElement.find('.expanded-content');
+            expect(open.length).toBe(1); // as opposed to two
         });
     });
 
