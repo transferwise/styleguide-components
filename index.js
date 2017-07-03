@@ -371,29 +371,29 @@ angular.module('my-app', ['tw.styleguide-components'])
 .directive('expandExample', function (){
     return {
         transclude: {
-            expHead: 'heading',
-            expBody: '?middle',
-            expButt: 'buttons'
+            expandedHead: 'heading',
+            expandedBody: '?middle',
+            expandedButtons: 'buttons'
         },
         template: ' \
             <div> \
-                <div class="m-t-1 m-b-3 visible-xs-block visible-sm-block" ng-transclude="expHead"></div> \
-                <div ng-transclude="expBody"></div> \
+                <div class="m-t-1 m-b-3 visible-xs-block visible-sm-block" ng-transclude="expandedHead"></div> \
+                <div ng-transclude="expandedBody"></div> \
                 <hr class="hidden-xs hidden-sm hidden-md"> \
-                <div class="m-t-2 btn-toolbar" ng-transclude="expButt"></div> \
+                <div class="m-t-2 btn-toolbar" ng-transclude="expandedButtons"></div> \
             </div>'
     };
 })
 .directive('collapseExample', function (){
     return {
         transclude: {
-            collBody: '?middle',
-            collRight: 'right'
+            collapseBody: '?middle',
+            collapseRight: 'right'
         },
         template: ' \
             <div class="media"> \
-                <div class="media-body" ng-transclude="collBody"></div> \
-                <div class="media-right text-xs-right" ng-transclude="collRight"></div> \
+                <div class="media-body" ng-transclude="collapseBody"></div> \
+                <div class="media-right text-xs-right" ng-transclude="collapseRight"></div> \
             </div>'
     };
 });
