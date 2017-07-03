@@ -14,7 +14,7 @@
                     They take up to four attributes.
                     <ul>
                         <li><code>state</code> - bootstrap state for the colour of the card</li>
-                        <li><code>enlarged</code> - (optional) boolean to mark a card for pre-expansion.
+                        <li><code>open</code> - (optional) boolean to mark a card for pre-expansion.
                         Only the first card in any <code>tw-cards</code> container with this attribute will
                         be expanded</li>
                         <li><code>disabled</code> - (optional) boolean for greyed out text on a card for
@@ -37,7 +37,7 @@
 &lt;tw-cards&gt;
     &lt;tw-card
         state="danger"
-        enlarged="false"&gt;
+        open="false"&gt;
         &lt;card-icon&gt;
         &lt;/card-icon&gt;
         &lt;collapsed&gt;
@@ -57,7 +57,7 @@
     <tw-cards>
         <tw-card
             state="danger"
-            enlarged="true"
+            open="true"
         >
             <card-icon>
                 <span class="icon icon-request icon-md icon-request"></span> 
@@ -115,7 +115,7 @@
         </tw-card>
         <tw-card
             state="info"
-            enlarged="true"
+            open="true"
         >
             <card-icon>
                 <span class="icon icon-md icon-transfer"></span>

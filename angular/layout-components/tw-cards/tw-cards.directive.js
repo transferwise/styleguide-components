@@ -94,7 +94,7 @@
             scope: {
                 state: '@',
                 index: '<',
-                enlarged: '<?',
+                open: '<?',
                 disabled: '=?',
                 inactive: '<'
             },
@@ -114,11 +114,11 @@
                 crdctrl.index = crdctrl.getLength() - 1;
                 crdctrl.inactive = $ctrl.cardContainerController.inactive;
 
-                if (crdctrl.enlarged === true && 
+                if (crdctrl.open === true && 
                     crdctrl.getExpandedIndex() === -1) { // only takes first pre-expanded card
                     crdctrl.updateExpandedIndex(crdctrl.index);
                 } else {
-                    crdctrl.enlarged = false;
+                    crdctrl.open = false;
                 }
                 if (crdctrl.disabled == null){
                     crdctrl.disabled = false;
@@ -142,9 +142,9 @@
 
     var expandedCardTemplate = 
         '<div   class="collapse" \
-                ng-attr-aria-expanded="{{ $ctrl.enlarged }}" \
-                ng-class="{\'in\': $ctrl.enlarged }" \
-                ng-if="$ctrl.enlarged" > \
+                ng-attr-aria-expanded="{{ $ctrl.open }}" \
+                ng-class="{\'in\': $ctrl.open }" \
+                ng-if="$ctrl.open" > \
             <div class="p-l-panel p-r-panel p-b-panel"> \
                 <div class="media"> \
                     <div class="media-left"> \
@@ -175,7 +175,7 @@
     var templateStr = 
         '<li    class="list-group-item p-a-0 list-group-item-{{$ctrl.state}}" \
                 ng-class="{ \
-                    \'active\': $ctrl.enlarged, \
+                    \'active\': $ctrl.open, \
                     \'disabled\': $ctrl.disabled \
                 }">'
             + collapsedCardTemplate + expandedCardTemplate + cardFormTemplate + 
