@@ -1352,7 +1352,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             controller: CardContainerController,
             bindToController: !0,
             transclude: !0,
-            template: '<div class="well"><ul ng-transclude class="list-group panel-list-group list-group-slide-out"                             ng-class="{\'list-group-inactive\': $ctrl.inactive}">                         </ul></div>'
+            template: '<ul ng-transclude class="list-group panel-list-group list-group-slide-out"                             ng-class="{\'list-group-inactive\': $ctrl.inactive}">                         </ul>'
         };
     }
     angular.module("tw.layout-components").directive("twCards", CardContainer).directive("twCard", Card).directive("formExample", FrmExample).directive("expandExample", ExpExample).directive("collapseExample", CollExample);

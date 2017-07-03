@@ -194,9 +194,9 @@
             controller: CardContainerController,
             bindToController: true,
             transclude: true,
-            template:   '<div class="well"><ul ng-transclude class="list-group panel-list-group list-group-slide-out" \
+            template:   '<ul ng-transclude class="list-group panel-list-group list-group-slide-out" \
                             ng-class="{\'list-group-inactive\': $ctrl.inactive}"> \
-                        </ul></div>',
+                        </ul>',
         };
     }
 
