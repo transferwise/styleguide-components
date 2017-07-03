@@ -389,6 +389,16 @@ angular.module('my-app', ['tw.styleguide-components'])
 				label: 'Chilean RUT ID',
 				note: '**.***.*** - *',
 			},
+			{
+				value: {
+					format: '** ***||*** ***||**** ***',
+					minlength: 5,
+					maxlength: 7,
+					placeholder: 'UK Postcode'
+				},
+				label: 'UK post code ',
+				note: '** ***||*** ***||**** ***',
+			},
 		];
 	},
 	bindings: {

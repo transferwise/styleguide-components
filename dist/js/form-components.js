@@ -1483,6 +1483,8 @@ angular.module("tw.form-components", []);
         }, this.countSeparatorsInPattern = function(pattern) {
             for (var separators = 0, i = 0; i < pattern.length; i++) "*" !== pattern[i] && separators++;
             return separators;
+        }, this.countCharactersInPattern = function(pattern) {
+            return pattern.length - this.countSeparatorsInPattern(pattern);
         };
     }
     angular.module("tw.form-styling").service("TwTextFormatService", TwTextFormatService);

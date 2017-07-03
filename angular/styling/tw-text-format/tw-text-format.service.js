@@ -107,5 +107,9 @@
       }
       return separators;
     };
+
+    this.countCharactersInPattern = function(pattern) {
+      return pattern.length - this.countSeparatorsInPattern(pattern);
+    };
   }
 })(window.angular);

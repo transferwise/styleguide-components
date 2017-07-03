@@ -1368,7 +1368,12 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         }
         function onPatternChange(newPattern, oldPattern) {
             if (newPattern === oldPattern) return void (pattern = newPattern);
-            pattern = newPattern && newPattern.indexOf("||") > 0 ? newPattern.substring(0, newPattern.indexOf("||")) : newPattern;
+            if (newPattern && newPattern.indexOf("||") > 0) {
+                var lengthPatterns = getLengthToPatternMap(newPattern);
+                console.log(lengthPatterns);
+                var modelLength = $ctrl.ngModel ? $ctrl.ngModel.length : 0;
+                pattern = lengthPatterns[String(modelLength)] ? map[String($ctrl.ngModel.length)] : newPattern.substring(0, newPattern.indexOf("||"));
+            } else pattern = newPattern;
             var viewValue = element.value;
             oldPattern && (viewValue = TwTextFormatService.unformatUsingPattern(viewValue, oldPattern)), 
             newPattern && (viewValue = TwTextFormatService.formatUsingPattern(viewValue, pattern)), 
@@ -1479,6 +1484,14 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         }
         function removeCharacters(value, first, last) {
             return value.substring(0, first - 1) + value.substring(last - 1, value.length);
+        }
+        function getLengthToPatternMap(pattern) {
+            var patterns = pattern.split("||"), lengthToPatternMap = {};
+            return patterns.forEach(function(patternIter) {
+                console.log(patternIter);
+                var lengthString = String(TwTextFormatService.countCharactersInPattern(patternIter));
+                lengthToPatternMap[lengthString] = patternIter;
+            }), lengthToPatternMap;
         }
         var ngModelController, element, undoStack, keydownCount, pattern = "", $ctrl = this, keys = {
             cmd: 224,
@@ -1788,6 +1801,8 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         }, this.countSeparatorsInPattern = function(pattern) {
             for (var separators = 0, i = 0; i < pattern.length; i++) "*" !== pattern[i] && separators++;
             return separators;
+        }, this.countCharactersInPattern = function(pattern) {
+            return pattern.length - this.countSeparatorsInPattern(pattern);
         };
     }
     angular.module("tw.form-styling").service("TwTextFormatService", TwTextFormatService);

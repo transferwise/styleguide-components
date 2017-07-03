@@ -87,7 +87,14 @@
         return;
       }
       if (newPattern && newPattern.indexOf('||') > 0) {
-        pattern = newPattern.substring(0, newPattern.indexOf('||'));
+        var lengthPatterns = getLengthToPatternMap(newPattern);
+        console.log(lengthPatterns);
+        var modelLength = $ctrl.ngModel ? $ctrl.ngModel.length : 0;
+        if (lengthPatterns[String(modelLength)]) {
+          pattern = map[String($ctrl.ngModel.length)];
+        } else {
+          pattern = newPattern.substring(0, newPattern.indexOf('||'));
+        }
       } else {
         pattern = newPattern;
       }
@@ -413,6 +420,18 @@
     function removeCharacters(value, first, last) {
       return value.substring(0, first - 1) +
         value.substring(last - 1, value.length);
+    }
+
+    function getLengthToPatternMap(pattern) {
+      var patterns = pattern.split('||'), lengthToPatternMap = {};
+      patterns.forEach(function(patternIter) {
+        console.log(patternIter);
+        var lengthString = String(
+          TwTextFormatService.countCharactersInPattern(patternIter)
+        );
+        lengthToPatternMap[lengthString] = patternIter;
+      });
+      return lengthToPatternMap;
     }
   }
 
