@@ -1,6 +1,6 @@
 'use strict';
 
-fdescribe('Directive: TwCards', function() {
+describe('Directive: TwCards', function() {
     var $compile,
         $rootScope,
         $scope,
