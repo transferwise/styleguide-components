@@ -41,20 +41,20 @@
             template: templateStr,
             link: function ($scope, $element, $attrs, $ctrl) {
 
-                var crdctrl = $scope.$ctrl;
+                var cardController = $scope.$ctrl;
 
-                crdctrl.addCard(crdctrl);
-                crdctrl.index = crdctrl.getLength() - 1;
-                crdctrl.inactive = $ctrl.cardContainerController.inactive;
+                cardController.addCard(cardController);
+                cardController.index = cardController.getLength() - 1;
+                cardController.inactive = $ctrl.cardContainerController.inactive;
 
-                if (crdctrl.open === true && 
-                    crdctrl.getExpandedIndex() === -1) { // only takes first pre-expanded card
-                    crdctrl.updateExpandedIndex(crdctrl.index);
+                if (cardController.open === true && 
+                    cardController.getExpandedIndex() === -1) { // only takes first pre-expanded card
+                    cardController.updateExpandedIndex(cardController.index);
                 } else {
-                    crdctrl.open = false;
+                    cardController.open = false;
                 }
-                if (crdctrl.disabled == null){
-                    crdctrl.disabled = false;
+                if (cardController.disabled == null) {
+                    cardController.disabled = false;
                 }
             }
         };
@@ -114,7 +114,7 @@
             + collapsedCardTemplate + expandedCardTemplate + cardFormTemplate + 
         '</li>';
 
-    function CardContainerController(){
+    function CardContainerController() {
         // useless ?
     }
 

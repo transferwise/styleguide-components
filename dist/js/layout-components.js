@@ -32,10 +32,10 @@ angular.module("tw.layout-components", []);
             controller: [ "$transclude", "TwCardsService", CardController ],
             template: templateStr,
             link: function($scope, $element, $attrs, $ctrl) {
-                var crdctrl = $scope.$ctrl;
-                crdctrl.addCard(crdctrl), crdctrl.index = crdctrl.getLength() - 1, crdctrl.inactive = $ctrl.cardContainerController.inactive, 
-                crdctrl.open === !0 && crdctrl.getExpandedIndex() === -1 ? crdctrl.updateExpandedIndex(crdctrl.index) : crdctrl.open = !1, 
-                null == crdctrl.disabled && (crdctrl.disabled = !1);
+                var cardController = $scope.$ctrl;
+                cardController.addCard(cardController), cardController.index = cardController.getLength() - 1, 
+                cardController.inactive = $ctrl.cardContainerController.inactive, cardController.open === !0 && cardController.getExpandedIndex() === -1 ? cardController.updateExpandedIndex(cardController.index) : cardController.open = !1, 
+                null == cardController.disabled && (cardController.disabled = !1);
             }
         };
     }

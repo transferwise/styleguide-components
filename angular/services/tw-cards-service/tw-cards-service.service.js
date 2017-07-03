@@ -10,11 +10,11 @@
 		var cards = []; // boolean array of card controllers
 
 		this.toggle = function(index) {
-            if (expandedIndex !== -1  && expandedIndex !== index){
+            if (expandedIndex !== -1  && expandedIndex !== index) {
                 cards[expandedIndex].open = false;
                 expandedIndex = -1;
             }
-            if (cards[index].open){
+            if (cards[index].open) {
                 cards[index].open = false;
             } else {
                 expandedIndex = index;
@@ -26,19 +26,19 @@
             cards.push(scope);
         };
 
-        this.getExpandedIndex = function(){
+        this.getExpandedIndex = function() {
             return expandedIndex;
         };
 
-        this.updateExpandedIndex = function(newExpandedIndex){
+        this.updateExpandedIndex = function(newExpandedIndex) {
         	expandedIndex = newExpandedIndex;
         };
 
-        this.getCard = function(index){
+        this.getCard = function(index) {
         	return cards[index];
         };
 
-        this.getLength = function(){
+        this.getLength = function() {
             return cards.length;
         };
 	}

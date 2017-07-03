@@ -333,10 +333,10 @@ angular.module('my-app', ['tw.styleguide-components'])
 .directive('twProcessDocs', function() {
 	return {templateUrl: 'partials/tw-process.html'};
 })
-.directive('twCardsDocs', function(){
+.directive('twCardsDocs', function() {
 	return {templateUrl: 'partials/tw-cards.html'};
 })
-.directive('formExample', function(){
+.directive('formExample', function() {
     return {
         template: ' \
             <div class="row "> \
@@ -368,7 +368,7 @@ angular.module('my-app', ['tw.styleguide-components'])
             </div>'
     };
 })
-.directive('expandExample', function (){
+.directive('expandExample', function () {
     return {
         transclude: {
             expandedHead: 'heading',
@@ -384,7 +384,7 @@ angular.module('my-app', ['tw.styleguide-components'])
             </div>'
     };
 })
-.directive('collapseExample', function (){
+.directive('collapseExample', function () {
     return {
         transclude: {
             collapseBody: '?middle',
