@@ -335,4 +335,65 @@ angular.module('my-app', ['tw.styleguide-components'])
 })
 .directive('twCardsDocs', function(){
 	return {templateUrl: 'partials/tw-cards.html'};
+})
+.directive('formExample', function(){
+    return {
+        template: ' \
+            <div class="row "> \
+                <div class="col-sm-6 col-lg-4"> \
+                    <div class="form-group m-b-0"> \
+                        <label class="control-label">Send</label> \
+                        <div class="input-group"> \
+                            <span class="input-group-addon ">£</span> \
+                            <input class="form-control text-xs-right p-r-0" type="text"> \
+                            <span class="input-group-addon p-l-1 ">USD</span> \
+                        </div> \
+                        <div class="help-block m-b-0 ">Rate £1 = £1.2345</div> \
+                    </div> \
+                </div> \
+                <div class="col-sm-6 col-lg-4 m-b-0"> \
+                    <div class="form-group m-b-0"> \
+                        <label class="control-label">Receive about </label> \
+                        <div class="input-group"> \
+                            <span class="input-group-addon ">£</span> \
+                            <input class="form-control text-xs-right p-r-0" type="text"> \
+                            <span class="input-group-addon p-l-1 ">USD</span> \
+                        </div> \
+                        <div class="help-block m-b-0 ">Fee £1.00 USD</div> \
+                    </div> \
+                </div> \
+                <div class="col-sm-12 col-lg-4 p-t-3 m-b-0"> \
+                    <button class="btn btn-success btn-block">Repeat transfer</button> \
+                </div> \
+            </div>'
+    };
+})
+.directive('expandExample', function (){
+    return {
+        transclude: {
+            expHead: 'heading',
+            expBody: '?middle',
+            expButt: 'buttons'
+        },
+        template: ' \
+            <div> \
+                <div class="m-t-1 m-b-3 visible-xs-block visible-sm-block" ng-transclude="expHead"></div> \
+                <div ng-transclude="expBody"></div> \
+                <hr class="hidden-xs hidden-sm hidden-md"> \
+                <div class="m-t-2 btn-toolbar" ng-transclude="expButt"></div> \
+            </div>'
+    };
+})
+.directive('collapseExample', function (){
+    return {
+        transclude: {
+            collBody: '?middle',
+            collRight: 'right'
+        },
+        template: ' \
+            <div class="media"> \
+                <div class="media-body" ng-transclude="collBody"></div> \
+                <div class="media-right text-xs-right" ng-transclude="collRight"></div> \
+            </div>'
+    };
 });
