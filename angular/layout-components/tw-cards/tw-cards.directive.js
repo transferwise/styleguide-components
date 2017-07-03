@@ -74,8 +74,9 @@
     }
 
 
-    function CardController(TwCardsService) {
+    function CardController($transclude, TwCardsService) {
         var $ctrl = this;
+        $ctrl.hasForm = $transclude.isSlotFilled("cardForm");
         $ctrl.toggle = TwCardsService.toggle;
         $ctrl.addCard = TwCardsService.addCard;
         $ctrl.getExpandedIndex = TwCardsService.getExpandedIndex;
@@ -92,7 +93,6 @@
             replace: true,
             scope: {
                 state: '@',
-                form: '<',
                 index: '<',
                 enlarged: '<?',
                 disabled: '=?',
@@ -104,7 +104,7 @@
                 cardForm: '?cardForm',
                 cardIcon: 'cardIcon',
             },
-            controller: ['TwCardsService', CardController],
+            controller: ['$transclude', 'TwCardsService', CardController],
             template: templateStr,
             link: function ($scope, $element, $attrs, $ctrl) {
 
@@ -163,7 +163,7 @@
         </div>';
 
     var cardFormTemplate = 
-        '<div class="well p-l-panel p-r-panel" ng-if="$ctrl.form"> \
+        '<div class="well p-l-panel p-r-panel" ng-if="$ctrl.hasForm"> \
             <div class="media"> \
                 <div class="media-left"> \
                     <div class="circle circle-sm circle-responsive invisible"></div> \

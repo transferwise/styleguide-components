@@ -14,8 +14,6 @@
                     They take up to four attributes.
                     <ul>
                         <li><code>state</code> - bootstrap state for the colour of the card</li>
-                        <li><code>form</code> - boolean to anticipate a <code>card-form</code> element for something
-                        like a repeat transfer</li>
                         <li><code>enlarged</code> - (optional) boolean to mark a card for pre-expansion.
                         Only the first card in any <code>tw-cards</code> container with this attribute will
                         be expanded</li>
@@ -28,7 +26,7 @@
                         <li><code>card-icon</code> - circle for the card's icon</li>
                         <li><code>collapsed</code> - the content for the collapsed card</li>
                         <li><code>expanded</code> - the content for the expanded card</li>
-                        <li><code>card-form</code> - (optional) the content for the form</li>
+                        <li><code>card-form</code> - (optional) the content for a form (like repeat transfer)</li>
                     </ul>
                 </li>
             </ul>
@@ -38,7 +36,6 @@
 <pre>
 &lt;tw-cards&gt;
     &lt;tw-card
-        form="true"
         state="danger"
         enlarged="false"&gt;
         &lt;card-icon&gt;
@@ -59,7 +56,6 @@
 <div class="well">
     <tw-cards>
         <tw-card
-            form="false"
             state="danger"
             enlarged="true"
         >
@@ -119,7 +115,6 @@
         </tw-card>
         <tw-card
             state="info"
-            form="false"
             enlarged="true"
         >
             <card-icon>
@@ -177,7 +172,6 @@
         </tw-card>
         <tw-card
             state="warning"
-            form="false"
         >
             <card-icon>
                 <img src="http://wallpaper-gallery.net/images/image/image-13.jpg" height="50" alt="red panda">
@@ -240,7 +234,6 @@
     <br>
     <tw-cards inactive="true">
         <tw-card
-            form="true"
             state="none"
         >
             <card-icon>V</card-icon>
@@ -315,7 +308,6 @@
         </tw-card>
         <tw-card
             state="none"
-            form="true"
         >
             <card-icon>W</card-icon>
             <collapsed>
@@ -389,7 +381,6 @@
         </tw-card>
         <tw-card
             state="none"
-            form="true"
             disabled="true"
         >
             <card-icon>X</card-icon>
