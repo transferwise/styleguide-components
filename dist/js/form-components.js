@@ -1322,6 +1322,27 @@ angular.module("tw.form-components", []);
     angular.module("tw.form-components").service("TwRequirementsService", TwRequirementsService);
 }(window.angular), function(angular) {
     "use strict";
+    function TwCardsService() {
+        var expandedIndex = -1, cards = [];
+        this.toggle = function(index) {
+            expandedIndex !== -1 && expandedIndex !== index && (cards[expandedIndex].open = !1, 
+            expandedIndex = -1), cards[index].open ? cards[index].open = !1 : (expandedIndex = index, 
+            cards[index].open = !0);
+        }, this.addCard = function(scope) {
+            cards.push(scope);
+        }, this.getExpandedIndex = function() {
+            return expandedIndex;
+        }, this.updateExpandedIndex = function(newExpandedIndex) {
+            expandedIndex = newExpandedIndex;
+        }, this.getCard = function(index) {
+            return cards[index];
+        }, this.getLength = function() {
+            return cards.length;
+        };
+    }
+    angular.module("tw.layout-components").service("TwCardsService", TwCardsService);
+}(window.angular), function(angular) {
+    "use strict";
     function TwCurrencyData() {
         var currencyDecimals = {
             BIF: 0,
