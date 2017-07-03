@@ -11,14 +11,14 @@
 
 		this.toggle = function(index) {
             if (expandedIndex !== -1  && expandedIndex !== index){
-                cards[expandedIndex].enlarged = false;
+                cards[expandedIndex].open = false;
                 expandedIndex = -1;
             }
-            if (cards[index].enlarged){
-                cards[index].enlarged = false;
+            if (cards[index].open){
+                cards[index].open = false;
             } else {
                 expandedIndex = index;
-                cards[index].enlarged = true;
+                cards[index].open = true;
             }
         };
 
