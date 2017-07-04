@@ -29,7 +29,8 @@ module.exports = function(grunt) {
                     banner: 'angular.module("tw.form-validation", []);\n' +
                         'angular.module("tw.form-styling", []);\n' +
                         'angular.module("tw.form-components", []);\n' +
-                        'angular.module("tw.styleguide-components", [\'tw.form-validation\', \'tw.form-styling\', \'tw.form-components\']);\n',
+                        'angular.module("tw.layout-components", []);\n' +
+                        'angular.module("tw.styleguide-components", [\'tw.form-validation\', \'tw.form-styling\', \'tw.form-components\', \'tw.layout-components\']);\n',
                     mangle: false,
                     beautify: true
                 }
@@ -46,7 +47,8 @@ module.exports = function(grunt) {
                     banner: 'angular.module("tw.form-validation", []);\n' +
                         'angular.module("tw.form-styling", []);\n' +
                         'angular.module("tw.form-components", []);\n' +
-                        'angular.module("tw.styleguide-components", [\'tw.form-validation\', \'tw.form-styling\', \'tw.form-components\']);\n',
+                        'angular.module("tw.layout-components", []);\n' +
+                        'angular.module("tw.styleguide-components", [\'tw.form-validation\', \'tw.form-styling\',0\'tw.form-components\', \'tw.layout-components\']);\n',
                     mangle: true,
                     beautify: false
                 }
@@ -100,10 +102,10 @@ module.exports = function(grunt) {
                     beautify: false
                 }
             },
-            components: {
+            formComponents: {
                 src: [
-                    'angular/components/**/*.controller.js',
-                    'angular/components/**/*.directive.js',
+                    'angular/form-components/**/*.controller.js',
+                    'angular/form-components/**/*.directive.js',
                     'angular/**/*.service.js'
                 ],
                 dest: 'dist/js/form-components.js',
@@ -113,15 +115,40 @@ module.exports = function(grunt) {
                     beautify: true
                 }
             },
-            componentsMin: {
+            formComponentsMin: {
                 src: [
-                    'angular/components/**/*.controller.js',
-                    'angular/components/**/*.directive.js',
+                    'angular/form-components/**/*.controller.js',
+                    'angular/form-components/**/*.directive.js',
                     'angular/**/*.service.js'
                 ],
                 dest: 'dist/js/form-components.min.js',
                 options: {
                     banner: 'angular.module("tw.form-components", []);\n',
+                    mangle: true,
+                    beautify: false
+                }
+            },
+            layoutComponents: {
+                src: [
+                    'angular/layout-components/**/*.controller.js',
+                    'angular/layout-components/**/*.directive.js'
+                ],
+                dest: 'dist/js/layout-components.js',
+                options: {
+                    banner: 'angular.module("tw.layout-components", []);\n',
+                    mangle: false,
+                    beautify: true
+                }
+            },
+            layoutComponentsMin: {
+                src: [
+                    'angular/layout-components/**/*.controller.js',
+                    'angular/layout-components/**/*.directive.js',
+                    'angular/**/*.service.js'
+                ],
+                dest: 'dist/js/layout-components.min.js',
+                options: {
+                    banner: 'angular.module("tw.layout-components", []);\n',
                     mangle: true,
                     beautify: false
                 }
