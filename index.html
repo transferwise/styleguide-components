@@ -28,13 +28,14 @@
 			<div class="col-lg-9">
 				<div class="panel">
 					<div class="panel-heading">
-						<h3 class="panel-title">Form Styling &amp; Validation</h3>
+						<h2 class="panel-title">Form Styling &amp; Validation</h2>
 					</div>
 					<div class="panel-body">
 						<tw-affix-docs></tw-affix-docs>
 						<tw-pop-over-docs></tw-pop-over-docs>
 						<tw-tool-tip-docs></tw-tool-tip-docs>
 						<tw-focusable-docs></tw-focusable-docs>
+						<tw-text-format-docs model="vm.model.presentation"></tw-text-format-docs>
 						<tw-validation-docs></tw-validation-docs>
 					</div>
 				</div>
@@ -42,10 +43,11 @@
 			<div class="col-lg-3">
 				<div data-spy="affix" data-offset-top="0">
 					<h4>Jump to:</h4>
-					<h5>Form Styling & Validation:</h5>
+					<h5>Form Styling &amp; Validation:</h5>
 					<ul class="list-unstyled">
 						<li><a href="#focusable">Focusable</a></li>
 						<li><a href="#pop-over">Pop over</a></li>
+						<li><a href="#text-format">Text format</a></li>
 						<li><a href="#tool-tip">Tool tip</a></li>
 						<li><a href="#validation">Validation</a></li>
 					</ul>
@@ -62,6 +64,10 @@
 						<li><a href="#select">Select</a></li>
 						<li><a href="#upload">Upload</a></li>
 					</ul>
+					<h5>Layout components:</h5>
+					<ul class="list-unstyled">
+						<li><a href="#cards">Cards</a></li>
+					</ul>
 					<h5>Other components:</h5>
 					<ul class="list-unstyled">
 						<li><a href="#process">Process</a></li>
@@ -72,11 +78,10 @@
 				</div>
 			</div>
 		</div>
-
 		<div class="row m-t-3">
 			<div class="col-lg-9">
 				<div class="panel-heading">
-					<h3 class="panel-title">Form components</h3>
+					<h2 class="panel-title">Form components</h2>
 				</div>
 				<div class="panel-body" ng-init="vm.requirementsForm = {}">
 					<tw-amount-currency-select-docs></tw-amount-currency-select-docs>
@@ -94,13 +99,22 @@
 		</div>
 		<div class="row m-t-3">
 			<div class="col-lg-9">
+				<div class="panel-heading">
+					<h3 class="panel-title">Layout components</h3>
+				</div>
+				<div class="panel-body">
+					<tw-cards-docs></tw-cards-docs>
+				</div>
+			</div>
+		</div>
+		<div class="row m-t-3">
+			<div class="col-lg-9">
 				<div class="panel">
 					<div class="panel-heading">
-						<h3 class="panel-title">Other components</h3>
+						<h2 class="panel-title">Other components</h2>
 					</div>
 					<div class="panel-body">
 						<tw-process-docs></tw-process-docs>
-
 						<h4 id="loader">TW Loader</h4>
 						<p>A directive to add the HTML necessary for our
 							loading indicator.  Simply use:</p>

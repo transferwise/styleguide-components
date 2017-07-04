@@ -278,7 +278,8 @@ angular.module('my-app', ['tw.styleguide-components'])
 		$ctrl.types = [
 			{'value': 'account', 'label': 'Account'},
 			{'value': 'profile', 'label': 'Profile'},
-			{'value': 'verification', 'label': 'Verification'}
+			{'value': 'verification', 'label': 'Verification'},
+			{'value': 'pay-in', 'label': 'Pay in'}
 		];
 		$ctrl.type = 'profile';
 
@@ -321,6 +322,80 @@ angular.module('my-app', ['tw.styleguide-components'])
 .directive('twFocusableDocs', function() {
 	return {templateUrl: 'partials/tw-focusable.html'};
 })
+.component('twTextFormatDocs', {
+	controller: function() {
+		var $ctrl = this;
+		$ctrl.patterns = [
+			{
+				value: {
+					format: '**** **** **** ****',
+					minlength: 16,
+					maxlength: 20,
+					placeholder: 'Number on the front of your card',
+					helpText: 'Credit/debit cards have either 16 or 20 digits'
+				},
+				label: 'Credit card number',
+				note: '**** **** **** ****'
+			},
+			{
+				value: {
+					format: '** / **',
+					minlength: 4,
+					maxlength: 4,
+					placeholder: 'MM / YY',
+					helpText: 'Month, then year'
+				},
+				label: 'Card expiry',
+				note: '** / **'
+			},
+			{
+				value: {
+					format: '** - ** - **',
+					minlength: 6,
+					maxlength: 7,
+					placeholder: '** - ** - **',
+					helpText: 'UK sort codes have 6 or 7 digits'
+				},
+				label: 'UK sort code',
+				note: '** - ** - **',
+			},
+			{
+				value: {
+					format: '(+**) **** *** ***',
+					minlength: 10,
+					maxlength: 12,
+					placeholder: '(+**) **** *** ***'
+				},
+				label: 'UK phone number',
+				note: '(+**) **** *** ***',
+			},
+			{
+				value: {
+					format: '***.***.***-**',
+					minlength: 11,
+					maxlength: 11,
+					placeholder: '***.***.***-**'
+				},
+				label: 'Brazilian CPF ID',
+				note: '***.***.***-**',
+			},
+			{
+				value: {
+					format: '**.***.*** - *',
+					minlength: 9,
+					maxlength: 9,
+					placeholder: '**.***.*** - *'
+				},
+				label: 'Chilean RUT ID',
+				note: '**.***.*** - *',
+			},
+		];
+	},
+	bindings: {
+		model: "="
+	},
+	templateUrl: 'partials/tw-text-format.html'
+})
 .directive('twPopOverDocs', function() {
 	return {templateUrl: 'partials/tw-pop-over.html'};
 })
@@ -332,4 +407,68 @@ angular.module('my-app', ['tw.styleguide-components'])
 })
 .directive('twProcessDocs', function() {
 	return {templateUrl: 'partials/tw-process.html'};
+})
+.directive('twCardsDocs', function() {
+	return {templateUrl: 'partials/tw-cards.html'};
+})
+.directive('formExample', function() {
+    return {
+        template: ' \
+            <div class="row "> \
+                <div class="col-sm-6 col-lg-4"> \
+                    <div class="form-group m-b-0"> \
+                        <label class="control-label">Send</label> \
+                        <div class="input-group"> \
+                            <span class="input-group-addon ">£</span> \
+                            <input class="form-control text-xs-right p-r-0" type="text"> \
+                            <span class="input-group-addon p-l-1 ">USD</span> \
+                        </div> \
+                        <div class="help-block m-b-0 ">Rate £1 = £1.2345</div> \
+                    </div> \
+                </div> \
+                <div class="col-sm-6 col-lg-4 m-b-0"> \
+                    <div class="form-group m-b-0"> \
+                        <label class="control-label">Receive about </label> \
+                        <div class="input-group"> \
+                            <span class="input-group-addon ">£</span> \
+                            <input class="form-control text-xs-right p-r-0" type="text"> \
+                            <span class="input-group-addon p-l-1 ">USD</span> \
+                        </div> \
+                        <div class="help-block m-b-0 ">Fee £1.00 USD</div> \
+                    </div> \
+                </div> \
+                <div class="col-sm-12 col-lg-4 p-t-3 m-b-0"> \
+                    <button class="btn btn-success btn-block">Repeat transfer</button> \
+                </div> \
+            </div>'
+    };
+})
+.directive('expandExample', function () {
+    return {
+        transclude: {
+            expandedHead: 'heading',
+            expandedBody: '?middle',
+            expandedButtons: 'buttons'
+        },
+        template: ' \
+            <div> \
+                <div class="m-t-1 m-b-3 visible-xs-block visible-sm-block" ng-transclude="expandedHead"></div> \
+                <div ng-transclude="expandedBody"></div> \
+                <hr class="hidden-xs hidden-sm hidden-md"> \
+                <div class="m-t-2 btn-toolbar" ng-transclude="expandedButtons"></div> \
+            </div>'
+    };
+})
+.directive('collapseExample', function () {
+    return {
+        transclude: {
+            collapseBody: '?middle',
+            collapseRight: 'right'
+        },
+        template: ' \
+            <div class="media"> \
+                <div class="media-body" ng-transclude="collapseBody"></div> \
+                <div class="media-right text-xs-right" ng-transclude="collapseRight"></div> \
+            </div>'
+    };
 });

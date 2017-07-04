@@ -1,7 +1,8 @@
 angular.module("tw.form-validation", []);
 angular.module("tw.form-styling", []);
 angular.module("tw.form-components", []);
-angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styling', 'tw.form-components']);
+angular.module("tw.layout-components", []);
+angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styling', 'tw.form-components', 'tw.layout-components']);
 !function(angular) {
     "use strict";
     function TwAmountCurrencySelectController($element, $scope, $timeout, TwCurrencyData) {
@@ -533,19 +534,20 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
                 uploadAccept: "@",
                 uploadIcon: "@",
                 uploadTooLargeMessage: "@",
-                options: "=",
+                options: "<",
                 ngModel: "=",
                 ngChange: "&",
-                ngRequired: "=",
-                ngDisabled: "=",
-                ngMinlength: "=twMinlength",
-                ngMaxlength: "=twMaxlength",
-                ngMin: "=",
-                ngMax: "=",
-                ngPattern: "=",
-                uploadOptions: "="
+                ngRequired: "<",
+                ngDisabled: "<",
+                ngMinlength: "<twMinlength",
+                ngMaxlength: "<twMaxlength",
+                ngMin: "<",
+                ngMax: "<",
+                ngPattern: "<",
+                uploadOptions: "<",
+                textFormat: "<"
             },
-            template: "<div ng-switch='$ctrl.type'> \t\t\t\t<input ng-switch-when='text'  \t\t\t\t\tname='{{$ctrl.name}}'  \t\t\t\t\ttype='text' \t\t\t\t\tclass='form-control' \t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-model-options='{ allowInvalid: true }' \t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-pattern='$ctrl.ngPattern' \t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\tng-blur='$ctrl.blur()' \t\t\t\t\tng-minlength='$ctrl.ngMinlength' \t\t\t\t\tng-maxlength='$ctrl.ngMaxlength' />  \t\t\t\t<input ng-switch-when='password'  \t\t\t\t\tname='{{$ctrl.name}}'  \t\t\t\t\ttype='password' \t\t\t\t\tclass='form-control' \t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-model-options='{ allowInvalid: true }' \t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\tng-blur='$ctrl.blur()' \t\t\t\t\tng-minlength='$ctrl.ngMinlength' \t\t\t\t\tng-maxlength='$ctrl.ngMaxlength' />  \t\t\t\t<input ng-switch-when='number'  \t\t\t\t\tname='{{$ctrl.name}}'  \t\t\t\t\ttype='number' \t\t\t\t\tstep='{{$ctrl.step}}' \t\t\t\t\tclass='form-control' \t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-model-options='{ allowInvalid: true }' \t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\tng-blur='$ctrl.blur()' \t\t\t\t\tng-min='$ctrl.ngMin' \t\t\t\t\tng-max='$ctrl.ngMax' />  \t\t\t\t<div ng-switch-when='radio' \t\t\t\t\tclass='radio' \t\t\t\t\tng-class='{disabled: $ctrl.ngDisabled}' \t\t\t\t\tng-repeat='option in $ctrl.options'> \t\t\t\t\t<label> \t\t\t\t\t\t<tw-radio \t\t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\t\tng-value='option.value' \t\t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\t\tng-click='$ctrl.change()' \t\t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t\t\t{{option.label}} \t\t\t\t\t</label> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='checkbox' \t\t\t\t\tclass='checkbox' \t\t\t\t\tng-class='{disabled: $ctrl.ngDisabled}'> \t\t\t\t\t<label> \t\t\t\t\t\t<tw-checkbox \t\t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\t\tng-click='$ctrl.change()' \t\t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t\t\t{{$ctrl.placeholder}} \t\t\t\t\t</label> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='select'> \t\t\t\t\t<tw-select \t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\toptions='$ctrl.options' \t\t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='upload'> \t\t\t\t\t<tw-upload \t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\tlabel='{{$ctrl.label}}' \t\t\t\t\t\ticon='{{$ctrl.uploadIcon}}' \t\t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\t\taccept='{{$ctrl.uploadAccept}}' \t\t\t\t\t\tcomplete-text='{{$ctrl.label}}' \t\t\t\t\t\tbutton-text='{{$ctrl.uploadOptions.buttonText}}' \t\t\t\t\t\tcancel-text='{{$ctrl.uploadOptions.cancelText}}' \t\t\t\t\t\ttoo-large-message='{{$ctrl.uploadTooLargeMessage}}' \t\t\t\t\t\tmax-size='$ctrl.ngMax' \t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='date'> \t\t\t\t\t<tw-date \t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\tlocale='{{$ctrl.locale}}' \t\t\t\t\t\tng-min='$ctrl.ngMin' \t\t\t\t\t\tng-max='$ctrl.ngMax' \t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t</div> \t\t\t\t<ng-transclude class='error-messages'></ng-transclude> \t\t\t</div>"
+            template: "<div ng-switch='$ctrl.type'> \t\t\t\t<input ng-switch-when='text'  \t\t\t\t\tname='{{$ctrl.name}}'  \t\t\t\t\ttype='text' \t\t\t\t\tclass='form-control' \t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-model-options='{ allowInvalid: true }' \t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-pattern='$ctrl.ngPattern' \t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\tng-blur='$ctrl.blur()' \t\t\t\t\tng-minlength='$ctrl.ngMinlength' \t\t\t\t\tng-maxlength='$ctrl.ngMaxlength' \t\t\t\t\ttw-text-format='{{$ctrl.textFormat}}' />  \t\t\t\t<input ng-switch-when='password'  \t\t\t\t\tname='{{$ctrl.name}}'  \t\t\t\t\ttype='password' \t\t\t\t\tclass='form-control' \t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-model-options='{ allowInvalid: true }' \t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\tng-blur='$ctrl.blur()' \t\t\t\t\tng-minlength='$ctrl.ngMinlength' \t\t\t\t\tng-maxlength='$ctrl.ngMaxlength' />  \t\t\t\t<input ng-switch-when='number'  \t\t\t\t\tname='{{$ctrl.name}}'  \t\t\t\t\ttype='number' \t\t\t\t\tstep='{{$ctrl.step}}' \t\t\t\t\tclass='form-control' \t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-model-options='{ allowInvalid: true }' \t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\tng-blur='$ctrl.blur()' \t\t\t\t\tng-min='$ctrl.ngMin' \t\t\t\t\tng-max='$ctrl.ngMax' />  \t\t\t\t<div ng-switch-when='radio' \t\t\t\t\tclass='radio' \t\t\t\t\tng-class='{disabled: $ctrl.ngDisabled}' \t\t\t\t\tng-repeat='option in $ctrl.options'> \t\t\t\t\t<label> \t\t\t\t\t\t<tw-radio \t\t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\t\tng-value='option.value' \t\t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\t\tng-click='$ctrl.change()' \t\t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t\t\t{{option.label}} \t\t\t\t\t</label> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='checkbox' \t\t\t\t\tclass='checkbox' \t\t\t\t\tng-class='{disabled: $ctrl.ngDisabled}'> \t\t\t\t\t<label> \t\t\t\t\t\t<tw-checkbox \t\t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\t\tng-click='$ctrl.change()' \t\t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t\t\t{{$ctrl.placeholder}} \t\t\t\t\t</label> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='select'> \t\t\t\t\t<tw-select \t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\toptions='$ctrl.options' \t\t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='upload'> \t\t\t\t\t<tw-upload \t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\tlabel='{{$ctrl.label}}' \t\t\t\t\t\ticon='{{$ctrl.uploadIcon}}' \t\t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\t\taccept='{{$ctrl.uploadAccept}}' \t\t\t\t\t\tcomplete-text='{{$ctrl.label}}' \t\t\t\t\t\tbutton-text='{{$ctrl.uploadOptions.buttonText}}' \t\t\t\t\t\tcancel-text='{{$ctrl.uploadOptions.cancelText}}' \t\t\t\t\t\ttoo-large-message='{{$ctrl.uploadTooLargeMessage}}' \t\t\t\t\t\tmax-size='$ctrl.ngMax' \t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='date'> \t\t\t\t\t<tw-date \t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\tlocale='{{$ctrl.locale}}' \t\t\t\t\t\tng-min='$ctrl.ngMin' \t\t\t\t\t\tng-max='$ctrl.ngMax' \t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t</div> \t\t\t\t<ng-transclude class='error-messages'></ng-transclude> \t\t\t</div>"
         };
     }
     function TwDynamicFormControlController($element, $scope) {
@@ -697,7 +699,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             controller: [ "$scope", TwFieldsetController ],
             controllerAs: "$ctrl",
             bindToController: !0,
-            template: " \t\t\t\t<fieldset ng-form='twFieldset'> \t\t\t\t\t<legend ng-if='$ctrl.legend'>{{$ctrl.legend}}</legend> \t\t\t\t\t<div class='row row-equal-height'> \t\t\t\t\t\t<div ng-repeat='fieldGroup in $ctrl.fields' class='col-xs-12' \t\t\t\t\t\t\tng-class='{ \t\t\t\t\t\t\t\t\"col-sm-4\": fieldGroup.width === \"sm\", \t\t\t\t\t\t\t\t\"col-sm-6\": fieldGroup.width === \"md\" || fieldGroup.maxlength && fieldGroup.maxlength <= 10, \t\t\t\t\t\t\t\t\"col-sm-12\": fieldGroup.width === \"lg\" || !fieldGroup.maxlength || fieldGroup.maxlength > 10 \t\t\t\t\t\t\t}'> \t\t\t\t\t\t\t<div class='form-group tw-form-group-{{fieldGroup.key}}' style='width: 100%;' \t\t\t\t\t\t\t\tng-class='{\"has-error\": $ctrl.errorMessages[fieldGroup.key]}'> \t\t\t\t\t\t\t\t<label class='control-label' \t\t\t\t\t\t\t\t\tng-if='fieldGroup.type !== \"upload\"'> \t\t\t\t\t\t\t\t\t{{fieldGroup.name}} \t\t\t\t\t\t\t\t</label> \t\t\t\t\t\t\t\t<div class='row'> \t\t\t\t\t\t\t\t\t<div class='col-xs-{{field.columns}}' \t\t\t\t\t\t\t\t\t\tng-repeat='field in fieldGroup.group'> \t\t\t\t\t\t\t\t\t\t<tw-dynamic-form-control \t\t\t\t\t\t\t\t\t\t\tname='{{field.key}}' \t\t\t\t\t\t\t\t\t\t\tlabel='{{fieldGroup.name}}' \t\t\t\t\t\t\t\t\t\t\ttype='{{field.type | lowercase}}' \t\t\t\t\t\t\t\t\t\t\tplaceholder='{{field.placeholder || field.example}}' \t\t\t\t\t\t\t\t\t\t\thelp-text='{{field.helpText}}' \t\t\t\t\t\t\t\t\t\t\tlocale='{{$ctrl.locale}}' \t\t\t\t\t\t\t\t\t\t\tupload-accept='{{field.accept}}' \t\t\t\t\t\t\t\t\t\t\tupload-icon='{{field.icon}}' \t\t\t\t\t\t\t\t\t\t\tupload-too-large-message='{{field.tooLargeMessage}}' \t\t\t\t\t\t\t\t\t\t\toptions='field.valuesAllowed' \t\t\t\t\t\t\t\t\t\t\tupload-options='$ctrl.uploadOptions' \t\t\t\t\t\t\t\t\t\t\tng-model='$ctrl.model[field.key]' \t\t\t\t\t\t\t\t\t\t\tng-blur='$ctrl.onBlur(field)' \t\t\t\t\t\t\t\t\t\t\tng-change='$ctrl.onChange(field)' \t\t\t\t\t\t\t\t\t\t\tng-required='field.required' \t\t\t\t\t\t\t\t\t\t\tng-disabled='field.disabled' \t\t\t\t\t\t\t\t\t\t\ttw-minlength='field.minLength' \t\t\t\t\t\t\t\t\t\t\ttw-maxlength='field.maxLength' \t\t\t\t\t\t\t\t\t\t\tng-min='field.min' \t\t\t\t\t\t\t\t\t\t\tng-max='field.max' \t\t\t\t\t\t\t\t\t\t\tng-pattern='field.validationRegexp' \t\t\t\t\t\t\t\t\t\t\ttw-validation > \t\t\t\t\t\t\t\t\t\t\t<!-- tw-dynamic-async-validator='field.validationAsync' --> \t\t\t\t\t\t\t\t\t\t</tw-dynamic-form-control> \t\t\t\t\t\t\t\t\t\t<div class='error-messages'> \t\t\t\t\t\t\t\t\t\t\t<div ng-repeat='(validationType, validationMessage) in $ctrl.validationMessages' \t\t\t\t\t\t\t\t\t\t\t\tclass='error-{{validationType}}'> \t\t\t\t\t\t\t\t\t\t\t\t{{validationMessage}} \t\t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t\t<div class='error-provided' ng-if='$ctrl.errorMessages[field.key]'> \t\t\t\t\t\t\t\t\t\t\t\t{{ $ctrl.errorMessages[field.key] }} \t\t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t<div ng-if='field.tooltip' \t\t\t\t\t\t\t\t\t\t\tclass='help-block'> \t\t\t\t\t\t\t\t\t\t\t<a role='button' \t\t\t\t\t\t\t\t\t\t\t\ttabindex='0' \t\t\t\t\t\t\t\t\t\t\t\tdata-toggle='popover' \t\t\t\t\t\t\t\t\t\t\t\tdata-placement='top' \t\t\t\t\t\t\t\t\t\t\t\ttitle='{{field.tooltip}}'> \t\t\t\t\t\t\t\t\t\t\t\t<span class='glyphicon glyphicon-question-sign'></span> \t\t\t\t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t</fieldset>"
+            template: " \t\t\t\t<fieldset ng-form='twFieldset'> \t\t\t\t\t<legend ng-if='$ctrl.legend'>{{$ctrl.legend}}</legend> \t\t\t\t\t<div class='row row-equal-height'> \t\t\t\t\t\t<div ng-repeat='fieldGroup in $ctrl.fields' class='col-xs-12' \t\t\t\t\t\t\tng-class='{ \t\t\t\t\t\t\t\t\"col-sm-4\": fieldGroup.width === \"sm\", \t\t\t\t\t\t\t\t\"col-sm-6\": fieldGroup.width === \"md\" || fieldGroup.maxlength && fieldGroup.maxlength <= 10, \t\t\t\t\t\t\t\t\"col-sm-12\": fieldGroup.width === \"lg\" || !fieldGroup.maxlength || fieldGroup.maxlength > 10 \t\t\t\t\t\t\t}'> \t\t\t\t\t\t\t<div class='form-group tw-form-group-{{fieldGroup.key}}' style='width: 100%;' \t\t\t\t\t\t\t\tng-class='{ \t\t\t\t\t\t\t\t\t\"has-error\": $ctrl.errorMessages[fieldGroup.key] \t\t\t\t\t\t\t\t}'> \t\t\t\t\t\t\t\t<label class='control-label' \t\t\t\t\t\t\t\t\tng-if='fieldGroup.type !== \"upload\"'> \t\t\t\t\t\t\t\t\t{{fieldGroup.name}} \t\t\t\t\t\t\t\t</label> \t\t\t\t\t\t\t\t<div class='row'> \t\t\t\t\t\t\t\t\t<div class='col-xs-{{field.columns}}' \t\t\t\t\t\t\t\t\t\tng-repeat='field in fieldGroup.group'> \t\t\t\t\t\t\t\t\t\t<tw-dynamic-form-control \t\t\t\t\t\t\t\t\t\t\tname='{{field.key}}' \t\t\t\t\t\t\t\t\t\t\tlabel='{{fieldGroup.name}}' \t\t\t\t\t\t\t\t\t\t\ttype='{{field.type | lowercase}}' \t\t\t\t\t\t\t\t\t\t\tplaceholder='{{field.placeholder || field.example}}' \t\t\t\t\t\t\t\t\t\t\thelp-text='{{field.helpText}}' \t\t\t\t\t\t\t\t\t\t\tlocale='{{$ctrl.locale}}' \t\t\t\t\t\t\t\t\t\t\tupload-accept='{{field.accept}}' \t\t\t\t\t\t\t\t\t\t\tupload-icon='{{field.icon}}' \t\t\t\t\t\t\t\t\t\t\tupload-too-large-message='{{field.tooLargeMessage}}' \t\t\t\t\t\t\t\t\t\t\toptions='field.valuesAllowed' \t\t\t\t\t\t\t\t\t\t\tupload-options='$ctrl.uploadOptions' \t\t\t\t\t\t\t\t\t\t\tng-model='$ctrl.model[field.key]' \t\t\t\t\t\t\t\t\t\t\tng-blur='$ctrl.onBlur(field)' \t\t\t\t\t\t\t\t\t\t\tng-change='$ctrl.onChange(field)' \t\t\t\t\t\t\t\t\t\t\tng-required='field.required' \t\t\t\t\t\t\t\t\t\t\tng-disabled='field.disabled' \t\t\t\t\t\t\t\t\t\t\ttw-minlength='field.minLength' \t\t\t\t\t\t\t\t\t\t\ttw-maxlength='field.maxLength' \t\t\t\t\t\t\t\t\t\t\tng-min='field.min' \t\t\t\t\t\t\t\t\t\t\tng-max='field.max' \t\t\t\t\t\t\t\t\t\t\tng-pattern='field.validationRegexp' \t\t\t\t\t\t\t\t\t\t\ttext-format='field.displayFormat' \t\t\t\t\t\t\t\t\t\t\ttw-validation> \t\t\t\t\t\t\t\t\t\t\t<!-- tw-dynamic-async-validator='field.validationAsync' --> \t\t\t\t\t\t\t\t\t\t</tw-dynamic-form-control> \t\t\t\t\t\t\t\t\t\t<div class='error-messages'> \t\t\t\t\t\t\t\t\t\t\t<div ng-repeat='(validationType, validationMessage) in $ctrl.validationMessages' \t\t\t\t\t\t\t\t\t\t\t\tclass='error-{{validationType}}'> \t\t\t\t\t\t\t\t\t\t\t\t{{validationMessage}} \t\t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t\t<div class='error-provided' ng-if='$ctrl.errorMessages[field.key]'> \t\t\t\t\t\t\t\t\t\t\t\t{{ $ctrl.errorMessages[field.key] }} \t\t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t<div ng-if='field.tooltip' \t\t\t\t\t\t\t\t\t\t\tclass='help-block'> \t\t\t\t\t\t\t\t\t\t\t{{field.tooltip}} \t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t</fieldset>"
         };
     }
     function TwFieldsetController($scope) {
@@ -1278,6 +1280,61 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     }
     angular.module("tw.form-components").directive("twFileInput", TwFileInputDirective).controller("twUploadController", TwUploadController).directive("twUpload", TwUploadDirective);
 }(window.angular), function(angular) {
+    "use strict";
+    function CardController($transclude, TwCardsService) {
+        var $ctrl = this;
+        $ctrl.hasForm = $transclude.isSlotFilled("cardForm"), $ctrl.toggle = TwCardsService.toggle, 
+        $ctrl.addCard = TwCardsService.addCard, $ctrl.getExpandedIndex = TwCardsService.getExpandedIndex, 
+        $ctrl.updateExpandedIndex = TwCardsService.updateExpandedIndex, $ctrl.getCard = TwCardsService.getCard, 
+        $ctrl.getLength = TwCardsService.getLength;
+    }
+    function Card() {
+        return {
+            require: {
+                cardContainerController: "^twCards"
+            },
+            controllerAs: "$ctrl",
+            bindToController: !0,
+            replace: !0,
+            scope: {
+                state: "@",
+                index: "<",
+                open: "<?",
+                disabled: "=?",
+                inactive: "<"
+            },
+            transclude: {
+                collapsedCard: "collapsed",
+                expandedCard: "expanded",
+                cardForm: "?cardForm",
+                cardIcon: "cardIcon"
+            },
+            controller: [ "$transclude", "TwCardsService", CardController ],
+            template: templateStr,
+            link: function($scope, $element, $attrs, $ctrl) {
+                var cardController = $scope.$ctrl;
+                cardController.addCard(cardController), cardController.index = cardController.getLength() - 1, 
+                cardController.inactive = $ctrl.cardContainerController.inactive, cardController.open === !0 && cardController.getExpandedIndex() === -1 ? cardController.updateExpandedIndex(cardController.index) : cardController.open = !1, 
+                null == cardController.disabled && (cardController.disabled = !1);
+            }
+        };
+    }
+    function CardContainerController() {}
+    function CardContainer() {
+        return {
+            scope: {
+                inactive: "=?"
+            },
+            controllerAs: "$ctrl",
+            controller: CardContainerController,
+            bindToController: !0,
+            transclude: !0,
+            template: '<ul ng-transclude class="list-group panel-list-group list-group-slide-out"                             ng-class="{\'list-group-inactive\': $ctrl.inactive}">                         </ul>'
+        };
+    }
+    angular.module("tw.layout-components").directive("twCards", CardContainer).directive("twCard", Card);
+    var collapsedCardTemplate = '<div class="p-a-panel" role="button" ng-click="$ctrl.toggle($ctrl.index)">             <div class="media">                 <div class="media-left">                     <div class="circle circle-sm circle-responsive" ng-class="{                             \'circle-inverse\': !$ctrl.inactive }">                         <div ng-transclude="cardIcon"></div>                     </div>                 </div>                 <div class="media-body" ng-transclude="collapsedCard"></div>             </div>         </div>', expandedCardTemplate = '<div   class="collapse"                 ng-attr-aria-expanded="{{ $ctrl.open }}"                 ng-class="{\'in\': $ctrl.open }"                 ng-if="$ctrl.open" >             <div class="p-l-panel p-r-panel p-b-panel">                 <div class="media">                     <div class="media-left">                         <div class="circle circle-sm circle-inverse circle-responsive invisible"></div>                     </div>                 <div class="media-body">                     <hr class="m-t-0 hidden-xs hidden-sm" />                     <a  href="" ng-click="$ctrl.toggle($ctrl.index)"                         class="visible-xs-inline-block visible-sm-inline-block text-no-decoration m-t-1"                         style="margin-left: -8px;">                         <i class="icon icon-left-arrow icon-xxl"></i>                     </a>                     <div ng-transclude="expandedCard"></div>                 </div>             </div>         </div>', cardFormTemplate = '<div class="well p-l-panel p-r-panel" ng-if="$ctrl.hasForm">             <div class="media">                 <div class="media-left">                     <div class="circle circle-sm circle-responsive invisible"></div>                 </div>                 <div class="media-body" ng-transclude="cardForm"></div>             </div>         </div>', templateStr = "<li    class=\"list-group-item p-a-0 list-group-item-{{$ctrl.state}}\"                 ng-class=\"{                     'active': $ctrl.open,                     'disabled': $ctrl.disabled                 }\">" + collapsedCardTemplate + expandedCardTemplate + cardFormTemplate + "</li>";
+}(window.angular), function(angular) {
     function TwAffix() {
         return {
             restrict: "A",
@@ -1331,6 +1388,174 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         };
     }
     angular.module("tw.form-styling").directive("twPopOver", TwPopOver);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwTextFormat() {
+        return {
+            restrict: "A",
+            require: "ngModel",
+            bindToController: !0,
+            controllerAs: "$ctrl",
+            scope: {
+                ngModel: "<",
+                twTextFormat: "@"
+            },
+            controller: [ "$element", "$timeout", "$scope", "TwTextFormatService", "TwUndoStackFactory", TwTextFormatController ]
+        };
+    }
+    function TwTextFormatController($element, $timeout, $scope, TwTextFormatService, TwUndoStackFactory) {
+        function init() {
+            undoStack = TwUndoStackFactory["new"](), keydownCount = 0, ngModelController = $element.controller("ngModel"), 
+            element = $element[0], $scope.$watch("$ctrl.twTextFormat", onPatternChange), $scope.$watch("$ctrl.ngModel", onModelChange), 
+            onPatternChange($ctrl.twTextFormat), ngModelController.$formatters.push(function(value) {
+                return TwTextFormatService.formatUsingPattern(value, pattern);
+            }), ngModelController.$parsers.push(function(value) {
+                return TwTextFormatService.unformatUsingPattern(value, pattern);
+            }), element.addEventListener("change", onChange), element.addEventListener("keydown", onKeydown), 
+            element.addEventListener("paste", onPaste), element.addEventListener("cut", onCut), 
+            element.addEventListener("copy", onCopy), replaceLengthValidators(ngModelController), 
+            undoStack.reset(element.value);
+        }
+        function onModelChange(newModel, oldModel) {
+            if (newModel !== oldModel) {
+                var selectionStart = element.selectionStart, selectionEnd = element.selectionEnd;
+                reformatControl(element, newModel), element.setSelectionRange(selectionStart, selectionEnd);
+            }
+        }
+        function onPatternChange(newPattern, oldPattern) {
+            if (newPattern === oldPattern) return void (pattern = newPattern);
+            pattern = newPattern && newPattern.indexOf("||") > 0 ? newPattern.substring(0, newPattern.indexOf("||")) : newPattern;
+            var viewValue = element.value;
+            oldPattern && (viewValue = TwTextFormatService.unformatUsingPattern(viewValue, oldPattern)), 
+            newPattern && (viewValue = TwTextFormatService.formatUsingPattern(viewValue, pattern)), 
+            undoStack.reset(viewValue), element.value = viewValue;
+        }
+        function replaceLengthValidators(ngModelController) {
+            $timeout(function() {
+                var originalMinLength = ngModelController.$validators.minlength, originalMaxLength = ngModelController.$validators.maxlength;
+                originalMinLength && (ngModelController.$validators.minlength = function(modelValue, viewValue) {
+                    return originalMinLength(modelValue, TwTextFormatService.unformatUsingPattern(viewValue, pattern));
+                }), originalMaxLength && (ngModelController.$validators.maxlength = function(modelValue, viewValue) {
+                    return originalMaxLength(modelValue, TwTextFormatService.unformatUsingPattern(viewValue, pattern));
+                });
+            });
+        }
+        function reformatControl(element, originalValue) {
+            originalValue || (originalValue = element.value);
+            var newValue = TwTextFormatService.reformatUsingPattern(originalValue, pattern);
+            newValue !== originalValue && (element.value = newValue);
+        }
+        function onChange() {
+            reformatControl(element), undoStack.add(element.value);
+        }
+        function onPaste(event) {
+            var selectionStart = element.selectionStart, clipboardData = (element.value.length, 
+            event.clipboardData || window.clipboardData), pastedData = clipboardData.getData("Text"), separatorsInPaste = TwTextFormatService.countSeparatorsInAppendedValue(pattern, selectionStart, pastedData);
+            $timeout(function() {
+                var newPosition = selectionStart + pastedData.length + separatorsInPaste;
+                reformatControl(element), undoStack.add(element.value), element.setSelectionRange(newPosition, newPosition);
+            });
+        }
+        function onKeydown(event) {
+            keydownCount++;
+            var currentKeydownCount = keydownCount, key = event.keyCode || event.which, selectionStart = event.target.selectionStart, selectionEnd = event.target.selectionEnd;
+            return reservedKeys.indexOf(key) >= 0 || event.metaKey || event.ctrlKey ? (key === keys.z && (event.metaKey || event.ctrlKey) && (event.preventDefault(), 
+            event.stopPropagation(), element.value = undoStack.undo()), void (key === keys.y && (event.metaKey || event.ctrlKey) && (event.preventDefault(), 
+            event.stopPropagation(), element.value = undoStack.redo()))) : void $timeout(function() {
+                afterKeydown(key, currentKeydownCount, element, pattern, selectionStart, selectionEnd);
+            });
+        }
+        function afterKeydown(key, currentKeydownCount, element, pattern, selectionStart, selectionEnd) {
+            var newVal;
+            key === keys.backspace ? (newVal = doBackspace(element, pattern, selectionStart, selectionEnd), 
+            ngModelController.$setViewValue(newVal)) : key === keys["delete"] ? (newVal = doDelete(element, pattern, selectionStart, selectionEnd), 
+            ngModelController.$setViewValue(newVal)) : keydownCount === currentKeydownCount && doKeypress(element, pattern, selectionStart, selectionEnd);
+        }
+        function doBackspace(element, pattern, selectionStart, selectionEnd) {
+            element.value = getFormattedValueAfterBackspace(element, pattern, selectionStart, selectionEnd), 
+            undoStack.add(element.value);
+            var newPosition = getPositionAfterBackspace(pattern, element, selectionStart, selectionEnd);
+            return element.setSelectionRange(newPosition, newPosition), element.value;
+        }
+        function getFormattedValueAfterBackspace(element, pattern, selectionStart, selectionEnd) {
+            var removeStart, removeEnd, newVal = element.value, separatorsBeforeCursor = TwTextFormatService.countSeparatorsBeforeCursor(pattern, selectionStart);
+            if (separatorsBeforeCursor) {
+                var adjust = separatorsBeforeCursor > 1 ? 1 : 0;
+                selectionStart !== selectionEnd ? (removeStart = selectionStart - separatorsBeforeCursor + 1, 
+                removeEnd = selectionStart - adjust) : (removeStart = selectionStart - separatorsBeforeCursor, 
+                removeEnd = selectionStart - adjust), newVal = removeCharacters(element.value, removeStart, removeEnd);
+            }
+            return TwTextFormatService.reformatUsingPattern(newVal, pattern);
+        }
+        function doDelete(element, pattern, selectionStart, selectionEnd) {
+            return element.value = getFormattedValueAfterDelete(element, pattern, selectionStart, selectionEnd), 
+            undoStack.add(element.value), element.setSelectionRange(selectionStart, selectionStart), 
+            element.value;
+        }
+        function getFormattedValueAfterDelete(element, pattern, selectionStart, selectionEnd) {
+            var removeStart, removeEnd, newVal = element.value, separatorsAfterCursor = TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart);
+            if (separatorsAfterCursor) {
+                var adjust = separatorsAfterCursor > 1 ? 0 : 1;
+                selectionStart !== selectionEnd ? (removeStart = selectionStart + adjust, removeEnd = selectionStart + separatorsAfterCursor + adjust) : (removeStart = selectionStart + separatorsAfterCursor, 
+                removeEnd = selectionStart + separatorsAfterCursor + 1), newVal = removeCharacters(element.value, removeStart, removeEnd);
+            }
+            return TwTextFormatService.reformatUsingPattern(newVal, pattern);
+        }
+        function doKeypress(element, pattern, selectionStart, selectionEnd) {
+            reformatControl(element), undoStack.add(element.value);
+            var newPosition = getPositionAfterKeypress(pattern, element, selectionStart, selectionEnd);
+            element.setSelectionRange(newPosition, newPosition);
+        }
+        function getPositionAfterBackspace(pattern, element, selectionStart, selectionEnd) {
+            var separatorsBefore = TwTextFormatService.countSeparatorsBeforeCursor(pattern, selectionStart), isRange = selectionStart !== selectionEnd, proposedPosition = selectionStart - separatorsBefore - (isRange ? 0 : 1);
+            return proposedPosition + TwTextFormatService.countSeparatorsAfterCursor(pattern, proposedPosition);
+        }
+        function getPositionAfterKeypress(pattern, element, selectionStart, selectionEnd) {
+            var separatorsAfter;
+            return selectionStart !== selectionEnd ? separatorsAfter = TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart) : (separatorsAfter = TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart), 
+            0 === separatorsAfter && (separatorsAfter = TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart + 1))), 
+            selectionStart + 1 + separatorsAfter;
+        }
+        function removeCharacters(value, first, last) {
+            return value.substring(0, first - 1) + value.substring(last - 1, value.length);
+        }
+        function onCut(event) {
+            var selectionStart = element.selectionStart;
+            $timeout(function() {
+                reformatControl(element), undoStack.add(element.value);
+                var newPosition = selectionStart + TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart);
+                element.setSelectionRange(newPosition, newPosition);
+            });
+        }
+        function onCopy(event) {
+            var selectionStart = element.selectionStart, selectionEnd = element.selectionEnd;
+            $timeout(function() {
+                element.setSelectionRange(selectionStart, selectionEnd);
+            });
+        }
+        var ngModelController, element, undoStack, keydownCount, pattern = "", $ctrl = this, keys = {
+            cmd: 224,
+            cmdLeft: 91,
+            cmdRight: 93,
+            backspace: 8,
+            tab: 9,
+            enter: 13,
+            shift: 16,
+            ctrl: 17,
+            alt: 18,
+            end: 35,
+            home: 36,
+            left: 37,
+            up: 38,
+            right: 39,
+            down: 40,
+            "delete": 46,
+            y: 89,
+            z: 90
+        }, reservedKeys = [ keys.cmd, keys.cmdLeft, keys.cmdRight, keys.enter, keys.shift, keys.ctrl, keys.alt, keys.left, keys.up, keys.right, keys.down ];
+        init();
+    }
+    angular.module("tw.form-styling").directive("twTextFormat", TwTextFormat);
 }(window.angular), function(angular) {
     function TwToolTip() {
         return {
@@ -1454,6 +1679,27 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         };
     }
     angular.module("tw.form-components").service("TwRequirementsService", TwRequirementsService);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwCardsService() {
+        var expandedIndex = -1, cards = [];
+        this.toggle = function(index) {
+            expandedIndex !== -1 && expandedIndex !== index && (cards[expandedIndex].open = !1, 
+            expandedIndex = -1), cards[index].open ? cards[index].open = !1 : (expandedIndex = index, 
+            cards[index].open = !0);
+        }, this.addCard = function(scope) {
+            cards.push(scope);
+        }, this.getExpandedIndex = function() {
+            return expandedIndex;
+        }, this.updateExpandedIndex = function(newExpandedIndex) {
+            expandedIndex = newExpandedIndex;
+        }, this.getCard = function(index) {
+            return cards[index];
+        }, this.getLength = function() {
+            return cards.length;
+        };
+    }
+    angular.module("tw.layout-components").service("TwCardsService", TwCardsService);
 }(window.angular), function(angular) {
     "use strict";
     function TwCurrencyData() {
@@ -1587,4 +1833,70 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         };
     }
     angular.module("tw.form-components").service("TwDateService", TwDateService);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwTextFormatService() {
+        function positionIsSeparator(pattern, position) {
+            return pattern[position] && "*" !== pattern[position];
+        }
+        this.formatUsingPattern = function(value, pattern) {
+            if (value || (value = ""), "string" != typeof pattern) return value;
+            for (var newValue = "", separators = 0, charactersToAllocate = value.length, position = 0; charactersToAllocate; ) positionIsSeparator(pattern, position) ? (newValue += pattern[position], 
+            separators++) : (newValue += value[position - separators], charactersToAllocate--), 
+            position++;
+            var separatorsAfterCursor = this.countSeparatorsAfterCursor(pattern, position);
+            return separatorsAfterCursor && (newValue += pattern.substr(position, separatorsAfterCursor)), 
+            newValue;
+        }, this.unformatUsingPattern = function(value, pattern) {
+            if (!value) return "";
+            if ("string" != typeof pattern) return value;
+            for (var i = 0; i < pattern.length; i++) if (positionIsSeparator(pattern, i)) for (;value.indexOf(pattern[i]) >= 0; ) value = value.replace(pattern[i], "");
+            return value;
+        }, this.reformatUsingPattern = function(value, newPattern, oldPattern) {
+            return "undefined" == typeof oldPattern && (oldPattern = newPattern), this.formatUsingPattern(this.unformatUsingPattern(value, oldPattern), newPattern);
+        }, this.countSeparatorsBeforeCursor = function(pattern, position) {
+            for (var separators = 0; positionIsSeparator(pattern, position - separators - 1); ) separators++;
+            return separators;
+        }, this.countSeparatorsAfterCursor = function(pattern, position) {
+            for (var separators = 0; positionIsSeparator(pattern, position + separators); ) separators++;
+            return separators;
+        }, this.countSeparatorsInAppendedValue = function(pattern, position, value) {
+            for (var separators = 0, i = 0, toAllocate = value.length; toAllocate; ) positionIsSeparator(pattern, position + i) ? separators++ : toAllocate--, 
+            i++;
+            return separators;
+        }, this.countSeparatorsInPattern = function(pattern) {
+            for (var separators = 0, i = 0; i < pattern.length; i++) positionIsSeparator(pattern, i) && separators++;
+            return separators;
+        };
+    }
+    angular.module("tw.form-styling").service("TwTextFormatService", TwTextFormatService);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwUndoStackFactory() {
+        this["new"] = function() {
+            return new UndoStack();
+        };
+    }
+    function UndoStack() {
+        var pointer = 0, stack = [];
+        this.reset = function(value) {
+            stack = [ value ], pointer = 0;
+        }, this.add = function(value) {
+            stack.length - 1 > pointer && (stack = stack.slice(0, pointer + 1)), stack[pointer] !== value && (stack.push(value), 
+            pointer++);
+        }, this.undo = function() {
+            return pointer >= 0 && "undefined" != typeof stack[pointer - 1] && pointer--, stack[pointer];
+        }, this.redo = function() {
+            return pointer < stack.length && "undefined" != typeof stack[pointer + 1] && pointer++, 
+            stack[pointer];
+        };
+    }
+    angular.module("tw.form-styling").service("TwUndoStackFactory", TwUndoStackFactory);
+}(window.angular), function(angular) {
+    "use strict";
+    angular.module("tw.form-styling").filter("twTextFormat", [ "TwTextFormatService", function(TwTextFormatService) {
+        return function(input, pattern) {
+            return input = input || "", pattern ? TwTextFormatService.formatUsingPattern(input, pattern) : input;
+        };
+    } ]);
 }(window.angular);

@@ -530,19 +530,20 @@ angular.module("tw.form-components", []);
                 uploadAccept: "@",
                 uploadIcon: "@",
                 uploadTooLargeMessage: "@",
-                options: "=",
+                options: "<",
                 ngModel: "=",
                 ngChange: "&",
-                ngRequired: "=",
-                ngDisabled: "=",
-                ngMinlength: "=twMinlength",
-                ngMaxlength: "=twMaxlength",
-                ngMin: "=",
-                ngMax: "=",
-                ngPattern: "=",
-                uploadOptions: "="
+                ngRequired: "<",
+                ngDisabled: "<",
+                ngMinlength: "<twMinlength",
+                ngMaxlength: "<twMaxlength",
+                ngMin: "<",
+                ngMax: "<",
+                ngPattern: "<",
+                uploadOptions: "<",
+                textFormat: "<"
             },
-            template: "<div ng-switch='$ctrl.type'> \t\t\t\t<input ng-switch-when='text'  \t\t\t\t\tname='{{$ctrl.name}}'  \t\t\t\t\ttype='text' \t\t\t\t\tclass='form-control' \t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-model-options='{ allowInvalid: true }' \t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-pattern='$ctrl.ngPattern' \t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\tng-blur='$ctrl.blur()' \t\t\t\t\tng-minlength='$ctrl.ngMinlength' \t\t\t\t\tng-maxlength='$ctrl.ngMaxlength' />  \t\t\t\t<input ng-switch-when='password'  \t\t\t\t\tname='{{$ctrl.name}}'  \t\t\t\t\ttype='password' \t\t\t\t\tclass='form-control' \t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-model-options='{ allowInvalid: true }' \t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\tng-blur='$ctrl.blur()' \t\t\t\t\tng-minlength='$ctrl.ngMinlength' \t\t\t\t\tng-maxlength='$ctrl.ngMaxlength' />  \t\t\t\t<input ng-switch-when='number'  \t\t\t\t\tname='{{$ctrl.name}}'  \t\t\t\t\ttype='number' \t\t\t\t\tstep='{{$ctrl.step}}' \t\t\t\t\tclass='form-control' \t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-model-options='{ allowInvalid: true }' \t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\tng-blur='$ctrl.blur()' \t\t\t\t\tng-min='$ctrl.ngMin' \t\t\t\t\tng-max='$ctrl.ngMax' />  \t\t\t\t<div ng-switch-when='radio' \t\t\t\t\tclass='radio' \t\t\t\t\tng-class='{disabled: $ctrl.ngDisabled}' \t\t\t\t\tng-repeat='option in $ctrl.options'> \t\t\t\t\t<label> \t\t\t\t\t\t<tw-radio \t\t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\t\tng-value='option.value' \t\t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\t\tng-click='$ctrl.change()' \t\t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t\t\t{{option.label}} \t\t\t\t\t</label> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='checkbox' \t\t\t\t\tclass='checkbox' \t\t\t\t\tng-class='{disabled: $ctrl.ngDisabled}'> \t\t\t\t\t<label> \t\t\t\t\t\t<tw-checkbox \t\t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\t\tng-click='$ctrl.change()' \t\t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t\t\t{{$ctrl.placeholder}} \t\t\t\t\t</label> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='select'> \t\t\t\t\t<tw-select \t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\toptions='$ctrl.options' \t\t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='upload'> \t\t\t\t\t<tw-upload \t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\tlabel='{{$ctrl.label}}' \t\t\t\t\t\ticon='{{$ctrl.uploadIcon}}' \t\t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\t\taccept='{{$ctrl.uploadAccept}}' \t\t\t\t\t\tcomplete-text='{{$ctrl.label}}' \t\t\t\t\t\tbutton-text='{{$ctrl.uploadOptions.buttonText}}' \t\t\t\t\t\tcancel-text='{{$ctrl.uploadOptions.cancelText}}' \t\t\t\t\t\ttoo-large-message='{{$ctrl.uploadTooLargeMessage}}' \t\t\t\t\t\tmax-size='$ctrl.ngMax' \t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='date'> \t\t\t\t\t<tw-date \t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\tlocale='{{$ctrl.locale}}' \t\t\t\t\t\tng-min='$ctrl.ngMin' \t\t\t\t\t\tng-max='$ctrl.ngMax' \t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t</div> \t\t\t\t<ng-transclude class='error-messages'></ng-transclude> \t\t\t</div>"
+            template: "<div ng-switch='$ctrl.type'> \t\t\t\t<input ng-switch-when='text'  \t\t\t\t\tname='{{$ctrl.name}}'  \t\t\t\t\ttype='text' \t\t\t\t\tclass='form-control' \t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-model-options='{ allowInvalid: true }' \t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-pattern='$ctrl.ngPattern' \t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\tng-blur='$ctrl.blur()' \t\t\t\t\tng-minlength='$ctrl.ngMinlength' \t\t\t\t\tng-maxlength='$ctrl.ngMaxlength' \t\t\t\t\ttw-text-format='{{$ctrl.textFormat}}' />  \t\t\t\t<input ng-switch-when='password'  \t\t\t\t\tname='{{$ctrl.name}}'  \t\t\t\t\ttype='password' \t\t\t\t\tclass='form-control' \t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-model-options='{ allowInvalid: true }' \t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\tng-blur='$ctrl.blur()' \t\t\t\t\tng-minlength='$ctrl.ngMinlength' \t\t\t\t\tng-maxlength='$ctrl.ngMaxlength' />  \t\t\t\t<input ng-switch-when='number'  \t\t\t\t\tname='{{$ctrl.name}}'  \t\t\t\t\ttype='number' \t\t\t\t\tstep='{{$ctrl.step}}' \t\t\t\t\tclass='form-control' \t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\tng-model-options='{ allowInvalid: true }' \t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\tng-blur='$ctrl.blur()' \t\t\t\t\tng-min='$ctrl.ngMin' \t\t\t\t\tng-max='$ctrl.ngMax' />  \t\t\t\t<div ng-switch-when='radio' \t\t\t\t\tclass='radio' \t\t\t\t\tng-class='{disabled: $ctrl.ngDisabled}' \t\t\t\t\tng-repeat='option in $ctrl.options'> \t\t\t\t\t<label> \t\t\t\t\t\t<tw-radio \t\t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\t\tng-value='option.value' \t\t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\t\tng-click='$ctrl.change()' \t\t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t\t\t{{option.label}} \t\t\t\t\t</label> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='checkbox' \t\t\t\t\tclass='checkbox' \t\t\t\t\tng-class='{disabled: $ctrl.ngDisabled}'> \t\t\t\t\t<label> \t\t\t\t\t\t<tw-checkbox \t\t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\t\tng-click='$ctrl.change()' \t\t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t\t\t{{$ctrl.placeholder}} \t\t\t\t\t</label> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='select'> \t\t\t\t\t<tw-select \t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\toptions='$ctrl.options' \t\t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='upload'> \t\t\t\t\t<tw-upload \t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\tlabel='{{$ctrl.label}}' \t\t\t\t\t\ticon='{{$ctrl.uploadIcon}}' \t\t\t\t\t\tplaceholder='{{$ctrl.placeholder}}' \t\t\t\t\t\taccept='{{$ctrl.uploadAccept}}' \t\t\t\t\t\tcomplete-text='{{$ctrl.label}}' \t\t\t\t\t\tbutton-text='{{$ctrl.uploadOptions.buttonText}}' \t\t\t\t\t\tcancel-text='{{$ctrl.uploadOptions.cancelText}}' \t\t\t\t\t\ttoo-large-message='{{$ctrl.uploadTooLargeMessage}}' \t\t\t\t\t\tmax-size='$ctrl.ngMax' \t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t</div> \t\t\t\t<div ng-switch-when='date'> \t\t\t\t\t<tw-date \t\t\t\t\t\tname='{{$ctrl.name}}' \t\t\t\t\t\tlocale='{{$ctrl.locale}}' \t\t\t\t\t\tng-min='$ctrl.ngMin' \t\t\t\t\t\tng-max='$ctrl.ngMax' \t\t\t\t\t\tng-model='$ctrl.ngModel' \t\t\t\t\t\tng-required='$ctrl.ngRequired' \t\t\t\t\t\tng-disabled='$ctrl.ngDisabled' \t\t\t\t\t\tng-change='$ctrl.change()' \t\t\t\t\t\tng-focus='$ctrl.focus()' \t\t\t\t\t\tng-blur='$ctrl.blur()' /> \t\t\t\t</div> \t\t\t\t<ng-transclude class='error-messages'></ng-transclude> \t\t\t</div>"
         };
     }
     function TwDynamicFormControlController($element, $scope) {
@@ -694,7 +695,7 @@ angular.module("tw.form-components", []);
             controller: [ "$scope", TwFieldsetController ],
             controllerAs: "$ctrl",
             bindToController: !0,
-            template: " \t\t\t\t<fieldset ng-form='twFieldset'> \t\t\t\t\t<legend ng-if='$ctrl.legend'>{{$ctrl.legend}}</legend> \t\t\t\t\t<div class='row row-equal-height'> \t\t\t\t\t\t<div ng-repeat='fieldGroup in $ctrl.fields' class='col-xs-12' \t\t\t\t\t\t\tng-class='{ \t\t\t\t\t\t\t\t\"col-sm-4\": fieldGroup.width === \"sm\", \t\t\t\t\t\t\t\t\"col-sm-6\": fieldGroup.width === \"md\" || fieldGroup.maxlength && fieldGroup.maxlength <= 10, \t\t\t\t\t\t\t\t\"col-sm-12\": fieldGroup.width === \"lg\" || !fieldGroup.maxlength || fieldGroup.maxlength > 10 \t\t\t\t\t\t\t}'> \t\t\t\t\t\t\t<div class='form-group tw-form-group-{{fieldGroup.key}}' style='width: 100%;' \t\t\t\t\t\t\t\tng-class='{\"has-error\": $ctrl.errorMessages[fieldGroup.key]}'> \t\t\t\t\t\t\t\t<label class='control-label' \t\t\t\t\t\t\t\t\tng-if='fieldGroup.type !== \"upload\"'> \t\t\t\t\t\t\t\t\t{{fieldGroup.name}} \t\t\t\t\t\t\t\t</label> \t\t\t\t\t\t\t\t<div class='row'> \t\t\t\t\t\t\t\t\t<div class='col-xs-{{field.columns}}' \t\t\t\t\t\t\t\t\t\tng-repeat='field in fieldGroup.group'> \t\t\t\t\t\t\t\t\t\t<tw-dynamic-form-control \t\t\t\t\t\t\t\t\t\t\tname='{{field.key}}' \t\t\t\t\t\t\t\t\t\t\tlabel='{{fieldGroup.name}}' \t\t\t\t\t\t\t\t\t\t\ttype='{{field.type | lowercase}}' \t\t\t\t\t\t\t\t\t\t\tplaceholder='{{field.placeholder || field.example}}' \t\t\t\t\t\t\t\t\t\t\thelp-text='{{field.helpText}}' \t\t\t\t\t\t\t\t\t\t\tlocale='{{$ctrl.locale}}' \t\t\t\t\t\t\t\t\t\t\tupload-accept='{{field.accept}}' \t\t\t\t\t\t\t\t\t\t\tupload-icon='{{field.icon}}' \t\t\t\t\t\t\t\t\t\t\tupload-too-large-message='{{field.tooLargeMessage}}' \t\t\t\t\t\t\t\t\t\t\toptions='field.valuesAllowed' \t\t\t\t\t\t\t\t\t\t\tupload-options='$ctrl.uploadOptions' \t\t\t\t\t\t\t\t\t\t\tng-model='$ctrl.model[field.key]' \t\t\t\t\t\t\t\t\t\t\tng-blur='$ctrl.onBlur(field)' \t\t\t\t\t\t\t\t\t\t\tng-change='$ctrl.onChange(field)' \t\t\t\t\t\t\t\t\t\t\tng-required='field.required' \t\t\t\t\t\t\t\t\t\t\tng-disabled='field.disabled' \t\t\t\t\t\t\t\t\t\t\ttw-minlength='field.minLength' \t\t\t\t\t\t\t\t\t\t\ttw-maxlength='field.maxLength' \t\t\t\t\t\t\t\t\t\t\tng-min='field.min' \t\t\t\t\t\t\t\t\t\t\tng-max='field.max' \t\t\t\t\t\t\t\t\t\t\tng-pattern='field.validationRegexp' \t\t\t\t\t\t\t\t\t\t\ttw-validation > \t\t\t\t\t\t\t\t\t\t\t<!-- tw-dynamic-async-validator='field.validationAsync' --> \t\t\t\t\t\t\t\t\t\t</tw-dynamic-form-control> \t\t\t\t\t\t\t\t\t\t<div class='error-messages'> \t\t\t\t\t\t\t\t\t\t\t<div ng-repeat='(validationType, validationMessage) in $ctrl.validationMessages' \t\t\t\t\t\t\t\t\t\t\t\tclass='error-{{validationType}}'> \t\t\t\t\t\t\t\t\t\t\t\t{{validationMessage}} \t\t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t\t<div class='error-provided' ng-if='$ctrl.errorMessages[field.key]'> \t\t\t\t\t\t\t\t\t\t\t\t{{ $ctrl.errorMessages[field.key] }} \t\t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t<div ng-if='field.tooltip' \t\t\t\t\t\t\t\t\t\t\tclass='help-block'> \t\t\t\t\t\t\t\t\t\t\t<a role='button' \t\t\t\t\t\t\t\t\t\t\t\ttabindex='0' \t\t\t\t\t\t\t\t\t\t\t\tdata-toggle='popover' \t\t\t\t\t\t\t\t\t\t\t\tdata-placement='top' \t\t\t\t\t\t\t\t\t\t\t\ttitle='{{field.tooltip}}'> \t\t\t\t\t\t\t\t\t\t\t\t<span class='glyphicon glyphicon-question-sign'></span> \t\t\t\t\t\t\t\t\t\t\t</a> \t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t</fieldset>"
+            template: " \t\t\t\t<fieldset ng-form='twFieldset'> \t\t\t\t\t<legend ng-if='$ctrl.legend'>{{$ctrl.legend}}</legend> \t\t\t\t\t<div class='row row-equal-height'> \t\t\t\t\t\t<div ng-repeat='fieldGroup in $ctrl.fields' class='col-xs-12' \t\t\t\t\t\t\tng-class='{ \t\t\t\t\t\t\t\t\"col-sm-4\": fieldGroup.width === \"sm\", \t\t\t\t\t\t\t\t\"col-sm-6\": fieldGroup.width === \"md\" || fieldGroup.maxlength && fieldGroup.maxlength <= 10, \t\t\t\t\t\t\t\t\"col-sm-12\": fieldGroup.width === \"lg\" || !fieldGroup.maxlength || fieldGroup.maxlength > 10 \t\t\t\t\t\t\t}'> \t\t\t\t\t\t\t<div class='form-group tw-form-group-{{fieldGroup.key}}' style='width: 100%;' \t\t\t\t\t\t\t\tng-class='{ \t\t\t\t\t\t\t\t\t\"has-error\": $ctrl.errorMessages[fieldGroup.key] \t\t\t\t\t\t\t\t}'> \t\t\t\t\t\t\t\t<label class='control-label' \t\t\t\t\t\t\t\t\tng-if='fieldGroup.type !== \"upload\"'> \t\t\t\t\t\t\t\t\t{{fieldGroup.name}} \t\t\t\t\t\t\t\t</label> \t\t\t\t\t\t\t\t<div class='row'> \t\t\t\t\t\t\t\t\t<div class='col-xs-{{field.columns}}' \t\t\t\t\t\t\t\t\t\tng-repeat='field in fieldGroup.group'> \t\t\t\t\t\t\t\t\t\t<tw-dynamic-form-control \t\t\t\t\t\t\t\t\t\t\tname='{{field.key}}' \t\t\t\t\t\t\t\t\t\t\tlabel='{{fieldGroup.name}}' \t\t\t\t\t\t\t\t\t\t\ttype='{{field.type | lowercase}}' \t\t\t\t\t\t\t\t\t\t\tplaceholder='{{field.placeholder || field.example}}' \t\t\t\t\t\t\t\t\t\t\thelp-text='{{field.helpText}}' \t\t\t\t\t\t\t\t\t\t\tlocale='{{$ctrl.locale}}' \t\t\t\t\t\t\t\t\t\t\tupload-accept='{{field.accept}}' \t\t\t\t\t\t\t\t\t\t\tupload-icon='{{field.icon}}' \t\t\t\t\t\t\t\t\t\t\tupload-too-large-message='{{field.tooLargeMessage}}' \t\t\t\t\t\t\t\t\t\t\toptions='field.valuesAllowed' \t\t\t\t\t\t\t\t\t\t\tupload-options='$ctrl.uploadOptions' \t\t\t\t\t\t\t\t\t\t\tng-model='$ctrl.model[field.key]' \t\t\t\t\t\t\t\t\t\t\tng-blur='$ctrl.onBlur(field)' \t\t\t\t\t\t\t\t\t\t\tng-change='$ctrl.onChange(field)' \t\t\t\t\t\t\t\t\t\t\tng-required='field.required' \t\t\t\t\t\t\t\t\t\t\tng-disabled='field.disabled' \t\t\t\t\t\t\t\t\t\t\ttw-minlength='field.minLength' \t\t\t\t\t\t\t\t\t\t\ttw-maxlength='field.maxLength' \t\t\t\t\t\t\t\t\t\t\tng-min='field.min' \t\t\t\t\t\t\t\t\t\t\tng-max='field.max' \t\t\t\t\t\t\t\t\t\t\tng-pattern='field.validationRegexp' \t\t\t\t\t\t\t\t\t\t\ttext-format='field.displayFormat' \t\t\t\t\t\t\t\t\t\t\ttw-validation> \t\t\t\t\t\t\t\t\t\t\t<!-- tw-dynamic-async-validator='field.validationAsync' --> \t\t\t\t\t\t\t\t\t\t</tw-dynamic-form-control> \t\t\t\t\t\t\t\t\t\t<div class='error-messages'> \t\t\t\t\t\t\t\t\t\t\t<div ng-repeat='(validationType, validationMessage) in $ctrl.validationMessages' \t\t\t\t\t\t\t\t\t\t\t\tclass='error-{{validationType}}'> \t\t\t\t\t\t\t\t\t\t\t\t{{validationMessage}} \t\t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t\t<div class='error-provided' ng-if='$ctrl.errorMessages[field.key]'> \t\t\t\t\t\t\t\t\t\t\t\t{{ $ctrl.errorMessages[field.key] }} \t\t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t\t<div ng-if='field.tooltip' \t\t\t\t\t\t\t\t\t\t\tclass='help-block'> \t\t\t\t\t\t\t\t\t\t\t{{field.tooltip}} \t\t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t\t</div> \t\t\t\t\t\t\t</div> \t\t\t\t\t\t</div> \t\t\t\t\t</div> \t\t\t\t</div> \t\t\t</fieldset>"
         };
     }
     function TwFieldsetController($scope) {
@@ -1322,6 +1323,27 @@ angular.module("tw.form-components", []);
     angular.module("tw.form-components").service("TwRequirementsService", TwRequirementsService);
 }(window.angular), function(angular) {
     "use strict";
+    function TwCardsService() {
+        var expandedIndex = -1, cards = [];
+        this.toggle = function(index) {
+            expandedIndex !== -1 && expandedIndex !== index && (cards[expandedIndex].open = !1, 
+            expandedIndex = -1), cards[index].open ? cards[index].open = !1 : (expandedIndex = index, 
+            cards[index].open = !0);
+        }, this.addCard = function(scope) {
+            cards.push(scope);
+        }, this.getExpandedIndex = function() {
+            return expandedIndex;
+        }, this.updateExpandedIndex = function(newExpandedIndex) {
+            expandedIndex = newExpandedIndex;
+        }, this.getCard = function(index) {
+            return cards[index];
+        }, this.getLength = function() {
+            return cards.length;
+        };
+    }
+    angular.module("tw.layout-components").service("TwCardsService", TwCardsService);
+}(window.angular), function(angular) {
+    "use strict";
     function TwCurrencyData() {
         var currencyDecimals = {
             BIF: 0,
@@ -1453,4 +1475,63 @@ angular.module("tw.form-components", []);
         };
     }
     angular.module("tw.form-components").service("TwDateService", TwDateService);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwTextFormatService() {
+        function positionIsSeparator(pattern, position) {
+            return pattern[position] && "*" !== pattern[position];
+        }
+        this.formatUsingPattern = function(value, pattern) {
+            if (value || (value = ""), "string" != typeof pattern) return value;
+            for (var newValue = "", separators = 0, charactersToAllocate = value.length, position = 0; charactersToAllocate; ) positionIsSeparator(pattern, position) ? (newValue += pattern[position], 
+            separators++) : (newValue += value[position - separators], charactersToAllocate--), 
+            position++;
+            var separatorsAfterCursor = this.countSeparatorsAfterCursor(pattern, position);
+            return separatorsAfterCursor && (newValue += pattern.substr(position, separatorsAfterCursor)), 
+            newValue;
+        }, this.unformatUsingPattern = function(value, pattern) {
+            if (!value) return "";
+            if ("string" != typeof pattern) return value;
+            for (var i = 0; i < pattern.length; i++) if (positionIsSeparator(pattern, i)) for (;value.indexOf(pattern[i]) >= 0; ) value = value.replace(pattern[i], "");
+            return value;
+        }, this.reformatUsingPattern = function(value, newPattern, oldPattern) {
+            return "undefined" == typeof oldPattern && (oldPattern = newPattern), this.formatUsingPattern(this.unformatUsingPattern(value, oldPattern), newPattern);
+        }, this.countSeparatorsBeforeCursor = function(pattern, position) {
+            for (var separators = 0; positionIsSeparator(pattern, position - separators - 1); ) separators++;
+            return separators;
+        }, this.countSeparatorsAfterCursor = function(pattern, position) {
+            for (var separators = 0; positionIsSeparator(pattern, position + separators); ) separators++;
+            return separators;
+        }, this.countSeparatorsInAppendedValue = function(pattern, position, value) {
+            for (var separators = 0, i = 0, toAllocate = value.length; toAllocate; ) positionIsSeparator(pattern, position + i) ? separators++ : toAllocate--, 
+            i++;
+            return separators;
+        }, this.countSeparatorsInPattern = function(pattern) {
+            for (var separators = 0, i = 0; i < pattern.length; i++) positionIsSeparator(pattern, i) && separators++;
+            return separators;
+        };
+    }
+    angular.module("tw.form-styling").service("TwTextFormatService", TwTextFormatService);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwUndoStackFactory() {
+        this["new"] = function() {
+            return new UndoStack();
+        };
+    }
+    function UndoStack() {
+        var pointer = 0, stack = [];
+        this.reset = function(value) {
+            stack = [ value ], pointer = 0;
+        }, this.add = function(value) {
+            stack.length - 1 > pointer && (stack = stack.slice(0, pointer + 1)), stack[pointer] !== value && (stack.push(value), 
+            pointer++);
+        }, this.undo = function() {
+            return pointer >= 0 && "undefined" != typeof stack[pointer - 1] && pointer--, stack[pointer];
+        }, this.redo = function() {
+            return pointer < stack.length && "undefined" != typeof stack[pointer + 1] && pointer++, 
+            stack[pointer];
+        };
+    }
+    angular.module("tw.form-styling").service("TwUndoStackFactory", TwUndoStackFactory);
 }(window.angular);
