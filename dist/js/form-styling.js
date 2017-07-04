@@ -84,7 +84,7 @@ angular.module("tw.form-styling", []);
         function onModelChange(newModel, oldModel) {
             if (newModel !== oldModel) {
                 var selectionStart = element.selectionStart, selectionEnd = element.selectionEnd;
-                reformatControl(element, newModel, !0), element.setSelectionRange(selectionStart, selectionEnd);
+                reformatControl(element, newModel), element.setSelectionRange(selectionStart, selectionEnd);
             }
         }
         function onPatternChange(newPattern, oldPattern) {
@@ -108,18 +108,17 @@ angular.module("tw.form-styling", []);
         function reformatControl(element, originalValue) {
             originalValue || (originalValue = element.value);
             var newValue = TwTextFormatService.reformatUsingPattern(originalValue, pattern);
-            return newValue !== originalValue && (element.value = newValue), newValue;
+            newValue !== originalValue && (element.value = newValue);
         }
         function onChange() {
-            var formatted = reformatControl(element);
-            undoStack.add(formatted);
+            reformatControl(element), undoStack.add(element.value);
         }
         function onPaste(event) {
             var selectionStart = element.selectionStart, clipboardData = (element.value.length, 
             event.clipboardData || window.clipboardData), pastedData = clipboardData.getData("Text"), separatorsInPaste = TwTextFormatService.countSeparatorsInAppendedValue(pattern, selectionStart, pastedData);
             $timeout(function() {
-                var newPosition = selectionStart + pastedData.length + separatorsInPaste, formatted = reformatControl(element);
-                undoStack.add(formatted), element.setSelectionRange(newPosition, newPosition);
+                var newPosition = selectionStart + pastedData.length + separatorsInPaste;
+                reformatControl(element), undoStack.add(element.value), element.setSelectionRange(newPosition, newPosition);
             });
         }
         function onKeydown(event) {
@@ -168,25 +167,9 @@ angular.module("tw.form-styling", []);
             return TwTextFormatService.reformatUsingPattern(newVal, pattern);
         }
         function doKeypress(element, pattern, selectionStart, selectionEnd) {
-            var formatted = reformatControl(element);
-            undoStack.add(formatted);
+            reformatControl(element), undoStack.add(element.value);
             var newPosition = getPositionAfterKeypress(pattern, element, selectionStart, selectionEnd);
             element.setSelectionRange(newPosition, newPosition);
-        }
-        function onCut(event) {
-            var selectionStart = element.selectionStart;
-            $timeout(function() {
-                var formatted = reformatControl(element);
-                undoStack.add(formatted);
-                var newPosition = selectionStart + TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart);
-                element.setSelectionRange(newPosition, newPosition);
-            });
-        }
-        function onCopy(event) {
-            var selectionStart = element.selectionStart, selectionEnd = element.selectionEnd;
-            $timeout(function() {
-                element.setSelectionRange(selectionStart, selectionEnd);
-            });
         }
         function getPositionAfterBackspace(pattern, element, selectionStart, selectionEnd) {
             var separatorsBefore = TwTextFormatService.countSeparatorsBeforeCursor(pattern, selectionStart), isRange = selectionStart !== selectionEnd, proposedPosition = selectionStart - separatorsBefore - (isRange ? 0 : 1);
@@ -200,6 +183,20 @@ angular.module("tw.form-styling", []);
         }
         function removeCharacters(value, first, last) {
             return value.substring(0, first - 1) + value.substring(last - 1, value.length);
+        }
+        function onCut(event) {
+            var selectionStart = element.selectionStart;
+            $timeout(function() {
+                reformatControl(element), undoStack.add(element.value);
+                var newPosition = selectionStart + TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart);
+                element.setSelectionRange(newPosition, newPosition);
+            });
+        }
+        function onCopy(event) {
+            var selectionStart = element.selectionStart, selectionEnd = element.selectionEnd;
+            $timeout(function() {
+                element.setSelectionRange(selectionStart, selectionEnd);
+            });
         }
         var ngModelController, element, undoStack, keydownCount, pattern = "", $ctrl = this, keys = {
             cmd: 224,

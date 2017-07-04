@@ -14,37 +14,39 @@
       if (typeof pattern !== "string") {
         return value;
       }
-      var newValue = "";
-      var separators = 0;
-      var moveCursor = 0;
+      var newValue = "",
+        separators = 0;
 
-      for(var i = 0; i < pattern.length && i <= value.length + separators; i++) {
-        if (pattern[i] === '*') {
-          if (value[i - separators]) {
-            newValue += value[i - separators];
-          }
-        } else {
-          newValue += pattern[i];
+      var charactersToAllocate = value.length;
+      var position = 0;
+      while(charactersToAllocate) {
+        if (positionIsSeparator(pattern, position)) {
+          newValue += pattern[position];
           separators++;
+        } else {
+          newValue += value[position - separators];
+          charactersToAllocate--;
         }
+        position++;
       }
-      // Add remaining characters on the end without formatting
-      if (value.substring(pattern.length - separators, value.length)) {
-        newValue += value.substring(pattern.length - separators, value.length);
+
+      var separatorsAfterCursor = this.countSeparatorsAfterCursor(pattern, position);
+      if (separatorsAfterCursor) {
+        newValue += pattern.substr(position, separatorsAfterCursor);
       }
       return newValue;
     };
 
     this.unformatUsingPattern = function(value, pattern) {
       if (!value) {
-        return "";  // return value
+        return "";
       }
       if (typeof pattern !== "string") {
         return value;
       }
       for(var i = 0; i < pattern.length; i++) {
-        if (pattern[i] !== '*') {
-          // TODO Not very efficient, regex tricky because of special characters
+        if (positionIsSeparator(pattern, i)) {
+          // Not very efficient, but regex tricky because of special characters
           while(value.indexOf(pattern[i]) >= 0) {
             value = value.replace(pattern[i], "");
           }
@@ -65,8 +67,7 @@
 
     this.countSeparatorsBeforeCursor = function(pattern, position) {
       var separators = 0;
-      while (pattern[position - separators - 1] &&
-        pattern[position - separators - 1] !== "*") {
+      while (positionIsSeparator(pattern, position - separators - 1)) {
         separators++;
       }
       return separators;
@@ -74,8 +75,7 @@
 
     this.countSeparatorsAfterCursor = function(pattern, position) {
       var separators = 0;
-      while (pattern[position + separators] &&
-        pattern[position + separators] !== "*") {
+      while (positionIsSeparator(pattern, position + separators)) {
         separators++;
       }
       return separators;
@@ -87,11 +87,10 @@
       var i = 0;
       var toAllocate = value.length;
       while(toAllocate) {
-        if (pattern[position + i] === "*" ||
-          typeof pattern[position + i] === "undefined") {
-          toAllocate--;
-        } else {
+        if (positionIsSeparator(pattern, position + i)) {
           separators++;
+        } else {
+          toAllocate--;
         }
         i++;
       }
@@ -101,11 +100,15 @@
     this.countSeparatorsInPattern = function(pattern) {
       var separators = 0;
       for(var i = 0; i < pattern.length; i++) {
-        if (pattern[i] !== "*") {
+        if (positionIsSeparator(pattern, i)) {
           separators++;
         }
       }
       return separators;
     };
+
+    function positionIsSeparator(pattern, position) {
+      return pattern[position] && pattern[position] !== "*";
+    }
   }
 })(window.angular);

@@ -409,7 +409,9 @@ describe('Directive: TwTextFormat, ', function() {
           $scope.pattern = "***/**/-/**";
           $scope.ngModel = "1234567";
         });
+
         /*
+        // These test if the browser supports selection API in test
         it('supports selection ', function() {
           $element = getCompiledDirectiveElement($scope);
           input = $element[0];
@@ -436,7 +438,6 @@ describe('Directive: TwTextFormat, ', function() {
           expect(input.selectionEnd).toBe(2);
         });
         */
-
 
         describe('follows a character', function() {
           beforeEach(function() {

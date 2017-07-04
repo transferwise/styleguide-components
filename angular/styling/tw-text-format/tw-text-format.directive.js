@@ -33,8 +33,12 @@
     TwTextFormatService,
     TwUndoStackFactory
   ) {
-    var ngModelController, element, undoStack, keydownCount,
-      pattern = "", $ctrl = this;
+    var ngModelController,
+      element,
+      undoStack,
+      keydownCount,
+      pattern = "",
+      $ctrl = this;
 
     function init() {
       undoStack = TwUndoStackFactory.new();
@@ -51,10 +55,10 @@
 
       // We need the formatter for external model changes
       ngModelController.$formatters.push(function(value) {
-        return TwTextFormatService.formatUsingPattern(value, pattern); //$ctrl.twTextFormat);
+        return TwTextFormatService.formatUsingPattern(value, pattern);
       });
       ngModelController.$parsers.push(function(value) {
-        return TwTextFormatService.unformatUsingPattern(value, pattern); //$ctrl.twTextFormat);
+        return TwTextFormatService.unformatUsingPattern(value, pattern);
       });
 
       element.addEventListener('change', onChange);
@@ -77,7 +81,7 @@
       // Preserve selection range after formatting
       var selectionStart = element.selectionStart,
         selectionEnd = element.selectionEnd;
-      reformatControl(element, newModel, true);
+      reformatControl(element, newModel);
       element.setSelectionRange(selectionStart, selectionEnd);
     }
 
@@ -103,6 +107,7 @@
     }
 
     function replaceLengthValidators(ngModelController) {
+      // We must wait until the default directives have loaded before replacing
       $timeout(function () {
         var originalMinLength = ngModelController.$validators.minlength,
             originalMaxLength = ngModelController.$validators.maxlength;
@@ -136,12 +141,11 @@
       if (newValue !== originalValue) {
         element.value = newValue;
       }
-      return newValue;
     }
 
     function onChange() {
-      var formatted = reformatControl(element);
-      undoStack.add(formatted);
+      reformatControl(element);
+      undoStack.add(element.value);
     }
 
     function onPaste(event) {
@@ -157,19 +161,18 @@
 
       $timeout(function() {
         var newPosition = selectionStart + pastedData.length + separatorsInPaste;
-        var formatted = reformatControl(element);
-        undoStack.add(formatted);
+        reformatControl(element);
+        undoStack.add(element.value);
         element.setSelectionRange(newPosition, newPosition);
       });
     }
 
     function onKeydown(event) {
       keydownCount++;
-      var currentKeydownCount = keydownCount;
-      var key = event.keyCode || event.which;
-
-      var selectionStart = event.target.selectionStart;
-      var selectionEnd = event.target.selectionEnd;
+      var currentKeydownCount = keydownCount,
+        key = event.keyCode || event.which,
+        selectionStart = event.target.selectionStart,
+        selectionEnd = event.target.selectionEnd;
 
       if (reservedKeys.indexOf(key) >= 0 || event.metaKey || event.ctrlKey) {
         if (key === keys.z && (event.metaKey || event.ctrlKey)) {
@@ -236,7 +239,8 @@
     }
 
     function getFormattedValueAfterBackspace(element, pattern, selectionStart, selectionEnd) {
-      var removeStart, removeEnd,
+      var removeStart,
+        removeEnd,
         newVal = element.value,
         separatorsBeforeCursor = TwTextFormatService.countSeparatorsBeforeCursor(
           pattern,
@@ -273,7 +277,8 @@
     }
 
     function getFormattedValueAfterDelete(element, pattern, selectionStart, selectionEnd) {
-      var removeStart, removeEnd,
+      var removeStart,
+        removeEnd,
         newVal = element.value,
         separatorsAfterCursor = TwTextFormatService.countSeparatorsAfterCursor(
           pattern,
@@ -301,8 +306,8 @@
 
     function doKeypress(element, pattern, selectionStart, selectionEnd) {
       // The parser already called this, but doing it after appends the next separator
-      var formatted = reformatControl(element);
-      undoStack.add(formatted);
+      reformatControl(element);
+      undoStack.add(element.value);
 
       var newPosition = getPositionAfterKeypress(
         pattern, element, selectionStart, selectionEnd
@@ -310,11 +315,53 @@
       element.setSelectionRange(newPosition, newPosition);
     }
 
+    function getPositionAfterBackspace(pattern, element, selectionStart, selectionEnd) {
+      var separatorsBefore = TwTextFormatService.countSeparatorsBeforeCursor(
+        pattern,
+        selectionStart
+      );
+      var isRange = (selectionStart !== selectionEnd);
+      // If a range was selected, we don't delete a character before cursor
+      var proposedPosition = selectionStart - separatorsBefore - (isRange ? 0 : 1);
+      return proposedPosition + TwTextFormatService.countSeparatorsAfterCursor(
+        pattern,
+        proposedPosition
+      );
+    }
+
+    function getPositionAfterKeypress(pattern, element, selectionStart, selectionEnd) {
+      var separatorsAfter;
+      if (selectionStart !== selectionEnd) {
+        separatorsAfter = TwTextFormatService.countSeparatorsAfterCursor(
+          pattern,
+          selectionStart
+        );
+      } else {
+        // TODO this works but is hard to understand
+        separatorsAfter = TwTextFormatService.countSeparatorsAfterCursor(
+          pattern,
+          selectionStart
+        );
+        if (separatorsAfter === 0) {
+          separatorsAfter = TwTextFormatService.countSeparatorsAfterCursor(
+            pattern,
+            selectionStart + 1
+          );
+        }
+      }
+      return selectionStart + 1 + separatorsAfter;
+    }
+
+    function removeCharacters(value, first, last) {
+      return value.substring(0, first - 1) +
+        value.substring(last - 1, value.length);
+    }
+
     function onCut(event) {
       var selectionStart = element.selectionStart;
       $timeout(function() {
-        var formatted = reformatControl(element);
-        undoStack.add(formatted);
+        reformatControl(element);
+        undoStack.add(element.value);
 
         // Also move cursor to the right of any separators
         var newPosition = selectionStart +
@@ -372,48 +419,6 @@
     ];
 
     init();
-
-    function getPositionAfterBackspace(pattern, element, selectionStart, selectionEnd) {
-      var separatorsBefore = TwTextFormatService.countSeparatorsBeforeCursor(
-        pattern,
-        selectionStart
-      );
-      var isRange = (selectionStart !== selectionEnd);
-      // If a range was selected, we don't delete a character before cursor
-      var proposedPosition = selectionStart - separatorsBefore - (isRange ? 0 : 1);
-      return proposedPosition + TwTextFormatService.countSeparatorsAfterCursor(
-        pattern,
-        proposedPosition
-      );
-    }
-
-    function getPositionAfterKeypress(pattern, element, selectionStart, selectionEnd) {
-      var separatorsAfter;
-      if (selectionStart !== selectionEnd) {
-        separatorsAfter = TwTextFormatService.countSeparatorsAfterCursor(
-          pattern,
-          selectionStart
-        );
-      } else {
-        // TODO this works but is hard to understand
-        separatorsAfter = TwTextFormatService.countSeparatorsAfterCursor(
-          pattern,
-          selectionStart
-        );
-        if (separatorsAfter === 0) {
-          separatorsAfter = TwTextFormatService.countSeparatorsAfterCursor(
-            pattern,
-            selectionStart + 1
-          );
-        }
-      }
-      return selectionStart + 1 + separatorsAfter;
-    }
-
-    function removeCharacters(value, first, last) {
-      return value.substring(0, first - 1) +
-        value.substring(last - 1, value.length);
-    }
   }
 
 })(window.angular);

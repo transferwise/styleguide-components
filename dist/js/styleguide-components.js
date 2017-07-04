@@ -1363,7 +1363,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         function onModelChange(newModel, oldModel) {
             if (newModel !== oldModel) {
                 var selectionStart = element.selectionStart, selectionEnd = element.selectionEnd;
-                reformatControl(element, newModel, !0), element.setSelectionRange(selectionStart, selectionEnd);
+                reformatControl(element, newModel), element.setSelectionRange(selectionStart, selectionEnd);
             }
         }
         function onPatternChange(newPattern, oldPattern) {
@@ -1387,18 +1387,17 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         function reformatControl(element, originalValue) {
             originalValue || (originalValue = element.value);
             var newValue = TwTextFormatService.reformatUsingPattern(originalValue, pattern);
-            return newValue !== originalValue && (element.value = newValue), newValue;
+            newValue !== originalValue && (element.value = newValue);
         }
         function onChange() {
-            var formatted = reformatControl(element);
-            undoStack.add(formatted);
+            reformatControl(element), undoStack.add(element.value);
         }
         function onPaste(event) {
             var selectionStart = element.selectionStart, clipboardData = (element.value.length, 
             event.clipboardData || window.clipboardData), pastedData = clipboardData.getData("Text"), separatorsInPaste = TwTextFormatService.countSeparatorsInAppendedValue(pattern, selectionStart, pastedData);
             $timeout(function() {
-                var newPosition = selectionStart + pastedData.length + separatorsInPaste, formatted = reformatControl(element);
-                undoStack.add(formatted), element.setSelectionRange(newPosition, newPosition);
+                var newPosition = selectionStart + pastedData.length + separatorsInPaste;
+                reformatControl(element), undoStack.add(element.value), element.setSelectionRange(newPosition, newPosition);
             });
         }
         function onKeydown(event) {
@@ -1447,25 +1446,9 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             return TwTextFormatService.reformatUsingPattern(newVal, pattern);
         }
         function doKeypress(element, pattern, selectionStart, selectionEnd) {
-            var formatted = reformatControl(element);
-            undoStack.add(formatted);
+            reformatControl(element), undoStack.add(element.value);
             var newPosition = getPositionAfterKeypress(pattern, element, selectionStart, selectionEnd);
             element.setSelectionRange(newPosition, newPosition);
-        }
-        function onCut(event) {
-            var selectionStart = element.selectionStart;
-            $timeout(function() {
-                var formatted = reformatControl(element);
-                undoStack.add(formatted);
-                var newPosition = selectionStart + TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart);
-                element.setSelectionRange(newPosition, newPosition);
-            });
-        }
-        function onCopy(event) {
-            var selectionStart = element.selectionStart, selectionEnd = element.selectionEnd;
-            $timeout(function() {
-                element.setSelectionRange(selectionStart, selectionEnd);
-            });
         }
         function getPositionAfterBackspace(pattern, element, selectionStart, selectionEnd) {
             var separatorsBefore = TwTextFormatService.countSeparatorsBeforeCursor(pattern, selectionStart), isRange = selectionStart !== selectionEnd, proposedPosition = selectionStart - separatorsBefore - (isRange ? 0 : 1);
@@ -1479,6 +1462,20 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         }
         function removeCharacters(value, first, last) {
             return value.substring(0, first - 1) + value.substring(last - 1, value.length);
+        }
+        function onCut(event) {
+            var selectionStart = element.selectionStart;
+            $timeout(function() {
+                reformatControl(element), undoStack.add(element.value);
+                var newPosition = selectionStart + TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart);
+                element.setSelectionRange(newPosition, newPosition);
+            });
+        }
+        function onCopy(event) {
+            var selectionStart = element.selectionStart, selectionEnd = element.selectionEnd;
+            $timeout(function() {
+                element.setSelectionRange(selectionStart, selectionEnd);
+            });
         }
         var ngModelController, element, undoStack, keydownCount, pattern = "", $ctrl = this, keys = {
             cmd: 224,
@@ -1762,31 +1759,36 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
 }(window.angular), function(angular) {
     "use strict";
     function TwTextFormatService() {
+        function positionIsSeparator(pattern, position) {
+            return pattern[position] && "*" !== pattern[position];
+        }
         this.formatUsingPattern = function(value, pattern) {
             if (value || (value = ""), "string" != typeof pattern) return value;
-            for (var newValue = "", separators = 0, i = 0; i < pattern.length && i <= value.length + separators; i++) "*" === pattern[i] ? value[i - separators] && (newValue += value[i - separators]) : (newValue += pattern[i], 
-            separators++);
-            return value.substring(pattern.length - separators, value.length) && (newValue += value.substring(pattern.length - separators, value.length)), 
+            for (var newValue = "", separators = 0, charactersToAllocate = value.length, position = 0; charactersToAllocate; ) positionIsSeparator(pattern, position) ? (newValue += pattern[position], 
+            separators++) : (newValue += value[position - separators], charactersToAllocate--), 
+            position++;
+            var separatorsAfterCursor = this.countSeparatorsAfterCursor(pattern, position);
+            return separatorsAfterCursor && (newValue += pattern.substr(position, separatorsAfterCursor)), 
             newValue;
         }, this.unformatUsingPattern = function(value, pattern) {
             if (!value) return "";
             if ("string" != typeof pattern) return value;
-            for (var i = 0; i < pattern.length; i++) if ("*" !== pattern[i]) for (;value.indexOf(pattern[i]) >= 0; ) value = value.replace(pattern[i], "");
+            for (var i = 0; i < pattern.length; i++) if (positionIsSeparator(pattern, i)) for (;value.indexOf(pattern[i]) >= 0; ) value = value.replace(pattern[i], "");
             return value;
         }, this.reformatUsingPattern = function(value, newPattern, oldPattern) {
             return "undefined" == typeof oldPattern && (oldPattern = newPattern), this.formatUsingPattern(this.unformatUsingPattern(value, oldPattern), newPattern);
         }, this.countSeparatorsBeforeCursor = function(pattern, position) {
-            for (var separators = 0; pattern[position - separators - 1] && "*" !== pattern[position - separators - 1]; ) separators++;
+            for (var separators = 0; positionIsSeparator(pattern, position - separators - 1); ) separators++;
             return separators;
         }, this.countSeparatorsAfterCursor = function(pattern, position) {
-            for (var separators = 0; pattern[position + separators] && "*" !== pattern[position + separators]; ) separators++;
+            for (var separators = 0; positionIsSeparator(pattern, position + separators); ) separators++;
             return separators;
         }, this.countSeparatorsInAppendedValue = function(pattern, position, value) {
-            for (var separators = 0, i = 0, toAllocate = value.length; toAllocate; ) "*" === pattern[position + i] || "undefined" == typeof pattern[position + i] ? toAllocate-- : separators++, 
+            for (var separators = 0, i = 0, toAllocate = value.length; toAllocate; ) positionIsSeparator(pattern, position + i) ? separators++ : toAllocate--, 
             i++;
             return separators;
         }, this.countSeparatorsInPattern = function(pattern) {
-            for (var separators = 0, i = 0; i < pattern.length; i++) "*" !== pattern[i] && separators++;
+            for (var separators = 0, i = 0; i < pattern.length; i++) positionIsSeparator(pattern, i) && separators++;
             return separators;
         };
     }
