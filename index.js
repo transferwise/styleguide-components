@@ -278,7 +278,8 @@ angular.module('my-app', ['tw.styleguide-components'])
 		$ctrl.types = [
 			{'value': 'account', 'label': 'Account'},
 			{'value': 'profile', 'label': 'Profile'},
-			{'value': 'verification', 'label': 'Verification'}
+			{'value': 'verification', 'label': 'Verification'},
+			{'value': 'pay-in', 'label': 'Pay in'}
 		];
 		$ctrl.type = 'profile';
 
@@ -320,6 +321,80 @@ angular.module('my-app', ['tw.styleguide-components'])
 })
 .directive('twFocusableDocs', function() {
 	return {templateUrl: 'partials/tw-focusable.html'};
+})
+.component('twTextFormatDocs', {
+	controller: function() {
+		var $ctrl = this;
+		$ctrl.patterns = [
+			{
+				value: {
+					format: '**** **** **** ****',
+					minlength: 16,
+					maxlength: 20,
+					placeholder: 'Number on the front of your card',
+					helpText: 'Credit/debit cards have either 16 or 20 digits'
+				},
+				label: 'Credit card number',
+				note: '**** **** **** ****'
+			},
+			{
+				value: {
+					format: '** / **',
+					minlength: 4,
+					maxlength: 4,
+					placeholder: 'MM / YY',
+					helpText: 'Month, then year'
+				},
+				label: 'Card expiry',
+				note: '** / **'
+			},
+			{
+				value: {
+					format: '** - ** - **',
+					minlength: 6,
+					maxlength: 7,
+					placeholder: '** - ** - **',
+					helpText: 'UK sort codes have 6 or 7 digits'
+				},
+				label: 'UK sort code',
+				note: '** - ** - **',
+			},
+			{
+				value: {
+					format: '(+**) **** *** ***',
+					minlength: 10,
+					maxlength: 12,
+					placeholder: '(+**) **** *** ***'
+				},
+				label: 'UK phone number',
+				note: '(+**) **** *** ***',
+			},
+			{
+				value: {
+					format: '***.***.***-**',
+					minlength: 11,
+					maxlength: 11,
+					placeholder: '***.***.***-**'
+				},
+				label: 'Brazilian CPF ID',
+				note: '***.***.***-**',
+			},
+			{
+				value: {
+					format: '**.***.*** - *',
+					minlength: 9,
+					maxlength: 9,
+					placeholder: '**.***.*** - *'
+				},
+				label: 'Chilean RUT ID',
+				note: '**.***.*** - *',
+			},
+		];
+	},
+	bindings: {
+		model: "="
+	},
+	templateUrl: 'partials/tw-text-format.html'
 })
 .directive('twPopOverDocs', function() {
 	return {templateUrl: 'partials/tw-pop-over.html'};

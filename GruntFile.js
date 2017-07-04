@@ -21,7 +21,8 @@ module.exports = function(grunt) {
                 src: [
                     'angular/**/*.controller.js',
                     'angular/**/*.directive.js',
-                    'angular/**/*.service.js'
+                    'angular/**/*.service.js',
+                    'angular/**/*.filter.js'
                 ],
                 dest: 'dist/js/styleguide-components.js',
                 options: {
@@ -38,7 +39,8 @@ module.exports = function(grunt) {
                 src: [
                     'angular/**/*.controller.js',
                     'angular/**/*.directive.js',
-                    'angular/**/*.service.js'
+                    'angular/**/*.service.js',
+                    'angular/**/*.filter.js'
                 ],
                 dest: 'dist/js/styleguide-components.min.js',
                 options: {
@@ -78,7 +80,8 @@ module.exports = function(grunt) {
             styling: {
                 src: [
                     'angular/styling/**/*.controller.js',
-                    'angular/styling/**/*.directive.js'
+                    'angular/styling/**/*.directive.js',
+                    'angular/**/*.filter.js'
                 ],
                 dest: 'dist/js/form-styling.js',
                 options: {

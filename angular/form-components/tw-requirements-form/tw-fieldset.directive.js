@@ -33,7 +33,9 @@
 								\"col-sm-12\": fieldGroup.width === \"lg\" || !fieldGroup.maxlength || fieldGroup.maxlength > 10 \
 							}'> \
 							<div class='form-group tw-form-group-{{fieldGroup.key}}' style='width: 100%;' \
-								ng-class='{\"has-error\": $ctrl.errorMessages[fieldGroup.key]}'> \
+								ng-class='{ \
+									\"has-error\": $ctrl.errorMessages[fieldGroup.key] \
+								}'> \
 								<label class='control-label' \
 									ng-if='fieldGroup.type !== \"upload\"'> \
 									{{fieldGroup.name}} \
@@ -63,7 +65,8 @@
 											ng-min='field.min' \
 											ng-max='field.max' \
 											ng-pattern='field.validationRegexp' \
-											tw-validation \> \
+											text-format='field.displayFormat' \
+											tw-validation> \
 											<!-- tw-dynamic-async-validator='field.validationAsync' --> \
 										</tw-dynamic-form-control> \
 										<div class='error-messages'> \
@@ -77,13 +80,7 @@
 										</div> \
 										<div ng-if='field.tooltip' \
 											class='help-block'> \
-											<a role='button' \
-												tabindex='0' \
-												data-toggle='popover' \
-												data-placement='top' \
-												title='{{field.tooltip}}'> \
-												<span class='glyphicon glyphicon-question-sign'></span> \
-											</a> \
+											{{field.tooltip}} \
 										</div> \
 									</div> \
 								</div> \

@@ -5,6 +5,7 @@
 /build/
 /components/
 npm-debug.log
+package-lock.json
 .env
 .DS_Store
 newrelic_agent.log
