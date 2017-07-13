@@ -46,7 +46,7 @@ module.exports = function(grunt) {
                         'angular.module("tw.form-styling", []);\n' +
                         'angular.module("tw.form-components", []);\n' +
                         'angular.module("tw.layout-components", []);\n' +
-                        'angular.module("tw.styleguide-components", [\'tw.form-validation\', \'tw.form-styling\',0\'tw.form-components\', \'tw.layout-components\']);\n',
+                        'angular.module("tw.styleguide-components", [\'tw.form-validation\', \'tw.form-styling\', \'tw.form-components\', \'tw.layout-components\']);\n',
                     mangle: true,
                     beautify: false
                 }
