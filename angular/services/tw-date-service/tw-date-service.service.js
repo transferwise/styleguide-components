@@ -108,6 +108,10 @@
 			if (locale.indexOf('US', locale.length - 2) !== -1) {
 				return true;
 			}
+            else if (getLanguageFromLocale(locale) === 'ja') {
+                return true;
+            }
+
 			return false;
 		};
 
@@ -222,7 +226,7 @@
 				'Friday', 'Saturday', 'Sunday'
 			],
 			'ja':[
-				'月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日'
+				'月', '火', '水', '木', '金', '土', '日'
 			]
 
 		};

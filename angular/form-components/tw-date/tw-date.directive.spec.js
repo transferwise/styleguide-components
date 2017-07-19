@@ -32,7 +32,8 @@ describe('Directive: TwDate', function() {
         en: 'en-GB',
         fr: 'fr-FR',
         es: 'es-ES',
-        us: 'en-US'
+        us: 'en-US',
+        jp: 'ja-JP'
     };
 
     var DAY_SELECTOR = 'input[name=day]';
@@ -661,6 +662,14 @@ describe('Directive: TwDate', function() {
             });
             it('should show month before day if locale is US', function () {
                 $scope.locale = LOCALES.us;
+                $scope.$digest();
+                var dayInput = element.find('.tw-date-day-column'),
+                    monthInput = element.find('.tw-date-month-column');
+
+                expect(dayInput.index()).toBeGreaterThan(monthInput.index());
+            });
+            it('should show month before day if locale language is Japanese', function () {
+                $scope.locale = LOCALES.jp;
                 $scope.$digest();
                 var dayInput = element.find('.tw-date-day-column'),
                     monthInput = element.find('.tw-date-month-column');
