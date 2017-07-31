@@ -1323,27 +1323,6 @@ angular.module("tw.form-components", []);
     angular.module("tw.form-components").service("TwRequirementsService", TwRequirementsService);
 }(window.angular), function(angular) {
     "use strict";
-    function TwCardsService() {
-        var expandedIndex = -1, cards = [];
-        this.toggle = function(index) {
-            expandedIndex !== -1 && expandedIndex !== index && (cards[expandedIndex].open = !1, 
-            expandedIndex = -1), cards[index].open ? cards[index].open = !1 : (expandedIndex = index, 
-            cards[index].open = !0);
-        }, this.addCard = function(scope) {
-            cards.push(scope);
-        }, this.getExpandedIndex = function() {
-            return expandedIndex;
-        }, this.updateExpandedIndex = function(newExpandedIndex) {
-            expandedIndex = newExpandedIndex;
-        }, this.getCard = function(index) {
-            return cards[index];
-        }, this.getLength = function() {
-            return cards.length;
-        };
-    }
-    angular.module("tw.layout-components").service("TwCardsService", TwCardsService);
-}(window.angular), function(angular) {
-    "use strict";
     function TwCurrencyData() {
         var currencyDecimals = {
             BIF: 0,
@@ -1475,63 +1454,4 @@ angular.module("tw.form-components", []);
         };
     }
     angular.module("tw.form-components").service("TwDateService", TwDateService);
-}(window.angular), function(angular) {
-    "use strict";
-    function TwTextFormatService() {
-        function positionIsSeparator(pattern, position) {
-            return pattern[position] && "*" !== pattern[position];
-        }
-        this.formatUsingPattern = function(value, pattern) {
-            if (value || (value = ""), "string" != typeof pattern) return value;
-            for (var newValue = "", separators = 0, charactersToAllocate = value.length, position = 0; charactersToAllocate; ) positionIsSeparator(pattern, position) ? (newValue += pattern[position], 
-            separators++) : (newValue += value[position - separators], charactersToAllocate--), 
-            position++;
-            var separatorsAfterCursor = this.countSeparatorsAfterCursor(pattern, position);
-            return separatorsAfterCursor && (newValue += pattern.substr(position, separatorsAfterCursor)), 
-            newValue;
-        }, this.unformatUsingPattern = function(value, pattern) {
-            if (!value) return "";
-            if ("string" != typeof pattern) return value;
-            for (var i = 0; i < pattern.length; i++) if (positionIsSeparator(pattern, i)) for (;value.indexOf(pattern[i]) >= 0; ) value = value.replace(pattern[i], "");
-            return value;
-        }, this.reformatUsingPattern = function(value, newPattern, oldPattern) {
-            return "undefined" == typeof oldPattern && (oldPattern = newPattern), this.formatUsingPattern(this.unformatUsingPattern(value, oldPattern), newPattern);
-        }, this.countSeparatorsBeforeCursor = function(pattern, position) {
-            for (var separators = 0; positionIsSeparator(pattern, position - separators - 1); ) separators++;
-            return separators;
-        }, this.countSeparatorsAfterCursor = function(pattern, position) {
-            for (var separators = 0; positionIsSeparator(pattern, position + separators); ) separators++;
-            return separators;
-        }, this.countSeparatorsInAppendedValue = function(pattern, position, value) {
-            for (var separators = 0, i = 0, toAllocate = value.length; toAllocate; ) positionIsSeparator(pattern, position + i) ? separators++ : toAllocate--, 
-            i++;
-            return separators;
-        }, this.countSeparatorsInPattern = function(pattern) {
-            for (var separators = 0, i = 0; i < pattern.length; i++) positionIsSeparator(pattern, i) && separators++;
-            return separators;
-        };
-    }
-    angular.module("tw.form-styling").service("TwTextFormatService", TwTextFormatService);
-}(window.angular), function(angular) {
-    "use strict";
-    function TwUndoStackFactory() {
-        this["new"] = function() {
-            return new UndoStack();
-        };
-    }
-    function UndoStack() {
-        var pointer = 0, stack = [];
-        this.reset = function(value) {
-            stack = [ value ], pointer = 0;
-        }, this.add = function(value) {
-            stack.length - 1 > pointer && (stack = stack.slice(0, pointer + 1)), stack[pointer] !== value && (stack.push(value), 
-            pointer++);
-        }, this.undo = function() {
-            return pointer >= 0 && "undefined" != typeof stack[pointer - 1] && pointer--, stack[pointer];
-        }, this.redo = function() {
-            return pointer < stack.length && "undefined" != typeof stack[pointer + 1] && pointer++, 
-            stack[pointer];
-        };
-    }
-    angular.module("tw.form-styling").service("TwUndoStackFactory", TwUndoStackFactory);
 }(window.angular);

@@ -106,7 +106,8 @@ module.exports = function(grunt) {
                 src: [
                     'angular/form-components/**/*.controller.js',
                     'angular/form-components/**/*.directive.js',
-                    'angular/**/*.service.js'
+                    'angular/form-components/**/*.service.js',
+                    'angular/services/**/*.service.js'
                 ],
                 dest: 'dist/js/form-components.js',
                 options: {
@@ -119,7 +120,8 @@ module.exports = function(grunt) {
                 src: [
                     'angular/form-components/**/*.controller.js',
                     'angular/form-components/**/*.directive.js',
-                    'angular/**/*.service.js'
+                    'angular/form-components/**/*.service.js',
+                    'angular/services/**/*.service.js'
                 ],
                 dest: 'dist/js/form-components.min.js',
                 options: {
@@ -131,7 +133,8 @@ module.exports = function(grunt) {
             layoutComponents: {
                 src: [
                     'angular/layout-components/**/*.controller.js',
-                    'angular/layout-components/**/*.directive.js'
+                    'angular/layout-components/**/*.directive.js',
+                    'angular/layout-components/**/*.service.js'
                 ],
                 dest: 'dist/js/layout-components.js',
                 options: {
@@ -144,7 +147,7 @@ module.exports = function(grunt) {
                 src: [
                     'angular/layout-components/**/*.controller.js',
                     'angular/layout-components/**/*.directive.js',
-                    'angular/**/*.service.js'
+                    'angular/layout-components/**/*.service.js'
                 ],
                 dest: 'dist/js/layout-components.min.js',
                 options: {
