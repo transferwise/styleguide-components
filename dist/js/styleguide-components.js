@@ -1808,7 +1808,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             var utcDate = this.getUTCDateFromParts(year, month, day);
             return utcDate.getUTCDay();
         }, this.isMonthBeforeDay = function(locale) {
-            return locale.indexOf("US", locale.length - 2) !== -1;
+            return locale.indexOf("US", locale.length - 2) !== -1 || "ja" === getLanguageFromLocale(locale);
         }, this.addYears = function(date, years) {
             return this.addToDate(date, years, 0, 0);
         }, this.addMonths = function(date, months) {
@@ -1829,7 +1829,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             ja: [ "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" ]
         }, DEFAULT_DAY_NAMES_BY_LANGUAGE = {
             en: [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" ],
-            ja: [ "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日", "日曜日" ]
+            ja: [ "月", "火", "水", "木", "金", "土", "日" ]
         };
     }
     angular.module("tw.form-components").service("TwDateService", TwDateService);
