@@ -789,6 +789,21 @@ describe('Directive: TwSelect', function() {
                 expect(el.hasClass('hidden')).toBe(true);
             });
         });
+        describe('label', function() {
+            it('should be displayed by default', function() {
+                $scope.ngModel = 'CIRCLE_ICON';
+                $scope.$digest();
+                var el = directiveElement.find(SELECTED_LABEL_SELECTOR);
+                expect(el.length).toBe(1);
+            });
+            it('can be hidden', function() {
+                $scope.ngModel = 'CIRCLE_ICON';
+                $scope.hideLabel = true;
+                $scope.$digest();
+                var el = directiveElement.find(SELECTED_LABEL_SELECTOR);
+                expect(el.hasClass('hidden')).toBe(true);
+            });
+        });
         describe('circle image', function() {
             it('should be displayed', function() {
                 $scope.ngModel = 'CIRCLE_IMAGE';
@@ -990,7 +1005,8 @@ describe('Directive: TwSelect', function() {
                     hide-secondary='{{hideSecondary}}' \
                     hide-icon='{{hideIcon}}' \
                     hide-currency='{{hideCurrency}}' \
-                    hide-circle='{{hideCircle}}'> \
+                    hide-circle='{{hideCircle}}' \
+                    hide-label='{{hideLabel}}'> \
                 </tw-select>";
         }
         var element = angular.element(template);
