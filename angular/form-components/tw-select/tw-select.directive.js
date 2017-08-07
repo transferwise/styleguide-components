@@ -30,7 +30,8 @@
 				hideSecondary: '@',
 				hideIcon: '@',
 				hideCurrency: '@',
-				hideCircle: '@'
+				hideCircle: '@',
+				hideLabel: '@'
 			},
 			template: " \
 				<div class='btn-group btn-block dropdown tw-select' aria-hidden='false'> \
@@ -57,22 +58,31 @@
 								<img ng-if='$ctrl.selected.circleImage' \
 									ng-src='{{$ctrl.selected.circleImage}}' /> \
 								<i ng-if='$ctrl.selected.circleIcon' class='icon {{$ctrl.selected.circleIcon}}'></i> \
-							</span><span class='text-ellipsis'> \
+							</span> \
+							<span class='text-ellipsis'> \
 								<i class='currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}}' \
 									ng-if='$ctrl.selected && $ctrl.selected.currency' \
 									ng-class='$ctrl.responsiveClasses($ctrl.hideCurrency)' \
-									></i><i class='icon {{$ctrl.selected.icon}}' \
+								></i> \
+								<i class='icon {{$ctrl.selected.icon}}' \
 									ng-if='$ctrl.selected && $ctrl.selected.icon && !$ctrl.selected.secondary' \
 									ng-class='$ctrl.responsiveClasses($ctrl.hideIcon)' \
-									></i><span class='tw-select-label'>{{$ctrl.selected.label}}</span><span \
+								></i> \
+								<span class='tw-select-label' ng-hide='$ctrl.hideLabel'>{{$ctrl.selected.label}}</span> \
+								<span \
 									ng-if='$ctrl.selected.note' \
 									ng-class='$ctrl.responsiveClasses($ctrl.hideNote)' \
-									class='tw-select-note small m-l-1'>{{$ctrl.selected.note}}</span><span \
+									class='tw-select-note small m-l-1'> \
+									{{$ctrl.selected.note}} \
+								</span> \
+								<span \
 									ng-if='$ctrl.selected.secondary' \
 									ng-class='$ctrl.responsiveClasses($ctrl.hideSecondary)' \
-									class='tw-select-secondary small secondary text-ellipsis'>{{$ctrl.selected.secondary}}</span> \
+									class='tw-select-secondary small secondary text-ellipsis'> \
+									{{$ctrl.selected.secondary}} \
 								</span> \
 							</span> \
+						</span> \
 						<span class='form-control-placeholder' ng-if='!$ctrl.selected'>{{$ctrl.placeholder}}</span> \
 						<span class='caret'></span> \
 					</button> \
@@ -208,7 +218,7 @@
 			if (value) {
 				breakpoints = value.split(',');
 			}
-				
+
 			breakpoints.forEach(function(breakpoint) {
 				if (validBreakpoints[breakpoint]) {
 					classes += 'hidden-' + breakpoint + ' ';

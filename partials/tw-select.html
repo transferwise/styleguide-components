@@ -34,7 +34,8 @@
 				hide-secondary="{{$ctrl.select.hideSecondary}}"
 				hide-icon="{{$ctrl.select.hideIcon}}"
 				hide-currency="{{$ctrl.select.hideCurrency}}"
-				hide-circle="{{$ctrl.select.hideCircle}}">
+				hide-circle="{{$ctrl.select.hideCircle}}"
+				hide-label="$ctrl.select.hideLabel">
 			</tw-select>
 			<tw-select tw-validation ng-if="$ctrl.select.extraLink"
 				name="mySelect"
@@ -55,7 +56,8 @@
 				hide-secondary="{{$ctrl.select.hideSecondary}}"
 				hide-icon="{{$ctrl.select.hideIcon}}"
 				hide-currency="{{$ctrl.select.hideCurrency}}"
-				hide-circle="{{$ctrl.select.hideCircle}}">
+				hide-circle="{{$ctrl.select.hideCircle}}"
+				hide-label="$ctrl.select.hideLabel">
 				<a href="" ng-click="$ctrl.log('click')">
 					Custom action
 				</a>
@@ -88,7 +90,8 @@
 				hide-secondary="{{$ctrl.select.hideSecondary}}"
 				hide-icon="{{$ctrl.select.hideIcon}}"
 				hide-currency="{{$ctrl.select.hideCurrency}}"
-				hide-circle="{{$ctrl.select.hideCircle}}">
+				hide-circle="{{$ctrl.select.hideCircle}}"
+				hide-label="$ctrl.select.hideLabel">
 			</tw-select>
 			<tw-select tw-validation ng-if="$ctrl.select.extraLink"
 				name="mySelect"
@@ -109,7 +112,8 @@
 				hide-secondary="{{$ctrl.select.hideSecondary}}"
 				hide-icon="{{$ctrl.select.hideIcon}}"
 				hide-currency="{{$ctrl.select.hideCurrency}}"
-				hide-circle="{{$ctrl.select.hideCircle}}">
+				hide-circle="{{$ctrl.select.hideCircle}}"
+				hide-label="$ctrl.select.hideLabel">
 			</tw-select>
 		</div>
 
@@ -132,7 +136,8 @@
   hide-secondary="{{$ctrl.select.hideSecondary}}"</span><span ng-if="$ctrl.select.hideIcon">
   hide-icon="{{$ctrl.select.hideIcon}}"</span><span ng-if="$ctrl.select.hideCurrency">
   hide-currency="{{$ctrl.select.hideCurrency}}"</span><span ng-if="$ctrl.select.hideCircle">
-  hide-circle="{{$ctrl.select.hideCircle}}"</span>
+  hide-circle="{{$ctrl.select.hideCircle}}"</span><span ng-show="$ctrl.select.hideLabel">
+  hide-label="{{$ctrl.select.hideLabel}}"</span>
   options="{{$ctrl.select.options[$ctrl.select.type] | json}}"
   tw-validation<span ng-if="!$ctrl.select.extraLink"> /&gt;</span><span ng-if="$ctrl.select.extraLink">&gt;
     &lt;a href='' ng-click='...'&gt;
@@ -270,6 +275,12 @@
 					placeholder="Choose breakpoint"
 					ng-model="$ctrl.select.hideIcon"
 					options="$ctrl.hideOptions"></tw-select>
+			</div>
+			<div class="checkbox">
+				<label>
+					<tw-checkbox ng-model="$ctrl.select.hideLabel" />
+					Hide selected label?
+				</label>
 			</div>
 			<input type="submit" class="btn btn-primary btn-block" value="Submit form" />
 		</div>
