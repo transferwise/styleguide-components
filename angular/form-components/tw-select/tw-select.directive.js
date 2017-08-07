@@ -25,6 +25,7 @@
 				size: '@',
 				dropdownRight: '@',
 				dropdownWidth: '@',
+				dropdownUp: '@',
 				inverse: '=',
 				hideNote: '@',
 				hideSecondary: '@',
@@ -34,7 +35,7 @@
 				hideLabel: '@'
 			},
 			template: " \
-				<div class='btn-group btn-block dropdown tw-select' aria-hidden='false'> \
+				<div class='btn-group btn-block tw-select' ng-class='{ dropdown: !$ctrl.dropdownUp, dropup: $ctrl.dropdownUp }' aria-hidden='false'> \
 					<button type='button' class='btn btn-input dropdown-toggle' \
 						ng-class='{ \
 							\"btn-input-inverse\": $ctrl.inverse, \

@@ -29,6 +29,7 @@
 				size="{{$ctrl.select.size}}"
 				dropdown-right="{{$ctrl.select.dropdownRight}}"
 				dropdown-width="{{$ctrl.select.dropdownWidth}}"
+				dropdown-up={{$ctrl.select.dropdownUp}}
 				inverse="$ctrl.select.inverse"
 				hide-note="{{$ctrl.select.hideNote}}"
 				hide-secondary="{{$ctrl.select.hideSecondary}}"
@@ -50,6 +51,7 @@
 				filter="{{$ctrl.select.showFilter}}"
 				size="{{$ctrl.select.size}}"
 				dropdown-right="{{$ctrl.select.dropdownRight}}"
+				dropdown-up={{$ctrl.select.dropdownUp}}
 				dropdown-width="{{$ctrl.select.dropdownWidth}}"
 				inverse="$ctrl.select.inverse"
 				hide-note="{{$ctrl.select.hideNote}}"
@@ -84,6 +86,7 @@
 				filter="{{$ctrl.select.showFilter}}"
 				size="{{$ctrl.select.size}}"
 				dropdown-right="{{$ctrl.select.dropdownRight}}"
+				dropdown-up={{$ctrl.select.dropdownUp}}
 				dropdown-width="{{$ctrl.select.dropdownWidth}}"
 				inverse="$ctrl.select.inverse"
 				hide-note="{{$ctrl.select.hideNote}}"
@@ -106,6 +109,7 @@
 				filter="{{$ctrl.select.showFilter}}"
 				size="{{$ctrl.select.size}}"
 				dropdown-right="{{$ctrl.select.dropdownRight}}"
+				dropdown-up={{$ctrl.select.dropdownUp}}
 				dropdown-width="{{$ctrl.select.dropdownWidth}}"
 				inverse="$ctrl.select.inverse"
 				hide-note="{{$ctrl.select.hideNote}}"
@@ -130,7 +134,8 @@
   ng-blur="..."<span ng-if="$ctrl.select.size">
   size="{{$ctrl.select.size}}"</span><span ng-if="$ctrl.select.inverse">
   inverse="{{$ctrl.select.inverse}}"</span><span ng-if="$ctrl.select.dropdownRight">
-  dropdown-right="{{$ctrl.select.dropdownRight}}"</span><span ng-if="$ctrl.select.dropdownWidth">
+  dropdown-right="{{$ctrl.select.dropdownRight}}"</span><span ng-show="$ctrl.select.dropdownUp">
+  dropdown-up="{{$ctrl.select.dropdownUp}}"</span><span ng-if="$ctrl.select.dropdownWidth">
   dropdown-width="{{$ctrl.select.dropdownWidth}}"</span><span ng-if="$ctrl.select.hideNote">
   hide-note="{{$ctrl.select.hideNote}}"</span><span ng-if="$ctrl.select.hideSecondary">
   hide-secondary="{{$ctrl.select.hideSecondary}}"</span><span ng-if="$ctrl.select.hideIcon">
@@ -219,6 +224,12 @@
 					<label>
 						<tw-checkbox ng-model="$ctrl.select.inverse" />
 						Invert the colours?
+					</label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<tw-checkbox ng-model="$ctrl.select.dropdownUp" />
+						Make the dropdown open upward
 					</label>
 				</div>
 				<div class="m-b-2">
