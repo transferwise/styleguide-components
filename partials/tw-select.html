@@ -35,7 +35,7 @@
 				hide-icon="{{$ctrl.select.hideIcon}}"
 				hide-currency="{{$ctrl.select.hideCurrency}}"
 				hide-circle="{{$ctrl.select.hideCircle}}"
-				hide-label="$ctrl.select.hideLabel">
+				hide-label="{{$ctrl.select.hideLabel}}">
 			</tw-select>
 			<tw-select tw-validation ng-if="$ctrl.select.extraLink"
 				name="mySelect"
@@ -57,7 +57,7 @@
 				hide-icon="{{$ctrl.select.hideIcon}}"
 				hide-currency="{{$ctrl.select.hideCurrency}}"
 				hide-circle="{{$ctrl.select.hideCircle}}"
-				hide-label="$ctrl.select.hideLabel">
+				hide-label="{{$ctrl.select.hideLabel}}">
 				<a href="" ng-click="$ctrl.log('click')">
 					Custom action
 				</a>
@@ -91,7 +91,7 @@
 				hide-icon="{{$ctrl.select.hideIcon}}"
 				hide-currency="{{$ctrl.select.hideCurrency}}"
 				hide-circle="{{$ctrl.select.hideCircle}}"
-				hide-label="$ctrl.select.hideLabel">
+				hide-label="{{$ctrl.select.hideLabel}}">
 			</tw-select>
 			<tw-select tw-validation ng-if="$ctrl.select.extraLink"
 				name="mySelect"
@@ -113,7 +113,7 @@
 				hide-icon="{{$ctrl.select.hideIcon}}"
 				hide-currency="{{$ctrl.select.hideCurrency}}"
 				hide-circle="{{$ctrl.select.hideCircle}}"
-				hide-label="$ctrl.select.hideLabel">
+				hide-label="{{$ctrl.select.hideLabel}}">
 			</tw-select>
 		</div>
 
@@ -276,11 +276,12 @@
 					ng-model="$ctrl.select.hideIcon"
 					options="$ctrl.hideOptions"></tw-select>
 			</div>
-			<div class="checkbox">
-				<label>
-					<tw-checkbox ng-model="$ctrl.select.hideLabel" />
-					Hide selected label?
-				</label>
+			<div class="form-group">
+				<label class="control-label">Hide selected label?</label>
+				<tw-select
+					placeholder="Choose breakpoint"
+					ng-model="$ctrl.select.hideLabel"
+					options="$ctrl.hideOptions"></tw-select>
 			</div>
 			<input type="submit" class="btn btn-primary btn-block" value="Submit form" />
 		</div>

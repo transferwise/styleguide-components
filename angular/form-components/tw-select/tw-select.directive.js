@@ -68,7 +68,9 @@
 									ng-if='$ctrl.selected && $ctrl.selected.icon && !$ctrl.selected.secondary' \
 									ng-class='$ctrl.responsiveClasses($ctrl.hideIcon)' \
 								></i> \
-								<span class='tw-select-label' ng-hide='$ctrl.hideLabel'>{{$ctrl.selected.label}}</span> \
+								<span class='tw-select-label' ng-class='$ctrl.responsiveClasses($ctrl.hideLabel)'> \
+									{{$ctrl.selected.label}} \
+								</span> \
 								<span \
 									ng-if='$ctrl.selected.note' \
 									ng-class='$ctrl.responsiveClasses($ctrl.hideNote)' \
