@@ -951,6 +951,17 @@ describe('Directive: TwSelect', function() {
             var el = directiveElement.find('.dropdown-menu-lg');
             expect(el.length).toBe(1);
         });
+
+        it('should open upwards', function() {
+            var el = directiveElement.find('.tw-select');
+            expect(el.hasClass('dropdown')).toBe(true);
+            expect(el.hasClass('dropup')).toBe(false);
+            $scope.dropdownUp = true;
+            $scope.$digest();
+            var el = directiveElement.find('.tw-select');
+            expect(el.hasClass('dropdown')).toBe(false);
+            expect(el.hasClass('dropup')).toBe(true);
+        });
     });
 
     describe('filter duplicates', function() {
@@ -999,6 +1010,7 @@ describe('Directive: TwSelect', function() {
                     ng-required='ngRequired' \
                     size='{{size}}' \
                     dropdown-right='{{dropdownRight}}' \
+                    dropdown-up='{{dropdownUp}}'\
                     dropdown-width='{{dropdownWidth}}' \
                     inverse='inverse' \
                     hide-note='{{hideNote}}' \
