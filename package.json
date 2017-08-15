@@ -1,0 +1,47 @@
+{
+  "name": "tw-styleguide-components",
+  "version": "1.20.1",
+  "description": "TransfeWise Styleguide Components",
+  "scripts": {
+    "pretest": "bower install",
+    "test": "grunt karma",
+    "prestart": "bower install",
+    "start": "grunt",
+    "dev": "live-server --port=8181"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/transferwise/hello.git"
+  },
+  "keywords": [
+    "AngularJS",
+    "Bootstrap"
+  ],
+  "bugs": {
+    "url": "https://github.com/transferwise/styleguide-components/issues"
+  },
+  "homepage": "https://github.com/transferwise/styleguide-components",
+  "devDependencies": {
+    "bower": "*",
+    "grunt": "^0.4.5",
+    "grunt-bower-task": "^0.4.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-less": "^1.2.0",
+    "grunt-contrib-uglify": "^1.0.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-htmllint": "^0.2.7",
+    "grunt-karma": "^0.12.1",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.21",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-coverage": "^0.5.5",
+    "karma-firefox-launcher": "^0.1.7",
+    "karma-jasmine": "^0.3.7",
+    "karma-mocha-reporter": "^2.0.0",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "karma-safari-launcher": "^1.0.0",
+    "live-server": "^1.1.0",
+    "phantomjs-prebuilt": "^2.1.5"
+  }
+}
