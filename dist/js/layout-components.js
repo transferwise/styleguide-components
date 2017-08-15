@@ -34,19 +34,19 @@ angular.module("tw.layout-components", []);
             link: function($scope, $element, $attrs, $ctrl) {
                 var cardController = $scope.$ctrl;
                 cardController.addCard(cardController), cardController.index = cardController.getLength() - 1, 
-                cardController.inactive = $ctrl.cardContainerController.inactive, cardController.open === !0 && cardController.getExpandedIndex() === -1 ? cardController.updateExpandedIndex(cardController.index) : cardController.open = !1, 
+                cardController.inactive = $ctrl.cardContainerController.inactive, console.dir(cardController.hasForm), 
+                cardController.open === !0 && cardController.getExpandedIndex() === -1 ? cardController.updateExpandedIndex(cardController.index) : cardController.open = !1, 
                 null == cardController.disabled && (cardController.disabled = !1);
             }
         };
     }
-    function CardContainerController() {}
     function CardContainer() {
         return {
             scope: {
                 inactive: "=?"
             },
             controllerAs: "$ctrl",
-            controller: CardContainerController,
+            controller: function() {},
             bindToController: !0,
             transclude: !0,
             template: '<ul ng-transclude class="list-group panel-list-group list-group-slide-out"                             ng-class="{\'list-group-inactive\': $ctrl.inactive}">                         </ul>'
