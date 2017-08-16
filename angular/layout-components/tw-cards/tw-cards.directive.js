@@ -120,7 +120,7 @@
                 inactive: '=?'
             },
             controllerAs: '$ctrl',
-            controller: function CardContainerController(){},
+            controller: function (){},
             bindToController: true,
             transclude: true,
             template:   '<ul ng-transclude class="list-group panel-list-group list-group-slide-out" \
