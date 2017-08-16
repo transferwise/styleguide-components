@@ -47,8 +47,6 @@
                 cardController.index = cardController.getLength() - 1;
                 cardController.inactive = $ctrl.cardContainerController.inactive;
 
-                console.dir(cardController.hasForm);
-
                 if (cardController.open === true && 
                     cardController.getExpandedIndex() === -1) { // only takes first pre-expanded card
                     cardController.updateExpandedIndex(cardController.index);
@@ -122,7 +120,7 @@
                 inactive: '=?'
             },
             controllerAs: '$ctrl',
-            controller: (function CardContainerController(){}),
+            controller: function CardContainerController(){},
             bindToController: true,
             transclude: true,
             template:   '<ul ng-transclude class="list-group panel-list-group list-group-slide-out" \
