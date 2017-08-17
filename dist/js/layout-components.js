@@ -39,14 +39,13 @@ angular.module("tw.layout-components", []);
             }
         };
     }
-    function CardContainerController() {}
     function CardContainer() {
         return {
             scope: {
                 inactive: "=?"
             },
             controllerAs: "$ctrl",
-            controller: CardContainerController,
+            controller: function() {},
             bindToController: !0,
             transclude: !0,
             template: '<ul ng-transclude class="list-group panel-list-group list-group-slide-out"                             ng-class="{\'list-group-inactive\': $ctrl.inactive}">                         </ul>'

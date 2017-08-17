@@ -114,17 +114,13 @@
             + collapsedCardTemplate + expandedCardTemplate + cardFormTemplate + 
         '</li>';
 
-    function CardContainerController() {
-        // useless ?
-    }
-
     function CardContainer() {
         return {
             scope: {
                 inactive: '=?'
             },
             controllerAs: '$ctrl',
-            controller: CardContainerController,
+            controller: function() {},
             bindToController: true,
             transclude: true,
             template:   '<ul ng-transclude class="list-group panel-list-group list-group-slide-out" \
