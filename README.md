@@ -5,14 +5,14 @@ dynamic form components, validation, and some styling directives.
 Live demo and documentation http://transferwise.github.io/styleguide-components/
 
 ### Installation
-It is recommended to use bower or NPM to import the latest version
+It is recommended to use yarn, npm or bower to import the latest version
 ```
 dependencies: {
     "styleguide-components": "https://github.com/transferwise/styleguide-components.git#v1.2.0",
 }
 ```
 
-Include the distribution file (exact path depends on your NPM/bower config).
+Include the distribution file (exact path depends on your yarn/npm/bower config).
 ```
 <script src="node_modules/styleguide-components/dist/js/styleguide-components.min.js"></script>
 ```
