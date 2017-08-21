@@ -24,7 +24,8 @@
 				placeholder: '@',
 				size: '@',
 				locale: '@',
-				label: '@'
+				label: '@',
+				shortDate: '='
 			}
 		};
 	}
@@ -402,6 +403,10 @@
 				}
 			});
 
+			$scope.$watch('$ctrl.shortDate', function(newValue, oldValue) {
+				ngModelCtrl.$validate();
+			});
+
 			$scope.$watch('$ctrl.ngMax', function(newValue, oldValue) {
 				if (newValue !== oldValue) {
 					updateMaxDateView($ctrl.ngMax);
@@ -481,10 +486,12 @@
 		}
 
 		function updateSelectedDatePresentation(){
-            $ctrl.selectedDateFormatted = TwDateService.getYearMonthDatePresentation($ctrl.selectedYear,
-                                                                                    $ctrl.monthsOfYear[$ctrl.selectedMonth],
-                                                                                    $ctrl.selectedDate,
-                                                                                    $ctrl.locale);
+			var monthsOfYear = $ctrl.shortDate ? $ctrl.shortMonthsOfYear : $ctrl.monthsOfYear;
+
+			$ctrl.selectedDateFormatted = TwDateService.getYearMonthDatePresentation($ctrl.selectedYear,
+																					monthsOfYear[$ctrl.selectedMonth],
+																					$ctrl.selectedDate,
+																					$ctrl.locale);
 		}
 
 		function updateCalendarDatePresentation(){
