@@ -1,5 +1,4 @@
 (function(angular) {
-  'use strict';
 
   const TwUpload = {
     controller: [
@@ -13,7 +12,7 @@
       TwUploadController
     ],
     transclude: true,
-    scope: {
+    bindings: {
       ngModel: '=',
       name: '@',
       icon: '@',
@@ -341,53 +340,29 @@
     }
 
     function addDragHandlers($element) {
-      $element.addEventListener('dragover', function(event) {
+      $element[0].addEventListener('dragover', function(event) {
         event.preventDefault();
         $ctrl.onDragChange(true);
         $scope.$apply();
       }, false);
 
-      element[0].addEventListener('dragover', function(event) {
+      $element[0].addEventListener('dragover', function(event) {
         event.preventDefault();
       }, false);
 
-      element[0].addEventListener('dragleave', function(event) {
+      $element[0].addEventListener('dragleave', function(event) {
         event.preventDefault();
         $ctrl.onDragChange(false);
         $scope.$apply();
       }, false);
 
-      element[0].addEventListener('drop', function(event) {
+      $element[0].addEventListener('drop', function(event) {
         event.preventDefault();
         $ctrl.fileDropped(event.dataTransfer.files[0], event);
         $scope.$apply();
       }, false);
     }
   }
-/*
-  function twUploadLink(scope, element, attr) {
-    element[0].addEventListener('dragenter', function(event) {
-      event.preventDefault();
-      scope.$ctrl.onDragChange(true);
-      scope.$apply();
-    }, false);
-
-    element[0].addEventListener('dragover', function(event) {
-      event.preventDefault();
-    }, false);
-
-    element[0].addEventListener('dragleave', function(event) {
-      event.preventDefault();
-      scope.$ctrl.onDragChange(false);
-      scope.$apply();
-    }, false);
-
-    element[0].addEventListener('drop', function(event) {
-      event.preventDefault();
-      scope.$ctrl.fileDropped(event.dataTransfer.files[0], event);
-      scope.$apply();
-    }, false);
-  }*/
 
   function triggerHandler(method, argument) {
     if (method && typeof method === 'function') {

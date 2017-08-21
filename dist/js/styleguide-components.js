@@ -511,7 +511,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         require: "ngModel",
         transclude: !0,
         controller: "TwDynamicFormControlController",
-        scope: {
+        bindings: {
             type: "@",
             name: "@",
             id: "@",
@@ -538,7 +538,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         },
         template: "<div ng-switch='$ctrl.type'>       <input ng-switch-when='text'          name='{{$ctrl.name}}'          type='text'         class='form-control'         placeholder='{{$ctrl.placeholder}}'         ng-model='$ctrl.ngModel'         ng-model-options='{ allowInvalid: true }'         ng-required='$ctrl.ngRequired'         ng-disabled='$ctrl.ngDisabled'         ng-pattern='$ctrl.ngPattern'         ng-change='$ctrl.change()'         ng-focus='$ctrl.focus()'         ng-blur='$ctrl.blur()'         ng-minlength='$ctrl.ngMinlength'         ng-maxlength='$ctrl.ngMaxlength'         tw-text-format='{{$ctrl.textFormat}}' />        <input ng-switch-when='password'          name='{{$ctrl.name}}'          type='password'         class='form-control'         placeholder='{{$ctrl.placeholder}}'         ng-model='$ctrl.ngModel'         ng-model-options='{ allowInvalid: true }'         ng-required='$ctrl.ngRequired'         ng-disabled='$ctrl.ngDisabled'         ng-change='$ctrl.change()'         ng-focus='$ctrl.focus()'         ng-blur='$ctrl.blur()'         ng-minlength='$ctrl.ngMinlength'         ng-maxlength='$ctrl.ngMaxlength' />        <input ng-switch-when='number'          name='{{$ctrl.name}}'          type='number'         step='{{$ctrl.step}}'         class='form-control'         placeholder='{{$ctrl.placeholder}}'         ng-model='$ctrl.ngModel'         ng-model-options='{ allowInvalid: true }'         ng-required='$ctrl.ngRequired'         ng-disabled='$ctrl.ngDisabled'         ng-change='$ctrl.change()'         ng-focus='$ctrl.focus()'         ng-blur='$ctrl.blur()'         ng-min='$ctrl.ngMin'         ng-max='$ctrl.ngMax' />        <div ng-switch-when='radio'         class='radio'         ng-class='{disabled: $ctrl.ngDisabled}'         ng-repeat='option in $ctrl.options'>         <label>           <tw-radio             name='{{$ctrl.name}}'             ng-value='option.value'             ng-model='$ctrl.ngModel'             ng-required='$ctrl.ngRequired'             ng-disabled='$ctrl.ngDisabled'             ng-change='$ctrl.change()'             ng-click='$ctrl.change()'             ng-focus='$ctrl.focus()'             ng-blur='$ctrl.blur()' />           {{option.label}}         </label>       </div>       <div ng-switch-when='checkbox'         class='checkbox'         ng-class='{disabled: $ctrl.ngDisabled}'>         <label>           <tw-checkbox             name='{{$ctrl.name}}'             ng-model='$ctrl.ngModel'             ng-required='$ctrl.ngRequired'             ng-disabled='$ctrl.ngDisabled'             ng-change='$ctrl.change()'             ng-click='$ctrl.change()'             ng-focus='$ctrl.focus()'             ng-blur='$ctrl.blur()' />           {{$ctrl.placeholder}}         </label>       </div>       <div ng-switch-when='select'>         <tw-select           name='{{$ctrl.name}}'           options='$ctrl.options'           placeholder='{{$ctrl.placeholder}}'           ng-model='$ctrl.ngModel'           ng-required='$ctrl.ngRequired'           ng-disabled='$ctrl.ngDisabled'           ng-change='$ctrl.change()'           ng-focus='$ctrl.focus()'           ng-blur='$ctrl.blur()' />       </div>       <div ng-switch-when='upload'>         <tw-upload           name='{{$ctrl.name}}'           label='{{$ctrl.label}}'           icon='{{$ctrl.uploadIcon}}'           placeholder='{{$ctrl.placeholder}}'           accept='{{$ctrl.uploadAccept}}'           complete-text='{{$ctrl.label}}'           button-text='{{$ctrl.uploadOptions.buttonText}}'           cancel-text='{{$ctrl.uploadOptions.cancelText}}'           too-large-message='{{$ctrl.uploadTooLargeMessage}}'           max-size='$ctrl.ngMax'           ng-model='$ctrl.ngModel'           ng-required='$ctrl.ngRequired'           ng-disabled='$ctrl.ngDisabled'           ng-change='$ctrl.change()'           ng-focus='$ctrl.focus()'           ng-blur='$ctrl.blur()' />       </div>       <div ng-switch-when='date'>         <tw-date           name='{{$ctrl.name}}'           locale='{{$ctrl.locale}}'           ng-min='$ctrl.ngMin'           ng-max='$ctrl.ngMax'           ng-model='$ctrl.ngModel'           ng-required='$ctrl.ngRequired'           ng-disabled='$ctrl.ngDisabled'           ng-change='$ctrl.change()'           ng-focus='$ctrl.focus()'           ng-blur='$ctrl.blur()' />       </div>       <ng-transclude class='error-messages'></ng-transclude>     </div>"
     };
-    angular.module("tw.form-components").directive("twDynamicFormControl", TwDynamicFormControl), 
+    angular.module("tw.form-components").component("twDynamicFormControl", TwDynamicFormControl), 
     angular.module("tw.form-components").controller("TwDynamicFormControlController", TwDynamicFormControlController), 
     TwDynamicFormControlController.$inject = [ "$element", "$scope" ];
 }(window.angular), function(angular) {
@@ -977,7 +977,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     const TwTabs = {
         bindings: {
             tabs: "<",
-            active: "<",
+            active: "=",
             onChange: "&"
         },
         controller: TwTabsController,
@@ -1047,7 +1047,6 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     }
     angular.module("tw.form-components").directive("twFileSelect", TwFileSelectDirective).controller("TwUploadDroppableController", TwUploadDroppableController).directive("twUploadDroppable", TwUploadDroppableDirective);
 }(window.angular), function(angular) {
-    "use strict";
     function TwUploadController($timeout, $element, $http, $scope, $transclude, $q, $attrs) {
         function reset() {
             $ctrl.isDroppable = !1, $ctrl.isProcessing = !1, $ctrl.isSuccess = !1, $ctrl.isError = !1, 
@@ -1105,13 +1104,13 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             return !0;
         }
         function addDragHandlers($element) {
-            $element.addEventListener("dragover", function(event) {
+            $element[0].addEventListener("dragover", function(event) {
                 event.preventDefault(), $ctrl.onDragChange(!0), $scope.$apply();
-            }, !1), element[0].addEventListener("dragover", function(event) {
+            }, !1), $element[0].addEventListener("dragover", function(event) {
                 event.preventDefault();
-            }, !1), element[0].addEventListener("dragleave", function(event) {
+            }, !1), $element[0].addEventListener("dragleave", function(event) {
                 event.preventDefault(), $ctrl.onDragChange(!1), $scope.$apply();
-            }, !1), element[0].addEventListener("drop", function(event) {
+            }, !1), $element[0].addEventListener("drop", function(event) {
                 event.preventDefault(), $ctrl.fileDropped(event.dataTransfer.files[0], event), $scope.$apply();
             }, !1);
         }
@@ -1171,7 +1170,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     const TwUpload = {
         controller: [ "$timeout", "$element", "$http", "$scope", "$transclude", "$q", "$attrs", TwUploadController ],
         transclude: !0,
-        scope: {
+        bindings: {
             ngModel: "=",
             name: "@",
             icon: "@",

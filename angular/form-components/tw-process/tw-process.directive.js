@@ -1,5 +1,5 @@
 (function(angular) {
-	
+
   const TwProcess = {
     bindings: {
       state: '<',
@@ -32,10 +32,6 @@
       </svg> \
     </span>"
   };
-
-  angular
-    .module('tw.form-components')
-    .component('twProcess', TwProcess);
 
   function TwProcessController($scope, $interval, $timeout) {
     var $ctrl = this;
@@ -102,4 +98,9 @@
 
     $ctrl.startProcess();
   }
+
+  angular
+    .module('tw.form-components')
+    .component('twProcess', TwProcess);
+
 })(window.angular);

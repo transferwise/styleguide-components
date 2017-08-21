@@ -4,7 +4,7 @@
   const TwTabs = {
     bindings: {
       tabs: '<',
-      active: '<',
+      active: '=',
       onChange: '&'
     },
     controller: TwTabsController,

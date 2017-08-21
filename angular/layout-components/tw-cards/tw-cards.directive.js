@@ -2,62 +2,61 @@
   'use strict';
 
   angular
-      .module('tw.layout-components')
-      .directive('twCards', CardContainer)
-      .directive('twCard', Card);
+    .module('tw.layout-components')
+    .directive('twCards', CardContainer)
+    .directive('twCard', Card);
 
 
   function CardController($transclude, TwCardsService) {
-      var $ctrl = this;
-      $ctrl.hasForm = $transclude.isSlotFilled("cardForm");
-      $ctrl.toggle = TwCardsService.toggle;
-      $ctrl.addCard = TwCardsService.addCard;
-      $ctrl.getExpandedIndex = TwCardsService.getExpandedIndex;
-      $ctrl.updateExpandedIndex = TwCardsService.updateExpandedIndex;
-      $ctrl.getCard = TwCardsService.getCard;
-      $ctrl.getLength = TwCardsService.getLength;
+    var $ctrl = this;
+    $ctrl.hasForm = $transclude.isSlotFilled("cardForm");
+    $ctrl.toggle = TwCardsService.toggle;
+    $ctrl.addCard = TwCardsService.addCard;
+    $ctrl.getExpandedIndex = TwCardsService.getExpandedIndex;
+    $ctrl.updateExpandedIndex = TwCardsService.updateExpandedIndex;
+    $ctrl.getCard = TwCardsService.getCard;
+    $ctrl.getLength = TwCardsService.getLength;
   }
 
   function Card() {
-      return {
-          require: {cardContainerController: '^twCards'},
-          controllerAs: '$ctrl',
-          bindToController: true,
-          replace: true,
-          scope: {
-              state: '@',
-              index: '<',
-              open: '<?',
-              disabled: '=?',
-              inactive: '<'
-          },
-          transclude: {
-              collapsedCard: 'collapsed',
-              expandedCard: 'expanded',
-              cardForm: '?cardForm',
-              cardIcon: 'cardIcon',
-          },
-          controller: ['$transclude', 'TwCardsService', CardController],
-          template: templateStr,
-          link: function ($scope, $element, $attrs, $ctrl) {
+    return {
+      require: {cardContainerController: '^twCards'},
+      controllerAs: '$ctrl',
+      bindToController: true,
+      replace: true,
+      scope: {
+        state: '@',
+        index: '<',
+        open: '<?',
+        disabled: '=?',
+        inactive: '<'
+      },
+      transclude: {
+        collapsedCard: 'collapsed',
+        expandedCard: 'expanded',
+        cardForm: '?cardForm',
+        cardIcon: 'cardIcon',
+      },
+      controller: ['$transclude', 'TwCardsService', CardController],
+      template: templateStr,
+      link: function ($scope, $element, $attrs, $ctrl) {
+        var cardController = $scope.$ctrl;
 
-              var cardController = $scope.$ctrl;
+        cardController.addCard(cardController);
+        cardController.index = cardController.getLength() - 1;
+        cardController.inactive = $ctrl.cardContainerController.inactive;
 
-              cardController.addCard(cardController);
-              cardController.index = cardController.getLength() - 1;
-              cardController.inactive = $ctrl.cardContainerController.inactive;
-
-              if (cardController.open === true &&
-                  cardController.getExpandedIndex() === -1) { // only takes first pre-expanded card
-                  cardController.updateExpandedIndex(cardController.index);
-              } else {
-                  cardController.open = false;
-              }
-              if (cardController.disabled == null) {
-                  cardController.disabled = false;
-              }
-          }
-      };
+        if (cardController.open === true &&
+          cardController.getExpandedIndex() === -1) { // only takes first pre-expanded card
+          cardController.updateExpandedIndex(cardController.index);
+        } else {
+          cardController.open = false;
+        }
+        if (cardController.disabled == null) {
+          cardController.disabled = false;
+        }
+      }
+    };
   }
 
   var collapsedCardTemplate = ' \

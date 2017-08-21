@@ -4,7 +4,7 @@
     require: 'ngModel',
     transclude: true,
     controller: "TwDynamicFormControlController",
-    scope: {
+    bindings: {
       type: "@",
       name: "@",
       id: "@",
@@ -159,16 +159,6 @@
     </div>"
   };
 
-  angular
-    .module('tw.form-components')
-    .directive('twDynamicFormControl', TwDynamicFormControl);
-
-  angular
-    .module('tw.form-components')
-    .controller('TwDynamicFormControlController', TwDynamicFormControlController);
-
-  TwDynamicFormControlController.$inject = ['$element', '$scope'];
-
   function TwDynamicFormControlController($element, $scope) {
     var $ctrl = this;
     var ngModelController = $element.controller('ngModel');
@@ -239,4 +229,14 @@
       return true;
     };
   }
+
+  angular
+    .module('tw.form-components')
+    .component('twDynamicFormControl', TwDynamicFormControl);
+
+  angular
+    .module('tw.form-components')
+    .controller('TwDynamicFormControlController', TwDynamicFormControlController);
+
+  TwDynamicFormControlController.$inject = ['$element', '$scope'];
 })(window.angular);

@@ -153,10 +153,6 @@
         ng-disabled='$ctrl.ngDisabled' />"
   };
 
-  angular
-    .module('tw.form-components')
-    .component('twSelect', TwSelect);
-
   /*
   // TODO may be better for accessibility to have hidden select?
   <select name='{{$ctrl.name}}' class='sr-only tw-select-hidden' \
@@ -562,4 +558,10 @@
   function isValidModel(value) {
     return value || value === 0 || value === false;
   }
+
+
+  angular
+    .module('tw.form-components')
+    .component('twSelect', TwSelect);
+
 })(window.angular);

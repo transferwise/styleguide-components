@@ -31,10 +31,6 @@
       </button>"
   };
 
-  angular
-    .module('tw.form-components')
-    .component('twRadio', TwRadio);
-
   function TwRadioController($scope, $element) {
     var $ctrl = this,
       $ngModel = $element.controller('ngModel'),
@@ -89,4 +85,9 @@
       }
     });
   }
+  
+  angular
+    .module('tw.form-components')
+    .component('twRadio', TwRadio);
+
 })(window.angular);
