@@ -63,12 +63,12 @@ describe('Directive: TwDate', function() {
                 setDateUsingControls(element, '2000', '0', '1');
                 expect($scope.ngModel).toEqual(getUTCDate(2000, 0, 1));
             });
-            it('should populate vm.months based on vm.locale if supported', function () {
+            it('should populate $ctrl.months based on $ctrl.locale if supported', function () {
                 if (isIntlSupportedForLocale('en')) {
                     expectDateMonthsToBeLocalized(element, 'en');
                 }
             });
-            it('should populate vm.months with default English months', function () {
+            it('should populate $ctrl.months with default English months', function () {
                 if (!isIntlSupportedForLocale('en')) {
                     expectDateMonthsToBeDefault(element);
                 }
@@ -287,11 +287,11 @@ describe('Directive: TwDate', function() {
             });
 
             if (isIntlSupportedForLocale(twLocale)) {
-                it('should populate vm.months based on vm.locale', function () {
+                it('should populate $ctrl.months based on $ctrl.locale', function () {
                     expectDateMonthsToBeLocalized(element, twLocale);
                 });
             } else {
-                it('should populate vm.months with default English months', function () {
+                it('should populate $ctrl.months with default English months', function () {
                     expectDateMonthsToBeDefault(element);
                 });
             }
@@ -304,7 +304,7 @@ describe('Directive: TwDate', function() {
                 element = getCompiledDirectiveElement($scope);
             });
 
-            it('should populate vm.dateMonths with default English months', function () {
+            it('should populate $ctrl.dateMonths with default English months', function () {
                 expectDateMonthsToBeDefault(element);
             });
         });
@@ -316,7 +316,7 @@ describe('Directive: TwDate', function() {
                 element = getCompiledDirectiveElement($scope);
             });
 
-            it('should populate vm.dateMonths with default English months', function () {
+            it('should populate $ctrl.dateMonths with default English months', function () {
                 expectDateMonthsToBeDefault(element);
             });
         });
@@ -643,11 +643,11 @@ describe('Directive: TwDate', function() {
             });
 
             if (isIntlSupportedForLocale(newLocale)) {
-                it('should update vm.dateMonths based on vm.locale', function () {
+                it('should update $ctrl.dateMonths based on $ctrl.locale', function () {
                     expectDateMonthsToBeLocalized(element, newLocale);
                 });
             } else {
-                it('should populate vm.dateMonths with default English months', function () {
+                it('should populate $ctrl.dateMonths with default English months', function () {
                     expectDateMonthsToBeDefault(element);
                 });
             }
@@ -815,20 +815,20 @@ describe('Directive: TwDate', function() {
     }
 
     function expectDateMonthsToBeLocalized(element, locale) {
-        var vm = getViewModel(element);
+        var $ctrl = getViewModel(element);
         var localizedMonthNames = getMonthNamesForLocale(locale);
         localizedMonthNames.forEach(function(monthName, index) {
-            expect(vm.dateMonths[index].value).toBe(index);
+            expect($ctrl.dateMonths[index].value).toBe(index);
 
             var upperCaseMonthName = monthName[0].toUpperCase() + monthName.substring(1);
-            expect(vm.dateMonths[index].label).toBe(upperCaseMonthName);
+            expect($ctrl.dateMonths[index].label).toBe(upperCaseMonthName);
         });
     }
     function expectDateMonthsToBeDefault(element) {
-        var vm = getViewModel(element);
+        var $ctrl = getViewModel(element);
         ENGLISH_MONTHS.forEach(function(monthName, index) {
-            expect(vm.dateMonths[index].value).toBe(index);
-            expect(vm.dateMonths[index].label).toBe(monthName);
+            expect($ctrl.dateMonths[index].value).toBe(index);
+            expect($ctrl.dateMonths[index].label).toBe(monthName);
         });
     }
 
@@ -881,6 +881,6 @@ describe('Directive: TwDate', function() {
     }
 
     function getViewModel(element) {
-        return element.isolateScope().vm;
+        return element.isolateScope().$ctrl;
     }
 });

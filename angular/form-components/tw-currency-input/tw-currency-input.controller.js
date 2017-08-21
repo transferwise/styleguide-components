@@ -1,70 +1,70 @@
 (function(angular) {
-	'use strict';
+  'use strict';
 
-	angular
-		.module('tw.form-components')
-		.controller('TwCurrencyInputController', TwCurrencyInputController);
+  angular
+    .module('tw.form-components')
+    .controller('TwCurrencyInputController', TwCurrencyInputController);
 
-	TwCurrencyInputController.$inject = [
-		'$element',
-		'$scope',
-		'$timeout',
-		'TwCurrencyData'
-	];
+  TwCurrencyInputController.$inject = [
+    '$element',
+    '$scope',
+    '$timeout',
+    'TwCurrencyData'
+  ];
 
-	function TwCurrencyInputController($element, $scope, $timeout, TwCurrencyData) {
-		var $ctrl = this;
-		var $ngModel = $element.controller('ngModel');
+  function TwCurrencyInputController($element, $scope, $timeout, TwCurrencyData) {
+    var $ctrl = this;
+    var $ngModel = $element.controller('ngModel');
 
-		$ctrl.showDecimals = true;
+    $ctrl.showDecimals = true;
 
-		$scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
-			if (newValue !== oldValue) {
-				$ngModel.$setDirty();
-			}
-		});
-		$scope.$watch('$ctrl.currency', function(newValue, oldValue) {
-			if (newValue !== oldValue) {
-				$ctrl.showDecimals = TwCurrencyData.getDecimals(newValue) > 0;
-			}
-		});
+    $scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        $ngModel.$setDirty();
+      }
+    });
+    $scope.$watch('$ctrl.currency', function(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        $ctrl.showDecimals = TwCurrencyData.getDecimals(newValue) > 0;
+      }
+    });
 
-		$element.find('input').on('blur', function() {
-			$ngModel.$setTouched();
-			$element.triggerHandler('blur');
-		});
+    $element.find('input').on('blur', function() {
+      $ngModel.$setTouched();
+      $element.triggerHandler('blur');
+    });
 
-		if ($ctrl.currencyCode && console && console.log) {
-			console.log('currency code is deprecated in twCurrencyInput, please use currency.');
-		}
+    if ($ctrl.currencyCode && console && console.log) {
+      console.log('currency code is deprecated in twCurrencyInput, please use currency.');
+    }
 
-		$ngModel.$validators.min = function(modelValue, viewValue) {
-			if (typeof $ctrl.ngMin === 'undefined' || $ctrl.ngMin === null || !isNumber(viewValue)) {
-				return true;
-			}
+    $ngModel.$validators.min = function(modelValue, viewValue) {
+      if (typeof $ctrl.ngMin === 'undefined' || $ctrl.ngMin === null || !isNumber(viewValue)) {
+        return true;
+      }
 
-			return viewValue >= $ctrl.ngMin;
-		};
+      return viewValue >= $ctrl.ngMin;
+    };
 
-		$ngModel.$validators.max = function(modelValue, viewValue) {
-			if (typeof $ctrl.ngMax === 'undefined' || $ctrl.ngMax === null || !isNumber(viewValue)) {
-				return true;
-			}
+    $ngModel.$validators.max = function(modelValue, viewValue) {
+      if (typeof $ctrl.ngMax === 'undefined' || $ctrl.ngMax === null || !isNumber(viewValue)) {
+        return true;
+      }
 
-			return viewValue <= $ctrl.ngMax;
-		};
+      return viewValue <= $ctrl.ngMax;
+    };
 
-		$ctrl.changedInputValue = function() {
-			if ($ctrl.ngChange) {
-				// $timeout is needed to get the last ngModel value.
-				// See: https://github.com/angular/angular.js/issues/4558
-				$timeout($ctrl.ngChange);
-			}
-		};
+    $ctrl.changedInputValue = function() {
+      if ($ctrl.ngChange) {
+        // $timeout is needed to get the last ngModel value.
+        // See: https://github.com/angular/angular.js/issues/4558
+        $timeout($ctrl.ngChange);
+      }
+    };
 
-		function isNumber(value) {
-			return !isNaN(parseFloat(value));
-		}
-	}
+    function isNumber(value) {
+      return !isNaN(parseFloat(value));
+    }
+  }
 
 })(window.angular);
