@@ -962,7 +962,6 @@ angular.module("tw.form-components", []);
     };
     angular.module("tw.form-components").component("twSelect", TwSelect);
 }(window.angular), function(angular) {
-    "use strict";
     function TwTabsController() {
         function switchTab(tab) {
             $ctrl.active = tab, $ctrl.onChange && $ctrl.onChange(tab);
