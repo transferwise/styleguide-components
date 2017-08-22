@@ -37,7 +37,7 @@ describe('Directive: TwDate', function() {
   };
 
   var DAY_SELECTOR = 'input[name=day]';
-  var MONTH_SELECTOR = '.tw-date-month'; //'input[name=month]';
+  var MONTH_SELECTOR = '.tw-date-month';
   var YEAR_SELECTOR = 'input[name=year]';
 
   describe('init', function() {
