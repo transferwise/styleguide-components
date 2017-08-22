@@ -20,6 +20,7 @@ module.exports = function(grunt) {
             combined: {
                 src: [
                     'angular/**/*.controller.js',
+                    'angular/**/*.component.js',
                     'angular/**/*.directive.js',
                     'angular/**/*.service.js',
                     'angular/**/*.filter.js'
@@ -38,6 +39,7 @@ module.exports = function(grunt) {
             combinedMin: {
                 src: [
                     'angular/**/*.controller.js',
+                    'angular/**/*.component.js',
                     'angular/**/*.directive.js',
                     'angular/**/*.service.js',
                     'angular/**/*.filter.js'
@@ -105,6 +107,7 @@ module.exports = function(grunt) {
             formComponents: {
                 src: [
                     'angular/form-components/**/*.controller.js',
+                    'angular/form-components/**/*.component.js',
                     'angular/form-components/**/*.directive.js',
                     'angular/form-components/**/*.service.js',
                     'angular/services/**/*.service.js'
@@ -119,6 +122,7 @@ module.exports = function(grunt) {
             formComponentsMin: {
                 src: [
                     'angular/form-components/**/*.controller.js',
+                    'angular/form-components/**/*.component.js',
                     'angular/form-components/**/*.directive.js',
                     'angular/form-components/**/*.service.js',
                     'angular/services/**/*.service.js'
@@ -133,6 +137,7 @@ module.exports = function(grunt) {
             layoutComponents: {
                 src: [
                     'angular/layout-components/**/*.controller.js',
+                    'angular/layout-components/**/*.component.js',
                     'angular/layout-components/**/*.directive.js',
                     'angular/layout-components/**/*.service.js'
                 ],
@@ -146,6 +151,7 @@ module.exports = function(grunt) {
             layoutComponentsMin: {
                 src: [
                     'angular/layout-components/**/*.controller.js',
+                    'angular/layout-components/**/*.component.js',
                     'angular/layout-components/**/*.directive.js',
                     'angular/layout-components/**/*.service.js'
                 ],
@@ -184,6 +190,7 @@ module.exports = function(grunt) {
                 '-W065': true  // allow \n for line endings
             },
             files: [
+                'angular/**/*.component.js',
                 'angular/**/*.controller.js',
                 'angular/**/*.directive.js',
                 'angular/**/*.service.js'
