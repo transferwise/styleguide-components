@@ -301,7 +301,8 @@ angular.module("tw.form-components", []);
                 placeholder: "@",
                 size: "@",
                 locale: "@",
-                label: "@"
+                label: "@",
+                shortDate: "<"
             }
         };
     }
@@ -338,6 +339,8 @@ angular.module("tw.form-components", []);
                 ngModelCtrl.$validate();
             }), $scope.$watch("$ctrl.ngMin", function(newValue, oldValue) {
                 newValue !== oldValue && (updateMinDateView($ctrl.ngMin), ngModelCtrl.$validate());
+            }), $scope.$watch("$ctrl.shortDate", function(newValue, oldValue) {
+                updateSelectedDatePresentation();
             }), $scope.$watch("$ctrl.ngMax", function(newValue, oldValue) {
                 newValue !== oldValue && (updateMaxDateView($ctrl.ngMax), ngModelCtrl.$validate());
             }), $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
@@ -371,7 +374,8 @@ angular.module("tw.form-components", []);
             updateSelectedDatePresentation();
         }
         function updateSelectedDatePresentation() {
-            $ctrl.selectedDateFormatted = TwDateService.getYearMonthDatePresentation($ctrl.selectedYear, $ctrl.monthsOfYear[$ctrl.selectedMonth], $ctrl.selectedDate, $ctrl.locale);
+            var monthsOfYear = $ctrl.shortDate ? $ctrl.shortMonthsOfYear : $ctrl.monthsOfYear;
+            $ctrl.selectedDateFormatted = TwDateService.getYearMonthDatePresentation($ctrl.selectedYear, monthsOfYear[$ctrl.selectedMonth], $ctrl.selectedDate, $ctrl.locale);
         }
         function updateCalendarDatePresentation() {
             $ctrl.yearMonthFormatted = TwDateService.getYearAndMonthPresentation($ctrl.year, $ctrl.monthsOfYear[$ctrl.month], $ctrl.locale);
@@ -1335,9 +1339,13 @@ angular.module("tw.form-components", []);
             return days;
         }, this.getMonthNamesForLocale = function(locale, format) {
             var date, months = [], language = getLanguageFromLocale(locale);
-            if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language]) return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language];
+            if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] && ("long" === format || "ja" === language)) return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language];
             format = getValidDateFormat(format), locale = getValidLocale(locale);
             for (var i = 0; i < 12; i++) date = this.getUTCDateFromParts(2e3, i, 15), months.push(getLocalisedDateName(date, locale, {
+                month: format
+            })), date = this.getUTCDateFromParts(2e3, i, 15), "short" === format ? (month = getLocalisedDateName(date, locale, {
+                month: "long"
+            }), month = month.length > 4 ? month.slice(0, 3) : month, months.push(month)) : months.push(getLocalisedDateName(date, locale, {
                 month: format
             }));
             return months;

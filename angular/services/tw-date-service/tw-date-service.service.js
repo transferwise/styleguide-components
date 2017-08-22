@@ -83,10 +83,10 @@
     };
 
     this.getMonthNamesForLocale = function(locale, format) {
-            var date, months = [], language = getLanguageFromLocale(locale);
-            if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language]) {
-                return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language];
-            }
+      var date, months = [], language = getLanguageFromLocale(locale);
+      if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] && (format === 'long' || language === 'ja')) {
+        return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language];
+      }
 
       format = getValidDateFormat(format);
       locale = getValidLocale(locale);
@@ -95,6 +95,14 @@
         // Day in middle of month avoids timezone issues
         date = this.getUTCDateFromParts(2000, i, 15);
         months.push(getLocalisedDateName(date, locale, {month: format}));
+        date = this.getUTCDateFromParts(2000, i, 15);
+        if (format === 'short') {
+          month = getLocalisedDateName(date, locale, {month: 'long'});
+          month = (month.length > 4) ? month.slice(0, 3) : month;
+          months.push(month);
+        } else {
+          months.push(getLocalisedDateName(date, locale, {month: format}));
+        }
       }
       return months;
     };
@@ -107,10 +115,9 @@
     this.isMonthBeforeDay = function(locale) {
       if (locale.indexOf('US', locale.length - 2) !== -1) {
         return true;
+      } else if (getLanguageFromLocale(locale) === 'ja') {
+        return true;
       }
-            else if (getLanguageFromLocale(locale) === 'ja') {
-                return true;
-            }
 
       return false;
     };

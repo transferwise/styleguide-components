@@ -226,6 +226,18 @@ describe('Directive: TwDateLookup, ', function() {
       }
     });
 
+    describe('when shortDate==true', function () {
+      beforeEach(function () {
+        $scope.ngModel = new Date('2000-01-10');
+        $scope.shortDate = true;
+        element = getCompiledDirectiveElement($scope);
+
+      });
+      it('should show short month name', function () {
+          expect(element.find(MODEL_DATE_SELECTOR).text().trim()).toBe('10 Jan 2000');
+      });
+    });
+
     describe('when ngMin and ngMax are supplied', function () {
       var ngModelController, formGroup, template;
       describe('as a valid date object', function () {
@@ -911,6 +923,7 @@ describe('Directive: TwDateLookup, ', function() {
           ng-disabled='ngDisabled' \
           ng-min='ngMin' \
           ng-max='ngMax' \
+          short-date='shortDate' \
           locale='{{locale}}'> \
         </tw-date-lookup>";
     }
