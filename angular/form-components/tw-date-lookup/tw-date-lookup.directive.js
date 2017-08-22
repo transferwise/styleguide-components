@@ -404,7 +404,7 @@
 			});
 
 			$scope.$watch('$ctrl.shortDate', function(newValue, oldValue) {
-				ngModelCtrl.$validate();
+				updateSelectedDatePresentation();
 			});
 
 			$scope.$watch('$ctrl.ngMax', function(newValue, oldValue) {
