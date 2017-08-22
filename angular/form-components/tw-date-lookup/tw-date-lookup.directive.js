@@ -479,7 +479,7 @@
 			}
 			$ctrl.monthBeforeDay = TwDateService.isMonthBeforeDay($ctrl.locale);
 			$ctrl.monthsOfYear = TwDateService.getMonthNamesForLocale($ctrl.locale, 'long');
-			$ctrl.shortMonthsOfYear = getShortMonthsOfYear($ctrl.monthsOfYear);
+			$ctrl.shortMonthsOfYear = TwDateService.getMonthNamesForLocale($ctrl.locale, 'short');
 			$ctrl.daysOfWeek = TwDateService.getDayNamesForLocale($ctrl.locale, 'short');
 			$ctrl.shortDaysOfWeek = TwDateService.getDayNamesForLocale($ctrl.locale, 'narrow');
 			updateSelectedDatePresentation();
@@ -498,18 +498,6 @@
 			$ctrl.yearMonthFormatted = TwDateService.getYearAndMonthPresentation($ctrl.year,
                                                                                 $ctrl.monthsOfYear[$ctrl.month],
                                                                                 $ctrl.locale);
-		}
-
-		function getShortMonthsOfYear(monthsOfYear){
-			var shortMonthsOfYear = [];
-			monthsOfYear.forEach(function(month) {
-				if(month.length > 4) {
-					shortMonthsOfYear.push(month.slice(0, 3));
-				} else {
-					shortMonthsOfYear.push(month);
-				}
-			});
-			return shortMonthsOfYear;
 		}
 
 		function moveDateToWithinRange(date, min, max) {
