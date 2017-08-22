@@ -976,68 +976,6 @@ angular.module("tw.form-components", []);
     };
     angular.module("tw.form-components").component("twTabs", TwTabs);
 }(window.angular), function(angular) {
-    "use strict";
-    function TwUploadDroppableDirective() {
-        return {
-            bindToController: !0,
-            controller: [ TwUploadDroppableController ],
-            controllerAs: "$ctrl",
-            replace: !1,
-            transclude: !0,
-            restrict: "E",
-            scope: {
-                title: "@",
-                cta: "@",
-                onUpload: "=",
-                accept: "="
-            },
-            link: TwUploadDroppableLink,
-            template: '<div class="text-center tw-upload-droppable-box" ng-class="{\'active\': $ctrl.isActive}"> \t\t\t\t<i class="icon icon-upload tw-upload-droppable-icon"></i>\t\t\t\t<h4 class="m-t-2" ng-if="$ctrl.title">{{$ctrl.title}}</h4>\t\t\t\t<div class="row">\t\t\t\t\t<div class="col-xs-12 col-sm-6 col-sm-offset-3 m-t-1">\t\t\t\t\t<ng-transclude></ng-transclude>\t\t\t\t\t<label class="link" for="file-upload">{{$ctrl.cta}}</label>\t\t\t\t\t<input tw-file-select id="file-upload" type="file" accept={{$ctrl.accept}} class="hidden" on-user-input="$ctrl.onManualUpload"/>\t\t\t\t\t</div>\t\t\t\t</div>\t\t\t</div>'
-        };
-    }
-    function TwUploadDroppableController() {
-        var $ctrl = this;
-        $ctrl.dragCounter = 0, $ctrl.isActive = !1, $ctrl.onManualUpload = function(event) {
-            $ctrl.onUpload && "function" == typeof $ctrl.onUpload && $ctrl.onUpload(angular.element(document.querySelector("#file-upload"))[0].files[0], event);
-        }, $ctrl.onDrop = function(file, event) {
-            $ctrl.onUpload && "function" == typeof $ctrl.onUpload && $ctrl.onUpload(file, event), 
-            $ctrl.isActive = !1, $ctrl.dropCounter = 0;
-        }, $ctrl.onDragChange = function(enter) {
-            enter ? ($ctrl.dragCounter++, 1 === $ctrl.dragCounter && ($ctrl.isActive = !0)) : ($ctrl.dragCounter--, 
-            0 === $ctrl.dragCounter && ($ctrl.isActive = !1));
-        };
-    }
-    function TwUploadDroppableLink(scope, element, attr) {
-        element[0].addEventListener("dragenter", function(event) {
-            event.preventDefault(), scope.$ctrl.onDragChange(!0), scope.$apply();
-        }, !1), element[0].addEventListener("dragover", function(event) {
-            event.preventDefault();
-        }, !1), element[0].addEventListener("dragleave", function(event) {
-            event.preventDefault(), scope.$ctrl.onDragChange(!1), scope.$apply();
-        }, !1), element[0].addEventListener("drop", function(event) {
-            event.preventDefault(), scope.$ctrl.onDrop(event.dataTransfer.files[0]), scope.$apply();
-        }, !1);
-    }
-    function TwFileSelectDirective() {
-        return {
-            bindToController: !0,
-            controller: function() {},
-            controllerAs: "$ctrl",
-            replace: !1,
-            restrict: "A",
-            scope: {
-                onUserInput: "="
-            },
-            link: TwFileSelectLink
-        };
-    }
-    function TwFileSelectLink(scope, element) {
-        element.on("change", function(event) {
-            scope.$ctrl.onUserInput && "function" == typeof scope.$ctrl.onUserInput && scope.$ctrl.onUserInput(event);
-        });
-    }
-    angular.module("tw.form-components").directive("twFileSelect", TwFileSelectDirective).controller("TwUploadDroppableController", TwUploadDroppableController).directive("twUploadDroppable", TwUploadDroppableDirective);
-}(window.angular), function(angular) {
     function TwUploadController($timeout, $element, $http, $scope, $transclude, $q, $attrs) {
         function reset() {
             $ctrl.isDroppable = !1, $ctrl.isProcessing = !1, $ctrl.isSuccess = !1, $ctrl.isError = !1, 
@@ -1187,6 +1125,68 @@ angular.module("tw.form-components", []);
         template: '       <div class="droppable" ng-class="{         \'droppable-sm\': $ctrl.size === \'sm\',         \'droppable-md\': $ctrl.size === \'md\' || !$ctrl.size,         \'droppable-lg\': $ctrl.size === \'lg\',         \'droppable-dropping\': $ctrl.isDroppable,         \'droppable-processing\': !$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError),         \'droppable-complete\': $ctrl.isDone       }">       <div class="droppable-default-card" aria-hidden="{{$ctrl.isDone}}">         <div class="droppable-card-content">           <div class="m-b-2">             <i class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></i>           </div>           <h4 class="m-b-1" ng-if="$ctrl.label || $ctrl.description">             {{$ctrl.label || $ctrl.description}}           </h4>           <p class="m-b-2">{{$ctrl.placeholder || $ctrl.instructions}}</p>           <label class="btn btn-primary">{{$ctrl.buttonText}}             <input tw-file-select type="file"               accept="{{$ctrl.accept}}"" class="tw-droppable-input hidden" name="file-upload"               on-user-input="$ctrl.onManualUpload" ng-model="$ctrl.inputFile"/>           </label>         </div>       </div>       <div class="droppable-processing-card droppable-card"         aria-hidden="{{$ctrl.isDone}}">         <div class="droppable-card-content">           <h4 class="m-b-2">             <span ng-if="$ctrl.isProcessing && $ctrl.processingText">{{$ctrl.processingText}}</span>             <span ng-if="$ctrl.isSuccess && $ctrl.successText">{{$ctrl.successText}}</span>             <span ng-if="$ctrl.isError && $ctrl.failureText">{{$ctrl.failureText}}</span>           </h4>           <tw-process size="sm" state="$ctrl.processingState"             ng-if="!$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"></tw-process>         </div>       </div>       <div class="droppable-complete-card droppable-card"         aria-hidden="{{!$ctrl.isDone}}">         <div class="droppable-card-content">            <div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError">             <h4 class="m-b-2" ng-if="$ctrl.completeText">               {{$ctrl.completeText}}             </h4>             <img ng-src="{{$ctrl.image}}" ng-if="$ctrl.isImage" class="thumbnail m-b-3" />             <i class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></i>             <p class="text-ellipsis m-b-2">{{$ctrl.fileName}}</p>           </div>           <div ng-if="!$ctrl.hasTranscluded && $ctrl.isError">             <h4 class="m-b-2" ng-if="$ctrl.isTooLarge">{{$ctrl.tooLargeMessage}}</h4>             <h4 class="m-b-2" ng-if="$ctrl.isWrongType">{{$ctrl.wrongTypeText}}</h4>             <h4 class="m-b-2" ng-if="!$ctrl.isTooLarge && $ctrl.errorMessage">{{$ctrl.errorMessage}}</h4>             <i class="icon icon-alert icon-xxl text-danger m-b-1"></i>           </div>           <div ng-if="$ctrl.hasTranscluded" ng-transclude></div>           <p ng-if="$ctrl.cancelText" class="m-t-2 m-b-0">             <a href="" ng-click="$ctrl.clear()">{{$ctrl.cancelText}}</a>           </p>         </div>       </div>       <div class="droppable-dropping-card droppable-card">         <div class="droppable-card-content">           <h4 class="m-b-2">Drop file to start upload</h4>           <div class="circle circle-sm">             <i class="icon icon-add"></i>           </div>           <p class="m-t-2 m-b-0"></p>         </div>       </div>     </div>'
     };
     angular.module("tw.form-components").directive("twFileInput", TwFileInputDirective).controller("twUploadController", TwUploadController).component("twUpload", TwUpload);
+}(window.angular), function(angular) {
+    "use strict";
+    function TwUploadDroppableDirective() {
+        return {
+            bindToController: !0,
+            controller: [ TwUploadDroppableController ],
+            controllerAs: "$ctrl",
+            replace: !1,
+            transclude: !0,
+            restrict: "E",
+            scope: {
+                title: "@",
+                cta: "@",
+                onUpload: "=",
+                accept: "="
+            },
+            link: TwUploadDroppableLink,
+            template: '<div class="text-center tw-upload-droppable-box" ng-class="{\'active\': $ctrl.isActive}"> \t\t\t\t<i class="icon icon-upload tw-upload-droppable-icon"></i>\t\t\t\t<h4 class="m-t-2" ng-if="$ctrl.title">{{$ctrl.title}}</h4>\t\t\t\t<div class="row">\t\t\t\t\t<div class="col-xs-12 col-sm-6 col-sm-offset-3 m-t-1">\t\t\t\t\t<ng-transclude></ng-transclude>\t\t\t\t\t<label class="link" for="file-upload">{{$ctrl.cta}}</label>\t\t\t\t\t<input tw-file-select id="file-upload" type="file" accept={{$ctrl.accept}} class="hidden" on-user-input="$ctrl.onManualUpload"/>\t\t\t\t\t</div>\t\t\t\t</div>\t\t\t</div>'
+        };
+    }
+    function TwUploadDroppableController() {
+        var $ctrl = this;
+        $ctrl.dragCounter = 0, $ctrl.isActive = !1, $ctrl.onManualUpload = function(event) {
+            $ctrl.onUpload && "function" == typeof $ctrl.onUpload && $ctrl.onUpload(angular.element(document.querySelector("#file-upload"))[0].files[0], event);
+        }, $ctrl.onDrop = function(file, event) {
+            $ctrl.onUpload && "function" == typeof $ctrl.onUpload && $ctrl.onUpload(file, event), 
+            $ctrl.isActive = !1, $ctrl.dropCounter = 0;
+        }, $ctrl.onDragChange = function(enter) {
+            enter ? ($ctrl.dragCounter++, 1 === $ctrl.dragCounter && ($ctrl.isActive = !0)) : ($ctrl.dragCounter--, 
+            0 === $ctrl.dragCounter && ($ctrl.isActive = !1));
+        };
+    }
+    function TwUploadDroppableLink(scope, element, attr) {
+        element[0].addEventListener("dragenter", function(event) {
+            event.preventDefault(), scope.$ctrl.onDragChange(!0), scope.$apply();
+        }, !1), element[0].addEventListener("dragover", function(event) {
+            event.preventDefault();
+        }, !1), element[0].addEventListener("dragleave", function(event) {
+            event.preventDefault(), scope.$ctrl.onDragChange(!1), scope.$apply();
+        }, !1), element[0].addEventListener("drop", function(event) {
+            event.preventDefault(), scope.$ctrl.onDrop(event.dataTransfer.files[0]), scope.$apply();
+        }, !1);
+    }
+    function TwFileSelectDirective() {
+        return {
+            bindToController: !0,
+            controller: function() {},
+            controllerAs: "$ctrl",
+            replace: !1,
+            restrict: "A",
+            scope: {
+                onUserInput: "="
+            },
+            link: TwFileSelectLink
+        };
+    }
+    function TwFileSelectLink(scope, element) {
+        element.on("change", function(event) {
+            scope.$ctrl.onUserInput && "function" == typeof scope.$ctrl.onUserInput && scope.$ctrl.onUserInput(event);
+        });
+    }
+    angular.module("tw.form-components").directive("twFileSelect", TwFileSelectDirective).controller("TwUploadDroppableController", TwUploadDroppableController).directive("twUploadDroppable", TwUploadDroppableDirective);
 }(window.angular), function(angular) {
     "use strict";
     function TwRequirementsService() {
