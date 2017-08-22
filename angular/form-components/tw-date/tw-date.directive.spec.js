@@ -37,7 +37,7 @@ describe('Directive: TwDate', function() {
   };
 
   var DAY_SELECTOR = 'input[name=day]';
-  var MONTH_SELECTOR = '.tw-date-month';
+  var MONTH_SELECTOR = 'input[name=month]';
   var YEAR_SELECTOR = 'input[name=year]';
 
   describe('init', function() {
@@ -53,7 +53,7 @@ describe('Directive: TwDate', function() {
         expect(element.find(DAY_SELECTOR).val()).toBe('');
       });
       it('should set month control to first value', function () {
-        expect(element.find(MONTH_SELECTOR).val()).toEqual('0');
+        expect(selectedMonthValue(element)).toEqual('0');
         expect(element.find('.tw-select-selected').text().trim()).toEqual('January');
       });
       it('should set year control to empty', function () {
@@ -82,7 +82,7 @@ describe('Directive: TwDate', function() {
         });
         it('should set control values correctly', function () {
           expect(element.find(DAY_SELECTOR).val()).toBe('21');
-          expect(element.find(MONTH_SELECTOR).val()).toBe('7');
+          expect(selectedMonthValue(element)).toBe('7');
           expect(element.find(YEAR_SELECTOR).val()).toBe('1990');
         });
         it('should leave date model as it was defined', function () {
@@ -103,7 +103,7 @@ describe('Directive: TwDate', function() {
         });
         it('should set control values correctly', function () {
           expect(element.find(DAY_SELECTOR).val()).toBe('21');
-          expect(element.find(MONTH_SELECTOR).val()).toBe('7');
+          expect(selectedMonthValue(element)).toBe('7');
           expect(element.find(YEAR_SELECTOR).val()).toBe('1990');
         });
         it('should leave date model as it was defined', function () {
@@ -124,7 +124,7 @@ describe('Directive: TwDate', function() {
         });
         it('should set control values correctly', function () {
           expect(element.find(DAY_SELECTOR).val()).toBe('28');
-          expect(element.find(MONTH_SELECTOR).val()).toBe('1');
+          expect(selectedMonthValue(element)).toBe('1');
           expect(element.find(YEAR_SELECTOR).val()).toBe('1990');
         });
         it('should leave date model unchanged', function () {
@@ -858,6 +858,10 @@ describe('Directive: TwDate', function() {
     } catch(ex) {
       console.log(ex.message);
     }
+  }
+
+  function selectedMonthValue(element) {
+    return element.find(MONTH_SELECTOR).val();
   }
 
   function getCompiledDirectiveElement(scope, template) {

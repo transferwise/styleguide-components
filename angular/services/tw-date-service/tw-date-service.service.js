@@ -67,10 +67,10 @@
     };
 
     this.getDayNamesForLocale = function(locale, format) {
-            var date, days = [], language = getLanguageFromLocale(locale);
-            if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language]) {
-                return DEFAULT_DAY_NAMES_BY_LANGUAGE[language];
-            }
+      var date, days = [], language = getLanguageFromLocale(locale);
+      if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language]) {
+        return DEFAULT_DAY_NAMES_BY_LANGUAGE[language];
+      }
 
       format = getValidDateFormat(format);
       locale = getValidLocale(locale);
@@ -83,7 +83,7 @@
     };
 
     this.getMonthNamesForLocale = function(locale, format) {
-      var date, months = [], language = getLanguageFromLocale(locale);
+      var date, months = [], month, language = getLanguageFromLocale(locale);
       if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] && (format === 'long' || language === 'ja')) {
         return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language];
       }
@@ -93,8 +93,6 @@
 
       for(var i = 0; i < 12; i++) {
         // Day in middle of month avoids timezone issues
-        date = this.getUTCDateFromParts(2000, i, 15);
-        months.push(getLocalisedDateName(date, locale, {month: format}));
         date = this.getUTCDateFromParts(2000, i, 15);
         if (format === 'short') {
           month = getLocalisedDateName(date, locale, {month: 'long'});
