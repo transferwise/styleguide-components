@@ -94,7 +94,7 @@
 			for(var i = 0; i < 12; i++) {
 				// Day in middle of month avoids timezone issues
 				date = this.getUTCDateFromParts(2000, i, 15);
-				if(format === 'short') {
+				if (format === 'short') {
 					month = getLocalisedDateName(date, locale, {month: 'long'});
 					month = (month.length > 4) ? month.slice(0, 3) : month;
 					months.push(month);
