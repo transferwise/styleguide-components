@@ -173,6 +173,7 @@ module.exports = function(grunt) {
                 eqeqeq: true,
                 eqnull: true,
                 browser: true,
+                esversion: 6,
                 globals: {
                     jQuery: true,
                     console: true
