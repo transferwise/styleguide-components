@@ -29,12 +29,14 @@
 				size="{{$ctrl.select.size}}"
 				dropdown-right="{{$ctrl.select.dropdownRight}}"
 				dropdown-width="{{$ctrl.select.dropdownWidth}}"
+				dropdown-up="{{$ctrl.select.dropdownUp}}"
 				inverse="$ctrl.select.inverse"
 				hide-note="{{$ctrl.select.hideNote}}"
 				hide-secondary="{{$ctrl.select.hideSecondary}}"
 				hide-icon="{{$ctrl.select.hideIcon}}"
 				hide-currency="{{$ctrl.select.hideCurrency}}"
-				hide-circle="{{$ctrl.select.hideCircle}}">
+				hide-circle="{{$ctrl.select.hideCircle}}"
+				hide-label="{{$ctrl.select.hideLabel}}">
 			</tw-select>
 			<tw-select tw-validation ng-if="$ctrl.select.extraLink"
 				name="mySelect"
@@ -49,13 +51,15 @@
 				filter="{{$ctrl.select.showFilter}}"
 				size="{{$ctrl.select.size}}"
 				dropdown-right="{{$ctrl.select.dropdownRight}}"
+				dropdown-up="{{$ctrl.select.dropdownUp}}"
 				dropdown-width="{{$ctrl.select.dropdownWidth}}"
 				inverse="$ctrl.select.inverse"
 				hide-note="{{$ctrl.select.hideNote}}"
 				hide-secondary="{{$ctrl.select.hideSecondary}}"
 				hide-icon="{{$ctrl.select.hideIcon}}"
 				hide-currency="{{$ctrl.select.hideCurrency}}"
-				hide-circle="{{$ctrl.select.hideCircle}}">
+				hide-circle="{{$ctrl.select.hideCircle}}"
+				hide-label="{{$ctrl.select.hideLabel}}">
 				<a href="" ng-click="$ctrl.log('click')">
 					Custom action
 				</a>
@@ -82,13 +86,15 @@
 				filter="{{$ctrl.select.showFilter}}"
 				size="{{$ctrl.select.size}}"
 				dropdown-right="{{$ctrl.select.dropdownRight}}"
+				dropdown-up="{{$ctrl.select.dropdownUp}}"
 				dropdown-width="{{$ctrl.select.dropdownWidth}}"
 				inverse="$ctrl.select.inverse"
 				hide-note="{{$ctrl.select.hideNote}}"
 				hide-secondary="{{$ctrl.select.hideSecondary}}"
 				hide-icon="{{$ctrl.select.hideIcon}}"
 				hide-currency="{{$ctrl.select.hideCurrency}}"
-				hide-circle="{{$ctrl.select.hideCircle}}">
+				hide-circle="{{$ctrl.select.hideCircle}}"
+				hide-label="{{$ctrl.select.hideLabel}}">
 			</tw-select>
 			<tw-select tw-validation ng-if="$ctrl.select.extraLink"
 				name="mySelect"
@@ -103,13 +109,15 @@
 				filter="{{$ctrl.select.showFilter}}"
 				size="{{$ctrl.select.size}}"
 				dropdown-right="{{$ctrl.select.dropdownRight}}"
+				dropdown-up="{{$ctrl.select.dropdownUp}}"
 				dropdown-width="{{$ctrl.select.dropdownWidth}}"
 				inverse="$ctrl.select.inverse"
 				hide-note="{{$ctrl.select.hideNote}}"
 				hide-secondary="{{$ctrl.select.hideSecondary}}"
 				hide-icon="{{$ctrl.select.hideIcon}}"
 				hide-currency="{{$ctrl.select.hideCurrency}}"
-				hide-circle="{{$ctrl.select.hideCircle}}">
+				hide-circle="{{$ctrl.select.hideCircle}}"
+				hide-label="{{$ctrl.select.hideLabel}}">
 			</tw-select>
 		</div>
 
@@ -126,13 +134,15 @@
   ng-blur="..."<span ng-if="$ctrl.select.size">
   size="{{$ctrl.select.size}}"</span><span ng-if="$ctrl.select.inverse">
   inverse="{{$ctrl.select.inverse}}"</span><span ng-if="$ctrl.select.dropdownRight">
-  dropdown-right="{{$ctrl.select.dropdownRight}}"</span><span ng-if="$ctrl.select.dropdownWidth">
+  dropdown-right="{{$ctrl.select.dropdownRight}}"</span><span ng-show="$ctrl.select.dropdownUp">
+  dropdown-up="{{$ctrl.select.dropdownUp}}"</span><span ng-if="$ctrl.select.dropdownWidth">
   dropdown-width="{{$ctrl.select.dropdownWidth}}"</span><span ng-if="$ctrl.select.hideNote">
   hide-note="{{$ctrl.select.hideNote}}"</span><span ng-if="$ctrl.select.hideSecondary">
   hide-secondary="{{$ctrl.select.hideSecondary}}"</span><span ng-if="$ctrl.select.hideIcon">
   hide-icon="{{$ctrl.select.hideIcon}}"</span><span ng-if="$ctrl.select.hideCurrency">
   hide-currency="{{$ctrl.select.hideCurrency}}"</span><span ng-if="$ctrl.select.hideCircle">
-  hide-circle="{{$ctrl.select.hideCircle}}"</span>
+  hide-circle="{{$ctrl.select.hideCircle}}"</span><span ng-show="$ctrl.select.hideLabel">
+  hide-label="{{$ctrl.select.hideLabel}}"</span>
   options="{{$ctrl.select.options[$ctrl.select.type] | json}}"
   tw-validation<span ng-if="!$ctrl.select.extraLink"> /&gt;</span><span ng-if="$ctrl.select.extraLink">&gt;
     &lt;a href='' ng-click='...'&gt;
@@ -216,6 +226,12 @@
 						Invert the colours?
 					</label>
 				</div>
+				<div class="checkbox">
+					<label>
+						<tw-checkbox ng-model="$ctrl.select.dropdownUp" />
+						Make the dropdown open upward
+					</label>
+				</div>
 				<div class="m-b-2">
 					<tw-select
 						placeholder="Button size..."
@@ -269,6 +285,13 @@
 				<tw-select
 					placeholder="Choose breakpoint"
 					ng-model="$ctrl.select.hideIcon"
+					options="$ctrl.hideOptions"></tw-select>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Hide selected label?</label>
+				<tw-select
+					placeholder="Choose breakpoint"
+					ng-model="$ctrl.select.hideLabel"
 					options="$ctrl.hideOptions"></tw-select>
 			</div>
 			<input type="submit" class="btn btn-primary btn-block" value="Submit form" />

@@ -789,6 +789,21 @@ describe('Directive: TwSelect', function() {
                 expect(el.hasClass('hidden')).toBe(true);
             });
         });
+        describe('label', function() {
+            it('should be displayed by default', function() {
+                $scope.ngModel = 'CIRCLE_ICON';
+                $scope.$digest();
+                var el = directiveElement.find(SELECTED_LABEL_SELECTOR);
+                expect(el.length).toBe(1);
+            });
+            it('can be hidden', function() {
+                $scope.ngModel = 'CIRCLE_ICON';
+                $scope.hideLabel = true;
+                $scope.$digest();
+                var el = directiveElement.find(SELECTED_LABEL_SELECTOR);
+                expect(el.hasClass('hidden')).toBe(true);
+            });
+        });
         describe('circle image', function() {
             it('should be displayed', function() {
                 $scope.ngModel = 'CIRCLE_IMAGE';
@@ -936,6 +951,17 @@ describe('Directive: TwSelect', function() {
             var el = directiveElement.find('.dropdown-menu-lg');
             expect(el.length).toBe(1);
         });
+
+        it('should open upwards', function() {
+            var el = directiveElement.find('.tw-select');
+            expect(el.hasClass('dropdown')).toBe(true);
+            expect(el.hasClass('dropup')).toBe(false);
+            $scope.dropdownUp = true;
+            $scope.$digest();
+            var el = directiveElement.find('.tw-select');
+            expect(el.hasClass('dropdown')).toBe(false);
+            expect(el.hasClass('dropup')).toBe(true);
+        });
     });
 
     describe('filter duplicates', function() {
@@ -984,13 +1010,15 @@ describe('Directive: TwSelect', function() {
                     ng-required='ngRequired' \
                     size='{{size}}' \
                     dropdown-right='{{dropdownRight}}' \
+                    dropdown-up='{{dropdownUp}}'\
                     dropdown-width='{{dropdownWidth}}' \
                     inverse='inverse' \
                     hide-note='{{hideNote}}' \
                     hide-secondary='{{hideSecondary}}' \
                     hide-icon='{{hideIcon}}' \
                     hide-currency='{{hideCurrency}}' \
-                    hide-circle='{{hideCircle}}'> \
+                    hide-circle='{{hideCircle}}' \
+                    hide-label='{{hideLabel}}'> \
                 </tw-select>";
         }
         var element = angular.element(template);
