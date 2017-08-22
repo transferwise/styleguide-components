@@ -84,7 +84,7 @@
 
 		this.getMonthNamesForLocale = function(locale, format) {
             var date, months = [], language = getLanguageFromLocale(locale);
-            if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] && ((format === 'long') || !format)) {
+            if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language]) {
                 return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language];
             }
 
