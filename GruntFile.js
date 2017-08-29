@@ -36,6 +36,30 @@ module.exports = function(grunt) {
             },
             externals: webpackExternals,
             module: webpackModule
+          },{
+            entry: './angular/validation/validation.js',
+            output: {
+              path: path.join(__dirname, './build'),
+              filename: 'form-validation.webpack.js'
+            },
+            externals: webpackExternals,
+            module: webpackModule
+          },{
+            entry: './angular/layout-components/layout-components.js',
+            output: {
+              path: path.join(__dirname, './build'),
+              filename: 'layout-components.webpack.js'
+            },
+            externals: webpackExternals,
+            module: webpackModule
+          },{
+            entry: './angular/styleguide-components.js',
+            output: {
+              path: path.join(__dirname, './build'),
+              filename: 'styleguide-components.webpack.js'
+            },
+            externals: webpackExternals,
+            module: webpackModule
           }]
         },
         watch: {
@@ -53,168 +77,102 @@ module.exports = function(grunt) {
             }
         },
         uglify: {
-            combined: {
-                src: [
-                    'angular/**/*.controller.js',
-                    'angular/**/*.component.js',
-                    'angular/**/*.directive.js',
-                    'angular/**/*.service.js',
-                    'angular/**/*.filter.js',
-                    'build/form-components.webpack.js',
-                    'build/form-styling.webpack.js',
-                    '!angular/form-components/*/*.js',
-                    '!angular/styling/*/*.*.js',
-                    '!angular/services/*/*.*.js',
-                ],
-                dest: 'dist/js/styleguide-components.js',
-                options: {
-                    banner: 'angular.module("tw.form-validation", []);\n' +
-                        'angular.module("tw.form-styling", []);\n' +
-                        'angular.module("tw.form-components", []);\n' +
-                        'angular.module("tw.layout-components", []);\n' +
-                        'angular.module("tw.styleguide-components", [\'tw.form-validation\', \'tw.form-styling\', \'tw.form-components\', \'tw.layout-components\']);\n',
-                    mangle: false,
-                    beautify: true
-                }
-            },
-            combinedMin: {
-                src: [
-                    'angular/**/*.controller.js',
-                    'angular/**/*.component.js',
-                    'angular/**/*.directive.js',
-                    'angular/**/*.service.js',
-                    'angular/**/*.filter.js',
-                    'build/form-components.webpack.js',
-                    'build/form-styling.webpack.js',
-                    '!angular/form-components/*/*.*.js',
-                    '!angular/styling/*/*.*.js',
-                    '!angular/services/*/*.*.js',
-                ],
-                dest: 'dist/js/styleguide-components.min.js',
-                options: {
-                    banner: 'angular.module("tw.form-validation", []);\n' +
-                        'angular.module("tw.form-styling", []);\n' +
-                        'angular.module("tw.form-components", []);\n' +
-                        'angular.module("tw.layout-components", []);\n' +
-                        'angular.module("tw.styleguide-components", [\'tw.form-validation\', \'tw.form-styling\', \'tw.form-components\', \'tw.layout-components\']);\n',
-                    mangle: true,
-                    beautify: false
-                }
-            },
             validation: {
                 src: [
-                    'angular/validation/**/*.controller.js',
-                    'angular/validation/**/*.directive.js'
+                    'build/form-validation.webpack.js'
                 ],
                 dest: 'dist/js/form-validation.js',
                 options: {
-                    banner: 'angular.module("tw.form-validation", []);\n',
                     mangle: false,
                     beautify: true
                 }
             },
             validationMin: {
                 src: [
-                    'angular/validation/**/*.controller.js',
-                    'angular/validation/**/*.directive.js'
+                    'build/form-validation.webpack.js'
                 ],
                 dest: 'dist/js/form-validation.min.js',
                 options: {
-                    banner: 'angular.module("tw.form-validation", []);\n',
                     mangle: true,
                     beautify: false
                 }
             },
             styling: {
                 src: [
-                    'angular/styling/**/*.controller.js',
-                    'angular/styling/**/*.directive.js',
-                    'angular/styling/**/*.filter.js',
-                    'build/form-styling.webpack.js',
-                    '!angular/styling/*/*.*.js'
+                    'build/form-styling.webpack.js'
                 ],
                 dest: 'dist/js/form-styling.js',
                 options: {
-                    banner: 'angular.module("tw.form-styling", []);\n',
                     mangle: false,
                     beautify: true
                 }
             },
             stylingMin: {
                 src: [
-                    'angular/styling/**/*.controller.js',
-                    'angular/styling/**/*.directive.js',
-                    'angular/styling/**/*.filter.js',
-                    'build/form-styling.webpack.js',
-                    '!angular/styling/*/*.*.js'
+                    'build/form-styling.webpack.js'
                 ],
                 dest: 'dist/js/form-styling.min.js',
                 options: {
-                    banner: 'angular.module("tw.form-styling", []);\n',
                     mangle: true,
                     beautify: false
                 }
             },
             formComponents: {
                 src: [
-                    'angular/form-components/**/*.controller.js',
-                    'angular/form-components/**/*.component.js',
-                    'angular/form-components/**/*.directive.js',
-                    'angular/form-components/**/*.service.js',
-                    'angular/services/**/*.service.js',
-                    'build/form-components.webpack.js',
-                    '!angular/form-components/*/*.*.js',
-                    '!angular/services/*/*.*.js'
+                    'build/form-components.webpack.js'
                 ],
                 dest: 'dist/js/form-components.js',
                 options: {
-                    banner: 'angular.module("tw.form-components", []);\n',
                     mangle: false,
                     beautify: true
                 }
             },
             formComponentsMin: {
                 src: [
-                    'angular/form-components/**/*.controller.js',
-                    'angular/form-components/**/*.component.js',
-                    'angular/form-components/**/*.directive.js',
-                    'angular/form-components/**/*.service.js',
-                    'angular/services/**/*.service.js',
-                    'build/form-components.webpack.js',
-                    '!angular/form-components/*/*.*.js',
-                    '!angular/services/*/*.*.js'
+                    'build/form-components.webpack.js'
                 ],
                 dest: 'dist/js/form-components.min.js',
                 options: {
-                    banner: 'angular.module("tw.form-components", []);\n',
                     mangle: true,
                     beautify: false
                 }
             },
             layoutComponents: {
                 src: [
-                    'angular/layout-components/**/*.controller.js',
-                    'angular/layout-components/**/*.component.js',
-                    'angular/layout-components/**/*.directive.js',
-                    'angular/layout-components/**/*.service.js'
+                    'build/layout-components.webpack.js'
                 ],
                 dest: 'dist/js/layout-components.js',
                 options: {
-                    banner: 'angular.module("tw.layout-components", []);\n',
                     mangle: false,
                     beautify: true
                 }
             },
             layoutComponentsMin: {
                 src: [
-                    'angular/layout-components/**/*.controller.js',
-                    'angular/layout-components/**/*.component.js',
-                    'angular/layout-components/**/*.directive.js',
-                    'angular/layout-components/**/*.service.js'
+                    'build/layout-components.webpack.js'
                 ],
                 dest: 'dist/js/layout-components.min.js',
                 options: {
-                    banner: 'angular.module("tw.layout-components", []);\n',
+                    mangle: true,
+                    beautify: false
+                }
+            },
+            combined: {
+                src: [
+                    'build/styleguide-components.webpack.js'
+                ],
+                dest: 'dist/js/styleguide-components.js',
+                options: {
+                    mangle: false,
+                    beautify: true
+                }
+            },
+            combinedMin: {
+                src: [
+                    'build/styleguide-components.webpack.js'
+                ],
+                dest: 'dist/js/styleguide-components.min.js',
+                options: {
                     mangle: true,
                     beautify: false
                 }

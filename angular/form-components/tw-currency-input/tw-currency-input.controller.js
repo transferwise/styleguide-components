@@ -1,6 +1,5 @@
-  import TwCurrencyData from '../../services/tw-currency-data/tw-currency-data.service.js';
 
-  function TwCurrencyInputController($element, $scope, $timeout, TwCurrencyData) {
+  function TwCurrencyInputController($element, $scope, $timeout, TwCurrencyService) {
     var $ctrl = this;
     var $ngModel = $element.controller('ngModel');
 
@@ -13,7 +12,7 @@
     });
     $scope.$watch('$ctrl.currency', function(newValue, oldValue) {
       if (newValue !== oldValue) {
-        $ctrl.showDecimals = TwCurrencyData.getDecimals(newValue) > 0;
+        $ctrl.showDecimals = TwCurrencyService.getDecimals(newValue) > 0;
       }
     });
 
@@ -59,7 +58,7 @@
     '$element',
     '$scope',
     '$timeout',
-    'TwCurrencyData'
+    'TwCurrencyService'
   ];
 
   export default TwCurrencyInputController;

@@ -232,5 +232,5 @@
   }
 
   export default angular
-    .module('tw.form-components')
+    .module('tw.styleguide.services.date', [])
     .service('TwDateService', TwDateService).name;

@@ -1,9 +1,3 @@
-(function(angular) {
-  'use strict';
-
-  angular
-    .module('tw.layout-components')
-    .service('TwCardsService', TwCardsService);
 
   function TwCardsService() {
     var expandedIndex = -1; // index of expanded card, -1 when all closed
@@ -42,4 +36,5 @@
       return cards.length;
     };
   }
-})(window.angular);
+
+  export default TwCardsService;

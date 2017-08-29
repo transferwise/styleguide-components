@@ -1,5 +1,5 @@
 
-  function TwCurrencyData() {
+  function TwCurrencyService() {
     var currencyDecimals = {
       'BIF': 0,
       'BYR': 0,
@@ -37,5 +37,5 @@
   }
 
   export default angular
-    .module('tw.form-components')
-    .service('TwCurrencyData', TwCurrencyData).name;
+    .module('tw.styleguide.services.currency-data', [])
+    .service('TwCurrencyService', TwCurrencyService).name;

@@ -1,4 +1,3 @@
-  import TwDateService from '../../services/tw-date-service/tw-date-service.service.js';
 
   function TwDateController($element, $log, $scope, TwDateService) {
     var $ctrl = this,

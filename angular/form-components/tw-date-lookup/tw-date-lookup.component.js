@@ -1,8 +1,7 @@
-  import TwDateService from '../../services/tw-date-service/tw-date-service.service.js';
 
   const TwDateLookup = {
     require: 'ngModel',
-    controller: ['$element', '$scope', '$timeout', 'TwDateService', TwDateLookupController],
+    controller: TwDateLookupController,
     bindings: {
       ngModel: '=',
       ngChange: '&',
@@ -584,6 +583,13 @@
 
     init();
   }
+
+  TwDateLookupController.$inject = [
+    '$element',
+    '$scope',
+    '$timeout',
+    'TwDateService'
+  ];
 
   export default angular
     .module('tw.components.date-lookup', [])

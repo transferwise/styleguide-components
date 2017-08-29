@@ -1,9 +1,4 @@
-(function(angular) {
-  'use strict';
 
-  angular
-    .module('tw.form-validation')
-    .directive('twValidation', TwValidation);
 
   function TwValidation() {
     return {
@@ -51,4 +46,7 @@
       element.attr("aria-invalid", true);
     }
   }
-})(window.angular);
+
+  export default angular
+    .module('tw.stylguide.validation.control', [])
+    .directive('twValidation', TwValidation).name;

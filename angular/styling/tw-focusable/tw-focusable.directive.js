@@ -1,7 +1,7 @@
 
   /* TODO deprecate in V1, opt-in through tw-focusable */
   angular
-    .module('tw.form-styling')
+    .module('tw.styleguide.styling.default-focus', [])
     .directive('formControl', TwFormControlStyling);
 
   function TwFormControlStyling() {

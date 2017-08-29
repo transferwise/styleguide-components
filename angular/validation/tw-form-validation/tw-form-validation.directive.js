@@ -1,11 +1,4 @@
 
-(function(angular) {
-  'use strict';
-
-  angular
-    .module('tw.form-validation')
-    .directive('form', TwFormValidation);
-
   function TwFormValidation() {
     return {
       restrict: 'E',
@@ -22,4 +15,7 @@
       }
     };
   }
-})(window.angular);
+
+  export default angular
+    .module('tw.styleguide.validation.form', [])
+    .directive('form', TwFormValidation).name;

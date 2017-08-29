@@ -1,4 +1,3 @@
-angular.module("tw.form-styling", []);
 !function(modules) {
     function __webpack_require__(moduleId) {
         if (installedModules[moduleId]) return installedModules[moduleId].exports;
@@ -111,7 +110,7 @@ angular.module("tw.form-styling", []);
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), angular.module("tw.form-styling").directive("formControl", TwFormControlStyling), 
+    }), angular.module("tw.styleguide.styling.default-focus", []).directive("formControl", TwFormControlStyling), 
     exports["default"] = angular.module("tw.styleguide.styling.focusable", []).directive("twFocusable", TwFocusable).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
@@ -354,11 +353,8 @@ angular.module("tw.form-styling", []);
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _angular = __webpack_require__(7), _angular2 = _interopRequireDefault(_angular), _twFocusableDirective = __webpack_require__(2), _twFocusableDirective2 = _interopRequireDefault(_twFocusableDirective), _twAffixDirective = __webpack_require__(1), _twAffixDirective2 = _interopRequireDefault(_twAffixDirective), _twPopOverDirective = __webpack_require__(3), _twPopOverDirective2 = _interopRequireDefault(_twPopOverDirective), _twToolTipDirective = __webpack_require__(6), _twToolTipDirective2 = _interopRequireDefault(_twToolTipDirective), _twTextFormatDirective = __webpack_require__(4), _twTextFormatDirective2 = _interopRequireDefault(_twTextFormatDirective), _twTextFormatFilter = __webpack_require__(5), _twTextFormatFilter2 = _interopRequireDefault(_twTextFormatFilter), stylingModule = _angular2["default"].module("tw.form-styling");
-    stylingModule.requires.push(_twFocusableDirective2["default"]), stylingModule.requires.push(_twAffixDirective2["default"]), 
-    stylingModule.requires.push(_twPopOverDirective2["default"]), stylingModule.requires.push(_twToolTipDirective2["default"]), 
-    stylingModule.requires.push(_twTextFormatDirective2["default"]), stylingModule.requires.push(_twTextFormatFilter2["default"]), 
-    exports["default"] = stylingModule.name;
+    var _angular = __webpack_require__(7), _angular2 = _interopRequireDefault(_angular), _twFocusableDirective = __webpack_require__(2), _twFocusableDirective2 = _interopRequireDefault(_twFocusableDirective), _twAffixDirective = __webpack_require__(1), _twAffixDirective2 = _interopRequireDefault(_twAffixDirective), _twPopOverDirective = __webpack_require__(3), _twPopOverDirective2 = _interopRequireDefault(_twPopOverDirective), _twToolTipDirective = __webpack_require__(6), _twToolTipDirective2 = _interopRequireDefault(_twToolTipDirective), _twTextFormatDirective = __webpack_require__(4), _twTextFormatDirective2 = _interopRequireDefault(_twTextFormatDirective), _twTextFormatFilter = __webpack_require__(5), _twTextFormatFilter2 = _interopRequireDefault(_twTextFormatFilter);
+    exports["default"] = _angular2["default"].module("tw.form-styling", [ _twFocusableDirective2["default"], _twAffixDirective2["default"], _twPopOverDirective2["default"], _twToolTipDirective2["default"], _twTextFormatDirective2["default"], _twTextFormatFilter2["default"] ]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwUndoStackFactory() {
