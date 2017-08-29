@@ -14,6 +14,4 @@ const TwLoader = {
   </div>"
 };
 
-export default angular
-  .module('tw.styleguide.loading.loader', [])
-  .component('twLoader', TwLoader).name;
+export default TwLoader;

@@ -16,6 +16,4 @@ function TwFormValidation() {
   };
 }
 
-export default angular
-  .module('tw.styleguide.validation.form', [])
-  .directive('form', TwFormValidation).name;
+export default TwFormValidation;

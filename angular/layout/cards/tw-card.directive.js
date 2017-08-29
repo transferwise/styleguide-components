@@ -1,17 +1,5 @@
 import TwCardsService from './tw-cards.service.js';
-
-function TwCardController($transclude, TwCardsService) {
-  var $ctrl = this;
-  $ctrl.hasForm = $transclude.isSlotFilled("cardForm");
-  $ctrl.toggle = TwCardsService.toggle;
-  $ctrl.addCard = TwCardsService.addCard;
-  $ctrl.getExpandedIndex = TwCardsService.getExpandedIndex;
-  $ctrl.updateExpandedIndex = TwCardsService.updateExpandedIndex;
-  $ctrl.getCard = TwCardsService.getCard;
-  $ctrl.getLength = TwCardsService.getLength;
-}
-
-TwCardController.$inject = ['$transclude', 'TwCardsService'];
+import TwCardController from './tw-card.controller.js';
 
 const collapsedCardTemplate = ' \
   <div class="p-a-panel" role="button" ng-click="$ctrl.toggle($ctrl.index)"> \
@@ -114,7 +102,4 @@ function TwCard() {
   };
 }
 
-export default angular
-  .module('tw.styleguide.layout.card', [])
-  .service('TwCardsService', TwCardsService)
-  .directive('twCard', TwCard).name;
+export default TwCard;

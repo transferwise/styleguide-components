@@ -12,6 +12,4 @@ const TwCards = {
     </ul>',
 };
 
-export default angular
-  .module('tw.styleguide.layout.cards', [])
-  .component('twCards', TwCards).name;
+export default TwCards;

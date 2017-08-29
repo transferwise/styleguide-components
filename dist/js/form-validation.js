@@ -50,7 +50,7 @@
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), TwDynamicAsyncValidator.$inject = [ "$log", "$q", "$http" ], exports["default"] = angular.module("tw.styleguide.validation.async", []).directive("twDynamicAsyncValidator", TwDynamicAsyncValidator).name;
+    }), TwDynamicAsyncValidator.$inject = [ "$log", "$q", "$http" ], exports["default"] = TwDynamicAsyncValidator;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwValidation() {
@@ -80,7 +80,7 @@
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), exports["default"] = angular.module("tw.stylguide.validation.control", []).directive("twValidation", TwValidation).name;
+    }), exports["default"] = TwValidation;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwFormValidation() {
@@ -97,7 +97,7 @@
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), exports["default"] = angular.module("tw.styleguide.validation.form", []).directive("form", TwFormValidation).name;
+    }), exports["default"] = TwFormValidation;
 }, function(module, exports) {
     module.exports = angular;
 }, function(module, exports, __webpack_require__) {

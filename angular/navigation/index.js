@@ -1,6 +1,6 @@
 import angular from 'angular';
 
-import Tabs from './tabs/tw-tabs.component.js';
+import Tabs from './tabs/';
 
 export default angular.module('tw.styleguide.navigation', [
   Tabs

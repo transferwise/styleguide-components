@@ -36,6 +36,4 @@ function TwPopOver() {
   };
 }
 
-export default angular
-  .module('tw.styleguide.help.popover', [])
-  .directive('twPopOver', TwPopOver).name;
+export default TwPopOver;

@@ -25,6 +25,4 @@ function TwAffix() {
   };
 }
 
-export default angular
-  .module('tw.styleguide.styling.affix', [])
-  .directive('twAffix', TwAffix).name;
+export default TwAffix;

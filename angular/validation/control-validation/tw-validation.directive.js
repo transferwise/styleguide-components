@@ -47,6 +47,4 @@ function checkModelAndUpdate(ngModel, formGroup, element) {
   }
 }
 
-export default angular
-  .module('tw.stylguide.validation.control', [])
-  .directive('twValidation', TwValidation).name;
+export default TwValidation;

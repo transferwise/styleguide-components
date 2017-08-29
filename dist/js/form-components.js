@@ -456,80 +456,48 @@
     var TwLoader = {
         template: "<div class='loader'>     <div class='loader-spinner'></div>     <div class='loader-flag'>       <svg xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='-2 -2 56 56'>         <polygon class='loader-flag-stroke'  stroke='#00B9FF' stroke-width='2' stroke-linejoin='miter' stroke-linecap='round' stroke-miterlimit='10' stroke-dasharray='300' stroke-dashoffset='300' fill='none' points='24.6,27.3 0,27.3 14.3,13.7 6.1,0 48.2,0 26.3,52 19.5,52 39.2,5.5 16.8,5.5 21.6,13.6 13.4,21.8 27,21.8' />       </svg>       <svg class='loader-flag-fill' xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='0 2 52 48'>         <polygon fill='#00B9FF' points='6.1,0 14.3,13.7 0,27.3 24.6,27.3 27,21.8 13.4,21.8 21.6,13.6 16.8,5.5 39.2,5.5 19.5,52 26.3,52 48.2,0 '/>       </svg>     </div>   </div>"
     };
-    exports["default"] = angular.module("tw.styleguide.loading.loader", []).component("twLoader", TwLoader).name;
+    exports["default"] = TwLoader;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwProcessController($scope, $interval, $timeout) {
-        function isStopped(state) {
-            return state === -1 || 0 === state || 1 === state;
-        }
-        var $ctrl = this;
-        $ctrl.processing = $ctrl.state;
-        var interval;
-        $scope.$watch("$ctrl.state", function(newVal) {
-            isStopped($ctrl.processing) && ($ctrl.processing = null, $ctrl.startProcess());
-        }), $scope.$watch("$ctrl.size", function(newVal) {
-            switch ($interval.cancel(interval), $ctrl.startProcess(), $ctrl.size || ($ctrl.size = "sm"), 
-            $ctrl.size) {
-              case "xs":
-                $ctrl.radius = "11";
-                break;
-
-              case "sm":
-                $ctrl.radius = "22";
-                break;
-
-              case "xl":
-                $ctrl.radius = "61";
-                break;
-
-              default:
-                $ctrl.radius = "46%";
-            }
-        }), $ctrl.startProcess = function() {
-            interval = $interval(function() {
-                $ctrl.processing = $ctrl.state, isStopped($ctrl.state) && $ctrl.stopProcess();
-            }, 1500);
-        }, $ctrl.stopProcess = function() {
-            $interval.cancel(interval), $ctrl.onStop && (0 === $ctrl.state ? $ctrl.onStop() : $timeout($ctrl.onStop, 1800));
-        }, $ctrl.startProcess();
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var TwProcess = {
+    var _twProcessController = __webpack_require__(31), _twProcessController2 = _interopRequireDefault(_twProcessController), TwProcess = {
         bindings: {
             state: "<",
             size: "@",
             onStop: "&",
             promise: "<"
         },
-        controller: [ "$scope", "$interval", "$timeout", TwProcessController ],
+        controller: _twProcessController2["default"],
         template: "<span class='process'     ng-class='{       \"process-success\": $ctrl.processing === 1,       \"process-danger\": $ctrl.processing === -1,       \"process-stopped\": $ctrl.processing === 0,       \"process-xs\": $ctrl.size === \"xs\",       \"process-sm\": $ctrl.size === \"sm\",       \"process-md\": $ctrl.size === \"md\",       \"process-lg\": $ctrl.size === \"lg\",       \"process-xl\": $ctrl.size === \"xl\"     }'>     <span class='process-icon-container'>       <span class='process-icon-horizontal'></span>       <span class='process-icon-vertical'></span>     </span>     <svg version='1.1'       xmlns='http://www.w3.org/2000/svg'       xml:space='preserve'>       <circle class='process-circle' cx='50%' cy='50%' ng-attr-r='{{$ctrl.radius}}'         fill-opacity='0.0' />     </svg>   </span>"
     };
-    exports["default"] = angular.module("tw.styleguide.loading.process", []).component("twProcess", TwProcess).name;
+    exports["default"] = TwProcess;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwTabsController() {
-        function switchTab(tab) {
-            $ctrl.active = tab, $ctrl.onChange && $ctrl.onChange(tab);
-        }
-        var $ctrl = this;
-        $ctrl.switchTab = switchTab, !$ctrl.active && $ctrl.tabs.length && ($ctrl.active = $ctrl.tabs[0].type);
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var TwTabs = {
+    var _twTabsController = __webpack_require__(32), _twTabsController2 = _interopRequireDefault(_twTabsController), TwTabs = {
         bindings: {
             tabs: "<",
             active: "=",
             onChange: "&"
         },
-        controller: TwTabsController,
+        controller: _twTabsController2["default"],
         template: "   <ul ng-if='$ctrl.tabs.length > 0'     class='nav nav-tabs m-b-3'>     <li ng-repeat='tab in $ctrl.tabs track by $index'       ng-class='{\"active\": $ctrl.active === tab.type}'>       <a href='' ng-click='$ctrl.switchTab(tab.type)'>         {{tab.label}}       </a>     </li>   </ul>"
     };
-    exports["default"] = angular.module("tw.styleguide.navigation.tabs", []).component("twTabs", TwTabs).name;
+    exports["default"] = TwTabs;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwCurrencyService() {
@@ -1521,4 +1489,56 @@
         value: !0
     }), TwUploadController.$inject = [ "$timeout", "$element", "$http", "$scope", "$transclude", "$q", "$attrs" ], 
     exports["default"] = TwUploadController;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function TwProcessController($scope, $interval, $timeout) {
+        function isStopped(state) {
+            return state === -1 || 0 === state || 1 === state;
+        }
+        var $ctrl = this;
+        $ctrl.processing = $ctrl.state;
+        var interval;
+        $scope.$watch("$ctrl.state", function(newVal) {
+            isStopped($ctrl.processing) && ($ctrl.processing = null, $ctrl.startProcess());
+        }), $scope.$watch("$ctrl.size", function(newVal) {
+            switch ($interval.cancel(interval), $ctrl.startProcess(), $ctrl.size || ($ctrl.size = "sm"), 
+            $ctrl.size) {
+              case "xs":
+                $ctrl.radius = "11";
+                break;
+
+              case "sm":
+                $ctrl.radius = "22";
+                break;
+
+              case "xl":
+                $ctrl.radius = "61";
+                break;
+
+              default:
+                $ctrl.radius = "46%";
+            }
+        }), $ctrl.startProcess = function() {
+            interval = $interval(function() {
+                $ctrl.processing = $ctrl.state, isStopped($ctrl.state) && $ctrl.stopProcess();
+            }, 1500);
+        }, $ctrl.stopProcess = function() {
+            $interval.cancel(interval), $ctrl.onStop && (0 === $ctrl.state ? $ctrl.onStop() : $timeout($ctrl.onStop, 1800));
+        }, $ctrl.startProcess();
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), TwProcessController.$inject = [ "$scope", "$interval", "$timeout" ], exports["default"] = TwProcessController;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function TwTabsController() {
+        function switchTab(tab) {
+            $ctrl.active = tab, $ctrl.onChange && $ctrl.onChange(tab);
+        }
+        var $ctrl = this;
+        $ctrl.switchTab = switchTab, !$ctrl.active && $ctrl.tabs.length && ($ctrl.active = $ctrl.tabs[0].type);
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), exports["default"] = TwTabsController;
 } ]);

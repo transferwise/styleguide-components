@@ -45,6 +45,4 @@ function TwDynamicAsyncValidator($log, $q, $http) {
 
 TwDynamicAsyncValidator.$inject = ['$log', '$q', '$http'];
 
-export default angular
-  .module('tw.styleguide.validation.async', [])
-  .directive('twDynamicAsyncValidator', TwDynamicAsyncValidator).name;
+export default TwDynamicAsyncValidator;

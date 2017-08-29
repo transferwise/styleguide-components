@@ -19,6 +19,4 @@ function TwToolTip() {
   };
 }
 
-export default angular
-  .module('tw.styleguide.help.tooltip', [])
-  .directive('twToolTip', TwToolTip).name;
+export default TwToolTip;
