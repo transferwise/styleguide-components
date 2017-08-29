@@ -113,38 +113,28 @@
     TwTextFormatFilter.$inject = [ "TwTextFormatService" ], exports["default"] = angular.module("tw.styleguide.styling.text-format").filter("twTextFormat", TwTextFormatFilter).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwPopOver() {
-        return {
-            restrict: "A",
-            link: function(scope, element) {
-                if (!element.popover) return void console.log("twPopOver requires tooltip from bootstrap.js");
-                var options = {}, tag = element[0];
-                tag.getAttribute("data-trigger") ? "hover" === tag.getAttribute("data-trigger") && (options.trigger = "hover focus") : options.trigger = "focus", 
-                tag.getAttribute("data-placement") || (options.placement = "top"), tag.getAttribute("data-content-html") && (options.html = !0), 
-                element.popover(options), tag.setAttribute("tabindex", "0"), tag.setAttribute("role", "button"), 
-                tag.setAttribute("data-toggle", "popover");
-            }
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
         };
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), exports["default"] = TwPopOver;
+    });
+    var _twPopOverDirective = __webpack_require__(9), _twPopOverDirective2 = _interopRequireDefault(_twPopOverDirective);
+    exports["default"] = angular.module("tw.styleguide.help.popover", []).directive("twPopOver", _twPopOverDirective2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwToolTip() {
-        return {
-            restrict: "A",
-            link: function(scope, element) {
-                if (!element.tooltip) return void console.log("twToolTip requires bootstrap.js");
-                var tag = element[0], options = {};
-                tag.getAttribute("data-placement") || (options.placement = "top"), element.tooltip(options), 
-                tag.setAttribute("tabindex", "0"), tag.setAttribute("data-toggle", "tooltip");
-            }
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
         };
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), exports["default"] = TwToolTip;
+    });
+    var _twToolTipDirective = __webpack_require__(10), _twToolTipDirective2 = _interopRequireDefault(_twToolTipDirective);
+    exports["default"] = angular.module("tw.styleguide.help.tooltip", []).directive("twToolTip", _twToolTipDirective2["default"]).name;
 }, function(module, exports) {
     module.exports = angular;
 }, function(module, exports, __webpack_require__) {
@@ -157,8 +147,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _angular = __webpack_require__(5), _angular2 = _interopRequireDefault(_angular), _twPopOverDirective = __webpack_require__(3), _twPopOverDirective2 = _interopRequireDefault(_twPopOverDirective), _twToolTipDirective = __webpack_require__(4), _twToolTipDirective2 = _interopRequireDefault(_twToolTipDirective), _twTextFormatDirective = __webpack_require__(1), _twTextFormatDirective2 = _interopRequireDefault(_twTextFormatDirective), _twTextFormatFilter = __webpack_require__(2), _twTextFormatFilter2 = _interopRequireDefault(_twTextFormatFilter);
-    exports["default"] = _angular2["default"].module("tw.form-styling", [ _twPopOverDirective2["default"], _twToolTipDirective2["default"], _twTextFormatDirective2["default"], _twTextFormatFilter2["default"] ]).name;
+    var _angular = __webpack_require__(5), _angular2 = _interopRequireDefault(_angular), _popOver = __webpack_require__(3), _popOver2 = _interopRequireDefault(_popOver), _toolTip = __webpack_require__(4), _toolTip2 = _interopRequireDefault(_toolTip), _twTextFormatDirective = __webpack_require__(1), _twTextFormatDirective2 = _interopRequireDefault(_twTextFormatDirective), _twTextFormatFilter = __webpack_require__(2), _twTextFormatFilter2 = _interopRequireDefault(_twTextFormatFilter);
+    exports["default"] = _angular2["default"].module("tw.form-styling", [ _popOver2["default"], _toolTip2["default"], _twTextFormatDirective2["default"], _twTextFormatFilter2["default"] ]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwTextFormatController($element, $timeout, $scope, TwTextFormatService, TwUndoStackFactory) {
@@ -341,4 +331,38 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     }), exports["default"] = TwUndoStackFactory;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function TwPopOver() {
+        return {
+            restrict: "A",
+            link: function(scope, element) {
+                if (!element.popover) return void console.log("twPopOver requires tooltip from bootstrap.js");
+                var options = {}, tag = element[0];
+                tag.getAttribute("data-trigger") ? "hover" === tag.getAttribute("data-trigger") && (options.trigger = "hover focus") : options.trigger = "focus", 
+                tag.getAttribute("data-placement") || (options.placement = "top"), tag.getAttribute("data-content-html") && (options.html = !0), 
+                element.popover(options), tag.setAttribute("tabindex", "0"), tag.setAttribute("role", "button"), 
+                tag.setAttribute("data-toggle", "popover");
+            }
+        };
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), exports["default"] = TwPopOver;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function TwToolTip() {
+        return {
+            restrict: "A",
+            link: function(scope, element) {
+                if (!element.tooltip) return void console.log("twToolTip requires bootstrap.js");
+                var tag = element[0], options = {};
+                tag.getAttribute("data-placement") || (options.placement = "top"), element.tooltip(options), 
+                tag.setAttribute("tabindex", "0"), tag.setAttribute("data-toggle", "tooltip");
+            }
+        };
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), exports["default"] = TwToolTip;
 } ]);

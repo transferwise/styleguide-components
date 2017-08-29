@@ -7,7 +7,7 @@ describe('Directive: TwDateLookup, ', function() {
       element,
       TwDateService;
 
-  beforeEach(module('tw.form-components'));
+  beforeEach(module('tw.styleguide.forms'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');

@@ -3,7 +3,7 @@ describe('TwDateService test', function() {
 
   var service, $scope, $rootScope, $window;
 
-  beforeEach(module('tw.form-components'));
+  beforeEach(module('tw.styleguide-components'));
 
   beforeEach(inject(function($injector) {
     service = $injector.get('TwDateService');

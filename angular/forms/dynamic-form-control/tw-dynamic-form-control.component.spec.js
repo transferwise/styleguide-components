@@ -7,7 +7,7 @@ describe('Directive: TwDynamicFormControlDirective', function() {
     formGroup;
 
   beforeEach(function() {
-    module('tw.form-components');
+    module('tw.styleguide.forms');
   });
 
   beforeEach(inject(function($injector) {

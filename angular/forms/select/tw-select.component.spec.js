@@ -28,7 +28,7 @@ describe('Directive: TwSelect', function() {
   var OPTION_CIRCLE_ICON_SELECTOR = '.dropdown-menu .circle .icon';
   var OPTION_DISABLED_SELECTOR = '.dropdown-menu .disabled';
 
-  beforeEach(module('tw.form-components'));
+  beforeEach(module('tw.styleguide.forms'));
 
   beforeEach(inject(function($injector) {
       $rootScope = $injector.get('$rootScope');

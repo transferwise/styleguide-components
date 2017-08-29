@@ -7,7 +7,7 @@ describe('Directive: TwCards', function() {
     isolateScope,
     directiveElement;
 
-  beforeEach(module('tw.layout-components'));
+  beforeEach(module('tw.styleguide.layout'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');

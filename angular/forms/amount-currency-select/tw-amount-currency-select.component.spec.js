@@ -13,8 +13,9 @@ describe('Directive: TwAmountCurrencySelect', function() {
   var INPUT_SELECTOR = 'input';
   var SELECT_SELECTOR = 'select';
 
-  beforeEach(module('tw.form-components'));
-  beforeEach(module('tw.form-styling'));
+  //beforeEach(module('tw.styleguide.forms'));
+  //beforeEach(module('tw.styleguide.validation'));
+  beforeEach(module('tw.styleguide-components'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');

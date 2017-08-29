@@ -16,8 +16,8 @@ describe('Directive: TwRadio', function() {
   var INPUT_SELECTOR = 'input';
   var LABEL_SELECTOR = '.checkbox label';
 
-  beforeEach(module('tw.form-components'));
-  beforeEach(module('tw.form-styling'));
+  beforeEach(module('tw.styleguide.forms'));
+  beforeEach(module('tw.styleguide.validation'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');

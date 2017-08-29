@@ -11,7 +11,7 @@ describe('Directive: TwUpload', function() {
   var LIST_ITEMS_SELECTOR = '.tw-select-option-link';
   var FILTER_INPUT_SELECTOR = '.tw-select-filter';
 
-  beforeEach(module('tw.form-components'));
+  beforeEach(module('tw.styleguide.forms'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');

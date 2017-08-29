@@ -12,8 +12,9 @@ describe('Directive: TwCurrencyInput', function() {
   var DIRECTIVE_SELECTOR = 'tw-currency-input';
   var INPUT_SELECTOR = 'input';
 
-  beforeEach(module('tw.form-components'));
-  beforeEach(module('tw.form-styling'));
+  //beforeEach(module('tw.styleguide.forms'));
+  //beforeEach(module('tw.styleguide.validation'));
+  beforeEach(module('tw.styleguide-components'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');

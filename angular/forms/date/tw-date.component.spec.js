@@ -6,7 +6,7 @@ describe('Directive: TwDate', function() {
     $scope,
     element;
 
-  beforeEach(module('tw.form-components'));
+  beforeEach(module('tw.styleguide.forms'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');

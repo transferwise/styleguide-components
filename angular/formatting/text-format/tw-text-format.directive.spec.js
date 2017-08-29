@@ -8,7 +8,7 @@ describe('Directive: TwTextFormat, ', function() {
       $timeout,
       input;
 
-  beforeEach(module('tw.form-styling'));
+  beforeEach(module('tw.styleguide.formatting'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');
