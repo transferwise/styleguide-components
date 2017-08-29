@@ -1,9 +1,8 @@
-(function(angular) {
 
   const TwDynamicFormControl = {
     require: 'ngModel',
     transclude: true,
-    controller: "TwDynamicFormControlController",
+    controller: TwDynamicFormControlController,
     bindings: {
       type: "@",
       name: "@",
@@ -230,13 +229,8 @@
     };
   }
 
-  angular
-    .module('tw.form-components')
-    .component('twDynamicFormControl', TwDynamicFormControl);
-
-  angular
-    .module('tw.form-components')
-    .controller('TwDynamicFormControlController', TwDynamicFormControlController);
-
   TwDynamicFormControlController.$inject = ['$element', '$scope'];
-})(window.angular);
+
+  export default angular
+    .module('tw.components.dynamic-from-control', [])
+    .component('twDynamicFormControl', TwDynamicFormControl).name;

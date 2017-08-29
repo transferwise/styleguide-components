@@ -1,4 +1,5 @@
-(function(angular) {
+
+  //import TwFocusable from '../styling/tw-focusable/tw-focusable.directive.js';
 
   const TwRadio = {
     require: 'ngModel',
@@ -85,9 +86,7 @@
       }
     });
   }
-  
-  angular
-    .module('tw.form-components')
-    .component('twRadio', TwRadio);
 
-})(window.angular);
+  export default angular
+    .module('tw.components.radio', [])
+    .component('twRadio', TwRadio).name;

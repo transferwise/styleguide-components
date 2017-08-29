@@ -1,4 +1,3 @@
-(function(angular) {
 
   const TwFieldset = {
     bindings: {
@@ -215,7 +214,6 @@
     init();
   }
 
-  angular
-    .module('tw.form-components')
-    .component('twFieldset', TwFieldset);
-})(window.angular);
+  export default angular
+    .module('tw.components.requirements-form', [])
+    .component('twFieldset', TwFieldset).name;

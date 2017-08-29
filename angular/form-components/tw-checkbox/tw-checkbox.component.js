@@ -1,5 +1,5 @@
 
-(function(angular) {
+  //import TwFocusable from '../styling/tw-focusable/tw-focusable.directive.js';
 
   const TwCheckbox = {
     require: 'ngModel',
@@ -29,15 +29,10 @@
       </button>"
   };
 
-  angular
-    .module('tw.form-components')
-    .component('twCheckbox', TwCheckbox);
-
   function TwCheckboxController($scope, $element) {
     var $ctrl = this,
       $ngModel = $element.controller('ngModel'),
       buttonElement = $element.find('.tw-checkbox-button');
-      labelSelector = '.checkbox';
 
     $ctrl.isChecked = function() {
       return ($ctrl.ngTrueValue && $ctrl.ngTrueValue === $ctrl.ngModel) ||
@@ -127,4 +122,7 @@
       $element.closest('.form-group').removeClass('has-error');
     }
   }
-})(window.angular);
+
+  export default angular
+    .module('tw.components.checkbox', [])
+    .component('twCheckbox', TwCheckbox).name;

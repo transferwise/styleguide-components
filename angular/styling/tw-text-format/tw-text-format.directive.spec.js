@@ -6,8 +6,7 @@ describe('Directive: TwTextFormat, ', function() {
       $scope,
       $element,
       $timeout,
-      input,
-      TwDateService;
+      input;
 
   beforeEach(module('tw.form-styling'));
 

@@ -1,16 +1,4 @@
-(function(angular) {
-  'use strict';
-
-  angular
-    .module('tw.form-components')
-    .controller('TwAmountCurrencySelectController', TwAmountCurrencySelectController);
-
-  TwAmountCurrencySelectController.$inject = [
-    '$element',
-    '$scope',
-    '$timeout',
-    'TwCurrencyData'
-  ];
+  import TwCurrencyData from '../../services/tw-currency-data/tw-currency-data.service.js';
 
   function TwAmountCurrencySelectController($element, $scope, $timeout, TwCurrencyData) {
     var $ctrl = this;
@@ -85,4 +73,11 @@
     }
   }
 
-})(window.angular);
+  TwAmountCurrencySelectController.$inject = [
+    '$element',
+    '$scope',
+    '$timeout',
+    'TwCurrencyData'
+  ];
+
+  export default TwAmountCurrencySelectController;

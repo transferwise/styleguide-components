@@ -1,4 +1,4 @@
-(function(angular) {
+
   const TwLoader = {
     template:
     "<div class='loader'> \
@@ -14,8 +14,6 @@
     </div>"
   };
 
-  angular
-    .module('tw.form-components')
-    .component('twLoader', TwLoader);
-
-})(window.angular);
+  export default angular
+    .module('tw.components.loader', [])
+    .component('twLoader', TwLoader).name;

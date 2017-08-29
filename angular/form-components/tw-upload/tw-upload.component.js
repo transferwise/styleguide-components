@@ -1,4 +1,3 @@
-(function(angular) {
 
   const TwUpload = {
     controller: [
@@ -399,10 +398,7 @@
     };
   }
 
-  angular
-    .module('tw.form-components')
+  export default angular
+    .module('tw.components.upload', [])
     .directive('twFileInput', TwFileInputDirective)
-    .controller('twUploadController', TwUploadController)
-    .component('twUpload', TwUpload);
-
-})(window.angular);
+    .component('twUpload', TwUpload).name;

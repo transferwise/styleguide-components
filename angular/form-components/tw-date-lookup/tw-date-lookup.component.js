@@ -1,4 +1,3 @@
-(function(angular) {
 
   const TwDateLookup = {
     require: 'ngModel',
@@ -585,8 +584,6 @@
     init();
   }
 
-  angular
-    .module('tw.form-components')
-    .component('twDateLookup', TwDateLookup);
-
-})(window.angular);
+  export default angular
+    .module('tw.components.date-lookup', [])
+    .component('twDateLookup', TwDateLookup).name;

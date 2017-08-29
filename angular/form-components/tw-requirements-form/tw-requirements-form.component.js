@@ -1,4 +1,4 @@
-(function(angular) {
+  import TwRequirementsService from './tw-requirements.service.js';
 
   const TwRequirementsForm = {
     bindings: {
@@ -122,8 +122,6 @@
     init();
   }
 
-  angular
-    .module('tw.form-components')
-    .component('twRequirementsForm', TwRequirementsForm);
-
-})(window.angular);
+  export default angular
+    .module('tw.components.requirements-form', [])
+    .component('twRequirementsForm', TwRequirementsForm).name;

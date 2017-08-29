@@ -1,16 +1,4 @@
-(function(angular) {
-  'use strict';
-
-  angular
-    .module('tw.form-components')
-    .controller('TwCurrencyInputController', TwCurrencyInputController);
-
-  TwCurrencyInputController.$inject = [
-    '$element',
-    '$scope',
-    '$timeout',
-    'TwCurrencyData'
-  ];
+  import TwCurrencyData from '../../services/tw-currency-data/tw-currency-data.service.js';
 
   function TwCurrencyInputController($element, $scope, $timeout, TwCurrencyData) {
     var $ctrl = this;
@@ -67,4 +55,11 @@
     }
   }
 
-})(window.angular);
+  TwCurrencyInputController.$inject = [
+    '$element',
+    '$scope',
+    '$timeout',
+    'TwCurrencyData'
+  ];
+
+  export default TwCurrencyInputController;

@@ -1,9 +1,3 @@
-(function(angular) {
-  'use strict';
-
-  angular
-    .module('tw.form-components')
-    .service('TwCurrencyData', TwCurrencyData);
 
   function TwCurrencyData() {
     var currencyDecimals = {
@@ -41,4 +35,7 @@
       return 2;
     };
   }
-})(window.angular);
+
+  export default angular
+    .module('tw.form-components')
+    .service('TwCurrencyData', TwCurrencyData).name;

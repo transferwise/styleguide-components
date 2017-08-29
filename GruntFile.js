@@ -1,7 +1,31 @@
+const webpack = require('webpack'); //to access built-in plugins
+const path = require('path');
+
 module.exports = function(grunt) {
+
+    //dist: require("./webpack.config.js")
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-
+        webpack: {
+          options: {},
+          build: {
+            entry: './angular/form-components/form-components.js',
+            output: {
+              path: path.join(__dirname, './build'),
+              filename: 'form-components.webpack.js'
+            },
+            externals: [{
+              angular: 'angular'
+            }],
+            module: {
+              rules: [{
+                test: /\.js$/,
+                exclude: [/node_modules/],
+                loader: 'babel-loader'
+              }]
+            }
+          }
+        },
         watch: {
             less: {
                 files: ['styles/**/*.less'],
@@ -9,7 +33,7 @@ module.exports = function(grunt) {
             },
             components: {
                 files: ['angular/**/*.js'],
-                tasks: ['uglify', 'jshint']
+                tasks: ['webpack', 'uglify', 'jshint']
             },
             templates: {
                 files: ['angular/**/*.html'],
@@ -23,7 +47,10 @@ module.exports = function(grunt) {
                     'angular/**/*.component.js',
                     'angular/**/*.directive.js',
                     'angular/**/*.service.js',
-                    'angular/**/*.filter.js'
+                    'angular/**/*.filter.js',
+                    'build/form-components.webpack.js',
+                    '!angular/form-components/*/*.js',
+                    '!angular/services/*/*.*.js',
                 ],
                 dest: 'dist/js/styleguide-components.js',
                 options: {
@@ -42,7 +69,10 @@ module.exports = function(grunt) {
                     'angular/**/*.component.js',
                     'angular/**/*.directive.js',
                     'angular/**/*.service.js',
-                    'angular/**/*.filter.js'
+                    'angular/**/*.filter.js',
+                    'build/form-components.webpack.js',
+                    '!angular/form-components/*/*.*.js',
+                    '!angular/services/*/*.*.js',
                 ],
                 dest: 'dist/js/styleguide-components.min.js',
                 options: {
@@ -110,7 +140,10 @@ module.exports = function(grunt) {
                     'angular/form-components/**/*.component.js',
                     'angular/form-components/**/*.directive.js',
                     'angular/form-components/**/*.service.js',
-                    'angular/services/**/*.service.js'
+                    'angular/services/**/*.service.js',
+                    'build/form-components.webpack.js',
+                    '!angular/form-components/*/*.*.js',
+                    '!angular/services/*/*.*.js',
                 ],
                 dest: 'dist/js/form-components.js',
                 options: {
@@ -125,7 +158,10 @@ module.exports = function(grunt) {
                     'angular/form-components/**/*.component.js',
                     'angular/form-components/**/*.directive.js',
                     'angular/form-components/**/*.service.js',
-                    'angular/services/**/*.service.js'
+                    'angular/services/**/*.service.js',
+                    'build/form-components.webpack.js',
+                    '!angular/form-components/*/*.*.js',
+                    '!angular/services/*/*.*.js',
                 ],
                 dest: 'dist/js/form-components.min.js',
                 options: {
@@ -263,8 +299,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-htmllint');
+    grunt.loadNpmTasks("grunt-webpack");
 
     // === REGISTER TASKS ===
-    grunt.registerTask('default', ['jshint', 'uglify', 'less', 'htmllint', 'copy', 'watch']);
-    grunt.registerTask('build', ['jshint', 'uglify', 'less', 'htmllint', 'copy']);
+    grunt.registerTask('default', ['jshint', 'webpack', 'uglify', 'less', 'htmllint', 'copy', 'watch']);
+    grunt.registerTask('build', ['jshint', 'webpack', 'uglify', 'less', 'htmllint', 'copy']);
 };

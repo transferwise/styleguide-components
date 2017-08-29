@@ -1,9 +1,3 @@
-(function(angular) {
-  'use strict';
-
-  angular
-    .module('tw.form-components')
-    .service('TwRequirementsService', TwRequirementsService);
 
   function TwRequirementsService() {
     this.cleanRequirementsModel = function(model, oldRequirements, newRequirements) {
@@ -76,4 +70,7 @@
       }
     }
   }
-})(window.angular);
+
+  export default angular
+    .module('tw.components.requirements-form')
+    .service('TwRequirementsService', TwRequirementsService).name;
