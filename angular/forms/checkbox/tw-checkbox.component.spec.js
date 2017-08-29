@@ -14,7 +14,8 @@ describe('Directive: TwCheckbox', function() {
   var INPUT_SELECTOR = 'input';
   var LABEL_SELECTOR = '.checkbox label';
 
-  beforeEach(module('tw.styleguide.forms'));
+  beforeEach(module('tw.styleguide.forms.checkbox'));
+  beforeEach(module('tw.styleguide.forms.focusable'));
   beforeEach(module('tw.styleguide.validation'));
 
   beforeEach(inject(function($injector) {

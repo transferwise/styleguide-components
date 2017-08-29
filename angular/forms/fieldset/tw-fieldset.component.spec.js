@@ -6,7 +6,7 @@ describe('Directive: TwFieldset', function() {
       $scope,
       directiveElement;
 
-  beforeEach(module('tw.styleguide-components'));
+  beforeEach(module('tw.styleguide.forms'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');

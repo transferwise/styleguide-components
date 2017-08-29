@@ -6,7 +6,8 @@ describe('Directive: TwRequirementsForm', function() {
     $scope,
     directiveElement;
 
-  beforeEach(module('tw.styleguide-components'));
+  beforeEach(module('tw.styleguide.forms'));
+  beforeEach(module('tw.styleguide.navigation'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');

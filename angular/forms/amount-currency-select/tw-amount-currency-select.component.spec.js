@@ -13,8 +13,9 @@ describe('Directive: TwAmountCurrencySelect', function() {
   var INPUT_SELECTOR = 'input';
   var SELECT_SELECTOR = 'select';
 
-  //beforeEach(module('tw.styleguide.forms'));
-  //beforeEach(module('tw.styleguide.validation'));
+  //beforeEach(module('tw.styleguide.forms.amount-currency-select'));
+  //beforeEach(module('tw.styleguide.forms.focusable'));
+  //beforeEach(module('tw.styleguide.services.currency-data'));
   beforeEach(module('tw.styleguide-components'));
 
   beforeEach(inject(function($injector) {
