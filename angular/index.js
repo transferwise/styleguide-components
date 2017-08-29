@@ -1,13 +1,18 @@
 import angular from 'angular';
 
-import FormComponents from './form-components/';
-import FormStyling from './styling/';
-import FormValidation from './validation/';
-import LayoutComponents from './layout-components/';
+import Forms from './forms/';
+import Validation from './validation/';
+import Formatting from './formatting/';
+
+import Styling from './styling/';
+import Layout from './layout/';
+import Navigation from './navigation/';
 
 export default angular.module('tw.styleguide-components', [
-  FormValidation,
-  FormComponents,
-  FormStyling,
-  LayoutComponents
+  Forms,
+  Validation,
+  Formatting,
+  Styling,
+  Layout,
+  Navigation
 ]).name;
