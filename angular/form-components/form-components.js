@@ -33,6 +33,7 @@ export default angular.module('tw.form-components', [
   TwDateLookup,
   TwCurrencyInput,
   TwAmountCurrencySelect,
+  TwDynamicFormControl,
   TwFieldset,
   TwRequirementsForm,
   TwTabs,
