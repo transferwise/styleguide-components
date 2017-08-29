@@ -280,7 +280,7 @@
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), exports["default"] = angular.module("tw.styleguide.styling.popover", []).directive("twPopOver", TwPopOver).name;
+    }), exports["default"] = angular.module("tw.styleguide.help.popover", []).directive("twPopOver", TwPopOver).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwToolTip() {
@@ -296,7 +296,7 @@
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), exports["default"] = angular.module("tw.styleguide.styling.tooltip", []).directive("twToolTip", TwToolTip).name;
+    }), exports["default"] = angular.module("tw.styleguide.help.tooltip", []).directive("twToolTip", TwToolTip).name;
 }, function(module, exports) {
     module.exports = angular;
 }, function(module, exports, __webpack_require__) {

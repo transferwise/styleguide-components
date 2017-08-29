@@ -13,12 +13,13 @@ import CurrencyInput from './forms/currency-input/tw-currency-input.component.js
 import AmountCurrencySelect from './forms/amount-currency-select/tw-amount-currency-select.component.js';
 import DynamicFormControl from './forms/dynamic-form-control/tw-dynamic-form-control.component.js';
 import Fieldset from './forms/fieldset/tw-fieldset.component.js';
-import RequirementsForm from './forms/requirements-form/tw-requirements-form.component.js';
 import Focusable from './forms/focusable/tw-focusable.directive.js';
 
 import Tabs from './navigation/tabs/tw-tabs.component.js';
-import Loader from './styling/loader/tw-loader.component.js';
-import Process from './styling/process/tw-process.component.js';
+import Loader from './loading/loader/tw-loader.component.js';
+import Process from './loading/process/tw-process.component.js';
+
+import RequirementsForm from './forms/requirements-form/tw-requirements-form.component.js';
 
 // Deprecated
 import UploadDroppable from './forms/upload-droppable/tw-upload-droppable.directive.js';

@@ -1,7 +1,7 @@
 import angular from 'angular';
 
-import PopOver from './styling/pop-over/tw-pop-over.directive.js';
-import ToolTip from './styling/tool-tip/tw-tool-tip.directive.js';
+import PopOver from './help/pop-over/tw-pop-over.directive.js';
+import ToolTip from './help/tool-tip/tw-tool-tip.directive.js';
 import TextFormatDirective from './formatting/text-format/tw-text-format.directive.js';
 import TextFormatFilter from './formatting/text-format/tw-text-format.filter.js';
 

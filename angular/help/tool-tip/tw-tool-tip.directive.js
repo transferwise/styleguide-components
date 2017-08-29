@@ -20,5 +20,5 @@ function TwToolTip() {
 }
 
 export default angular
-  .module('tw.styleguide.styling.tooltip', [])
+  .module('tw.styleguide.help.tooltip', [])
   .directive('twToolTip', TwToolTip).name;

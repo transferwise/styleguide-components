@@ -37,5 +37,5 @@ function TwPopOver() {
 }
 
 export default angular
-  .module('tw.styleguide.styling.popover', [])
+  .module('tw.styleguide.help.popover', [])
   .directive('twPopOver', TwPopOver).name;

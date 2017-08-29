@@ -1059,6 +1059,66 @@
     exports["default"] = angular.module("tw.styleguide.forms.upload", []).directive("twFileInput", TwFileInputDirective).component("twUpload", TwUpload).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    });
+    var TwLoader = {
+        template: "<div class='loader'>     <div class='loader-spinner'></div>     <div class='loader-flag'>       <svg xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='-2 -2 56 56'>         <polygon class='loader-flag-stroke'  stroke='#00B9FF' stroke-width='2' stroke-linejoin='miter' stroke-linecap='round' stroke-miterlimit='10' stroke-dasharray='300' stroke-dashoffset='300' fill='none' points='24.6,27.3 0,27.3 14.3,13.7 6.1,0 48.2,0 26.3,52 19.5,52 39.2,5.5 16.8,5.5 21.6,13.6 13.4,21.8 27,21.8' />       </svg>       <svg class='loader-flag-fill' xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='0 2 52 48'>         <polygon fill='#00B9FF' points='6.1,0 14.3,13.7 0,27.3 24.6,27.3 27,21.8 13.4,21.8 21.6,13.6 16.8,5.5 39.2,5.5 19.5,52 26.3,52 48.2,0 '/>       </svg>     </div>   </div>"
+    };
+    exports["default"] = angular.module("tw.styleguide.loading.loader", []).component("twLoader", TwLoader).name;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function TwProcessController($scope, $interval, $timeout) {
+        function isStopped(state) {
+            return state === -1 || 0 === state || 1 === state;
+        }
+        var $ctrl = this;
+        $ctrl.processing = $ctrl.state;
+        var interval;
+        $scope.$watch("$ctrl.state", function(newVal) {
+            isStopped($ctrl.processing) && ($ctrl.processing = null, $ctrl.startProcess());
+        }), $scope.$watch("$ctrl.size", function(newVal) {
+            switch ($interval.cancel(interval), $ctrl.startProcess(), $ctrl.size || ($ctrl.size = "sm"), 
+            $ctrl.size) {
+              case "xs":
+                $ctrl.radius = "11";
+                break;
+
+              case "sm":
+                $ctrl.radius = "22";
+                break;
+
+              case "xl":
+                $ctrl.radius = "61";
+                break;
+
+              default:
+                $ctrl.radius = "46%";
+            }
+        }), $ctrl.startProcess = function() {
+            interval = $interval(function() {
+                $ctrl.processing = $ctrl.state, isStopped($ctrl.state) && $ctrl.stopProcess();
+            }, 1500);
+        }, $ctrl.stopProcess = function() {
+            $interval.cancel(interval), $ctrl.onStop && (0 === $ctrl.state ? $ctrl.onStop() : $timeout($ctrl.onStop, 1800));
+        }, $ctrl.startProcess();
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    });
+    var TwProcess = {
+        bindings: {
+            state: "<",
+            size: "@",
+            onStop: "&",
+            promise: "<"
+        },
+        controller: [ "$scope", "$interval", "$timeout", TwProcessController ],
+        template: "<span class='process'     ng-class='{       \"process-success\": $ctrl.processing === 1,       \"process-danger\": $ctrl.processing === -1,       \"process-stopped\": $ctrl.processing === 0,       \"process-xs\": $ctrl.size === \"xs\",       \"process-sm\": $ctrl.size === \"sm\",       \"process-md\": $ctrl.size === \"md\",       \"process-lg\": $ctrl.size === \"lg\",       \"process-xl\": $ctrl.size === \"xl\"     }'>     <span class='process-icon-container'>       <span class='process-icon-horizontal'></span>       <span class='process-icon-vertical'></span>     </span>     <svg version='1.1'       xmlns='http://www.w3.org/2000/svg'       xml:space='preserve'>       <circle class='process-circle' cx='50%' cy='50%' ng-attr-r='{{$ctrl.radius}}'         fill-opacity='0.0' />     </svg>   </span>"
+    };
+    exports["default"] = angular.module("tw.styleguide.loading.process", []).component("twProcess", TwProcess).name;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
     function TwTabsController() {
         function switchTab(tab) {
             $ctrl.active = tab, $ctrl.onChange && $ctrl.onChange(tab);
@@ -1218,66 +1278,6 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     }), exports["default"] = angular.module("tw.styleguide.services.date", []).service("TwDateService", TwDateService).name;
-}, function(module, exports, __webpack_require__) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", {
-        value: !0
-    });
-    var TwLoader = {
-        template: "<div class='loader'>     <div class='loader-spinner'></div>     <div class='loader-flag'>       <svg xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='-2 -2 56 56'>         <polygon class='loader-flag-stroke'  stroke='#00B9FF' stroke-width='2' stroke-linejoin='miter' stroke-linecap='round' stroke-miterlimit='10' stroke-dasharray='300' stroke-dashoffset='300' fill='none' points='24.6,27.3 0,27.3 14.3,13.7 6.1,0 48.2,0 26.3,52 19.5,52 39.2,5.5 16.8,5.5 21.6,13.6 13.4,21.8 27,21.8' />       </svg>       <svg class='loader-flag-fill' xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='0 2 52 48'>         <polygon fill='#00B9FF' points='6.1,0 14.3,13.7 0,27.3 24.6,27.3 27,21.8 13.4,21.8 21.6,13.6 16.8,5.5 39.2,5.5 19.5,52 26.3,52 48.2,0 '/>       </svg>     </div>   </div>"
-    };
-    exports["default"] = angular.module("tw.styleguide.navigation.loader", []).component("twLoader", TwLoader).name;
-}, function(module, exports, __webpack_require__) {
-    "use strict";
-    function TwProcessController($scope, $interval, $timeout) {
-        function isStopped(state) {
-            return state === -1 || 0 === state || 1 === state;
-        }
-        var $ctrl = this;
-        $ctrl.processing = $ctrl.state;
-        var interval;
-        $scope.$watch("$ctrl.state", function(newVal) {
-            isStopped($ctrl.processing) && ($ctrl.processing = null, $ctrl.startProcess());
-        }), $scope.$watch("$ctrl.size", function(newVal) {
-            switch ($interval.cancel(interval), $ctrl.startProcess(), $ctrl.size || ($ctrl.size = "sm"), 
-            $ctrl.size) {
-              case "xs":
-                $ctrl.radius = "11";
-                break;
-
-              case "sm":
-                $ctrl.radius = "22";
-                break;
-
-              case "xl":
-                $ctrl.radius = "61";
-                break;
-
-              default:
-                $ctrl.radius = "46%";
-            }
-        }), $ctrl.startProcess = function() {
-            interval = $interval(function() {
-                $ctrl.processing = $ctrl.state, isStopped($ctrl.state) && $ctrl.stopProcess();
-            }, 1500);
-        }, $ctrl.stopProcess = function() {
-            $interval.cancel(interval), $ctrl.onStop && (0 === $ctrl.state ? $ctrl.onStop() : $timeout($ctrl.onStop, 1800));
-        }, $ctrl.startProcess();
-    }
-    Object.defineProperty(exports, "__esModule", {
-        value: !0
-    });
-    var TwProcess = {
-        bindings: {
-            state: "<",
-            size: "@",
-            onStop: "&",
-            promise: "<"
-        },
-        controller: [ "$scope", "$interval", "$timeout", TwProcessController ],
-        template: "<span class='process'     ng-class='{       \"process-success\": $ctrl.processing === 1,       \"process-danger\": $ctrl.processing === -1,       \"process-stopped\": $ctrl.processing === 0,       \"process-xs\": $ctrl.size === \"xs\",       \"process-sm\": $ctrl.size === \"sm\",       \"process-md\": $ctrl.size === \"md\",       \"process-lg\": $ctrl.size === \"lg\",       \"process-xl\": $ctrl.size === \"xl\"     }'>     <span class='process-icon-container'>       <span class='process-icon-horizontal'></span>       <span class='process-icon-vertical'></span>     </span>     <svg version='1.1'       xmlns='http://www.w3.org/2000/svg'       xml:space='preserve'>       <circle class='process-circle' cx='50%' cy='50%' ng-attr-r='{{$ctrl.radius}}'         fill-opacity='0.0' />     </svg>   </span>"
-    };
-    exports["default"] = angular.module("tw.styleguide.navigation.process", []).component("twProcess", TwProcess).name;
 }, function(module, exports) {
     module.exports = angular;
 }, function(module, exports, __webpack_require__) {
@@ -1290,7 +1290,7 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _angular = __webpack_require__(18), _angular2 = _interopRequireDefault(_angular), _twDateService = __webpack_require__(15), _twDateService2 = _interopRequireDefault(_twDateService), _twCurrencyService = __webpack_require__(14), _twCurrencyService2 = _interopRequireDefault(_twCurrencyService), _twCheckboxComponent = __webpack_require__(1), _twCheckboxComponent2 = _interopRequireDefault(_twCheckboxComponent), _twRadioComponent = __webpack_require__(8), _twRadioComponent2 = _interopRequireDefault(_twRadioComponent), _twSelectComponent = __webpack_require__(10), _twSelectComponent2 = _interopRequireDefault(_twSelectComponent), _twUploadComponent = __webpack_require__(12), _twUploadComponent2 = _interopRequireDefault(_twUploadComponent), _twDateComponent = __webpack_require__(4), _twDateComponent2 = _interopRequireDefault(_twDateComponent), _twDateLookupComponent = __webpack_require__(3), _twDateLookupComponent2 = _interopRequireDefault(_twDateLookupComponent), _twCurrencyInputComponent = __webpack_require__(2), _twCurrencyInputComponent2 = _interopRequireDefault(_twCurrencyInputComponent), _twAmountCurrencySelectComponent = __webpack_require__(0), _twAmountCurrencySelectComponent2 = _interopRequireDefault(_twAmountCurrencySelectComponent), _twDynamicFormControlComponent = __webpack_require__(5), _twDynamicFormControlComponent2 = _interopRequireDefault(_twDynamicFormControlComponent), _twFieldsetComponent = __webpack_require__(6), _twFieldsetComponent2 = _interopRequireDefault(_twFieldsetComponent), _twRequirementsFormComponent = __webpack_require__(9), _twRequirementsFormComponent2 = _interopRequireDefault(_twRequirementsFormComponent), _twFocusableDirective = __webpack_require__(7), _twFocusableDirective2 = _interopRequireDefault(_twFocusableDirective), _twTabsComponent = __webpack_require__(13), _twTabsComponent2 = _interopRequireDefault(_twTabsComponent), _twLoaderComponent = __webpack_require__(16), _twLoaderComponent2 = _interopRequireDefault(_twLoaderComponent), _twProcessComponent = __webpack_require__(17), _twProcessComponent2 = _interopRequireDefault(_twProcessComponent), _twUploadDroppableDirective = __webpack_require__(11), _twUploadDroppableDirective2 = _interopRequireDefault(_twUploadDroppableDirective);
+    var _angular = __webpack_require__(18), _angular2 = _interopRequireDefault(_angular), _twDateService = __webpack_require__(17), _twDateService2 = _interopRequireDefault(_twDateService), _twCurrencyService = __webpack_require__(16), _twCurrencyService2 = _interopRequireDefault(_twCurrencyService), _twCheckboxComponent = __webpack_require__(1), _twCheckboxComponent2 = _interopRequireDefault(_twCheckboxComponent), _twRadioComponent = __webpack_require__(8), _twRadioComponent2 = _interopRequireDefault(_twRadioComponent), _twSelectComponent = __webpack_require__(10), _twSelectComponent2 = _interopRequireDefault(_twSelectComponent), _twUploadComponent = __webpack_require__(12), _twUploadComponent2 = _interopRequireDefault(_twUploadComponent), _twDateComponent = __webpack_require__(4), _twDateComponent2 = _interopRequireDefault(_twDateComponent), _twDateLookupComponent = __webpack_require__(3), _twDateLookupComponent2 = _interopRequireDefault(_twDateLookupComponent), _twCurrencyInputComponent = __webpack_require__(2), _twCurrencyInputComponent2 = _interopRequireDefault(_twCurrencyInputComponent), _twAmountCurrencySelectComponent = __webpack_require__(0), _twAmountCurrencySelectComponent2 = _interopRequireDefault(_twAmountCurrencySelectComponent), _twDynamicFormControlComponent = __webpack_require__(5), _twDynamicFormControlComponent2 = _interopRequireDefault(_twDynamicFormControlComponent), _twFieldsetComponent = __webpack_require__(6), _twFieldsetComponent2 = _interopRequireDefault(_twFieldsetComponent), _twFocusableDirective = __webpack_require__(7), _twFocusableDirective2 = _interopRequireDefault(_twFocusableDirective), _twTabsComponent = __webpack_require__(15), _twTabsComponent2 = _interopRequireDefault(_twTabsComponent), _twLoaderComponent = __webpack_require__(13), _twLoaderComponent2 = _interopRequireDefault(_twLoaderComponent), _twProcessComponent = __webpack_require__(14), _twProcessComponent2 = _interopRequireDefault(_twProcessComponent), _twRequirementsFormComponent = __webpack_require__(9), _twRequirementsFormComponent2 = _interopRequireDefault(_twRequirementsFormComponent), _twUploadDroppableDirective = __webpack_require__(11), _twUploadDroppableDirective2 = _interopRequireDefault(_twUploadDroppableDirective);
     exports["default"] = _angular2["default"].module("tw.form-components", [ _twDateService2["default"], _twCurrencyService2["default"], _twCheckboxComponent2["default"], _twRadioComponent2["default"], _twSelectComponent2["default"], _twUploadComponent2["default"], _twDateComponent2["default"], _twDateLookupComponent2["default"], _twCurrencyInputComponent2["default"], _twAmountCurrencySelectComponent2["default"], _twDynamicFormControlComponent2["default"], _twFieldsetComponent2["default"], _twRequirementsFormComponent2["default"], _twFocusableDirective2["default"], _twTabsComponent2["default"], _twLoaderComponent2["default"], _twProcessComponent2["default"], _twUploadDroppableDirective2["default"] ]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";

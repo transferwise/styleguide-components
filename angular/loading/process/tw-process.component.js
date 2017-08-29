@@ -99,5 +99,5 @@ function TwProcessController($scope, $interval, $timeout) {
 }
 
 export default angular
-  .module('tw.styleguide.navigation.process', [])
+  .module('tw.styleguide.loading.process', [])
   .component('twProcess', TwProcess).name;
