@@ -31,6 +31,4 @@ function FocusableLink(scope, element) {
     });
 }
 
-export default angular
-  .module('tw.styleguide.forms.focusable', [])
-  .directive('twFocusable', TwFocusable).name;
+export default TwFocusable;

@@ -2,7 +2,7 @@
 function TwUploadDroppableDirective() {
   return {
     bindToController: true,
-    controller: [TwUploadDroppableController],
+    controller: TwUploadDroppableController,
     controllerAs: '$ctrl',
     replace: false,
     transclude: true,
@@ -90,29 +90,4 @@ function TwUploadDroppableLink(scope, element, attr) {
   }, false);
 }
 
-function TwFileSelectDirective() {
-  return {
-    bindToController: true,
-    controller: function(){},
-    controllerAs: '$ctrl',
-    replace: false,
-    restrict: 'A',
-    scope: {
-      onUserInput: '='
-    },
-    link: TwFileSelectLink
-  };
-}
-
-function TwFileSelectLink(scope, element) {
-  element.on('change', function (event) {
-    if (scope.$ctrl.onUserInput && typeof scope.$ctrl.onUserInput === 'function') {
-      scope.$ctrl.onUserInput(event);
-    }
-  });
-}
-
-export default angular
-  .module('tw.styleguide.forms.upload-droppable', [])
-  .directive('twFileSelect', TwFileSelectDirective)
-  .directive('twUploadDroppable', TwUploadDroppableDirective).name;
+export default TwUploadDroppableDirective;

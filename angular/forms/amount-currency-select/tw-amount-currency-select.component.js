@@ -75,6 +75,4 @@ const TwAmountCurrencySelect = {
     </div>',
 };
 
-export default angular
-  .module('tw.styleguide.forms.amount-currency-select', [])
-  .component('twAmountCurrencySelect', TwAmountCurrencySelect).name;
+export default TwAmountCurrencySelect;

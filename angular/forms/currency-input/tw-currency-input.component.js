@@ -45,6 +45,4 @@ const TwCurrencyInput = {
     </div>',
 };
 
-export default angular
-  .module('tw.styleguide.forms.currency-input', [])
-  .component('twCurrencyInput', TwCurrencyInput).name;
+export default TwCurrencyInput;

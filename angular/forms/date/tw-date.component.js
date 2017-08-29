@@ -78,6 +78,4 @@ const TwDate = {
   template: templateAsString
 };
 
-export default angular
-  .module('tw.styleguide.forms.date', [])
-  .component('twDate', TwDate).name;
+export default TwDate;
