@@ -215,5 +215,5 @@
   }
 
   export default angular
-    .module('tw.components.requirements-form', [])
+    .module('tw.components.fieldset', [])
     .component('twFieldset', TwFieldset).name;

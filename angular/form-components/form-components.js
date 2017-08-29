@@ -33,6 +33,7 @@ formComponentsModule.requires.push(TwTabs);
 formComponentsModule.requires.push(TwAmountCurrencySelect);
 formComponentsModule.requires.push(TwDynamicFormControl);
 formComponentsModule.requires.push(TwFieldset);
+formComponentsModule.requires.push(TwRequirementsForm);
 
 formComponentsModule.requires.push(TwUploadDroppable);
 
