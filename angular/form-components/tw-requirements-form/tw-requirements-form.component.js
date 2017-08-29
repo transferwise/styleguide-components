@@ -124,4 +124,5 @@
 
   export default angular
     .module('tw.components.requirements-form', [])
+    .service('TwRequirementsService', TwRequirementsService)
     .component('twRequirementsForm', TwRequirementsForm).name;

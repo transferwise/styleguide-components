@@ -1,3 +1,4 @@
+  import TwDateService from '../../services/tw-date-service/tw-date-service.service.js';
 
   const TwDateLookup = {
     require: 'ngModel',

@@ -71,6 +71,4 @@
     }
   }
 
-  export default angular
-    .module('tw.components.requirements-form')
-    .service('TwRequirementsService', TwRequirementsService).name;
+  export default TwRequirementsService;

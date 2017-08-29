@@ -29,7 +29,7 @@ angular.module("tw.form-components", []);
         return __webpack_require__.d(getter, "a", getter), getter;
     }, __webpack_require__.o = function(object, property) {
         return Object.prototype.hasOwnProperty.call(object, property);
-    }, __webpack_require__.p = "", __webpack_require__(__webpack_require__.s = 17);
+    }, __webpack_require__.p = "", __webpack_require__(__webpack_require__.s = 18);
 }([ function(module, exports, __webpack_require__) {
     "use strict";
     function TwCurrencyData() {
@@ -66,6 +66,111 @@ angular.module("tw.form-components", []);
     }), exports["default"] = angular.module("tw.form-components").service("TwCurrencyData", TwCurrencyData).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
+    function TwDateService() {
+        function getLocalisedDateName(date, locale, formattingObject) {
+            var name = date.toLocaleDateString(locale, formattingObject);
+            return isLocaleTranslationRequiresStripping(locale) && (name = name.replace(/[0-9]|\s|,/g, "")), 
+            name[0].toUpperCase() + name.substring(1);
+        }
+        function getValidDateFormat(format) {
+            var validFormats = [ "narrow", "short", "long" ];
+            return !format || validFormats.indexOf(format) < 0 ? "long" : format;
+        }
+        function getValidLocale(locale) {
+            return isIntlSupportedForLocale(locale) ? locale : "en-GB";
+        }
+        function isIntlSupportedForLocale(locale) {
+            try {
+                var supportedLocales = window.Intl.DateTimeFormat.supportedLocalesOf([ locale ]);
+                return supportedLocales.length > 0;
+            } catch (error) {
+                return !1;
+            }
+        }
+        function isLocaleTranslationRequiresStripping(locale) {
+            if (!locale) return !0;
+            var lang = getLanguageFromLocale(locale);
+            return "ja" !== lang;
+        }
+        function getLanguageFromLocale(locale) {
+            return locale ? locale.substring(0, 2) : null;
+        }
+        this.getLocaleDate = function(date) {
+            return date || (date = new Date()), date.getDate();
+        }, this.getLocaleMonth = function(date) {
+            return date || (date = new Date()), date.getMonth();
+        }, this.getLocaleFullYear = function(date) {
+            return date || (date = new Date()), date.getFullYear();
+        }, this.getLocaleToday = function() {
+            var now = new Date();
+            return this.getUTCDateFromParts(this.getLocaleFullYear(now), this.getLocaleMonth(now), this.getLocaleDate(now));
+        }, this.getUTCDate = function(date) {
+            return date || (date = new Date()), date.getUTCDate();
+        }, this.getUTCMonth = function(date) {
+            return date || (date = new Date()), date.getUTCMonth();
+        }, this.getUTCFullYear = function(date) {
+            return date || (date = new Date()), date.getUTCFullYear();
+        }, this.getUTCToday = function() {
+            var now = new Date();
+            return this.getUTCDateFromParts(this.getUTCFullYear(now), this.getUTCMonth(now), this.getUTCDate(now));
+        }, this.getLastDayOfMonth = function(year, month) {
+            var lastDay = this.getUTCDateFromParts(year, month + 1, 0);
+            return lastDay.getUTCDate();
+        }, this.getUTCDateFromParts = function(year, month, day) {
+            var date = new Date();
+            return date.setUTCFullYear(year, month, day), date.setUTCHours(0), date.setUTCMinutes(0), 
+            date.setUTCSeconds(0), date.setUTCMilliseconds(0), date;
+        }, this.getDayNamesForLocale = function(locale, format) {
+            var date, days = [], language = getLanguageFromLocale(locale);
+            if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language]) return DEFAULT_DAY_NAMES_BY_LANGUAGE[language];
+            format = getValidDateFormat(format), locale = getValidLocale(locale);
+            for (var i = 1; i <= 7; i++) date = this.getUTCDateFromParts(2001, 0, i), days.push(getLocalisedDateName(date, locale, {
+                weekday: format
+            }));
+            return days;
+        }, this.getMonthNamesForLocale = function(locale, format) {
+            var date, month, months = [], language = getLanguageFromLocale(locale);
+            if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] && ("long" === format || "ja" === language)) return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language];
+            format = getValidDateFormat(format), locale = getValidLocale(locale);
+            for (var i = 0; i < 12; i++) date = this.getUTCDateFromParts(2e3, i, 15), "short" === format ? (month = getLocalisedDateName(date, locale, {
+                month: "long"
+            }), month = month.length > 4 ? month.slice(0, 3) : month, months.push(month)) : months.push(getLocalisedDateName(date, locale, {
+                month: format
+            }));
+            return months;
+        }, this.getWeekday = function(year, month, day) {
+            var utcDate = this.getUTCDateFromParts(year, month, day);
+            return utcDate.getUTCDay();
+        }, this.isMonthBeforeDay = function(locale) {
+            return locale.indexOf("US", locale.length - 2) !== -1 || "ja" === getLanguageFromLocale(locale);
+        }, this.addYears = function(date, years) {
+            return this.addToDate(date, years, 0, 0);
+        }, this.addMonths = function(date, months) {
+            return this.addToDate(date, 0, months, 0);
+        }, this.addDays = function(date, days) {
+            return this.addToDate(date, 0, 0, days);
+        }, this.addToDate = function(date, years, months, days) {
+            return this.getUTCDateFromParts(date.getUTCFullYear() + years, date.getUTCMonth() + months, date.getUTCDate() + days);
+        }, this.getYearAndMonthPresentation = function(year, monthName, locale) {
+            var lang = getLanguageFromLocale(locale);
+            return "ja" === lang ? year + "年" + monthName : monthName + " " + year;
+        }, this.getYearMonthDatePresentation = function(year, monthName, date, locale) {
+            var lang = getLanguageFromLocale(locale);
+            return "ja" === lang ? year + "年" + monthName + date + "日" : locale.indexOf("US", locale.length - 2) !== -1 ? monthName + " " + date + ", " + year : date + " " + monthName + " " + year;
+        };
+        var DEFAULT_MONTH_NAMES_BY_LANGUAGE = {
+            en: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
+            ja: [ "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" ]
+        }, DEFAULT_DAY_NAMES_BY_LANGUAGE = {
+            en: [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" ],
+            ja: [ "月", "火", "水", "木", "金", "土", "日" ]
+        };
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), exports["default"] = angular.module("tw.form-components").service("TwDateService", TwDateService).name;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
             "default": obj
@@ -74,7 +179,7 @@ angular.module("tw.form-components", []);
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twAmountCurrencySelectController = __webpack_require__(18), _twAmountCurrencySelectController2 = _interopRequireDefault(_twAmountCurrencySelectController), TwAmountCurrencySelect = {
+    var _twAmountCurrencySelectController = __webpack_require__(19), _twAmountCurrencySelectController2 = _interopRequireDefault(_twAmountCurrencySelectController), TwAmountCurrencySelect = {
         require: "ngModel",
         controller: _twAmountCurrencySelectController2["default"],
         transclude: {
@@ -165,7 +270,7 @@ angular.module("tw.form-components", []);
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twCurrencyInputController = __webpack_require__(19), _twCurrencyInputController2 = _interopRequireDefault(_twCurrencyInputController), TwCurrencyInput = {
+    var _twCurrencyInputController = __webpack_require__(20), _twCurrencyInputController2 = _interopRequireDefault(_twCurrencyInputController), TwCurrencyInput = {
         require: "ngModel",
         controller: _twCurrencyInputController2["default"],
         transclude: {
@@ -189,6 +294,11 @@ angular.module("tw.form-components", []);
     exports["default"] = angular.module("tw.components.currency-input", []).component("twCurrencyInput", TwCurrencyInput).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
     function TwDateLookupController($element, $scope, $timeout, TwDateService) {
         function init() {
             $ctrl.yearOffset = 0, ngModelCtrl = $element.controller("ngModel"), addValidators(), 
@@ -346,7 +456,8 @@ angular.module("tw.form-components", []);
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var TwDateLookup = {
+    var _twDateServiceService = __webpack_require__(1), TwDateLookup = (_interopRequireDefault(_twDateServiceService), 
+    {
         require: "ngModel",
         controller: [ "$element", "$scope", "$timeout", "TwDateService", TwDateLookupController ],
         bindings: {
@@ -363,7 +474,7 @@ angular.module("tw.form-components", []);
             shortDate: "<"
         },
         template: '     <div class="btn-group btn-block dropdown"       ng-keydown="$ctrl.keyHandler($event)">       <button class="btn btn-input dropdown-toggle tw-date-lookup-button" data-toggle="dropdown"         ng-disabled="$ctrl.ngDisabled"         ng-click="$ctrl.openLookup()"         ng-focus="$ctrl.buttonFocus()"         ng-class="{           \'btn-sm\': $ctrl.size === \'sm\',           \'btn-lg\': $ctrl.size === \'lg\'         }">         <span ng-if="!$ctrl.ngModel"           class="form-control-placeholder tw-date-lookup-placeholder">           {{$ctrl.placeholder}}         </span>         <span ng-if="$ctrl.label && $ctrl.ngModel"           class="control-label small m-r-1" style="font-size: 14px;"           >{{$ctrl.label}}</span         ><span ng-if="$ctrl.ngModel" class="tw-date-lookup-selected">          {{$ctrl.selectedDateFormatted}}        </span>         <span class="caret"></span>       </button>       <div class="dropdown-menu" style="min-width: 300px;">                 <div ng-if="$ctrl.mode === \'year\'" class="tw-date-lookup-years">           <div class="text-xs-center p-t-1 p-b-2">             <div class="pull-xs-left p-b-2">               <a href="" ng-click="$ctrl.setYearOffset($event, -20)"                 class="text-no-decoration tw-date-lookup-previous-years">                 <i class="icon icon-left icon-lg"></i>               </a>             </div>             <div class="pull-xs-right p-b-2">               <a href="" ng-click="$ctrl.setYearOffset($event, 20)"                 class="text-no-decoration tw-date-lookup-next-years">                 <i class="icon icon-right icon-lg"></i>               </a>             </div>           </div>           <table class="table table-condensed table-bordered table-calendar m-b-0">             <tbody>               <tr ng-repeat="row in [0,4,8,12,16]">                 <td ng-repeat="col in [0,1,2,3]">                   <a href=""                     ng-click="$ctrl.selectYear($event, $ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)"                     ng-disabled="$ctrl.isYearDisabled($ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)"                     ng-class="{\'active\': $ctrl.selectedYear === ($ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)}"                     class="tw-date-lookup-year-option">                     {{$ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset}}                   </a>                 </td>               </tr>             </tbody>           </table>         </div>                 <div ng-if="$ctrl.mode === \'month\'" class="tw-date-lookup-months">           <div class="text-xs-center p-t-1 p-b-2">             <div class="pull-xs-left">               <a href="" ng-click="$ctrl.yearBefore($event)" class="text-no-decoration">                 <i class="icon icon-left icon-lg"></i>               </a>             </div>             <a href="" ng-click="$ctrl.switchToYears($event)"               class="tw-date-lookup-year-label">               {{$ctrl.year}}             </a>             <div class="pull-xs-right">               <a href="" ng-click="$ctrl.yearAfter($event)" class="text-no-decoration">                 <i class="icon icon-right icon-lg"></i>               </a>             </div>           </div>           <table class="table table-condensed table-bordered table-calendar m-b-0">             <tbody>               <tr ng-repeat="row in [0,4,8]">                 <td ng-repeat="col in [0,1,2,3]">                   <a href=""                     ng-click="$ctrl.selectMonth($event, row+col, $ctrl.year)"                     ng-disabled="$ctrl.isMonthDisabled(row + col, $ctrl.year)"                     ng-class="{\'active\': $ctrl.selectedMonth === (row + col) && $ctrl.selectedYear === $ctrl.year}"                     class="tw-date-lookup-month-option">                     {{$ctrl.shortMonthsOfYear[row+col] | limitTo:5}}                   </a>                 </td>               </tr>             </tbody>           </table>         </div>                 <div ng-if="$ctrl.mode === \'day\'" class="tw-date-lookup-days">           <div class="text-xs-center p-t-1 p-b-2">             <div class="pull-xs-left">               <a href="" ng-click="$ctrl.monthBefore($event)"                 class="text-no-decoration tw-date-lookup-previous-month">                 <i class="icon icon-left icon-lg"></i>               </a>             </div>             <a href="" ng-click="$ctrl.switchToYears($event)"               class="tw-date-lookup-month-label">               {{$ctrl.yearMonthFormatted}}             </a>             <div class="pull-xs-right">               <a href="" ng-click="$ctrl.monthAfter($event)"                 class="text-no-decoration tw-date-lookup-next-month">                 <i class="icon icon-right icon-lg"></i>               </a>             </div>           </div>           <table class="table table-condensed table-bordered table-calendar m-b-0">             <thead>               <tr>                 <th ng-repeat="day in $ctrl.daysOfWeek track by $index">                   <span class="hidden-xs">{{day | limitTo : 3}}</span>                   <span class="visible-xs-inline-block">{{$ctrl.shortDaysOfWeek[$index] | limitTo : 2}}</span>                 </th>               </tr>             </thead>             <tbody>               <tr ng-repeat="week in $ctrl.weeks">                 <td ng-repeat="day in week track by $index"                   ng-class="{                     \'default\': $index > 4                   }">                   <a href="" title="{{day}} {{$ctrl.monthsOfYear[$ctrl.month]}} {{$ctrl.year}}"                     ng-if="day"                     ng-click="$ctrl.selectDay($event, day, $ctrl.month, $ctrl.year)"                     ng-disabled="$ctrl.isDayDisabled(day, $ctrl.month, $ctrl.year)"                     ng-class="{                       \'active\': $ctrl.isCurrentlySelected(day, $ctrl.month, $ctrl.year)                     }"                     class="tw-date-lookup-day-option" tabindex="0">                     {{day}}                   </a>                 </td>               </tr>             </tbody>           </table>         </div>       </div>     </div>'
-    };
+    });
     exports["default"] = angular.module("tw.components.date-lookup", []).component("twDateLookup", TwDateLookup).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
@@ -375,7 +486,7 @@ angular.module("tw.form-components", []);
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twDateController = __webpack_require__(20), _twDateController2 = _interopRequireDefault(_twDateController), daySectionTemplate = "     <label class='sr-only'>Day</label>     <input type='number'       name='day'       class='form-control tw-date-day'       ng-model='$ctrl.day'       ng-change='$ctrl.updateDateModelAndValidationClasses()'       placeholder='DD'       min='1'       ng-min='1'       ng-disabled='$ctrl.dateDisabled'       ng-required='$ctrl.dateRequired'       tw-focusable />", monthSectionTemplate = "      <label class='sr-only'>Month</label>    <tw-select       name='month'       class='tw-date-month'       ng-model='$ctrl.month'       ng-change='$ctrl.updateDateModelAndValidationClasses()'       ng-required='$ctrl.dateRequired'       ng-disabled='$ctrl.dateDisabled'       options='$ctrl.dateMonths'>     </tw-select>", yearSectionTemplate = "     <label class='sr-only'>Year</label>     <input type='number'       name='year'       class='form-control tw-date-year'       placeholder='YYYY'       ng-model='$ctrl.year'       ng-change='$ctrl.updateDateModelAndValidationClasses()'       ng-min='$ctrl.min.getFullYear()'       ng-max='$ctrl.max.getFullYear()'       maxlength='4'       ng-maxlength='4'       ng-disabled='$ctrl.dateDisabled'       ng-required='$ctrl.dateRequired'       tw-focusable />", templateAsString = "     <div class='row'>       <div class='col-sm-5 tw-date-month-column' ng-if='$ctrl.monthBeforeDay'>" + monthSectionTemplate + "       </div>       <div class='col-sm-3 tw-date-day-column'>" + daySectionTemplate + "       </div>       <div class='col-sm-5 tw-date-month-column' ng-if='!$ctrl.monthBeforeDay'>" + monthSectionTemplate + "       </div>       <div class='col-sm-4 tw-date-year-column'>" + yearSectionTemplate + "       </div>     </div>", TwDate = {
+    var _twDateController = __webpack_require__(21), _twDateController2 = _interopRequireDefault(_twDateController), daySectionTemplate = "     <label class='sr-only'>Day</label>     <input type='number'       name='day'       class='form-control tw-date-day'       ng-model='$ctrl.day'       ng-change='$ctrl.updateDateModelAndValidationClasses()'       placeholder='DD'       min='1'       ng-min='1'       ng-disabled='$ctrl.dateDisabled'       ng-required='$ctrl.dateRequired'       tw-focusable />", monthSectionTemplate = "      <label class='sr-only'>Month</label>    <tw-select       name='month'       class='tw-date-month'       ng-model='$ctrl.month'       ng-change='$ctrl.updateDateModelAndValidationClasses()'       ng-required='$ctrl.dateRequired'       ng-disabled='$ctrl.dateDisabled'       options='$ctrl.dateMonths'>     </tw-select>", yearSectionTemplate = "     <label class='sr-only'>Year</label>     <input type='number'       name='year'       class='form-control tw-date-year'       placeholder='YYYY'       ng-model='$ctrl.year'       ng-change='$ctrl.updateDateModelAndValidationClasses()'       ng-min='$ctrl.min.getFullYear()'       ng-max='$ctrl.max.getFullYear()'       maxlength='4'       ng-maxlength='4'       ng-disabled='$ctrl.dateDisabled'       ng-required='$ctrl.dateRequired'       tw-focusable />", templateAsString = "     <div class='row'>       <div class='col-sm-5 tw-date-month-column' ng-if='$ctrl.monthBeforeDay'>" + monthSectionTemplate + "       </div>       <div class='col-sm-3 tw-date-day-column'>" + daySectionTemplate + "       </div>       <div class='col-sm-5 tw-date-month-column' ng-if='!$ctrl.monthBeforeDay'>" + monthSectionTemplate + "       </div>       <div class='col-sm-4 tw-date-year-column'>" + yearSectionTemplate + "       </div>     </div>", TwDate = {
         require: "ngModel",
         controller: _twDateController2["default"],
         bindings: {
@@ -670,8 +781,7 @@ angular.module("tw.form-components", []);
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twRequirementsService = __webpack_require__(21), TwRequirementsForm = (_interopRequireDefault(_twRequirementsService), 
-    {
+    var _twRequirementsService = __webpack_require__(22), _twRequirementsService2 = _interopRequireDefault(_twRequirementsService), TwRequirementsForm = {
         bindings: {
             model: "=",
             requirements: "<",
@@ -684,8 +794,8 @@ angular.module("tw.form-components", []);
         },
         controller: [ "$scope", "TwRequirementsService", TwRequirementsFormController ],
         template: "     <tw-tabs       ng-if='$ctrl.requirements.length > 1'       tabs='$ctrl.requirements'       active='$ctrl.model.type'>     </tw-tabs>     <div class='tab-content' ng-form='twForm'>       <div ng-repeat='requirementType in $ctrl.requirements'         ng-if='$ctrl.model.type == requirementType.type'         class='tab-pane active'         id='{{requirementType.type}}'>         <p>{{requirementType.description}}</p>         <tw-fieldset           fields='requirementType.fields'           model='$ctrl.model'           upload-options='$ctrl.uploadOptions'           locale='{{$ctrl.locale}}'           onRefreshRequirements='$ctrl.onRefreshRequirements()'           validation-messages='$ctrl.validationMessages'           error-messages='$ctrl.errorMessages'>         </tw-fieldset>       </div>     </div>"
-    });
-    exports["default"] = angular.module("tw.components.requirements-form", []).component("twRequirementsForm", TwRequirementsForm).name;
+    };
+    exports["default"] = angular.module("tw.components.requirements-form", []).service("TwRequirementsService", _twRequirementsService2["default"]).component("twRequirementsForm", TwRequirementsForm).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwSelectController($element, $scope, $transclude, $timeout) {
@@ -993,7 +1103,7 @@ angular.module("tw.form-components", []);
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), exports["default"] = angular.module("tw.components.upload-droppable").directive("twFileSelect", TwFileSelectDirective).directive("twUploadDroppable", TwUploadDroppableDirective).name;
+    }), exports["default"] = angular.module("tw.components.upload-droppable", []).directive("twFileSelect", TwFileSelectDirective).directive("twUploadDroppable", TwUploadDroppableDirective).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwUploadController($timeout, $element, $http, $scope, $transclude, $q, $attrs) {
@@ -1160,8 +1270,8 @@ angular.module("tw.form-components", []);
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _angular = __webpack_require__(16), _angular2 = _interopRequireDefault(_angular), _twCheckboxComponent = __webpack_require__(2), _twCheckboxComponent2 = _interopRequireDefault(_twCheckboxComponent), _twRadioComponent = __webpack_require__(9), _twRadioComponent2 = _interopRequireDefault(_twRadioComponent), _twSelectComponent = __webpack_require__(12), _twSelectComponent2 = _interopRequireDefault(_twSelectComponent), _twLoaderComponent = __webpack_require__(7), _twLoaderComponent2 = _interopRequireDefault(_twLoaderComponent), _twProcessComponent = __webpack_require__(8), _twProcessComponent2 = _interopRequireDefault(_twProcessComponent), _twUploadComponent = __webpack_require__(15), _twUploadComponent2 = _interopRequireDefault(_twUploadComponent), _twDateComponent = __webpack_require__(5), _twDateComponent2 = _interopRequireDefault(_twDateComponent), _twDateLookupComponent = __webpack_require__(4), _twDateLookupComponent2 = _interopRequireDefault(_twDateLookupComponent), _twCurrencyInputComponent = __webpack_require__(3), _twCurrencyInputComponent2 = _interopRequireDefault(_twCurrencyInputComponent), _twAmountCurrencySelectComponent = __webpack_require__(1), _twAmountCurrencySelectComponent2 = _interopRequireDefault(_twAmountCurrencySelectComponent), _twTabsComponent = __webpack_require__(13), _twTabsComponent2 = _interopRequireDefault(_twTabsComponent), _twDynamicFormControlComponent = __webpack_require__(6), _twDynamicFormControlComponent2 = _interopRequireDefault(_twDynamicFormControlComponent), _twFieldsetComponent = __webpack_require__(10), _twFieldsetComponent2 = _interopRequireDefault(_twFieldsetComponent), _twRequirementsFormComponent = __webpack_require__(11), _twUploadDroppableDirective = (_interopRequireDefault(_twRequirementsFormComponent), 
-    __webpack_require__(14)), _twUploadDroppableDirective2 = _interopRequireDefault(_twUploadDroppableDirective), formComponentsModule = _angular2["default"].module("tw.form-components");
+    var _angular = __webpack_require__(17), _angular2 = _interopRequireDefault(_angular), _twCheckboxComponent = __webpack_require__(3), _twCheckboxComponent2 = _interopRequireDefault(_twCheckboxComponent), _twRadioComponent = __webpack_require__(10), _twRadioComponent2 = _interopRequireDefault(_twRadioComponent), _twSelectComponent = __webpack_require__(13), _twSelectComponent2 = _interopRequireDefault(_twSelectComponent), _twLoaderComponent = __webpack_require__(8), _twLoaderComponent2 = _interopRequireDefault(_twLoaderComponent), _twProcessComponent = __webpack_require__(9), _twProcessComponent2 = _interopRequireDefault(_twProcessComponent), _twUploadComponent = __webpack_require__(16), _twUploadComponent2 = _interopRequireDefault(_twUploadComponent), _twDateComponent = __webpack_require__(6), _twDateComponent2 = _interopRequireDefault(_twDateComponent), _twDateLookupComponent = __webpack_require__(5), _twDateLookupComponent2 = _interopRequireDefault(_twDateLookupComponent), _twCurrencyInputComponent = __webpack_require__(4), _twCurrencyInputComponent2 = _interopRequireDefault(_twCurrencyInputComponent), _twAmountCurrencySelectComponent = __webpack_require__(2), _twAmountCurrencySelectComponent2 = _interopRequireDefault(_twAmountCurrencySelectComponent), _twTabsComponent = __webpack_require__(14), _twTabsComponent2 = _interopRequireDefault(_twTabsComponent), _twDynamicFormControlComponent = __webpack_require__(7), _twDynamicFormControlComponent2 = _interopRequireDefault(_twDynamicFormControlComponent), _twFieldsetComponent = __webpack_require__(11), _twFieldsetComponent2 = _interopRequireDefault(_twFieldsetComponent), _twRequirementsFormComponent = __webpack_require__(12), _twUploadDroppableDirective = (_interopRequireDefault(_twRequirementsFormComponent), 
+    __webpack_require__(15)), _twUploadDroppableDirective2 = _interopRequireDefault(_twUploadDroppableDirective), formComponentsModule = _angular2["default"].module("tw.form-components");
     formComponentsModule.requires.push(_twCheckboxComponent2["default"]), formComponentsModule.requires.push(_twRadioComponent2["default"]), 
     formComponentsModule.requires.push(_twSelectComponent2["default"]), formComponentsModule.requires.push(_twLoaderComponent2["default"]), 
     formComponentsModule.requires.push(_twProcessComponent2["default"]), formComponentsModule.requires.push(_twUploadComponent2["default"]), 
@@ -1377,7 +1487,7 @@ angular.module("tw.form-components", []);
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twDateServiceService = __webpack_require__(22);
+    var _twDateServiceService = __webpack_require__(1);
     _interopRequireDefault(_twDateServiceService);
     TwDateController.$inject = [ "$element", "$log", "$scope", "TwDateService" ], exports["default"] = TwDateController;
 }, function(module, exports, __webpack_require__) {
@@ -1427,110 +1537,5 @@ angular.module("tw.form-components", []);
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), exports["default"] = angular.module("tw.components.requirements-form").service("TwRequirementsService", TwRequirementsService).name;
-}, function(module, exports, __webpack_require__) {
-    "use strict";
-    function TwDateService() {
-        function getLocalisedDateName(date, locale, formattingObject) {
-            var name = date.toLocaleDateString(locale, formattingObject);
-            return isLocaleTranslationRequiresStripping(locale) && (name = name.replace(/[0-9]|\s|,/g, "")), 
-            name[0].toUpperCase() + name.substring(1);
-        }
-        function getValidDateFormat(format) {
-            var validFormats = [ "narrow", "short", "long" ];
-            return !format || validFormats.indexOf(format) < 0 ? "long" : format;
-        }
-        function getValidLocale(locale) {
-            return isIntlSupportedForLocale(locale) ? locale : "en-GB";
-        }
-        function isIntlSupportedForLocale(locale) {
-            try {
-                var supportedLocales = window.Intl.DateTimeFormat.supportedLocalesOf([ locale ]);
-                return supportedLocales.length > 0;
-            } catch (error) {
-                return !1;
-            }
-        }
-        function isLocaleTranslationRequiresStripping(locale) {
-            if (!locale) return !0;
-            var lang = getLanguageFromLocale(locale);
-            return "ja" !== lang;
-        }
-        function getLanguageFromLocale(locale) {
-            return locale ? locale.substring(0, 2) : null;
-        }
-        this.getLocaleDate = function(date) {
-            return date || (date = new Date()), date.getDate();
-        }, this.getLocaleMonth = function(date) {
-            return date || (date = new Date()), date.getMonth();
-        }, this.getLocaleFullYear = function(date) {
-            return date || (date = new Date()), date.getFullYear();
-        }, this.getLocaleToday = function() {
-            var now = new Date();
-            return this.getUTCDateFromParts(this.getLocaleFullYear(now), this.getLocaleMonth(now), this.getLocaleDate(now));
-        }, this.getUTCDate = function(date) {
-            return date || (date = new Date()), date.getUTCDate();
-        }, this.getUTCMonth = function(date) {
-            return date || (date = new Date()), date.getUTCMonth();
-        }, this.getUTCFullYear = function(date) {
-            return date || (date = new Date()), date.getUTCFullYear();
-        }, this.getUTCToday = function() {
-            var now = new Date();
-            return this.getUTCDateFromParts(this.getUTCFullYear(now), this.getUTCMonth(now), this.getUTCDate(now));
-        }, this.getLastDayOfMonth = function(year, month) {
-            var lastDay = this.getUTCDateFromParts(year, month + 1, 0);
-            return lastDay.getUTCDate();
-        }, this.getUTCDateFromParts = function(year, month, day) {
-            var date = new Date();
-            return date.setUTCFullYear(year, month, day), date.setUTCHours(0), date.setUTCMinutes(0), 
-            date.setUTCSeconds(0), date.setUTCMilliseconds(0), date;
-        }, this.getDayNamesForLocale = function(locale, format) {
-            var date, days = [], language = getLanguageFromLocale(locale);
-            if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language]) return DEFAULT_DAY_NAMES_BY_LANGUAGE[language];
-            format = getValidDateFormat(format), locale = getValidLocale(locale);
-            for (var i = 1; i <= 7; i++) date = this.getUTCDateFromParts(2001, 0, i), days.push(getLocalisedDateName(date, locale, {
-                weekday: format
-            }));
-            return days;
-        }, this.getMonthNamesForLocale = function(locale, format) {
-            var date, month, months = [], language = getLanguageFromLocale(locale);
-            if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] && ("long" === format || "ja" === language)) return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language];
-            format = getValidDateFormat(format), locale = getValidLocale(locale);
-            for (var i = 0; i < 12; i++) date = this.getUTCDateFromParts(2e3, i, 15), "short" === format ? (month = getLocalisedDateName(date, locale, {
-                month: "long"
-            }), month = month.length > 4 ? month.slice(0, 3) : month, months.push(month)) : months.push(getLocalisedDateName(date, locale, {
-                month: format
-            }));
-            return months;
-        }, this.getWeekday = function(year, month, day) {
-            var utcDate = this.getUTCDateFromParts(year, month, day);
-            return utcDate.getUTCDay();
-        }, this.isMonthBeforeDay = function(locale) {
-            return locale.indexOf("US", locale.length - 2) !== -1 || "ja" === getLanguageFromLocale(locale);
-        }, this.addYears = function(date, years) {
-            return this.addToDate(date, years, 0, 0);
-        }, this.addMonths = function(date, months) {
-            return this.addToDate(date, 0, months, 0);
-        }, this.addDays = function(date, days) {
-            return this.addToDate(date, 0, 0, days);
-        }, this.addToDate = function(date, years, months, days) {
-            return this.getUTCDateFromParts(date.getUTCFullYear() + years, date.getUTCMonth() + months, date.getUTCDate() + days);
-        }, this.getYearAndMonthPresentation = function(year, monthName, locale) {
-            var lang = getLanguageFromLocale(locale);
-            return "ja" === lang ? year + "年" + monthName : monthName + " " + year;
-        }, this.getYearMonthDatePresentation = function(year, monthName, date, locale) {
-            var lang = getLanguageFromLocale(locale);
-            return "ja" === lang ? year + "年" + monthName + date + "日" : locale.indexOf("US", locale.length - 2) !== -1 ? monthName + " " + date + ", " + year : date + " " + monthName + " " + year;
-        };
-        var DEFAULT_MONTH_NAMES_BY_LANGUAGE = {
-            en: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
-            ja: [ "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" ]
-        }, DEFAULT_DAY_NAMES_BY_LANGUAGE = {
-            en: [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" ],
-            ja: [ "月", "火", "水", "木", "金", "土", "日" ]
-        };
-    }
-    Object.defineProperty(exports, "__esModule", {
-        value: !0
-    }), exports["default"] = angular.module("tw.form-components").service("TwDateService", TwDateService).name;
+    }), exports["default"] = TwRequirementsService;
 } ]);
