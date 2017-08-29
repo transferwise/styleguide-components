@@ -399,6 +399,6 @@
   }
 
   export default angular
-    .module('tw.components.upload', [])
+    .module('tw.styleguide.forms.upload', [])
     .directive('twFileInput', TwFileInputDirective)
     .component('twUpload', TwUpload).name;

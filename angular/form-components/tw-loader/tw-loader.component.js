@@ -15,5 +15,5 @@
   };
 
   export default angular
-    .module('tw.components.loader', [])
+    .module('tw.styleguide.navigation.loader', [])
     .component('twLoader', TwLoader).name;

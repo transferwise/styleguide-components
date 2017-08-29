@@ -86,5 +86,5 @@
   }
 
   export default angular
-    .module('tw.components.radio', [])
+    .module('tw.styleguide.forms.radio', [])
     .component('twRadio', TwRadio).name;

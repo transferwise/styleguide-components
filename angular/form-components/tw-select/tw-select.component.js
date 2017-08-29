@@ -559,5 +559,5 @@
   }
 
   export default angular
-    .module('tw.components.select', [])
+    .module('tw.styleguide.forms.select', [])
     .component('twSelect', TwSelect).name;

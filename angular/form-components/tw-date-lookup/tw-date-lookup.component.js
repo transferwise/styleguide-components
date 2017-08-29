@@ -592,5 +592,5 @@
   ];
 
   export default angular
-    .module('tw.components.date-lookup', [])
+    .module('tw.styleguide.forms.date-lookup', [])
     .component('twDateLookup', TwDateLookup).name;

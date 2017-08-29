@@ -123,6 +123,6 @@
   }
 
   export default angular
-    .module('tw.components.requirements-form', [])
+    .module('tw.styleguide.forms.requirements-form', [])
     .service('TwRequirementsService', TwRequirementsService)
     .component('twRequirementsForm', TwRequirementsForm).name;

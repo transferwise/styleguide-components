@@ -79,5 +79,5 @@
   };
 
   export default angular
-    .module('tw.components.date', [])
+    .module('tw.styleguide.forms.date', [])
     .component('twDate', TwDate).name;

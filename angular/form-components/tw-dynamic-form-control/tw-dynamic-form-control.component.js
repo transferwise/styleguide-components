@@ -232,5 +232,5 @@
   TwDynamicFormControlController.$inject = ['$element', '$scope'];
 
   export default angular
-    .module('tw.components.dynamic-from-control', [])
+    .module('tw.styleguide.forms.dynamic-from-control', [])
     .component('twDynamicFormControl', TwDynamicFormControl).name;

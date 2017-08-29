@@ -113,6 +113,6 @@
 	}
 
 	export default angular
-		.module('tw.components.upload-droppable', [])
+		.module('tw.styleguide.forms.upload-droppable', [])
 		.directive('twFileSelect', TwFileSelectDirective)
 		.directive('twUploadDroppable', TwUploadDroppableDirective).name;

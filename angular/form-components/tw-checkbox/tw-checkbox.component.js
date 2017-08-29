@@ -122,5 +122,5 @@
   }
 
   export default angular
-    .module('tw.components.checkbox', [])
+    .module('tw.styleguide.forms.checkbox', [])
     .component('twCheckbox', TwCheckbox).name;

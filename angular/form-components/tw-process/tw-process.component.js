@@ -99,5 +99,5 @@
   }
 
   export default angular
-    .module('tw.components.process', [])
+    .module('tw.styleguide.navigation.process', [])
     .component('twProcess', TwProcess).name;

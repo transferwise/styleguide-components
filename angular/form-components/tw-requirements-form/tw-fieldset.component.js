@@ -215,5 +215,5 @@
   }
 
   export default angular
-    .module('tw.components.fieldset', [])
+    .module('tw.styleguide.forms.fieldset', [])
     .component('twFieldset', TwFieldset).name;

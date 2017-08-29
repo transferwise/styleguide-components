@@ -76,5 +76,5 @@
   };
 
   export default angular
-    .module('tw.components.amount-currency-select', [])
+    .module('tw.styleguide.forms.amount-currency-select', [])
     .component('twAmountCurrencySelect', TwAmountCurrencySelect).name;

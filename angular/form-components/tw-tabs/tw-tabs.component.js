@@ -35,5 +35,5 @@
   }
 
   export default angular
-    .module('tw.components.tabs', [])
+    .module('tw.styleguide.navigation.tabs', [])
     .component('twTabs', TwTabs).name;

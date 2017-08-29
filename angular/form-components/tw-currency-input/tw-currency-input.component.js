@@ -46,5 +46,5 @@
   };
 
   export default angular
-    .module('tw.components.currency-input', [])
+    .module('tw.styleguide.forms.currency-input', [])
     .component('twCurrencyInput', TwCurrencyInput).name;
