@@ -1,6 +1,4 @@
 
-  //import TwFocusable from '../styling/tw-focusable/tw-focusable.directive.js';
-
   const TwRadio = {
     require: 'ngModel',
     controller: ['$scope', '$element', TwRadioController],

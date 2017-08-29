@@ -1,6 +1,4 @@
 
-  //import TwFocusable from '../styling/tw-focusable/tw-focusable.directive.js';
-
   const TwCheckbox = {
     require: 'ngModel',
     controller: ['$scope', '$element', TwCheckboxController],
