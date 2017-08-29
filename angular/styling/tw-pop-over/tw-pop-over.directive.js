@@ -1,7 +1,3 @@
-(function(angular) {
-  angular
-    .module('tw.form-styling')
-    .directive('twPopOver', TwPopOver);
 
   function TwPopOver() {
     return {
@@ -39,4 +35,7 @@
       }
     };
   }
-})(window.angular);
+
+  export default angular
+    .module('tw.styleguide.styling.popover', [])
+    .directive('twPopOver', TwPopOver).name;

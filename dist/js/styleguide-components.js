@@ -57,241 +57,6 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     }
     angular.module("tw.layout-components").directive("twCards", CardContainer).directive("twCard", Card);
     var collapsedCardTemplate = '     <div class="p-a-panel" role="button" ng-click="$ctrl.toggle($ctrl.index)">       <div class="media">         <div class="media-left">           <div class="circle circle-sm circle-responsive"             ng-class="{ \'circle-inverse\': !$ctrl.inactive }">             <div ng-transclude="cardIcon"></div>           </div>         </div>         <div class="media-body" ng-transclude="collapsedCard"></div>       </div>     </div>', expandedCardTemplate = '     <div class="collapse"       ng-attr-aria-expanded="{{ $ctrl.open }}"       ng-class="{\'in\': $ctrl.open }"       ng-if="$ctrl.open" >       <div class="p-l-panel p-r-panel p-b-panel">         <div class="media">           <div class="media-left">               <div class="circle circle-sm circle-inverse circle-responsive invisible"></div>           </div>           <div class="media-body">             <hr class="m-t-0 hidden-xs hidden-sm" />             <a  href="" ng-click="$ctrl.toggle($ctrl.index)"                 class="visible-xs-inline-block visible-sm-inline-block text-no-decoration m-t-1"                 style="margin-left: -8px;">                 <i class="icon icon-left-arrow icon-xxl"></i>             </a>             <div ng-transclude="expandedCard"></div>           </div>         </div>       </div>     </div>', cardFormTemplate = '<div class="well p-l-panel p-r-panel" ng-if="$ctrl.hasForm">       <div class="media">         <div class="media-left">           <div class="circle circle-sm circle-responsive invisible"></div>         </div>         <div class="media-body" ng-transclude="cardForm"></div>       </div>     </div>', templateStr = "<li class=\"list-group-item p-a-0 list-group-item-{{$ctrl.state}}\"       ng-class=\"{         'active': $ctrl.open,         'disabled': $ctrl.disabled       }\">" + collapsedCardTemplate + expandedCardTemplate + cardFormTemplate + "</li>";
-}(window.angular), function(angular) {
-    function TwAffix() {
-        return {
-            restrict: "A",
-            link: function(scope, element) {
-                if (!element.affix) return void console.log("twAffix requires bootstrap.js");
-                var tag = element[0], options = {};
-                (tag.getAttribute("data-offset-top") || tag.getAttribute("data-offset-bottom")) && (options.offset = {}), 
-                tag.getAttribute("data-offset-top") && Number(tag.getAttribute("data-offset-top")) && (options.offset.top = Number(tag.getAttribute("data-offset-top"))), 
-                tag.getAttribute("data-offset-bottom") && Number(tag.getAttribute("data-offset-bottom")) && (options.offset.bottom = Number(tag.getAttribute("data-offset-bottom"))), 
-                element.affix(options);
-            }
-        };
-    }
-    angular.module("tw.form-styling").directive("twAffix", TwAffix);
-}(window.angular), function(angular) {
-    "use strict";
-    function TwFormControlStyling() {
-        return {
-            restrict: "C",
-            link: FocusableLink
-        };
-    }
-    function TwFocusable() {
-        return {
-            restrict: "A",
-            link: FocusableLink
-        };
-    }
-    function FocusableLink(scope, element) {
-        var formGroup = $(element).closest(".form-group");
-        $(element).on("focus", function() {
-            formGroup.addClass("focus");
-        }).on("blur", function() {
-            formGroup.removeClass("focus");
-        });
-    }
-    angular.module("tw.form-styling").directive("formControl", TwFormControlStyling), 
-    angular.module("tw.form-styling").directive("twFocusable", TwFocusable);
-}(window.angular), function(angular) {
-    function TwPopOver() {
-        return {
-            restrict: "A",
-            link: function(scope, element) {
-                if (!element.popover) return void console.log("twPopOver requires tooltip from bootstrap.js");
-                var options = {}, tag = element[0];
-                tag.getAttribute("data-trigger") ? "hover" === tag.getAttribute("data-trigger") && (options.trigger = "hover focus") : options.trigger = "focus", 
-                tag.getAttribute("data-placement") || (options.placement = "top"), tag.getAttribute("data-content-html") && (options.html = !0), 
-                element.popover(options), tag.setAttribute("tabindex", "0"), tag.setAttribute("role", "button"), 
-                tag.setAttribute("data-toggle", "popover");
-            }
-        };
-    }
-    angular.module("tw.form-styling").directive("twPopOver", TwPopOver);
-}(window.angular), function(angular) {
-    "use strict";
-    function TwTextFormat() {
-        return {
-            restrict: "A",
-            require: "ngModel",
-            bindToController: !0,
-            controllerAs: "$ctrl",
-            scope: {
-                ngModel: "<",
-                twTextFormat: "@"
-            },
-            controller: [ "$element", "$timeout", "$scope", "TwTextFormatService", "TwUndoStackFactory", TwTextFormatController ]
-        };
-    }
-    function TwTextFormatController($element, $timeout, $scope, TwTextFormatService, TwUndoStackFactory) {
-        function init() {
-            undoStack = TwUndoStackFactory["new"](), keydownCount = 0, ngModelController = $element.controller("ngModel"), 
-            element = $element[0], $scope.$watch("$ctrl.twTextFormat", onPatternChange), $scope.$watch("$ctrl.ngModel", onModelChange), 
-            onPatternChange($ctrl.twTextFormat), ngModelController.$formatters.push(function(value) {
-                return TwTextFormatService.formatUsingPattern(value, pattern);
-            }), ngModelController.$parsers.push(function(value) {
-                return TwTextFormatService.unformatUsingPattern(value, pattern);
-            }), element.addEventListener("change", onChange), element.addEventListener("keydown", onKeydown), 
-            element.addEventListener("paste", onPaste), element.addEventListener("cut", onCut), 
-            element.addEventListener("copy", onCopy), replaceLengthValidators(ngModelController), 
-            undoStack.reset(element.value);
-        }
-        function onModelChange(newModel, oldModel) {
-            if (newModel !== oldModel) {
-                var selectionStart = element.selectionStart, selectionEnd = element.selectionEnd;
-                reformatControl(element, newModel), element.setSelectionRange(selectionStart, selectionEnd);
-            }
-        }
-        function onPatternChange(newPattern, oldPattern) {
-            if (newPattern === oldPattern) return void (pattern = newPattern);
-            pattern = newPattern && newPattern.indexOf("||") > 0 ? newPattern.substring(0, newPattern.indexOf("||")) : newPattern;
-            var viewValue = element.value;
-            oldPattern && (viewValue = TwTextFormatService.unformatUsingPattern(viewValue, oldPattern)), 
-            newPattern && (viewValue = TwTextFormatService.formatUsingPattern(viewValue, pattern)), 
-            undoStack.reset(viewValue), element.value = viewValue;
-        }
-        function replaceLengthValidators(ngModelController) {
-            $timeout(function() {
-                var originalMinLength = ngModelController.$validators.minlength, originalMaxLength = ngModelController.$validators.maxlength;
-                originalMinLength && (ngModelController.$validators.minlength = function(modelValue, viewValue) {
-                    return originalMinLength(modelValue, TwTextFormatService.unformatUsingPattern(viewValue, pattern));
-                }), originalMaxLength && (ngModelController.$validators.maxlength = function(modelValue, viewValue) {
-                    return originalMaxLength(modelValue, TwTextFormatService.unformatUsingPattern(viewValue, pattern));
-                });
-            });
-        }
-        function reformatControl(element, originalValue) {
-            originalValue || (originalValue = element.value);
-            var newValue = TwTextFormatService.reformatUsingPattern(originalValue, pattern);
-            newValue !== originalValue && (element.value = newValue);
-        }
-        function onChange() {
-            reformatControl(element), undoStack.add(element.value);
-        }
-        function onPaste(event) {
-            var selectionStart = element.selectionStart, clipboardData = (element.value.length, 
-            event.clipboardData || window.clipboardData), pastedData = clipboardData.getData("Text"), separatorsInPaste = TwTextFormatService.countSeparatorsInAppendedValue(pattern, selectionStart, pastedData);
-            $timeout(function() {
-                var newPosition = selectionStart + pastedData.length + separatorsInPaste;
-                reformatControl(element), undoStack.add(element.value), element.setSelectionRange(newPosition, newPosition);
-            });
-        }
-        function onKeydown(event) {
-            keydownCount++;
-            var currentKeydownCount = keydownCount, key = event.keyCode || event.which, selectionStart = event.target.selectionStart, selectionEnd = event.target.selectionEnd;
-            return reservedKeys.indexOf(key) >= 0 || event.metaKey || event.ctrlKey ? (key === keys.z && (event.metaKey || event.ctrlKey) && (event.preventDefault(), 
-            event.stopPropagation(), element.value = undoStack.undo()), void (key === keys.y && (event.metaKey || event.ctrlKey) && (event.preventDefault(), 
-            event.stopPropagation(), element.value = undoStack.redo()))) : void $timeout(function() {
-                afterKeydown(key, currentKeydownCount, element, pattern, selectionStart, selectionEnd);
-            });
-        }
-        function afterKeydown(key, currentKeydownCount, element, pattern, selectionStart, selectionEnd) {
-            var newVal;
-            key === keys.backspace ? (newVal = doBackspace(element, pattern, selectionStart, selectionEnd), 
-            ngModelController.$setViewValue(newVal)) : key === keys["delete"] ? (newVal = doDelete(element, pattern, selectionStart, selectionEnd), 
-            ngModelController.$setViewValue(newVal)) : keydownCount === currentKeydownCount && doKeypress(element, pattern, selectionStart, selectionEnd);
-        }
-        function doBackspace(element, pattern, selectionStart, selectionEnd) {
-            element.value = getFormattedValueAfterBackspace(element, pattern, selectionStart, selectionEnd), 
-            undoStack.add(element.value);
-            var newPosition = getPositionAfterBackspace(pattern, element, selectionStart, selectionEnd);
-            return element.setSelectionRange(newPosition, newPosition), element.value;
-        }
-        function getFormattedValueAfterBackspace(element, pattern, selectionStart, selectionEnd) {
-            var removeStart, removeEnd, newVal = element.value, separatorsBeforeCursor = TwTextFormatService.countSeparatorsBeforeCursor(pattern, selectionStart);
-            if (separatorsBeforeCursor) {
-                var adjust = separatorsBeforeCursor > 1 ? 1 : 0;
-                selectionStart !== selectionEnd ? (removeStart = selectionStart - separatorsBeforeCursor + 1, 
-                removeEnd = selectionStart - adjust) : (removeStart = selectionStart - separatorsBeforeCursor, 
-                removeEnd = selectionStart - adjust), newVal = removeCharacters(element.value, removeStart, removeEnd);
-            }
-            return TwTextFormatService.reformatUsingPattern(newVal, pattern);
-        }
-        function doDelete(element, pattern, selectionStart, selectionEnd) {
-            return element.value = getFormattedValueAfterDelete(element, pattern, selectionStart, selectionEnd), 
-            undoStack.add(element.value), element.setSelectionRange(selectionStart, selectionStart), 
-            element.value;
-        }
-        function getFormattedValueAfterDelete(element, pattern, selectionStart, selectionEnd) {
-            var removeStart, removeEnd, newVal = element.value, separatorsAfterCursor = TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart);
-            if (separatorsAfterCursor) {
-                var adjust = separatorsAfterCursor > 1 ? 0 : 1;
-                selectionStart !== selectionEnd ? (removeStart = selectionStart + adjust, removeEnd = selectionStart + separatorsAfterCursor + adjust) : (removeStart = selectionStart + separatorsAfterCursor, 
-                removeEnd = selectionStart + separatorsAfterCursor + 1), newVal = removeCharacters(element.value, removeStart, removeEnd);
-            }
-            return TwTextFormatService.reformatUsingPattern(newVal, pattern);
-        }
-        function doKeypress(element, pattern, selectionStart, selectionEnd) {
-            reformatControl(element), undoStack.add(element.value);
-            var newPosition = getPositionAfterKeypress(pattern, element, selectionStart, selectionEnd);
-            element.setSelectionRange(newPosition, newPosition);
-        }
-        function getPositionAfterBackspace(pattern, element, selectionStart, selectionEnd) {
-            var separatorsBefore = TwTextFormatService.countSeparatorsBeforeCursor(pattern, selectionStart), isRange = selectionStart !== selectionEnd, proposedPosition = selectionStart - separatorsBefore - (isRange ? 0 : 1);
-            return proposedPosition + TwTextFormatService.countSeparatorsAfterCursor(pattern, proposedPosition);
-        }
-        function getPositionAfterKeypress(pattern, element, selectionStart, selectionEnd) {
-            var separatorsAfter;
-            return selectionStart !== selectionEnd ? separatorsAfter = TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart) : (separatorsAfter = TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart), 
-            0 === separatorsAfter && (separatorsAfter = TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart + 1))), 
-            selectionStart + 1 + separatorsAfter;
-        }
-        function removeCharacters(value, first, last) {
-            return value.substring(0, first - 1) + value.substring(last - 1, value.length);
-        }
-        function onCut(event) {
-            var selectionStart = element.selectionStart;
-            $timeout(function() {
-                reformatControl(element), undoStack.add(element.value);
-                var newPosition = selectionStart + TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart);
-                element.setSelectionRange(newPosition, newPosition);
-            });
-        }
-        function onCopy(event) {
-            var selectionStart = element.selectionStart, selectionEnd = element.selectionEnd;
-            $timeout(function() {
-                element.setSelectionRange(selectionStart, selectionEnd);
-            });
-        }
-        var ngModelController, element, undoStack, keydownCount, pattern = "", $ctrl = this, keys = {
-            cmd: 224,
-            cmdLeft: 91,
-            cmdRight: 93,
-            backspace: 8,
-            tab: 9,
-            enter: 13,
-            shift: 16,
-            ctrl: 17,
-            alt: 18,
-            end: 35,
-            home: 36,
-            left: 37,
-            up: 38,
-            right: 39,
-            down: 40,
-            "delete": 46,
-            y: 89,
-            z: 90
-        }, reservedKeys = [ keys.cmd, keys.cmdLeft, keys.cmdRight, keys.enter, keys.shift, keys.ctrl, keys.alt, keys.left, keys.up, keys.right, keys.down ];
-        init();
-    }
-    angular.module("tw.form-styling").directive("twTextFormat", TwTextFormat);
-}(window.angular), function(angular) {
-    function TwToolTip() {
-        return {
-            restrict: "A",
-            link: function(scope, element) {
-                if (!element.tooltip) return void console.log("twToolTip requires bootstrap.js");
-                var tag = element[0], options = {};
-                tag.getAttribute("data-placement") || (options.placement = "top"), element.tooltip(options), 
-                tag.setAttribute("tabindex", "0"), tag.setAttribute("data-toggle", "tooltip");
-            }
-        };
-    }
-    angular.module("tw.form-styling").directive("twToolTip", TwToolTip);
 }(window.angular), function() {
     "use strict";
     function TwDynamicAsyncValidator($log, $q, $http) {
@@ -377,72 +142,6 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         };
     }
     angular.module("tw.layout-components").service("TwCardsService", TwCardsService);
-}(window.angular), function(angular) {
-    "use strict";
-    function TwTextFormatService() {
-        function positionIsSeparator(pattern, position) {
-            return pattern[position] && "*" !== pattern[position];
-        }
-        this.formatUsingPattern = function(value, pattern) {
-            if (value || (value = ""), "string" != typeof pattern) return value;
-            for (var newValue = "", separators = 0, charactersToAllocate = value.length, position = 0; charactersToAllocate; ) positionIsSeparator(pattern, position) ? (newValue += pattern[position], 
-            separators++) : (newValue += value[position - separators], charactersToAllocate--), 
-            position++;
-            var separatorsAfterCursor = this.countSeparatorsAfterCursor(pattern, position);
-            return separatorsAfterCursor && (newValue += pattern.substr(position, separatorsAfterCursor)), 
-            newValue;
-        }, this.unformatUsingPattern = function(value, pattern) {
-            if (!value) return "";
-            if ("string" != typeof pattern) return value;
-            for (var i = 0; i < pattern.length; i++) if (positionIsSeparator(pattern, i)) for (;value.indexOf(pattern[i]) >= 0; ) value = value.replace(pattern[i], "");
-            return value;
-        }, this.reformatUsingPattern = function(value, newPattern, oldPattern) {
-            return "undefined" == typeof oldPattern && (oldPattern = newPattern), this.formatUsingPattern(this.unformatUsingPattern(value, oldPattern), newPattern);
-        }, this.countSeparatorsBeforeCursor = function(pattern, position) {
-            for (var separators = 0; positionIsSeparator(pattern, position - separators - 1); ) separators++;
-            return separators;
-        }, this.countSeparatorsAfterCursor = function(pattern, position) {
-            for (var separators = 0; positionIsSeparator(pattern, position + separators); ) separators++;
-            return separators;
-        }, this.countSeparatorsInAppendedValue = function(pattern, position, value) {
-            for (var separators = 0, i = 0, toAllocate = value.length; toAllocate; ) positionIsSeparator(pattern, position + i) ? separators++ : toAllocate--, 
-            i++;
-            return separators;
-        }, this.countSeparatorsInPattern = function(pattern) {
-            for (var separators = 0, i = 0; i < pattern.length; i++) positionIsSeparator(pattern, i) && separators++;
-            return separators;
-        };
-    }
-    angular.module("tw.form-styling").service("TwTextFormatService", TwTextFormatService);
-}(window.angular), function(angular) {
-    "use strict";
-    function TwUndoStackFactory() {
-        this["new"] = function() {
-            return new UndoStack();
-        };
-    }
-    function UndoStack() {
-        var pointer = 0, stack = [];
-        this.reset = function(value) {
-            stack = [ value ], pointer = 0;
-        }, this.add = function(value) {
-            stack.length - 1 > pointer && (stack = stack.slice(0, pointer + 1)), stack[pointer] !== value && (stack.push(value), 
-            pointer++);
-        }, this.undo = function() {
-            return pointer >= 0 && "undefined" != typeof stack[pointer - 1] && pointer--, stack[pointer];
-        }, this.redo = function() {
-            return pointer < stack.length && "undefined" != typeof stack[pointer + 1] && pointer++, 
-            stack[pointer];
-        };
-    }
-    angular.module("tw.form-styling").service("TwUndoStackFactory", TwUndoStackFactory);
-}(window.angular), function(angular) {
-    "use strict";
-    angular.module("tw.form-styling").filter("twTextFormat", [ "TwTextFormatService", function(TwTextFormatService) {
-        return function(input, pattern) {
-            return input = input || "", pattern ? TwTextFormatService.formatUsingPattern(input, pattern) : input;
-        };
-    } ]);
 }(window.angular), function(modules) {
     function __webpack_require__(moduleId) {
         if (installedModules[moduleId]) return installedModules[moduleId].exports;
@@ -473,7 +172,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         return __webpack_require__.d(getter, "a", getter), getter;
     }, __webpack_require__.o = function(object, property) {
         return Object.prototype.hasOwnProperty.call(object, property);
-    }, __webpack_require__.p = "", __webpack_require__(__webpack_require__.s = 17);
+    }, __webpack_require__.p = "", __webpack_require__(__webpack_require__.s = 18);
 }([ function(module, exports, __webpack_require__) {
     "use strict";
     function TwCurrencyData() {
@@ -510,6 +209,111 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     }), exports["default"] = angular.module("tw.form-components").service("TwCurrencyData", TwCurrencyData).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
+    function TwDateService() {
+        function getLocalisedDateName(date, locale, formattingObject) {
+            var name = date.toLocaleDateString(locale, formattingObject);
+            return isLocaleTranslationRequiresStripping(locale) && (name = name.replace(/[0-9]|\s|,/g, "")), 
+            name[0].toUpperCase() + name.substring(1);
+        }
+        function getValidDateFormat(format) {
+            var validFormats = [ "narrow", "short", "long" ];
+            return !format || validFormats.indexOf(format) < 0 ? "long" : format;
+        }
+        function getValidLocale(locale) {
+            return isIntlSupportedForLocale(locale) ? locale : "en-GB";
+        }
+        function isIntlSupportedForLocale(locale) {
+            try {
+                var supportedLocales = window.Intl.DateTimeFormat.supportedLocalesOf([ locale ]);
+                return supportedLocales.length > 0;
+            } catch (error) {
+                return !1;
+            }
+        }
+        function isLocaleTranslationRequiresStripping(locale) {
+            if (!locale) return !0;
+            var lang = getLanguageFromLocale(locale);
+            return "ja" !== lang;
+        }
+        function getLanguageFromLocale(locale) {
+            return locale ? locale.substring(0, 2) : null;
+        }
+        this.getLocaleDate = function(date) {
+            return date || (date = new Date()), date.getDate();
+        }, this.getLocaleMonth = function(date) {
+            return date || (date = new Date()), date.getMonth();
+        }, this.getLocaleFullYear = function(date) {
+            return date || (date = new Date()), date.getFullYear();
+        }, this.getLocaleToday = function() {
+            var now = new Date();
+            return this.getUTCDateFromParts(this.getLocaleFullYear(now), this.getLocaleMonth(now), this.getLocaleDate(now));
+        }, this.getUTCDate = function(date) {
+            return date || (date = new Date()), date.getUTCDate();
+        }, this.getUTCMonth = function(date) {
+            return date || (date = new Date()), date.getUTCMonth();
+        }, this.getUTCFullYear = function(date) {
+            return date || (date = new Date()), date.getUTCFullYear();
+        }, this.getUTCToday = function() {
+            var now = new Date();
+            return this.getUTCDateFromParts(this.getUTCFullYear(now), this.getUTCMonth(now), this.getUTCDate(now));
+        }, this.getLastDayOfMonth = function(year, month) {
+            var lastDay = this.getUTCDateFromParts(year, month + 1, 0);
+            return lastDay.getUTCDate();
+        }, this.getUTCDateFromParts = function(year, month, day) {
+            var date = new Date();
+            return date.setUTCFullYear(year, month, day), date.setUTCHours(0), date.setUTCMinutes(0), 
+            date.setUTCSeconds(0), date.setUTCMilliseconds(0), date;
+        }, this.getDayNamesForLocale = function(locale, format) {
+            var date, days = [], language = getLanguageFromLocale(locale);
+            if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language]) return DEFAULT_DAY_NAMES_BY_LANGUAGE[language];
+            format = getValidDateFormat(format), locale = getValidLocale(locale);
+            for (var i = 1; i <= 7; i++) date = this.getUTCDateFromParts(2001, 0, i), days.push(getLocalisedDateName(date, locale, {
+                weekday: format
+            }));
+            return days;
+        }, this.getMonthNamesForLocale = function(locale, format) {
+            var date, month, months = [], language = getLanguageFromLocale(locale);
+            if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] && ("long" === format || "ja" === language)) return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language];
+            format = getValidDateFormat(format), locale = getValidLocale(locale);
+            for (var i = 0; i < 12; i++) date = this.getUTCDateFromParts(2e3, i, 15), "short" === format ? (month = getLocalisedDateName(date, locale, {
+                month: "long"
+            }), month = month.length > 4 ? month.slice(0, 3) : month, months.push(month)) : months.push(getLocalisedDateName(date, locale, {
+                month: format
+            }));
+            return months;
+        }, this.getWeekday = function(year, month, day) {
+            var utcDate = this.getUTCDateFromParts(year, month, day);
+            return utcDate.getUTCDay();
+        }, this.isMonthBeforeDay = function(locale) {
+            return locale.indexOf("US", locale.length - 2) !== -1 || "ja" === getLanguageFromLocale(locale);
+        }, this.addYears = function(date, years) {
+            return this.addToDate(date, years, 0, 0);
+        }, this.addMonths = function(date, months) {
+            return this.addToDate(date, 0, months, 0);
+        }, this.addDays = function(date, days) {
+            return this.addToDate(date, 0, 0, days);
+        }, this.addToDate = function(date, years, months, days) {
+            return this.getUTCDateFromParts(date.getUTCFullYear() + years, date.getUTCMonth() + months, date.getUTCDate() + days);
+        }, this.getYearAndMonthPresentation = function(year, monthName, locale) {
+            var lang = getLanguageFromLocale(locale);
+            return "ja" === lang ? year + "年" + monthName : monthName + " " + year;
+        }, this.getYearMonthDatePresentation = function(year, monthName, date, locale) {
+            var lang = getLanguageFromLocale(locale);
+            return "ja" === lang ? year + "年" + monthName + date + "日" : locale.indexOf("US", locale.length - 2) !== -1 ? monthName + " " + date + ", " + year : date + " " + monthName + " " + year;
+        };
+        var DEFAULT_MONTH_NAMES_BY_LANGUAGE = {
+            en: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
+            ja: [ "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" ]
+        }, DEFAULT_DAY_NAMES_BY_LANGUAGE = {
+            en: [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" ],
+            ja: [ "月", "火", "水", "木", "金", "土", "日" ]
+        };
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), exports["default"] = angular.module("tw.form-components").service("TwDateService", TwDateService).name;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : {
             "default": obj
@@ -518,7 +322,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twAmountCurrencySelectController = __webpack_require__(18), _twAmountCurrencySelectController2 = _interopRequireDefault(_twAmountCurrencySelectController), TwAmountCurrencySelect = {
+    var _twAmountCurrencySelectController = __webpack_require__(19), _twAmountCurrencySelectController2 = _interopRequireDefault(_twAmountCurrencySelectController), TwAmountCurrencySelect = {
         require: "ngModel",
         controller: _twAmountCurrencySelectController2["default"],
         transclude: {
@@ -609,7 +413,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twCurrencyInputController = __webpack_require__(19), _twCurrencyInputController2 = _interopRequireDefault(_twCurrencyInputController), TwCurrencyInput = {
+    var _twCurrencyInputController = __webpack_require__(20), _twCurrencyInputController2 = _interopRequireDefault(_twCurrencyInputController), TwCurrencyInput = {
         require: "ngModel",
         controller: _twCurrencyInputController2["default"],
         transclude: {
@@ -633,6 +437,11 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     exports["default"] = angular.module("tw.components.currency-input", []).component("twCurrencyInput", TwCurrencyInput).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
     function TwDateLookupController($element, $scope, $timeout, TwDateService) {
         function init() {
             $ctrl.yearOffset = 0, ngModelCtrl = $element.controller("ngModel"), addValidators(), 
@@ -790,7 +599,8 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var TwDateLookup = {
+    var _twDateServiceService = __webpack_require__(1), TwDateLookup = (_interopRequireDefault(_twDateServiceService), 
+    {
         require: "ngModel",
         controller: [ "$element", "$scope", "$timeout", "TwDateService", TwDateLookupController ],
         bindings: {
@@ -807,7 +617,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
             shortDate: "<"
         },
         template: '     <div class="btn-group btn-block dropdown"       ng-keydown="$ctrl.keyHandler($event)">       <button class="btn btn-input dropdown-toggle tw-date-lookup-button" data-toggle="dropdown"         ng-disabled="$ctrl.ngDisabled"         ng-click="$ctrl.openLookup()"         ng-focus="$ctrl.buttonFocus()"         ng-class="{           \'btn-sm\': $ctrl.size === \'sm\',           \'btn-lg\': $ctrl.size === \'lg\'         }">         <span ng-if="!$ctrl.ngModel"           class="form-control-placeholder tw-date-lookup-placeholder">           {{$ctrl.placeholder}}         </span>         <span ng-if="$ctrl.label && $ctrl.ngModel"           class="control-label small m-r-1" style="font-size: 14px;"           >{{$ctrl.label}}</span         ><span ng-if="$ctrl.ngModel" class="tw-date-lookup-selected">          {{$ctrl.selectedDateFormatted}}        </span>         <span class="caret"></span>       </button>       <div class="dropdown-menu" style="min-width: 300px;">                 <div ng-if="$ctrl.mode === \'year\'" class="tw-date-lookup-years">           <div class="text-xs-center p-t-1 p-b-2">             <div class="pull-xs-left p-b-2">               <a href="" ng-click="$ctrl.setYearOffset($event, -20)"                 class="text-no-decoration tw-date-lookup-previous-years">                 <i class="icon icon-left icon-lg"></i>               </a>             </div>             <div class="pull-xs-right p-b-2">               <a href="" ng-click="$ctrl.setYearOffset($event, 20)"                 class="text-no-decoration tw-date-lookup-next-years">                 <i class="icon icon-right icon-lg"></i>               </a>             </div>           </div>           <table class="table table-condensed table-bordered table-calendar m-b-0">             <tbody>               <tr ng-repeat="row in [0,4,8,12,16]">                 <td ng-repeat="col in [0,1,2,3]">                   <a href=""                     ng-click="$ctrl.selectYear($event, $ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)"                     ng-disabled="$ctrl.isYearDisabled($ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)"                     ng-class="{\'active\': $ctrl.selectedYear === ($ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)}"                     class="tw-date-lookup-year-option">                     {{$ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset}}                   </a>                 </td>               </tr>             </tbody>           </table>         </div>                 <div ng-if="$ctrl.mode === \'month\'" class="tw-date-lookup-months">           <div class="text-xs-center p-t-1 p-b-2">             <div class="pull-xs-left">               <a href="" ng-click="$ctrl.yearBefore($event)" class="text-no-decoration">                 <i class="icon icon-left icon-lg"></i>               </a>             </div>             <a href="" ng-click="$ctrl.switchToYears($event)"               class="tw-date-lookup-year-label">               {{$ctrl.year}}             </a>             <div class="pull-xs-right">               <a href="" ng-click="$ctrl.yearAfter($event)" class="text-no-decoration">                 <i class="icon icon-right icon-lg"></i>               </a>             </div>           </div>           <table class="table table-condensed table-bordered table-calendar m-b-0">             <tbody>               <tr ng-repeat="row in [0,4,8]">                 <td ng-repeat="col in [0,1,2,3]">                   <a href=""                     ng-click="$ctrl.selectMonth($event, row+col, $ctrl.year)"                     ng-disabled="$ctrl.isMonthDisabled(row + col, $ctrl.year)"                     ng-class="{\'active\': $ctrl.selectedMonth === (row + col) && $ctrl.selectedYear === $ctrl.year}"                     class="tw-date-lookup-month-option">                     {{$ctrl.shortMonthsOfYear[row+col] | limitTo:5}}                   </a>                 </td>               </tr>             </tbody>           </table>         </div>                 <div ng-if="$ctrl.mode === \'day\'" class="tw-date-lookup-days">           <div class="text-xs-center p-t-1 p-b-2">             <div class="pull-xs-left">               <a href="" ng-click="$ctrl.monthBefore($event)"                 class="text-no-decoration tw-date-lookup-previous-month">                 <i class="icon icon-left icon-lg"></i>               </a>             </div>             <a href="" ng-click="$ctrl.switchToYears($event)"               class="tw-date-lookup-month-label">               {{$ctrl.yearMonthFormatted}}             </a>             <div class="pull-xs-right">               <a href="" ng-click="$ctrl.monthAfter($event)"                 class="text-no-decoration tw-date-lookup-next-month">                 <i class="icon icon-right icon-lg"></i>               </a>             </div>           </div>           <table class="table table-condensed table-bordered table-calendar m-b-0">             <thead>               <tr>                 <th ng-repeat="day in $ctrl.daysOfWeek track by $index">                   <span class="hidden-xs">{{day | limitTo : 3}}</span>                   <span class="visible-xs-inline-block">{{$ctrl.shortDaysOfWeek[$index] | limitTo : 2}}</span>                 </th>               </tr>             </thead>             <tbody>               <tr ng-repeat="week in $ctrl.weeks">                 <td ng-repeat="day in week track by $index"                   ng-class="{                     \'default\': $index > 4                   }">                   <a href="" title="{{day}} {{$ctrl.monthsOfYear[$ctrl.month]}} {{$ctrl.year}}"                     ng-if="day"                     ng-click="$ctrl.selectDay($event, day, $ctrl.month, $ctrl.year)"                     ng-disabled="$ctrl.isDayDisabled(day, $ctrl.month, $ctrl.year)"                     ng-class="{                       \'active\': $ctrl.isCurrentlySelected(day, $ctrl.month, $ctrl.year)                     }"                     class="tw-date-lookup-day-option" tabindex="0">                     {{day}}                   </a>                 </td>               </tr>             </tbody>           </table>         </div>       </div>     </div>'
-    };
+    });
     exports["default"] = angular.module("tw.components.date-lookup", []).component("twDateLookup", TwDateLookup).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
@@ -819,7 +629,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twDateController = __webpack_require__(20), _twDateController2 = _interopRequireDefault(_twDateController), daySectionTemplate = "     <label class='sr-only'>Day</label>     <input type='number'       name='day'       class='form-control tw-date-day'       ng-model='$ctrl.day'       ng-change='$ctrl.updateDateModelAndValidationClasses()'       placeholder='DD'       min='1'       ng-min='1'       ng-disabled='$ctrl.dateDisabled'       ng-required='$ctrl.dateRequired'       tw-focusable />", monthSectionTemplate = "      <label class='sr-only'>Month</label>    <tw-select       name='month'       class='tw-date-month'       ng-model='$ctrl.month'       ng-change='$ctrl.updateDateModelAndValidationClasses()'       ng-required='$ctrl.dateRequired'       ng-disabled='$ctrl.dateDisabled'       options='$ctrl.dateMonths'>     </tw-select>", yearSectionTemplate = "     <label class='sr-only'>Year</label>     <input type='number'       name='year'       class='form-control tw-date-year'       placeholder='YYYY'       ng-model='$ctrl.year'       ng-change='$ctrl.updateDateModelAndValidationClasses()'       ng-min='$ctrl.min.getFullYear()'       ng-max='$ctrl.max.getFullYear()'       maxlength='4'       ng-maxlength='4'       ng-disabled='$ctrl.dateDisabled'       ng-required='$ctrl.dateRequired'       tw-focusable />", templateAsString = "     <div class='row'>       <div class='col-sm-5 tw-date-month-column' ng-if='$ctrl.monthBeforeDay'>" + monthSectionTemplate + "       </div>       <div class='col-sm-3 tw-date-day-column'>" + daySectionTemplate + "       </div>       <div class='col-sm-5 tw-date-month-column' ng-if='!$ctrl.monthBeforeDay'>" + monthSectionTemplate + "       </div>       <div class='col-sm-4 tw-date-year-column'>" + yearSectionTemplate + "       </div>     </div>", TwDate = {
+    var _twDateController = __webpack_require__(21), _twDateController2 = _interopRequireDefault(_twDateController), daySectionTemplate = "     <label class='sr-only'>Day</label>     <input type='number'       name='day'       class='form-control tw-date-day'       ng-model='$ctrl.day'       ng-change='$ctrl.updateDateModelAndValidationClasses()'       placeholder='DD'       min='1'       ng-min='1'       ng-disabled='$ctrl.dateDisabled'       ng-required='$ctrl.dateRequired'       tw-focusable />", monthSectionTemplate = "      <label class='sr-only'>Month</label>    <tw-select       name='month'       class='tw-date-month'       ng-model='$ctrl.month'       ng-change='$ctrl.updateDateModelAndValidationClasses()'       ng-required='$ctrl.dateRequired'       ng-disabled='$ctrl.dateDisabled'       options='$ctrl.dateMonths'>     </tw-select>", yearSectionTemplate = "     <label class='sr-only'>Year</label>     <input type='number'       name='year'       class='form-control tw-date-year'       placeholder='YYYY'       ng-model='$ctrl.year'       ng-change='$ctrl.updateDateModelAndValidationClasses()'       ng-min='$ctrl.min.getFullYear()'       ng-max='$ctrl.max.getFullYear()'       maxlength='4'       ng-maxlength='4'       ng-disabled='$ctrl.dateDisabled'       ng-required='$ctrl.dateRequired'       tw-focusable />", templateAsString = "     <div class='row'>       <div class='col-sm-5 tw-date-month-column' ng-if='$ctrl.monthBeforeDay'>" + monthSectionTemplate + "       </div>       <div class='col-sm-3 tw-date-day-column'>" + daySectionTemplate + "       </div>       <div class='col-sm-5 tw-date-month-column' ng-if='!$ctrl.monthBeforeDay'>" + monthSectionTemplate + "       </div>       <div class='col-sm-4 tw-date-year-column'>" + yearSectionTemplate + "       </div>     </div>", TwDate = {
         require: "ngModel",
         controller: _twDateController2["default"],
         bindings: {
@@ -1114,8 +924,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twRequirementsService = __webpack_require__(21), TwRequirementsForm = (_interopRequireDefault(_twRequirementsService), 
-    {
+    var _twRequirementsService = __webpack_require__(22), _twRequirementsService2 = _interopRequireDefault(_twRequirementsService), TwRequirementsForm = {
         bindings: {
             model: "=",
             requirements: "<",
@@ -1128,8 +937,8 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
         },
         controller: [ "$scope", "TwRequirementsService", TwRequirementsFormController ],
         template: "     <tw-tabs       ng-if='$ctrl.requirements.length > 1'       tabs='$ctrl.requirements'       active='$ctrl.model.type'>     </tw-tabs>     <div class='tab-content' ng-form='twForm'>       <div ng-repeat='requirementType in $ctrl.requirements'         ng-if='$ctrl.model.type == requirementType.type'         class='tab-pane active'         id='{{requirementType.type}}'>         <p>{{requirementType.description}}</p>         <tw-fieldset           fields='requirementType.fields'           model='$ctrl.model'           upload-options='$ctrl.uploadOptions'           locale='{{$ctrl.locale}}'           onRefreshRequirements='$ctrl.onRefreshRequirements()'           validation-messages='$ctrl.validationMessages'           error-messages='$ctrl.errorMessages'>         </tw-fieldset>       </div>     </div>"
-    });
-    exports["default"] = angular.module("tw.components.requirements-form", []).component("twRequirementsForm", TwRequirementsForm).name;
+    };
+    exports["default"] = angular.module("tw.components.requirements-form", []).service("TwRequirementsService", _twRequirementsService2["default"]).component("twRequirementsForm", TwRequirementsForm).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwSelectController($element, $scope, $transclude, $timeout) {
@@ -1437,7 +1246,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), exports["default"] = angular.module("tw.components.upload-droppable").directive("twFileSelect", TwFileSelectDirective).directive("twUploadDroppable", TwUploadDroppableDirective).name;
+    }), exports["default"] = angular.module("tw.components.upload-droppable", []).directive("twFileSelect", TwFileSelectDirective).directive("twUploadDroppable", TwUploadDroppableDirective).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwUploadController($timeout, $element, $http, $scope, $transclude, $q, $attrs) {
@@ -1604,8 +1413,8 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _angular = __webpack_require__(16), _angular2 = _interopRequireDefault(_angular), _twCheckboxComponent = __webpack_require__(2), _twCheckboxComponent2 = _interopRequireDefault(_twCheckboxComponent), _twRadioComponent = __webpack_require__(9), _twRadioComponent2 = _interopRequireDefault(_twRadioComponent), _twSelectComponent = __webpack_require__(12), _twSelectComponent2 = _interopRequireDefault(_twSelectComponent), _twLoaderComponent = __webpack_require__(7), _twLoaderComponent2 = _interopRequireDefault(_twLoaderComponent), _twProcessComponent = __webpack_require__(8), _twProcessComponent2 = _interopRequireDefault(_twProcessComponent), _twUploadComponent = __webpack_require__(15), _twUploadComponent2 = _interopRequireDefault(_twUploadComponent), _twDateComponent = __webpack_require__(5), _twDateComponent2 = _interopRequireDefault(_twDateComponent), _twDateLookupComponent = __webpack_require__(4), _twDateLookupComponent2 = _interopRequireDefault(_twDateLookupComponent), _twCurrencyInputComponent = __webpack_require__(3), _twCurrencyInputComponent2 = _interopRequireDefault(_twCurrencyInputComponent), _twAmountCurrencySelectComponent = __webpack_require__(1), _twAmountCurrencySelectComponent2 = _interopRequireDefault(_twAmountCurrencySelectComponent), _twTabsComponent = __webpack_require__(13), _twTabsComponent2 = _interopRequireDefault(_twTabsComponent), _twDynamicFormControlComponent = __webpack_require__(6), _twDynamicFormControlComponent2 = _interopRequireDefault(_twDynamicFormControlComponent), _twFieldsetComponent = __webpack_require__(10), _twFieldsetComponent2 = _interopRequireDefault(_twFieldsetComponent), _twRequirementsFormComponent = __webpack_require__(11), _twUploadDroppableDirective = (_interopRequireDefault(_twRequirementsFormComponent), 
-    __webpack_require__(14)), _twUploadDroppableDirective2 = _interopRequireDefault(_twUploadDroppableDirective), formComponentsModule = _angular2["default"].module("tw.form-components");
+    var _angular = __webpack_require__(17), _angular2 = _interopRequireDefault(_angular), _twCheckboxComponent = __webpack_require__(3), _twCheckboxComponent2 = _interopRequireDefault(_twCheckboxComponent), _twRadioComponent = __webpack_require__(10), _twRadioComponent2 = _interopRequireDefault(_twRadioComponent), _twSelectComponent = __webpack_require__(13), _twSelectComponent2 = _interopRequireDefault(_twSelectComponent), _twLoaderComponent = __webpack_require__(8), _twLoaderComponent2 = _interopRequireDefault(_twLoaderComponent), _twProcessComponent = __webpack_require__(9), _twProcessComponent2 = _interopRequireDefault(_twProcessComponent), _twUploadComponent = __webpack_require__(16), _twUploadComponent2 = _interopRequireDefault(_twUploadComponent), _twDateComponent = __webpack_require__(6), _twDateComponent2 = _interopRequireDefault(_twDateComponent), _twDateLookupComponent = __webpack_require__(5), _twDateLookupComponent2 = _interopRequireDefault(_twDateLookupComponent), _twCurrencyInputComponent = __webpack_require__(4), _twCurrencyInputComponent2 = _interopRequireDefault(_twCurrencyInputComponent), _twAmountCurrencySelectComponent = __webpack_require__(2), _twAmountCurrencySelectComponent2 = _interopRequireDefault(_twAmountCurrencySelectComponent), _twTabsComponent = __webpack_require__(14), _twTabsComponent2 = _interopRequireDefault(_twTabsComponent), _twDynamicFormControlComponent = __webpack_require__(7), _twDynamicFormControlComponent2 = _interopRequireDefault(_twDynamicFormControlComponent), _twFieldsetComponent = __webpack_require__(11), _twFieldsetComponent2 = _interopRequireDefault(_twFieldsetComponent), _twRequirementsFormComponent = __webpack_require__(12), _twUploadDroppableDirective = (_interopRequireDefault(_twRequirementsFormComponent), 
+    __webpack_require__(15)), _twUploadDroppableDirective2 = _interopRequireDefault(_twUploadDroppableDirective), formComponentsModule = _angular2["default"].module("tw.form-components");
     formComponentsModule.requires.push(_twCheckboxComponent2["default"]), formComponentsModule.requires.push(_twRadioComponent2["default"]), 
     formComponentsModule.requires.push(_twSelectComponent2["default"]), formComponentsModule.requires.push(_twLoaderComponent2["default"]), 
     formComponentsModule.requires.push(_twProcessComponent2["default"]), formComponentsModule.requires.push(_twUploadComponent2["default"]), 
@@ -1821,7 +1630,7 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twDateServiceService = __webpack_require__(22);
+    var _twDateServiceService = __webpack_require__(1);
     _interopRequireDefault(_twDateServiceService);
     TwDateController.$inject = [ "$element", "$log", "$scope", "TwDateService" ], exports["default"] = TwDateController;
 }, function(module, exports, __webpack_require__) {
@@ -1871,110 +1680,389 @@ angular.module("tw.styleguide-components", ['tw.form-validation', 'tw.form-styli
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), exports["default"] = angular.module("tw.components.requirements-form").service("TwRequirementsService", TwRequirementsService).name;
-}, function(module, exports, __webpack_require__) {
-    "use strict";
-    function TwDateService() {
-        function getLocalisedDateName(date, locale, formattingObject) {
-            var name = date.toLocaleDateString(locale, formattingObject);
-            return isLocaleTranslationRequiresStripping(locale) && (name = name.replace(/[0-9]|\s|,/g, "")), 
-            name[0].toUpperCase() + name.substring(1);
-        }
-        function getValidDateFormat(format) {
-            var validFormats = [ "narrow", "short", "long" ];
-            return !format || validFormats.indexOf(format) < 0 ? "long" : format;
-        }
-        function getValidLocale(locale) {
-            return isIntlSupportedForLocale(locale) ? locale : "en-GB";
-        }
-        function isIntlSupportedForLocale(locale) {
-            try {
-                var supportedLocales = window.Intl.DateTimeFormat.supportedLocalesOf([ locale ]);
-                return supportedLocales.length > 0;
-            } catch (error) {
-                return !1;
-            }
-        }
-        function isLocaleTranslationRequiresStripping(locale) {
-            if (!locale) return !0;
-            var lang = getLanguageFromLocale(locale);
-            return "ja" !== lang;
-        }
-        function getLanguageFromLocale(locale) {
-            return locale ? locale.substring(0, 2) : null;
-        }
-        this.getLocaleDate = function(date) {
-            return date || (date = new Date()), date.getDate();
-        }, this.getLocaleMonth = function(date) {
-            return date || (date = new Date()), date.getMonth();
-        }, this.getLocaleFullYear = function(date) {
-            return date || (date = new Date()), date.getFullYear();
-        }, this.getLocaleToday = function() {
-            var now = new Date();
-            return this.getUTCDateFromParts(this.getLocaleFullYear(now), this.getLocaleMonth(now), this.getLocaleDate(now));
-        }, this.getUTCDate = function(date) {
-            return date || (date = new Date()), date.getUTCDate();
-        }, this.getUTCMonth = function(date) {
-            return date || (date = new Date()), date.getUTCMonth();
-        }, this.getUTCFullYear = function(date) {
-            return date || (date = new Date()), date.getUTCFullYear();
-        }, this.getUTCToday = function() {
-            var now = new Date();
-            return this.getUTCDateFromParts(this.getUTCFullYear(now), this.getUTCMonth(now), this.getUTCDate(now));
-        }, this.getLastDayOfMonth = function(year, month) {
-            var lastDay = this.getUTCDateFromParts(year, month + 1, 0);
-            return lastDay.getUTCDate();
-        }, this.getUTCDateFromParts = function(year, month, day) {
-            var date = new Date();
-            return date.setUTCFullYear(year, month, day), date.setUTCHours(0), date.setUTCMinutes(0), 
-            date.setUTCSeconds(0), date.setUTCMilliseconds(0), date;
-        }, this.getDayNamesForLocale = function(locale, format) {
-            var date, days = [], language = getLanguageFromLocale(locale);
-            if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language]) return DEFAULT_DAY_NAMES_BY_LANGUAGE[language];
-            format = getValidDateFormat(format), locale = getValidLocale(locale);
-            for (var i = 1; i <= 7; i++) date = this.getUTCDateFromParts(2001, 0, i), days.push(getLocalisedDateName(date, locale, {
-                weekday: format
-            }));
-            return days;
-        }, this.getMonthNamesForLocale = function(locale, format) {
-            var date, month, months = [], language = getLanguageFromLocale(locale);
-            if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] && ("long" === format || "ja" === language)) return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language];
-            format = getValidDateFormat(format), locale = getValidLocale(locale);
-            for (var i = 0; i < 12; i++) date = this.getUTCDateFromParts(2e3, i, 15), "short" === format ? (month = getLocalisedDateName(date, locale, {
-                month: "long"
-            }), month = month.length > 4 ? month.slice(0, 3) : month, months.push(month)) : months.push(getLocalisedDateName(date, locale, {
-                month: format
-            }));
-            return months;
-        }, this.getWeekday = function(year, month, day) {
-            var utcDate = this.getUTCDateFromParts(year, month, day);
-            return utcDate.getUTCDay();
-        }, this.isMonthBeforeDay = function(locale) {
-            return locale.indexOf("US", locale.length - 2) !== -1 || "ja" === getLanguageFromLocale(locale);
-        }, this.addYears = function(date, years) {
-            return this.addToDate(date, years, 0, 0);
-        }, this.addMonths = function(date, months) {
-            return this.addToDate(date, 0, months, 0);
-        }, this.addDays = function(date, days) {
-            return this.addToDate(date, 0, 0, days);
-        }, this.addToDate = function(date, years, months, days) {
-            return this.getUTCDateFromParts(date.getUTCFullYear() + years, date.getUTCMonth() + months, date.getUTCDate() + days);
-        }, this.getYearAndMonthPresentation = function(year, monthName, locale) {
-            var lang = getLanguageFromLocale(locale);
-            return "ja" === lang ? year + "年" + monthName : monthName + " " + year;
-        }, this.getYearMonthDatePresentation = function(year, monthName, date, locale) {
-            var lang = getLanguageFromLocale(locale);
-            return "ja" === lang ? year + "年" + monthName + date + "日" : locale.indexOf("US", locale.length - 2) !== -1 ? monthName + " " + date + ", " + year : date + " " + monthName + " " + year;
+    }), exports["default"] = TwRequirementsService;
+} ]), function(modules) {
+    function __webpack_require__(moduleId) {
+        if (installedModules[moduleId]) return installedModules[moduleId].exports;
+        var module = installedModules[moduleId] = {
+            i: moduleId,
+            l: !1,
+            exports: {}
         };
-        var DEFAULT_MONTH_NAMES_BY_LANGUAGE = {
-            en: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
-            ja: [ "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" ]
-        }, DEFAULT_DAY_NAMES_BY_LANGUAGE = {
-            en: [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" ],
-            ja: [ "月", "火", "水", "木", "金", "土", "日" ]
+        return modules[moduleId].call(module.exports, module, module.exports, __webpack_require__), 
+        module.l = !0, module.exports;
+    }
+    var installedModules = {};
+    return __webpack_require__.m = modules, __webpack_require__.c = installedModules, 
+    __webpack_require__.i = function(value) {
+        return value;
+    }, __webpack_require__.d = function(exports, name, getter) {
+        __webpack_require__.o(exports, name) || Object.defineProperty(exports, name, {
+            configurable: !1,
+            enumerable: !0,
+            get: getter
+        });
+    }, __webpack_require__.n = function(module) {
+        var getter = module && module.__esModule ? function() {
+            return module["default"];
+        } : function() {
+            return module;
+        };
+        return __webpack_require__.d(getter, "a", getter), getter;
+    }, __webpack_require__.o = function(object, property) {
+        return Object.prototype.hasOwnProperty.call(object, property);
+    }, __webpack_require__.p = "", __webpack_require__(__webpack_require__.s = 8);
+}([ function(module, exports, __webpack_require__) {
+    "use strict";
+    function TwTextFormatService() {
+        function positionIsSeparator(pattern, position) {
+            return pattern[position] && "*" !== pattern[position];
+        }
+        this.formatUsingPattern = function(value, pattern) {
+            if (value || (value = ""), "string" != typeof pattern) return value;
+            for (var newValue = "", separators = 0, charactersToAllocate = value.length, position = 0; charactersToAllocate; ) positionIsSeparator(pattern, position) ? (newValue += pattern[position], 
+            separators++) : (newValue += value[position - separators], charactersToAllocate--), 
+            position++;
+            var separatorsAfterCursor = this.countSeparatorsAfterCursor(pattern, position);
+            return separatorsAfterCursor && (newValue += pattern.substr(position, separatorsAfterCursor)), 
+            newValue;
+        }, this.unformatUsingPattern = function(value, pattern) {
+            if (!value) return "";
+            if ("string" != typeof pattern) return value;
+            for (var i = 0; i < pattern.length; i++) if (positionIsSeparator(pattern, i)) for (;value.indexOf(pattern[i]) >= 0; ) value = value.replace(pattern[i], "");
+            return value;
+        }, this.reformatUsingPattern = function(value, newPattern, oldPattern) {
+            return "undefined" == typeof oldPattern && (oldPattern = newPattern), this.formatUsingPattern(this.unformatUsingPattern(value, oldPattern), newPattern);
+        }, this.countSeparatorsBeforeCursor = function(pattern, position) {
+            for (var separators = 0; positionIsSeparator(pattern, position - separators - 1); ) separators++;
+            return separators;
+        }, this.countSeparatorsAfterCursor = function(pattern, position) {
+            for (var separators = 0; positionIsSeparator(pattern, position + separators); ) separators++;
+            return separators;
+        }, this.countSeparatorsInAppendedValue = function(pattern, position, value) {
+            for (var separators = 0, i = 0, toAllocate = value.length; toAllocate; ) positionIsSeparator(pattern, position + i) ? separators++ : toAllocate--, 
+            i++;
+            return separators;
+        }, this.countSeparatorsInPattern = function(pattern) {
+            for (var separators = 0, i = 0; i < pattern.length; i++) positionIsSeparator(pattern, i) && separators++;
+            return separators;
         };
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), exports["default"] = angular.module("tw.form-components").service("TwDateService", TwDateService).name;
+    }), exports["default"] = TwTextFormatService;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function TwAffix() {
+        return {
+            restrict: "A",
+            link: function(scope, element) {
+                if (!element.affix) return void console.log("twAffix requires bootstrap.js");
+                var tag = element[0], options = {};
+                (tag.getAttribute("data-offset-top") || tag.getAttribute("data-offset-bottom")) && (options.offset = {}), 
+                tag.getAttribute("data-offset-top") && Number(tag.getAttribute("data-offset-top")) && (options.offset.top = Number(tag.getAttribute("data-offset-top"))), 
+                tag.getAttribute("data-offset-bottom") && Number(tag.getAttribute("data-offset-bottom")) && (options.offset.bottom = Number(tag.getAttribute("data-offset-bottom"))), 
+                element.affix(options);
+            }
+        };
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), exports["default"] = angular.module("tw.styleguide.styling.affix", []).directive("twAffix", TwAffix).name;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function TwFormControlStyling() {
+        return {
+            restrict: "C",
+            link: FocusableLink
+        };
+    }
+    function TwFocusable() {
+        return {
+            restrict: "A",
+            link: FocusableLink
+        };
+    }
+    function FocusableLink(scope, element) {
+        var formGroup = $(element).closest(".form-group");
+        $(element).on("focus", function() {
+            formGroup.addClass("focus");
+        }).on("blur", function() {
+            formGroup.removeClass("focus");
+        });
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), angular.module("tw.form-styling").directive("formControl", TwFormControlStyling), 
+    exports["default"] = angular.module("tw.styleguide.styling.focusable", []).directive("twFocusable", TwFocusable).name;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function TwPopOver() {
+        return {
+            restrict: "A",
+            link: function(scope, element) {
+                if (!element.popover) return void console.log("twPopOver requires tooltip from bootstrap.js");
+                var options = {}, tag = element[0];
+                tag.getAttribute("data-trigger") ? "hover" === tag.getAttribute("data-trigger") && (options.trigger = "hover focus") : options.trigger = "focus", 
+                tag.getAttribute("data-placement") || (options.placement = "top"), tag.getAttribute("data-content-html") && (options.html = !0), 
+                element.popover(options), tag.setAttribute("tabindex", "0"), tag.setAttribute("role", "button"), 
+                tag.setAttribute("data-toggle", "popover");
+            }
+        };
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), exports["default"] = angular.module("tw.styleguide.styling.popover", []).directive("twPopOver", TwPopOver).name;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
+    function TwTextFormat() {
+        return {
+            restrict: "A",
+            require: "ngModel",
+            bindToController: !0,
+            controllerAs: "$ctrl",
+            scope: {
+                ngModel: "<",
+                twTextFormat: "@"
+            },
+            controller: [ "$element", "$timeout", "$scope", "TwTextFormatService", "TwUndoStackFactory", TwTextFormatController ]
+        };
+    }
+    function TwTextFormatController($element, $timeout, $scope, TwTextFormatService, TwUndoStackFactory) {
+        function init() {
+            undoStack = TwUndoStackFactory["new"](), keydownCount = 0, ngModelController = $element.controller("ngModel"), 
+            element = $element[0], $scope.$watch("$ctrl.twTextFormat", onPatternChange), $scope.$watch("$ctrl.ngModel", onModelChange), 
+            onPatternChange($ctrl.twTextFormat), ngModelController.$formatters.push(function(value) {
+                return TwTextFormatService.formatUsingPattern(value, pattern);
+            }), ngModelController.$parsers.push(function(value) {
+                return TwTextFormatService.unformatUsingPattern(value, pattern);
+            }), element.addEventListener("change", onChange), element.addEventListener("keydown", onKeydown), 
+            element.addEventListener("paste", onPaste), element.addEventListener("cut", onCut), 
+            element.addEventListener("copy", onCopy), replaceLengthValidators(ngModelController), 
+            undoStack.reset(element.value);
+        }
+        function onModelChange(newModel, oldModel) {
+            if (newModel !== oldModel) {
+                var selectionStart = element.selectionStart, selectionEnd = element.selectionEnd;
+                reformatControl(element, newModel), element.setSelectionRange(selectionStart, selectionEnd);
+            }
+        }
+        function onPatternChange(newPattern, oldPattern) {
+            if (newPattern === oldPattern) return void (pattern = newPattern);
+            pattern = newPattern && newPattern.indexOf("||") > 0 ? newPattern.substring(0, newPattern.indexOf("||")) : newPattern;
+            var viewValue = element.value;
+            oldPattern && (viewValue = TwTextFormatService.unformatUsingPattern(viewValue, oldPattern)), 
+            newPattern && (viewValue = TwTextFormatService.formatUsingPattern(viewValue, pattern)), 
+            undoStack.reset(viewValue), element.value = viewValue;
+        }
+        function replaceLengthValidators(ngModelController) {
+            $timeout(function() {
+                var originalMinLength = ngModelController.$validators.minlength, originalMaxLength = ngModelController.$validators.maxlength;
+                originalMinLength && (ngModelController.$validators.minlength = function(modelValue, viewValue) {
+                    return originalMinLength(modelValue, TwTextFormatService.unformatUsingPattern(viewValue, pattern));
+                }), originalMaxLength && (ngModelController.$validators.maxlength = function(modelValue, viewValue) {
+                    return originalMaxLength(modelValue, TwTextFormatService.unformatUsingPattern(viewValue, pattern));
+                });
+            });
+        }
+        function reformatControl(element, originalValue) {
+            originalValue || (originalValue = element.value);
+            var newValue = TwTextFormatService.reformatUsingPattern(originalValue, pattern);
+            newValue !== originalValue && (element.value = newValue);
+        }
+        function onChange() {
+            reformatControl(element), undoStack.add(element.value);
+        }
+        function onPaste(event) {
+            var selectionStart = element.selectionStart, clipboardData = (element.value.length, 
+            event.clipboardData || window.clipboardData), pastedData = clipboardData.getData("Text"), separatorsInPaste = TwTextFormatService.countSeparatorsInAppendedValue(pattern, selectionStart, pastedData);
+            $timeout(function() {
+                var newPosition = selectionStart + pastedData.length + separatorsInPaste;
+                reformatControl(element), undoStack.add(element.value), element.setSelectionRange(newPosition, newPosition);
+            });
+        }
+        function onKeydown(event) {
+            keydownCount++;
+            var currentKeydownCount = keydownCount, key = event.keyCode || event.which, selectionStart = event.target.selectionStart, selectionEnd = event.target.selectionEnd;
+            return reservedKeys.indexOf(key) >= 0 || event.metaKey || event.ctrlKey ? (key === keys.z && (event.metaKey || event.ctrlKey) && (event.preventDefault(), 
+            event.stopPropagation(), element.value = undoStack.undo()), void (key === keys.y && (event.metaKey || event.ctrlKey) && (event.preventDefault(), 
+            event.stopPropagation(), element.value = undoStack.redo()))) : void $timeout(function() {
+                afterKeydown(key, currentKeydownCount, element, pattern, selectionStart, selectionEnd);
+            });
+        }
+        function afterKeydown(key, currentKeydownCount, element, pattern, selectionStart, selectionEnd) {
+            var newVal;
+            key === keys.backspace ? (newVal = doBackspace(element, pattern, selectionStart, selectionEnd), 
+            ngModelController.$setViewValue(newVal)) : key === keys["delete"] ? (newVal = doDelete(element, pattern, selectionStart, selectionEnd), 
+            ngModelController.$setViewValue(newVal)) : keydownCount === currentKeydownCount && doKeypress(element, pattern, selectionStart, selectionEnd);
+        }
+        function doBackspace(element, pattern, selectionStart, selectionEnd) {
+            element.value = getFormattedValueAfterBackspace(element, pattern, selectionStart, selectionEnd), 
+            undoStack.add(element.value);
+            var newPosition = getPositionAfterBackspace(pattern, element, selectionStart, selectionEnd);
+            return element.setSelectionRange(newPosition, newPosition), element.value;
+        }
+        function getFormattedValueAfterBackspace(element, pattern, selectionStart, selectionEnd) {
+            var removeStart, removeEnd, newVal = element.value, separatorsBeforeCursor = TwTextFormatService.countSeparatorsBeforeCursor(pattern, selectionStart);
+            if (separatorsBeforeCursor) {
+                var adjust = separatorsBeforeCursor > 1 ? 1 : 0;
+                selectionStart !== selectionEnd ? (removeStart = selectionStart - separatorsBeforeCursor + 1, 
+                removeEnd = selectionStart - adjust) : (removeStart = selectionStart - separatorsBeforeCursor, 
+                removeEnd = selectionStart - adjust), newVal = removeCharacters(element.value, removeStart, removeEnd);
+            }
+            return TwTextFormatService.reformatUsingPattern(newVal, pattern);
+        }
+        function doDelete(element, pattern, selectionStart, selectionEnd) {
+            return element.value = getFormattedValueAfterDelete(element, pattern, selectionStart, selectionEnd), 
+            undoStack.add(element.value), element.setSelectionRange(selectionStart, selectionStart), 
+            element.value;
+        }
+        function getFormattedValueAfterDelete(element, pattern, selectionStart, selectionEnd) {
+            var removeStart, removeEnd, newVal = element.value, separatorsAfterCursor = TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart);
+            if (separatorsAfterCursor) {
+                var adjust = separatorsAfterCursor > 1 ? 0 : 1;
+                selectionStart !== selectionEnd ? (removeStart = selectionStart + adjust, removeEnd = selectionStart + separatorsAfterCursor + adjust) : (removeStart = selectionStart + separatorsAfterCursor, 
+                removeEnd = selectionStart + separatorsAfterCursor + 1), newVal = removeCharacters(element.value, removeStart, removeEnd);
+            }
+            return TwTextFormatService.reformatUsingPattern(newVal, pattern);
+        }
+        function doKeypress(element, pattern, selectionStart, selectionEnd) {
+            reformatControl(element), undoStack.add(element.value);
+            var newPosition = getPositionAfterKeypress(pattern, element, selectionStart, selectionEnd);
+            element.setSelectionRange(newPosition, newPosition);
+        }
+        function getPositionAfterBackspace(pattern, element, selectionStart, selectionEnd) {
+            var separatorsBefore = TwTextFormatService.countSeparatorsBeforeCursor(pattern, selectionStart), isRange = selectionStart !== selectionEnd, proposedPosition = selectionStart - separatorsBefore - (isRange ? 0 : 1);
+            return proposedPosition + TwTextFormatService.countSeparatorsAfterCursor(pattern, proposedPosition);
+        }
+        function getPositionAfterKeypress(pattern, element, selectionStart, selectionEnd) {
+            var separatorsAfter;
+            return selectionStart !== selectionEnd ? separatorsAfter = TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart) : (separatorsAfter = TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart), 
+            0 === separatorsAfter && (separatorsAfter = TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart + 1))), 
+            selectionStart + 1 + separatorsAfter;
+        }
+        function removeCharacters(value, first, last) {
+            return value.substring(0, first - 1) + value.substring(last - 1, value.length);
+        }
+        function onCut(event) {
+            var selectionStart = element.selectionStart;
+            $timeout(function() {
+                reformatControl(element), undoStack.add(element.value);
+                var newPosition = selectionStart + TwTextFormatService.countSeparatorsAfterCursor(pattern, selectionStart);
+                element.setSelectionRange(newPosition, newPosition);
+            });
+        }
+        function onCopy(event) {
+            var selectionStart = element.selectionStart, selectionEnd = element.selectionEnd;
+            $timeout(function() {
+                element.setSelectionRange(selectionStart, selectionEnd);
+            });
+        }
+        var ngModelController, element, undoStack, keydownCount, pattern = "", $ctrl = this, keys = {
+            cmd: 224,
+            cmdLeft: 91,
+            cmdRight: 93,
+            backspace: 8,
+            tab: 9,
+            enter: 13,
+            shift: 16,
+            ctrl: 17,
+            alt: 18,
+            end: 35,
+            home: 36,
+            left: 37,
+            up: 38,
+            right: 39,
+            down: 40,
+            "delete": 46,
+            y: 89,
+            z: 90
+        }, reservedKeys = [ keys.cmd, keys.cmdLeft, keys.cmdRight, keys.enter, keys.shift, keys.ctrl, keys.alt, keys.left, keys.up, keys.right, keys.down ];
+        init();
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    });
+    var _twTextFormatService = __webpack_require__(0), _twTextFormatService2 = _interopRequireDefault(_twTextFormatService), _undoStackService = __webpack_require__(9), _undoStackService2 = _interopRequireDefault(_undoStackService);
+    exports["default"] = angular.module("tw.styleguide.styling.text-format", []).service("TwUndoStackFactory", _undoStackService2["default"]).service("TwTextFormatService", _twTextFormatService2["default"]).directive("twTextFormat", TwTextFormat).name;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
+    function TwTextFormatFilter(TwTextFormatService) {
+        return function(input, pattern) {
+            return input = input || "", pattern ? TwTextFormatService.formatUsingPattern(input, pattern) : input;
+        };
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    });
+    var _twTextFormatService = __webpack_require__(0);
+    _interopRequireDefault(_twTextFormatService);
+    TwTextFormatFilter.$inject = [ "TwTextFormatService" ], exports["default"] = angular.module("tw.styleguide.styling.text-format").filter("twTextFormat", TwTextFormatFilter).name;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function TwToolTip() {
+        return {
+            restrict: "A",
+            link: function(scope, element) {
+                if (!element.tooltip) return void console.log("twToolTip requires bootstrap.js");
+                var tag = element[0], options = {};
+                tag.getAttribute("data-placement") || (options.placement = "top"), element.tooltip(options), 
+                tag.setAttribute("tabindex", "0"), tag.setAttribute("data-toggle", "tooltip");
+            }
+        };
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), exports["default"] = angular.module("tw.styleguide.styling.tooltip", []).directive("twToolTip", TwToolTip).name;
+}, function(module, exports) {
+    module.exports = angular;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    });
+    var _angular = __webpack_require__(7), _angular2 = _interopRequireDefault(_angular), _twFocusableDirective = __webpack_require__(2), _twFocusableDirective2 = _interopRequireDefault(_twFocusableDirective), _twAffixDirective = __webpack_require__(1), _twAffixDirective2 = _interopRequireDefault(_twAffixDirective), _twPopOverDirective = __webpack_require__(3), _twPopOverDirective2 = _interopRequireDefault(_twPopOverDirective), _twToolTipDirective = __webpack_require__(6), _twToolTipDirective2 = _interopRequireDefault(_twToolTipDirective), _twTextFormatDirective = __webpack_require__(4), _twTextFormatDirective2 = _interopRequireDefault(_twTextFormatDirective), _twTextFormatFilter = __webpack_require__(5), _twTextFormatFilter2 = _interopRequireDefault(_twTextFormatFilter), stylingModule = _angular2["default"].module("tw.form-styling");
+    stylingModule.requires.push(_twFocusableDirective2["default"]), stylingModule.requires.push(_twAffixDirective2["default"]), 
+    stylingModule.requires.push(_twPopOverDirective2["default"]), stylingModule.requires.push(_twToolTipDirective2["default"]), 
+    stylingModule.requires.push(_twTextFormatDirective2["default"]), stylingModule.requires.push(_twTextFormatFilter2["default"]), 
+    exports["default"] = stylingModule.name;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function TwUndoStackFactory() {
+        this["new"] = function() {
+            return new UndoStack();
+        };
+    }
+    function UndoStack() {
+        var pointer = 0, stack = [];
+        this.reset = function(value) {
+            stack = [ value ], pointer = 0;
+        }, this.add = function(value) {
+            stack.length - 1 > pointer && (stack = stack.slice(0, pointer + 1)), stack[pointer] !== value && (stack.push(value), 
+            pointer++);
+        }, this.undo = function() {
+            return pointer >= 0 && "undefined" != typeof stack[pointer - 1] && pointer--, stack[pointer];
+        }, this.redo = function() {
+            return pointer < stack.length && "undefined" != typeof stack[pointer + 1] && pointer++, 
+            stack[pointer];
+        };
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), exports["default"] = TwUndoStackFactory;
 } ]);

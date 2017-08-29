@@ -1,7 +1,3 @@
-(function(angular) {
-  angular
-    .module('tw.form-styling')
-    .directive('twToolTip', TwToolTip);
 
   function TwToolTip() {
     return {
@@ -22,4 +18,7 @@
       }
     };
   }
-})(window.angular);
+
+  export default angular
+    .module('tw.styleguide.styling.tooltip', [])
+    .directive('twToolTip', TwToolTip).name;

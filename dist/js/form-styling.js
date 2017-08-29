@@ -1,5 +1,76 @@
 angular.module("tw.form-styling", []);
-!function(angular) {
+!function(modules) {
+    function __webpack_require__(moduleId) {
+        if (installedModules[moduleId]) return installedModules[moduleId].exports;
+        var module = installedModules[moduleId] = {
+            i: moduleId,
+            l: !1,
+            exports: {}
+        };
+        return modules[moduleId].call(module.exports, module, module.exports, __webpack_require__), 
+        module.l = !0, module.exports;
+    }
+    var installedModules = {};
+    return __webpack_require__.m = modules, __webpack_require__.c = installedModules, 
+    __webpack_require__.i = function(value) {
+        return value;
+    }, __webpack_require__.d = function(exports, name, getter) {
+        __webpack_require__.o(exports, name) || Object.defineProperty(exports, name, {
+            configurable: !1,
+            enumerable: !0,
+            get: getter
+        });
+    }, __webpack_require__.n = function(module) {
+        var getter = module && module.__esModule ? function() {
+            return module["default"];
+        } : function() {
+            return module;
+        };
+        return __webpack_require__.d(getter, "a", getter), getter;
+    }, __webpack_require__.o = function(object, property) {
+        return Object.prototype.hasOwnProperty.call(object, property);
+    }, __webpack_require__.p = "", __webpack_require__(__webpack_require__.s = 8);
+}([ function(module, exports, __webpack_require__) {
+    "use strict";
+    function TwTextFormatService() {
+        function positionIsSeparator(pattern, position) {
+            return pattern[position] && "*" !== pattern[position];
+        }
+        this.formatUsingPattern = function(value, pattern) {
+            if (value || (value = ""), "string" != typeof pattern) return value;
+            for (var newValue = "", separators = 0, charactersToAllocate = value.length, position = 0; charactersToAllocate; ) positionIsSeparator(pattern, position) ? (newValue += pattern[position], 
+            separators++) : (newValue += value[position - separators], charactersToAllocate--), 
+            position++;
+            var separatorsAfterCursor = this.countSeparatorsAfterCursor(pattern, position);
+            return separatorsAfterCursor && (newValue += pattern.substr(position, separatorsAfterCursor)), 
+            newValue;
+        }, this.unformatUsingPattern = function(value, pattern) {
+            if (!value) return "";
+            if ("string" != typeof pattern) return value;
+            for (var i = 0; i < pattern.length; i++) if (positionIsSeparator(pattern, i)) for (;value.indexOf(pattern[i]) >= 0; ) value = value.replace(pattern[i], "");
+            return value;
+        }, this.reformatUsingPattern = function(value, newPattern, oldPattern) {
+            return "undefined" == typeof oldPattern && (oldPattern = newPattern), this.formatUsingPattern(this.unformatUsingPattern(value, oldPattern), newPattern);
+        }, this.countSeparatorsBeforeCursor = function(pattern, position) {
+            for (var separators = 0; positionIsSeparator(pattern, position - separators - 1); ) separators++;
+            return separators;
+        }, this.countSeparatorsAfterCursor = function(pattern, position) {
+            for (var separators = 0; positionIsSeparator(pattern, position + separators); ) separators++;
+            return separators;
+        }, this.countSeparatorsInAppendedValue = function(pattern, position, value) {
+            for (var separators = 0, i = 0, toAllocate = value.length; toAllocate; ) positionIsSeparator(pattern, position + i) ? separators++ : toAllocate--, 
+            i++;
+            return separators;
+        }, this.countSeparatorsInPattern = function(pattern) {
+            for (var separators = 0, i = 0; i < pattern.length; i++) positionIsSeparator(pattern, i) && separators++;
+            return separators;
+        };
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), exports["default"] = TwTextFormatService;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
     function TwAffix() {
         return {
             restrict: "A",
@@ -13,8 +84,10 @@ angular.module("tw.form-styling", []);
             }
         };
     }
-    angular.module("tw.form-styling").directive("twAffix", TwAffix);
-}(window.angular), function(angular) {
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), exports["default"] = angular.module("tw.styleguide.styling.affix", []).directive("twAffix", TwAffix).name;
+}, function(module, exports, __webpack_require__) {
     "use strict";
     function TwFormControlStyling() {
         return {
@@ -36,9 +109,12 @@ angular.module("tw.form-styling", []);
             formGroup.removeClass("focus");
         });
     }
-    angular.module("tw.form-styling").directive("formControl", TwFormControlStyling), 
-    angular.module("tw.form-styling").directive("twFocusable", TwFocusable);
-}(window.angular), function(angular) {
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), angular.module("tw.form-styling").directive("formControl", TwFormControlStyling), 
+    exports["default"] = angular.module("tw.styleguide.styling.focusable", []).directive("twFocusable", TwFocusable).name;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
     function TwPopOver() {
         return {
             restrict: "A",
@@ -52,9 +128,16 @@ angular.module("tw.form-styling", []);
             }
         };
     }
-    angular.module("tw.form-styling").directive("twPopOver", TwPopOver);
-}(window.angular), function(angular) {
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), exports["default"] = angular.module("tw.styleguide.styling.popover", []).directive("twPopOver", TwPopOver).name;
+}, function(module, exports, __webpack_require__) {
     "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
     function TwTextFormat() {
         return {
             restrict: "A",
@@ -220,8 +303,31 @@ angular.module("tw.form-styling", []);
         }, reservedKeys = [ keys.cmd, keys.cmdLeft, keys.cmdRight, keys.enter, keys.shift, keys.ctrl, keys.alt, keys.left, keys.up, keys.right, keys.down ];
         init();
     }
-    angular.module("tw.form-styling").directive("twTextFormat", TwTextFormat);
-}(window.angular), function(angular) {
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    });
+    var _twTextFormatService = __webpack_require__(0), _twTextFormatService2 = _interopRequireDefault(_twTextFormatService), _undoStackService = __webpack_require__(9), _undoStackService2 = _interopRequireDefault(_undoStackService);
+    exports["default"] = angular.module("tw.styleguide.styling.text-format", []).service("TwUndoStackFactory", _undoStackService2["default"]).service("TwTextFormatService", _twTextFormatService2["default"]).directive("twTextFormat", TwTextFormat).name;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
+    function TwTextFormatFilter(TwTextFormatService) {
+        return function(input, pattern) {
+            return input = input || "", pattern ? TwTextFormatService.formatUsingPattern(input, pattern) : input;
+        };
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    });
+    var _twTextFormatService = __webpack_require__(0);
+    _interopRequireDefault(_twTextFormatService);
+    TwTextFormatFilter.$inject = [ "TwTextFormatService" ], exports["default"] = angular.module("tw.styleguide.styling.text-format").filter("twTextFormat", TwTextFormatFilter).name;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
     function TwToolTip() {
         return {
             restrict: "A",
@@ -233,12 +339,48 @@ angular.module("tw.form-styling", []);
             }
         };
     }
-    angular.module("tw.form-styling").directive("twToolTip", TwToolTip);
-}(window.angular), function(angular) {
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), exports["default"] = angular.module("tw.styleguide.styling.tooltip", []).directive("twToolTip", TwToolTip).name;
+}, function(module, exports) {
+    module.exports = angular;
+}, function(module, exports, __webpack_require__) {
     "use strict";
-    angular.module("tw.form-styling").filter("twTextFormat", [ "TwTextFormatService", function(TwTextFormatService) {
-        return function(input, pattern) {
-            return input = input || "", pattern ? TwTextFormatService.formatUsingPattern(input, pattern) : input;
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
         };
-    } ]);
-}(window.angular);
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    });
+    var _angular = __webpack_require__(7), _angular2 = _interopRequireDefault(_angular), _twFocusableDirective = __webpack_require__(2), _twFocusableDirective2 = _interopRequireDefault(_twFocusableDirective), _twAffixDirective = __webpack_require__(1), _twAffixDirective2 = _interopRequireDefault(_twAffixDirective), _twPopOverDirective = __webpack_require__(3), _twPopOverDirective2 = _interopRequireDefault(_twPopOverDirective), _twToolTipDirective = __webpack_require__(6), _twToolTipDirective2 = _interopRequireDefault(_twToolTipDirective), _twTextFormatDirective = __webpack_require__(4), _twTextFormatDirective2 = _interopRequireDefault(_twTextFormatDirective), _twTextFormatFilter = __webpack_require__(5), _twTextFormatFilter2 = _interopRequireDefault(_twTextFormatFilter), stylingModule = _angular2["default"].module("tw.form-styling");
+    stylingModule.requires.push(_twFocusableDirective2["default"]), stylingModule.requires.push(_twAffixDirective2["default"]), 
+    stylingModule.requires.push(_twPopOverDirective2["default"]), stylingModule.requires.push(_twToolTipDirective2["default"]), 
+    stylingModule.requires.push(_twTextFormatDirective2["default"]), stylingModule.requires.push(_twTextFormatFilter2["default"]), 
+    exports["default"] = stylingModule.name;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function TwUndoStackFactory() {
+        this["new"] = function() {
+            return new UndoStack();
+        };
+    }
+    function UndoStack() {
+        var pointer = 0, stack = [];
+        this.reset = function(value) {
+            stack = [ value ], pointer = 0;
+        }, this.add = function(value) {
+            stack.length - 1 > pointer && (stack = stack.slice(0, pointer + 1)), stack[pointer] !== value && (stack.push(value), 
+            pointer++);
+        }, this.undo = function() {
+            return pointer >= 0 && "undefined" != typeof stack[pointer - 1] && pointer--, stack[pointer];
+        }, this.redo = function() {
+            return pointer < stack.length && "undefined" != typeof stack[pointer + 1] && pointer++, 
+            stack[pointer];
+        };
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), exports["default"] = TwUndoStackFactory;
+} ]);

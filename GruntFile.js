@@ -1,6 +1,18 @@
 const webpack = require('webpack'); //to access built-in plugins
 const path = require('path');
 
+const webpackModule = {
+  rules: [{
+    test: /\.js$/,
+    exclude: [/node_modules/],
+    loader: 'babel-loader'
+  }]
+};
+
+const webpackExternals = [{
+  angular: 'angular'
+}];
+
 module.exports = function(grunt) {
 
     //dist: require("./webpack.config.js")
@@ -8,23 +20,23 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         webpack: {
           options: {},
-          build: {
+          build: [{
             entry: './angular/form-components/form-components.js',
             output: {
               path: path.join(__dirname, './build'),
               filename: 'form-components.webpack.js'
             },
-            externals: [{
-              angular: 'angular'
-            }],
-            module: {
-              rules: [{
-                test: /\.js$/,
-                exclude: [/node_modules/],
-                loader: 'babel-loader'
-              }]
-            }
-          }
+            externals: webpackExternals,
+            module: webpackModule
+          },{
+            entry: './angular/styling/styling.js',
+            output: {
+              path: path.join(__dirname, './build'),
+              filename: 'form-styling.webpack.js'
+            },
+            externals: webpackExternals,
+            module: webpackModule
+          }]
         },
         watch: {
             less: {
@@ -49,7 +61,9 @@ module.exports = function(grunt) {
                     'angular/**/*.service.js',
                     'angular/**/*.filter.js',
                     'build/form-components.webpack.js',
+                    'build/form-styling.webpack.js',
                     '!angular/form-components/*/*.js',
+                    '!angular/styling/*/*.*.js',
                     '!angular/services/*/*.*.js',
                 ],
                 dest: 'dist/js/styleguide-components.js',
@@ -71,7 +85,9 @@ module.exports = function(grunt) {
                     'angular/**/*.service.js',
                     'angular/**/*.filter.js',
                     'build/form-components.webpack.js',
+                    'build/form-styling.webpack.js',
                     '!angular/form-components/*/*.*.js',
+                    '!angular/styling/*/*.*.js',
                     '!angular/services/*/*.*.js',
                 ],
                 dest: 'dist/js/styleguide-components.min.js',
@@ -113,7 +129,9 @@ module.exports = function(grunt) {
                 src: [
                     'angular/styling/**/*.controller.js',
                     'angular/styling/**/*.directive.js',
-                    'angular/**/*.filter.js'
+                    'angular/styling/**/*.filter.js',
+                    'build/form-styling.webpack.js',
+                    '!angular/styling/*/*.*.js'
                 ],
                 dest: 'dist/js/form-styling.js',
                 options: {
@@ -125,7 +143,10 @@ module.exports = function(grunt) {
             stylingMin: {
                 src: [
                     'angular/styling/**/*.controller.js',
-                    'angular/styling/**/*.directive.js'
+                    'angular/styling/**/*.directive.js',
+                    'angular/styling/**/*.filter.js',
+                    'build/form-styling.webpack.js',
+                    '!angular/styling/*/*.*.js'
                 ],
                 dest: 'dist/js/form-styling.min.js',
                 options: {
@@ -143,7 +164,7 @@ module.exports = function(grunt) {
                     'angular/services/**/*.service.js',
                     'build/form-components.webpack.js',
                     '!angular/form-components/*/*.*.js',
-                    '!angular/services/*/*.*.js',
+                    '!angular/services/*/*.*.js'
                 ],
                 dest: 'dist/js/form-components.js',
                 options: {
@@ -161,7 +182,7 @@ module.exports = function(grunt) {
                     'angular/services/**/*.service.js',
                     'build/form-components.webpack.js',
                     '!angular/form-components/*/*.*.js',
-                    '!angular/services/*/*.*.js',
+                    '!angular/services/*/*.*.js'
                 ],
                 dest: 'dist/js/form-components.min.js',
                 options: {

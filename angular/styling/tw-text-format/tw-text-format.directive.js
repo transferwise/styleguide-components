@@ -1,9 +1,5 @@
-(function(angular) {
-  'use strict';
-
-  angular
-    .module('tw.form-styling')
-    .directive('twTextFormat', TwTextFormat);
+  import TwTextFormatService from './tw-text-format.service.js';
+  import TwUndoStackFactory from './undo-stack.service.js';
 
   function TwTextFormat() {
     return {
@@ -421,4 +417,8 @@
     init();
   }
 
-})(window.angular);
+  export default angular
+    .module('tw.styleguide.styling.text-format', [])
+    .service('TwUndoStackFactory', TwUndoStackFactory)
+    .service('TwTextFormatService', TwTextFormatService)
+    .directive('twTextFormat', TwTextFormat).name;

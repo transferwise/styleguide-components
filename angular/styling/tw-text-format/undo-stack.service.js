@@ -1,9 +1,3 @@
-(function(angular) {
-  'use strict';
-
-  angular
-    .module('tw.form-styling')
-    .service('TwUndoStackFactory', TwUndoStackFactory);
 
   function TwUndoStackFactory() {
     this.new = function() {
@@ -51,4 +45,5 @@
       return stack[pointer];
     };
   }
-})(window.angular);
+
+  export default TwUndoStackFactory;
