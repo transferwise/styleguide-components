@@ -21,7 +21,7 @@ module.exports = function(grunt) {
         webpack: {
           options: {},
           build: [{
-            entry: './angular/form-components/form-components.js',
+            entry: './angular/form-components/index.js',
             output: {
               path: path.join(__dirname, './build'),
               filename: 'form-components.webpack.js'
@@ -29,7 +29,7 @@ module.exports = function(grunt) {
             externals: webpackExternals,
             module: webpackModule
           },{
-            entry: './angular/styling/styling.js',
+            entry: './angular/styling/index.js',
             output: {
               path: path.join(__dirname, './build'),
               filename: 'form-styling.webpack.js'
@@ -37,7 +37,7 @@ module.exports = function(grunt) {
             externals: webpackExternals,
             module: webpackModule
           },{
-            entry: './angular/validation/validation.js',
+            entry: './angular/validation/index.js',
             output: {
               path: path.join(__dirname, './build'),
               filename: 'form-validation.webpack.js'
@@ -45,7 +45,7 @@ module.exports = function(grunt) {
             externals: webpackExternals,
             module: webpackModule
           },{
-            entry: './angular/layout-components/layout-components.js',
+            entry: './angular/layout-components/index.js',
             output: {
               path: path.join(__dirname, './build'),
               filename: 'layout-components.webpack.js'
@@ -53,7 +53,7 @@ module.exports = function(grunt) {
             externals: webpackExternals,
             module: webpackModule
           },{
-            entry: './angular/styleguide-components.js',
+            entry: './angular/index.js',
             output: {
               path: path.join(__dirname, './build'),
               filename: 'styleguide-components.webpack.js'
