@@ -1,29 +1,29 @@
+import RequirementsService from './requirements.service.js';
 
-function TwRequirementsFormController($scope, TwRequirementsService) {
-  var $ctrl = this;
-  $ctrl.switchTab = switchTab;
+class RequirementsFormController {
+  constructor($scope, TwRequirementsService) {
+    this.RequirementsService = TwRequirementsService;
 
-  function init() {
-    if (!$ctrl.model) {
-      $ctrl.model = {};
+    if (!this.model) {
+      this.model = {};
     }
 
-    if ($ctrl.requirements) {
-      TwRequirementsService.prepRequirements($ctrl.requirements);
+    if (this.requirements) {
+      this.RequirementsService.prepRequirements(this.requirements);
     }
 
-    $scope.$watch('$ctrl.requirements', function(newRequirements, oldRequirements) {
+    $scope.$watch('$ctrl.requirements', (newRequirements, oldRequirements) => {
       if (!angular.equals(newRequirements, oldRequirements)) {
-        TwRequirementsService.prepRequirements($ctrl.requirements);
-        var oldType = $ctrl.model.type;
+        this.RequirementsService.prepRequirements(this.requirements);
+        var oldType = this.model.type;
         var newType =
-          $ctrl.requirements.length ? $ctrl.requirements[0].type : null;
+          this.requirements.length ? this.requirements[0].type : null;
 
-        $ctrl.model.type = newType;
+        this.model.type = newType;
 
         if (oldRequirements && newRequirements) {
-          TwRequirementsService.cleanModel(
-            $ctrl.model,
+          this.RequirementsService.cleanModel(
+            this.model,
             oldRequirements, oldType,
             newRequirements, newType
           );
@@ -31,12 +31,12 @@ function TwRequirementsFormController($scope, TwRequirementsService) {
       }
     });
 
-    $scope.$watch('$ctrl.model.type', function(newType, oldType) {
-      switchTab(newType, oldType);
+    $scope.$watch('$ctrl.model.type', (newType, oldType) => {
+      this.switchTab(newType, oldType);
     });
 
-    $scope.$watch('twForm.$valid', function(validity) {
-      $ctrl.isValid = validity;
+    $scope.$watch('twForm.$valid', (validity) => {
+      this.isValid = validity;
     });
 
     // TODO can we add asyncvalidator here? - prob not
@@ -45,45 +45,43 @@ function TwRequirementsFormController($scope, TwRequirementsService) {
   /**
    * Perform the refreshRequirementsOnChange check on blur
    */
-  $ctrl.onBlur = function(field) {
+  onBlur(field) {
     if (!field.refreshRequirementsOnChange) {
       return;
     }
     // TODO disabled the form while we refresh requirements?
 
-    if (false && $ctrl.onRefreshRequirements) {
+    if (false && this.onRefreshRequirements) {
       // Should post the current model back to the requirements end
       // point and update the requirements.
       // TODO Can we handle this internally?
-      $ctrl.onRefreshRequirements();
+      this.onRefreshRequirements();
     }
-  };
+  }
 
-  function switchTab(newType, oldType) {
-    var oldRequirementType = TwRequirementsService.findRequirementByType(
-      oldType, $ctrl.requirements
+  switchTab(newType, oldType) {
+    var oldRequirementType = this.RequirementsService.findRequirementByType(
+      oldType, this.requirements
     );
-    var newRequirementType = TwRequirementsService.findRequirementByType(
-      newType, $ctrl.requirements
+    var newRequirementType = this.RequirementsService.findRequirementByType(
+      newType, this.requirements
     );
 
     if (!oldRequirementType || !newRequirementType) {
-      if (!$ctrl.model) {
-          $ctrl.model = {};
+      if (!this.model) {
+          this.model = {};
       }
-      $ctrl.model.type = newType;
+      this.model.type = newType;
     }
 
-    TwRequirementsService.cleanRequirementsModel(
-      $ctrl.model,
+    this.RequirementsService.cleanRequirementsModel(
+      this.model,
       oldRequirementType,
       newRequirementType
     );
   }
-
-  init();
 }
 
-TwRequirementsFormController.$inject = ['$scope', 'TwRequirementsService'];
+RequirementsFormController.$inject = ['$scope', 'TwRequirementsService'];
 
-export default TwRequirementsFormController;
+export default RequirementsFormController;

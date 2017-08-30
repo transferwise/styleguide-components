@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: TwRequirementsForm', function() {
+describe('RequirementsForm', function() {
   var $compile,
     $rootScope,
     $scope,
