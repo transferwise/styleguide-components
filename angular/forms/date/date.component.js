@@ -1,9 +1,10 @@
-import TwDateController from  './tw-date.controller.js';
+import controller from  './date.controller.js';
 import template from './date.html';
 
-const TwDate = {
+const DateControl = {
+  controller,
+  template,
   require: 'ngModel',
-  controller: TwDateController,
   bindings: {
     ngModel: '=',
     required: '@',
@@ -17,8 +18,7 @@ const TwDate = {
     max: '@',
     ngMax: '<',
     modelType: '@'
-  },
-  template
+  }
 };
 
-export default TwDate;
+export default DateControl;

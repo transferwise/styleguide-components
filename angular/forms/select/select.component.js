@@ -1,9 +1,10 @@
-import TwSelectController from './tw-select.controller.js';
+import controller from './select.controller.js';
 import template from './select.html';
 
-const TwSelect = {
+const Select = {
+  controller,
+  template,
   require: 'ngModel',
-  controller: TwSelectController,
   transclude: true,
   bindings: {
     ngModel: '=',
@@ -24,8 +25,7 @@ const TwSelect = {
     hideCurrency: '@',
     hideCircle: '@',
     hideLabel: '@'
-  },
-  template
+  }
 };
 
 /*
@@ -38,4 +38,4 @@ const TwSelect = {
 </select>"
 */
 
-export default TwSelect;
+export default Select;

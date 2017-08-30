@@ -62,8 +62,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twCardsService = __webpack_require__(0), _twCardsService2 = _interopRequireDefault(_twCardsService), _twCardDirective = __webpack_require__(5), _twCardDirective2 = _interopRequireDefault(_twCardDirective), _twCardsComponent = __webpack_require__(6), _twCardsComponent2 = _interopRequireDefault(_twCardsComponent);
-    exports["default"] = angular.module("tw.styleguide.layout.cards", []).service("TwCardsService", _twCardsService2["default"]).component("twCards", _twCardsComponent2["default"]).directive("twCard", _twCardDirective2["default"]).name;
+    var _cardsService = __webpack_require__(0), _cardsService2 = _interopRequireDefault(_cardsService), _cardDirective = __webpack_require__(5), _cardDirective2 = _interopRequireDefault(_cardDirective), _cardsComponent = __webpack_require__(6), _cardsComponent2 = _interopRequireDefault(_cardsComponent);
+    exports["default"] = angular.module("tw.styleguide.layout.cards", []).service("TwCardsService", _cardsService2["default"]).component("twCards", _cardsComponent2["default"]).directive("twCard", _cardDirective2["default"]).name;
 }, function(module, exports) {
     module.exports = angular;
 }, function(module, exports, __webpack_require__) {
@@ -97,8 +97,10 @@
             "default": obj
         };
     }
-    function TwCard() {
+    function Card() {
         return {
+            controller: _cardController2["default"],
+            template: _card2["default"],
             require: {
                 cardContainerController: "^twCards"
             },
@@ -118,8 +120,6 @@
                 cardForm: "?cardForm",
                 cardIcon: "cardIcon"
             },
-            controller: _twCardController2["default"],
-            template: _card2["default"],
             link: function($scope, $element, $attrs, $ctrl) {
                 var cardController = $scope.$ctrl;
                 cardController.addCard(cardController), cardController.index = cardController.getLength() - 1, 
@@ -131,9 +131,9 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twCardsService = __webpack_require__(0), _twCardController = (_interopRequireDefault(_twCardsService), 
-    __webpack_require__(4)), _twCardController2 = _interopRequireDefault(_twCardController), _card = __webpack_require__(7), _card2 = _interopRequireDefault(_card);
-    exports["default"] = TwCard;
+    var _cardsService = __webpack_require__(0), _cardController = (_interopRequireDefault(_cardsService), 
+    __webpack_require__(4)), _cardController2 = _interopRequireDefault(_cardController), _card = __webpack_require__(7), _card2 = _interopRequireDefault(_card);
+    exports["default"] = Card;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -145,12 +145,11 @@
         value: !0
     });
     var _cards = __webpack_require__(8), _cards2 = _interopRequireDefault(_cards), TwCards = {
+        template: _cards2["default"],
         bindings: {
             inactive: "=?"
         },
-        controller: function() {},
-        transclude: !0,
-        template: _cards2["default"]
+        transclude: !0
     };
     exports["default"] = TwCards;
 }, function(module, exports) {

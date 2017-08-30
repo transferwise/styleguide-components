@@ -1,4 +1,4 @@
-import DateService from './tw-date.service.js';
+import DateService from './date.service.js';
 
 export default angular
   .module('tw.styleguide.services.date', [])

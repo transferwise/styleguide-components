@@ -1,5 +1,5 @@
-import TwDynamicAsyncValidator from './tw-async-validation.directive.js';
+import AsyncValidation from './async-validation.directive.js';
 
 export default angular
   .module('tw.styleguide.validation.async', [])
-  .directive('twDynamicAsyncValidator', TwDynamicAsyncValidator).name;
+  .directive('twAsyncValidation', AsyncValidation).name;

@@ -4,8 +4,8 @@ import Checkbox from '../checkbox/';
 import DateControl from '../date/';
 import Upload from '../upload/';
 
-import TwDynamicFormControl from './tw-dynamic-form-control.component.js';
+import FormControl from './form-control.component.js';
 
 export default angular
-  .module('tw.styleguide.forms.dynamic-form-control', [])
-  .component('twDynamicFormControl', TwDynamicFormControl).name;
+  .module('tw.styleguide.forms.form-control', [])
+  .component('twDynamicFormControl', FormControl).name;

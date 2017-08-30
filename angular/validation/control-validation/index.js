@@ -1,5 +1,5 @@
-import TwValidation from './tw-validation.directive.js';
+import ControlValidation from './control-validation.directive.js';
 
 export default angular
   .module('tw.stylguide.validation.control', [])
-  .directive('twValidation', TwValidation).name;
+  .directive('twValidation', ControlValidation).name;

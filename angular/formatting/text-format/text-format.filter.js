@@ -1,6 +1,6 @@
-import TwTextFormatService from './tw-text-format.service.js';
+import TextFormatService from './text-format.service.js';
 
-function TwTextFormatFilter(TwTextFormatService) {
+function TextFormatFilter(TwTextFormatService) {
   return function(input, pattern) {
     input = input || '';
     if (!pattern) {
@@ -10,8 +10,8 @@ function TwTextFormatFilter(TwTextFormatService) {
   };
 }
 
-TwTextFormatFilter.$inject = ['TwTextFormatService'];
+TextFormatFilter.$inject = ['TwTextFormatService'];
 
 export default angular
   .module('tw.styleguide.formatting.text-format')
-  .filter('twTextFormat', TwTextFormatFilter).name;
+  .filter('twTextFormat', TextFormatFilter).name;

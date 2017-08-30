@@ -1,5 +1,5 @@
-import TwToolTip from './tw-tool-tip.directive.js';
+import ToolTip from './tool-tip.directive.js';
 
 export default angular
   .module('tw.styleguide.help.tooltip', [])
-  .directive('twToolTip', TwToolTip).name;
+  .directive('twToolTip', ToolTip).name;

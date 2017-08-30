@@ -1,8 +1,9 @@
-import TwUploadController from './tw-upload.controller.js';
+import controller from './upload.controller.js';
 import template from './upload.html';
 
-const TwUpload = {
-  controller: TwUploadController,
+const Upload = {
+  controller,
+  template,
   transclude: true,
   bindings: {
     ngModel: '=',
@@ -27,8 +28,7 @@ const TwUpload = {
     onFailure: '=',
     onCancel: '=',
     maxSize: '<'
-  },
-  template
+  }
 };
 
-export default TwUpload;
+export default Upload;

@@ -1,5 +1,5 @@
-import TwProcess from './tw-process.component.js';
+import Process from './process.component.js';
 
 export default angular
   .module('tw.styleguide.loading.process', [])
-  .component('twProcess', TwProcess).name;
+  .component('twProcess', Process).name;

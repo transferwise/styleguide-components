@@ -1,9 +1,10 @@
-import TwRadioController from './tw-radio.controller.js';
+import controller from './radio.controller.js';
 import template from './radio.html';
 
-const TwRadio = {
+const Radio = {
+  controller,
+  template,
   require: 'ngModel',
-  controller: TwRadioController,
   bindings: {
     name: "@",
     value: "@",
@@ -12,8 +13,7 @@ const TwRadio = {
     ngRequired: '<',
     ngDisabled: '<',
     ngChange: '&'
-  },
-  template
+  }
 };
 
-export default TwRadio;
+export default Radio;

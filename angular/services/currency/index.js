@@ -1,4 +1,4 @@
-import CurrencyService from './tw-currency.service.js';
+import CurrencyService from './currency.service.js';
 
 export default angular
   .module('tw.styleguide.services.currency', [])
