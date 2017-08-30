@@ -1,4 +1,4 @@
-describe('Directive: TwDynamicFormControlDirective', function() {
+describe('FormControl', function() {
   var $compile,
     $rootScope,
     $scope,

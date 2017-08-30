@@ -1,75 +1,84 @@
 
-function TwDynamicFormControlController($element, $scope) {
-  var $ctrl = this;
-  var ngModelController = $element.controller('ngModel');
-  $ctrl.change = function() {
-    ngModelController.$setDirty();
-    if ($ctrl.ngChange) {
-      $ctrl.ngChange();
-    }
-  };
-  $ctrl.focus = function() {
-    $element.triggerHandler('focus');
-  };
-  $ctrl.blur = function() {
-    ngModelController.$setTouched();
-    $element.triggerHandler('blur');
-  };
+class FormControlController {
+  constructor($element, $scope) {
+    var $ctrl = this;
+    var $ngModel = $element.controller('ngModel');
 
-  ngModelController.$validators.minlength = function(modelValue, viewValue) {
-    var value = modelValue || viewValue;
-    if ($ctrl.type !== 'text' || !$ctrl.ngMinlength) {
-      return true;
-    }
-    return !value || value.length >= $ctrl.ngMinlength;
-  };
-  ngModelController.$validators.maxlength = function(modelValue, viewValue) {
-    var value = modelValue || viewValue;
-    if ($ctrl.type !== 'text' || !$ctrl.ngMaxlength) {
-      return true;
-    }
-    return !value || value.length <= $ctrl.ngMaxlength;
-  };
+    this.$element = $element;
 
-  // Min and max do not work on custom elements, add manual validators
-  ngModelController.$validators.min = function(modelValue, viewValue) {
-    var value = modelValue || viewValue;
-    if (typeof $ctrl.ngMin === "undefined") {
+    $ngModel.$validators.minlength = (modelValue, viewValue) => {
+      var value = modelValue || viewValue;
+      if (this.type !== 'text' || !this.ngMinlength) {
+        return true;
+      }
+      return !value || value.length >= this.ngMinlength;
+    };
+
+    $ngModel.$validators.maxlength = (modelValue, viewValue) => {
+      var value = modelValue || viewValue;
+      if (this.type !== 'text' || !this.ngMaxlength) {
+        return true;
+      }
+      return !value || value.length <= this.ngMaxlength;
+    };
+
+    // Min and max do not work on custom elements, add manual validators
+    $ngModel.$validators.min = (modelValue, viewValue) => {
+      var value = modelValue || viewValue;
+      if (typeof this.ngMin === "undefined") {
+        return true;
+      }
+      if (typeof value === "number" &&
+        typeof this.ngMin === "number" &&
+        value < this.ngMin) {
+        return false;
+      }
+      if (value &&
+        value.getUTCDate &&
+        this.ngMin.getUTCDate &&
+        value < this.ngMin) {
+        return false;
+      }
       return true;
-    }
-    if (typeof value === "number" &&
-      typeof $ctrl.ngMin === "number" &&
-      value < $ctrl.ngMin) {
-      return false;
-    }
-    if (value &&
-      value.getUTCDate &&
-      $ctrl.ngMin.getUTCDate &&
-      value < $ctrl.ngMin) {
-      return false;
-    }
-    return true;
-  };
-  ngModelController.$validators.max = function(modelValue, viewValue) {
-    var value = modelValue || viewValue;
-    if (typeof $ctrl.ngMax === "undefined") {
+    };
+
+    $ngModel.$validators.max = (modelValue, viewValue) => {
+      var value = modelValue || viewValue;
+      if (typeof this.ngMax === "undefined") {
+        return true;
+      }
+      if (typeof value === "number" &&
+        typeof this.ngMax === "number" &&
+        value > this.ngMax) {
+        return false;
+      }
+      if (value &&
+        viewValue.getUTCDate &&
+        this.ngMax.getUTCDate &&
+        value > this.ngMax) {
+        return false;
+      }
       return true;
+    };
+  }
+
+  change() {
+    this.$ngModel.$setDirty();
+    if (this.ngChange) {
+      this.ngChange();
     }
-    if (typeof value === "number" &&
-      typeof $ctrl.ngMax === "number" &&
-      value > $ctrl.ngMax) {
-      return false;
-    }
-    if (value &&
-      viewValue.getUTCDate &&
-      $ctrl.ngMax.getUTCDate &&
-      value > $ctrl.ngMax) {
-      return false;
-    }
-    return true;
-  };
+  }
+
+  focus() {
+    this.$element.triggerHandler('focus');
+  }
+
+  blur() {
+    this.$ngModel.$setTouched();
+    this.$element.triggerHandler('blur');
+  }
 }
 
-TwDynamicFormControlController.$inject = ['$element', '$scope'];
+FormControlController.$inject = ['$element', '$scope'];
 
-export default TwDynamicFormControlController;
+export default FormControlController;

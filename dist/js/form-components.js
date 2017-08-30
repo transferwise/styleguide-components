@@ -1104,7 +1104,9 @@
     var _formControlController = __webpack_require__(31), _formControlController2 = _interopRequireDefault(_formControlController), _formControl = __webpack_require__(59), _formControl2 = _interopRequireDefault(_formControl), FormControl = {
         controller: _formControlController2["default"],
         template: _formControl2["default"],
-        require: "ngModel",
+        require: {
+            $ngModel: "ngModel"
+        },
         transclude: !0,
         bindings: {
             type: "@",
@@ -1135,31 +1137,61 @@
     exports["default"] = FormControl;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwDynamicFormControlController($element, $scope) {
-        var $ctrl = this, ngModelController = $element.controller("ngModel");
-        $ctrl.change = function() {
-            ngModelController.$setDirty(), $ctrl.ngChange && $ctrl.ngChange();
-        }, $ctrl.focus = function() {
-            $element.triggerHandler("focus");
-        }, $ctrl.blur = function() {
-            ngModelController.$setTouched(), $element.triggerHandler("blur");
-        }, ngModelController.$validators.minlength = function(modelValue, viewValue) {
-            var value = modelValue || viewValue;
-            return "text" !== $ctrl.type || !$ctrl.ngMinlength || (!value || value.length >= $ctrl.ngMinlength);
-        }, ngModelController.$validators.maxlength = function(modelValue, viewValue) {
-            var value = modelValue || viewValue;
-            return "text" !== $ctrl.type || !$ctrl.ngMaxlength || (!value || value.length <= $ctrl.ngMaxlength);
-        }, ngModelController.$validators.min = function(modelValue, viewValue) {
-            var value = modelValue || viewValue;
-            return "undefined" == typeof $ctrl.ngMin || !("number" == typeof value && "number" == typeof $ctrl.ngMin && value < $ctrl.ngMin) && !(value && value.getUTCDate && $ctrl.ngMin.getUTCDate && value < $ctrl.ngMin);
-        }, ngModelController.$validators.max = function(modelValue, viewValue) {
-            var value = modelValue || viewValue;
-            return "undefined" == typeof $ctrl.ngMax || !("number" == typeof value && "number" == typeof $ctrl.ngMax && value > $ctrl.ngMax) && !(value && viewValue.getUTCDate && $ctrl.ngMax.getUTCDate && value > $ctrl.ngMax);
-        };
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), TwDynamicFormControlController.$inject = [ "$element", "$scope" ], exports["default"] = TwDynamicFormControlController;
+    });
+    var _createClass = function() {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || !1, descriptor.configurable = !0, 
+                "value" in descriptor && (descriptor.writable = !0), Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+        return function(Constructor, protoProps, staticProps) {
+            return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+            Constructor;
+        };
+    }(), FormControlController = function() {
+        function FormControlController($element, $scope) {
+            var _this = this;
+            _classCallCheck(this, FormControlController);
+            var $ngModel = $element.controller("ngModel");
+            this.$element = $element, $ngModel.$validators.minlength = function(modelValue, viewValue) {
+                var value = modelValue || viewValue;
+                return "text" !== _this.type || !_this.ngMinlength || (!value || value.length >= _this.ngMinlength);
+            }, $ngModel.$validators.maxlength = function(modelValue, viewValue) {
+                var value = modelValue || viewValue;
+                return "text" !== _this.type || !_this.ngMaxlength || (!value || value.length <= _this.ngMaxlength);
+            }, $ngModel.$validators.min = function(modelValue, viewValue) {
+                var value = modelValue || viewValue;
+                return "undefined" == typeof _this.ngMin || !("number" == typeof value && "number" == typeof _this.ngMin && value < _this.ngMin) && !(value && value.getUTCDate && _this.ngMin.getUTCDate && value < _this.ngMin);
+            }, $ngModel.$validators.max = function(modelValue, viewValue) {
+                var value = modelValue || viewValue;
+                return "undefined" == typeof _this.ngMax || !("number" == typeof value && "number" == typeof _this.ngMax && value > _this.ngMax) && !(value && viewValue.getUTCDate && _this.ngMax.getUTCDate && value > _this.ngMax);
+            };
+        }
+        return _createClass(FormControlController, [ {
+            key: "change",
+            value: function() {
+                this.$ngModel.$setDirty(), this.ngChange && this.ngChange();
+            }
+        }, {
+            key: "focus",
+            value: function() {
+                this.$element.triggerHandler("focus");
+            }
+        }, {
+            key: "blur",
+            value: function() {
+                this.$ngModel.$setTouched(), this.$element.triggerHandler("blur");
+            }
+        } ]), FormControlController;
+    }();
+    FormControlController.$inject = [ "$element", "$scope" ], exports["default"] = FormControlController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
