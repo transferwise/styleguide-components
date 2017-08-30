@@ -2712,16 +2712,36 @@
     exports["default"] = Tabs;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwTabsController() {
-        function switchTab(tab) {
-            $ctrl.active = tab, $ctrl.onChange && $ctrl.onChange(tab);
-        }
-        var $ctrl = this;
-        $ctrl.switchTab = switchTab, !$ctrl.active && $ctrl.tabs.length && ($ctrl.active = $ctrl.tabs[0].type);
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), exports["default"] = TwTabsController;
+    });
+    var _createClass = function() {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || !1, descriptor.configurable = !0, 
+                "value" in descriptor && (descriptor.writable = !0), Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+        return function(Constructor, protoProps, staticProps) {
+            return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+            Constructor;
+        };
+    }(), TabsController = function() {
+        function TabsController() {
+            _classCallCheck(this, TabsController), !this.active && this.tabs.length && (this.active = this.tabs[0].type);
+        }
+        return _createClass(TabsController, [ {
+            key: "switchTab",
+            value: function(tab) {
+                $ctrl.active = tab, this.onChange && this.onChange(tab);
+            }
+        } ]), TabsController;
+    }();
+    exports["default"] = TabsController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwCurrencyService() {
