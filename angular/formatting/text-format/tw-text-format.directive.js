@@ -17,7 +17,7 @@ function TwTextFormat() {
 }
 
 export default angular
-  .module('tw.styleguide.styling.text-format', [])
+  .module('tw.styleguide.formatting.text-format', [])
   .service('TwUndoStackFactory', TwUndoStackFactory)
   .service('TwTextFormatService', TwTextFormatService)
   .directive('twTextFormat', TwTextFormat).name;

@@ -92,7 +92,7 @@
         value: !0
     });
     var _twTextFormatController = __webpack_require__(7), _twTextFormatController2 = _interopRequireDefault(_twTextFormatController), _undoStackService = __webpack_require__(8), _undoStackService2 = _interopRequireDefault(_undoStackService), _twTextFormatService = __webpack_require__(0), _twTextFormatService2 = _interopRequireDefault(_twTextFormatService);
-    exports["default"] = angular.module("tw.styleguide.styling.text-format", []).service("TwUndoStackFactory", _undoStackService2["default"]).service("TwTextFormatService", _twTextFormatService2["default"]).directive("twTextFormat", TwTextFormat).name;
+    exports["default"] = angular.module("tw.styleguide.formatting.text-format", []).service("TwUndoStackFactory", _undoStackService2["default"]).service("TwTextFormatService", _twTextFormatService2["default"]).directive("twTextFormat", TwTextFormat).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -110,7 +110,7 @@
     });
     var _twTextFormatService = __webpack_require__(0);
     _interopRequireDefault(_twTextFormatService);
-    TwTextFormatFilter.$inject = [ "TwTextFormatService" ], exports["default"] = angular.module("tw.styleguide.styling.text-format").filter("twTextFormat", TwTextFormatFilter).name;
+    TwTextFormatFilter.$inject = [ "TwTextFormatService" ], exports["default"] = angular.module("tw.styleguide.formatting.text-format").filter("twTextFormat", TwTextFormatFilter).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
