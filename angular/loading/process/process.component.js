@@ -1,14 +1,15 @@
-import ProcessController from './process.controller.js';
+import controller from './process.controller.js';
+import template from './process.html';
 
 const Process = {
+  controller,
+  template,
   bindings: {
     state: '<',
     size: '@',
     onStop: '&',
     promise: '<'
-  },
-  controller: ProcessController,
-  template: require('./process.html')
+  }
 };
 
 export default Process;

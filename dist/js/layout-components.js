@@ -145,7 +145,6 @@
         value: !0
     });
     var _cards = __webpack_require__(8), _cards2 = _interopRequireDefault(_cards), TwCards = {
-        controller: function() {},
         template: _cards2["default"],
         bindings: {
             inactive: "=?"

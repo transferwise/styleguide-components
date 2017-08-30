@@ -1671,15 +1671,15 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _processController = __webpack_require__(49), _processController2 = _interopRequireDefault(_processController), Process = {
+    var _processController = __webpack_require__(49), _processController2 = _interopRequireDefault(_processController), _process = __webpack_require__(66), _process2 = _interopRequireDefault(_process), Process = {
+        controller: _processController2["default"],
+        template: _process2["default"],
         bindings: {
             state: "<",
             size: "@",
             onStop: "&",
             promise: "<"
-        },
-        controller: _processController2["default"],
-        template: __webpack_require__(66)
+        }
     };
     exports["default"] = Process;
 }, function(module, exports, __webpack_require__) {
