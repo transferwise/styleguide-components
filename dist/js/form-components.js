@@ -1220,13 +1220,68 @@
     exports["default"] = Fieldset;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwFieldsetController($scope) {
-        function init() {
-            $ctrl.model || ($ctrl.model = {}), $ctrl.fields && prepFields($ctrl.fields), $scope.$watch("$ctrl.fields", function(newValue, oldValue) {
-                angular.equals(newValue, oldValue) || prepFields($ctrl.fields);
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+    }
+    function prepFields(fields, model) {
+        fields.forEach(function(fieldGroup) {
+            fieldGroup.group.length && (fieldGroup.key = fieldGroup.group[0].key), fieldGroup.group.forEach(function(field) {
+                "upload" === field.type && (fieldGroup.type = "upload"), prepRegExp(field), prepValuesAsync(field, model), 
+                prepValuesAllowed(field);
+            });
+        });
+    }
+    function prepRegExp(field) {
+        if (field.validationRegexp) try {
+            field.validationRegexp = new RegExp(field.validationRegexp);
+        } catch (ex) {
+            console.log("API regexp is invalid"), field.validationRegexp = !1;
+        } else field.validationRegexp = !1;
+    }
+    function prepValuesAsync(field, model) {
+        if (field.valuesAsync) {
+            var postData = {};
+            field.valuesAsync.params && field.valuesAsync.params.length && (postData = getParamValuesFromModel(model, field.valuesAsync.params)), 
+            $http.post(field.valuesAsync.url, postData).then(function(response) {
+                field.valuesAllowed = response.data, prepValuesAllowed(field);
+            })["catch"](function() {});
+        }
+    }
+    function prepValuesAllowed(field) {
+        angular.isArray(field.valuesAllowed) && field.valuesAllowed.forEach(function(valueAllowed) {
+            valueAllowed.value = valueAllowed.key, valueAllowed.label = valueAllowed.name;
+        });
+    }
+    function getParamValuesFromModel(model, params) {
+        var data = {};
+        return params.forEach(function(param) {
+            model[param.key] ? data[param.parameterName] = model[param.key] : param.required;
+        }), data;
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    });
+    var _createClass = function() {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || !1, descriptor.configurable = !0, 
+                "value" in descriptor && (descriptor.writable = !0), Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+        return function(Constructor, protoProps, staticProps) {
+            return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+            Constructor;
+        };
+    }(), FieldsetController = function() {
+        function FieldsetController($scope) {
+            var _this = this;
+            _classCallCheck(this, FieldsetController), this.model || (this.model = {}), this.fields && prepFields(this.fields, this.model), 
+            $scope.$watch("$ctrl.fields", function(newValue, oldValue) {
+                angular.equals(newValue, oldValue) || prepFields(_this.fields, _this.model);
             }), $scope.$watch("twFieldset.$valid", function(validity) {
-                $ctrl.isValid = validity;
-            }), $ctrl.validationMessages || ($ctrl.validationMessages = {
+                _this.isValid = validity;
+            }), this.validationMessages || (this.validationMessages = {
                 required: "Required",
                 pattern: "Incorrect format",
                 min: "The value is too low",
@@ -1235,54 +1290,24 @@
                 maxlength: "The value is too long"
             });
         }
-        function removeFieldError(fieldKey) {
-            $ctrl.errorMessages && delete $ctrl.errorMessages[fieldKey];
-        }
-        function prepFields(fields) {
-            fields.forEach(function(fieldGroup) {
-                fieldGroup.group.length && (fieldGroup.key = fieldGroup.group[0].key), fieldGroup.group.forEach(function(field) {
-                    "upload" === field.type && (fieldGroup.type = "upload"), prepRegExp(field), prepValuesAsync(field), 
-                    prepValuesAllowed(field);
-                });
-            });
-        }
-        function prepRegExp(field) {
-            if (field.validationRegexp) try {
-                field.validationRegexp = new RegExp(field.validationRegexp);
-            } catch (ex) {
-                console.log("API regexp is invalid"), field.validationRegexp = !1;
-            } else field.validationRegexp = !1;
-        }
-        function prepValuesAsync(field) {
-            if (field.valuesAsync) {
-                var postData = {};
-                field.valuesAsync.params && field.valuesAsync.params.length && (postData = getParamValuesFromModel($ctrl.model, field.valuesAsync.params)), 
-                $http.post(field.valuesAsync.url, postData).then(function(response) {
-                    field.valuesAllowed = response.data, prepValuesAllowed(field);
-                })["catch"](function() {});
+        return _createClass(FieldsetController, [ {
+            key: "onBlur",
+            value: function(field) {
+                this.removeFieldError(field.key), !field.refreshRequirementsOnChange;
             }
-        }
-        function prepValuesAllowed(field) {
-            angular.isArray(field.valuesAllowed) && field.valuesAllowed.forEach(function(valueAllowed) {
-                valueAllowed.value = valueAllowed.key, valueAllowed.label = valueAllowed.name;
-            });
-        }
-        function getParamValuesFromModel(model, params) {
-            var data = {};
-            return params.forEach(function(param) {
-                model[param.key] ? data[param.parameterName] = model[param.key] : param.required;
-            }), data;
-        }
-        var $ctrl = this;
-        $ctrl.onBlur = function(field) {
-            removeFieldError(field.key), !field.refreshRequirementsOnChange;
-        }, $ctrl.onChange = function(field) {
-            removeFieldError(field.key);
-        }, init();
-    }
-    Object.defineProperty(exports, "__esModule", {
-        value: !0
-    }), TwFieldsetController.$inject = [ "$scope" ], exports["default"] = TwFieldsetController;
+        }, {
+            key: "onChange",
+            value: function(field) {
+                this.removeFieldError(field.key);
+            }
+        }, {
+            key: "removeFieldError",
+            value: function(fieldKey) {
+                this.errorMessages && delete this.errorMessages[fieldKey];
+            }
+        } ]), FieldsetController;
+    }();
+    FieldsetController.$inject = [ "$scope" ], exports["default"] = FieldsetController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwFormControlStyling() {
