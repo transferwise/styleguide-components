@@ -1,13 +1,14 @@
-import TabsController from './tabs.controller.js';
+import controller from './tabs.controller.js';
+import template from './tabs.html';
 
 const Tabs = {
+  controller,
+  template,
   bindings: {
     tabs: '<',
     active: '=',
     onChange: '&'
-  },
-  controller: TabsController,
-  template: require('./tabs.html')
+  }
 };
 
 export default Tabs;

@@ -1,8 +1,10 @@
-import SelectController from './select.controller.js';
+import controller from './select.controller.js';
+import template from './select.html';
 
 const Select = {
+  controller,
+  template,
   require: 'ngModel',
-  controller: SelectController,
   transclude: true,
   bindings: {
     ngModel: '=',
@@ -23,8 +25,7 @@ const Select = {
     hideCurrency: '@',
     hideCircle: '@',
     hideLabel: '@'
-  },
-  template: require('./select.html')
+  }
 };
 
 /*

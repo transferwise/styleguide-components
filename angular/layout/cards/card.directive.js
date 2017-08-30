@@ -1,8 +1,11 @@
-import CardsService from './cards.service.js';
-import CardController from './card.controller.js';
+import service from './cards.service.js';
+import controller from './card.controller.js';
+import template from './card.html';
 
 function Card() {
   return {
+    controller,
+    template,
     require: {
       cardContainerController: '^twCards'
     },
@@ -22,8 +25,6 @@ function Card() {
       cardForm: '?cardForm',
       cardIcon: 'cardIcon',
     },
-    controller: CardController,
-    template: require('./card.html'),
     link: function ($scope, $element, $attrs, $ctrl) {
       var cardController = $scope.$ctrl;
 

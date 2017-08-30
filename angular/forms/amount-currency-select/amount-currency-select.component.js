@@ -1,8 +1,10 @@
-import AmountCurrencySelectController from  './amount-currency-select.controller.js';
+import controller from  './amount-currency-select.controller.js';
+import template from './amount-currency-select.html';
 
 const AmountCurrencySelect = {
+  controller,
+  template,
   require: 'ngModel',
-  controller: AmountCurrencySelectController,
   transclude: {
     'addon': '?addon'
   },
@@ -31,8 +33,7 @@ const AmountCurrencySelect = {
 
     size: '@',
     locale: '@'
-  },
-  template: require('./amount-currency-select.html')
+  }
 };
 
 export default AmountCurrencySelect;

@@ -1,6 +1,9 @@
-import FieldsetController from './fieldset.controller.js';
+import controller from './fieldset.controller.js';
+import template from './fieldset.html';
 
 const Fieldset = {
+  controller,
+  template,
   bindings: {
     legend: '@',
     model: '=',
@@ -11,9 +14,7 @@ const Fieldset = {
     validationMessages: '<',
     errorMessages: '<',
     isValid: '=?'
-  },
-  controller: FieldsetController,
-  template: require('./fieldset.html')
+  }
 };
 
 export default Fieldset;

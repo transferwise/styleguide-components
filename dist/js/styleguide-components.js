@@ -548,9 +548,10 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _amountCurrencySelectController = __webpack_require__(26), _amountCurrencySelectController2 = _interopRequireDefault(_amountCurrencySelectController), AmountCurrencySelect = {
-        require: "ngModel",
+    var _amountCurrencySelectController = __webpack_require__(26), _amountCurrencySelectController2 = _interopRequireDefault(_amountCurrencySelectController), _amountCurrencySelect = __webpack_require__(84), _amountCurrencySelect2 = _interopRequireDefault(_amountCurrencySelect), AmountCurrencySelect = {
         controller: _amountCurrencySelectController2["default"],
+        template: _amountCurrencySelect2["default"],
+        require: "ngModel",
         transclude: {
             addon: "?addon"
         },
@@ -572,8 +573,7 @@
             placeholder: "@",
             size: "@",
             locale: "@"
-        },
-        template: __webpack_require__(84)
+        }
     };
     exports["default"] = AmountCurrencySelect;
 }, function(module, exports, __webpack_require__) {
@@ -637,9 +637,10 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _checkboxController = __webpack_require__(29), _checkboxController2 = _interopRequireDefault(_checkboxController), Checkbox = {
-        require: "ngModel",
+    var _checkboxController = __webpack_require__(29), _checkboxController2 = _interopRequireDefault(_checkboxController), _checkbox = __webpack_require__(85), _checkbox2 = _interopRequireDefault(_checkbox), Checkbox = {
         controller: _checkboxController2["default"],
+        template: _checkbox2["default"],
+        require: "ngModel",
         bindings: {
             name: "@",
             ngModel: "=",
@@ -647,8 +648,7 @@
             ngFalseValue: "<",
             ngRequired: "<",
             ngDisabled: "<"
-        },
-        template: __webpack_require__(85)
+        }
     };
     exports["default"] = Checkbox;
 }, function(module, exports, __webpack_require__) {
@@ -700,9 +700,10 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _currencyInputController = __webpack_require__(31), _currencyInputController2 = _interopRequireDefault(_currencyInputController), CurrencyInput = {
-        require: "ngModel",
+    var _currencyInputController = __webpack_require__(31), _currencyInputController2 = _interopRequireDefault(_currencyInputController), _currencyInput = __webpack_require__(86), _currencyInput2 = _interopRequireDefault(_currencyInput), CurrencyInput = {
         controller: _currencyInputController2["default"],
+        template: _currencyInput2["default"],
+        require: "ngModel",
         transclude: {
             addon: "?addon"
         },
@@ -718,8 +719,7 @@
             placeholder: "@",
             size: "@",
             locale: "@"
-        },
-        template: __webpack_require__(86)
+        }
     };
     exports["default"] = CurrencyInput;
 }, function(module, exports, __webpack_require__) {
@@ -778,9 +778,10 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _dateLookupController = __webpack_require__(34), _dateLookupController2 = _interopRequireDefault(_dateLookupController), DateLookup = {
-        require: "ngModel",
+    var _dateLookupController = __webpack_require__(34), _dateLookupController2 = _interopRequireDefault(_dateLookupController), _dateLookup = __webpack_require__(87), _dateLookup2 = _interopRequireDefault(_dateLookup), DateLookup = {
         controller: _dateLookupController2["default"],
+        template: _dateLookup2["default"],
+        require: "ngModel",
         bindings: {
             ngModel: "=",
             ngChange: "&",
@@ -793,8 +794,7 @@
             locale: "@",
             label: "@",
             shortDate: "<"
-        },
-        template: __webpack_require__(87)
+        }
     };
     exports["default"] = DateLookup;
 }, function(module, exports, __webpack_require__) {
@@ -987,9 +987,10 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _dateController = __webpack_require__(37), _dateController2 = _interopRequireDefault(_dateController), DateControl = {
-        require: "ngModel",
+    var _dateController = __webpack_require__(37), _dateController2 = _interopRequireDefault(_dateController), _date = __webpack_require__(88), _date2 = _interopRequireDefault(_date), DateControl = {
         controller: _dateController2["default"],
+        template: _date2["default"],
+        require: "ngModel",
         bindings: {
             ngModel: "=",
             required: "@",
@@ -1003,8 +1004,7 @@
             max: "@",
             ngMax: "<",
             modelType: "@"
-        },
-        template: __webpack_require__(88)
+        }
     };
     exports["default"] = DateControl;
 }, function(module, exports, __webpack_require__) {
@@ -1154,10 +1154,11 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _formControlController = __webpack_require__(39), _formControlController2 = _interopRequireDefault(_formControlController), FormControl = {
+    var _formControlController = __webpack_require__(39), _formControlController2 = _interopRequireDefault(_formControlController), _formControl = __webpack_require__(89), _formControl2 = _interopRequireDefault(_formControl), FormControl = {
+        controller: _formControlController2["default"],
+        template: _formControl2["default"],
         require: "ngModel",
         transclude: !0,
-        controller: _formControlController2["default"],
         bindings: {
             type: "@",
             name: "@",
@@ -1182,8 +1183,7 @@
             ngPattern: "<",
             uploadOptions: "<",
             textFormat: "<"
-        },
-        template: __webpack_require__(89)
+        }
     };
     exports["default"] = FormControl;
 }, function(module, exports, __webpack_require__) {
@@ -1223,7 +1223,9 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _fieldsetController = __webpack_require__(41), _fieldsetController2 = _interopRequireDefault(_fieldsetController), Fieldset = {
+    var _fieldsetController = __webpack_require__(41), _fieldsetController2 = _interopRequireDefault(_fieldsetController), _fieldset = __webpack_require__(90), _fieldset2 = _interopRequireDefault(_fieldset), Fieldset = {
+        controller: _fieldsetController2["default"],
+        template: _fieldset2["default"],
         bindings: {
             legend: "@",
             model: "=",
@@ -1234,9 +1236,7 @@
             validationMessages: "<",
             errorMessages: "<",
             isValid: "=?"
-        },
-        controller: _fieldsetController2["default"],
-        template: __webpack_require__(90)
+        }
     };
     exports["default"] = Fieldset;
 }, function(module, exports, __webpack_require__) {
@@ -1352,9 +1352,10 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _radioController = __webpack_require__(45), _radioController2 = _interopRequireDefault(_radioController), Radio = {
-        require: "ngModel",
+    var _radioController = __webpack_require__(45), _radioController2 = _interopRequireDefault(_radioController), _radio = __webpack_require__(91), _radio2 = _interopRequireDefault(_radio), Radio = {
         controller: _radioController2["default"],
+        template: _radio2["default"],
+        require: "ngModel",
         bindings: {
             name: "@",
             value: "@",
@@ -1363,8 +1364,7 @@
             ngRequired: "<",
             ngDisabled: "<",
             ngChange: "&"
-        },
-        template: __webpack_require__(91)
+        }
     };
     exports["default"] = Radio;
 }, function(module, exports, __webpack_require__) {
@@ -1416,7 +1416,9 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _requirementsFormController = __webpack_require__(48), _requirementsFormController2 = _interopRequireDefault(_requirementsFormController), RequirementsForm = {
+    var _requirementsFormController = __webpack_require__(48), _requirementsFormController2 = _interopRequireDefault(_requirementsFormController), _requirementsForm = __webpack_require__(92), _requirementsForm2 = _interopRequireDefault(_requirementsForm), RequirementsForm = {
+        controller: _requirementsFormController2["default"],
+        template: _requirementsForm2["default"],
         bindings: {
             model: "=",
             requirements: "<",
@@ -1426,9 +1428,7 @@
             validationMessages: "<",
             errorMessages: "<",
             isValid: "=?"
-        },
-        controller: _requirementsFormController2["default"],
-        template: __webpack_require__(92)
+        }
     };
     exports["default"] = RequirementsForm;
 }, function(module, exports, __webpack_require__) {
@@ -1520,9 +1520,10 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _selectController = __webpack_require__(51), _selectController2 = _interopRequireDefault(_selectController), Select = {
-        require: "ngModel",
+    var _selectController = __webpack_require__(51), _selectController2 = _interopRequireDefault(_selectController), _select = __webpack_require__(93), _select2 = _interopRequireDefault(_select), Select = {
         controller: _selectController2["default"],
+        template: _select2["default"],
+        require: "ngModel",
         transclude: !0,
         bindings: {
             ngModel: "=",
@@ -1543,8 +1544,7 @@
             hideCurrency: "@",
             hideCircle: "@",
             hideLabel: "@"
-        },
-        template: __webpack_require__(93)
+        }
     };
     exports["default"] = Select;
 }, function(module, exports, __webpack_require__) {
@@ -1856,8 +1856,9 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _uploadController = __webpack_require__(57), _uploadController2 = _interopRequireDefault(_uploadController), Upload = {
+    var _uploadController = __webpack_require__(57), _uploadController2 = _interopRequireDefault(_uploadController), _upload = __webpack_require__(94), _upload2 = _interopRequireDefault(_upload), Upload = {
         controller: _uploadController2["default"],
+        template: _upload2["default"],
         transclude: !0,
         bindings: {
             ngModel: "=",
@@ -1881,8 +1882,7 @@
             onFailure: "=",
             onCancel: "=",
             maxSize: "<"
-        },
-        template: __webpack_require__(94)
+        }
     };
     exports["default"] = Upload;
 }, function(module, exports, __webpack_require__) {
@@ -2115,6 +2115,8 @@
     }
     function Card() {
         return {
+            controller: _cardController2["default"],
+            template: _card2["default"],
             require: {
                 cardContainerController: "^twCards"
             },
@@ -2134,8 +2136,6 @@
                 cardForm: "?cardForm",
                 cardIcon: "cardIcon"
             },
-            controller: _cardController2["default"],
-            template: __webpack_require__(95),
             link: function($scope, $element, $attrs, $ctrl) {
                 var cardController = $scope.$ctrl;
                 cardController.addCard(cardController), cardController.index = cardController.getLength() - 1, 
@@ -2148,20 +2148,25 @@
         value: !0
     });
     var _cardsService = __webpack_require__(11), _cardController = (_interopRequireDefault(_cardsService), 
-    __webpack_require__(65)), _cardController2 = _interopRequireDefault(_cardController);
+    __webpack_require__(65)), _cardController2 = _interopRequireDefault(_cardController), _card = __webpack_require__(95), _card2 = _interopRequireDefault(_card);
     exports["default"] = Card;
 }, function(module, exports, __webpack_require__) {
     "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var TwCards = {
+    var _cards = __webpack_require__(96), _cards2 = _interopRequireDefault(_cards), TwCards = {
+        controller: function() {},
+        template: _cards2["default"],
         bindings: {
             inactive: "=?"
         },
-        controller: function() {},
-        transclude: !0,
-        template: __webpack_require__(96)
+        transclude: !0
     };
     exports["default"] = TwCards;
 }, function(module, exports, __webpack_require__) {
@@ -2190,11 +2195,16 @@
     exports["default"] = angular.module("tw.styleguide.loading.loader", []).component("twLoader", _loaderComponent2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var TwLoader = {
-        template: __webpack_require__(97)
+    var _loader = __webpack_require__(97), _loader2 = _interopRequireDefault(_loader), TwLoader = {
+        template: _loader2["default"]
     };
     exports["default"] = TwLoader;
 }, function(module, exports, __webpack_require__) {
@@ -2280,14 +2290,14 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _tabsController = __webpack_require__(75), _tabsController2 = _interopRequireDefault(_tabsController), Tabs = {
+    var _tabsController = __webpack_require__(75), _tabsController2 = _interopRequireDefault(_tabsController), _tabs = __webpack_require__(99), _tabs2 = _interopRequireDefault(_tabs), Tabs = {
+        controller: _tabsController2["default"],
+        template: _tabs2["default"],
         bindings: {
             tabs: "<",
             active: "=",
             onChange: "&"
-        },
-        controller: _tabsController2["default"],
-        template: __webpack_require__(99)
+        }
     };
     exports["default"] = Tabs;
 }, function(module, exports, __webpack_require__) {

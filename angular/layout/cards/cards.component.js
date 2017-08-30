@@ -1,11 +1,12 @@
+import template from './cards.html';
 
 const TwCards = {
+  controller: function() {},
+  template,
   bindings: {
     inactive: '=?'
   },
-  controller: function() {},
-  transclude: true,
-  template: require('./cards.html'),
+  transclude: true
 };
 
 export default TwCards;

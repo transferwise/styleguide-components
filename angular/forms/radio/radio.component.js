@@ -1,8 +1,10 @@
-import RadioController from './radio.controller.js';
+import controller from './radio.controller.js';
+import template from './radio.html';
 
 const Radio = {
+  controller,
+  template,
   require: 'ngModel',
-  controller: RadioController,
   bindings: {
     name: "@",
     value: "@",
@@ -11,8 +13,7 @@ const Radio = {
     ngRequired: '<',
     ngDisabled: '<',
     ngChange: '&'
-  },
-  template: require('./radio.html')
+  }
 };
 
 export default Radio;

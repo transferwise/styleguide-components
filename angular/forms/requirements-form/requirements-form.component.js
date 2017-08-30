@@ -1,6 +1,9 @@
-import RequirementsFormController from './requirements-form.controller.js';
+import controller from './requirements-form.controller.js';
+import template from './requirements-form.html';
 
 const RequirementsForm = {
+  controller,
+  template,
   bindings: {
     model: '=',
     requirements: '<',
@@ -10,9 +13,7 @@ const RequirementsForm = {
     validationMessages: '<',
     errorMessages: '<',
     isValid: '=?'
-  },
-  controller: RequirementsFormController,
-  template: require('./requirements-form.html')
+  }
 };
 
 

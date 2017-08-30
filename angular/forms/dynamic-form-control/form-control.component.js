@@ -1,9 +1,11 @@
-import FormControlController from './form-control.controller.js';
+import controller from './form-control.controller.js';
+import template from './form-control.html';
 
 const FormControl = {
+  controller,
+  template,
   require: 'ngModel',
   transclude: true,
-  controller: FormControlController,
   bindings: {
     type: "@",
     name: "@",
@@ -29,8 +31,7 @@ const FormControl = {
     ngPattern: "<",
     uploadOptions: "<",
     textFormat: "<"
-  },
-  template: require('./form-control.html')
+  }
 };
 
 export default FormControl;

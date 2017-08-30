@@ -99,6 +99,8 @@
     }
     function Card() {
         return {
+            controller: _cardController2["default"],
+            template: _card2["default"],
             require: {
                 cardContainerController: "^twCards"
             },
@@ -118,8 +120,6 @@
                 cardForm: "?cardForm",
                 cardIcon: "cardIcon"
             },
-            controller: _cardController2["default"],
-            template: __webpack_require__(7),
             link: function($scope, $element, $attrs, $ctrl) {
                 var cardController = $scope.$ctrl;
                 cardController.addCard(cardController), cardController.index = cardController.getLength() - 1, 
@@ -132,20 +132,25 @@
         value: !0
     });
     var _cardsService = __webpack_require__(0), _cardController = (_interopRequireDefault(_cardsService), 
-    __webpack_require__(4)), _cardController2 = _interopRequireDefault(_cardController);
+    __webpack_require__(4)), _cardController2 = _interopRequireDefault(_cardController), _card = __webpack_require__(7), _card2 = _interopRequireDefault(_card);
     exports["default"] = Card;
 }, function(module, exports, __webpack_require__) {
     "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var TwCards = {
+    var _cards = __webpack_require__(8), _cards2 = _interopRequireDefault(_cards), TwCards = {
+        controller: function() {},
+        template: _cards2["default"],
         bindings: {
             inactive: "=?"
         },
-        controller: function() {},
-        transclude: !0,
-        template: __webpack_require__(8)
+        transclude: !0
     };
     exports["default"] = TwCards;
 }, function(module, exports) {

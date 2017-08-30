@@ -1,8 +1,10 @@
-import DateControlController from  './date.controller.js';
+import controller from  './date.controller.js';
+import template from './date.html';
 
 const DateControl = {
+  controller,
+  template,
   require: 'ngModel',
-  controller: DateControlController,
   bindings: {
     ngModel: '=',
     required: '@',
@@ -16,8 +18,7 @@ const DateControl = {
     max: '@',
     ngMax: '<',
     modelType: '@'
-  },
-  template: require('./date.html')
+  }
 };
 
 export default DateControl;

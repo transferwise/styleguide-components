@@ -1,8 +1,10 @@
-import DateLookupController from './date-lookup.controller.js';
+import controller from './date-lookup.controller.js';
+import template from './date-lookup.html';
 
 const DateLookup = {
+  controller,
+  template,
   require: 'ngModel',
-  controller: DateLookupController,
   bindings: {
     ngModel: '=',
     ngChange: '&',
@@ -15,8 +17,7 @@ const DateLookup = {
     locale: '@',
     label: '@',
     shortDate: '<'
-  },
-  template: require('./date-lookup.html')
+  }
 };
 
 export default DateLookup;

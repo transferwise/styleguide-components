@@ -1,8 +1,11 @@
-import CheckboxController from './checkbox.controller.js';
+
+import controller from './checkbox.controller.js';
+import template from './checkbox.html';
 
 const Checkbox = {
+  controller,
+  template,
   require: 'ngModel',
-  controller: CheckboxController,
   bindings: {
     name: "@",
     ngModel: '=',
@@ -10,8 +13,7 @@ const Checkbox = {
     ngFalseValue: '<',
     ngRequired: '<',
     ngDisabled: '<'
-  },
-  template: require('./checkbox.html')
+  }
 };
 
 export default Checkbox;

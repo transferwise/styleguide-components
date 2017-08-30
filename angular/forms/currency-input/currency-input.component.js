@@ -1,8 +1,10 @@
-import CurrencyInputController from  './currency-input.controller.js';
+import controller from  './currency-input.controller.js';
+import template from './currency-input.html';
 
 const CurrencyInput = {
+  controller,
+  template,
   require: 'ngModel',
-  controller: CurrencyInputController,
   transclude: {
     'addon': '?addon'
   },
@@ -18,8 +20,7 @@ const CurrencyInput = {
     placeholder: '@',
     size: '@',
     locale: '@'
-  },
-  template: require('./currency-input.html')
+  }
 };
 
 export default CurrencyInput;

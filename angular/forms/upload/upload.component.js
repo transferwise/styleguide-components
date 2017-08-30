@@ -1,7 +1,9 @@
-import UploadController from './upload.controller.js';
+import controller from './upload.controller.js';
+import template from './upload.html';
 
 const Upload = {
-  controller: UploadController,
+  controller,
+  template,
   transclude: true,
   bindings: {
     ngModel: '=',
@@ -26,8 +28,7 @@ const Upload = {
     onFailure: '=',
     onCancel: '=',
     maxSize: '<'
-  },
-  template: require('./upload.html')
+  }
 };
 
 export default Upload;
