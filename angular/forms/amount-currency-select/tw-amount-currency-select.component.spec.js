@@ -13,9 +13,6 @@ describe('Directive: TwAmountCurrencySelect', function() {
   var INPUT_SELECTOR = 'input';
   var SELECT_SELECTOR = 'select';
 
-  //beforeEach(module('tw.styleguide.forms.amount-currency-select'));
-  //beforeEach(module('tw.styleguide.forms.focusable'));
-  //beforeEach(module('tw.styleguide.services.currency-data'));
   beforeEach(module('tw.styleguide-components'));
 
   beforeEach(inject(function($injector) {
@@ -24,7 +21,11 @@ describe('Directive: TwAmountCurrencySelect', function() {
     $scope = $rootScope.$new();
     $scope.ngModel = null;
     $scope.currency = "eur";
-    $scope.currencies = [{value:'eur',label:'EUR'},{value:'gbp',label:'GBP'},{value:'usd',label:'USD'}];
+    $scope.currencies = [
+      {value:'eur',label:'EUR'},
+      {value:'gbp',label:'GBP'},
+      {value:'usd',label:'USD'}
+    ];
     $scope.ngChange = function() {};
     $scope.ngClick = function() {};
     $scope.ngFocus = function() {};
