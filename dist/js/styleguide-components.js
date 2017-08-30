@@ -551,7 +551,9 @@
     var _amountCurrencySelectController = __webpack_require__(26), _amountCurrencySelectController2 = _interopRequireDefault(_amountCurrencySelectController), _amountCurrencySelect = __webpack_require__(84), _amountCurrencySelect2 = _interopRequireDefault(_amountCurrencySelect), AmountCurrencySelect = {
         controller: _amountCurrencySelectController2["default"],
         template: _amountCurrencySelect2["default"],
-        require: "ngModel",
+        require: {
+            $ngModel: "ngModel"
+        },
         transclude: {
             addon: "?addon"
         },
@@ -583,37 +585,65 @@
             "default": obj
         };
     }
-    function TwAmountCurrencySelectController($element, $scope, $timeout, TwCurrencyService) {
-        function isNumber(value) {
-            return !isNaN(parseFloat(value));
-        }
-        var $ctrl = this, $ngModel = $element.controller("ngModel");
-        $ctrl.showDecimals = !0, $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
-            newValue !== oldValue && $ngModel.$setDirty();
-        }), $scope.$watch("$ctrl.currency", function(newValue, oldValue) {
-            newValue && newValue !== oldValue && ($ctrl.showDecimals = TwCurrencyService.getDecimals(newValue) > 0);
-        }), $element.find("input").on("blur", function() {
-            $ngModel.$setTouched(), $element.triggerHandler("blur");
-        }), $ngModel.$validators.min = function(modelValue, viewValue) {
-            return "undefined" == typeof $ctrl.ngMin || null === $ctrl.ngMin || !isNumber(viewValue) || viewValue >= $ctrl.ngMin;
-        }, $ngModel.$validators.max = function(modelValue, viewValue) {
-            return "undefined" == typeof $ctrl.ngMax || null === $ctrl.ngMax || !isNumber(viewValue) || viewValue <= $ctrl.ngMax;
-        }, $ctrl.changedAmount = function() {
-            $ctrl.ngChange && $timeout($ctrl.ngChange), $ctrl.onAmountChange && (console & console.log && console.log("onAmountChange is deprecated in twAmountCurrencySelect, please use ngChange."), 
-            $timeout($ctrl.onAmountChange));
-        }, $ctrl.changedCurrency = function() {
-            $ctrl.onCurrencyChange && $timeout($ctrl.onCurrencyChange);
-        }, $ctrl.customAction = function() {
-            $ctrl.onCustomAction && $ctrl.onCustomAction();
-        };
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+    }
+    function isNumber(value) {
+        return !isNaN(parseFloat(value));
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _currency = __webpack_require__(2);
-    _interopRequireDefault(_currency);
-    TwAmountCurrencySelectController.$inject = [ "$element", "$scope", "$timeout", "TwCurrencyService" ], 
-    exports["default"] = TwAmountCurrencySelectController;
+    var _createClass = function() {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || !1, descriptor.configurable = !0, 
+                "value" in descriptor && (descriptor.writable = !0), Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+        return function(Constructor, protoProps, staticProps) {
+            return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+            Constructor;
+        };
+    }(), _currency = __webpack_require__(2), AmountCurrencySelectController = (_interopRequireDefault(_currency), 
+    function() {
+        function AmountCurrencySelectController($element, $scope, $timeout, TwCurrencyService) {
+            var _this = this;
+            _classCallCheck(this, AmountCurrencySelectController);
+            var $ngModel = $element.controller("ngModel");
+            this.$timeout = $timeout, this.showDecimals = !0, $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+                newValue !== oldValue && $ngModel.$setDirty();
+            }), $scope.$watch("$ctrl.currency", function(newValue, oldValue) {
+                newValue && newValue !== oldValue && (_this.showDecimals = TwCurrencyService.getDecimals(newValue) > 0);
+            }), $element.find("input").on("blur", function() {
+                $ngModel.$setTouched(), $element.triggerHandler("blur");
+            }), $ngModel.$validators.min = function(modelValue, viewValue) {
+                return "undefined" == typeof _this.ngMin || null === _this.ngMin || !isNumber(viewValue) || viewValue >= _this.ngMin;
+            }, $ngModel.$validators.max = function(modelValue, viewValue) {
+                return "undefined" == typeof _this.ngMax || null === _this.ngMax || !isNumber(viewValue) || viewValue <= _this.ngMax;
+            };
+        }
+        return _createClass(AmountCurrencySelectController, [ {
+            key: "changedAmount",
+            value: function() {
+                this.ngChange && this.$timeout(this.ngChange), this.onAmountChange && (console & console.log && console.log("onAmountChange is deprecated in twAmountCurrencySelect, please use ngChange."), 
+                this.$timeout(this.onAmountChange));
+            }
+        }, {
+            key: "changedCurrency",
+            value: function() {
+                this.onCurrencyChange && this.$timeout(this.onCurrencyChange);
+            }
+        }, {
+            key: "customAction",
+            value: function() {
+                this.onCustomAction && this.onCustomAction();
+            }
+        } ]), AmountCurrencySelectController;
+    }());
+    AmountCurrencySelectController.$inject = [ "$element", "$scope", "$timeout", "TwCurrencyService" ], 
+    exports["default"] = AmountCurrencySelectController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {

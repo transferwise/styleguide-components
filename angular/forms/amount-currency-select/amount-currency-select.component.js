@@ -4,7 +4,9 @@ import template from './amount-currency-select.html';
 const AmountCurrencySelect = {
   controller,
   template,
-  require: 'ngModel',
+  require: {
+    $ngModel: 'ngModel'
+  },
   transclude: {
     'addon': '?addon'
   },

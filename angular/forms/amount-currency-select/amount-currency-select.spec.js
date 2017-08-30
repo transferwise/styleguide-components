@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: TwAmountCurrencySelect', function() {
+describe('AmountCurrencySelect', function() {
   var $compile,
     $rootScope,
     $scope,
