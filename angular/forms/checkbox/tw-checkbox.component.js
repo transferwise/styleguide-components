@@ -1,4 +1,5 @@
 import TwCheckboxController from './tw-checkbox.controller.js';
+import template from './checkbox.html';
 
 const TwCheckbox = {
   require: 'ngModel',
@@ -11,21 +12,7 @@ const TwCheckbox = {
     ngRequired: '<',
     ngDisabled: '<'
   },
-  template: " \
-    <input type='hidden' class='sr-only' \
-      name='{{$ctrl.name}}' \
-      ng-model='$ctrl.ngModel' \
-      ng-click='$ctrl.hiddenClick($event)' \
-      ng-disabled='$ctrl.ngDisabled'/> \
-    <button type='button' class='tw-checkbox-button' tw-focusable \
-      ng-click='$ctrl.buttonClick($event)' \
-      ng-focus='$ctrl.buttonFocus()' \
-      ng-blur='$ctrl.buttonBlur()' \
-      ng-disabled='$ctrl.ngDisabled' \
-      ng-class='{\"checked\": $ctrl.checked}' \
-      aria-pressed='{{$ctrl.checked}}'> \
-      <span class='tw-checkbox-check glyphicon glyphicon-ok'></span> \
-    </button>"
+  template
 };
 
 export default TwCheckbox;

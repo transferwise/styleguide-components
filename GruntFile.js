@@ -3,6 +3,9 @@ const path = require('path');
 
 const webpackModule = {
   rules: [{
+    test: /\.html$/,
+    loader: 'html-loader?root=.'
+  },{
     test: /\.js$/,
     exclude: [/node_modules/],
     loader: 'babel-loader'
@@ -68,7 +71,7 @@ module.exports = function(grunt) {
                 tasks: ['less']
             },
             components: {
-                files: ['angular/**/*.js'],
+                files: ['angular/**/*.js', 'angular/**/*.html'],
                 tasks: ['webpack', 'uglify', 'jshint']
             },
             templates: {

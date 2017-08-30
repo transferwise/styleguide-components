@@ -1,3 +1,4 @@
+import template from './cards.html';
 
 const TwCards = {
   bindings: {
@@ -5,11 +6,7 @@ const TwCards = {
   },
   controller: function() {},
   transclude: true,
-  template: ' \
-    <ul ng-transclude \
-      class="list-group panel-list-group list-group-slide-out" \
-      ng-class="{\'list-group-inactive\': $ctrl.inactive}"> \
-    </ul>',
+  template,
 };
 
 export default TwCards;

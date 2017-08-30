@@ -119,7 +119,7 @@
                 cardIcon: "cardIcon"
             },
             controller: _twCardController2["default"],
-            template: twCardTemplate,
+            template: _card2["default"],
             link: function($scope, $element, $attrs, $ctrl) {
                 var cardController = $scope.$ctrl;
                 cardController.addCard(cardController), cardController.index = cardController.getLength() - 1, 
@@ -132,20 +132,29 @@
         value: !0
     });
     var _twCardsService = __webpack_require__(0), _twCardController = (_interopRequireDefault(_twCardsService), 
-    __webpack_require__(4)), _twCardController2 = _interopRequireDefault(_twCardController), collapsedCardTemplate = '   <div class="p-a-panel" role="button" ng-click="$ctrl.toggle($ctrl.index)">     <div class="media">       <div class="media-left">         <div class="circle circle-sm circle-responsive"           ng-class="{ \'circle-inverse\': !$ctrl.inactive }">           <div ng-transclude="cardIcon"></div>         </div>       </div>       <div class="media-body" ng-transclude="collapsedCard"></div>     </div>   </div>', expandedCardTemplate = '   <div class="p-l-panel p-r-panel p-b-panel">     <div class="media">       <div class="media-left">           <div class="circle circle-sm circle-inverse circle-responsive invisible"></div>       </div>       <div class="media-body">         <hr class="m-t-0 hidden-xs hidden-sm" />         <a  href="" ng-click="$ctrl.toggle($ctrl.index)"             class="visible-xs-inline-block visible-sm-inline-block text-no-decoration m-t-1"             style="margin-left: -8px;">             <i class="icon icon-left-arrow icon-xxl"></i>         </a>         <div ng-transclude="expandedCard"></div>       </div>     </div>   </div>', cardFormTemplate = '<div class="well p-l-panel p-r-panel" ng-if="$ctrl.hasForm">     <div class="media">       <div class="media-left">         <div class="circle circle-sm circle-responsive invisible"></div>       </div>       <div class="media-body" ng-transclude="cardForm"></div>     </div>   </div>', twCardTemplate = "<li class=\"list-group-item p-a-0 list-group-item-{{$ctrl.state}}\"     ng-class=\"{       'active': $ctrl.open,       'disabled': $ctrl.disabled     }\">" + collapsedCardTemplate + '<div class="collapse"       ng-attr-aria-expanded="{{ $ctrl.open }}"       ng-class="{\'in\': $ctrl.open }"       ng-if="$ctrl.open" >' + expandedCardTemplate + cardFormTemplate + "</div>   </li>";
+    __webpack_require__(4)), _twCardController2 = _interopRequireDefault(_twCardController), _card = __webpack_require__(7), _card2 = _interopRequireDefault(_card);
     exports["default"] = TwCard;
 }, function(module, exports, __webpack_require__) {
     "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var TwCards = {
+    var _cards = __webpack_require__(8), _cards2 = _interopRequireDefault(_cards), TwCards = {
         bindings: {
             inactive: "=?"
         },
         controller: function() {},
         transclude: !0,
-        template: '     <ul ng-transclude       class="list-group panel-list-group list-group-slide-out"       ng-class="{\'list-group-inactive\': $ctrl.inactive}">     </ul>'
+        template: _cards2["default"]
     };
     exports["default"] = TwCards;
+}, function(module, exports) {
+    module.exports = '<li class="list-group-item p-a-0 list-group-item-{{$ctrl.state}}"\n  ng-class="{\n    \'active\': $ctrl.open,\n    \'disabled\': $ctrl.disabled\n  }">\n\n  <div class="p-a-panel" role="button" ng-click="$ctrl.toggle($ctrl.index)">\n    <div class="media">\n      <div class="media-left">\n        <div class="circle circle-sm circle-responsive"\n          ng-class="{\'circle-inverse\': !$ctrl.inactive }">\n          <div ng-transclude="cardIcon"></div>\n        </div>\n      </div>\n      <div class="media-body" ng-transclude="collapsedCard"></div>\n    </div>\n  </div>\n\n  <div class="collapse"\n    ng-attr-aria-expanded="{{ $ctrl.open }}"\n    ng-class="{\'in\': $ctrl.open }"\n    ng-if="$ctrl.open" >\n\n    <div class="p-l-panel p-r-panel p-b-panel">\n      <div class="media">\n        <div class="media-left">\n          <div class="circle circle-sm circle-inverse circle-responsive invisible"></div>\n        </div>\n        <div class="media-body">\n          <hr class="m-t-0 hidden-xs hidden-sm" />\n          <a href="" ng-click="$ctrl.toggle($ctrl.index)"\n            class="visible-xs-inline-block visible-sm-inline-block text-no-decoration m-t-1 tw-card-back">\n            <span class="icon icon-left-arrow icon-xxl"></span>\n          </a>\n          <div ng-transclude="expandedCard"></div>\n        </div>\n      </div>\n    </div>\n\n    <div class="well p-l-panel p-r-panel" ng-if="$ctrl.hasForm">\n      <div class="media">\n        <div class="media-left">\n          <div class="circle circle-sm circle-responsive invisible"></div>\n        </div>\n        <div class="media-body" ng-transclude="cardForm"></div>\n      </div>\n    </div>\n\n  </div>\n</li>\n';
+}, function(module, exports) {
+    module.exports = '<ul ng-transclude\n  class="list-group panel-list-group list-group-slide-out"\n  ng-class="{\'list-group-inactive\': $ctrl.inactive}">\n</ul>\n';
 } ]);
