@@ -1,3 +1,4 @@
+import template from './cards.html';
 
 const TwCards = {
   bindings: {
@@ -5,7 +6,7 @@ const TwCards = {
   },
   controller: function() {},
   transclude: true,
-  template: require('./cards.html'),
+  template,
 };
 
 export default TwCards;

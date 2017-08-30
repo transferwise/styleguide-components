@@ -1,5 +1,6 @@
 import TwCardsService from './tw-cards.service.js';
 import TwCardController from './tw-card.controller.js';
+import template from './card.html';
 
 function TwCard() {
   return {
@@ -23,7 +24,7 @@ function TwCard() {
       cardIcon: 'cardIcon',
     },
     controller: TwCardController,
-    template: require('./card.html'),
+    template,
     link: function ($scope, $element, $attrs, $ctrl) {
       var cardController = $scope.$ctrl;
 

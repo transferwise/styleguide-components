@@ -1,4 +1,5 @@
 import TwDateLookupController from './tw-date-lookup.controller.js';
+import template from './date-lookup.html';
 
 const TwDateLookup = {
   require: 'ngModel',
@@ -16,7 +17,7 @@ const TwDateLookup = {
     label: '@',
     shortDate: '<'
   },
-  template: require('./date-lookup.html')
+  template
 };
 
 export default TwDateLookup;

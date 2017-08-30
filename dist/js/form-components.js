@@ -276,7 +276,7 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twAmountCurrencySelectController = __webpack_require__(21), _twAmountCurrencySelectController2 = _interopRequireDefault(_twAmountCurrencySelectController), TwAmountCurrencySelect = {
+    var _twAmountCurrencySelectController = __webpack_require__(21), _twAmountCurrencySelectController2 = _interopRequireDefault(_twAmountCurrencySelectController), _amountCurrencySelect = __webpack_require__(54), _amountCurrencySelect2 = _interopRequireDefault(_amountCurrencySelect), TwAmountCurrencySelect = {
         require: "ngModel",
         controller: _twAmountCurrencySelectController2["default"],
         transclude: {
@@ -301,7 +301,7 @@
             size: "@",
             locale: "@"
         },
-        template: __webpack_require__(54)
+        template: _amountCurrencySelect2["default"]
     };
     exports["default"] = TwAmountCurrencySelect;
 }, function(module, exports, __webpack_require__) {
@@ -352,7 +352,7 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twCheckboxController = __webpack_require__(23), _twCheckboxController2 = _interopRequireDefault(_twCheckboxController), TwCheckbox = {
+    var _twCheckboxController = __webpack_require__(23), _twCheckboxController2 = _interopRequireDefault(_twCheckboxController), _checkbox = __webpack_require__(55), _checkbox2 = _interopRequireDefault(_checkbox), TwCheckbox = {
         require: "ngModel",
         controller: _twCheckboxController2["default"],
         bindings: {
@@ -363,7 +363,7 @@
             ngRequired: "<",
             ngDisabled: "<"
         },
-        template: __webpack_require__(55)
+        template: _checkbox2["default"]
     };
     exports["default"] = TwCheckbox;
 }, function(module, exports, __webpack_require__) {
@@ -415,7 +415,7 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twCurrencyInputController = __webpack_require__(25), _twCurrencyInputController2 = _interopRequireDefault(_twCurrencyInputController), TwCurrencyInput = {
+    var _twCurrencyInputController = __webpack_require__(25), _twCurrencyInputController2 = _interopRequireDefault(_twCurrencyInputController), _currencyInput = __webpack_require__(56), _currencyInput2 = _interopRequireDefault(_currencyInput), TwCurrencyInput = {
         require: "ngModel",
         controller: _twCurrencyInputController2["default"],
         transclude: {
@@ -434,7 +434,7 @@
             size: "@",
             locale: "@"
         },
-        template: __webpack_require__(56)
+        template: _currencyInput2["default"]
     };
     exports["default"] = TwCurrencyInput;
 }, function(module, exports, __webpack_require__) {
@@ -481,7 +481,7 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twDateLookupController = __webpack_require__(27), _twDateLookupController2 = _interopRequireDefault(_twDateLookupController), TwDateLookup = {
+    var _twDateLookupController = __webpack_require__(27), _twDateLookupController2 = _interopRequireDefault(_twDateLookupController), _dateLookup = __webpack_require__(57), _dateLookup2 = _interopRequireDefault(_dateLookup), TwDateLookup = {
         require: "ngModel",
         controller: _twDateLookupController2["default"],
         bindings: {
@@ -497,7 +497,7 @@
             label: "@",
             shortDate: "<"
         },
-        template: __webpack_require__(57)
+        template: _dateLookup2["default"]
     };
     exports["default"] = TwDateLookup;
 }, function(module, exports, __webpack_require__) {
@@ -678,7 +678,7 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twDateController = __webpack_require__(29), _twDateController2 = _interopRequireDefault(_twDateController), TwDate = {
+    var _twDateController = __webpack_require__(29), _twDateController2 = _interopRequireDefault(_twDateController), _date = __webpack_require__(58), _date2 = _interopRequireDefault(_date), TwDate = {
         require: "ngModel",
         controller: _twDateController2["default"],
         bindings: {
@@ -695,7 +695,7 @@
             ngMax: "<",
             modelType: "@"
         },
-        template: __webpack_require__(58)
+        template: _date2["default"]
     };
     exports["default"] = TwDate;
 }, function(module, exports, __webpack_require__) {
@@ -845,7 +845,7 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twDynamicFormControlController = __webpack_require__(31), _twDynamicFormControlController2 = _interopRequireDefault(_twDynamicFormControlController), TwDynamicFormControl = {
+    var _twDynamicFormControlController = __webpack_require__(31), _twDynamicFormControlController2 = _interopRequireDefault(_twDynamicFormControlController), _formControl = __webpack_require__(59), _formControl2 = _interopRequireDefault(_formControl), TwDynamicFormControl = {
         require: "ngModel",
         transclude: !0,
         controller: _twDynamicFormControlController2["default"],
@@ -874,7 +874,7 @@
             uploadOptions: "<",
             textFormat: "<"
         },
-        template: __webpack_require__(59)
+        template: _formControl2["default"]
     };
     exports["default"] = TwDynamicFormControl;
 }, function(module, exports, __webpack_require__) {
@@ -914,7 +914,7 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twFieldsetController = __webpack_require__(33), _twFieldsetController2 = _interopRequireDefault(_twFieldsetController), TwFieldset = {
+    var _twFieldsetController = __webpack_require__(33), _twFieldsetController2 = _interopRequireDefault(_twFieldsetController), _fieldset = __webpack_require__(60), _fieldset2 = _interopRequireDefault(_fieldset), TwFieldset = {
         bindings: {
             legend: "@",
             model: "=",
@@ -927,7 +927,7 @@
             isValid: "=?"
         },
         controller: _twFieldsetController2["default"],
-        template: __webpack_require__(60)
+        template: _fieldset2["default"]
     };
     exports["default"] = TwFieldset;
 }, function(module, exports, __webpack_require__) {
@@ -1031,7 +1031,7 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twRadioController = __webpack_require__(36), _twRadioController2 = _interopRequireDefault(_twRadioController), TwRadio = {
+    var _twRadioController = __webpack_require__(36), _twRadioController2 = _interopRequireDefault(_twRadioController), _radio = __webpack_require__(61), _radio2 = _interopRequireDefault(_radio), TwRadio = {
         require: "ngModel",
         controller: _twRadioController2["default"],
         bindings: {
@@ -1043,7 +1043,7 @@
             ngDisabled: "<",
             ngChange: "&"
         },
-        template: __webpack_require__(61)
+        template: _radio2["default"]
     };
     exports["default"] = TwRadio;
 }, function(module, exports, __webpack_require__) {
@@ -1081,7 +1081,7 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twRequirementsFormController = __webpack_require__(38), _twRequirementsFormController2 = _interopRequireDefault(_twRequirementsFormController), TwRequirementsForm = {
+    var _twRequirementsFormController = __webpack_require__(38), _twRequirementsFormController2 = _interopRequireDefault(_twRequirementsFormController), _requirementsForm = __webpack_require__(62), _requirementsForm2 = _interopRequireDefault(_requirementsForm), TwRequirementsForm = {
         bindings: {
             model: "=",
             requirements: "<",
@@ -1093,7 +1093,7 @@
             isValid: "=?"
         },
         controller: _twRequirementsFormController2["default"],
-        template: __webpack_require__(62)
+        template: _requirementsForm2["default"]
     };
     exports["default"] = TwRequirementsForm;
 }, function(module, exports, __webpack_require__) {
@@ -1185,7 +1185,7 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twSelectController = __webpack_require__(41), _twSelectController2 = _interopRequireDefault(_twSelectController), TwSelect = {
+    var _twSelectController = __webpack_require__(41), _twSelectController2 = _interopRequireDefault(_twSelectController), _select = __webpack_require__(63), _select2 = _interopRequireDefault(_select), TwSelect = {
         require: "ngModel",
         controller: _twSelectController2["default"],
         transclude: !0,
@@ -1209,7 +1209,7 @@
             hideCircle: "@",
             hideLabel: "@"
         },
-        template: __webpack_require__(63)
+        template: _select2["default"]
     };
     exports["default"] = TwSelect;
 }, function(module, exports, __webpack_require__) {
@@ -1509,7 +1509,7 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twUploadController = __webpack_require__(46), _twUploadController2 = _interopRequireDefault(_twUploadController), TwUpload = {
+    var _twUploadController = __webpack_require__(46), _twUploadController2 = _interopRequireDefault(_twUploadController), _upload = __webpack_require__(64), _upload2 = _interopRequireDefault(_upload), TwUpload = {
         controller: _twUploadController2["default"],
         transclude: !0,
         bindings: {
@@ -1535,7 +1535,7 @@
             onCancel: "=",
             maxSize: "<"
         },
-        template: __webpack_require__(64)
+        template: _upload2["default"]
     };
     exports["default"] = TwUpload;
 }, function(module, exports, __webpack_require__) {
@@ -1649,11 +1649,16 @@
     exports["default"] = TwUploadController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var TwLoader = {
-        template: __webpack_require__(65)
+    var _loader = __webpack_require__(65), _loader2 = _interopRequireDefault(_loader), TwLoader = {
+        template: _loader2["default"]
     };
     exports["default"] = TwLoader;
 }, function(module, exports, __webpack_require__) {
@@ -1666,7 +1671,7 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twProcessController = __webpack_require__(49), _twProcessController2 = _interopRequireDefault(_twProcessController), TwProcess = {
+    var _twProcessController = __webpack_require__(49), _twProcessController2 = _interopRequireDefault(_twProcessController), _process = __webpack_require__(66), _process2 = _interopRequireDefault(_process), TwProcess = {
         bindings: {
             state: "<",
             size: "@",
@@ -1674,7 +1679,7 @@
             promise: "<"
         },
         controller: _twProcessController2["default"],
-        template: __webpack_require__(66)
+        template: _process2["default"]
     };
     exports["default"] = TwProcess;
 }, function(module, exports, __webpack_require__) {
@@ -1727,14 +1732,14 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twTabsController = __webpack_require__(51), _twTabsController2 = _interopRequireDefault(_twTabsController), TwTabs = {
+    var _twTabsController = __webpack_require__(51), _twTabsController2 = _interopRequireDefault(_twTabsController), _tabs = __webpack_require__(67), _tabs2 = _interopRequireDefault(_tabs), TwTabs = {
         bindings: {
             tabs: "<",
             active: "=",
             onChange: "&"
         },
         controller: _twTabsController2["default"],
-        template: __webpack_require__(67)
+        template: _tabs2["default"]
     };
     exports["default"] = TwTabs;
 }, function(module, exports, __webpack_require__) {

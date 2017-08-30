@@ -1,4 +1,5 @@
 import TwDateController from  './tw-date.controller.js';
+import template from './date.html';
 
 const TwDate = {
   require: 'ngModel',
@@ -17,7 +18,7 @@ const TwDate = {
     ngMax: '<',
     modelType: '@'
   },
-  template: require('./date.html')
+  template
 };
 
 export default TwDate;

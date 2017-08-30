@@ -1,4 +1,5 @@
 import TwUploadController from './tw-upload.controller.js';
+import template from './upload.html';
 
 const TwUpload = {
   controller: TwUploadController,
@@ -27,7 +28,7 @@ const TwUpload = {
     onCancel: '=',
     maxSize: '<'
   },
-  template: require('./upload.html')
+  template
 };
 
 export default TwUpload;

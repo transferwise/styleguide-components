@@ -1,6 +1,7 @@
+import template from './loader.html';
 
 const TwLoader = {
-  template: require('./loader.html')
+  template
 };
 
 export default TwLoader;

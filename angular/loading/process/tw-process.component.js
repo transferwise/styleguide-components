@@ -1,4 +1,5 @@
 import TwProcessController from './tw-process.controller.js';
+import template from './process.html';
 
 const TwProcess = {
   bindings: {
@@ -8,7 +9,7 @@ const TwProcess = {
     promise: '<'
   },
   controller: TwProcessController,
-  template: require('./process.html')
+  template
 };
 
 export default TwProcess;

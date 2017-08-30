@@ -1,4 +1,5 @@
 import TwSelectController from './tw-select.controller.js';
+import template from './select.html';
 
 const TwSelect = {
   require: 'ngModel',
@@ -24,7 +25,7 @@ const TwSelect = {
     hideCircle: '@',
     hideLabel: '@'
   },
-  template: require('./select.html')
+  template
 };
 
 /*

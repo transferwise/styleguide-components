@@ -1,4 +1,5 @@
 import TwCurrencyInputController from  './tw-currency-input.controller.js';
+import template from './currency-input.html';
 
 const TwCurrencyInput = {
   require: 'ngModel',
@@ -19,7 +20,7 @@ const TwCurrencyInput = {
     size: '@',
     locale: '@'
   },
-  template: require('./currency-input.html')
+  template
 };
 
 export default TwCurrencyInput;

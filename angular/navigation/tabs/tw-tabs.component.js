@@ -1,4 +1,5 @@
 import TwTabsController from './tw-tabs.controller.js';
+import template from './tabs.html';
 
 const TwTabs = {
   bindings: {
@@ -7,7 +8,7 @@ const TwTabs = {
     onChange: '&'
   },
   controller: TwTabsController,
-  template: require('./tabs.html')
+  template
 };
 
 export default TwTabs;

@@ -1,4 +1,5 @@
 import TwFieldsetController from './tw-fieldset.controller.js';
+import template from './fieldset.html';
 
 const TwFieldset = {
   bindings: {
@@ -13,7 +14,7 @@ const TwFieldset = {
     isValid: '=?'
   },
   controller: TwFieldsetController,
-  template: require('./fieldset.html')
+  template
 };
 
 export default TwFieldset;

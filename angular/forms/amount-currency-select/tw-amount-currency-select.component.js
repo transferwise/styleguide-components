@@ -1,4 +1,5 @@
 import TwAmountCurrencySelectController from  './tw-amount-currency-select.controller.js';
+import template from './amount-currency-select.html';
 
 const TwAmountCurrencySelect = {
   require: 'ngModel',
@@ -32,7 +33,7 @@ const TwAmountCurrencySelect = {
     size: '@',
     locale: '@'
   },
-  template: require('./amount-currency-select.html')
+  template
 };
 
 export default TwAmountCurrencySelect;
