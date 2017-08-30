@@ -784,7 +784,9 @@
     var _dateController = __webpack_require__(29), _dateController2 = _interopRequireDefault(_dateController), _date = __webpack_require__(58), _date2 = _interopRequireDefault(_date), DateControl = {
         controller: _dateController2["default"],
         template: _date2["default"],
-        require: "ngModel",
+        require: {
+            $ngModel: "ngModel"
+        },
         bindings: {
             ngModel: "=",
             required: "@",
@@ -808,136 +810,179 @@
             "default": obj
         };
     }
-    function TwDateController($element, $log, $scope, TwDateService) {
-        function init() {
-            if ($ctrl.ngModel) applyDateModelIfValidOrThrowError(), initialisedWithDate = !0; else {
-                if ($ctrl.modelType) {
-                    if ($ctrl.modelType !== STRING_TYPE && $ctrl.modelType !== OBJECT_TYPE) throw new Error("Invalid modelType, should be " + STRING_TYPE + " or " + OBJECT_TYPE);
-                    $ctrl.dateModelType = $ctrl.modelType;
-                } else $ctrl.dateModelType = OBJECT_TYPE;
-                $ctrl.day = null, $ctrl.month = 0, $ctrl.year = null;
-            }
-            ngModel = $element.controller("ngModel"), ngModel.$validators.min = function(value) {
-                var limit = prepDateLimitForComparison($ctrl.ngMin, $ctrl.min), dateValue = prepDateValueForComparison(value);
-                return !limit || !dateValue || dateValue >= limit;
-            }, ngModel.$validators.max = function(value) {
-                var limit = prepDateLimitForComparison($ctrl.ngMax, $ctrl.max), dateValue = prepDateValueForComparison(value);
-                return !limit || !dateValue || dateValue <= limit;
-            }, setDateRequired(), setDateDisabled(), setDateLocale(), setMonths(), registerWatchers(), 
-            addBlurHandlers($element);
-        }
-        function addBlurHandlers($element) {
-            var dayTouched, yearTouched;
-            $element.find("input[name=day]").on("blur", function() {
-                dayTouched = !0, dayTouched && yearTouched && (ngModel.$setTouched(), $element.triggerHandler("blur"));
-            }), $element.find("input[name=year]").on("blur", function() {
-                yearTouched = !0, ngModel.$setTouched(), $element.triggerHandler("blur");
-            });
-        }
-        function prepDateLimitForComparison(ngLimit, attrLimit) {
-            var limit = ngLimit ? ngLimit : !!attrLimit && attrLimit;
-            return !!limit && (limit = "string" == typeof limit ? new Date(limit) : limit, !!validDateObject(limit) && limit);
-        }
-        function prepDateValueForComparison(dateValue) {
-            return "string" == typeof dateValue ? new Date(dateValue) : dateValue;
-        }
-        function applyDateModelIfValidOrThrowError() {
-            if (!validDate($ctrl.ngModel)) throw new Error("date model passed should either be instance of Date or valid ISO8601 string");
-            $ctrl.dateModelType = "string" == typeof $ctrl.ngModel ? STRING_TYPE : OBJECT_TYPE, 
-            $ctrl.explodeDateModel($ctrl.ngModel);
-        }
-        function setMonths() {
-            $ctrl.dateMonths = getMonthsBasedOnIntlSupportForLocale();
-        }
-        function setDateRequired() {
-            $ctrl.dateRequired = void 0 !== $ctrl.ngRequired ? $ctrl.ngRequired : void 0 !== $ctrl.required;
-        }
-        function setDateDisabled() {
-            $ctrl.dateDisabled = void 0 !== $ctrl.ngDisabled ? $ctrl.ngDisabled : void 0 !== $ctrl.disabled;
-        }
-        function setDateLocale() {
-            $ctrl.locale || ($ctrl.locale = DEFAULT_LOCALE_EN), $ctrl.monthBeforeDay = TwDateService.isMonthBeforeDay($ctrl.locale);
-        }
-        function explodeDateModel(date) {
-            var dateObj = "string" == typeof date ? new Date(date) : date;
-            $ctrl.day = dateObj.getUTCDate(), $ctrl.month = dateObj.getUTCMonth(), $ctrl.year = dateObj.getUTCFullYear();
-        }
-        function validDate(date) {
-            return validDateObject(date) || validDateString(date);
-        }
-        function validDateObject(dateObj) {
-            return "[object Date]" === Object.prototype.toString.call(dateObj) && !isNaN(dateObj.getTime());
-        }
-        function validDateString(dateString) {
-            return "string" == typeof dateString && validDateObject(new Date(dateString));
-        }
-        function registerWatchers() {
-            $scope.$watch("$ctrl.day", function(newValue, oldValue) {
-                newValue !== oldValue && initialisedWithDate && ngModel.$setDirty();
-            }), $scope.$watch("$ctrl.month", function(newValue, oldValue) {
-                newValue !== oldValue && ($ctrl.adjustLastDay(), ngModel.$setTouched(), initialisedWithDate && ngModel.$setDirty());
-            }), $scope.$watch("$ctrl.year", function(newValue, oldValue) {
-                newValue !== oldValue && initialisedWithDate && ngModel.$setDirty();
-            }), $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
-                newValue !== oldValue && validDate($ctrl.ngModel) && (ngModel.$setDirty(), $ctrl.explodeDateModel($ctrl.ngModel));
-            }), $scope.$watch("$ctrl.ngRequired", function(newValue, oldValue) {
-                newValue !== oldValue && setDateRequired();
-            }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
-                newValue !== oldValue && setDateDisabled();
-            }), $scope.$watch("$ctrl.locale", function(newValue, oldValue) {
-                newValue !== oldValue && (setDateLocale(), setMonths());
-            });
-        }
-        function getMonthsBasedOnIntlSupportForLocale() {
-            var monthNames = TwDateService.getMonthNamesForLocale($ctrl.locale);
-            return extendMonthsWithIds(monthNames);
-        }
-        function extendMonthsWithIds(monthNames) {
-            return monthNames.map(function(monthName, index) {
-                return {
-                    value: index,
-                    label: monthName
-                };
-            });
-        }
-        function isExplodedDatePatternCorrect() {
-            return isNumber($ctrl.year) && isNumber($ctrl.day) && (isNumber($ctrl.month) || isNumericString($ctrl.month));
-        }
-        function isNumber(value) {
-            return "number" == typeof value;
-        }
-        function isNumericString(value) {
-            return "string" == typeof value && !isNaN(Number($ctrl.month));
-        }
-        function combineDate() {
-            var date = TwDateService.getUTCDateFromParts(Number($ctrl.year), Number($ctrl.month), Number($ctrl.day));
-            return date;
-        }
-        function updateDateModelAndValidationClasses() {
-            if ($ctrl.adjustLastDay(), !isExplodedDatePatternCorrect()) return void ngModel.$setViewValue(null);
-            var dateObj = combineDate();
-            if ($ctrl.dateModelType === STRING_TYPE) {
-                var isoString = dateObj.toISOString(), dateString = isoString.substring(0, isoString.indexOf("T"));
-                ngModel.$setViewValue(dateString);
-            } else ngModel.$setViewValue(dateObj);
-        }
-        function adjustLastDay() {
-            var day = Number($ctrl.day), month = Number($ctrl.month), year = Number($ctrl.year), lastUTCDayForMonthAndYear = TwDateService.getLastDayOfMonth(year, month);
-            day > lastUTCDayForMonthAndYear && ($ctrl.day = parseInt(lastUTCDayForMonthAndYear, 10));
-        }
-        var ngModel, $ctrl = this, initialisedWithDate = !1;
-        $ctrl.updateDateModelAndValidationClasses = updateDateModelAndValidationClasses, 
-        $ctrl.explodeDateModel = explodeDateModel, $ctrl.combineDate = combineDate, $ctrl.adjustLastDay = adjustLastDay, 
-        $ctrl.validDate = validDate;
-        var DEFAULT_LOCALE_EN = "en", STRING_TYPE = "string", OBJECT_TYPE = "object";
-        init();
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+    }
+    function isNumber(value) {
+        return "number" == typeof value;
+    }
+    function isNumericString(value) {
+        return "string" == typeof value && !isNaN(Number(value));
+    }
+    function isExplodedDatePatternCorrect(year, month, day) {
+        return isNumber(year) && isNumber(day) && (isNumber(month) || isNumericString(month));
+    }
+    function validDate(date) {
+        return validDateObject(date) || validDateString(date);
+    }
+    function validDateObject(dateObj) {
+        return "[object Date]" === Object.prototype.toString.call(dateObj) && !isNaN(dateObj.getTime());
+    }
+    function validDateString(dateString) {
+        return "string" == typeof dateString && validDateObject(new Date(dateString));
+    }
+    function prepDateLimitForComparison(ngLimit, attrLimit) {
+        var limit = ngLimit ? ngLimit : !!attrLimit && attrLimit;
+        return !!limit && (limit = "string" == typeof limit ? new Date(limit) : limit, !!validDateObject(limit) && limit);
+    }
+    function prepDateValueForComparison(dateValue) {
+        return "string" == typeof dateValue ? new Date(dateValue) : dateValue;
+    }
+    function extendMonthsWithIds(monthNames) {
+        return monthNames.map(function(monthName, index) {
+            return {
+                value: index,
+                label: monthName
+            };
+        });
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _date = __webpack_require__(9);
-    _interopRequireDefault(_date);
-    TwDateController.$inject = [ "$element", "$log", "$scope", "TwDateService" ], exports["default"] = TwDateController;
+    var _createClass = function() {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || !1, descriptor.configurable = !0, 
+                "value" in descriptor && (descriptor.writable = !0), Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+        return function(Constructor, protoProps, staticProps) {
+            return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+            Constructor;
+        };
+    }(), _date = __webpack_require__(9), DateController = (_interopRequireDefault(_date), 
+    function() {
+        function DateController($element, $log, $scope, TwDateService) {
+            _classCallCheck(this, DateController);
+            var $ngModel = $element.controller("ngModel");
+            if (this.DateService = TwDateService, this.initialisedWithDate = !1, this.ngModel) this.applyDateModelIfValidOrThrowError(), 
+            this.initialisedWithDate = !0; else {
+                if (this.modelType) {
+                    if (this.modelType !== STRING_TYPE && this.modelType !== OBJECT_TYPE) throw new Error("Invalid modelType, should be " + STRING_TYPE + " or " + OBJECT_TYPE);
+                    this.dateModelType = this.modelType;
+                } else this.dateModelType = OBJECT_TYPE;
+                this.day = null, this.month = 0, this.year = null;
+            }
+            this.setDateRequired(), this.setDateDisabled(), this.setDateLocale(), this.setMonths(), 
+            this.addValidators($ngModel), this.addWatchers($scope, $ngModel), this.addBlurHandlers($element, $ngModel);
+        }
+        return _createClass(DateController, [ {
+            key: "addBlurHandlers",
+            value: function($element, $ngModel) {
+                var dayTouched, yearTouched;
+                $element.find("input[name=day]").on("blur", function() {
+                    dayTouched = !0, dayTouched && yearTouched && ($ngModel.$setTouched(), $element.triggerHandler("blur"));
+                }), $element.find("input[name=year]").on("blur", function() {
+                    yearTouched = !0, $ngModel.$setTouched(), $element.triggerHandler("blur");
+                });
+            }
+        }, {
+            key: "applyDateModelIfValidOrThrowError",
+            value: function() {
+                if (!validDate(this.ngModel)) throw new Error("date model passed should either be instance of Date or valid ISO8601 string");
+                this.dateModelType = "string" == typeof this.ngModel ? STRING_TYPE : OBJECT_TYPE, 
+                this.explodeDateModel(this.ngModel);
+            }
+        }, {
+            key: "setMonths",
+            value: function() {
+                this.dateMonths = this.getMonthsBasedOnIntlSupportForLocale();
+            }
+        }, {
+            key: "setDateRequired",
+            value: function() {
+                this.dateRequired = void 0 !== this.ngRequired ? this.ngRequired : void 0 !== this.required;
+            }
+        }, {
+            key: "setDateDisabled",
+            value: function() {
+                this.dateDisabled = void 0 !== this.ngDisabled ? this.ngDisabled : void 0 !== this.disabled;
+            }
+        }, {
+            key: "setDateLocale",
+            value: function() {
+                this.locale || (this.locale = DEFAULT_LOCALE_EN), this.monthBeforeDay = this.DateService.isMonthBeforeDay(this.locale);
+            }
+        }, {
+            key: "explodeDateModel",
+            value: function(date) {
+                var dateObj = "string" == typeof date ? new Date(date) : date;
+                this.day = dateObj.getUTCDate(), this.month = dateObj.getUTCMonth(), this.year = dateObj.getUTCFullYear();
+            }
+        }, {
+            key: "addValidators",
+            value: function($ngModel) {
+                var _this = this;
+                $ngModel.$validators.min = function(value) {
+                    var limit = prepDateLimitForComparison(_this.ngMin, _this.min), dateValue = prepDateValueForComparison(value);
+                    return !limit || !dateValue || dateValue >= limit;
+                }, $ngModel.$validators.max = function(value) {
+                    var limit = prepDateLimitForComparison(_this.ngMax, _this.max), dateValue = prepDateValueForComparison(value);
+                    return !limit || !dateValue || dateValue <= limit;
+                };
+            }
+        }, {
+            key: "addWatchers",
+            value: function($scope, $ngModel) {
+                var _this2 = this;
+                $scope.$watch("$ctrl.day", function(newValue, oldValue) {
+                    newValue !== oldValue && _this2.initialisedWithDate && $ngModel.$setDirty();
+                }), $scope.$watch("$ctrl.month", function(newValue, oldValue) {
+                    newValue !== oldValue && (_this2.adjustLastDay(), $ngModel.$setTouched(), _this2.initialisedWithDate && $ngModel.$setDirty());
+                }), $scope.$watch("$ctrl.year", function(newValue, oldValue) {
+                    newValue !== oldValue && _this2.initialisedWithDate && $ngModel.$setDirty();
+                }), $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+                    newValue !== oldValue && validDate(_this2.ngModel) && ($ngModel.$setDirty(), _this2.explodeDateModel(_this2.ngModel));
+                }), $scope.$watch("$ctrl.ngRequired", function(newValue, oldValue) {
+                    newValue !== oldValue && _this2.setDateRequired();
+                }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
+                    newValue !== oldValue && _this2.setDateDisabled();
+                }), $scope.$watch("$ctrl.locale", function(newValue, oldValue) {
+                    newValue !== oldValue && (_this2.setDateLocale(), _this2.setMonths());
+                });
+            }
+        }, {
+            key: "getMonthsBasedOnIntlSupportForLocale",
+            value: function() {
+                var monthNames = this.DateService.getMonthNamesForLocale(this.locale);
+                return extendMonthsWithIds(monthNames);
+            }
+        }, {
+            key: "combineDate",
+            value: function() {
+                var date = this.DateService.getUTCDateFromParts(Number(this.year), Number(this.month), Number(this.day));
+                return date;
+            }
+        }, {
+            key: "updateDateModelAndValidationClasses",
+            value: function() {
+                if (this.adjustLastDay(), !isExplodedDatePatternCorrect(this.year, this.month, this.day)) return void this.$ngModel.$setViewValue(null);
+                var dateObj = this.combineDate();
+                if (this.dateModelType === STRING_TYPE) {
+                    var isoString = dateObj.toISOString(), dateString = isoString.substring(0, isoString.indexOf("T"));
+                    this.$ngModel.$setViewValue(dateString);
+                } else this.$ngModel.$setViewValue(dateObj);
+            }
+        }, {
+            key: "adjustLastDay",
+            value: function() {
+                var day = Number(this.day), month = Number(this.month), year = Number(this.year), lastUTCDayForMonthAndYear = this.DateService.getLastDayOfMonth(year, month);
+                day > lastUTCDayForMonthAndYear && (this.day = parseInt(lastUTCDayForMonthAndYear, 10));
+            }
+        } ]), DateController;
+    }()), DEFAULT_LOCALE_EN = "en", STRING_TYPE = "string", OBJECT_TYPE = "object";
+    DateController.$inject = [ "$element", "$log", "$scope", "TwDateService" ], exports["default"] = DateController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
