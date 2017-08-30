@@ -1,13 +1,71 @@
 class CheckboxController {
   constructor($scope, $element) {
-    const ngModelController = $element.controller('ngModel');
+    const $ngModel = $element.controller('ngModel');
 
     this.$element = $element;
-
     this.checked = this.isChecked();
 
     this.addLabelHandler();
-    this.addWatchers($scope, $element, ngModelController);
+    this.addWatchers($scope, $element, $ngModel);
+  }
+
+  isChecked() {
+    return (this.ngTrueValue && this.ngTrueValue === this.ngModel) ||
+      !this.ngTrueValue && this.ngModel || false;
+  }
+
+  buttonClick($event) {
+    if (this.checked) {
+      this.checked = false;
+      this.$ngModel.$setViewValue(this.ngFalseValue || false);
+    } else {
+      this.checked = true;
+      this.$ngModel.$setViewValue(this.ngTrueValue || true);
+    }
+    this.$ngModel.$setTouched();
+
+    if ($event) {
+      // Prevent button click propgation from firing label
+      $event.stopPropagation();
+    }
+
+    validateCheckbox(
+      this.checked,
+      this.$element,
+      this.$ngModel,
+      this.ngRequired
+    );
+  }
+
+  buttonFocus() {
+    this.$element
+      .closest('.checkbox')
+      .find('label')
+      .addClass('focus');
+
+    this.$element.triggerHandler('focus');
+  }
+
+  buttonBlur() {
+    this.$element
+      .closest('.checkbox')
+      .find('label')
+      .removeClass('focus');
+
+    this.$element.triggerHandler('blur');
+    this.$ngModel.$setTouched();
+
+    validateCheckbox(
+      this.checked,
+      this.$element,
+      this.$ngModel,
+      this.ngRequired
+    );
+  }
+
+  // IE 'clicks' the hidden input when label is clicked
+  hiddenClick($event) {
+    $event.stopPropagation();
   }
 
   addLabelHandler() {
@@ -19,14 +77,14 @@ class CheckboxController {
     });
   }
 
-  addWatchers($scope, $element, ngModelController) {
+  addWatchers($scope, $element, $ngModel) {
     $scope.$watch('$ctrl.ngModel', (newValue, oldValue) => {
       if (newValue !== oldValue) {
-        ngModelController.$setDirty();
+        $ngModel.$setDirty();
         validateCheckbox(
           this.checked,
           $element,
-          ngModelController,
+          $ngModel,
           this.ngRequired
         );
         this.checked = this.isChecked();
@@ -52,70 +110,11 @@ class CheckboxController {
         validateCheckbox(
           this.checked,
           $element,
-          ngModelController,
+          $ngModel,
           this.ngRequired
         );
       }
     });
-  }
-
-  isChecked() {
-    return (this.ngTrueValue && this.ngTrueValue === this.ngModel) ||
-      !this.ngTrueValue && this.ngModel || false;
-  }
-
-  buttonClick($event) {
-    if (this.checked) {
-      this.checked = false;
-      this.ngModelController.$setViewValue(this.ngFalseValue || false);
-    } else {
-      this.checked = true;
-      this.ngModelController.$setViewValue(this.ngTrueValue || true);
-    }
-    this.ngModelController.$setTouched();
-
-    if ($event) {
-      // Prevent button click propgation from firing label
-      $event.stopPropagation();
-    }
-
-    validateCheckbox(
-      this.checked,
-      this.$element,
-      this.ngModelController,
-      this.ngRequired
-    );
-  }
-
-  buttonFocus() {
-    this.$element
-      .closest('.checkbox')
-      .find('label')
-      .addClass('focus');
-
-    this.$element.triggerHandler('focus');
-  }
-
-  buttonBlur() {
-    this.$element
-      .closest('.checkbox')
-      .find('label')
-      .removeClass('focus');
-
-    this.$element.triggerHandler('blur');
-    this.ngModelController.$setTouched();
-
-    validateCheckbox(
-      this.checked,
-      this.$element,
-      this.ngModelController,
-      this.ngRequired
-    );
-  }
-
-  // IE 'clicks' the hidden input when label is clicked
-  hiddenClick($event) {
-    $event.stopPropagation();
   }
 }
 

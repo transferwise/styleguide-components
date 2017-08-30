@@ -356,7 +356,7 @@
         controller: _checkboxController2["default"],
         template: _checkbox2["default"],
         require: {
-            ngModelController: "ngModel"
+            $ngModel: "ngModel"
         },
         bindings: {
             name: "@",
@@ -398,32 +398,11 @@
     }(), CheckboxController = function() {
         function CheckboxController($scope, $element) {
             _classCallCheck(this, CheckboxController);
-            var ngModelController = $element.controller("ngModel");
+            var $ngModel = $element.controller("ngModel");
             this.$element = $element, this.checked = this.isChecked(), this.addLabelHandler(), 
-            this.addWatchers($scope, $element, ngModelController);
+            this.addWatchers($scope, $element, $ngModel);
         }
         return _createClass(CheckboxController, [ {
-            key: "addLabelHandler",
-            value: function() {
-                var _this = this;
-                this.$element.closest("label").on("click", function(event) {
-                    _this.$element.find("button").trigger("click"), event.preventDefault(), event.stopPropagation();
-                });
-            }
-        }, {
-            key: "addWatchers",
-            value: function($scope, $element, ngModelController) {
-                var _this2 = this;
-                $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
-                    newValue !== oldValue && (ngModelController.$setDirty(), validateCheckbox(_this2.checked, $element, ngModelController, _this2.ngRequired), 
-                    _this2.checked = _this2.isChecked());
-                }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
-                    newValue && !oldValue ? $element.closest(".checkbox").addClass("disabled").attr("disabled", !0) : !newValue && oldValue && $element.closest(".checkbox").removeClass("disabled").removeAttr("disabled");
-                }), $scope.$watch("$ctrl.ngRequired", function(newValue, oldValue) {
-                    newValue !== oldValue && validateCheckbox(_this2.checked, $element, ngModelController, _this2.ngRequired);
-                });
-            }
-        }, {
             key: "isChecked",
             value: function() {
                 return this.ngTrueValue && this.ngTrueValue === this.ngModel || !this.ngTrueValue && this.ngModel || !1;
@@ -431,9 +410,9 @@
         }, {
             key: "buttonClick",
             value: function($event) {
-                this.checked ? (this.checked = !1, this.ngModelController.$setViewValue(this.ngFalseValue || !1)) : (this.checked = !0, 
-                this.ngModelController.$setViewValue(this.ngTrueValue || !0)), this.ngModelController.$setTouched(), 
-                $event && $event.stopPropagation(), validateCheckbox(this.checked, this.$element, this.ngModelController, this.ngRequired);
+                this.checked ? (this.checked = !1, this.$ngModel.$setViewValue(this.ngFalseValue || !1)) : (this.checked = !0, 
+                this.$ngModel.$setViewValue(this.ngTrueValue || !0)), this.$ngModel.$setTouched(), 
+                $event && $event.stopPropagation(), validateCheckbox(this.checked, this.$element, this.$ngModel, this.ngRequired);
             }
         }, {
             key: "buttonFocus",
@@ -444,12 +423,33 @@
             key: "buttonBlur",
             value: function() {
                 this.$element.closest(".checkbox").find("label").removeClass("focus"), this.$element.triggerHandler("blur"), 
-                this.ngModelController.$setTouched(), validateCheckbox(this.checked, this.$element, this.ngModelController, this.ngRequired);
+                this.$ngModel.$setTouched(), validateCheckbox(this.checked, this.$element, this.$ngModel, this.ngRequired);
             }
         }, {
             key: "hiddenClick",
             value: function($event) {
                 $event.stopPropagation();
+            }
+        }, {
+            key: "addLabelHandler",
+            value: function() {
+                var _this = this;
+                this.$element.closest("label").on("click", function(event) {
+                    _this.$element.find("button").trigger("click"), event.preventDefault(), event.stopPropagation();
+                });
+            }
+        }, {
+            key: "addWatchers",
+            value: function($scope, $element, $ngModel) {
+                var _this2 = this;
+                $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+                    newValue !== oldValue && ($ngModel.$setDirty(), validateCheckbox(_this2.checked, $element, $ngModel, _this2.ngRequired), 
+                    _this2.checked = _this2.isChecked());
+                }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
+                    newValue && !oldValue ? $element.closest(".checkbox").addClass("disabled").attr("disabled", !0) : !newValue && oldValue && $element.closest(".checkbox").removeClass("disabled").removeAttr("disabled");
+                }), $scope.$watch("$ctrl.ngRequired", function(newValue, oldValue) {
+                    newValue !== oldValue && validateCheckbox(_this2.checked, $element, $ngModel, _this2.ngRequired);
+                });
             }
         } ]), CheckboxController;
     }();
@@ -1083,7 +1083,9 @@
     var _radioController = __webpack_require__(36), _radioController2 = _interopRequireDefault(_radioController), _radio = __webpack_require__(61), _radio2 = _interopRequireDefault(_radio), Radio = {
         controller: _radioController2["default"],
         template: _radio2["default"],
-        require: "ngModel",
+        require: {
+            $ngModel: "ngModel"
+        },
         bindings: {
             name: "@",
             value: "@",
@@ -1097,29 +1099,70 @@
     exports["default"] = Radio;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwRadioController($scope, $element) {
-        var $ctrl = this, $ngModel = $element.controller("ngModel"), radioSelector = ".radio", labelSelector = "label";
-        $ctrl.isChecked = function() {
-            return $ctrl.ngValue && $ctrl.ngModel === $ctrl.ngValue || $ctrl.value === $ctrl.ngModel;
-        }, $ctrl.checked = $ctrl.isChecked(), $ctrl.buttonClick = function($event) {
-            $ctrl.ngDisabled || ($ctrl.checked = !0, $ngModel.$setViewValue($ctrl.ngValue || $ctrl.value));
-        }, $ctrl.buttonFocus = function() {
-            $element.closest(labelSelector).addClass("focus"), $element.triggerHandler("focus");
-        }, $ctrl.buttonBlur = function() {
-            $element.closest(labelSelector).removeClass("focus"), $element.triggerHandler("blur");
-        }, $ctrl.hiddenInputChange = function() {
-            $ctrl.ngChange && $ctrl.ngChange();
-        }, $element.on("blur", function(event) {
-            $ngModel.$setTouched();
-        }), $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
-            newValue !== oldValue && $ngModel.$setDirty(), $ctrl.checked = $ctrl.isChecked();
-        }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
-            newValue && !oldValue ? $element.closest(radioSelector).addClass("disabled") : !newValue && oldValue && $element.closest(radioSelector).removeClass("disabled");
-        });
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), TwRadioController.$inject = [ "$scope", "$element" ], exports["default"] = TwRadioController;
+    });
+    var _createClass = function() {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || !1, descriptor.configurable = !0, 
+                "value" in descriptor && (descriptor.writable = !0), Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+        return function(Constructor, protoProps, staticProps) {
+            return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+            Constructor;
+        };
+    }(), RadioController = function() {
+        function RadioController($scope, $element) {
+            _classCallCheck(this, RadioController);
+            var $ngModel = $element.controller("ngModel");
+            this.$element = $element, this.checked = this.isChecked(), $element.on("blur", function(event) {
+                $ngModel.$setTouched();
+            }), this.addWatchers($scope, $element, $ngModel);
+        }
+        return _createClass(RadioController, [ {
+            key: "isChecked",
+            value: function() {
+                return this.ngValue && this.ngModel === this.ngValue || this.value === this.ngModel;
+            }
+        }, {
+            key: "buttonClick",
+            value: function($event) {
+                this.ngDisabled || (this.checked = !0, this.$ngModel.$setViewValue(this.ngValue || this.value));
+            }
+        }, {
+            key: "buttonFocus",
+            value: function() {
+                this.$element.closest("label").addClass("focus"), this.$element.triggerHandler("focus");
+            }
+        }, {
+            key: "buttonBlur",
+            value: function() {
+                this.$element.closest("label").removeClass("focus"), this.$element.triggerHandler("blur");
+            }
+        }, {
+            key: "hiddenInputChange",
+            value: function() {
+                this.ngChange && this.ngChange();
+            }
+        }, {
+            key: "addWatchers",
+            value: function($scope, $element, $ngModel) {
+                var _this = this;
+                $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+                    newValue !== oldValue && _this.$ngModel.$setDirty(), _this.checked = _this.isChecked();
+                }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
+                    newValue && !oldValue ? _this.$element.closest(".radio").addClass("disabled").attr("disabled", !0) : !newValue && oldValue && _this.$element.closest(".radio").removeClass("disabled").removeAttr("disabled");
+                });
+            }
+        } ]), RadioController;
+    }();
+    RadioController.$inject = [ "$scope", "$element" ], exports["default"] = RadioController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {

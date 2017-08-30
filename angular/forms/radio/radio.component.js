@@ -4,7 +4,9 @@ import template from './radio.html';
 const Radio = {
   controller,
   template,
-  require: 'ngModel',
+  require: {
+    $ngModel: 'ngModel'
+  },
   bindings: {
     name: "@",
     value: "@",

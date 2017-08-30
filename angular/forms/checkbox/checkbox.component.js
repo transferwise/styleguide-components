@@ -6,7 +6,7 @@ const Checkbox = {
   controller,
   template,
   require: {
-    ngModelController: 'ngModel'
+    $ngModel: 'ngModel'
   },
   bindings: {
     name: "@",
