@@ -8,5 +8,4 @@ export default angular.module('tw.styleguide.validation', [
   FormValidation,
   ControlValidation,
   AsyncValidation
-
 ]).name;

@@ -1,8 +1,5 @@
 import angular from 'angular';
 
-import DateService          from '../services/date/';
-import CurrencyService      from '../services/currency/';
-
 import Checkbox             from './checkbox/';
 import Radio                from './radio/';
 import Select               from './select/';
@@ -20,9 +17,6 @@ import Focusable            from './focusable/';
 import UploadDroppable      from './upload-droppable/';
 
 export default angular.module('tw.styleguide.forms', [
-  DateService,
-  CurrencyService,
-
   Checkbox,
   Radio,
   Select,
