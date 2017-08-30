@@ -1,0 +1,36 @@
+import TwProcessController from './tw-process.controller.js';
+
+const TwProcess = {
+  bindings: {
+    state: '<',
+    size: '@',
+    onStop: '&',
+    promise: '<'
+  },
+  controller: TwProcessController,
+  template:
+  "<span class='process' \
+    ng-class='{ \
+      \"process-success\": $ctrl.processing === 1, \
+      \"process-danger\": $ctrl.processing === -1, \
+      \"process-stopped\": $ctrl.processing === 0, \
+      \"process-xs\": $ctrl.size === \"xs\", \
+      \"process-sm\": $ctrl.size === \"sm\", \
+      \"process-md\": $ctrl.size === \"md\", \
+      \"process-lg\": $ctrl.size === \"lg\", \
+      \"process-xl\": $ctrl.size === \"xl\" \
+    }'> \
+    <span class='process-icon-container'> \
+      <span class='process-icon-horizontal'></span> \
+      <span class='process-icon-vertical'></span> \
+    </span> \
+    <svg version='1.1' \
+      xmlns='http://www.w3.org/2000/svg' \
+      xml:space='preserve'> \
+      <circle class='process-circle' cx='50%' cy='50%' ng-attr-r='{{$ctrl.radius}}' \
+        fill-opacity='0.0' /> \
+    </svg> \
+  </span>"
+};
+
+export default TwProcess;

@@ -1,11 +1,11 @@
 import angular from 'angular';
 
-import FormValidation from './tw-form-validation/tw-form-validation.directive.js';
-import Validation from './tw-validation/tw-validation.directive.js';
-import DynamicAsyncValidator from './tw-dynamic-async-validator/tw-dynamic-async-validator.directive.js';
+import FormValidation from './form-validation/';
+import ControlValidation from './control-validation/';
+import AsyncValidation from './async-validation/';
 
-export default angular.module('tw.form-validation', [
+export default angular.module('tw.styleguide.validation', [
   FormValidation,
-  Validation,
-  DynamicAsyncValidator
+  ControlValidation,
+  AsyncValidation
 ]).name;
