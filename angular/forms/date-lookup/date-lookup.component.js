@@ -4,7 +4,9 @@ import template from './date-lookup.html';
 const DateLookup = {
   controller,
   template,
-  require: 'ngModel',
+  require: {
+    $ngModel: 'ngModel'
+  },
   bindings: {
     ngModel: '=',
     ngChange: '&',

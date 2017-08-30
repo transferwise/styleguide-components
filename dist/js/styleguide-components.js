@@ -884,7 +884,9 @@
     var _dateLookupController = __webpack_require__(34), _dateLookupController2 = _interopRequireDefault(_dateLookupController), _dateLookup = __webpack_require__(87), _dateLookup2 = _interopRequireDefault(_dateLookup), DateLookup = {
         controller: _dateLookupController2["default"],
         template: _dateLookup2["default"],
-        require: "ngModel",
+        require: {
+            $ngModel: "ngModel"
+        },
         bindings: {
             ngModel: "=",
             ngChange: "&",
@@ -907,165 +909,271 @@
             "default": obj
         };
     }
-    function TwDateLookupController($element, $scope, $timeout, TwDateService) {
-        function init() {
-            $ctrl.yearOffset = 0, ngModelCtrl = $element.controller("ngModel"), addValidators(), 
-            addWatchers(), ngModelCtrl.$formatters.push(function(newDate) {
-                return updateCalendarView(newDate), newDate;
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    });
+    var _createClass = function() {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || !1, descriptor.configurable = !0, 
+                "value" in descriptor && (descriptor.writable = !0), Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+        return function(Constructor, protoProps, staticProps) {
+            return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+            Constructor;
+        };
+    }(), _date = __webpack_require__(3), TwDateLookupController = (_interopRequireDefault(_date), 
+    function() {
+        function TwDateLookupController($element, $scope, $timeout, TwDateService) {
+            var _this = this;
+            _classCallCheck(this, TwDateLookupController);
+            var $ngModel = $element.controller("ngModel");
+            this.DateService = TwDateService, this.$element = $element, this.$timeout = $timeout, 
+            this.yearOffset = 0, this.addValidators($ngModel, $element), this.addWatchers($scope, $ngModel), 
+            $ngModel.$formatters.push(function(newDate) {
+                return _this.updateCalendarView(newDate), newDate;
             }), $element.find(".btn, .dropdown-menu").on("focusout", function() {
                 $timeout(function() {
                     0 !== $element.find(".btn:focus").length || $element.find(".btn-group").hasClass("open") || ($element.parents(".form-group").removeClass("focus"), 
                     $element.triggerHandler("blur"));
                 }, 150);
-            }), setLocale($ctrl.locale), updateMinDateView($ctrl.ngMin), updateMaxDateView($ctrl.ngMax);
+            }), this.setLocale(this.locale), this.updateMinDateView(this.ngMin), this.updateMaxDateView(this.ngMax);
         }
-        function resetFocus() {
-            $element.find("button").focus();
-        }
-        function addValidators() {
-            ngModelCtrl.$validators.min = function(modelValue, viewValue) {
-                var value = modelValue || viewValue;
-                return !(value && value < $ctrl.ngMin) || ($element.parents(".form-group").addClass("has-error"), 
-                !1);
-            }, ngModelCtrl.$validators.max = function(modelValue, viewValue) {
-                var value = modelValue || viewValue;
-                return !(value && value > $ctrl.ngMax) || ($element.parents(".form-group").addClass("has-error"), 
-                !1);
-            };
-        }
-        function addWatchers() {
-            $scope.$watch("$ctrl.locale", function(newValue, oldValue) {
-                newValue && newValue !== oldValue && setLocale(newValue);
-            }), $scope.$watch("$ctrl.ngRequired", function(newValue, oldValue) {
-                ngModelCtrl.$validate();
-            }), $scope.$watch("$ctrl.ngMin", function(newValue, oldValue) {
-                newValue !== oldValue && (updateMinDateView($ctrl.ngMin), ngModelCtrl.$validate());
-            }), $scope.$watch("$ctrl.shortDate", function(newValue, oldValue) {
-                updateSelectedDatePresentation();
-            }), $scope.$watch("$ctrl.ngMax", function(newValue, oldValue) {
-                newValue !== oldValue && (updateMaxDateView($ctrl.ngMax), ngModelCtrl.$validate());
-            }), $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
-                newValue && ($ctrl.selectedDate = TwDateService.getUTCDate(newValue), $ctrl.selectedMonth = TwDateService.getUTCMonth(newValue), 
-                $ctrl.selectedYear = TwDateService.getUTCFullYear(newValue), updateSelectedDatePresentation());
-            });
-        }
-        function updateCalendarView(viewDate) {
-            viewDate && viewDate.getUTCDate || (viewDate = TwDateService.getLocaleToday()), 
-            $ctrl.day = TwDateService.getUTCDate(viewDate), $ctrl.month = TwDateService.getUTCMonth(viewDate), 
-            $ctrl.year = TwDateService.getUTCFullYear(viewDate), $ctrl.weeks = getTableStructure(), 
-            updateCalendarDatePresentation();
-        }
-        function getTableStructure() {
-            var firstDayOfMonth = TwDateService.getWeekday($ctrl.year, $ctrl.month, 1);
-            0 === firstDayOfMonth && (firstDayOfMonth = 7);
-            for (var daysInMonth = TwDateService.getLastDayOfMonth($ctrl.year, $ctrl.month), week = [], weeks = [], i = 1; i < firstDayOfMonth; i++) week.push(!1);
-            for (i = 1; i <= daysInMonth; i++) week.push(i), (firstDayOfMonth + i - 1) % 7 === 0 && (weeks.push(week), 
-            week = []);
-            if (week.length) {
-                for (i = week.length; i < 7; i++) week.push(!1);
-                weeks.push(week);
+        return _createClass(TwDateLookupController, [ {
+            key: "openLookup",
+            value: function() {
+                var _this2 = this;
+                this.$ngModel.$setTouched(), this.mode = "day";
+                var viewDate = this.ngModel;
+                this.ngMin && this.ngModel < this.ngMin && (viewDate = this.ngMin), this.ngMax && this.ngModel > this.ngMax && (viewDate = this.ngMax), 
+                this.updateCalendarView(viewDate), this.$timeout(function() {
+                    _this2.$element.find(".tw-date-lookup-month-label").focus();
+                });
             }
-            return weeks;
-        }
-        function setLocale(locale) {
-            locale || ($ctrl.locale = "en-GB"), $ctrl.monthBeforeDay = TwDateService.isMonthBeforeDay($ctrl.locale), 
-            $ctrl.monthsOfYear = TwDateService.getMonthNamesForLocale($ctrl.locale, "long"), 
-            $ctrl.shortMonthsOfYear = TwDateService.getMonthNamesForLocale($ctrl.locale, "short"), 
-            $ctrl.daysOfWeek = TwDateService.getDayNamesForLocale($ctrl.locale, "short"), $ctrl.shortDaysOfWeek = TwDateService.getDayNamesForLocale($ctrl.locale, "narrow"), 
-            updateSelectedDatePresentation();
-        }
-        function updateSelectedDatePresentation() {
-            var monthsOfYear = $ctrl.shortDate ? $ctrl.shortMonthsOfYear : $ctrl.monthsOfYear;
-            $ctrl.selectedDateFormatted = TwDateService.getYearMonthDatePresentation($ctrl.selectedYear, monthsOfYear[$ctrl.selectedMonth], $ctrl.selectedDate, $ctrl.locale);
-        }
-        function updateCalendarDatePresentation() {
-            $ctrl.yearMonthFormatted = TwDateService.getYearAndMonthPresentation($ctrl.year, $ctrl.monthsOfYear[$ctrl.month], $ctrl.locale);
-        }
-        function moveDateToWithinRange(date, min, max) {
-            return date || (date = TwDateService.getLocaleToday()), min && min > date ? min : max && max < date ? max : date;
-        }
-        function setModel(modelDate) {
-            modelDate = moveDateToWithinRange(modelDate, $ctrl.ngMin, $ctrl.ngMax), ngModelCtrl.$setViewValue(modelDate), 
-            ngModelCtrl.$setDirty(), updateCalendarView(modelDate);
-        }
-        function updateMinDateView(minDate) {
-            minDate && minDate.getUTCDate ? (minDay = TwDateService.getUTCDate(minDate), minMonth = TwDateService.getUTCMonth(minDate), 
-            minYear = TwDateService.getUTCFullYear(minDate)) : (minDay = null, minMonth = null, 
-            minYear = null);
-        }
-        function updateMaxDateView(maxDate) {
-            maxDate && maxDate.getUTCDate ? (maxDay = TwDateService.getUTCDate(maxDate), maxMonth = TwDateService.getUTCMonth(maxDate), 
-            maxYear = TwDateService.getUTCFullYear(maxDate)) : (maxDay = null, maxMonth = null, 
-            maxYear = null);
-        }
-        function findActiveLink() {
-            $timeout(function() {
-                $element.find("a.active").focus();
-            });
-        }
-        function adjustDate(mode, date, days, months, years) {
-            var newDate = date;
-            "day" === mode && (newDate = TwDateService.addDays(date, days)), "month" === mode && (newDate = TwDateService.addMonths(date, months)), 
-            "year" === mode && (newDate = TwDateService.addYears(date, years)), setModel(newDate);
-        }
-        var ngModelCtrl, minDay, minMonth, minYear, maxDay, maxMonth, maxYear, $ctrl = this;
-        $ctrl.openLookup = function() {
-            ngModelCtrl.$setTouched(), $ctrl.mode = "day";
-            var viewDate = $ctrl.ngModel;
-            $ctrl.ngMin && $ctrl.ngModel < $ctrl.ngMin && (viewDate = $ctrl.ngMin), $ctrl.ngMax && $ctrl.ngModel > $ctrl.ngMax && (viewDate = $ctrl.ngMax), 
-            updateCalendarView(viewDate), $timeout(function() {
-                $element.find(".tw-date-lookup-month-label").focus();
-            });
-        }, $ctrl.selectDay = function($event, day, month, year) {
-            return $ctrl.isDayDisabled(day, month, year) ? void $event.stopPropagation() : ($ctrl.day = day, 
-            setModel(TwDateService.getUTCDateFromParts(year, month, day)), resetFocus(), void updateCalendarDatePresentation());
-        }, $ctrl.selectMonth = function($event, month, year) {
-            $event.stopPropagation(), $ctrl.isMonthDisabled(month, year) || ($ctrl.month = month, 
-            $ctrl.weeks = getTableStructure(), $ctrl.mode = "day", updateCalendarDatePresentation());
-        }, $ctrl.selectYear = function($event, year) {
-            $event.stopPropagation(), $ctrl.isYearDisabled(year) || ($ctrl.year = year, $ctrl.mode = "month", 
-            updateCalendarDatePresentation());
-        }, $ctrl.monthBefore = function($event) {
-            $event.stopPropagation(), 0 === $ctrl.month ? ($ctrl.year--, $ctrl.month = 11) : $ctrl.month--, 
-            $ctrl.weeks = getTableStructure(), updateCalendarDatePresentation();
-        }, $ctrl.yearBefore = function($event) {
-            $event.stopPropagation(), $ctrl.year--, $ctrl.weeks = getTableStructure(), updateCalendarDatePresentation();
-        }, $ctrl.monthAfter = function($event) {
-            $event.stopPropagation(), 11 === $ctrl.month ? ($ctrl.year++, $ctrl.month = 0) : $ctrl.month++, 
-            $ctrl.weeks = getTableStructure(), updateCalendarDatePresentation();
-        }, $ctrl.yearAfter = function($event) {
-            $event.stopPropagation(), $ctrl.year++, $ctrl.weeks = getTableStructure(), updateCalendarDatePresentation();
-        }, $ctrl.isCurrentlySelected = function(day, month, year) {
-            return day === $ctrl.selectedDate && month === $ctrl.selectedMonth && year === $ctrl.selectedYear;
-        }, $ctrl.isDayDisabled = function(day, month, year) {
-            return $ctrl.isYearDisabled(year) || $ctrl.isMonthDisabled(month, year) || year === minYear && month === minMonth && day < minDay || year === maxYear && month === maxMonth && day > maxDay;
-        }, $ctrl.isMonthDisabled = function(month, year) {
-            return $ctrl.isYearDisabled(year) || year === minYear && month < minMonth || year === maxYear && month > maxMonth;
-        }, $ctrl.isYearDisabled = function(year) {
-            return minYear && year < minYear || maxYear && year > maxYear;
-        }, $ctrl.switchToMonths = function($event) {
-            resetFocus($event.target), findActiveLink(), $event.stopPropagation(), $ctrl.mode = "month";
-        }, $ctrl.switchToYears = function($event) {
-            resetFocus($event.target), findActiveLink(), $event.stopPropagation(), $ctrl.mode = "year";
-        }, $ctrl.setYearOffset = function($event, addtionalOffset) {
-            $event.stopPropagation(), $ctrl.yearOffset += addtionalOffset;
-        }, $ctrl.buttonFocus = function() {
-            $element.parents(".form-group").addClass("focus"), $element.triggerHandler("focus");
-        }, $ctrl.blur = function() {
-            $element.triggerHandler("focus");
-        }, $ctrl.keyHandler = function(event) {
-            if (!$ctrl.ngModel) return void setModel(TwDateService.getUTCDateFromParts($ctrl.year, $ctrl.month, $ctrl.day));
-            var characterCode = event.which || event.charCode || event.keyCode;
-            return 37 === characterCode ? adjustDate($ctrl.mode, $ctrl.ngModel, -1, -1, -1) : 38 === characterCode ? (event.preventDefault(), 
-            adjustDate($ctrl.mode, $ctrl.ngModel, -7, -4, -4)) : 39 === characterCode ? adjustDate($ctrl.mode, $ctrl.ngModel, 1, 1, 1) : 40 === characterCode && (event.preventDefault(), 
-            adjustDate($ctrl.mode, $ctrl.ngModel, 7, 4, 4)), findActiveLink(), !0;
-        }, init();
-    }
-    Object.defineProperty(exports, "__esModule", {
-        value: !0
-    });
-    var _date = __webpack_require__(3);
-    _interopRequireDefault(_date);
+        }, {
+            key: "selectDay",
+            value: function($event, day, month, year) {
+                return this.isDayDisabled(day, month, year) ? void $event.stopPropagation() : (this.day = day, 
+                this.setModel(this.DateService.getUTCDateFromParts(year, month, day)), this.resetFocus(this.$element), 
+                void this.updateCalendarDatePresentation());
+            }
+        }, {
+            key: "selectMonth",
+            value: function($event, month, year) {
+                $event.stopPropagation(), this.isMonthDisabled(month, year) || (this.month = month, 
+                this.weeks = this.getTableStructure(), this.mode = "day", this.updateCalendarDatePresentation());
+            }
+        }, {
+            key: "selectYear",
+            value: function($event, year) {
+                $event.stopPropagation(), this.isYearDisabled(year) || (this.year = year, this.mode = "month", 
+                this.updateCalendarDatePresentation());
+            }
+        }, {
+            key: "monthBefore",
+            value: function($event) {
+                $event.stopPropagation(), 0 === this.month ? (this.year--, this.month = 11) : this.month--, 
+                this.weeks = this.getTableStructure(), this.updateCalendarDatePresentation();
+            }
+        }, {
+            key: "yearBefore",
+            value: function($event) {
+                $event.stopPropagation(), this.year--, this.weeks = this.getTableStructure(), this.updateCalendarDatePresentation();
+            }
+        }, {
+            key: "monthAfter",
+            value: function($event) {
+                $event.stopPropagation(), 11 === this.month ? (this.year++, this.month = 0) : this.month++, 
+                this.weeks = this.getTableStructure(), this.updateCalendarDatePresentation();
+            }
+        }, {
+            key: "yearAfter",
+            value: function($event) {
+                $event.stopPropagation(), this.year++, this.weeks = this.getTableStructure(), this.updateCalendarDatePresentation();
+            }
+        }, {
+            key: "isCurrentlySelected",
+            value: function(day, month, year) {
+                return day === this.selectedDate && month === this.selectedMonth && year === this.selectedYear;
+            }
+        }, {
+            key: "isDayDisabled",
+            value: function(day, month, year) {
+                return this.isYearDisabled(year) || this.isMonthDisabled(month, year) || year === this.minYear && month === this.minMonth && day < this.minDay || year === this.maxYear && month === this.maxMonth && day > this.maxDay;
+            }
+        }, {
+            key: "isMonthDisabled",
+            value: function(month, year) {
+                return this.isYearDisabled(year) || year === this.minYear && month < this.minMonth || year === this.maxYear && month > this.maxMonth;
+            }
+        }, {
+            key: "isYearDisabled",
+            value: function(year) {
+                return this.minYear && year < this.minYear || this.maxYear && year > this.maxYear;
+            }
+        }, {
+            key: "switchToMonths",
+            value: function($event) {
+                this.resetFocus($($event.target)), this.findActiveLink(), $event.stopPropagation(), 
+                this.mode = "month";
+            }
+        }, {
+            key: "switchToYears",
+            value: function($event) {
+                this.resetFocus($($event.target)), this.findActiveLink(), $event.stopPropagation(), 
+                this.mode = "year";
+            }
+        }, {
+            key: "setYearOffset",
+            value: function($event, addtionalOffset) {
+                $event.stopPropagation(), this.yearOffset += addtionalOffset;
+            }
+        }, {
+            key: "buttonFocus",
+            value: function() {
+                this.$element.parents(".form-group").addClass("focus"), this.$element.triggerHandler("focus");
+            }
+        }, {
+            key: "blur",
+            value: function() {
+                this.$element.triggerHandler("focus");
+            }
+        }, {
+            key: "addValidators",
+            value: function($ngModel, $element) {
+                var _this3 = this;
+                $ngModel.$validators.min = function(modelValue, viewValue) {
+                    var value = modelValue || viewValue;
+                    return !(value && value < _this3.ngMin) || ($element.parents(".form-group").addClass("has-error"), 
+                    !1);
+                }, $ngModel.$validators.max = function(modelValue, viewValue) {
+                    var value = modelValue || viewValue;
+                    return !(value && value > _this3.ngMax) || ($element.parents(".form-group").addClass("has-error"), 
+                    !1);
+                };
+            }
+        }, {
+            key: "addWatchers",
+            value: function($scope, $ngModel) {
+                var _this4 = this;
+                $scope.$watch("$ctrl.locale", function(newValue, oldValue) {
+                    newValue && newValue !== oldValue && _this4.setLocale(newValue);
+                }), $scope.$watch("$ctrl.ngRequired", function(newValue, oldValue) {
+                    $ngModel.$validate();
+                }), $scope.$watch("$ctrl.ngMin", function(newValue, oldValue) {
+                    newValue !== oldValue && (_this4.updateMinDateView(_this4.ngMin), $ngModel.$validate());
+                }), $scope.$watch("$ctrl.shortDate", function(newValue, oldValue) {
+                    _this4.updateSelectedDatePresentation();
+                }), $scope.$watch("$ctrl.ngMax", function(newValue, oldValue) {
+                    newValue !== oldValue && (_this4.updateMaxDateView(_this4.ngMax), $ngModel.$validate());
+                }), $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+                    newValue && (_this4.selectedDate = _this4.DateService.getUTCDate(newValue), _this4.selectedMonth = _this4.DateService.getUTCMonth(newValue), 
+                    _this4.selectedYear = _this4.DateService.getUTCFullYear(newValue), _this4.updateSelectedDatePresentation());
+                });
+            }
+        }, {
+            key: "updateCalendarView",
+            value: function(viewDate) {
+                viewDate && viewDate.getUTCDate || (viewDate = this.DateService.getLocaleToday()), 
+                this.day = this.DateService.getUTCDate(viewDate), this.month = this.DateService.getUTCMonth(viewDate), 
+                this.year = this.DateService.getUTCFullYear(viewDate), this.weeks = this.getTableStructure(), 
+                this.updateCalendarDatePresentation();
+            }
+        }, {
+            key: "getTableStructure",
+            value: function() {
+                var firstDayOfMonth = this.DateService.getWeekday(this.year, this.month, 1);
+                0 === firstDayOfMonth && (firstDayOfMonth = 7);
+                for (var daysInMonth = this.DateService.getLastDayOfMonth(this.year, this.month), week = [], weeks = [], i = 1; i < firstDayOfMonth; i++) week.push(!1);
+                for (i = 1; i <= daysInMonth; i++) week.push(i), (firstDayOfMonth + i - 1) % 7 === 0 && (weeks.push(week), 
+                week = []);
+                if (week.length) {
+                    for (i = week.length; i < 7; i++) week.push(!1);
+                    weeks.push(week);
+                }
+                return weeks;
+            }
+        }, {
+            key: "setLocale",
+            value: function(locale) {
+                locale || (this.locale = "en-GB"), this.monthBeforeDay = this.DateService.isMonthBeforeDay(this.locale), 
+                this.monthsOfYear = this.DateService.getMonthNamesForLocale(this.locale, "long"), 
+                this.shortMonthsOfYear = this.DateService.getMonthNamesForLocale(this.locale, "short"), 
+                this.daysOfWeek = this.DateService.getDayNamesForLocale(this.locale, "short"), this.shortDaysOfWeek = this.DateService.getDayNamesForLocale(this.locale, "narrow"), 
+                this.updateSelectedDatePresentation();
+            }
+        }, {
+            key: "updateSelectedDatePresentation",
+            value: function() {
+                var monthsOfYear = this.shortDate ? this.shortMonthsOfYear : this.monthsOfYear;
+                this.selectedDateFormatted = this.DateService.getYearMonthDatePresentation(this.selectedYear, monthsOfYear[this.selectedMonth], this.selectedDate, this.locale);
+            }
+        }, {
+            key: "updateCalendarDatePresentation",
+            value: function() {
+                this.yearMonthFormatted = this.DateService.getYearAndMonthPresentation(this.year, this.monthsOfYear[this.month], this.locale);
+            }
+        }, {
+            key: "moveDateToWithinRange",
+            value: function(date, min, max) {
+                return date || (date = this.DateService.getLocaleToday()), min && min > date ? min : max && max < date ? max : date;
+            }
+        }, {
+            key: "setModel",
+            value: function(modelDate) {
+                modelDate = this.moveDateToWithinRange(modelDate, this.ngMin, this.ngMax), this.$ngModel.$setViewValue(modelDate), 
+                this.$ngModel.$setDirty(), this.updateCalendarView(modelDate);
+            }
+        }, {
+            key: "updateMinDateView",
+            value: function(minDate) {
+                minDate && minDate.getUTCDate ? (this.minDay = this.DateService.getUTCDate(minDate), 
+                this.minMonth = this.DateService.getUTCMonth(minDate), this.minYear = this.DateService.getUTCFullYear(minDate)) : (this.minDay = null, 
+                this.minMonth = null, this.minYear = null);
+            }
+        }, {
+            key: "updateMaxDateView",
+            value: function(maxDate) {
+                maxDate && maxDate.getUTCDate ? (this.maxDay = this.DateService.getUTCDate(maxDate), 
+                this.maxMonth = this.DateService.getUTCMonth(maxDate), this.maxYear = this.DateService.getUTCFullYear(maxDate)) : (this.maxDay = null, 
+                this.maxMonth = null, this.maxYear = null);
+            }
+        }, {
+            key: "keyHandler",
+            value: function(event) {
+                if (!this.ngModel) return void this.setModel(this.DateService.getUTCDateFromParts(this.year, this.month, this.day));
+                var characterCode = event.which || event.charCode || event.keyCode;
+                return 37 === characterCode ? this.adjustDate(this.mode, this.ngModel, -1, -1, -1) : 38 === characterCode ? (event.preventDefault(), 
+                this.adjustDate(this.mode, this.ngModel, -7, -4, -4)) : 39 === characterCode ? this.adjustDate(this.mode, this.ngModel, 1, 1, 1) : 40 === characterCode && (event.preventDefault(), 
+                this.adjustDate(this.mode, this.ngModel, 7, 4, 4)), this.findActiveLink(), !0;
+            }
+        }, {
+            key: "findActiveLink",
+            value: function() {
+                var _this5 = this;
+                this.$timeout(function() {
+                    _this5.$element.find("a.active").focus();
+                });
+            }
+        }, {
+            key: "resetFocus",
+            value: function($element) {
+                $element.find("button").focus();
+            }
+        }, {
+            key: "adjustDate",
+            value: function(mode, date, days, months, years) {
+                var newDate = date;
+                "day" === mode && (newDate = this.DateService.addDays(date, days)), "month" === mode && (newDate = this.DateService.addMonths(date, months)), 
+                "year" === mode && (newDate = this.DateService.addYears(date, years)), this.setModel(newDate);
+            }
+        } ]), TwDateLookupController;
+    }());
     TwDateLookupController.$inject = [ "$element", "$scope", "$timeout", "TwDateService" ], 
     exports["default"] = TwDateLookupController;
 }, function(module, exports, __webpack_require__) {
