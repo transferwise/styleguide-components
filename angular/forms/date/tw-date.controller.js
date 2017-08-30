@@ -1,3 +1,4 @@
+import TwDateService from '../../services/date/';
 
 function TwDateController($element, $log, $scope, TwDateService) {
   var $ctrl = this,

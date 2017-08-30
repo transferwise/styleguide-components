@@ -39,6 +39,30 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
+    var _twCurrencyService = __webpack_require__(52), _twCurrencyService2 = _interopRequireDefault(_twCurrencyService);
+    exports["default"] = angular.module("tw.styleguide.services.currency", []).service("TwCurrencyService", _twCurrencyService2["default"]).name;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    });
+    var _twDateService = __webpack_require__(53), _twDateService2 = _interopRequireDefault(_twDateService);
+    exports["default"] = angular.module("tw.styleguide.services.date", []).service("TwDateService", _twDateService2["default"]).name;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    });
     var _twAmountCurrencySelectComponent = __webpack_require__(20), _twAmountCurrencySelectComponent2 = _interopRequireDefault(_twAmountCurrencySelectComponent);
     exports["default"] = angular.module("tw.styleguide.forms.amount-currency-select", []).component("twAmountCurrencySelect", _twAmountCurrencySelectComponent2["default"]).name;
 }, function(module, exports, __webpack_require__) {
@@ -221,145 +245,6 @@
     });
     var _twTabsComponent = __webpack_require__(50), _twTabsComponent2 = _interopRequireDefault(_twTabsComponent);
     exports["default"] = angular.module("tw.styleguide.navigation.tabs", []).component("twTabs", _twTabsComponent2["default"]).name;
-}, function(module, exports, __webpack_require__) {
-    "use strict";
-    function TwCurrencyService() {
-        var currencyDecimals = {
-            BIF: 0,
-            BYR: 0,
-            CLP: 0,
-            DJF: 0,
-            GNF: 0,
-            JPY: 0,
-            KMF: 0,
-            KRW: 0,
-            MGA: 0,
-            PYG: 0,
-            RWF: 0,
-            VND: 0,
-            VUV: 0,
-            XAF: 0,
-            XOF: 0,
-            XPF: 0,
-            HUF: 0,
-            BHD: 3,
-            JOD: 3,
-            KWD: 3,
-            OMR: 3,
-            TND: 3
-        };
-        this.getDecimals = function(currency) {
-            return currency.toUpperCase && "undefined" != typeof currencyDecimals[currency.toUpperCase()] ? currencyDecimals[currency.toUpperCase()] : 2;
-        };
-    }
-    Object.defineProperty(exports, "__esModule", {
-        value: !0
-    }), exports["default"] = angular.module("tw.styleguide.services.currency-data", []).service("TwCurrencyService", TwCurrencyService).name;
-}, function(module, exports, __webpack_require__) {
-    "use strict";
-    function TwDateService() {
-        function getLocalisedDateName(date, locale, formattingObject) {
-            var name = date.toLocaleDateString(locale, formattingObject);
-            return isLocaleTranslationRequiresStripping(locale) && (name = name.replace(/[0-9]|\s|,/g, "")), 
-            name[0].toUpperCase() + name.substring(1);
-        }
-        function getValidDateFormat(format) {
-            var validFormats = [ "narrow", "short", "long" ];
-            return !format || validFormats.indexOf(format) < 0 ? "long" : format;
-        }
-        function getValidLocale(locale) {
-            return isIntlSupportedForLocale(locale) ? locale : "en-GB";
-        }
-        function isIntlSupportedForLocale(locale) {
-            try {
-                var supportedLocales = window.Intl.DateTimeFormat.supportedLocalesOf([ locale ]);
-                return supportedLocales.length > 0;
-            } catch (error) {
-                return !1;
-            }
-        }
-        function isLocaleTranslationRequiresStripping(locale) {
-            if (!locale) return !0;
-            var lang = getLanguageFromLocale(locale);
-            return "ja" !== lang;
-        }
-        function getLanguageFromLocale(locale) {
-            return locale ? locale.substring(0, 2) : null;
-        }
-        this.getLocaleDate = function(date) {
-            return date || (date = new Date()), date.getDate();
-        }, this.getLocaleMonth = function(date) {
-            return date || (date = new Date()), date.getMonth();
-        }, this.getLocaleFullYear = function(date) {
-            return date || (date = new Date()), date.getFullYear();
-        }, this.getLocaleToday = function() {
-            var now = new Date();
-            return this.getUTCDateFromParts(this.getLocaleFullYear(now), this.getLocaleMonth(now), this.getLocaleDate(now));
-        }, this.getUTCDate = function(date) {
-            return date || (date = new Date()), date.getUTCDate();
-        }, this.getUTCMonth = function(date) {
-            return date || (date = new Date()), date.getUTCMonth();
-        }, this.getUTCFullYear = function(date) {
-            return date || (date = new Date()), date.getUTCFullYear();
-        }, this.getUTCToday = function() {
-            var now = new Date();
-            return this.getUTCDateFromParts(this.getUTCFullYear(now), this.getUTCMonth(now), this.getUTCDate(now));
-        }, this.getLastDayOfMonth = function(year, month) {
-            var lastDay = this.getUTCDateFromParts(year, month + 1, 0);
-            return lastDay.getUTCDate();
-        }, this.getUTCDateFromParts = function(year, month, day) {
-            var date = new Date();
-            return date.setUTCFullYear(year, month, day), date.setUTCHours(0), date.setUTCMinutes(0), 
-            date.setUTCSeconds(0), date.setUTCMilliseconds(0), date;
-        }, this.getDayNamesForLocale = function(locale, format) {
-            var date, days = [], language = getLanguageFromLocale(locale);
-            if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language]) return DEFAULT_DAY_NAMES_BY_LANGUAGE[language];
-            format = getValidDateFormat(format), locale = getValidLocale(locale);
-            for (var i = 1; i <= 7; i++) date = this.getUTCDateFromParts(2001, 0, i), days.push(getLocalisedDateName(date, locale, {
-                weekday: format
-            }));
-            return days;
-        }, this.getMonthNamesForLocale = function(locale, format) {
-            var date, month, months = [], language = getLanguageFromLocale(locale);
-            if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] && ("long" === format || "ja" === language)) return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language];
-            format = getValidDateFormat(format), locale = getValidLocale(locale);
-            for (var i = 0; i < 12; i++) date = this.getUTCDateFromParts(2e3, i, 15), "short" === format ? (month = getLocalisedDateName(date, locale, {
-                month: "long"
-            }), month = month.length > 4 ? month.slice(0, 3) : month, months.push(month)) : months.push(getLocalisedDateName(date, locale, {
-                month: format
-            }));
-            return months;
-        }, this.getWeekday = function(year, month, day) {
-            var utcDate = this.getUTCDateFromParts(year, month, day);
-            return utcDate.getUTCDay();
-        }, this.isMonthBeforeDay = function(locale) {
-            return locale.indexOf("US", locale.length - 2) !== -1 || "ja" === getLanguageFromLocale(locale);
-        }, this.addYears = function(date, years) {
-            return this.addToDate(date, years, 0, 0);
-        }, this.addMonths = function(date, months) {
-            return this.addToDate(date, 0, months, 0);
-        }, this.addDays = function(date, days) {
-            return this.addToDate(date, 0, 0, days);
-        }, this.addToDate = function(date, years, months, days) {
-            return this.getUTCDateFromParts(date.getUTCFullYear() + years, date.getUTCMonth() + months, date.getUTCDate() + days);
-        }, this.getYearAndMonthPresentation = function(year, monthName, locale) {
-            var lang = getLanguageFromLocale(locale);
-            return "ja" === lang ? year + "年" + monthName : monthName + " " + year;
-        }, this.getYearMonthDatePresentation = function(year, monthName, date, locale) {
-            var lang = getLanguageFromLocale(locale);
-            return "ja" === lang ? year + "年" + monthName + date + "日" : locale.indexOf("US", locale.length - 2) !== -1 ? monthName + " " + date + ", " + year : date + " " + monthName + " " + year;
-        };
-        var DEFAULT_MONTH_NAMES_BY_LANGUAGE = {
-            en: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
-            ja: [ "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" ]
-        }, DEFAULT_DAY_NAMES_BY_LANGUAGE = {
-            en: [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" ],
-            ja: [ "月", "火", "水", "木", "金", "土", "日" ]
-        };
-    }
-    Object.defineProperty(exports, "__esModule", {
-        value: !0
-    }), exports["default"] = angular.module("tw.styleguide.services.date", []).service("TwDateService", TwDateService).name;
 }, function(module, exports) {
     module.exports = angular;
 }, function(module, exports, __webpack_require__) {
@@ -372,8 +257,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _angular = __webpack_require__(18), _angular2 = _interopRequireDefault(_angular), _twDateService = __webpack_require__(17), _twDateService2 = _interopRequireDefault(_twDateService), _twCurrencyService = __webpack_require__(16), _twCurrencyService2 = _interopRequireDefault(_twCurrencyService), _checkbox = __webpack_require__(1), _checkbox2 = _interopRequireDefault(_checkbox), _radio = __webpack_require__(8), _radio2 = _interopRequireDefault(_radio), _select = __webpack_require__(10), _select2 = _interopRequireDefault(_select), _upload = __webpack_require__(12), _upload2 = _interopRequireDefault(_upload), _date = __webpack_require__(4), _date2 = _interopRequireDefault(_date), _dateLookup = __webpack_require__(3), _dateLookup2 = _interopRequireDefault(_dateLookup), _currencyInput = __webpack_require__(2), _currencyInput2 = _interopRequireDefault(_currencyInput), _amountCurrencySelect = __webpack_require__(0), _amountCurrencySelect2 = _interopRequireDefault(_amountCurrencySelect), _dynamicFormControl = __webpack_require__(5), _dynamicFormControl2 = _interopRequireDefault(_dynamicFormControl), _fieldset = __webpack_require__(6), _fieldset2 = _interopRequireDefault(_fieldset), _focusable = __webpack_require__(7), _focusable2 = _interopRequireDefault(_focusable), _tabs = __webpack_require__(15), _tabs2 = _interopRequireDefault(_tabs), _loader = __webpack_require__(13), _loader2 = _interopRequireDefault(_loader), _process = __webpack_require__(14), _process2 = _interopRequireDefault(_process), _requirementsForm = __webpack_require__(9), _requirementsForm2 = _interopRequireDefault(_requirementsForm), _uploadDroppable = __webpack_require__(11), _uploadDroppable2 = _interopRequireDefault(_uploadDroppable);
-    exports["default"] = _angular2["default"].module("tw.form-components", [ _twDateService2["default"], _twCurrencyService2["default"], _checkbox2["default"], _radio2["default"], _select2["default"], _upload2["default"], _date2["default"], _dateLookup2["default"], _currencyInput2["default"], _amountCurrencySelect2["default"], _dynamicFormControl2["default"], _fieldset2["default"], _focusable2["default"], _tabs2["default"], _loader2["default"], _process2["default"], _requirementsForm2["default"], _uploadDroppable2["default"] ]).name;
+    var _angular = __webpack_require__(18), _angular2 = _interopRequireDefault(_angular), _checkbox = __webpack_require__(3), _checkbox2 = _interopRequireDefault(_checkbox), _radio = __webpack_require__(10), _radio2 = _interopRequireDefault(_radio), _select = __webpack_require__(12), _select2 = _interopRequireDefault(_select), _upload = __webpack_require__(14), _upload2 = _interopRequireDefault(_upload), _date = __webpack_require__(6), _date2 = _interopRequireDefault(_date), _dateLookup = __webpack_require__(5), _dateLookup2 = _interopRequireDefault(_dateLookup), _currencyInput = __webpack_require__(4), _currencyInput2 = _interopRequireDefault(_currencyInput), _amountCurrencySelect = __webpack_require__(2), _amountCurrencySelect2 = _interopRequireDefault(_amountCurrencySelect), _dynamicFormControl = __webpack_require__(7), _dynamicFormControl2 = _interopRequireDefault(_dynamicFormControl), _fieldset = __webpack_require__(8), _fieldset2 = _interopRequireDefault(_fieldset), _focusable = __webpack_require__(9), _focusable2 = _interopRequireDefault(_focusable), _tabs = __webpack_require__(17), _tabs2 = _interopRequireDefault(_tabs), _loader = __webpack_require__(15), _loader2 = _interopRequireDefault(_loader), _process = __webpack_require__(16), _process2 = _interopRequireDefault(_process), _requirementsForm = __webpack_require__(11), _requirementsForm2 = _interopRequireDefault(_requirementsForm), _uploadDroppable = __webpack_require__(13), _uploadDroppable2 = _interopRequireDefault(_uploadDroppable);
+    exports["default"] = _angular2["default"].module("tw.form-components", [ _checkbox2["default"], _radio2["default"], _select2["default"], _upload2["default"], _date2["default"], _dateLookup2["default"], _currencyInput2["default"], _amountCurrencySelect2["default"], _dynamicFormControl2["default"], _fieldset2["default"], _focusable2["default"], _tabs2["default"], _loader2["default"], _process2["default"], _requirementsForm2["default"], _uploadDroppable2["default"] ]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -414,6 +299,11 @@
     exports["default"] = TwAmountCurrencySelect;
 }, function(module, exports, __webpack_require__) {
     "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
     function TwAmountCurrencySelectController($element, $scope, $timeout, TwCurrencyService) {
         function isNumber(value) {
             return !isNaN(parseFloat(value));
@@ -440,7 +330,10 @@
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), TwAmountCurrencySelectController.$inject = [ "$element", "$scope", "$timeout", "TwCurrencyService" ], 
+    });
+    var _currency = __webpack_require__(0);
+    _interopRequireDefault(_currency);
+    TwAmountCurrencySelectController.$inject = [ "$element", "$scope", "$timeout", "TwCurrencyService" ], 
     exports["default"] = TwAmountCurrencySelectController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
@@ -539,6 +432,11 @@
     exports["default"] = TwCurrencyInput;
 }, function(module, exports, __webpack_require__) {
     "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
     function TwCurrencyInputController($element, $scope, $timeout, TwCurrencyService) {
         function isNumber(value) {
             return !isNaN(parseFloat(value));
@@ -561,7 +459,10 @@
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), TwCurrencyInputController.$inject = [ "$element", "$scope", "$timeout", "TwCurrencyService" ], 
+    });
+    var _currency = __webpack_require__(0);
+    _interopRequireDefault(_currency);
+    TwCurrencyInputController.$inject = [ "$element", "$scope", "$timeout", "TwCurrencyService" ], 
     exports["default"] = TwCurrencyInputController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
@@ -594,6 +495,11 @@
     exports["default"] = TwDateLookup;
 }, function(module, exports, __webpack_require__) {
     "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
     function TwDateLookupController($element, $scope, $timeout, TwDateService) {
         function init() {
             $ctrl.yearOffset = 0, ngModelCtrl = $element.controller("ngModel"), addValidators(), 
@@ -750,7 +656,10 @@
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), TwDateLookupController.$inject = [ "$element", "$scope", "$timeout", "TwDateService" ], 
+    });
+    var _date = __webpack_require__(1);
+    _interopRequireDefault(_date);
+    TwDateLookupController.$inject = [ "$element", "$scope", "$timeout", "TwDateService" ], 
     exports["default"] = TwDateLookupController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
@@ -784,6 +693,11 @@
     exports["default"] = TwDate;
 }, function(module, exports, __webpack_require__) {
     "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
     function TwDateController($element, $log, $scope, TwDateService) {
         function init() {
             if ($ctrl.ngModel) applyDateModelIfValidOrThrowError(), initialisedWithDate = !0; else {
@@ -910,8 +824,10 @@
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), TwDateController.$inject = [ "$element", "$log", "$scope", "TwDateService" ], 
-    exports["default"] = TwDateController;
+    });
+    var _date = __webpack_require__(1);
+    _interopRequireDefault(_date);
+    TwDateController.$inject = [ "$element", "$log", "$scope", "TwDateService" ], exports["default"] = TwDateController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -1826,4 +1742,143 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     }), exports["default"] = TwTabsController;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function TwCurrencyService() {
+        var currencyDecimals = {
+            BIF: 0,
+            BYR: 0,
+            CLP: 0,
+            DJF: 0,
+            GNF: 0,
+            JPY: 0,
+            KMF: 0,
+            KRW: 0,
+            MGA: 0,
+            PYG: 0,
+            RWF: 0,
+            VND: 0,
+            VUV: 0,
+            XAF: 0,
+            XOF: 0,
+            XPF: 0,
+            HUF: 0,
+            BHD: 3,
+            JOD: 3,
+            KWD: 3,
+            OMR: 3,
+            TND: 3
+        };
+        this.getDecimals = function(currency) {
+            return currency.toUpperCase && "undefined" != typeof currencyDecimals[currency.toUpperCase()] ? currencyDecimals[currency.toUpperCase()] : 2;
+        };
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), exports["default"] = TwCurrencyService;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function TwDateService() {
+        function getLocalisedDateName(date, locale, formattingObject) {
+            var name = date.toLocaleDateString(locale, formattingObject);
+            return isLocaleTranslationRequiresStripping(locale) && (name = name.replace(/[0-9]|\s|,/g, "")), 
+            name[0].toUpperCase() + name.substring(1);
+        }
+        function getValidDateFormat(format) {
+            var validFormats = [ "narrow", "short", "long" ];
+            return !format || validFormats.indexOf(format) < 0 ? "long" : format;
+        }
+        function getValidLocale(locale) {
+            return isIntlSupportedForLocale(locale) ? locale : "en-GB";
+        }
+        function isIntlSupportedForLocale(locale) {
+            try {
+                var supportedLocales = window.Intl.DateTimeFormat.supportedLocalesOf([ locale ]);
+                return supportedLocales.length > 0;
+            } catch (error) {
+                return !1;
+            }
+        }
+        function isLocaleTranslationRequiresStripping(locale) {
+            if (!locale) return !0;
+            var lang = getLanguageFromLocale(locale);
+            return "ja" !== lang;
+        }
+        function getLanguageFromLocale(locale) {
+            return locale ? locale.substring(0, 2) : null;
+        }
+        this.getLocaleDate = function(date) {
+            return date || (date = new Date()), date.getDate();
+        }, this.getLocaleMonth = function(date) {
+            return date || (date = new Date()), date.getMonth();
+        }, this.getLocaleFullYear = function(date) {
+            return date || (date = new Date()), date.getFullYear();
+        }, this.getLocaleToday = function() {
+            var now = new Date();
+            return this.getUTCDateFromParts(this.getLocaleFullYear(now), this.getLocaleMonth(now), this.getLocaleDate(now));
+        }, this.getUTCDate = function(date) {
+            return date || (date = new Date()), date.getUTCDate();
+        }, this.getUTCMonth = function(date) {
+            return date || (date = new Date()), date.getUTCMonth();
+        }, this.getUTCFullYear = function(date) {
+            return date || (date = new Date()), date.getUTCFullYear();
+        }, this.getUTCToday = function() {
+            var now = new Date();
+            return this.getUTCDateFromParts(this.getUTCFullYear(now), this.getUTCMonth(now), this.getUTCDate(now));
+        }, this.getLastDayOfMonth = function(year, month) {
+            var lastDay = this.getUTCDateFromParts(year, month + 1, 0);
+            return lastDay.getUTCDate();
+        }, this.getUTCDateFromParts = function(year, month, day) {
+            var date = new Date();
+            return date.setUTCFullYear(year, month, day), date.setUTCHours(0), date.setUTCMinutes(0), 
+            date.setUTCSeconds(0), date.setUTCMilliseconds(0), date;
+        }, this.getDayNamesForLocale = function(locale, format) {
+            var date, days = [], language = getLanguageFromLocale(locale);
+            if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language]) return DEFAULT_DAY_NAMES_BY_LANGUAGE[language];
+            format = getValidDateFormat(format), locale = getValidLocale(locale);
+            for (var i = 1; i <= 7; i++) date = this.getUTCDateFromParts(2001, 0, i), days.push(getLocalisedDateName(date, locale, {
+                weekday: format
+            }));
+            return days;
+        }, this.getMonthNamesForLocale = function(locale, format) {
+            var date, month, months = [], language = getLanguageFromLocale(locale);
+            if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] && ("long" === format || "ja" === language)) return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language];
+            format = getValidDateFormat(format), locale = getValidLocale(locale);
+            for (var i = 0; i < 12; i++) date = this.getUTCDateFromParts(2e3, i, 15), "short" === format ? (month = getLocalisedDateName(date, locale, {
+                month: "long"
+            }), month = month.length > 4 ? month.slice(0, 3) : month, months.push(month)) : months.push(getLocalisedDateName(date, locale, {
+                month: format
+            }));
+            return months;
+        }, this.getWeekday = function(year, month, day) {
+            var utcDate = this.getUTCDateFromParts(year, month, day);
+            return utcDate.getUTCDay();
+        }, this.isMonthBeforeDay = function(locale) {
+            return locale.indexOf("US", locale.length - 2) !== -1 || "ja" === getLanguageFromLocale(locale);
+        }, this.addYears = function(date, years) {
+            return this.addToDate(date, years, 0, 0);
+        }, this.addMonths = function(date, months) {
+            return this.addToDate(date, 0, months, 0);
+        }, this.addDays = function(date, days) {
+            return this.addToDate(date, 0, 0, days);
+        }, this.addToDate = function(date, years, months, days) {
+            return this.getUTCDateFromParts(date.getUTCFullYear() + years, date.getUTCMonth() + months, date.getUTCDate() + days);
+        }, this.getYearAndMonthPresentation = function(year, monthName, locale) {
+            var lang = getLanguageFromLocale(locale);
+            return "ja" === lang ? year + "年" + monthName : monthName + " " + year;
+        }, this.getYearMonthDatePresentation = function(year, monthName, date, locale) {
+            var lang = getLanguageFromLocale(locale);
+            return "ja" === lang ? year + "年" + monthName + date + "日" : locale.indexOf("US", locale.length - 2) !== -1 ? monthName + " " + date + ", " + year : date + " " + monthName + " " + year;
+        };
+        var DEFAULT_MONTH_NAMES_BY_LANGUAGE = {
+            en: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
+            ja: [ "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" ]
+        }, DEFAULT_DAY_NAMES_BY_LANGUAGE = {
+            en: [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" ],
+            ja: [ "月", "火", "水", "木", "金", "土", "日" ]
+        };
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), exports["default"] = TwDateService;
 } ]);

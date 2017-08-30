@@ -231,6 +231,4 @@ function TwDateService() {
   };
 }
 
-export default angular
-  .module('tw.styleguide.services.date', [])
-  .service('TwDateService', TwDateService).name;
+export default TwDateService;

@@ -1,3 +1,4 @@
+import TwCurrencyService from '../../services/currency/';
 
 function TwCurrencyInputController($element, $scope, $timeout, TwCurrencyService) {
   var $ctrl = this;

@@ -1,3 +1,4 @@
+import TwDateService from '../../services/date/';
 
 function TwDateLookupController($element, $scope, $timeout, TwDateService) {
   var $ctrl = this,

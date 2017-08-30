@@ -1,7 +1,7 @@
 import angular from 'angular';
 
-import DateService          from '../services/date/tw-date.service.js';
-import CurrencyService      from '../services/currency/tw-currency.service.js';
+import DateService          from '../services/date/';
+import CurrencyService      from '../services/currency/';
 
 import Checkbox             from './checkbox/';
 import Radio                from './radio/';

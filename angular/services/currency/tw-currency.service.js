@@ -36,6 +36,4 @@ function TwCurrencyService() {
   };
 }
 
-export default angular
-  .module('tw.styleguide.services.currency-data', [])
-  .service('TwCurrencyService', TwCurrencyService).name;
+export default TwCurrencyService;

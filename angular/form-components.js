@@ -1,8 +1,5 @@
 import angular from 'angular';
 
-import DateService          from './services/date/tw-date.service.js';
-import CurrencyService      from './services/currency/tw-currency.service.js';
-
 import Checkbox             from './forms/checkbox/';
 import Radio                from './forms/radio/';
 import Select               from './forms/select/';
@@ -25,9 +22,6 @@ import RequirementsForm     from './forms/requirements-form/';
 import UploadDroppable      from './forms/upload-droppable/';
 
 export default angular.module('tw.form-components', [
-  DateService,
-  CurrencyService,
-
   Checkbox,
   Radio,
   Select,
