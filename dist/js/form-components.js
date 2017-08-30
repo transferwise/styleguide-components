@@ -497,7 +497,9 @@
     var _currencyInputController = __webpack_require__(25), _currencyInputController2 = _interopRequireDefault(_currencyInputController), _currencyInput = __webpack_require__(56), _currencyInput2 = _interopRequireDefault(_currencyInput), CurrencyInput = {
         controller: _currencyInputController2["default"],
         template: _currencyInput2["default"],
-        require: "ngModel",
+        require: {
+            $ngModel: "ngModel"
+        },
         transclude: {
             addon: "?addon"
         },
@@ -523,31 +525,53 @@
             "default": obj
         };
     }
-    function TwCurrencyInputController($element, $scope, $timeout, TwCurrencyService) {
-        function isNumber(value) {
-            return !isNaN(parseFloat(value));
-        }
-        var $ctrl = this, $ngModel = $element.controller("ngModel");
-        $ctrl.showDecimals = !0, $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
-            newValue !== oldValue && $ngModel.$setDirty();
-        }), $scope.$watch("$ctrl.currency", function(newValue, oldValue) {
-            newValue !== oldValue && ($ctrl.showDecimals = TwCurrencyService.getDecimals(newValue) > 0);
-        }), $element.find("input").on("blur", function() {
-            $ngModel.$setTouched(), $element.triggerHandler("blur");
-        }), $ctrl.currencyCode && console && console.log && console.log("currency code is deprecated in twCurrencyInput, please use currency."), 
-        $ngModel.$validators.min = function(modelValue, viewValue) {
-            return "undefined" == typeof $ctrl.ngMin || null === $ctrl.ngMin || !isNumber(viewValue) || viewValue >= $ctrl.ngMin;
-        }, $ngModel.$validators.max = function(modelValue, viewValue) {
-            return "undefined" == typeof $ctrl.ngMax || null === $ctrl.ngMax || !isNumber(viewValue) || viewValue <= $ctrl.ngMax;
-        }, $ctrl.changedInputValue = function() {
-            $ctrl.ngChange && $timeout($ctrl.ngChange);
-        };
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+    }
+    function isNumber(value) {
+        return !isNaN(parseFloat(value));
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _currency = __webpack_require__(8);
-    _interopRequireDefault(_currency);
+    var _createClass = function() {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || !1, descriptor.configurable = !0, 
+                "value" in descriptor && (descriptor.writable = !0), Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+        return function(Constructor, protoProps, staticProps) {
+            return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+            Constructor;
+        };
+    }(), _currency = __webpack_require__(8), TwCurrencyInputController = (_interopRequireDefault(_currency), 
+    function() {
+        function TwCurrencyInputController($element, $scope, $timeout, TwCurrencyService) {
+            var _this = this;
+            _classCallCheck(this, TwCurrencyInputController);
+            var $ngModel = $element.controller("ngModel");
+            this.$timeout = $timeout, this.showDecimals = !0, $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+                newValue !== oldValue && $ngModel.$setDirty();
+            }), $scope.$watch("$ctrl.currency", function(newValue, oldValue) {
+                newValue !== oldValue && (_this.showDecimals = TwCurrencyService.getDecimals(newValue) > 0);
+            }), $element.find("input").on("blur", function() {
+                $ngModel.$setTouched(), $element.triggerHandler("blur");
+            }), this.currencyCode && console && console.log && console.log("currency code is deprecated in twCurrencyInput, please use currency."), 
+            $ngModel.$validators.min = function(modelValue, viewValue) {
+                return "undefined" == typeof _this.ngMin || null === _this.ngMin || !isNumber(viewValue) || viewValue >= _this.ngMin;
+            }, $ngModel.$validators.max = function(modelValue, viewValue) {
+                return "undefined" == typeof _this.ngMax || null === _this.ngMax || !isNumber(viewValue) || viewValue <= _this.ngMax;
+            };
+        }
+        return _createClass(TwCurrencyInputController, [ {
+            key: "changedInputValue",
+            value: function() {
+                this.ngChange && this.$timeout(this.ngChange);
+            }
+        } ]), TwCurrencyInputController;
+    }());
     TwCurrencyInputController.$inject = [ "$element", "$scope", "$timeout", "TwCurrencyService" ], 
     exports["default"] = TwCurrencyInputController;
 }, function(module, exports, __webpack_require__) {
