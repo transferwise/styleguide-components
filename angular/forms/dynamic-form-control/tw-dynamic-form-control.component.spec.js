@@ -8,6 +8,7 @@ describe('Directive: TwDynamicFormControlDirective', function() {
 
   beforeEach(function() {
     module('tw.styleguide.forms');
+    module('tw.styleguide.services');
   });
 
   beforeEach(inject(function($injector) {
