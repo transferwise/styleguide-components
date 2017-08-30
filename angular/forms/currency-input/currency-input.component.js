@@ -1,8 +1,8 @@
-import TwCurrencyInputController from  './tw-currency-input.controller.js';
+import CurrencyInputController from  './currency-input.controller.js';
 
-const TwCurrencyInput = {
+const CurrencyInput = {
   require: 'ngModel',
-  controller: TwCurrencyInputController,
+  controller: CurrencyInputController,
   transclude: {
     'addon': '?addon'
   },
@@ -22,4 +22,4 @@ const TwCurrencyInput = {
   template: require('./currency-input.html')
 };
 
-export default TwCurrencyInput;
+export default CurrencyInput;

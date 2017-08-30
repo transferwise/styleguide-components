@@ -1,4 +1,4 @@
-import Focusable from './tw-focusable.directive.js';
+import Focusable from './focusable.directive.js';
 
 export default angular
   .module('tw.styleguide.forms.focusable', [])

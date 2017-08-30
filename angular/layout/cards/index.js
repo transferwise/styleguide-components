@@ -1,9 +1,9 @@
-import TwCardsService from './tw-cards.service.js';
-import TwCard from './tw-card.directive.js';
-import TwCards from './tw-cards.component.js';
+import CardsService from './cards.service.js';
+import Card from './card.directive.js';
+import Cards from './cards.component.js';
 
 export default angular
   .module('tw.styleguide.layout.cards', [])
-  .service('TwCardsService', TwCardsService)
-  .component('twCards', TwCards)
-  .directive('twCard', TwCard).name;
+  .service('TwCardsService', CardsService)
+  .component('twCards', Cards)
+  .directive('twCard', Card).name;

@@ -1,8 +1,8 @@
-import TwRadioController from './tw-radio.controller.js';
+import RadioController from './radio.controller.js';
 
-const TwRadio = {
+const Radio = {
   require: 'ngModel',
-  controller: TwRadioController,
+  controller: RadioController,
   bindings: {
     name: "@",
     value: "@",
@@ -15,4 +15,4 @@ const TwRadio = {
   template: require('./radio.html')
 };
 
-export default TwRadio;
+export default Radio;

@@ -39,8 +39,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twAsyncValidationDirective = __webpack_require__(5), _twAsyncValidationDirective2 = _interopRequireDefault(_twAsyncValidationDirective);
-    exports["default"] = angular.module("tw.styleguide.validation.async", []).directive("twDynamicAsyncValidator", _twAsyncValidationDirective2["default"]).name;
+    var _asyncValidationDirective = __webpack_require__(5), _asyncValidationDirective2 = _interopRequireDefault(_asyncValidationDirective);
+    exports["default"] = angular.module("tw.styleguide.validation.async", []).directive("twAsyncValidation", _asyncValidationDirective2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -51,8 +51,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twValidationDirective = __webpack_require__(6), _twValidationDirective2 = _interopRequireDefault(_twValidationDirective);
-    exports["default"] = angular.module("tw.stylguide.validation.control", []).directive("twValidation", _twValidationDirective2["default"]).name;
+    var _controlValidationDirective = __webpack_require__(6), _controlValidationDirective2 = _interopRequireDefault(_controlValidationDirective);
+    exports["default"] = angular.module("tw.stylguide.validation.control", []).directive("twValidation", _controlValidationDirective2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -63,8 +63,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twFormValidationDirective = __webpack_require__(7), _twFormValidationDirective2 = _interopRequireDefault(_twFormValidationDirective);
-    exports["default"] = angular.module("tw.styleguide.validation.form", []).directive("form", _twFormValidationDirective2["default"]).name;
+    var _formValidationDirective = __webpack_require__(7), _formValidationDirective2 = _interopRequireDefault(_formValidationDirective);
+    exports["default"] = angular.module("tw.styleguide.validation.form", []).directive("form", _formValidationDirective2["default"]).name;
 }, function(module, exports) {
     module.exports = angular;
 }, function(module, exports, __webpack_require__) {

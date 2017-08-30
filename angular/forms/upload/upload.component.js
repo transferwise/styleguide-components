@@ -1,7 +1,7 @@
-import TwUploadController from './tw-upload.controller.js';
+import UploadController from './upload.controller.js';
 
-const TwUpload = {
-  controller: TwUploadController,
+const Upload = {
+  controller: UploadController,
   transclude: true,
   bindings: {
     ngModel: '=',
@@ -30,4 +30,4 @@ const TwUpload = {
   template: require('./upload.html')
 };
 
-export default TwUpload;
+export default Upload;

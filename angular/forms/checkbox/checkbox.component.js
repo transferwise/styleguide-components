@@ -1,8 +1,8 @@
-import TwCheckboxController from './tw-checkbox.controller.js';
+import CheckboxController from './checkbox.controller.js';
 
-const TwCheckbox = {
+const Checkbox = {
   require: 'ngModel',
-  controller: TwCheckboxController,
+  controller: CheckboxController,
   bindings: {
     name: "@",
     ngModel: '=',
@@ -14,4 +14,4 @@ const TwCheckbox = {
   template: require('./checkbox.html')
 };
 
-export default TwCheckbox;
+export default Checkbox;

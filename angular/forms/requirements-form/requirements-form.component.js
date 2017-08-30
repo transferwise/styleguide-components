@@ -1,6 +1,6 @@
-import TwRequirementsFormController from './tw-requirements-form.controller.js';
+import RequirementsFormController from './requirements-form.controller.js';
 
-const TwRequirementsForm = {
+const RequirementsForm = {
   bindings: {
     model: '=',
     requirements: '<',
@@ -11,9 +11,9 @@ const TwRequirementsForm = {
     errorMessages: '<',
     isValid: '=?'
   },
-  controller: TwRequirementsFormController,
+  controller: RequirementsFormController,
   template: require('./requirements-form.html')
 };
 
 
-export default TwRequirementsForm;
+export default RequirementsForm;

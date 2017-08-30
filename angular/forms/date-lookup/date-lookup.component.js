@@ -1,8 +1,8 @@
-import TwDateLookupController from './tw-date-lookup.controller.js';
+import DateLookupController from './date-lookup.controller.js';
 
-const TwDateLookup = {
+const DateLookup = {
   require: 'ngModel',
-  controller: TwDateLookupController,
+  controller: DateLookupController,
   bindings: {
     ngModel: '=',
     ngChange: '&',
@@ -19,4 +19,4 @@ const TwDateLookup = {
   template: require('./date-lookup.html')
 };
 
-export default TwDateLookup;
+export default DateLookup;

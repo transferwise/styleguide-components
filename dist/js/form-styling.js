@@ -75,7 +75,7 @@
             "default": obj
         };
     }
-    function TwTextFormat() {
+    function TextFormat() {
         return {
             restrict: "A",
             require: "ngModel",
@@ -85,14 +85,14 @@
                 ngModel: "<",
                 twTextFormat: "@"
             },
-            controller: _twTextFormatController2["default"]
+            controller: _textFormatController2["default"]
         };
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twTextFormatController = __webpack_require__(7), _twTextFormatController2 = _interopRequireDefault(_twTextFormatController), _undoStackService = __webpack_require__(8), _undoStackService2 = _interopRequireDefault(_undoStackService), _twTextFormatService = __webpack_require__(0), _twTextFormatService2 = _interopRequireDefault(_twTextFormatService);
-    exports["default"] = angular.module("tw.styleguide.formatting.text-format", []).service("TwUndoStackFactory", _undoStackService2["default"]).service("TwTextFormatService", _twTextFormatService2["default"]).directive("twTextFormat", TwTextFormat).name;
+    var _textFormatController = __webpack_require__(7), _textFormatController2 = _interopRequireDefault(_textFormatController), _undoStackService = __webpack_require__(8), _undoStackService2 = _interopRequireDefault(_undoStackService), _textFormatService = __webpack_require__(0), _textFormatService2 = _interopRequireDefault(_textFormatService);
+    exports["default"] = angular.module("tw.styleguide.formatting.text-format", []).service("TwUndoStackFactory", _undoStackService2["default"]).service("TwTextFormatService", _textFormatService2["default"]).directive("twTextFormat", TextFormat).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -100,7 +100,7 @@
             "default": obj
         };
     }
-    function TwTextFormatFilter(TwTextFormatService) {
+    function TextFormatFilter(TwTextFormatService) {
         return function(input, pattern) {
             return input = input || "", pattern ? TwTextFormatService.formatUsingPattern(input, pattern) : input;
         };
@@ -108,9 +108,9 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twTextFormatService = __webpack_require__(0);
-    _interopRequireDefault(_twTextFormatService);
-    TwTextFormatFilter.$inject = [ "TwTextFormatService" ], exports["default"] = angular.module("tw.styleguide.formatting.text-format").filter("twTextFormat", TwTextFormatFilter).name;
+    var _textFormatService = __webpack_require__(0);
+    _interopRequireDefault(_textFormatService);
+    TextFormatFilter.$inject = [ "TwTextFormatService" ], exports["default"] = angular.module("tw.styleguide.formatting.text-format").filter("twTextFormat", TextFormatFilter).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -121,8 +121,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twPopOverDirective = __webpack_require__(9), _twPopOverDirective2 = _interopRequireDefault(_twPopOverDirective);
-    exports["default"] = angular.module("tw.styleguide.help.popover", []).directive("twPopOver", _twPopOverDirective2["default"]).name;
+    var _popOverDirective = __webpack_require__(9), _popOverDirective2 = _interopRequireDefault(_popOverDirective);
+    exports["default"] = angular.module("tw.styleguide.help.popover", []).directive("twPopOver", _popOverDirective2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -133,8 +133,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twToolTipDirective = __webpack_require__(10), _twToolTipDirective2 = _interopRequireDefault(_twToolTipDirective);
-    exports["default"] = angular.module("tw.styleguide.help.tooltip", []).directive("twToolTip", _twToolTipDirective2["default"]).name;
+    var _toolTipDirective = __webpack_require__(10), _toolTipDirective2 = _interopRequireDefault(_toolTipDirective);
+    exports["default"] = angular.module("tw.styleguide.help.tooltip", []).directive("twToolTip", _toolTipDirective2["default"]).name;
 }, function(module, exports) {
     module.exports = angular;
 }, function(module, exports, __webpack_require__) {
@@ -147,8 +147,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _angular = __webpack_require__(5), _angular2 = _interopRequireDefault(_angular), _popOver = __webpack_require__(3), _popOver2 = _interopRequireDefault(_popOver), _toolTip = __webpack_require__(4), _toolTip2 = _interopRequireDefault(_toolTip), _twTextFormatDirective = __webpack_require__(1), _twTextFormatDirective2 = _interopRequireDefault(_twTextFormatDirective), _twTextFormatFilter = __webpack_require__(2), _twTextFormatFilter2 = _interopRequireDefault(_twTextFormatFilter);
-    exports["default"] = _angular2["default"].module("tw.form-styling", [ _popOver2["default"], _toolTip2["default"], _twTextFormatDirective2["default"], _twTextFormatFilter2["default"] ]).name;
+    var _angular = __webpack_require__(5), _angular2 = _interopRequireDefault(_angular), _popOver = __webpack_require__(3), _popOver2 = _interopRequireDefault(_popOver), _toolTip = __webpack_require__(4), _toolTip2 = _interopRequireDefault(_toolTip), _textFormatDirective = __webpack_require__(1), _textFormatDirective2 = _interopRequireDefault(_textFormatDirective), _textFormatFilter = __webpack_require__(2), _textFormatFilter2 = _interopRequireDefault(_textFormatFilter);
+    exports["default"] = _angular2["default"].module("tw.form-styling", [ _popOver2["default"], _toolTip2["default"], _textFormatDirective2["default"], _textFormatFilter2["default"] ]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwTextFormatController($element, $timeout, $scope, TwTextFormatService, TwUndoStackFactory) {

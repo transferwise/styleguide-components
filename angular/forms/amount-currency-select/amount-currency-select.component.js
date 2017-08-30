@@ -1,8 +1,8 @@
-import TwAmountCurrencySelectController from  './tw-amount-currency-select.controller.js';
+import AmountCurrencySelectController from  './amount-currency-select.controller.js';
 
-const TwAmountCurrencySelect = {
+const AmountCurrencySelect = {
   require: 'ngModel',
-  controller: TwAmountCurrencySelectController,
+  controller: AmountCurrencySelectController,
   transclude: {
     'addon': '?addon'
   },
@@ -35,4 +35,4 @@ const TwAmountCurrencySelect = {
   template: require('./amount-currency-select.html')
 };
 
-export default TwAmountCurrencySelect;
+export default AmountCurrencySelect;

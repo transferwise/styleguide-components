@@ -1,7 +1,7 @@
-import TwCardsService from './tw-cards.service.js';
-import TwCardController from './tw-card.controller.js';
+import CardsService from './cards.service.js';
+import CardController from './card.controller.js';
 
-function TwCard() {
+function Card() {
   return {
     require: {
       cardContainerController: '^twCards'
@@ -22,7 +22,7 @@ function TwCard() {
       cardForm: '?cardForm',
       cardIcon: 'cardIcon',
     },
-    controller: TwCardController,
+    controller: CardController,
     template: require('./card.html'),
     link: function ($scope, $element, $attrs, $ctrl) {
       var cardController = $scope.$ctrl;
@@ -44,4 +44,4 @@ function TwCard() {
   };
 }
 
-export default TwCard;
+export default Card;

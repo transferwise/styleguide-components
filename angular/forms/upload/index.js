@@ -1,5 +1,5 @@
-import Upload from './tw-upload.component.js';
-import FileInput from './tw-file-input.directive.js';
+import Upload from './upload.component.js';
+import FileInput from './file-input.directive.js';
 
 export default angular
   .module('tw.styleguide.forms.upload', [])

@@ -1,9 +1,9 @@
-import TwDynamicFormControlController from './tw-dynamic-form-control.controller.js';
+import FormControlController from './form-control.controller.js';
 
-const TwDynamicFormControl = {
+const FormControl = {
   require: 'ngModel',
   transclude: true,
-  controller: TwDynamicFormControlController,
+  controller: FormControlController,
   bindings: {
     type: "@",
     name: "@",
@@ -33,4 +33,4 @@ const TwDynamicFormControl = {
   template: require('./form-control.html')
 };
 
-export default TwDynamicFormControl;
+export default FormControl;

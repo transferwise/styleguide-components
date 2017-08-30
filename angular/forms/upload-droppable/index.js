@@ -1,7 +1,7 @@
-import TwUploadDroppable from './tw-upload-droppable.directive.js';
-import TwFileSelect from './tw-file-select.directive.js';
+import UploadDroppable from './upload-droppable.directive.js';
+import FileSelect from './file-select.directive.js';
 
 export default angular
   .module('tw.styleguide.forms.upload-droppable', [])
-  .directive('twFileSelect', TwFileSelect)
-  .component('twUploadDroppable', TwUploadDroppable).name;
+  .directive('twFileSelect', FileSelect)
+  .component('twUploadDroppable', UploadDroppable).name;

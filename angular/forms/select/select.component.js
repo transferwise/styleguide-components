@@ -1,8 +1,8 @@
-import TwSelectController from './tw-select.controller.js';
+import SelectController from './select.controller.js';
 
-const TwSelect = {
+const Select = {
   require: 'ngModel',
-  controller: TwSelectController,
+  controller: SelectController,
   transclude: true,
   bindings: {
     ngModel: '=',
@@ -37,4 +37,4 @@ const TwSelect = {
 </select>"
 */
 
-export default TwSelect;
+export default Select;

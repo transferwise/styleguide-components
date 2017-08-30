@@ -39,8 +39,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twSelectComponent = __webpack_require__(40), _twSelectComponent2 = _interopRequireDefault(_twSelectComponent);
-    exports["default"] = angular.module("tw.styleguide.forms.select", []).component("twSelect", _twSelectComponent2["default"]).name;
+    var _selectComponent = __webpack_require__(40), _selectComponent2 = _interopRequireDefault(_selectComponent);
+    exports["default"] = angular.module("tw.styleguide.forms.select", []).component("twSelect", _selectComponent2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -51,8 +51,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twCheckboxComponent = __webpack_require__(22), _twCheckboxComponent2 = _interopRequireDefault(_twCheckboxComponent);
-    exports["default"] = angular.module("tw.styleguide.forms.checkbox", []).component("twCheckbox", _twCheckboxComponent2["default"]).name;
+    var _checkboxComponent = __webpack_require__(22), _checkboxComponent2 = _interopRequireDefault(_checkboxComponent);
+    exports["default"] = angular.module("tw.styleguide.forms.checkbox", []).component("twCheckbox", _checkboxComponent2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -63,8 +63,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twDateComponent = __webpack_require__(28), _twDateComponent2 = _interopRequireDefault(_twDateComponent);
-    exports["default"] = angular.module("tw.styleguide.forms.date", []).component("twDate", _twDateComponent2["default"]).name;
+    var _dateComponent = __webpack_require__(28), _dateComponent2 = _interopRequireDefault(_dateComponent);
+    exports["default"] = angular.module("tw.styleguide.forms.date", []).component("twDate", _dateComponent2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -77,9 +77,9 @@
     });
     var _select = __webpack_require__(0), _radio = (_interopRequireDefault(_select), 
     __webpack_require__(5)), _checkbox = (_interopRequireDefault(_radio), __webpack_require__(1)), _date = (_interopRequireDefault(_checkbox), 
-    __webpack_require__(2)), _upload = (_interopRequireDefault(_date), __webpack_require__(6)), _twDynamicFormControlComponent = (_interopRequireDefault(_upload), 
-    __webpack_require__(30)), _twDynamicFormControlComponent2 = _interopRequireDefault(_twDynamicFormControlComponent);
-    exports["default"] = angular.module("tw.styleguide.forms.dynamic-form-control", []).component("twDynamicFormControl", _twDynamicFormControlComponent2["default"]).name;
+    __webpack_require__(2)), _upload = (_interopRequireDefault(_date), __webpack_require__(6)), _formControlComponent = (_interopRequireDefault(_upload), 
+    __webpack_require__(30)), _formControlComponent2 = _interopRequireDefault(_formControlComponent);
+    exports["default"] = angular.module("tw.styleguide.forms.form-control", []).component("twDynamicFormControl", _formControlComponent2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -90,9 +90,9 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _dynamicFormControl = __webpack_require__(3), _twFieldsetComponent = (_interopRequireDefault(_dynamicFormControl), 
-    __webpack_require__(32)), _twFieldsetComponent2 = _interopRequireDefault(_twFieldsetComponent);
-    exports["default"] = angular.module("tw.styleguide.forms.fieldset", []).component("twFieldset", _twFieldsetComponent2["default"]).name;
+    var _dynamicFormControl = __webpack_require__(3), _fieldsetComponent = (_interopRequireDefault(_dynamicFormControl), 
+    __webpack_require__(32)), _fieldsetComponent2 = _interopRequireDefault(_fieldsetComponent);
+    exports["default"] = angular.module("tw.styleguide.forms.fieldset", []).component("twFieldset", _fieldsetComponent2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -103,8 +103,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twRadioComponent = __webpack_require__(35), _twRadioComponent2 = _interopRequireDefault(_twRadioComponent);
-    exports["default"] = angular.module("tw.styleguide.forms.radio", []).component("twRadio", _twRadioComponent2["default"]).name;
+    var _radioComponent = __webpack_require__(35), _radioComponent2 = _interopRequireDefault(_radioComponent);
+    exports["default"] = angular.module("tw.styleguide.forms.radio", []).component("twRadio", _radioComponent2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -115,8 +115,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twUploadComponent = __webpack_require__(45), _twUploadComponent2 = _interopRequireDefault(_twUploadComponent), _twFileInputDirective = __webpack_require__(44), _twFileInputDirective2 = _interopRequireDefault(_twFileInputDirective);
-    exports["default"] = angular.module("tw.styleguide.forms.upload", []).directive("twFileInput", _twFileInputDirective2["default"]).component("twUpload", _twUploadComponent2["default"]).name;
+    var _uploadComponent = __webpack_require__(45), _uploadComponent2 = _interopRequireDefault(_uploadComponent), _fileInputDirective = __webpack_require__(44), _fileInputDirective2 = _interopRequireDefault(_fileInputDirective);
+    exports["default"] = angular.module("tw.styleguide.forms.upload", []).directive("twFileInput", _fileInputDirective2["default"]).component("twUpload", _uploadComponent2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -127,8 +127,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twTabsComponent = __webpack_require__(50), _twTabsComponent2 = _interopRequireDefault(_twTabsComponent);
-    exports["default"] = angular.module("tw.styleguide.navigation.tabs", []).component("twTabs", _twTabsComponent2["default"]).name;
+    var _tabsComponent = __webpack_require__(50), _tabsComponent2 = _interopRequireDefault(_tabsComponent);
+    exports["default"] = angular.module("tw.styleguide.navigation.tabs", []).component("twTabs", _tabsComponent2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -139,8 +139,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twCurrencyService = __webpack_require__(52), _twCurrencyService2 = _interopRequireDefault(_twCurrencyService);
-    exports["default"] = angular.module("tw.styleguide.services.currency", []).service("TwCurrencyService", _twCurrencyService2["default"]).name;
+    var _currencyService = __webpack_require__(52), _currencyService2 = _interopRequireDefault(_currencyService);
+    exports["default"] = angular.module("tw.styleguide.services.currency", []).service("TwCurrencyService", _currencyService2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -151,8 +151,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twDateService = __webpack_require__(53), _twDateService2 = _interopRequireDefault(_twDateService);
-    exports["default"] = angular.module("tw.styleguide.services.date", []).service("TwDateService", _twDateService2["default"]).name;
+    var _dateService = __webpack_require__(53), _dateService2 = _interopRequireDefault(_dateService);
+    exports["default"] = angular.module("tw.styleguide.services.date", []).service("TwDateService", _dateService2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -163,9 +163,9 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _select = __webpack_require__(0), _twAmountCurrencySelectComponent = (_interopRequireDefault(_select), 
-    __webpack_require__(20)), _twAmountCurrencySelectComponent2 = _interopRequireDefault(_twAmountCurrencySelectComponent);
-    exports["default"] = angular.module("tw.styleguide.forms.amount-currency-select", []).component("twAmountCurrencySelect", _twAmountCurrencySelectComponent2["default"]).name;
+    var _select = __webpack_require__(0), _amountCurrencySelectComponent = (_interopRequireDefault(_select), 
+    __webpack_require__(20)), _amountCurrencySelectComponent2 = _interopRequireDefault(_amountCurrencySelectComponent);
+    exports["default"] = angular.module("tw.styleguide.forms.amount-currency-select", []).component("twAmountCurrencySelect", _amountCurrencySelectComponent2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -176,8 +176,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twCurrencyInputComponent = __webpack_require__(24), _twCurrencyInputComponent2 = _interopRequireDefault(_twCurrencyInputComponent);
-    exports["default"] = angular.module("tw.styleguide.forms.currency-input", []).component("twCurrencyInput", _twCurrencyInputComponent2["default"]).name;
+    var _currencyInputComponent = __webpack_require__(24), _currencyInputComponent2 = _interopRequireDefault(_currencyInputComponent);
+    exports["default"] = angular.module("tw.styleguide.forms.currency-input", []).component("twCurrencyInput", _currencyInputComponent2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -188,8 +188,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twDateLookupComponent = __webpack_require__(26), _twDateLookupComponent2 = _interopRequireDefault(_twDateLookupComponent);
-    exports["default"] = angular.module("tw.styleguide.forms.date-lookup", []).component("twDateLookup", _twDateLookupComponent2["default"]).name;
+    var _dateLookupComponent = __webpack_require__(26), _dateLookupComponent2 = _interopRequireDefault(_dateLookupComponent);
+    exports["default"] = angular.module("tw.styleguide.forms.date-lookup", []).component("twDateLookup", _dateLookupComponent2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -200,8 +200,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twFocusableDirective = __webpack_require__(34), _twFocusableDirective2 = _interopRequireDefault(_twFocusableDirective);
-    exports["default"] = angular.module("tw.styleguide.forms.focusable", []).directive("twFocusable", _twFocusableDirective2["default"]).name;
+    var _focusableDirective = __webpack_require__(34), _focusableDirective2 = _interopRequireDefault(_focusableDirective);
+    exports["default"] = angular.module("tw.styleguide.forms.focusable", []).directive("twFocusable", _focusableDirective2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -212,10 +212,10 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twRequirementsService = __webpack_require__(39), _twRequirementsService2 = _interopRequireDefault(_twRequirementsService), _twRequirementsFormComponent = __webpack_require__(37), _twRequirementsFormComponent2 = _interopRequireDefault(_twRequirementsFormComponent), _tabs = __webpack_require__(7), _fieldset = (_interopRequireDefault(_tabs), 
+    var _requirementsService = __webpack_require__(39), _requirementsService2 = _interopRequireDefault(_requirementsService), _requirementsFormComponent = __webpack_require__(37), _requirementsFormComponent2 = _interopRequireDefault(_requirementsFormComponent), _tabs = __webpack_require__(7), _fieldset = (_interopRequireDefault(_tabs), 
     __webpack_require__(4));
     _interopRequireDefault(_fieldset);
-    exports["default"] = angular.module("tw.styleguide.forms.requirements-form", []).service("TwRequirementsService", _twRequirementsService2["default"]).component("twRequirementsForm", _twRequirementsFormComponent2["default"]).name;
+    exports["default"] = angular.module("tw.styleguide.forms.requirements-form", []).service("TwRequirementsService", _requirementsService2["default"]).component("twRequirementsForm", _requirementsFormComponent2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -226,8 +226,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twUploadDroppableDirective = __webpack_require__(43), _twUploadDroppableDirective2 = _interopRequireDefault(_twUploadDroppableDirective), _twFileSelectDirective = __webpack_require__(42), _twFileSelectDirective2 = _interopRequireDefault(_twFileSelectDirective);
-    exports["default"] = angular.module("tw.styleguide.forms.upload-droppable", []).directive("twFileSelect", _twFileSelectDirective2["default"]).component("twUploadDroppable", _twUploadDroppableDirective2["default"]).name;
+    var _uploadDroppableDirective = __webpack_require__(43), _uploadDroppableDirective2 = _interopRequireDefault(_uploadDroppableDirective), _fileSelectDirective = __webpack_require__(42), _fileSelectDirective2 = _interopRequireDefault(_fileSelectDirective);
+    exports["default"] = angular.module("tw.styleguide.forms.upload-droppable", []).directive("twFileSelect", _fileSelectDirective2["default"]).component("twUploadDroppable", _uploadDroppableDirective2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -238,8 +238,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twLoaderComponent = __webpack_require__(47), _twLoaderComponent2 = _interopRequireDefault(_twLoaderComponent);
-    exports["default"] = angular.module("tw.styleguide.loading.loader", []).component("twLoader", _twLoaderComponent2["default"]).name;
+    var _loaderComponent = __webpack_require__(47), _loaderComponent2 = _interopRequireDefault(_loaderComponent);
+    exports["default"] = angular.module("tw.styleguide.loading.loader", []).component("twLoader", _loaderComponent2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -250,8 +250,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twProcessComponent = __webpack_require__(48), _twProcessComponent2 = _interopRequireDefault(_twProcessComponent);
-    exports["default"] = angular.module("tw.styleguide.loading.process", []).component("twProcess", _twProcessComponent2["default"]).name;
+    var _processComponent = __webpack_require__(48), _processComponent2 = _interopRequireDefault(_processComponent);
+    exports["default"] = angular.module("tw.styleguide.loading.process", []).component("twProcess", _processComponent2["default"]).name;
 }, function(module, exports) {
     module.exports = angular;
 }, function(module, exports, __webpack_require__) {
@@ -276,9 +276,9 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twAmountCurrencySelectController = __webpack_require__(21), _twAmountCurrencySelectController2 = _interopRequireDefault(_twAmountCurrencySelectController), TwAmountCurrencySelect = {
+    var _amountCurrencySelectController = __webpack_require__(21), _amountCurrencySelectController2 = _interopRequireDefault(_amountCurrencySelectController), AmountCurrencySelect = {
         require: "ngModel",
-        controller: _twAmountCurrencySelectController2["default"],
+        controller: _amountCurrencySelectController2["default"],
         transclude: {
             addon: "?addon"
         },
@@ -303,7 +303,7 @@
         },
         template: __webpack_require__(54)
     };
-    exports["default"] = TwAmountCurrencySelect;
+    exports["default"] = AmountCurrencySelect;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -352,9 +352,9 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twCheckboxController = __webpack_require__(23), _twCheckboxController2 = _interopRequireDefault(_twCheckboxController), TwCheckbox = {
+    var _checkboxController = __webpack_require__(23), _checkboxController2 = _interopRequireDefault(_checkboxController), Checkbox = {
         require: "ngModel",
-        controller: _twCheckboxController2["default"],
+        controller: _checkboxController2["default"],
         bindings: {
             name: "@",
             ngModel: "=",
@@ -365,7 +365,7 @@
         },
         template: __webpack_require__(55)
     };
-    exports["default"] = TwCheckbox;
+    exports["default"] = Checkbox;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwCheckboxController($scope, $element) {
@@ -415,9 +415,9 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twCurrencyInputController = __webpack_require__(25), _twCurrencyInputController2 = _interopRequireDefault(_twCurrencyInputController), TwCurrencyInput = {
+    var _currencyInputController = __webpack_require__(25), _currencyInputController2 = _interopRequireDefault(_currencyInputController), CurrencyInput = {
         require: "ngModel",
-        controller: _twCurrencyInputController2["default"],
+        controller: _currencyInputController2["default"],
         transclude: {
             addon: "?addon"
         },
@@ -436,7 +436,7 @@
         },
         template: __webpack_require__(56)
     };
-    exports["default"] = TwCurrencyInput;
+    exports["default"] = CurrencyInput;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -481,9 +481,9 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twDateLookupController = __webpack_require__(27), _twDateLookupController2 = _interopRequireDefault(_twDateLookupController), TwDateLookup = {
+    var _dateLookupController = __webpack_require__(27), _dateLookupController2 = _interopRequireDefault(_dateLookupController), DateLookup = {
         require: "ngModel",
-        controller: _twDateLookupController2["default"],
+        controller: _dateLookupController2["default"],
         bindings: {
             ngModel: "=",
             ngChange: "&",
@@ -499,7 +499,7 @@
         },
         template: __webpack_require__(57)
     };
-    exports["default"] = TwDateLookup;
+    exports["default"] = DateLookup;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -678,9 +678,9 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twDateController = __webpack_require__(29), _twDateController2 = _interopRequireDefault(_twDateController), TwDate = {
+    var _dateController = __webpack_require__(29), _dateController2 = _interopRequireDefault(_dateController), DateControl = {
         require: "ngModel",
-        controller: _twDateController2["default"],
+        controller: _dateController2["default"],
         bindings: {
             ngModel: "=",
             required: "@",
@@ -697,7 +697,7 @@
         },
         template: __webpack_require__(58)
     };
-    exports["default"] = TwDate;
+    exports["default"] = DateControl;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -845,10 +845,10 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twDynamicFormControlController = __webpack_require__(31), _twDynamicFormControlController2 = _interopRequireDefault(_twDynamicFormControlController), TwDynamicFormControl = {
+    var _formControlController = __webpack_require__(31), _formControlController2 = _interopRequireDefault(_formControlController), FormControl = {
         require: "ngModel",
         transclude: !0,
-        controller: _twDynamicFormControlController2["default"],
+        controller: _formControlController2["default"],
         bindings: {
             type: "@",
             name: "@",
@@ -876,7 +876,7 @@
         },
         template: __webpack_require__(59)
     };
-    exports["default"] = TwDynamicFormControl;
+    exports["default"] = FormControl;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwDynamicFormControlController($element, $scope) {
@@ -914,7 +914,7 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twFieldsetController = __webpack_require__(33), _twFieldsetController2 = _interopRequireDefault(_twFieldsetController), TwFieldset = {
+    var _fieldsetController = __webpack_require__(33), _fieldsetController2 = _interopRequireDefault(_fieldsetController), Fieldset = {
         bindings: {
             legend: "@",
             model: "=",
@@ -926,10 +926,10 @@
             errorMessages: "<",
             isValid: "=?"
         },
-        controller: _twFieldsetController2["default"],
+        controller: _fieldsetController2["default"],
         template: __webpack_require__(60)
     };
-    exports["default"] = TwFieldset;
+    exports["default"] = Fieldset;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwFieldsetController($scope) {
@@ -1031,9 +1031,9 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twRadioController = __webpack_require__(36), _twRadioController2 = _interopRequireDefault(_twRadioController), TwRadio = {
+    var _radioController = __webpack_require__(36), _radioController2 = _interopRequireDefault(_radioController), Radio = {
         require: "ngModel",
-        controller: _twRadioController2["default"],
+        controller: _radioController2["default"],
         bindings: {
             name: "@",
             value: "@",
@@ -1045,7 +1045,7 @@
         },
         template: __webpack_require__(61)
     };
-    exports["default"] = TwRadio;
+    exports["default"] = Radio;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwRadioController($scope, $element) {
@@ -1081,7 +1081,7 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twRequirementsFormController = __webpack_require__(38), _twRequirementsFormController2 = _interopRequireDefault(_twRequirementsFormController), TwRequirementsForm = {
+    var _requirementsFormController = __webpack_require__(38), _requirementsFormController2 = _interopRequireDefault(_requirementsFormController), RequirementsForm = {
         bindings: {
             model: "=",
             requirements: "<",
@@ -1092,10 +1092,10 @@
             errorMessages: "<",
             isValid: "=?"
         },
-        controller: _twRequirementsFormController2["default"],
+        controller: _requirementsFormController2["default"],
         template: __webpack_require__(62)
     };
-    exports["default"] = TwRequirementsForm;
+    exports["default"] = RequirementsForm;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwRequirementsFormController($scope, TwRequirementsService) {
@@ -1185,9 +1185,9 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twSelectController = __webpack_require__(41), _twSelectController2 = _interopRequireDefault(_twSelectController), TwSelect = {
+    var _selectController = __webpack_require__(41), _selectController2 = _interopRequireDefault(_selectController), Select = {
         require: "ngModel",
-        controller: _twSelectController2["default"],
+        controller: _selectController2["default"],
         transclude: !0,
         bindings: {
             ngModel: "=",
@@ -1211,7 +1211,7 @@
         },
         template: __webpack_require__(63)
     };
-    exports["default"] = TwSelect;
+    exports["default"] = Select;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwSelectController($element, $scope, $transclude, $timeout) {
@@ -1509,8 +1509,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twUploadController = __webpack_require__(46), _twUploadController2 = _interopRequireDefault(_twUploadController), TwUpload = {
-        controller: _twUploadController2["default"],
+    var _uploadController = __webpack_require__(46), _uploadController2 = _interopRequireDefault(_uploadController), Upload = {
+        controller: _uploadController2["default"],
         transclude: !0,
         bindings: {
             ngModel: "=",
@@ -1537,7 +1537,7 @@
         },
         template: __webpack_require__(64)
     };
-    exports["default"] = TwUpload;
+    exports["default"] = Upload;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwUploadController($timeout, $element, $http, $scope, $transclude, $q, $attrs) {
@@ -1666,17 +1666,17 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twProcessController = __webpack_require__(49), _twProcessController2 = _interopRequireDefault(_twProcessController), TwProcess = {
+    var _processController = __webpack_require__(49), _processController2 = _interopRequireDefault(_processController), Process = {
         bindings: {
             state: "<",
             size: "@",
             onStop: "&",
             promise: "<"
         },
-        controller: _twProcessController2["default"],
+        controller: _processController2["default"],
         template: __webpack_require__(66)
     };
-    exports["default"] = TwProcess;
+    exports["default"] = Process;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwProcessController($scope, $interval, $timeout) {
@@ -1727,16 +1727,16 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _twTabsController = __webpack_require__(51), _twTabsController2 = _interopRequireDefault(_twTabsController), TwTabs = {
+    var _tabsController = __webpack_require__(51), _tabsController2 = _interopRequireDefault(_tabsController), Tabs = {
         bindings: {
             tabs: "<",
             active: "=",
             onChange: "&"
         },
-        controller: _twTabsController2["default"],
+        controller: _tabsController2["default"],
         template: __webpack_require__(67)
     };
-    exports["default"] = TwTabs;
+    exports["default"] = Tabs;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwTabsController() {

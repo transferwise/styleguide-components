@@ -1,6 +1,6 @@
-import TwFieldsetController from './tw-fieldset.controller.js';
+import FieldsetController from './fieldset.controller.js';
 
-const TwFieldset = {
+const Fieldset = {
   bindings: {
     legend: '@',
     model: '=',
@@ -12,8 +12,8 @@ const TwFieldset = {
     errorMessages: '<',
     isValid: '=?'
   },
-  controller: TwFieldsetController,
+  controller: FieldsetController,
   template: require('./fieldset.html')
 };
 
-export default TwFieldset;
+export default Fieldset;
