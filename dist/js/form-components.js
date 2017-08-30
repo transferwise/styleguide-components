@@ -355,7 +355,9 @@
     var _checkboxController = __webpack_require__(23), _checkboxController2 = _interopRequireDefault(_checkboxController), _checkbox = __webpack_require__(55), _checkbox2 = _interopRequireDefault(_checkbox), Checkbox = {
         controller: _checkboxController2["default"],
         template: _checkbox2["default"],
-        require: "ngModel",
+        require: {
+            ngModelController: "ngModel"
+        },
         bindings: {
             name: "@",
             ngModel: "=",
@@ -368,35 +370,11 @@
     exports["default"] = Checkbox;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwCheckboxController($scope, $element) {
-        var $ctrl = this, $ngModel = $element.controller("ngModel");
-        $element.find(".tw-checkbox-button");
-        $ctrl.isChecked = function() {
-            return $ctrl.ngTrueValue && $ctrl.ngTrueValue === $ctrl.ngModel || !$ctrl.ngTrueValue && $ctrl.ngModel || !1;
-        }, $ctrl.checked = $ctrl.isChecked(), $ctrl.buttonClick = function($event) {
-            $ctrl.checked ? ($ctrl.checked = !1, $ngModel.$setViewValue($ctrl.ngFalseValue || !1)) : ($ctrl.checked = !0, 
-            $ngModel.$setViewValue($ctrl.ngTrueValue || !0)), $ngModel.$setTouched(), $event && $event.stopPropagation(), 
-            validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl);
-        }, $ctrl.buttonFocus = function() {
-            $element.closest(".checkbox").find("label").addClass("focus"), $element.triggerHandler("focus");
-        }, $ctrl.buttonBlur = function() {
-            $element.closest(".checkbox").find("label").removeClass("focus"), $element.triggerHandler("blur"), 
-            $ngModel.$setTouched(), validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl);
-        }, $ctrl.hiddenClick = function($event) {
-            $event.stopPropagation();
-        }, $element.closest("label").on("click", function(event) {
-            $element.find("button").trigger("click"), event.preventDefault(), event.stopPropagation();
-        }), $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
-            newValue !== oldValue && ($ngModel.$setDirty(), validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl), 
-            $ctrl.checked = $ctrl.isChecked());
-        }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
-            newValue && !oldValue ? $element.closest(".checkbox").addClass("disabled").addClass("disabled", !0) : !newValue && oldValue && $element.closest(".checkbox").removeClass("disabled").removeClass("disabled");
-        }), $scope.$watch("$ctrl.ngRequired", function(newValue, oldValue) {
-            newValue !== oldValue && newValue && validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl);
-        });
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
     }
-    function validateCheckbox(isChecked, $element, $ngModel, $ctrl) {
-        $ngModel.$touched && (!isChecked && $ctrl.ngRequired ? ($ngModel.$setValidity("required", !1), 
+    function validateCheckbox(isChecked, $element, $ngModel, isRequired) {
+        $ngModel.$touched && (!isChecked && isRequired ? ($ngModel.$setValidity("required", !1), 
         $element.find(".tw-checkbox-button").addClass("has-error"), $element.closest(".checkbox").addClass("has-error"), 
         $element.closest(".form-group").addClass("has-error")) : ($ngModel.$setValidity("required", !0), 
         $element.find(".tw-checkbox-button").removeClass("has-error"), $element.closest(".checkbox").removeClass("has-error"), 
@@ -404,7 +382,78 @@
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), TwCheckboxController.$inject = [ "$scope", "$element" ], exports["default"] = TwCheckboxController;
+    });
+    var _createClass = function() {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || !1, descriptor.configurable = !0, 
+                "value" in descriptor && (descriptor.writable = !0), Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+        return function(Constructor, protoProps, staticProps) {
+            return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+            Constructor;
+        };
+    }(), CheckboxController = function() {
+        function CheckboxController($scope, $element) {
+            _classCallCheck(this, CheckboxController);
+            var ngModelController = $element.controller("ngModel");
+            this.$element = $element, this.checked = this.isChecked(), this.addLabelHandler(), 
+            this.addWatchers($scope, $element, ngModelController);
+        }
+        return _createClass(CheckboxController, [ {
+            key: "addLabelHandler",
+            value: function() {
+                var _this = this;
+                this.$element.closest("label").on("click", function(event) {
+                    _this.$element.find("button").trigger("click"), event.preventDefault(), event.stopPropagation();
+                });
+            }
+        }, {
+            key: "addWatchers",
+            value: function($scope, $element, ngModelController) {
+                var _this2 = this;
+                $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
+                    newValue !== oldValue && (ngModelController.$setDirty(), validateCheckbox(_this2.checked, $element, ngModelController, _this2.ngRequired), 
+                    _this2.checked = _this2.isChecked());
+                }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
+                    newValue && !oldValue ? $element.closest(".checkbox").addClass("disabled").attr("disabled", !0) : !newValue && oldValue && $element.closest(".checkbox").removeClass("disabled").removeAttr("disabled");
+                }), $scope.$watch("$ctrl.ngRequired", function(newValue, oldValue) {
+                    newValue !== oldValue && validateCheckbox(_this2.checked, $element, ngModelController, _this2.ngRequired);
+                });
+            }
+        }, {
+            key: "isChecked",
+            value: function() {
+                return this.ngTrueValue && this.ngTrueValue === this.ngModel || !this.ngTrueValue && this.ngModel || !1;
+            }
+        }, {
+            key: "buttonClick",
+            value: function($event) {
+                this.checked ? (this.checked = !1, this.ngModelController.$setViewValue(this.ngFalseValue || !1)) : (this.checked = !0, 
+                this.ngModelController.$setViewValue(this.ngTrueValue || !0)), this.ngModelController.$setTouched(), 
+                $event && $event.stopPropagation(), validateCheckbox(this.checked, this.$element, this.ngModelController, this.ngRequired);
+            }
+        }, {
+            key: "buttonFocus",
+            value: function() {
+                this.$element.closest(".checkbox").find("label").addClass("focus"), this.$element.triggerHandler("focus");
+            }
+        }, {
+            key: "buttonBlur",
+            value: function() {
+                this.$element.closest(".checkbox").find("label").removeClass("focus"), this.$element.triggerHandler("blur"), 
+                this.ngModelController.$setTouched(), validateCheckbox(this.checked, this.$element, this.ngModelController, this.ngRequired);
+            }
+        }, {
+            key: "hiddenClick",
+            value: function($event) {
+                $event.stopPropagation();
+            }
+        } ]), CheckboxController;
+    }();
+    CheckboxController.$inject = [ "$scope", "$element" ], exports["default"] = CheckboxController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {

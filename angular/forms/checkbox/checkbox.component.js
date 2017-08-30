@@ -5,7 +5,9 @@ import template from './checkbox.html';
 const Checkbox = {
   controller,
   template,
-  require: 'ngModel',
+  require: {
+    ngModelController: 'ngModel'
+  },
   bindings: {
     name: "@",
     ngModel: '=',
