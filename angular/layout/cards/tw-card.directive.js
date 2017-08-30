@@ -15,24 +15,19 @@ const collapsedCardTemplate = ' \
   </div>';
 
 const expandedCardTemplate = ' \
-  <div class="collapse" \
-    ng-attr-aria-expanded="{{ $ctrl.open }}" \
-    ng-class="{\'in\': $ctrl.open }" \
-    ng-if="$ctrl.open" > \
-    <div class="p-l-panel p-r-panel p-b-panel"> \
-      <div class="media"> \
-        <div class="media-left"> \
-            <div class="circle circle-sm circle-inverse circle-responsive invisible"></div> \
-        </div> \
-        <div class="media-body"> \
-          <hr class="m-t-0 hidden-xs hidden-sm" /> \
-          <a  href="" ng-click="$ctrl.toggle($ctrl.index)" \
-              class="visible-xs-inline-block visible-sm-inline-block text-no-decoration m-t-1" \
-              style="margin-left: -8px;"> \
-              <i class="icon icon-left-arrow icon-xxl"></i> \
-          </a> \
-          <div ng-transclude="expandedCard"></div> \
-        </div> \
+  <div class="p-l-panel p-r-panel p-b-panel"> \
+    <div class="media"> \
+      <div class="media-left"> \
+          <div class="circle circle-sm circle-inverse circle-responsive invisible"></div> \
+      </div> \
+      <div class="media-body"> \
+        <hr class="m-t-0 hidden-xs hidden-sm" /> \
+        <a  href="" ng-click="$ctrl.toggle($ctrl.index)" \
+            class="visible-xs-inline-block visible-sm-inline-block text-no-decoration m-t-1" \
+            style="margin-left: -8px;"> \
+            <i class="icon icon-left-arrow icon-xxl"></i> \
+        </a> \
+        <div ng-transclude="expandedCard"></div> \
       </div> \
     </div> \
   </div>';
@@ -54,9 +49,14 @@ const twCardTemplate =
       \'disabled\': $ctrl.disabled \
     }">' +
     collapsedCardTemplate +
-    expandedCardTemplate +
-    cardFormTemplate +
-  '</li>';
+    '<div class="collapse" \
+      ng-attr-aria-expanded="{{ $ctrl.open }}" \
+      ng-class="{\'in\': $ctrl.open }" \
+      ng-if="$ctrl.open" >' +
+      expandedCardTemplate +
+      cardFormTemplate +
+    '</div> \
+  </li>';
 
 
 function TwCard() {
