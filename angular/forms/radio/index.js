@@ -1,5 +1,5 @@
-import TwRadio from './tw-radio.component.js';
+import Radio from './tw-radio.component.js';
 
 export default angular
   .module('tw.styleguide.forms.radio', [])
-  .component('twRadio', TwRadio).name;
+  .component('twRadio', Radio).name;

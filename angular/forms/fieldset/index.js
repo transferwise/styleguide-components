@@ -1,5 +1,6 @@
-import TwFieldset from './tw-fieldset.component.js';
+import FormControl from '../dynamic-form-control/';
+import Fieldset from './tw-fieldset.component.js';
 
 export default angular
   .module('tw.styleguide.forms.fieldset', [])
-  .component('twFieldset', TwFieldset).name;
+  .component('twFieldset', Fieldset).name;

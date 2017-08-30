@@ -1,5 +1,5 @@
-import TwSelect from './tw-select.component.js';
+import Select from './tw-select.component.js';
 
 export default angular
   .module('tw.styleguide.forms.select', [])
-  .component('twSelect', TwSelect).name;
+  .component('twSelect', Select).name;

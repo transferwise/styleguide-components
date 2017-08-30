@@ -1,5 +1,5 @@
-import TwCurrencyInput from './tw-currency-input.component.js';
+import CurrencyInput from './tw-currency-input.component.js';
 
 export default angular
   .module('tw.styleguide.forms.currency-input', [])
-  .component('twCurrencyInput', TwCurrencyInput).name;
+  .component('twCurrencyInput', CurrencyInput).name;
