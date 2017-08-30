@@ -1,15 +1,16 @@
 
-function TwCardController($transclude, TwCardsService) {
-  var $ctrl = this;
-  $ctrl.hasForm = $transclude.isSlotFilled("cardForm");
-  $ctrl.toggle = TwCardsService.toggle;
-  $ctrl.addCard = TwCardsService.addCard;
-  $ctrl.getExpandedIndex = TwCardsService.getExpandedIndex;
-  $ctrl.updateExpandedIndex = TwCardsService.updateExpandedIndex;
-  $ctrl.getCard = TwCardsService.getCard;
-  $ctrl.getLength = TwCardsService.getLength;
+class CardController {
+  constructor($transclude, CardsService) {
+    this.hasForm = $transclude.isSlotFilled("cardForm");
+    this.toggle = CardsService.toggle;
+    this.addCard = CardsService.addCard;
+    this.getExpandedIndex = CardsService.getExpandedIndex;
+    this.updateExpandedIndex = CardsService.updateExpandedIndex;
+    this.getCard = CardsService.getCard;
+    this.getLength = CardsService.getLength;
+  }
 }
 
-TwCardController.$inject = ['$transclude', 'TwCardsService'];
+CardController.$inject = ['$transclude', 'TwCardsService'];
 
-export default TwCardController;
+export default CardController;

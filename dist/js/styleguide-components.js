@@ -2479,16 +2479,19 @@
     exports["default"] = angular.module("tw.styleguide.styling.affix", []).directive("twAffix", _affixDirective2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwCardController($transclude, TwCardsService) {
-        var $ctrl = this;
-        $ctrl.hasForm = $transclude.isSlotFilled("cardForm"), $ctrl.toggle = TwCardsService.toggle, 
-        $ctrl.addCard = TwCardsService.addCard, $ctrl.getExpandedIndex = TwCardsService.getExpandedIndex, 
-        $ctrl.updateExpandedIndex = TwCardsService.updateExpandedIndex, $ctrl.getCard = TwCardsService.getCard, 
-        $ctrl.getLength = TwCardsService.getLength;
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), TwCardController.$inject = [ "$transclude", "TwCardsService" ], exports["default"] = TwCardController;
+    });
+    var CardController = function CardController($transclude, CardsService) {
+        _classCallCheck(this, CardController), this.hasForm = $transclude.isSlotFilled("cardForm"), 
+        this.toggle = CardsService.toggle, this.addCard = CardsService.addCard, this.getExpandedIndex = CardsService.getExpandedIndex, 
+        this.updateExpandedIndex = CardsService.updateExpandedIndex, this.getCard = CardsService.getCard, 
+        this.getLength = CardsService.getLength;
+    };
+    CardController.$inject = [ "$transclude", "TwCardsService" ], exports["default"] = CardController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
