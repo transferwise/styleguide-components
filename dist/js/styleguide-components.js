@@ -2627,44 +2627,69 @@
     exports["default"] = Process;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwProcessController($scope, $interval, $timeout) {
-        function isStopped(state) {
-            return state === -1 || 0 === state || 1 === state;
-        }
-        var $ctrl = this;
-        $ctrl.processing = $ctrl.state;
-        var interval;
-        $scope.$watch("$ctrl.state", function(newVal) {
-            isStopped($ctrl.processing) && ($ctrl.processing = null, $ctrl.startProcess());
-        }), $scope.$watch("$ctrl.size", function(newVal) {
-            switch ($interval.cancel(interval), $ctrl.startProcess(), $ctrl.size || ($ctrl.size = "sm"), 
-            $ctrl.size) {
-              case "xs":
-                $ctrl.radius = "11";
-                break;
-
-              case "sm":
-                $ctrl.radius = "22";
-                break;
-
-              case "xl":
-                $ctrl.radius = "61";
-                break;
-
-              default:
-                $ctrl.radius = "46%";
-            }
-        }), $ctrl.startProcess = function() {
-            interval = $interval(function() {
-                $ctrl.processing = $ctrl.state, isStopped($ctrl.state) && $ctrl.stopProcess();
-            }, 1500);
-        }, $ctrl.stopProcess = function() {
-            $interval.cancel(interval), $ctrl.onStop && (0 === $ctrl.state ? $ctrl.onStop() : $timeout($ctrl.onStop, 1800));
-        }, $ctrl.startProcess();
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+    }
+    function isStopped(state) {
+        return state === -1 || 0 === state || 1 === state;
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), TwProcessController.$inject = [ "$scope", "$interval", "$timeout" ], exports["default"] = TwProcessController;
+    });
+    var _createClass = function() {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || !1, descriptor.configurable = !0, 
+                "value" in descriptor && (descriptor.writable = !0), Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+        return function(Constructor, protoProps, staticProps) {
+            return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+            Constructor;
+        };
+    }(), ProcessController = function() {
+        function ProcessController($scope, $interval, $timeout) {
+            var _this = this;
+            _classCallCheck(this, ProcessController), this.$interval = $interval, this.$timeout = $timeout, 
+            this.interval = null, this.processing = this.state, $scope.$watch("$ctrl.state", function(newVal) {
+                isStopped(_this.processing) && (_this.processing = null, _this.startProcess());
+            }), $scope.$watch("$ctrl.size", function(newVal) {
+                switch ($interval.cancel(_this.interval), _this.startProcess(), _this.size || (_this.size = "sm"), 
+                _this.size) {
+                  case "xs":
+                    _this.radius = "11";
+                    break;
+
+                  case "sm":
+                    _this.radius = "22";
+                    break;
+
+                  case "xl":
+                    _this.radius = "61";
+                    break;
+
+                  default:
+                    _this.radius = "46%";
+                }
+            }), this.startProcess();
+        }
+        return _createClass(ProcessController, [ {
+            key: "startProcess",
+            value: function() {
+                var _this2 = this;
+                this.interval = this.$interval(function() {
+                    _this2.processing = _this2.state, isStopped(_this2.state) && _this2.stopProcess();
+                }, 1500);
+            }
+        }, {
+            key: "stopProcess",
+            value: function() {
+                this.interval && this.$interval.cancel(this.interval), this.onStop && (0 === this.state ? this.onStop() : this.$timeout(this.onStop, 1800));
+            }
+        } ]), ProcessController;
+    }();
+    ProcessController.$inject = [ "$scope", "$interval", "$timeout" ], exports["default"] = ProcessController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
