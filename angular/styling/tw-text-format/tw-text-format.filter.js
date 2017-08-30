@@ -1,15 +1,17 @@
-(function(angular) {
-  'use strict';
+  import TwTextFormatService from './tw-text-format.service.js';
 
-  angular
-    .module('tw.form-styling')
-    .filter('twTextFormat', ['TwTextFormatService', function(TwTextFormatService) {
-      return function(input, pattern) {
-        input = input || '';
-        if (!pattern) {
-          return input;
-        }
-        return TwTextFormatService.formatUsingPattern(input, pattern);
-      };
-    }]);
-})(window.angular);
+  function TwTextFormatFilter(TwTextFormatService) {
+    return function(input, pattern) {
+      input = input || '';
+      if (!pattern) {
+        return input;
+      }
+      return TwTextFormatService.formatUsingPattern(input, pattern);
+    };
+  }
+
+  TwTextFormatFilter.$inject = ['TwTextFormatService'];
+
+  export default angular
+    .module('tw.styleguide.styling.text-format')
+    .filter('twTextFormat', TwTextFormatFilter).name;

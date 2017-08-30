@@ -1,11 +1,3 @@
-(function(angular) {
-  'use strict';
-
-  angular
-    .module('tw.form-components')
-    .controller('TwDateController', TwDateController);
-
-  TwDateController.$inject = ['$element', '$log', '$scope', 'TwDateService'];
 
   function TwDateController($element, $log, $scope, TwDateService) {
     var $ctrl = this,
@@ -290,4 +282,6 @@
     init();
   }
 
-})(window.angular);
+  TwDateController.$inject = ['$element', '$log', '$scope', 'TwDateService'];
+
+  export default TwDateController;

@@ -1,11 +1,5 @@
-(function(angular) {
-  'use strict';
 
-  angular
-    .module('tw.form-components')
-    .service('TwCurrencyData', TwCurrencyData);
-
-  function TwCurrencyData() {
+  function TwCurrencyService() {
     var currencyDecimals = {
       'BIF': 0,
       'BYR': 0,
@@ -41,4 +35,7 @@
       return 2;
     };
   }
-})(window.angular);
+
+  export default angular
+    .module('tw.styleguide.services.currency-data', [])
+    .service('TwCurrencyService', TwCurrencyService).name;

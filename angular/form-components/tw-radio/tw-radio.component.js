@@ -1,4 +1,3 @@
-(function(angular) {
 
   const TwRadio = {
     require: 'ngModel',
@@ -85,9 +84,7 @@
       }
     });
   }
-  
-  angular
-    .module('tw.form-components')
-    .component('twRadio', TwRadio);
 
-})(window.angular);
+  export default angular
+    .module('tw.styleguide.forms.radio', [])
+    .component('twRadio', TwRadio).name;

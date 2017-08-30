@@ -1,8 +1,7 @@
-(function(angular) {
 
   const TwDateLookup = {
     require: 'ngModel',
-    controller: ['$element', '$scope', '$timeout', 'TwDateService', TwDateLookupController],
+    controller: TwDateLookupController,
     bindings: {
       ngModel: '=',
       ngChange: '&',
@@ -585,8 +584,13 @@
     init();
   }
 
-  angular
-    .module('tw.form-components')
-    .component('twDateLookup', TwDateLookup);
+  TwDateLookupController.$inject = [
+    '$element',
+    '$scope',
+    '$timeout',
+    'TwDateService'
+  ];
 
-})(window.angular);
+  export default angular
+    .module('tw.styleguide.forms.date-lookup', [])
+    .component('twDateLookup', TwDateLookup).name;

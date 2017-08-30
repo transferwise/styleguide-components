@@ -1,4 +1,3 @@
-(function(angular) {
 
   const TwProcess = {
     bindings: {
@@ -99,8 +98,6 @@
     $ctrl.startProcess();
   }
 
-  angular
-    .module('tw.form-components')
-    .component('twProcess', TwProcess);
-
-})(window.angular);
+  export default angular
+    .module('tw.styleguide.navigation.process', [])
+    .component('twProcess', TwProcess).name;

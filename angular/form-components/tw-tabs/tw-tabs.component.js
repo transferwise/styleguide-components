@@ -1,4 +1,3 @@
-(function(angular) {
 
   const TwTabs = {
     bindings: {
@@ -35,8 +34,6 @@
     }
   }
 
-  angular
-    .module('tw.form-components')
-    .component('twTabs', TwTabs);
-
-})(window.angular);
+  export default angular
+    .module('tw.styleguide.navigation.tabs', [])
+    .component('twTabs', TwTabs).name;

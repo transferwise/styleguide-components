@@ -1,9 +1,3 @@
-(function(angular) {
-  'use strict';
-
-  angular
-    .module('tw.form-styling')
-    .service('TwTextFormatService', TwTextFormatService);
 
   function TwTextFormatService() {
 
@@ -111,4 +105,5 @@
       return pattern[position] && pattern[position] !== "*";
     }
   }
-})(window.angular);
+
+  export default TwTextFormatService;

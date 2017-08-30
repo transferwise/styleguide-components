@@ -1,11 +1,3 @@
-(function(angular) {
-	'use strict';
-
-	angular
-		.module('tw.form-components')
-		.directive('twFileSelect', TwFileSelectDirective)
-		.controller('TwUploadDroppableController', TwUploadDroppableController)
-		.directive('twUploadDroppable', TwUploadDroppableDirective);
 
 	function TwUploadDroppableDirective() {
 		return {
@@ -120,5 +112,7 @@
 		});
 	}
 
-
-})(window.angular);
+	export default angular
+		.module('tw.styleguide.forms.upload-droppable', [])
+		.directive('twFileSelect', TwFileSelectDirective)
+		.directive('twUploadDroppable', TwUploadDroppableDirective).name;

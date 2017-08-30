@@ -1,8 +1,8 @@
-(function(angular) {
+  import TwAmountCurrencySelectController from  './tw-amount-currency-select.controller.js';
 
   const TwAmountCurrencySelect = {
     require: 'ngModel',
-    controller: 'TwAmountCurrencySelectController',
+    controller: TwAmountCurrencySelectController,
     transclude: {
       'addon': '?addon'
     },
@@ -75,8 +75,6 @@
       </div>',
   };
 
-  angular
-    .module('tw.form-components')
-    .component('twAmountCurrencySelect', TwAmountCurrencySelect);
-
-})(window.angular);
+  export default angular
+    .module('tw.styleguide.forms.amount-currency-select', [])
+    .component('twAmountCurrencySelect', TwAmountCurrencySelect).name;

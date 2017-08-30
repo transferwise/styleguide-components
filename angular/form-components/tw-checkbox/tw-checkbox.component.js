@@ -1,6 +1,4 @@
 
-(function(angular) {
-
   const TwCheckbox = {
     require: 'ngModel',
     controller: ['$scope', '$element', TwCheckboxController],
@@ -29,15 +27,10 @@
       </button>"
   };
 
-  angular
-    .module('tw.form-components')
-    .component('twCheckbox', TwCheckbox);
-
   function TwCheckboxController($scope, $element) {
     var $ctrl = this,
       $ngModel = $element.controller('ngModel'),
       buttonElement = $element.find('.tw-checkbox-button');
-      labelSelector = '.checkbox';
 
     $ctrl.isChecked = function() {
       return ($ctrl.ngTrueValue && $ctrl.ngTrueValue === $ctrl.ngModel) ||
@@ -127,4 +120,7 @@
       $element.closest('.form-group').removeClass('has-error');
     }
   }
-})(window.angular);
+
+  export default angular
+    .module('tw.styleguide.forms.checkbox', [])
+    .component('twCheckbox', TwCheckbox).name;

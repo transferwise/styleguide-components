@@ -1,18 +1,5 @@
-(function(angular) {
-  'use strict';
 
-  angular
-    .module('tw.form-components')
-    .controller('TwAmountCurrencySelectController', TwAmountCurrencySelectController);
-
-  TwAmountCurrencySelectController.$inject = [
-    '$element',
-    '$scope',
-    '$timeout',
-    'TwCurrencyData'
-  ];
-
-  function TwAmountCurrencySelectController($element, $scope, $timeout, TwCurrencyData) {
+  function TwAmountCurrencySelectController($element, $scope, $timeout, TwCurrencyService) {
     var $ctrl = this;
     var $ngModel = $element.controller('ngModel');
 
@@ -26,7 +13,7 @@
 
     $scope.$watch('$ctrl.currency', function(newValue, oldValue) {
       if (newValue && newValue !== oldValue) {
-        $ctrl.showDecimals = TwCurrencyData.getDecimals(newValue) > 0;
+        $ctrl.showDecimals = TwCurrencyService.getDecimals(newValue) > 0;
       }
     });
 
@@ -85,4 +72,11 @@
     }
   }
 
-})(window.angular);
+  TwAmountCurrencySelectController.$inject = [
+    '$element',
+    '$scope',
+    '$timeout',
+    'TwCurrencyService'
+  ];
+
+  export default TwAmountCurrencySelectController;

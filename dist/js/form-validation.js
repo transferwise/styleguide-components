@@ -1,5 +1,35 @@
-angular.module("tw.form-validation", []);
-!function() {
+!function(modules) {
+    function __webpack_require__(moduleId) {
+        if (installedModules[moduleId]) return installedModules[moduleId].exports;
+        var module = installedModules[moduleId] = {
+            i: moduleId,
+            l: !1,
+            exports: {}
+        };
+        return modules[moduleId].call(module.exports, module, module.exports, __webpack_require__), 
+        module.l = !0, module.exports;
+    }
+    var installedModules = {};
+    return __webpack_require__.m = modules, __webpack_require__.c = installedModules, 
+    __webpack_require__.i = function(value) {
+        return value;
+    }, __webpack_require__.d = function(exports, name, getter) {
+        __webpack_require__.o(exports, name) || Object.defineProperty(exports, name, {
+            configurable: !1,
+            enumerable: !0,
+            get: getter
+        });
+    }, __webpack_require__.n = function(module) {
+        var getter = module && module.__esModule ? function() {
+            return module["default"];
+        } : function() {
+            return module;
+        };
+        return __webpack_require__.d(getter, "a", getter), getter;
+    }, __webpack_require__.o = function(object, property) {
+        return Object.prototype.hasOwnProperty.call(object, property);
+    }, __webpack_require__.p = "", __webpack_require__(__webpack_require__.s = 4);
+}([ function(module, exports, __webpack_require__) {
     "use strict";
     function TwDynamicAsyncValidator($log, $q, $http) {
         function DyancicAsyncValidatorController() {
@@ -18,9 +48,10 @@ angular.module("tw.form-validation", []);
             }
         };
     }
-    angular.module("tw.form-validation").directive("twDynamicAsyncValidator", TwDynamicAsyncValidator), 
-    TwDynamicAsyncValidator.$inject = [ "$log", "$q", "$http" ];
-}(), function(angular) {
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), TwDynamicAsyncValidator.$inject = [ "$log", "$q", "$http" ], exports["default"] = angular.module("tw.styleguide.validation.async", []).directive("twDynamicAsyncValidator", TwDynamicAsyncValidator).name;
+}, function(module, exports, __webpack_require__) {
     "use strict";
     function TwFormValidation() {
         return {
@@ -34,8 +65,10 @@ angular.module("tw.form-validation", []);
             }
         };
     }
-    angular.module("tw.form-validation").directive("form", TwFormValidation);
-}(window.angular), function(angular) {
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), exports["default"] = angular.module("tw.styleguide.validation.form", []).directive("form", TwFormValidation).name;
+}, function(module, exports, __webpack_require__) {
     "use strict";
     function TwValidation() {
         return {
@@ -62,5 +95,21 @@ angular.module("tw.form-validation", []);
         return ngModel.$valid ? (formGroup.removeClass("has-error"), void element.removeAttr("aria-invalid")) : void (ngModel.$touched && ngModel.$dirty && (formGroup.addClass("has-error"), 
         element.attr("aria-invalid", !0)));
     }
-    angular.module("tw.form-validation").directive("twValidation", TwValidation);
-}(window.angular);
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    }), exports["default"] = angular.module("tw.stylguide.validation.control", []).directive("twValidation", TwValidation).name;
+}, function(module, exports) {
+    module.exports = angular;
+}, function(module, exports, __webpack_require__) {
+    "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
+    Object.defineProperty(exports, "__esModule", {
+        value: !0
+    });
+    var _angular = __webpack_require__(3), _angular2 = _interopRequireDefault(_angular), _twFormValidationDirective = __webpack_require__(1), _twFormValidationDirective2 = _interopRequireDefault(_twFormValidationDirective), _twValidationDirective = __webpack_require__(2), _twValidationDirective2 = _interopRequireDefault(_twValidationDirective), _twDynamicAsyncValidatorDirective = __webpack_require__(0), _twDynamicAsyncValidatorDirective2 = _interopRequireDefault(_twDynamicAsyncValidatorDirective);
+    exports["default"] = _angular2["default"].module("tw.form-validation", [ _twFormValidationDirective2["default"], _twValidationDirective2["default"], _twDynamicAsyncValidatorDirective2["default"] ]).name;
+} ]);

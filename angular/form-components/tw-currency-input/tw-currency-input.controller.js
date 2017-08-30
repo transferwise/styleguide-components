@@ -1,18 +1,5 @@
-(function(angular) {
-  'use strict';
 
-  angular
-    .module('tw.form-components')
-    .controller('TwCurrencyInputController', TwCurrencyInputController);
-
-  TwCurrencyInputController.$inject = [
-    '$element',
-    '$scope',
-    '$timeout',
-    'TwCurrencyData'
-  ];
-
-  function TwCurrencyInputController($element, $scope, $timeout, TwCurrencyData) {
+  function TwCurrencyInputController($element, $scope, $timeout, TwCurrencyService) {
     var $ctrl = this;
     var $ngModel = $element.controller('ngModel');
 
@@ -25,7 +12,7 @@
     });
     $scope.$watch('$ctrl.currency', function(newValue, oldValue) {
       if (newValue !== oldValue) {
-        $ctrl.showDecimals = TwCurrencyData.getDecimals(newValue) > 0;
+        $ctrl.showDecimals = TwCurrencyService.getDecimals(newValue) > 0;
       }
     });
 
@@ -67,4 +54,11 @@
     }
   }
 
-})(window.angular);
+  TwCurrencyInputController.$inject = [
+    '$element',
+    '$scope',
+    '$timeout',
+    'TwCurrencyService'
+  ];
+
+  export default TwCurrencyInputController;

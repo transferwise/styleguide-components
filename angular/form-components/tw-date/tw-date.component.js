@@ -1,6 +1,6 @@
-(function(angular) {
+  import TwDateController from  './tw-date.controller.js';
 
-  var daySectionTemplate = " \
+  const daySectionTemplate = " \
     <label class='sr-only'>Day</label> \
     <input type='number' \
       name='day' \
@@ -14,7 +14,7 @@
       ng-required='$ctrl.dateRequired' \
       tw-focusable />";
 
-  var monthSectionTemplate = "  \
+  const monthSectionTemplate = "  \
     <label class='sr-only'>Month</label>\
     <tw-select \
       name='month' \
@@ -26,7 +26,7 @@
       options='$ctrl.dateMonths'> \
     </tw-select>";
 
-  var yearSectionTemplate = " \
+  const yearSectionTemplate = " \
     <label class='sr-only'>Year</label> \
     <input type='number' \
       name='year' \
@@ -42,7 +42,7 @@
       ng-required='$ctrl.dateRequired' \
       tw-focusable />";
 
-  var templateAsString = " \
+  const templateAsString = " \
     <div class='row'> \
       <div class='col-sm-5 tw-date-month-column' ng-if='$ctrl.monthBeforeDay'>" +
         monthSectionTemplate + " \
@@ -60,7 +60,7 @@
 
   const TwDate = {
     require: 'ngModel',
-    controller: 'TwDateController',
+    controller: TwDateController,
     bindings: {
       ngModel: '=',
       required: '@',
@@ -78,8 +78,6 @@
     template: templateAsString
   };
 
-  angular
-    .module('tw.form-components')
-    .component('twDate', TwDate);
-
-})(window.angular);
+  export default angular
+    .module('tw.styleguide.forms.date', [])
+    .component('twDate', TwDate).name;

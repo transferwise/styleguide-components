@@ -1,9 +1,3 @@
-(function(angular) {
-  'use strict';
-
-  angular
-    .module('tw.form-components')
-    .service('TwDateService', TwDateService);
 
   function TwDateService() {
 
@@ -236,4 +230,7 @@
 
     };
   }
-})(window.angular);
+
+  export default angular
+    .module('tw.styleguide.services.date', [])
+    .service('TwDateService', TwDateService).name;

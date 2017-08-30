@@ -1,7 +1,3 @@
-(function(angular) {
-  angular
-    .module('tw.form-styling')
-    .directive('twAffix', TwAffix);
 
   function TwAffix() {
     return {
@@ -29,4 +25,6 @@
     };
   }
 
-})(window.angular);
+  export default angular
+    .module('tw.styleguide.styling.affix', [])
+    .directive('twAffix', TwAffix).name;

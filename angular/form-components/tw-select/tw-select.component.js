@@ -1,4 +1,3 @@
-(function(angular) {
 
   const TwSelect = {
     require: 'ngModel',
@@ -559,9 +558,6 @@
     return value || value === 0 || value === false;
   }
 
-
-  angular
-    .module('tw.form-components')
-    .component('twSelect', TwSelect);
-
-})(window.angular);
+  export default angular
+    .module('tw.styleguide.forms.select', [])
+    .component('twSelect', TwSelect).name;

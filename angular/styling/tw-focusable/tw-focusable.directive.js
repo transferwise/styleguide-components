@@ -1,9 +1,7 @@
-(function(angular) {
-  'use strict';
 
   /* TODO deprecate in V1, opt-in through tw-focusable */
   angular
-    .module('tw.form-styling')
+    .module('tw.styleguide.styling.default-focus', [])
     .directive('formControl', TwFormControlStyling);
 
   function TwFormControlStyling() {
@@ -13,9 +11,6 @@
     };
   }
 
-  angular
-    .module('tw.form-styling')
-    .directive('twFocusable', TwFocusable);
 
   function TwFocusable() {
     return {
@@ -35,4 +30,7 @@
         formGroup.removeClass('focus');
       });
   }
-})(window.angular);
+
+  export default angular
+    .module('tw.styleguide.styling.focusable', [])
+    .directive('twFocusable', TwFocusable).name;

@@ -1,8 +1,8 @@
-(function(angular) {
+  import TwCurrencyInputController from  './tw-currency-input.controller.js';
 
   const TwCurrencyInput = {
     require: 'ngModel',
-    controller: 'TwCurrencyInputController',
+    controller: TwCurrencyInputController,
     transclude: {
       'addon': '?addon'
     },
@@ -45,8 +45,6 @@
       </div>',
   };
 
-  angular
-    .module('tw.form-components')
-    .component('twCurrencyInput', TwCurrencyInput);
-
-})(window.angular);
+  export default angular
+    .module('tw.styleguide.forms.currency-input', [])
+    .component('twCurrencyInput', TwCurrencyInput).name;

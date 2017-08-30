@@ -1,11 +1,3 @@
-(function() {
-  'use strict';
-
-  angular
-    .module('tw.form-validation')
-    .directive('twDynamicAsyncValidator', TwDynamicAsyncValidator);
-
-  TwDynamicAsyncValidator.$inject = ['$log', '$q', '$http'];
 
   function TwDynamicAsyncValidator($log, $q, $http) {
     return {
@@ -50,4 +42,9 @@
         });
     }
   }
-})();
+
+  TwDynamicAsyncValidator.$inject = ['$log', '$q', '$http'];
+
+  export default angular
+    .module('tw.styleguide.validation.async', [])
+    .directive('twDynamicAsyncValidator', TwDynamicAsyncValidator).name;
