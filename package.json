@@ -42,6 +42,7 @@
     "grunt-karma": "^0.12.1",
     "grunt-webpack": "^3.0.2",
     "grunt-webpack-server": "^0.1.0",
+    "html-loader": "^0.5.1",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.21",
     "karma-chrome-launcher": "^0.2.2",

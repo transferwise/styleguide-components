@@ -19,30 +19,7 @@ const TwCurrencyInput = {
     size: '@',
     locale: '@'
   },
-  template: ' \
-    <div class="input-group" ng-class="{ \
-      \'input-group-sm\': $ctrl.size === \'sm\', \
-      \'input-group-lg\': $ctrl.size === \'lg\', \
-      disabled: $ctrl.ngDisabled \
-    }"> \
-      <input \
-        type="tel" \
-        autocomplete="off" \
-        name="amount" \
-        step="any" \
-        class="form-control p-r-0" \
-        placeholder="{{$ctrl.placeholder}}" \
-        show-decimals="$ctrl.showDecimals" \
-        tw-focusable \
-        tw-number-input-formatter \
-        ng-change="$ctrl.changedInputValue()" \
-        ng-model="$ctrl.ngModel" \
-        ng-disabled="$ctrl.ngDisabled" /> \
-      <span class="hello-world input-group-addon tw-currency-input-code p-l-1"> \
-        <span ng-transclude="addon"></span> \
-        {{ $ctrl.currency || $ctrl.currencyCode }} \
-      </span> \
-    </div>',
+  template: require('./currency-input.html')
 };
 
 export default TwCurrencyInput;

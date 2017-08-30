@@ -32,47 +32,7 @@ const TwAmountCurrencySelect = {
     size: '@',
     locale: '@'
   },
-  template: '\
-    <div class="input-group" ng-class="{ \
-      \'input-group-sm\': $ctrl.size === \'sm\', \
-      \'input-group-lg\': $ctrl.size === \'lg\', \
-      disabled: $ctrl.ngDisabled \
-    }">  \
-      <input \
-        type="tel"  \
-        autocomplete="off"  \
-        name="amount"  \
-        step="any"  \
-        class="form-control"  \
-        placeholder="{{ $ctrl.placeholder }}" \
-        tw-focusable  \
-        show-decimals="$ctrl.showDecimals" \
-        tw-number-input-formatter  \
-        ng-change="$ctrl.changedAmount()"  \
-        ng-model="$ctrl.ngModel" \
-        ng-disabled="$ctrl.ngDisabled" /> \
-      <span class="input-group-addon" \
-        ng-class="{\'input-lg\': $ctrl.size === \'lg\'}" ng-transclude="addon"></span> \
-      <span class="input-group-btn">  \
-        <tw-select \
-          ng-model="$ctrl.currency" \
-          ng-required="true" \
-          size="{{ $ctrl.size }}" \
-          inverse="true" \
-          dropdown-right="xs" \
-          dropdown-width="lg" \
-          hide-currency="xs" \
-          hide-note="true" \
-          hide-secondary="true" \
-          options="$ctrl.currencies" \
-          filter="{{ $ctrl.currencyFilterPlaceholder }}" \
-          ng-change="$ctrl.changedCurrency()"> \
-            <a href="" ng-if="!!$ctrl.customActionLabel" ng-click="$ctrl.onCustomAction()"> \
-              {{ $ctrl.customActionLabel }} \
-            </a> \
-        </tw-select> \
-      </span> \
-    </div>',
+  template: require('./amount-currency-select.html')
 };
 
 export default TwAmountCurrencySelect;
