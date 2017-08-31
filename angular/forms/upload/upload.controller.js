@@ -1,129 +1,155 @@
 
-function TwUploadController(
-  $timeout,
-  $element,
-  $http,
-  $scope,
-  $transclude,
-  $q,
-  $attrs)
-{
-  var $ctrl = this;
-  var asyncPromise;
-  var isImage = false;
+class UploadController {
+  constructor(
+    $timeout,
+    $element,
+    $http,
+    $scope,
+    $transclude,
+    $q,
+    $attrs
+  ) {
+    this.$timeout = $timeout;
+    this.$element = $element;
+    this.$http = $http;
+    this.$attrs = $attrs;
+    this.$q = $q;
 
-  $ctrl.dragCounter = 0;
-  $ctrl.isProcessing = false;
+    // First isImage updated only at select times, second updated instantly.
+    this.isImage = false;
+    this.isImage_instant = false;
 
-  $ctrl.processingState = null;
+    this.dragCounter = 0;
+    this.isProcessing = false;
 
-  checkForTranscludedContent($transclude, $ctrl);
+    this.processingState = null;
 
-  $scope.$watch('$ctrl.icon', function() {
-    $ctrl.viewIcon = $ctrl.icon ? $ctrl.icon : 'upload';
-  });
+    this.checkForTranscludedContent($transclude, this);
 
-  if (($ctrl.processingText || $ctrl.successText || $ctrl.failureText) &&
-      (!$ctrl.processingText || !$ctrl.successText || !$ctrl.failureText)) {
-    throw new Error('Supply all of processing, success, and failure text, or supply none.');
+    $scope.$watch('$ctrl.icon', () => {
+      this.viewIcon = this.icon ? this.icon : 'upload';
+    });
+
+    if ((this.processingText || this.successText || this.failureText) &&
+        (!this.processingText || !this.successText || !this.failureText)) {
+      throw new Error(
+        'Supply all of processing, success, and failure text, or supply none.'
+      );
+    }
+
+    this.addDragHandlers($scope, $element);
   }
 
-  addDragHandlers($element);
+  onManualUpload() {
+    const element = this.$element[0];
+    const uploadInput = element.querySelector('.tw-droppable-input');
+    const file = uploadInput.files[0];
 
-  $ctrl.onManualUpload = function(event) {
-    var file = angular.element(
-      $element[0].querySelector('.tw-droppable-input')
-    )[0].files[0];
+    if (!file) {
+      throw new Error('Could not retrieve file');
+    }
 
-    $ctrl.fileDropped(file, event);
-  };
+    this.fileDropped(file);
+  }
 
-  $ctrl.fileDropped = function(file, event) {
-    reset();
+  fileDropped(file) {
+    this.reset();
 
-    isImage = (file.type && file.type.indexOf('image') > -1);
-    $ctrl.fileName = file.name;
+    this.isImage_instant = (file.type && file.type.indexOf('image') > -1);
+    this.fileName = file.name;
 
-    $ctrl.isProcessing = true;
-    $ctrl.processingState = null;
+    this.isProcessing = true;
+    this.processingState = null;
 
-    triggerHandler($ctrl.onStart, file);
+    triggerHandler(this.onStart, file);
 
-    if (!isSizeValid(file, $ctrl.maxSize)) {
-      $ctrl.isTooLarge = true;
-      asyncFailure({
+    if (!isSizeValid(file, this.maxSize)) {
+      this.isTooLarge = true;
+      this.asyncFailure({
         status: 413,
         statusText: 'Request Entity Too Large'
       });
       return;
     }
 
-    if (!isTypeValid(file, $ctrl.accept)) {
-      $ctrl.isWrongType = true;
-      asyncFailure({
+    if (!isTypeValid(file, this.accept)) {
+      this.isWrongType = true;
+      this.asyncFailure({
         status: 415,
         statusText: 'Unsupported Media Type'
       });
       return;
     }
 
-    if ($ctrl.httpOptions) {
+    const $ctrl = this;
+
+    if (this.httpOptions) {
       // Post file now
-      $q.all([
-          asyncPost(file),
-          asyncFileRead(file)
+      this.$q.all([
+          this.asyncPost(file),
+          this.asyncFileRead(file)
         ])
-        .then(function(response) {
-          showDataImage(response[1]);
-          return response[0];
+        .then((response) => {
+          asyncSuccess(response[0], $ctrl);
+          return response;
         })
-        .then(asyncSuccess)
-        .catch(asyncFailure);
+        .then((response) => {
+          showDataImage(response[1], $ctrl);
+          return response;
+        })
+        .catch((error) => {
+          return asyncFailure(error, $ctrl);
+        });
     } else {
       // Post on form submit
-      asyncFileRead(file)
-        .then(showDataImage)
-        .then(asyncSuccess)
-        .catch(asyncFailure);
+      this.asyncFileRead(file)
+        .then((response) => {
+          return asyncSuccess(response, $ctrl);
+        })
+        .then((response) => {
+          return showDataImage(response, $ctrl);
+        })
+        .catch((error) => {
+          return asyncFailure(error, $ctrl);
+        });
     }
-  };
-
-  $ctrl.onDragChange = function(enter) {
-    if (enter) {
-      $ctrl.dragCounter++;
-      if ($ctrl.dragCounter >= 1) {
-        $ctrl.isDroppable = true;
-      }
-    } else {
-      $ctrl.dragCounter--;
-      if ($ctrl.dragCounter <= 0) {
-        $ctrl.isDroppable = false;
-      }
-    }
-  };
-
-  $ctrl.clear = function() {
-    reset();
-    triggerHandler($ctrl.onCancel);
-  };
-
-  function reset() {
-    $ctrl.isDroppable = false;
-    $ctrl.isProcessing = false;
-    $ctrl.isSuccess = false;
-    $ctrl.isError = false;
-    $ctrl.dragCounter = 0;
-    $ctrl.isDone = false;
-    $ctrl.isTooLarge = false;
-    $ctrl.isWrongType = false;
-    $element[0].querySelector('input').value = null;
-    setNgModel(null);
   }
 
-  function setNgModel(value) {
+  onDragEnter() {
+    this.dragCounter++;
+    if (this.dragCounter >= 1) {
+      this.isDroppable = true;
+    }
+  }
+  onDragLeave() {
+    this.dragCounter--;
+    if (this.dragCounter <= 0) {
+      this.isDroppable = false;
+    }
+  }
+
+  clear() {
+    this.reset();
+    triggerHandler(this.onCancel);
+  }
+
+  reset() {
+    this.isDroppable = false;
+    this.isProcessing = false;
+    this.isSuccess = false;
+    this.isError = false;
+    this.dragCounter = 0;
+    this.isDone = false;
+    this.isTooLarge = false;
+    this.isWrongType = false;
+    this.$element[0].querySelector('input').value = null;
+    this.setNgModel(null);
+  }
+
+  setNgModel(value) {
     // If ngModel not assignable, we don't want to error.
-    if (typeof $attrs.ngModel !== 'undefined') {
-      var $ngModel = $element.controller('ngModel');
+    if (typeof this.$attrs.ngModel !== 'undefined') {
+      const $ngModel = this.$element.controller('ngModel');
       if (!$ngModel.$setViewValue) {
         return;
       }
@@ -131,40 +157,23 @@ function TwUploadController(
     }
   }
 
-  function asyncPost(file) {
+  asyncPost(file) {
     var formData = new FormData();
-    formData.append($ctrl.name, file);
+    formData.append(this.name, file);
 
-    var $httpOptions = prepareHttpOptions(angular.copy($ctrl.httpOptions));
-    return $http.post($httpOptions.url, formData, $httpOptions);
+    var $httpOptions = prepareHttpOptions(angular.copy(this.httpOptions));
+    return this.$http.post($httpOptions.url, formData, $httpOptions);
   }
 
-  function prepareHttpOptions($httpOptions) {
-    if (!$httpOptions.url) {
-      throw new Error('You must supply a URL to post image data asynchronously');
-    }
-    if (!$httpOptions.headers) {
-      $httpOptions.headers = {};
-    }
-    if ($httpOptions.method) {
-      delete $httpOptions.method;
-    }
-
-    $httpOptions.headers['Content-Type'] = undefined;
-    $httpOptions.transformRequest = angular.identity;
-
-    return $httpOptions;
-  }
-
-  function asyncFileRead(file) {
+  asyncFileRead(file) {
     var reader = new FileReader();
-    var deferred = $q.defer();
+    var deferred = this.$q.defer();
 
     // When the reader finishes loading resolve the promise
-    reader.onload = function(event) {
+    reader.onload = (event) => {
       deferred.resolve(event.target.result);
     };
-    reader.onerror = function(event) {
+    reader.onerror = (event) => {
       deferred.reject(event);
     };
 
@@ -173,85 +182,38 @@ function TwUploadController(
     return deferred.promise;
   }
 
-  function showDataImage(dataUrl) {
-    setNgModel(dataUrl);
-    // Only set isImage at this point to avoid trying to show another file type
-    $ctrl.isImage = isImage;
-    if (isImage) {
-      $ctrl.image = dataUrl;
-    }
-  }
-
-  function asyncSuccess(response) {
-    // Start changing process indicator immediately
-    $ctrl.processingState = 1;
-
-    // Wait before updating text
-    $timeout(function() {
-      $ctrl.isProcessing = false;
-      $ctrl.isSuccess = true;
-    }, 3000);
-
-    // Allow a small amount of extra time before notifying external handlers
-    $timeout(function() {
-      triggerHandler($ctrl.onSuccess, response);
-      $ctrl.isDone = true;
-    }, 3800);
-
-    return response;
-  }
-
-  function asyncFailure(error) {
-    // Start changing process indicator immediately
-    $ctrl.processingState = -1;
-
-    // Wait before updating text
-    $timeout(function() {
-      $ctrl.isProcessing = false;
-      $ctrl.isError = true;
-    }, 3000);
-
-    // Allow a small amount of extra time before notifying external handlers
-    $timeout(function() {
-      triggerHandler($ctrl.onFailure, error);
-      $ctrl.isDone = true;
-    }, 4100);  //3500); TODO for some reason more time is needed
-
-    return error;
-  }
-
-  function isSizeValid(file, maxSize) {
-    return !(angular.isNumber(maxSize) && file.size > maxSize);
-  }
-
-  function isTypeValid(file, accept) {
-    return true;
-    // TODO validate file type
-    // $ctrl.isWrongType = true;
-  }
-
-  function addDragHandlers($element) {
-    $element[0].addEventListener('dragover', function(event) {
+  addDragHandlers($scope, $element) {
+    $element[0].addEventListener('dragenter', (event) => {
       event.preventDefault();
-      $ctrl.onDragChange(true);
+      this.onDragEnter();
       $scope.$apply();
     }, false);
 
-    $element[0].addEventListener('dragover', function(event) {
+    $element[0].addEventListener('dragover', (event) => {
       event.preventDefault();
     }, false);
 
-    $element[0].addEventListener('dragleave', function(event) {
+    $element[0].addEventListener('dragleave', (event) => {
       event.preventDefault();
-      $ctrl.onDragChange(false);
+      this.onDragLeave();
       $scope.$apply();
     }, false);
 
-    $element[0].addEventListener('drop', function(event) {
+    $element[0].addEventListener('drop', (event) => {
       event.preventDefault();
-      $ctrl.fileDropped(event.dataTransfer.files[0], event);
+      this.fileDropped(event.dataTransfer.files[0]);
       $scope.$apply();
     }, false);
+  }
+
+  checkForTranscludedContent($transclude, $ctrl) {
+    $transclude((clone) => {
+      if (clone.length > 1 || clone.text().trim() !== '') {
+        this.hasTranscluded = true;
+      } else {
+        this.hasTranscluded = false;
+      }
+    });
   }
 }
 
@@ -261,15 +223,82 @@ function triggerHandler(method, argument) {
   }
 }
 
-function checkForTranscludedContent($transclude, $ctrl) {
-  $transclude(function(clone) {
-    if (clone.length > 1 || clone.text().trim() !== '') {
-      $ctrl.hasTranscluded = true;
-    }
-  });
+
+function prepareHttpOptions($httpOptions) {
+  if (!$httpOptions.url) {
+    throw new Error('You must supply a URL to post image data asynchronously');
+  }
+  if (!$httpOptions.headers) {
+    $httpOptions.headers = {};
+  }
+  if ($httpOptions.method) {
+    delete $httpOptions.method;
+  }
+
+  $httpOptions.headers['Content-Type'] = undefined;
+  $httpOptions.transformRequest = angular.identity;
+
+  return $httpOptions;
 }
 
-TwUploadController.$inject = [
+function isSizeValid(file, maxSize) {
+  return !(angular.isNumber(maxSize) && file.size > maxSize);
+}
+
+function isTypeValid(file, accept) {
+  return true;
+  // TODO validate file type
+  // this.isWrongType = true;
+}
+
+function showDataImage(dataUrl, $ctrl) {
+  $ctrl.setNgModel(dataUrl);
+  // Only set isImage at this point to avoid trying to show another file type
+  $ctrl.isImage = $ctrl.isImage_instant;
+  if ($ctrl.isImage) {
+    $ctrl.image = dataUrl;
+  }
+}
+
+function asyncSuccess(response, $ctrl) {
+  // Start changing process indicator immediately
+  $ctrl.processingState = 1;
+
+  // Wait before updating text
+  $ctrl.$timeout(() => {
+    $ctrl.isProcessing = false;
+    $ctrl.isSuccess = true;
+  }, 3000);
+
+  // Allow a small amount of extra time before notifying external handlers
+  $ctrl.$timeout(() => {
+    triggerHandler($ctrl.onSuccess, response);
+    $ctrl.isDone = true;
+  }, 3800);
+
+  return response;
+}
+
+function asyncFailure(error, $ctrl) {
+  // Start changing process indicator immediately
+  $ctrl.processingState = -1;
+
+  // Wait before updating text
+  $ctrl.$timeout(() => {
+    $ctrl.isProcessing = false;
+    $ctrl.isError = true;
+  }, 3000);
+
+  // Allow a small amount of extra time before notifying external handlers
+  $ctrl.$timeout(() => {
+    triggerHandler($ctrl.onFailure, error);
+    $ctrl.isDone = true;
+  }, 4100);  //3500); TODO for some reason more time is needed
+
+  return error;
+}
+
+UploadController.$inject = [
   '$timeout',
   '$element',
   '$http',
@@ -279,4 +308,4 @@ TwUploadController.$inject = [
   '$attrs'
 ];
 
-export default TwUploadController;
+export default UploadController;

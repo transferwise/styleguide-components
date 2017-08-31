@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: TwUpload', function() {
+describe('Upload', function() {
   var $compile,
     $rootScope,
     $scope,
@@ -24,12 +24,12 @@ describe('Directive: TwUpload', function() {
       $scope.onUpload = function() {};
       var template = " \
         <tw-upload \
-            title='Drag and drop here' \
-            buttonText='or click here' \
-            placeholder='please choose' \
-            on-upload='onUpload' \
-            ng-accept='csv'> \
-            <a class='transcluded-content'></a> \
+          title='Drag and drop here' \
+          buttonText='or click here' \
+          placeholder='please choose' \
+          on-upload='onUpload' \
+          ng-accept='csv'> \
+          <a class='transcluded-content'></a> \
         </tw-upload>";
       directiveElement = getCompiledDirectiveElement($scope, template);
     });

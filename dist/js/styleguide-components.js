@@ -2208,27 +2208,29 @@
     }), exports["default"] = TwUploadDroppableDirective;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwFileInputDirective() {
+    function FileInputDirective() {
         return {
-            bindToController: !0,
-            controller: TwFileInputController,
-            controllerAs: "$ctrl",
-            replace: !1,
             restrict: "A",
+            controller: FileInputController,
+            controllerAs: "$ctrl",
+            bindToController: !0,
+            require: {
+                UploadController: "^twUpload"
+            },
             scope: {
-                onUserInput: "="
+                onUserInput: "&"
             }
         };
     }
-    function TwFileInputController($element) {
+    function FileInputController($element) {
         var $ctrl = this;
         $element.on("change", function(event) {
-            $ctrl.onUserInput && "function" == typeof $ctrl.onUserInput && $ctrl.onUserInput(event);
+            $ctrl.onUserInput && "function" == typeof $ctrl.onUserInput && $ctrl.onUserInput();
         });
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), TwFileInputController.$inject = [ "$element" ], exports["default"] = TwFileInputDirective;
+    }), FileInputController.$inject = [ "$element" ], exports["default"] = FileInputDirective;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -2254,7 +2256,7 @@
             buttonText: "@",
             cancelText: "@",
             processingText: "@",
-            completeText: "@",
+            successText: "@",
             errorMessage: "@",
             tooLargeMessage: "@",
             size: "@",
@@ -2270,113 +2272,178 @@
     exports["default"] = Upload;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwUploadController($timeout, $element, $http, $scope, $transclude, $q, $attrs) {
-        function reset() {
-            $ctrl.isDroppable = !1, $ctrl.isProcessing = !1, $ctrl.isSuccess = !1, $ctrl.isError = !1, 
-            $ctrl.dragCounter = 0, $ctrl.isDone = !1, $ctrl.isTooLarge = !1, $ctrl.isWrongType = !1, 
-            $element[0].querySelector("input").value = null, setNgModel(null);
-        }
-        function setNgModel(value) {
-            if ("undefined" != typeof $attrs.ngModel) {
-                var $ngModel = $element.controller("ngModel");
-                if (!$ngModel.$setViewValue) return;
-                $ngModel.$setViewValue(value);
-            }
-        }
-        function asyncPost(file) {
-            var formData = new FormData();
-            formData.append($ctrl.name, file);
-            var $httpOptions = prepareHttpOptions(angular.copy($ctrl.httpOptions));
-            return $http.post($httpOptions.url, formData, $httpOptions);
-        }
-        function prepareHttpOptions($httpOptions) {
-            if (!$httpOptions.url) throw new Error("You must supply a URL to post image data asynchronously");
-            return $httpOptions.headers || ($httpOptions.headers = {}), $httpOptions.method && delete $httpOptions.method, 
-            $httpOptions.headers["Content-Type"] = void 0, $httpOptions.transformRequest = angular.identity, 
-            $httpOptions;
-        }
-        function asyncFileRead(file) {
-            var reader = new FileReader(), deferred = $q.defer();
-            return reader.onload = function(event) {
-                deferred.resolve(event.target.result);
-            }, reader.onerror = function(event) {
-                deferred.reject(event);
-            }, reader.readAsDataURL(file), deferred.promise;
-        }
-        function showDataImage(dataUrl) {
-            setNgModel(dataUrl), $ctrl.isImage = isImage, isImage && ($ctrl.image = dataUrl);
-        }
-        function asyncSuccess(response) {
-            return $ctrl.processingState = 1, $timeout(function() {
-                $ctrl.isProcessing = !1, $ctrl.isSuccess = !0;
-            }, 3e3), $timeout(function() {
-                triggerHandler($ctrl.onSuccess, response), $ctrl.isDone = !0;
-            }, 3800), response;
-        }
-        function asyncFailure(error) {
-            return $ctrl.processingState = -1, $timeout(function() {
-                $ctrl.isProcessing = !1, $ctrl.isError = !0;
-            }, 3e3), $timeout(function() {
-                triggerHandler($ctrl.onFailure, error), $ctrl.isDone = !0;
-            }, 4100), error;
-        }
-        function isSizeValid(file, maxSize) {
-            return !(angular.isNumber(maxSize) && file.size > maxSize);
-        }
-        function isTypeValid(file, accept) {
-            return !0;
-        }
-        function addDragHandlers($element) {
-            $element[0].addEventListener("dragover", function(event) {
-                event.preventDefault(), $ctrl.onDragChange(!0), $scope.$apply();
-            }, !1), $element[0].addEventListener("dragover", function(event) {
-                event.preventDefault();
-            }, !1), $element[0].addEventListener("dragleave", function(event) {
-                event.preventDefault(), $ctrl.onDragChange(!1), $scope.$apply();
-            }, !1), $element[0].addEventListener("drop", function(event) {
-                event.preventDefault(), $ctrl.fileDropped(event.dataTransfer.files[0], event), $scope.$apply();
-            }, !1);
-        }
-        var $ctrl = this, isImage = !1;
-        if ($ctrl.dragCounter = 0, $ctrl.isProcessing = !1, $ctrl.processingState = null, 
-        checkForTranscludedContent($transclude, $ctrl), $scope.$watch("$ctrl.icon", function() {
-            $ctrl.viewIcon = $ctrl.icon ? $ctrl.icon : "upload";
-        }), ($ctrl.processingText || $ctrl.successText || $ctrl.failureText) && (!$ctrl.processingText || !$ctrl.successText || !$ctrl.failureText)) throw new Error("Supply all of processing, success, and failure text, or supply none.");
-        addDragHandlers($element), $ctrl.onManualUpload = function(event) {
-            var file = angular.element($element[0].querySelector(".tw-droppable-input"))[0].files[0];
-            $ctrl.fileDropped(file, event);
-        }, $ctrl.fileDropped = function(file, event) {
-            return reset(), isImage = file.type && file.type.indexOf("image") > -1, $ctrl.fileName = file.name, 
-            $ctrl.isProcessing = !0, $ctrl.processingState = null, triggerHandler($ctrl.onStart, file), 
-            isSizeValid(file, $ctrl.maxSize) ? isTypeValid(file, $ctrl.accept) ? void ($ctrl.httpOptions ? $q.all([ asyncPost(file), asyncFileRead(file) ]).then(function(response) {
-                return showDataImage(response[1]), response[0];
-            }).then(asyncSuccess)["catch"](asyncFailure) : asyncFileRead(file).then(showDataImage).then(asyncSuccess)["catch"](asyncFailure)) : ($ctrl.isWrongType = !0, 
-            void asyncFailure({
-                status: 415,
-                statusText: "Unsupported Media Type"
-            })) : ($ctrl.isTooLarge = !0, void asyncFailure({
-                status: 413,
-                statusText: "Request Entity Too Large"
-            }));
-        }, $ctrl.onDragChange = function(enter) {
-            enter ? ($ctrl.dragCounter++, $ctrl.dragCounter >= 1 && ($ctrl.isDroppable = !0)) : ($ctrl.dragCounter--, 
-            $ctrl.dragCounter <= 0 && ($ctrl.isDroppable = !1));
-        }, $ctrl.clear = function() {
-            reset(), triggerHandler($ctrl.onCancel);
-        };
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
     }
     function triggerHandler(method, argument) {
         method && "function" == typeof method && method(argument);
     }
-    function checkForTranscludedContent($transclude, $ctrl) {
-        $transclude(function(clone) {
-            (clone.length > 1 || "" !== clone.text().trim()) && ($ctrl.hasTranscluded = !0);
-        });
+    function prepareHttpOptions($httpOptions) {
+        if (!$httpOptions.url) throw new Error("You must supply a URL to post image data asynchronously");
+        return $httpOptions.headers || ($httpOptions.headers = {}), $httpOptions.method && delete $httpOptions.method, 
+        $httpOptions.headers["Content-Type"] = void 0, $httpOptions.transformRequest = angular.identity, 
+        $httpOptions;
+    }
+    function isSizeValid(file, maxSize) {
+        return !(angular.isNumber(maxSize) && file.size > maxSize);
+    }
+    function isTypeValid(file, accept) {
+        return !0;
+    }
+    function showDataImage(dataUrl, $ctrl) {
+        $ctrl.setNgModel(dataUrl), $ctrl.isImage = $ctrl.isImage_instant, $ctrl.isImage && ($ctrl.image = dataUrl);
+    }
+    function asyncSuccess(response, $ctrl) {
+        return $ctrl.processingState = 1, $ctrl.$timeout(function() {
+            $ctrl.isProcessing = !1, $ctrl.isSuccess = !0;
+        }, 3e3), $ctrl.$timeout(function() {
+            triggerHandler($ctrl.onSuccess, response), $ctrl.isDone = !0;
+        }, 3800), response;
+    }
+    function asyncFailure(error, $ctrl) {
+        return $ctrl.processingState = -1, $ctrl.$timeout(function() {
+            $ctrl.isProcessing = !1, $ctrl.isError = !0;
+        }, 3e3), $ctrl.$timeout(function() {
+            triggerHandler($ctrl.onFailure, error), $ctrl.isDone = !0;
+        }, 4100), error;
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), TwUploadController.$inject = [ "$timeout", "$element", "$http", "$scope", "$transclude", "$q", "$attrs" ], 
-    exports["default"] = TwUploadController;
+    });
+    var _createClass = function() {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || !1, descriptor.configurable = !0, 
+                "value" in descriptor && (descriptor.writable = !0), Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+        return function(Constructor, protoProps, staticProps) {
+            return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+            Constructor;
+        };
+    }(), UploadController = function() {
+        function UploadController($timeout, $element, $http, $scope, $transclude, $q, $attrs) {
+            var _this = this;
+            if (_classCallCheck(this, UploadController), this.$timeout = $timeout, this.$element = $element, 
+            this.$http = $http, this.$attrs = $attrs, this.$q = $q, this.isImage = !1, this.isImage_instant = !1, 
+            this.dragCounter = 0, this.isProcessing = !1, this.processingState = null, this.checkForTranscludedContent($transclude, this), 
+            $scope.$watch("$ctrl.icon", function() {
+                _this.viewIcon = _this.icon ? _this.icon : "upload";
+            }), (this.processingText || this.successText || this.failureText) && (!this.processingText || !this.successText || !this.failureText)) throw new Error("Supply all of processing, success, and failure text, or supply none.");
+            this.addDragHandlers($scope, $element);
+        }
+        return _createClass(UploadController, [ {
+            key: "onManualUpload",
+            value: function() {
+                var element = this.$element[0], uploadInput = element.querySelector(".tw-droppable-input"), file = uploadInput.files[0];
+                if (!file) throw new Error("Could not retrieve file");
+                this.fileDropped(file);
+            }
+        }, {
+            key: "fileDropped",
+            value: function(file) {
+                if (this.reset(), this.isImage_instant = file.type && file.type.indexOf("image") > -1, 
+                this.fileName = file.name, this.isProcessing = !0, this.processingState = null, 
+                triggerHandler(this.onStart, file), !isSizeValid(file, this.maxSize)) return this.isTooLarge = !0, 
+                void this.asyncFailure({
+                    status: 413,
+                    statusText: "Request Entity Too Large"
+                });
+                if (!isTypeValid(file, this.accept)) return this.isWrongType = !0, void this.asyncFailure({
+                    status: 415,
+                    statusText: "Unsupported Media Type"
+                });
+                var $ctrl = this;
+                this.httpOptions ? this.$q.all([ this.asyncPost(file), this.asyncFileRead(file) ]).then(function(response) {
+                    return asyncSuccess(response[0], $ctrl), response;
+                }).then(function(response) {
+                    return showDataImage(response[1], $ctrl), response;
+                })["catch"](function(error) {
+                    return asyncFailure(error, $ctrl);
+                }) : this.asyncFileRead(file).then(function(response) {
+                    return asyncSuccess(response, $ctrl);
+                }).then(function(response) {
+                    return showDataImage(response, $ctrl);
+                })["catch"](function(error) {
+                    return asyncFailure(error, $ctrl);
+                });
+            }
+        }, {
+            key: "onDragEnter",
+            value: function() {
+                this.dragCounter++, this.dragCounter >= 1 && (this.isDroppable = !0);
+            }
+        }, {
+            key: "onDragLeave",
+            value: function() {
+                this.dragCounter--, this.dragCounter <= 0 && (this.isDroppable = !1);
+            }
+        }, {
+            key: "clear",
+            value: function() {
+                this.reset(), triggerHandler(this.onCancel);
+            }
+        }, {
+            key: "reset",
+            value: function() {
+                this.isDroppable = !1, this.isProcessing = !1, this.isSuccess = !1, this.isError = !1, 
+                this.dragCounter = 0, this.isDone = !1, this.isTooLarge = !1, this.isWrongType = !1, 
+                this.$element[0].querySelector("input").value = null, this.setNgModel(null);
+            }
+        }, {
+            key: "setNgModel",
+            value: function(value) {
+                if ("undefined" != typeof this.$attrs.ngModel) {
+                    var $ngModel = this.$element.controller("ngModel");
+                    if (!$ngModel.$setViewValue) return;
+                    $ngModel.$setViewValue(value);
+                }
+            }
+        }, {
+            key: "asyncPost",
+            value: function(file) {
+                var formData = new FormData();
+                formData.append(this.name, file);
+                var $httpOptions = prepareHttpOptions(angular.copy(this.httpOptions));
+                return this.$http.post($httpOptions.url, formData, $httpOptions);
+            }
+        }, {
+            key: "asyncFileRead",
+            value: function(file) {
+                var reader = new FileReader(), deferred = this.$q.defer();
+                return reader.onload = function(event) {
+                    deferred.resolve(event.target.result);
+                }, reader.onerror = function(event) {
+                    deferred.reject(event);
+                }, reader.readAsDataURL(file), deferred.promise;
+            }
+        }, {
+            key: "addDragHandlers",
+            value: function($scope, $element) {
+                var _this2 = this;
+                $element[0].addEventListener("dragenter", function(event) {
+                    event.preventDefault(), _this2.onDragEnter(), $scope.$apply();
+                }, !1), $element[0].addEventListener("dragover", function(event) {
+                    event.preventDefault();
+                }, !1), $element[0].addEventListener("dragleave", function(event) {
+                    event.preventDefault(), _this2.onDragLeave(), $scope.$apply();
+                }, !1), $element[0].addEventListener("drop", function(event) {
+                    event.preventDefault(), _this2.fileDropped(event.dataTransfer.files[0]), $scope.$apply();
+                }, !1);
+            }
+        }, {
+            key: "checkForTranscludedContent",
+            value: function($transclude, $ctrl) {
+                var _this3 = this;
+                $transclude(function(clone) {
+                    clone.length > 1 || "" !== clone.text().trim() ? _this3.hasTranscluded = !0 : _this3.hasTranscluded = !1;
+                });
+            }
+        } ]), UploadController;
+    }();
+    UploadController.$inject = [ "$timeout", "$element", "$http", "$scope", "$transclude", "$q", "$attrs" ], 
+    exports["default"] = UploadController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -3007,7 +3074,7 @@
 }, function(module, exports) {
     module.exports = '<div class="btn-group btn-block tw-select"\n  ng-class="{\n    dropdown: !$ctrl.dropdownUp,\n    dropup: $ctrl.dropdownUp\n  }" aria-hidden="false">\n\n  <button type="button" class="btn btn-input dropdown-toggle"\n    ng-class="{\n      \'btn-input-inverse\': $ctrl.inverse,\n      \'btn-addon\': $ctrl.inverse,\n      \'btn-sm\': $ctrl.size === \'sm\',\n      \'btn-lg\': $ctrl.size === \'lg\'\n    }"\n    data-toggle="dropdown" aria-expanded="false"\n    ng-disabled="$ctrl.ngDisabled"\n    ng-focus="$ctrl.buttonFocus()"\n    tw-focusable>\n\n    <span class="tw-select-selected" ng-if="$ctrl.selected">\n      <span class="circle circle-inverse pull-xs-left circle-sm"\n        ng-if="$ctrl.selected && $ctrl.selected.icon && $ctrl.selected.secondary">\n        <span class="icon {{$ctrl.selected.icon}}"></span>\n      </span>\n\n      <span class="circle circle-inverse pull-xs-left"\n        ng-class="$ctrl.circleClasses($ctrl.hideCircle)"\n        ng-if="($ctrl.selected.circleText || $ctrl.selected.circleImage || $ctrl.selected.circleIcon)">\n        <span ng-if="$ctrl.selected.circleText">{{$ctrl.selected.circleText}}</span>\n        <img alt="{{$ctrl.selected.label}}"\n          ng-if="$ctrl.selected.circleImage"\n          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="\n          ng-src="{{$ctrl.selected.circleImage}}" />\n        <span ng-if="$ctrl.selected.circleIcon" class="icon {{$ctrl.selected.circleIcon}}"></span>\n      </span>\n\n      <span class="text-ellipsis">\n        <span class="currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}}"\n          ng-if="$ctrl.selected && $ctrl.selected.currency"\n          ng-class="$ctrl.responsiveClasses($ctrl.hideCurrency)"\n        ></span>\n        <span class="icon {{$ctrl.selected.icon}}"\n          ng-if="$ctrl.selected && $ctrl.selected.icon && !$ctrl.selected.secondary"\n          ng-class="$ctrl.responsiveClasses($ctrl.hideIcon)"\n        ></span>\n        <span class="tw-select-label"\n          ng-class="$ctrl.responsiveClasses($ctrl.hideLabel)">\n          {{$ctrl.selected.label}}\n        </span>\n        <span\n          ng-if="$ctrl.selected.note"\n          ng-class="$ctrl.responsiveClasses($ctrl.hideNote)"\n          class="tw-select-note small m-l-1">\n          {{$ctrl.selected.note}}\n        </span>\n\n        <span\n          ng-if="$ctrl.selected.secondary"\n          ng-class="$ctrl.responsiveClasses($ctrl.hideSecondary)"\n          class="tw-select-secondary small secondary text-ellipsis">\n          {{$ctrl.selected.secondary}}\n        </span>\n      </span>\n    </span>\n\n    <span class="form-control-placeholder" ng-if="!$ctrl.selected">{{$ctrl.placeholder}}</span>\n    <span class="caret"></span>\n  </button>\n  <ul class="dropdown-menu" role="menu" ng-class="{\n      \'dropdown-menu-xs-right\': $ctrl.dropdownRight === \'xs\',\n      \'dropdown-menu-sm-right\': $ctrl.dropdownRight === \'sm\',\n      \'dropdown-menu-md-right\': $ctrl.dropdownRight === \'md\',\n      \'dropdown-menu-lg-right\': $ctrl.dropdownRight === \'lg\',\n      \'dropdown-menu-xl-right\': $ctrl.dropdownRight === \'xl\',\n      \'dropdown-menu-sm\': $ctrl.dropdownWidth === \'sm\',\n      \'dropdown-menu-md\': $ctrl.dropdownWidth === \'md\',\n      \'dropdown-menu-lg\': $ctrl.dropdownWidth === \'lg\'\n    }">\n\n    <li ng-if="$ctrl.filter">\n      <a href="" class="tw-select-filter-link p-a-0" tabindex="-1"\n        ng-focus="$ctrl.filterFocus()">\n        <div class="input-group">\n          <span class="input-group-addon"><span class="icon icon-search"></span> </span>\n          <input type="text"\n            class="form-control tw-select-filter"\n            placeholder="{{$ctrl.filter}}"\n            ng-model="$ctrl.filterString"\n            ng-change="$ctrl.filterChange()"\n            ng-keydown="$ctrl.filterKeydown($event)" />\n        </div>\n      </a>\n    </li>\n\n    <li ng-class="{active: !$ctrl.selected}"\n      ng-if="$ctrl.placeholder && !$ctrl.ngRequired && !$ctrl.filter">\n      <a href="" tabindex="-1"\n        ng-click="$ctrl.placeholderClick()"\n        ng-focus="$ctrl.placeholderFocus()"\n        class="tw-select-placeholder" tw-focusable>\n        {{$ctrl.placeholder}}\n      </a>\n    </li>\n\n    <li ng-if="($ctrl.placeholder && !$ctrl.ngRequired) || $ctrl.filter" class="divider"></li>\n\n    <li\n      ng-repeat="option in $ctrl.filteredOptions"\n      ng-class="{\n        \'active\': $ctrl.ngModel === option.value,\n        \'disabled\': option.disabled,\n        \'dropdown-header\': option.header,\n        \'tw-select-option\': !option.header && !option.disabled\n      }">\n      <span ng-if="option.header" class="text-ellipsis">{{option.header}}</span>\n      <a href=""\n        ng-if="!option.header"\n        ng-click="$ctrl.optionClick(option, $event)"\n        ng-focus="$ctrl.optionFocus(option)"\n        ng-class="{\'tw-select-option-link\': !option.disabled}"\n        index="{{$index}}"\n        tabindex="-1"\n        tw-focusable >\n        <div ng-if="option.icon && option.secondary"\n          class="circle circle-inverse pull-xs-left circle-sm">\n          <span class="icon {{option.icon}}"></span>\n        </div>\n        <span ng-if="option.icon && !option.secondary"\n          class="icon {{option.icon}} pull-xs-left" >\n        </span> <span ng-if="option.currency"\n          class="currency-flag currency-flag-{{option.currency | lowercase}} pull-xs-left" >\n        </span> <span class="circle circle-inverse pull-xs-left"\n          ng-class="{\n            \'circle-sm\': option.secondary,\n            \'circle-xs\': !option.secondary\n          }"\n          ng-if="option.circleText || option.circleImage || option.circleIcon">\n          <span class="tw-select-circle-text"\n            ng-if="option.circleText">{{option.circleText}}</span>\n          <img alt="{{option.label}}"\n            ng-if="option.circleImage"\n            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="\n            ng-src="{{option.circleImage}}" />\n          <span ng-if="option.circleIcon" class="icon {{option.circleIcon}}"></span>\n        </span>{{option.label}}<span\n          ng-if="option.note" class="tw-select-note small m-l-1">{{option.note}}</span><span\n          ng-if="option.secondary"\n          class="tw-select-secondary small text-ellipsis">{{option.secondary}}</span>\n      </a>\n    </li>\n\n    <li ng-if="$ctrl.hasTranscluded" class="divider"></li>\n\n    <li ng-transclude ng-if="$ctrl.hasTranscluded" class="tw-select-transcluded"></li>\n  </ul>\n</div>\n<input type="hidden" class="tw-select-hidden"\n  name="{{$ctrl.name}}"\n  value="{{$ctrl.ngModel}}"\n  ng-disabled="$ctrl.ngDisabled" />\n';
 }, function(module, exports) {
-    module.exports = '<div class="droppable" ng-class="{\n  \'droppable-sm\': $ctrl.size ===\'sm\',\n  \'droppable-md\': $ctrl.size ===\'md\' || !$ctrl.size,\n  \'droppable-lg\': $ctrl.size ===\'lg\',\n  \'droppable-dropping\': $ctrl.isDroppable,\n  \'droppable-processing\': !$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError),\n  \'droppable-complete\': $ctrl.isDone\n}">\n  <div class="droppable-default-card" aria-hidden="{{$ctrl.isDone}}">\n    <div class="droppable-card-content">\n      <div class="m-b-2">\n        <span class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></span>\n      </div>\n      <h4 class="m-b-1" ng-if="$ctrl.label || $ctrl.description">\n        {{$ctrl.label || $ctrl.description}}\n      </h4>\n      <p class="m-b-2">{{$ctrl.placeholder || $ctrl.instructions}}</p>\n      <label class="btn btn-primary">{{$ctrl.buttonText}}\n        <input tw-file-select type="file"\n          accept="{{$ctrl.accept}}"\n          class="tw-droppable-input hidden"\n          name="file-upload"\n          on-user-input="$ctrl.onManualUpload"\n          ng-model="$ctrl.inputFile"/>\n      </label>\n    </div>\n  </div>\n  <div class="droppable-processing-card droppable-card"\n    aria-hidden="{{$ctrl.isDone}}">\n    <div class="droppable-card-content">\n      <h4 class="m-b-2">\n        <span ng-if="$ctrl.isProcessing && $ctrl.processingText">{{$ctrl.processingText}}</span>\n        <span ng-if="$ctrl.isSuccess && $ctrl.successText">{{$ctrl.successText}}</span>\n        <span ng-if="$ctrl.isError && $ctrl.failureText">{{$ctrl.failureText}}</span>\n      </h4>\n      <tw-process size="sm" state="$ctrl.processingState"\n        ng-if="!$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"></tw-process>\n    </div>\n  </div>\n  <div class="droppable-complete-card droppable-card"\n    aria-hidden="{{!$ctrl.isDone}}">\n    <div class="droppable-card-content">\n      <div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError">\n        <h4 class="m-b-2" ng-if="$ctrl.completeText">\n          {{$ctrl.completeText}}\n        </h4>\n        <img\n          ng-if="$ctrl.isImage"\n          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="\n          ng-src="{{$ctrl.image}}"\n          alt="OK"\n          class="thumbnail m-b-3" />\n        <span class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></span>\n        <p class="text-ellipsis m-b-2">{{$ctrl.fileName}}</p>\n      </div>\n      <div ng-if="!$ctrl.hasTranscluded && $ctrl.isError">\n        <h4 class="m-b-2" ng-if="$ctrl.isTooLarge">{{$ctrl.tooLargeMessage}}</h4>\n        <h4 class="m-b-2" ng-if="$ctrl.isWrongType">{{$ctrl.wrongTypeText}}</h4>\n        <h4 class="m-b-2" ng-if="!$ctrl.isTooLarge && $ctrl.errorMessage">{{$ctrl.errorMessage}}</h4>\n        <span class="icon icon-alert icon-xxl text-danger m-b-1"></span>\n      </div>\n      <div ng-if="$ctrl.hasTranscluded" ng-transclude></div>\n      <p ng-if="$ctrl.cancelText" class="m-t-2 m-b-0">\n        <a href="" ng-click="$ctrl.clear()">{{$ctrl.cancelText}}</a>\n      </p>\n    </div>\n  </div>\n  <div class="droppable-dropping-card droppable-card">\n    <div class="droppable-card-content">\n      <h4 class="m-b-2">Drop file to start upload</h4>\n      <div class="circle circle-sm">\n        <span class="icon icon-add"></span>\n      </div>\n      <p class="m-t-2 m-b-0"></p>\n    </div>\n  </div>\n</div>\'\n';
+    module.exports = '<div class="droppable" ng-class="{\n  \'droppable-sm\': $ctrl.size ===\'sm\',\n  \'droppable-md\': $ctrl.size ===\'md\' || !$ctrl.size,\n  \'droppable-lg\': $ctrl.size ===\'lg\',\n  \'droppable-dropping\': $ctrl.isDroppable,\n  \'droppable-processing\': !$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError),\n  \'droppable-complete\': $ctrl.isDone\n}">\n  <div class="droppable-default-card" aria-hidden="{{$ctrl.isDone}}">\n    <div class="droppable-card-content">\n      <div class="m-b-2">\n        <span class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></span>\n      </div>\n      <h4 class="m-b-1" ng-if="$ctrl.label || $ctrl.description">\n        {{$ctrl.label || $ctrl.description}}\n      </h4>\n      <p class="m-b-2">{{$ctrl.placeholder || $ctrl.instructions}}</p>\n      <label class="btn btn-primary">{{$ctrl.buttonText}}\n        <input tw-file-input\n          type="file"\n          accept="{{$ctrl.accept}}"\n          class="tw-droppable-input hidden"\n\n          name="file-upload"\n          on-user-input="$ctrl.onManualUpload()"\n          ng-model="$ctrl.inputFile" />\n        <!-- ng-change="$ctrl.onManualUpload()" -->\n      </label>\n    </div>\n  </div>\n  <div class="droppable-processing-card droppable-card"\n    aria-hidden="{{$ctrl.isDone}}">\n    <div class="droppable-card-content">\n      <h4 class="m-b-2">\n        <span ng-if="$ctrl.isProcessing && $ctrl.processingText">{{$ctrl.processingText}}</span>\n        <span ng-if="$ctrl.isSuccess && $ctrl.successText">{{$ctrl.successText}}</span>\n        <span ng-if="$ctrl.isError && $ctrl.failureText">{{$ctrl.failureText}}</span>\n      </h4>\n      <tw-process size="sm" state="$ctrl.processingState"\n        ng-if="($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"></tw-process>\n    </div>\n  </div>\n  <div class="droppable-complete-card droppable-card"\n    aria-hidden="{{!$ctrl.isDone}}">\n    <div class="droppable-card-content">\n      <div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError">\n        <h4 class="m-b-2" ng-if="$ctrl.label">\n          {{$ctrl.label}}\n        </h4>\n        <img\n          ng-if="$ctrl.isImage"\n          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="\n          ng-src="{{$ctrl.image}}"\n          alt="OK"\n          class="thumbnail m-b-3" />\n        <span class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></span>\n        <p class="text-ellipsis m-b-2">{{$ctrl.fileName}}</p>\n      </div>\n      <div ng-if="!$ctrl.hasTranscluded && $ctrl.isError">\n        <h4 class="m-b-2" ng-if="$ctrl.isTooLarge">{{$ctrl.tooLargeMessage}}</h4>\n        <h4 class="m-b-2" ng-if="$ctrl.isWrongType">{{$ctrl.wrongTypeText}}</h4>\n        <h4 class="m-b-2" ng-if="!$ctrl.isTooLarge && $ctrl.errorMessage">{{$ctrl.errorMessage}}</h4>\n        <span class="icon icon-alert icon-xxl text-danger m-b-1"></span>\n      </div>\n      <div ng-if="$ctrl.hasTranscluded" ng-transclude></div>\n      <p ng-if="$ctrl.cancelText" class="m-t-2 m-b-0">\n        <a href="" ng-click="$ctrl.clear()">{{$ctrl.cancelText}}</a>\n      </p>\n    </div>\n  </div>\n  <div class="droppable-dropping-card droppable-card">\n    <div class="droppable-card-content">\n      <h4 class="m-b-2">Drop file to start upload</h4>\n      <div class="circle circle-sm">\n        <span class="icon icon-add"></span>\n      </div>\n      <p class="m-t-2 m-b-0"></p>\n    </div>\n  </div>\n</div>\'\n';
 }, function(module, exports) {
     module.exports = '<li class="list-group-item p-a-0 list-group-item-{{$ctrl.state}}"\n  ng-class="{\n    \'active\': $ctrl.open,\n    \'disabled\': $ctrl.disabled\n  }">\n\n  <div class="p-a-panel" role="button" ng-click="$ctrl.toggle($ctrl.index)">\n    <div class="media">\n      <div class="media-left">\n        <div class="circle circle-sm circle-responsive"\n          ng-class="{\'circle-inverse\': !$ctrl.inactive }">\n          <div ng-transclude="cardIcon"></div>\n        </div>\n      </div>\n      <div class="media-body" ng-transclude="collapsedCard"></div>\n    </div>\n  </div>\n\n  <div class="collapse"\n    ng-attr-aria-expanded="{{ $ctrl.open }}"\n    ng-class="{\'in\': $ctrl.open }"\n    ng-if="$ctrl.open" >\n\n    <div class="p-l-panel p-r-panel p-b-panel">\n      <div class="media">\n        <div class="media-left">\n          <div class="circle circle-sm circle-inverse circle-responsive invisible"></div>\n        </div>\n        <div class="media-body">\n          <hr class="m-t-0 hidden-xs hidden-sm" />\n          <a href="" ng-click="$ctrl.toggle($ctrl.index)"\n            class="visible-xs-inline-block visible-sm-inline-block text-no-decoration m-t-1 tw-card-back">\n            <span class="icon icon-left-arrow icon-xxl"></span>\n          </a>\n          <div ng-transclude="expandedCard"></div>\n        </div>\n      </div>\n    </div>\n\n    <div class="well p-l-panel p-r-panel" ng-if="$ctrl.hasForm">\n      <div class="media">\n        <div class="media-left">\n          <div class="circle circle-sm circle-responsive invisible"></div>\n        </div>\n        <div class="media-body" ng-transclude="cardForm"></div>\n      </div>\n    </div>\n\n  </div>\n</li>\n';
 }, function(module, exports) {

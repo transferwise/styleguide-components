@@ -1,27 +1,29 @@
 
-function TwFileInputDirective() {
+function FileInputDirective() {
   return {
-    bindToController: true,
-    controller: TwFileInputController,
-    controllerAs: '$ctrl',
-    replace: false,
     restrict: 'A',
+    controller: FileInputController,
+    controllerAs: '$ctrl',
+    bindToController: true,
+    require: {
+      UploadController: '^twUpload'
+    },
     scope: {
-      onUserInput: '='
+      onUserInput: '&'
     }
   };
 }
 
-function TwFileInputController($element) {
+function FileInputController($element) {
   var $ctrl = this;
   $element.on('change', function (event) {
     if ($ctrl.onUserInput &&
       typeof $ctrl.onUserInput === 'function') {
-      $ctrl.onUserInput(event);
+      $ctrl.onUserInput();
     }
   });
 }
 
-TwFileInputController.$inject = ['$element'];
+FileInputController.$inject = ['$element'];
 
-export default TwFileInputDirective;
+export default FileInputDirective;
