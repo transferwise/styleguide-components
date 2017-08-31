@@ -6,7 +6,7 @@ class TabsController {
   }
 
   switchTab(tab) {
-    $ctrl.active = tab;
+    this.active = tab;
     if (this.onChange) {
       this.onChange(tab);
     }
