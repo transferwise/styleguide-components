@@ -1597,113 +1597,20 @@
     exports["default"] = Select;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwSelectController($element, $scope, $transclude, $timeout) {
-        function responsiveClasses(value) {
-            var classes = "", validBreakpoints = {
-                xs: !0,
-                sm: !0,
-                md: !0,
-                lg: !0,
-                xl: !0
-            }, breakpoints = [];
-            return "boolean" == typeof value && value ? "hidden" : value && value.toLowerCase && "true" === value.toLowerCase() ? "hidden" : (value && (breakpoints = value.split(",")), 
-            breakpoints.forEach(function(breakpoint) {
-                validBreakpoints[breakpoint] && (classes += "hidden-" + breakpoint + " ");
-            }), classes);
-        }
-        function circleClasses(responsiveOption) {
-            var classes = $ctrl.responsiveClasses(responsiveOption), secondaryClasses = $ctrl.responsiveClasses($ctrl.hideSecondary);
-            return classes += $ctrl.selected.secondary && 0 === secondaryClasses.length ? " circle-sm" : " circle-xs";
-        }
-        function buttonFocus() {
-            $element.triggerHandler("focus");
-        }
-        function optionClick(option, $event) {
-            return option.disabled ? void $event.stopPropagation() : (selectOption($ngModel, $ctrl, option), 
-            void $element.find(".btn").focus());
-        }
-        function optionFocus(option) {
-            selectOption($ngModel, $ctrl, option);
-        }
-        function optionKeypress(event) {
-            if (!$(event.target).hasClass("tw-select-filter")) {
-                var characterCode = getCharacterCodeFromKeypress(event);
-                if (8 === characterCode) return event.preventDefault(), !1;
-                var character = getCharacterFromKeypress(event);
-                continueSearchAndSelectMatch($ngModel, $ctrl, $ctrl.options, character), $element.find(".active a").focus();
-            }
-        }
-        function placeholderClick(option) {
-            resetOption($ngModel, $ctrl), $element.find(".btn").focus();
-        }
-        function placeholderFocus() {
-            resetOption($ngModel, $ctrl);
-        }
-        function getFilteredOptions() {
-            if (!$ctrl.options || !$ctrl.options.filter) return [];
-            var filteredLabels = [];
-            return $ctrl.options.filter(function(option) {
-                var filterStringLower = $ctrl.filterString && escapeRegExp($ctrl.filterString.toLowerCase());
-                if (!filterStringLower) return !0;
-                var duplicate = !1;
-                filteredLabels.indexOf(option.label) > -1 && (duplicate = !0);
-                var addOption = (option.label && option.label.toLowerCase().search(filterStringLower) >= 0 || option.note && option.note.toLowerCase().search(filterStringLower) >= 0 || option.secondary && option.secondary.toLowerCase().search(filterStringLower) >= 0 || option.searchable && option.searchable.toLowerCase().search(filterStringLower) >= 0) && !duplicate;
-                return addOption && filteredLabels.push(option.label), addOption;
-            });
-        }
-        function escapeRegExp(str) {
-            return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-        }
-        function filterFocus() {
-            $element.find(".tw-select-filter").focus();
-        }
-        function filterChange() {
-            $ctrl.filteredOptions = $ctrl.getFilteredOptions();
-            var selectedOption = findSelected($ctrl.filteredOptions, $ctrl.selected);
-            !selectedOption && $ctrl.filteredOptions.length && selectOption($ngModel, $ctrl, $ctrl.filteredOptions[0]);
-        }
-        function findSelected(options, selected) {
-            var selectedOption;
-            return options.forEach(function(option) {
-                selected && angular.equals(selected.value, option.value) && (selectedOption = selected);
-            }), selectedOption;
-        }
-        function filterKeydown(event) {
-            var characterCode = event.which || event.charCode || event.keyCode, activeOption = $element.find(".active"), activeLink = activeOption.find("a"), optionLinks = $element.find(".tw-select-option-link");
-            return 40 === characterCode ? (moveDownOneOption(activeOption, activeLink, optionLinks), 
-            event.preventDefault()) : 38 === characterCode ? (moveUpOneOption(activeOption, activeLink, optionLinks), 
-            event.preventDefault()) : 13 === characterCode && (activeOption.click(), $element.find(".btn").focus(), 
-            event.preventDefault()), !0;
-        }
-        function selectOptionUsingLink(link) {
-            var option = $ctrl.filteredOptions[link.attr("index")];
-            selectOption($ngModel, $ctrl, option);
-        }
-        function moveUpOneOption(activeOption, activeLink, optionLinks) {
-            if (!activeOption.length && optionLinks.length) return void selectOptionUsingLink($(optionLinks[optionLinks.length - 1]));
-            if (activeLink[0] !== optionLinks[0]) {
-                var previousOptions = activeOption.prevAll(".tw-select-option");
-                return void selectOptionUsingLink($(previousOptions[0]).find("a"));
-            }
-        }
-        function moveDownOneOption(activeOption, activeLink, optionLinks) {
-            if (!activeOption.length && optionLinks.length) return void selectOptionUsingLink($(optionLinks[0]));
-            if (activeLink[0] !== optionLinks[optionLinks.length - 1]) {
-                var nextOptions = activeOption.nextAll(".tw-select-option");
-                return void selectOptionUsingLink($(nextOptions[0]).find("a"));
-            }
-            var transcludedOption = $(".tw-select-transcluded");
-            return transcludedOption.length ? void transcludedOption.find("a").focus() : void 0;
-        }
-        var $ctrl = this, $ngModel = $element.controller("ngModel");
-        $ctrl.search = "", preSelectModelValue($ngModel, $ctrl, $ctrl.options), setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl), 
-        addWatchers($ctrl, $scope, $ngModel, $element), addEventHandlers($ctrl, $element, $ngModel, $ctrl.options, $timeout), 
-        checkForTranscludedContent($transclude, $ctrl), $ctrl.buttonFocus = buttonFocus, 
-        $ctrl.optionClick = optionClick, $ctrl.optionFocus = optionFocus, $ctrl.optionKeypress = optionKeypress, 
-        $ctrl.placeholderFocus = placeholderFocus, $ctrl.placeholderClick = placeholderClick, 
-        $ctrl.filterFocus = filterFocus, $ctrl.filterChange = filterChange, $ctrl.filterKeydown = filterKeydown, 
-        $ctrl.responsiveClasses = responsiveClasses, $ctrl.circleClasses = circleClasses, 
-        $ctrl.getFilteredOptions = getFilteredOptions, $ctrl.filterString = "", $ctrl.filteredOptions = $ctrl.getFilteredOptions();
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+    }
+    function labelMatches(option, search) {
+        return option.label && option.label.toLowerCase().search(search) >= 0;
+    }
+    function noteMatches(option, search) {
+        return option.note && option.note.toLowerCase().search(search) >= 0;
+    }
+    function secondaryMatches(option, search) {
+        return option.secondary && option.secondary.toLowerCase().search(search) >= 0;
+    }
+    function searchableMatches(option, search) {
+        return option.searchable && option.searchable.toLowerCase().search(search) >= 0;
     }
     function addWatchers($ctrl, $scope, $ngModel, $element) {
         $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
@@ -1741,6 +1648,9 @@
     function getCharacterFromKeypress(event) {
         return String.fromCharCode(getCharacterCodeFromKeypress(event));
     }
+    function escapeRegExp(str) {
+        return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+    }
     function preSelectModelValue($ngModel, $ctrl, options) {
         if (isValidModel($ctrl.ngModel)) {
             var option = findOptionFromValue($ctrl.options, $ctrl.ngModel);
@@ -1769,6 +1679,12 @@
         option.disabled || ($ngModel.$setViewValue(option.value), $ngModel.$commitViewValue(), 
         $ctrl.selected = option);
     }
+    function findSelected(options, selected) {
+        var selectedOption;
+        return options.forEach(function(option) {
+            selected && angular.equals(selected.value, option.value) && (selectedOption = selected);
+        }), selectedOption;
+    }
     function resetOption($ngModel, $ctrl) {
         $ngModel.$setViewValue(null), $ngModel.$commitViewValue(), $ctrl.selected = !1;
     }
@@ -1787,10 +1703,150 @@
     function isValidModel(value) {
         return value || 0 === value || value === !1;
     }
+    function responsiveClasses(value) {
+        var classes = "", validBreakpoints = {
+            xs: !0,
+            sm: !0,
+            md: !0,
+            lg: !0,
+            xl: !0
+        }, breakpoints = [];
+        return "boolean" == typeof value && value ? "hidden" : value && value.toLowerCase && "true" === value.toLowerCase() ? "hidden" : (value && (breakpoints = value.split(",")), 
+        breakpoints.forEach(function(breakpoint) {
+            validBreakpoints[breakpoint] && (classes += "hidden-" + breakpoint + " ");
+        }), classes);
+    }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), TwSelectController.$inject = [ "$element", "$scope", "$transclude", "$timeout" ], 
-    exports["default"] = TwSelectController;
+    });
+    var _createClass = function() {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || !1, descriptor.configurable = !0, 
+                "value" in descriptor && (descriptor.writable = !0), Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+        return function(Constructor, protoProps, staticProps) {
+            return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
+            Constructor;
+        };
+    }(), SelectController = function() {
+        function SelectController($element, $scope, $transclude, $timeout, $attrs) {
+            _classCallCheck(this, SelectController), this.$ngModel = $element.controller("ngModel"), 
+            this.$element = $element, this.search = "", preSelectModelValue(this.$ngModel, this, this.options), 
+            setDefaultIfRequired(this.$ngModel, this, $element, $attrs), addWatchers(this, $scope, this.$ngModel, $element), 
+            addEventHandlers(this, $element, this.$ngModel, this.options, $timeout), checkForTranscludedContent($transclude, this), 
+            this.responsiveClasses = responsiveClasses, this.filterString = "", this.filteredOptions = this.getFilteredOptions();
+        }
+        return _createClass(SelectController, [ {
+            key: "circleClasses",
+            value: function(responsiveOption) {
+                var classes = responsiveClasses(responsiveOption), secondaryClasses = responsiveClasses(this.hideSecondary);
+                return classes += this.selected.secondary && 0 === secondaryClasses.length ? " circle-sm" : " circle-xs";
+            }
+        }, {
+            key: "buttonFocus",
+            value: function() {
+                this.$element.triggerHandler("focus");
+            }
+        }, {
+            key: "optionClick",
+            value: function(option, $event) {
+                return option.disabled ? void $event.stopPropagation() : (selectOption(this.$ngModel, this, option), 
+                void this.$element.find(".btn").focus());
+            }
+        }, {
+            key: "optionFocus",
+            value: function(option) {
+                selectOption(this.$ngModel, this, option);
+            }
+        }, {
+            key: "optionKeypress",
+            value: function(event) {
+                if (!$(event.target).hasClass("tw-select-filter")) {
+                    var characterCode = getCharacterCodeFromKeypress(event);
+                    if (8 === characterCode) return event.preventDefault(), !1;
+                    var character = getCharacterFromKeypress(event);
+                    continueSearchAndSelectMatch(this.$ngModel, this, this.options, character), this.$element.find(".active a").focus();
+                }
+            }
+        }, {
+            key: "placeholderClick",
+            value: function(option) {
+                resetOption(this.$ngModel, this), this.$element.find(".btn").focus();
+            }
+        }, {
+            key: "placeholderFocus",
+            value: function() {
+                resetOption(this.$ngModel, this);
+            }
+        }, {
+            key: "getFilteredOptions",
+            value: function() {
+                var _this = this;
+                if (!this.options || !this.options.filter) return [];
+                var filteredLabels = [];
+                return this.options.filter(function(option) {
+                    var filterStringLower = _this.filterString && escapeRegExp(_this.filterString.toLowerCase());
+                    if (!filterStringLower) return !0;
+                    var duplicate = !1;
+                    filteredLabels.indexOf(option.label) > -1 && (duplicate = !0);
+                    var addOption = (labelMatches(option, filterStringLower) || noteMatches(option, filterStringLower) || secondaryMatches(option, filterStringLower) || searchableMatches(option, filterStringLower)) && !duplicate;
+                    return addOption && filteredLabels.push(option.label), addOption;
+                });
+            }
+        }, {
+            key: "filterFocus",
+            value: function() {
+                this.$element.find(".tw-select-filter").focus();
+            }
+        }, {
+            key: "filterChange",
+            value: function() {
+                this.filteredOptions = this.getFilteredOptions();
+                var selectedOption = findSelected(this.filteredOptions, this.selected);
+                !selectedOption && this.filteredOptions.length && selectOption(this.$ngModel, this, this.filteredOptions[0]);
+            }
+        }, {
+            key: "filterKeydown",
+            value: function(event) {
+                var characterCode = event.which || event.charCode || event.keyCode, activeOption = this.$element.find(".active"), activeLink = activeOption.find("a"), optionLinks = this.$element.find(".tw-select-option-link");
+                return 40 === characterCode ? (this.moveDownOneOption(activeOption, activeLink, optionLinks), 
+                event.preventDefault()) : 38 === characterCode ? (this.moveUpOneOption(activeOption, activeLink, optionLinks), 
+                event.preventDefault()) : 13 === characterCode && (activeOption.click(), this.$element.find(".btn").focus(), 
+                event.preventDefault()), !0;
+            }
+        }, {
+            key: "selectOptionUsingLink",
+            value: function(link) {
+                var option = this.filteredOptions[link.attr("index")];
+                selectOption(this.$ngModel, this, option);
+            }
+        }, {
+            key: "moveUpOneOption",
+            value: function(activeOption, activeLink, optionLinks) {
+                if (!activeOption.length && optionLinks.length) return void this.selectOptionUsingLink($(optionLinks[optionLinks.length - 1]));
+                if (activeLink[0] !== optionLinks[0]) {
+                    var previousOptions = activeOption.prevAll(".tw-select-option");
+                    return void this.selectOptionUsingLink($(previousOptions[0]).find("a"));
+                }
+            }
+        }, {
+            key: "moveDownOneOption",
+            value: function(activeOption, activeLink, optionLinks) {
+                if (!activeOption.length && optionLinks.length) return void this.selectOptionUsingLink($(optionLinks[0]));
+                if (activeLink[0] !== optionLinks[optionLinks.length - 1]) {
+                    var nextOptions = activeOption.nextAll(".tw-select-option");
+                    return void this.selectOptionUsingLink($(nextOptions[0]).find("a"));
+                }
+                var transcludedOption = $(".tw-select-transcluded");
+                return transcludedOption.length ? void transcludedOption.find("a").focus() : void 0;
+            }
+        } ]), SelectController;
+    }();
+    SelectController.$inject = [ "$element", "$scope", "$transclude", "$timeout", "$attrs" ], 
+    exports["default"] = SelectController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwFileSelectDirective() {
