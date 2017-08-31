@@ -19,7 +19,7 @@ module.exports = function(config) {
             //'components/bootstrap/dist/css/bootstrap.css',
 
             // include unit test specs
-            'angular/**/*.spec.js'
+            'src/**/*.spec.js'
         ],
         // files to exclude
         exclude : [],
@@ -43,7 +43,7 @@ module.exports = function(config) {
 
         // map of preprocessors that is used mostly for plugins
         preprocessors: {
-            'angular/**/*.controller.js': ['coverage']
+            'src/**/*.controller.js': ['coverage']
         },
 
         // list of karma plugins

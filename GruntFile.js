@@ -24,7 +24,7 @@ module.exports = function(grunt) {
         webpack: {
           options: {},
           build: [{
-            entry: './angular/form-components.js',
+            entry: './src/form-components.js',
             output: {
               path: path.join(__dirname, './build'),
               filename: 'form-components.webpack.js'
@@ -32,7 +32,7 @@ module.exports = function(grunt) {
             externals: webpackExternals,
             module: webpackModule
           },{
-            entry: './angular/form-styling.js',
+            entry: './src/form-styling.js',
             output: {
               path: path.join(__dirname, './build'),
               filename: 'form-styling.webpack.js'
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
             externals: webpackExternals,
             module: webpackModule
           },{
-            entry: './angular/form-validation.js',
+            entry: './src/form-validation.js',
             output: {
               path: path.join(__dirname, './build'),
               filename: 'form-validation.webpack.js'
@@ -48,7 +48,7 @@ module.exports = function(grunt) {
             externals: webpackExternals,
             module: webpackModule
           },{
-            entry: './angular/layout-components.js',
+            entry: './src/layout-components.js',
             output: {
               path: path.join(__dirname, './build'),
               filename: 'layout-components.webpack.js'
@@ -56,7 +56,7 @@ module.exports = function(grunt) {
             externals: webpackExternals,
             module: webpackModule
           },{
-            entry: './angular/index.js',
+            entry: './src/index.js',
             output: {
               path: path.join(__dirname, './build'),
               filename: 'styleguide-components.webpack.js'
@@ -71,11 +71,11 @@ module.exports = function(grunt) {
                 tasks: ['less']
             },
             components: {
-                files: ['angular/**/*.js', 'angular/**/*.html'],
+                files: ['src/**/*.js', 'src/**/*.html'],
                 tasks: ['webpack', 'uglify', 'jshint']
             },
             templates: {
-                files: ['angular/**/*.html'],
+                files: ['src/**/*.html'],
                 tasks: ['copy']
             }
         },
@@ -208,10 +208,10 @@ module.exports = function(grunt) {
                 '-W065': true  // allow \n for line endings
             },
             files: [
-                'angular/**/*.component.js',
-                'angular/**/*.controller.js',
-                'angular/**/*.directive.js',
-                'angular/**/*.service.js'
+                'src/**/*.component.js',
+                'src/**/*.controller.js',
+                'src/**/*.directive.js',
+                'src/**/*.service.js'
             ]
         },
         htmllint: {
@@ -226,7 +226,7 @@ module.exports = function(grunt) {
                 "indent-width": false
             },
             files: [
-                'angular/**/*.html',
+                'src/**/*.html',
                 'partials/**/*.html',
                 'index.html'
             ]
