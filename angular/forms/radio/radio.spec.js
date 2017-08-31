@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: TwRadio', function() {
+describe('Radio', function() {
   var $compile,
     $rootScope,
     $scope,

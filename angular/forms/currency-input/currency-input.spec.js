@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: TwCurrencyInput', function() {
+describe('CurrencyInput', function() {
   var $compile,
     $rootScope,
     $scope,

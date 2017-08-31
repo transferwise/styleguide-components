@@ -4,7 +4,9 @@ import template from './currency-input.html';
 const CurrencyInput = {
   controller,
   template,
-  require: 'ngModel',
+  require: {
+    $ngModel: 'ngModel'
+  },
   transclude: {
     'addon': '?addon'
   },

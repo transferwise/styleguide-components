@@ -53,8 +53,8 @@
 				size="{{$ctrl.size}}"
 				accept="{{$ctrl.accept}}"
 				max-size="$ctrl.maxSize"
-				description="{{$ctrl.description}}"
-				instructions="{{$ctrl.instructions}}"
+				label="{{$ctrl.label}}"
+				placeholder="{{$ctrl.placeholder}}"
 
 				button-text="{{$ctrl.buttonText}}"
 				cancel-text="{{$ctrl.cancelText}}"
@@ -65,7 +65,6 @@
 				processing-text="{{$ctrl.processingText}}"
 				success-text="{{$ctrl.successText}}"
 				failure-text="{{$ctrl.failureText}}"
-				complete-text="{{$ctrl.completeText}}"
 
 				on-start="$ctrl.onStart"
 				on-success="$ctrl.onSuccess"
@@ -82,8 +81,8 @@
 				size="{{$ctrl.size}}"
 				accept="{{$ctrl.accept}}"
 				max-size="$ctrl.maxSize"
-				description="{{$ctrl.description}}"
-				instructions="{{$ctrl.instructions}}"
+				label="{{$ctrl.label}}"
+				placeholder="{{$ctrl.placeholder}}"
 
 				button-text="{{$ctrl.buttonText}}"
 				cancel-text="{{$ctrl.cancelText}}"
@@ -94,7 +93,6 @@
 				processing-text="{{$ctrl.processingText}}"
 				success-text="{{$ctrl.successText}}"
 				failure-text="{{$ctrl.failureText}}"
-				complete-text="{{$ctrl.completeText}}"
 
 				on-start="$ctrl.onStart"
 				on-success="$ctrl.onSuccess"
@@ -124,9 +122,9 @@
   ng-model="{{$ctrl.ngModel | limitTo : 30}}..."</span>
   name="{{$ctrl.name}}"<span ng-if="$ctrl.icon">
   icon="{{$ctrl.icon}}"</span><span ng-if="$ctrl.size !== 'md'">
-  size="{{$ctrl.size}}"</span><span ng-if="$ctrl.description">
-  description="{{$ctrl.description}}"</span>
-  instructions="{{$ctrl.instructions}}"
+  size="{{$ctrl.size}}"</span><span ng-if="$ctrl.label">
+  label="{{$ctrl.label}}"</span>
+  placeholder="{{$ctrl.placeholder}}"
   button-text="{{$ctrl.buttonText}}"
   cancel-text="{{$ctrl.cancelText}}"
 <span ng-if="$ctrl.accept">
@@ -136,8 +134,7 @@
   too-large-message="{{$ctrl.tooLargeMessage}}"</span><span ng-if="$ctrl.processingText">
   processing-text="{{$ctrl.processingText}}"</span><span ng-if="$ctrl.successText">
   success-text="{{$ctrl.successText}}"</span><span ng-if="$ctrl.failureText">
-  failure-text="{{$ctrl.failureText}}"</span><span ng-if="$ctrl.completeText">
-  complete-text="{{$ctrl.completeText}}"</span><span ng-if="$ctrl.httpOptions">
+  failure-text="{{$ctrl.failureText}}"</span><span ng-if="$ctrl.httpOptions">
   http-options="{{$ctrl.httpOptions}}"</span><span ng-if="$ctrl.errorMessage">
   error-message="{{$ctrl.errorMessage}}"</span>
 
@@ -162,11 +159,17 @@
 				<input type="text" class="form-control" ng-model="$ctrl.name" />
 			</div>
 
-			<div class="form-group" ng-init="$ctrl.instructions = 'Drag and drop a file less than 1MB'">
+			<div class="form-group">
 				<label class="control-label">
-					Instruction text
+					Label
 				</label>
-				<input type="text" class="form-control" ng-model="$ctrl.instructions" />
+				<input type="text" class="form-control" ng-model="$ctrl.label" />
+			</div>
+			<div class="form-group" ng-init="$ctrl.placeholder = 'Drag and drop a file less than 1MB'">
+				<label class="control-label">
+					Placeholder text
+				</label>
+				<input type="text" class="form-control" ng-model="$ctrl.placeholder" />
 			</div>
 
 			<div class="form-group" ng-init="$ctrl.buttonText = 'Or choose file'">
@@ -182,12 +185,6 @@
 				<input type="text" class="form-control" ng-model="$ctrl.cancelText" />
 			</div>
 
-			<div class="form-group">
-				<label class="control-label">
-					Document description
-				</label>
-				<input type="text" class="form-control" ng-model="$ctrl.description" />
-			</div>
 			<div class="form-group">
 				<label class="control-label">
 					Icon
@@ -215,12 +212,6 @@
 					Failure text
 				</label>
 				<input type="text" class="form-control" ng-model="$ctrl.failureText" />
-			</div>
-			<div class="form-group">
-				<label class="control-label">
-					Complete text
-				</label>
-				<input type="text" class="form-control" ng-model="$ctrl.completeText" />
 			</div>
 
 			<div class="form-group">

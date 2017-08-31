@@ -1,85 +1,129 @@
-function TwCheckboxController($scope, $element) {
-  var $ctrl = this,
-    $ngModel = $element.controller('ngModel'),
-    buttonElement = $element.find('.tw-checkbox-button');
+class CheckboxController {
+  constructor($scope, $element) {
+    const $ngModel = $element.controller('ngModel');
 
-  $ctrl.isChecked = function() {
-    return ($ctrl.ngTrueValue && $ctrl.ngTrueValue === $ctrl.ngModel) ||
-      !$ctrl.ngTrueValue && $ctrl.ngModel || false;
-  };
+    this.$element = $element;
+    this.checked = this.isChecked();
 
-  $ctrl.checked = $ctrl.isChecked();
+    this.addLabelHandler();
+    this.addWatchers($scope, $element, $ngModel);
+  }
 
-  $ctrl.buttonClick = function($event) {
-    if ($ctrl.checked) {
-      $ctrl.checked = false;
-      //$ctrl.ngModel = $ctrl.ngFalseValue || false;
-      $ngModel.$setViewValue($ctrl.ngFalseValue || false);
+  isChecked() {
+    return (this.ngTrueValue && this.ngTrueValue === this.ngModel) ||
+      !this.ngTrueValue && this.ngModel || false;
+  }
+
+  buttonClick($event) {
+    if (this.checked) {
+      this.checked = false;
+      this.$ngModel.$setViewValue(this.ngFalseValue || false);
     } else {
-      $ctrl.checked = true;
-      //$ctrl.ngModel = $ctrl.ngTrueValue || true;
-      $ngModel.$setViewValue($ctrl.ngTrueValue || true);
+      this.checked = true;
+      this.$ngModel.$setViewValue(this.ngTrueValue || true);
     }
-    $ngModel.$setTouched();
+    this.$ngModel.$setTouched();
 
     if ($event) {
       // Prevent button click propgation from firing label
       $event.stopPropagation();
     }
-    validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl);
-  };
-  $ctrl.buttonFocus = function() {
-    $element.closest('.checkbox').find('label').addClass('focus');
-    $element.triggerHandler('focus');
-  };
-  $ctrl.buttonBlur = function() {
-    $element.closest('.checkbox').find('label').removeClass('focus');
-    $element.triggerHandler('blur');
-    $ngModel.$setTouched();
 
-    validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl);
-  };
+    validateCheckbox(
+      this.checked,
+      this.$element,
+      this.$ngModel,
+      this.ngRequired
+    );
+  }
+
+  buttonFocus() {
+    this.$element
+      .closest('.checkbox')
+      .find('label')
+      .addClass('focus');
+
+    this.$element.triggerHandler('focus');
+  }
+
+  buttonBlur() {
+    this.$element
+      .closest('.checkbox')
+      .find('label')
+      .removeClass('focus');
+
+    this.$element.triggerHandler('blur');
+    this.$ngModel.$setTouched();
+
+    validateCheckbox(
+      this.checked,
+      this.$element,
+      this.$ngModel,
+      this.ngRequired
+    );
+  }
 
   // IE 'clicks' the hidden input when label is clicked
-  $ctrl.hiddenClick = function($event) {
+  hiddenClick($event) {
     $event.stopPropagation();
-  };
+  }
 
-  $element.closest('label').on('click', function(event) {
-    // Trigger our button, prevent default label behaviour
-    $element.find('button').trigger('click');
-    event.preventDefault();
-    event.stopPropagation();
-  });
+  addLabelHandler() {
+    this.$element.closest('label').on('click', (event) => {
+      // Trigger our button, prevent default label behaviour
+      this.$element.find('button').trigger('click');
+      event.preventDefault();
+      event.stopPropagation();
+    });
+  }
 
-  $scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
-    if (newValue !== oldValue) {
-      $ngModel.$setDirty();
-      validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl);
-      $ctrl.checked = $ctrl.isChecked();
-    }
-  });
+  addWatchers($scope, $element, $ngModel) {
+    $scope.$watch('$ctrl.ngModel', (newValue, oldValue) => {
+      if (newValue !== oldValue) {
+        $ngModel.$setDirty();
+        validateCheckbox(
+          this.checked,
+          $element,
+          $ngModel,
+          this.ngRequired
+        );
+        this.checked = this.isChecked();
+      }
+    });
 
-  $scope.$watch('$ctrl.ngDisabled', function(newValue, oldValue) {
-    if (newValue && !oldValue) {
-      $element.closest('.checkbox').addClass('disabled').addClass('disabled', true);
-    } else if (!newValue && oldValue) {
-      $element.closest('.checkbox').removeClass('disabled').removeClass('disabled');
-    }
-  });
-  $scope.$watch('$ctrl.ngRequired', function(newValue, oldValue) {
-    if (newValue !== oldValue && newValue) {
-      validateCheckbox($ctrl.checked, $element, $ngModel, $ctrl);
-    }
-  });
+    $scope.$watch('$ctrl.ngDisabled', (newValue, oldValue) => {
+      if (newValue && !oldValue) {
+        $element
+          .closest('.checkbox')
+          .addClass('disabled')
+          .attr('disabled', true);
+      } else if (!newValue && oldValue) {
+        $element
+          .closest('.checkbox')
+          .removeClass('disabled')
+          .removeAttr('disabled');
+      }
+    });
+
+    $scope.$watch('$ctrl.ngRequired', (newValue, oldValue) => {
+      if (newValue !== oldValue) {
+        validateCheckbox(
+          this.checked,
+          $element,
+          $ngModel,
+          this.ngRequired
+        );
+      }
+    });
+  }
 }
 
-function validateCheckbox(isChecked, $element, $ngModel, $ctrl) {
+function validateCheckbox(isChecked, $element, $ngModel, isRequired) {
   if (!$ngModel.$touched) {
     return;
   }
 
-  if (!isChecked && $ctrl.ngRequired) {
+  if (!isChecked && isRequired) {
     $ngModel.$setValidity('required', false);
     $element.find('.tw-checkbox-button').addClass('has-error');
     $element.closest('.checkbox').addClass('has-error');
@@ -92,6 +136,6 @@ function validateCheckbox(isChecked, $element, $ngModel, $ctrl) {
   }
 }
 
-TwCheckboxController.$inject = ['$scope', '$element'];
+CheckboxController.$inject = ['$scope', '$element'];
 
-export default TwCheckboxController;
+export default CheckboxController;

@@ -1,59 +1,73 @@
+class RadioController {
+  constructor($scope, $element) {
+    const $ngModel = $element.controller('ngModel');
 
-function TwRadioController($scope, $element) {
-  var $ctrl = this,
-    $ngModel = $element.controller('ngModel'),
-    radioSelector = '.radio',
-    labelSelector = 'label';
+    this.$element = $element;
+    this.checked = this.isChecked();
 
-  $ctrl.isChecked = function() {
-    return ($ctrl.ngValue && $ctrl.ngModel === $ctrl.ngValue) ||
-      $ctrl.value === $ctrl.ngModel;
-  };
-  $ctrl.checked = $ctrl.isChecked();
-  $ctrl.buttonClick = function($event) {
-    if ($ctrl.ngDisabled) {
+    $element.on('blur', (event) => {
+      $ngModel.$setTouched();
+    });
+
+    this.addWatchers($scope, $element, $ngModel);
+  }
+
+  isChecked() {
+    return (this.ngValue && this.ngModel === this.ngValue) ||
+      this.value === this.ngModel;
+  }
+
+  buttonClick($event) {
+    if (this.ngDisabled) {
       return;
     }
 
-    $ctrl.checked = true;
-    $ngModel.$setViewValue($ctrl.ngValue || $ctrl.value);
-  };
-  $ctrl.buttonFocus = function() {
-    $element.closest(labelSelector).addClass('focus');
-    $element.triggerHandler('focus');
-  };
-  $ctrl.buttonBlur = function() {
-    $element.closest(labelSelector).removeClass('focus');
-    $element.triggerHandler('blur');
-  };
-  $ctrl.hiddenInputChange = function() {
+    this.checked = true;
+    this.$ngModel.$setViewValue(this.ngValue || this.value);
+  }
+
+  buttonFocus() {
+    this.$element.closest('label').addClass('focus');
+    this.$element.triggerHandler('focus');
+  }
+
+  buttonBlur() {
+    this.$element.closest('label').removeClass('focus');
+    this.$element.triggerHandler('blur');
+  }
+
+  hiddenInputChange() {
     // This only fires on label click
     // Normal change handler doesn't, so trigger manually
-    if ($ctrl.ngChange) {
-      $ctrl.ngChange();
+    if (this.ngChange) {
+      this.ngChange();
     }
-  };
+  }
 
-  $element.on('blur', function(event) {
-    $ngModel.$setTouched();
-  });
+  addWatchers($scope, $element, $ngModel) {
+    $scope.$watch('$ctrl.ngModel', (newValue, oldValue) => {
+      if (newValue !== oldValue) {
+        this.$ngModel.$setDirty();
+      }
+      this.checked = this.isChecked();
+    });
 
-  $scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
-    if (newValue !== oldValue) {
-      $ngModel.$setDirty();
-    }
-    $ctrl.checked = $ctrl.isChecked();
-  });
-
-  $scope.$watch('$ctrl.ngDisabled', function(newValue, oldValue) {
-    if (newValue && !oldValue) {
-      $element.closest(radioSelector).addClass('disabled');
-    } else if (!newValue && oldValue) {
-      $element.closest(radioSelector).removeClass('disabled');
-    }
-  });
+    $scope.$watch('$ctrl.ngDisabled', (newValue, oldValue) => {
+      if (newValue && !oldValue) {
+        this.$element
+          .closest('.radio')
+          .addClass('disabled')
+          .attr('disabled', true);
+      } else if (!newValue && oldValue) {
+        this.$element
+          .closest('.radio')
+          .removeClass('disabled')
+          .removeAttr('disabled');
+      }
+    });
+  }
 }
 
-TwRadioController.$inject = ['$scope', '$element'];
+RadioController.$inject = ['$scope', '$element'];
 
-export default TwRadioController;
+export default RadioController;

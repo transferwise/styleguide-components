@@ -1158,7 +1158,7 @@ describe('Directive: TwSelect', function() {
   },{
     value: "CIRCLE_IMAGE",
     label: 'Circle image',
-    circleImage: "images/mike.jpg"
+    circleImage: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
   },{
     value: "CIRCLE_ICON",
     label: 'Circle icon',

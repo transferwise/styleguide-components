@@ -1,3 +1,4 @@
+/* DEPRECATED in favour of upload */
 
 function TwFileSelectDirective() {
   return {

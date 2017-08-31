@@ -1,83 +1,85 @@
 import TwCurrencyService from '../../services/currency/';
 
-function TwAmountCurrencySelectController($element, $scope, $timeout, TwCurrencyService) {
-  var $ctrl = this;
-  var $ngModel = $element.controller('ngModel');
+class AmountCurrencySelectController {
+  constructor($element, $scope, $timeout, TwCurrencyService) {
+    var $ngModel = $element.controller('ngModel');
 
-  $ctrl.showDecimals = true;
+    this.$timeout = $timeout;
+    this.showDecimals = true;
 
-  $scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
-    if (newValue !== oldValue) {
-      $ngModel.$setDirty();
-    }
-  });
+    $scope.$watch('$ctrl.ngModel', (newValue, oldValue) => {
+      if (newValue !== oldValue) {
+        $ngModel.$setDirty();
+      }
+    });
 
-  $scope.$watch('$ctrl.currency', function(newValue, oldValue) {
-    if (newValue && newValue !== oldValue) {
-      $ctrl.showDecimals = TwCurrencyService.getDecimals(newValue) > 0;
-    }
-  });
+    $scope.$watch('$ctrl.currency', (newValue, oldValue) => {
+      if (newValue && newValue !== oldValue) {
+        this.showDecimals = TwCurrencyService.getDecimals(newValue) > 0;
+      }
+    });
 
-  $element.find('input').on('blur', function() {
-    $ngModel.$setTouched();
-    $element.triggerHandler('blur');
-  });
+    $element.find('input').on('blur', () => {
+      $ngModel.$setTouched();
+      $element.triggerHandler('blur');
+    });
 
-  $ngModel.$validators.min = function(modelValue, viewValue) {
-    if (typeof $ctrl.ngMin === 'undefined' || $ctrl.ngMin === null || !isNumber(viewValue)) {
-      return true;
-    }
+    $ngModel.$validators.min = (modelValue, viewValue) => {
+      if (typeof this.ngMin === 'undefined' || this.ngMin === null || !isNumber(viewValue)) {
+        return true;
+      }
 
-    return viewValue >= $ctrl.ngMin;
-  };
+      return viewValue >= this.ngMin;
+    };
 
-  $ngModel.$validators.max = function(modelValue, viewValue) {
-    if (typeof $ctrl.ngMax === 'undefined' || $ctrl.ngMax === null || !isNumber(viewValue)) {
-      return true;
-    }
+    $ngModel.$validators.max = (modelValue, viewValue) => {
+      if (typeof this.ngMax === 'undefined' || this.ngMax === null || !isNumber(viewValue)) {
+        return true;
+      }
 
-    return viewValue <= $ctrl.ngMax;
-  };
+      return viewValue <= this.ngMax;
+    };
+  }
 
-  $ctrl.changedAmount = function() {
-    if ($ctrl.ngChange) {
+  changedAmount() {
+    if (this.ngChange) {
       // $timeout is needed to get the last ngModel value.
       // See: https://github.com/angular/angular.js/issues/4558
-      $timeout($ctrl.ngChange);
+      this.$timeout(this.ngChange);
     }
     /* Deprecated */
-    if ($ctrl.onAmountChange) {
+    if (this.onAmountChange) {
       // $timeout is needed to get the last ngModel value.
       // See: https://github.com/angular/angular.js/issues/4558
       if (console & console.log) {
         console.log("onAmountChange is deprecated in twAmountCurrencySelect, please use ngChange.");
       }
-      $timeout($ctrl.onAmountChange);
+      this.$timeout(this.onAmountChange);
     }
-  };
+  }
 
-  $ctrl.changedCurrency = function() {
-    if ($ctrl.onCurrencyChange) {
-      $timeout($ctrl.onCurrencyChange);
+  changedCurrency() {
+    if (this.onCurrencyChange) {
+      this.$timeout(this.onCurrencyChange);
     }
-  };
+  }
 
-  $ctrl.customAction = function() {
-    if ($ctrl.onCustomAction) {
-      $ctrl.onCustomAction();
+  customAction() {
+    if (this.onCustomAction) {
+      this.onCustomAction();
     }
-  };
-
-  function isNumber(value) {
-    return !isNaN(parseFloat(value));
   }
 }
 
-TwAmountCurrencySelectController.$inject = [
+function isNumber(value) {
+  return !isNaN(parseFloat(value));
+}
+
+AmountCurrencySelectController.$inject = [
   '$element',
   '$scope',
   '$timeout',
   'TwCurrencyService'
 ];
 
-export default TwAmountCurrencySelectController;
+export default AmountCurrencySelectController;

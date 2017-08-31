@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: TwCheckbox', function() {
+describe('Checkbox', function() {
   var $compile,
     $rootScope,
     $scope,

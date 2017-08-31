@@ -31,7 +31,12 @@ module.exports = function(config) {
         frameworks: ['jasmine'],
 
         // browsers to test against, be sure to install the correct karma browser launcher plugin
-        browsers : ['PhantomJS', 'Chrome', 'Firefox', 'Safari'], // npm install karma-chrome-launcher --save-dev
+        browsers : [
+          'PhantomJS',
+          'Chrome',
+          'Firefox',
+          'Safari'
+        ],
 
         // 'progress' is the default reporter
         reporters: ['coverage', 'mocha'],

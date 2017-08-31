@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: TwTextFormat, ', function() {
+describe('TextFormat directive, ', function() {
   var $compile,
       $rootScope,
       $scope,

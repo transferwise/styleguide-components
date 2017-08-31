@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: TwDate', function() {
+describe('Date', function() {
   var $compile,
     $rootScope,
     $scope,

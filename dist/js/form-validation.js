@@ -81,17 +81,17 @@
     exports["default"] = _angular2["default"].module("tw.form-validation", [ _formValidation2["default"], _controlValidation2["default"], _asyncValidation2["default"] ]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwDynamicAsyncValidator($log, $q, $http) {
-        function DyancicAsyncValidatorController() {
-            console.log("this.twDynamicAsyncValidator"), console.log(ctrl.twDynamicAsyncValidator);
-        }
-        function emailValidLink(scope, element, attrs, ngModel) {
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+    }
+    function AsyncValidation($log, $q, $http) {
+        function AsyncValidationLink(scope, element, attrs, ngModel) {
             attrs["tw-dynamic-async-validator"];
         }
         return {
-            link: emailValidLink,
+            link: AsyncValidationLink,
             restrict: "A",
-            controller: DyancicAsyncValidatorController,
+            controller: AsyncValidatorController,
             contollerAs: "ctrl",
             bindToController: {
                 twDynamicAsyncValidator: "="
@@ -100,7 +100,11 @@
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), TwDynamicAsyncValidator.$inject = [ "$log", "$q", "$http" ], exports["default"] = TwDynamicAsyncValidator;
+    });
+    var AsyncValidatorController = function AsyncValidatorController() {
+        _classCallCheck(this, AsyncValidatorController);
+    };
+    AsyncValidation.$inject = [ "$log", "$q", "$http" ], exports["default"] = AsyncValidation;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function TwValidation() {

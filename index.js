@@ -243,11 +243,10 @@ angular.module('my-app', ['tw.styleguide-components'])
 			};
 
 			$ctrl.makeFancy = function() {
-				$ctrl.description = "Front of your ID document";
+				$ctrl.label = "Front of your ID document";
 				$ctrl.processingText = "Processing...";
 				$ctrl.successText = "Upload complete!";
 				$ctrl.failureText = "Upload failed!";
-				$ctrl.completeText = "Front of ID";
 			};
 
 			$ctrl.acceptOptions = [

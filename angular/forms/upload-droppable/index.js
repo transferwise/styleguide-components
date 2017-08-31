@@ -1,3 +1,5 @@
+/* DEPRECATED in favour of upload */
+
 import UploadDroppable from './upload-droppable.directive.js';
 import FileSelect from './file-select.directive.js';
 

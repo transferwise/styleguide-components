@@ -4,7 +4,9 @@ import template from './date.html';
 const DateControl = {
   controller,
   template,
-  require: 'ngModel',
+  require: {
+    $ngModel: 'ngModel'
+  },
   bindings: {
     ngModel: '=',
     required: '@',

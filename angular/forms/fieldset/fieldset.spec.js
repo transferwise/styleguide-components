@@ -1,11 +1,10 @@
 'use strict';
 
-describe('Directive: TwFieldset', function() {
+describe('Fieldset', function() {
   var $compile,
       $rootScope,
       $scope,
       directiveElement;
-
 
   beforeEach(module('tw.styleguide.forms'));
 

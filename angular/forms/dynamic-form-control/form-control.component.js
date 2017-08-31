@@ -4,7 +4,9 @@ import template from './form-control.html';
 const FormControl = {
   controller,
   template,
-  require: 'ngModel',
+  require: {
+    $ngModel: 'ngModel'
+  },
   transclude: true,
   bindings: {
     type: "@",

@@ -1,26 +1,24 @@
 import TwDateService from '../../services/date/';
 
-function TwDateLookupController($element, $scope, $timeout, TwDateService) {
-  var $ctrl = this,
-    ngModelCtrl,
-    minDay, minMonth, minYear,
-    maxDay, maxMonth, maxYear;
+class TwDateLookupController {
+  constructor($element, $scope, $timeout, TwDateService) {
+    const $ngModel = $element.controller('ngModel');
 
-  function init() {
-    $ctrl.yearOffset = 0;
+    this.DateService = TwDateService;
+    this.$element = $element;
+    this.$timeout = $timeout;
+    this.yearOffset = 0;
 
-    ngModelCtrl = $element.controller('ngModel');
+    this.addValidators($ngModel, $element);
+    this.addWatchers($scope, $ngModel);
 
-    addValidators();
-    addWatchers();
-
-    ngModelCtrl.$formatters.push(function(newDate) {
-      updateCalendarView(newDate);
+    $ngModel.$formatters.push((newDate) => {
+      this.updateCalendarView(newDate);
       return newDate;
     });
 
-    $element.find('.btn, .dropdown-menu').on('focusout', function() {
-      $timeout(function() {
+    $element.find('.btn, .dropdown-menu').on('focusout', () => {
+      $timeout(() => {
         // If button isn't focused and dropdown not open, then blur
         if ($element.find('.btn:focus').length === 0 &&
           !$element.find('.btn-group').hasClass('open')) {
@@ -32,178 +30,173 @@ function TwDateLookupController($element, $scope, $timeout, TwDateService) {
       }, 150);   // need timeout because using dropdown.js,
     });
 
-    setLocale($ctrl.locale);
+    this.setLocale(this.locale);
 
-    updateMinDateView($ctrl.ngMin);
-    updateMaxDateView($ctrl.ngMax);
+    this.updateMinDateView(this.ngMin);
+    this.updateMaxDateView(this.ngMax);
   }
 
-  $ctrl.openLookup = function() {
-    ngModelCtrl.$setTouched();
-    $ctrl.mode = 'day';
+  openLookup() {
+    this.$ngModel.$setTouched();
+    this.mode = 'day';
 
-    var viewDate = $ctrl.ngModel;
-    if ($ctrl.ngMin && $ctrl.ngModel < $ctrl.ngMin) {
-      viewDate = $ctrl.ngMin;
+    var viewDate = this.ngModel;
+    if (this.ngMin && this.ngModel < this.ngMin) {
+      viewDate = this.ngMin;
     }
-    if ($ctrl.ngMax && $ctrl.ngModel > $ctrl.ngMax) {
-      viewDate = $ctrl.ngMax;
+    if (this.ngMax && this.ngModel > this.ngMax) {
+      viewDate = this.ngMax;
     }
-    updateCalendarView(viewDate);
+    this.updateCalendarView(viewDate);
 
-    $timeout(function () {
-      $element.find('.tw-date-lookup-month-label').focus();
+    this.$timeout(() => {
+      this.$element.find('.tw-date-lookup-month-label').focus();
     });
-  };
+  }
 
-  $ctrl.selectDay = function($event, day, month, year) {
-    if ($ctrl.isDayDisabled(day, month, year)) {
+  selectDay($event, day, month, year) {
+    if (this.isDayDisabled(day, month, year)) {
       // Don't close dropdown, don't set model
       $event.stopPropagation();
       return;
     }
-    $ctrl.day = day;
+    this.day = day;
     // Always set model to UTC dates
-    setModel(TwDateService.getUTCDateFromParts(year, month, day));
-    resetFocus();
-    updateCalendarDatePresentation();
-  };
+    this.setModel(this.DateService.getUTCDateFromParts(year, month, day));
+    this.resetFocus(this.$element);
+    this.updateCalendarDatePresentation();
+  }
 
-  $ctrl.selectMonth = function($event, month, year) {
+  selectMonth($event, month, year) {
     $event.stopPropagation();
-    if ($ctrl.isMonthDisabled(month, year)) {
+    if (this.isMonthDisabled(month, year)) {
       return;
     }
-    $ctrl.month = month;
-    $ctrl.weeks = getTableStructure();
-    $ctrl.mode = 'day';
-    updateCalendarDatePresentation();
-  };
+    this.month = month;
+    this.weeks = this.getTableStructure();
+    this.mode = 'day';
+    this.updateCalendarDatePresentation();
+  }
 
-  $ctrl.selectYear = function($event, year) {
+  selectYear($event, year) {
     $event.stopPropagation();
-    if ($ctrl.isYearDisabled(year)) {
+    if (this.isYearDisabled(year)) {
       return;
     }
-    $ctrl.year = year;
-    $ctrl.mode = 'month';
-    updateCalendarDatePresentation();
-  };
+    this.year = year;
+    this.mode = 'month';
+    this.updateCalendarDatePresentation();
+  }
 
-  $ctrl.monthBefore = function($event) {
+  monthBefore($event) {
     // Prevent dropdown closing
     $event.stopPropagation();
-    if ($ctrl.month === 0) {
-      $ctrl.year--;
-      $ctrl.month = 11;
+    if (this.month === 0) {
+      this.year--;
+      this.month = 11;
     } else {
-      $ctrl.month--;
+      this.month--;
     }
-    $ctrl.weeks = getTableStructure();
-    updateCalendarDatePresentation();
-  };
+    this.weeks = this.getTableStructure();
+    this.updateCalendarDatePresentation();
+  }
 
-  $ctrl.yearBefore = function($event) {
+  yearBefore($event) {
     // Prevent dropdown closing
     $event.stopPropagation();
-    $ctrl.year--;
-    $ctrl.weeks = getTableStructure();
-    updateCalendarDatePresentation();
-  };
+    this.year--;
+    this.weeks = this.getTableStructure();
+    this.updateCalendarDatePresentation();
+  }
 
-  $ctrl.monthAfter = function($event) {
+  monthAfter($event) {
     // Prevent dropdown closing
     $event.stopPropagation();
-    if ($ctrl.month === 11) {
-      $ctrl.year++;
-      $ctrl.month = 0;
+    if (this.month === 11) {
+      this.year++;
+      this.month = 0;
     } else {
-      $ctrl.month++;
+      this.month++;
     }
-    $ctrl.weeks = getTableStructure();
-    updateCalendarDatePresentation();
-  };
+    this.weeks = this.getTableStructure();
+    this.updateCalendarDatePresentation();
+  }
 
-  $ctrl.yearAfter = function($event) {
+  yearAfter($event) {
     // Prevent dropdown closing
     $event.stopPropagation();
-    $ctrl.year++;
-    $ctrl.weeks = getTableStructure();
-    updateCalendarDatePresentation();
-  };
+    this.year++;
+    this.weeks = this.getTableStructure();
+    this.updateCalendarDatePresentation();
+  }
 
-  $ctrl.isCurrentlySelected = function(day, month, year) {
-    return day === $ctrl.selectedDate &&
-      month === $ctrl.selectedMonth &&
-      year === $ctrl.selectedYear;
-  };
+  isCurrentlySelected(day, month, year) {
+    return day === this.selectedDate &&
+      month === this.selectedMonth &&
+      year === this.selectedYear;
+  }
 
-  $ctrl.isDayDisabled = function(day, month, year) {
-    return $ctrl.isYearDisabled(year) ||
-      $ctrl.isMonthDisabled(month, year) ||
-      (year === minYear && month === minMonth && day < minDay) ||
-      (year === maxYear && month === maxMonth && day > maxDay);
-  };
+  isDayDisabled(day, month, year) {
+    return this.isYearDisabled(year) ||
+      this.isMonthDisabled(month, year) ||
+      (year === this.minYear && month === this.minMonth && day < this.minDay) ||
+      (year === this.maxYear && month === this.maxMonth && day > this.maxDay);
+  }
 
-  $ctrl.isMonthDisabled = function(month, year) {
-    return $ctrl.isYearDisabled(year) ||
-      (year === minYear && month < minMonth) ||
-      (year === maxYear && month > maxMonth);
-  };
+  isMonthDisabled(month, year) {
+    return this.isYearDisabled(year) ||
+      (year === this.minYear && month < this.minMonth) ||
+      (year === this.maxYear && month > this.maxMonth);
+  }
 
-  $ctrl.isYearDisabled = function(year) {
-    return (minYear && year < minYear) || (maxYear && year > maxYear);
-  };
+  isYearDisabled(year) {
+    return (this.minYear && year < this.minYear) || (this.maxYear && year > this.maxYear);
+  }
 
-  $ctrl.switchToMonths = function($event) {
-    resetFocus($event.target);
-    findActiveLink();
+  switchToMonths($event) {
+    this.resetFocus($($event.target));
+    this.findActiveLink();
     $event.stopPropagation();
-    $ctrl.mode = 'month';
-  };
+    this.mode = 'month';
+  }
 
-  $ctrl.switchToYears = function($event) {
-    resetFocus($event.target);
-    findActiveLink();
+  switchToYears($event) {
+    this.resetFocus($($event.target));
+    this.findActiveLink();
     $event.stopPropagation();
-    $ctrl.mode = 'year';
-  };
+    this.mode = 'year';
+  }
 
-  $ctrl.setYearOffset = function($event, addtionalOffset) {
+  setYearOffset($event, addtionalOffset) {
     $event.stopPropagation();
-    $ctrl.yearOffset += addtionalOffset;
-  };
+    this.yearOffset += addtionalOffset;
+  }
 
-  $ctrl.buttonFocus = function() {
+  buttonFocus() {
     // TODO remove jquery dependency
-    $element.parents('.form-group').addClass('focus');
+    this.$element.parents('.form-group').addClass('focus');
     // jqLite supports triggerHandler
-    $element.triggerHandler('focus');
-  };
-
-  $ctrl.blur = function() {
-    // jqLite supports triggerHandler
-    $element.triggerHandler('focus');
-  };
-
-  function resetFocus() {
-    // jqLite supports find by tag name
-    $element.find('button').focus();
+    this.$element.triggerHandler('focus');
   }
 
-  function addValidators() {
-    ngModelCtrl.$validators.min = function(modelValue, viewValue) {
+  blur() {
+    // jqLite supports triggerHandler
+    this.$element.triggerHandler('focus');
+  }
+
+  addValidators($ngModel, $element) {
+    $ngModel.$validators.min = (modelValue, viewValue) => {
       var value = modelValue || viewValue;
-      if (value && value < $ctrl.ngMin) {
+      if (value && value < this.ngMin) {
         // TODO remove jquery dependency
         $element.parents('.form-group').addClass('has-error');
         return false;
       }
       return true;
     };
-    ngModelCtrl.$validators.max = function(modelValue, viewValue) {
+    $ngModel.$validators.max = (modelValue, viewValue) => {
       var value = modelValue || viewValue;
-      if (value && value > $ctrl.ngMax) {
+      if (value && value > this.ngMax) {
         // TODO remove jquery dependency
         $element.parents('.form-group').addClass('has-error');
         return false;
@@ -212,67 +205,67 @@ function TwDateLookupController($element, $scope, $timeout, TwDateService) {
     };
   }
 
-  function addWatchers() {
-    $scope.$watch('$ctrl.locale', function(newValue, oldValue) {
+  addWatchers($scope, $ngModel) {
+    $scope.$watch('$ctrl.locale', (newValue, oldValue) => {
       if (newValue && newValue !== oldValue) {
-        setLocale(newValue);
+        this.setLocale(newValue);
       }
     });
 
-    $scope.$watch('$ctrl.ngRequired', function(newValue, oldValue) {
-      ngModelCtrl.$validate();
+    $scope.$watch('$ctrl.ngRequired', (newValue, oldValue) => {
+      $ngModel.$validate();
     });
 
-    $scope.$watch('$ctrl.ngMin', function(newValue, oldValue) {
+    $scope.$watch('$ctrl.ngMin', (newValue, oldValue) => {
       if (newValue !== oldValue) {
-        updateMinDateView($ctrl.ngMin);
-        ngModelCtrl.$validate();
+        this.updateMinDateView(this.ngMin);
+        $ngModel.$validate();
       }
     });
 
-    $scope.$watch('$ctrl.shortDate', function(newValue, oldValue) {
-      updateSelectedDatePresentation();
+    $scope.$watch('$ctrl.shortDate', (newValue, oldValue) => {
+      this.updateSelectedDatePresentation();
     });
 
-    $scope.$watch('$ctrl.ngMax', function(newValue, oldValue) {
+    $scope.$watch('$ctrl.ngMax', (newValue, oldValue) => {
       if (newValue !== oldValue) {
-        updateMaxDateView($ctrl.ngMax);
-        ngModelCtrl.$validate();
+        this.updateMaxDateView(this.ngMax);
+        $ngModel.$validate();
       }
     });
 
-    $scope.$watch('$ctrl.ngModel', function(newValue, oldValue) {
+    $scope.$watch('$ctrl.ngModel', (newValue, oldValue) => {
       if (newValue) {
-        $ctrl.selectedDate = TwDateService.getUTCDate(newValue);
-        $ctrl.selectedMonth = TwDateService.getUTCMonth(newValue);
-        $ctrl.selectedYear = TwDateService.getUTCFullYear(newValue);
-        updateSelectedDatePresentation();
+        this.selectedDate = this.DateService.getUTCDate(newValue);
+        this.selectedMonth = this.DateService.getUTCMonth(newValue);
+        this.selectedYear = this.DateService.getUTCFullYear(newValue);
+        this.updateSelectedDatePresentation();
       }
     });
   }
 
-  function updateCalendarView(viewDate) {
+  updateCalendarView(viewDate) {
     if (!viewDate || !viewDate.getUTCDate) {
       // We want user's 'today' in UTC
-      viewDate = TwDateService.getLocaleToday();
+      viewDate = this.DateService.getLocaleToday();
     }
 
     // Provided dates should use UTC
-    $ctrl.day = TwDateService.getUTCDate(viewDate);
-    $ctrl.month = TwDateService.getUTCMonth(viewDate);
-    $ctrl.year = TwDateService.getUTCFullYear(viewDate);
+    this.day = this.DateService.getUTCDate(viewDate);
+    this.month = this.DateService.getUTCMonth(viewDate);
+    this.year = this.DateService.getUTCFullYear(viewDate);
 
-    $ctrl.weeks = getTableStructure();
+    this.weeks = this.getTableStructure();
 
-    updateCalendarDatePresentation();
+    this.updateCalendarDatePresentation();
   }
 
-  function getTableStructure() {
-    var firstDayOfMonth = TwDateService.getWeekday($ctrl.year, $ctrl.month, 1);
+  getTableStructure() {
+    var firstDayOfMonth = this.DateService.getWeekday(this.year, this.month, 1);
     if (firstDayOfMonth === 0) {
       firstDayOfMonth = 7;
     }
-    var daysInMonth = TwDateService.getLastDayOfMonth($ctrl.year, $ctrl.month);
+    var daysInMonth = this.DateService.getLastDayOfMonth(this.year, this.month);
 
     var days = [];
     var weekNumber = 0;
@@ -300,36 +293,40 @@ function TwDateLookupController($element, $scope, $timeout, TwDateService) {
     return weeks;
   }
 
-  function setLocale(locale) {
+  setLocale(locale) {
     if (!locale) {
-      $ctrl.locale = "en-GB";
+      this.locale = "en-GB";
     }
-    $ctrl.monthBeforeDay = TwDateService.isMonthBeforeDay($ctrl.locale);
-    $ctrl.monthsOfYear = TwDateService.getMonthNamesForLocale($ctrl.locale, 'long');
-    $ctrl.shortMonthsOfYear = TwDateService.getMonthNamesForLocale($ctrl.locale, 'short');
-    $ctrl.daysOfWeek = TwDateService.getDayNamesForLocale($ctrl.locale, 'short');
-    $ctrl.shortDaysOfWeek = TwDateService.getDayNamesForLocale($ctrl.locale, 'narrow');
-    updateSelectedDatePresentation();
+    this.monthBeforeDay = this.DateService.isMonthBeforeDay(this.locale);
+    this.monthsOfYear = this.DateService.getMonthNamesForLocale(this.locale, 'long');
+    this.shortMonthsOfYear = this.DateService.getMonthNamesForLocale(this.locale, 'short');
+    this.daysOfWeek = this.DateService.getDayNamesForLocale(this.locale, 'short');
+    this.shortDaysOfWeek = this.DateService.getDayNamesForLocale(this.locale, 'narrow');
+    this.updateSelectedDatePresentation();
   }
 
-  function updateSelectedDatePresentation(){
-    var monthsOfYear = $ctrl.shortDate ? $ctrl.shortMonthsOfYear : $ctrl.monthsOfYear;
+  updateSelectedDatePresentation() {
+    var monthsOfYear = this.shortDate ? this.shortMonthsOfYear : this.monthsOfYear;
 
-    $ctrl.selectedDateFormatted = TwDateService.getYearMonthDatePresentation($ctrl.selectedYear,
-                                        monthsOfYear[$ctrl.selectedMonth],
-                                        $ctrl.selectedDate,
-                                        $ctrl.locale);
+    this.selectedDateFormatted = this.DateService.getYearMonthDatePresentation(
+      this.selectedYear,
+      monthsOfYear[this.selectedMonth],
+      this.selectedDate,
+      this.locale
+    );
   }
 
-  function updateCalendarDatePresentation(){
-    $ctrl.yearMonthFormatted = TwDateService.getYearAndMonthPresentation($ctrl.year,
-                                                                              $ctrl.monthsOfYear[$ctrl.month],
-                                                                              $ctrl.locale);
+  updateCalendarDatePresentation() {
+    this.yearMonthFormatted = this.DateService.getYearAndMonthPresentation(
+      this.year,
+      this.monthsOfYear[this.month],
+      this.locale
+    );
   }
 
-  function moveDateToWithinRange(date, min, max) {
+  moveDateToWithinRange(date, min, max) {
     if (!date) {
-      date = TwDateService.getLocaleToday();
+      date = this.DateService.getLocaleToday();
     }
     if (min && min > date) {
       return min;
@@ -340,44 +337,44 @@ function TwDateLookupController($element, $scope, $timeout, TwDateService) {
     return date;
   }
 
-  function setModel(modelDate) {
-    modelDate = moveDateToWithinRange(modelDate, $ctrl.ngMin, $ctrl.ngMax);
-    ngModelCtrl.$setViewValue(modelDate);
-    ngModelCtrl.$setDirty();
+  setModel(modelDate) {
+    modelDate = this.moveDateToWithinRange(modelDate, this.ngMin, this.ngMax);
+    this.$ngModel.$setViewValue(modelDate);
+    this.$ngModel.$setDirty();
 
-    updateCalendarView(modelDate);
+    this.updateCalendarView(modelDate);
   }
 
-  function updateMinDateView(minDate) {
+  updateMinDateView(minDate) {
     if (minDate && minDate.getUTCDate) {
-      minDay = TwDateService.getUTCDate(minDate);
-      minMonth = TwDateService.getUTCMonth(minDate);
-      minYear = TwDateService.getUTCFullYear(minDate);
+      this.minDay = this.DateService.getUTCDate(minDate);
+      this.minMonth = this.DateService.getUTCMonth(minDate);
+      this.minYear = this.DateService.getUTCFullYear(minDate);
     } else {
-      minDay = null;
-      minMonth = null;
-      minYear = null;
+      this.minDay = null;
+      this.minMonth = null;
+      this.minYear = null;
     }
   }
 
-  function updateMaxDateView(maxDate) {
+  updateMaxDateView(maxDate) {
     if (maxDate && maxDate.getUTCDate) {
-      maxDay = TwDateService.getUTCDate(maxDate);
-      maxMonth = TwDateService.getUTCMonth(maxDate);
-      maxYear = TwDateService.getUTCFullYear(maxDate);
+      this.maxDay = this.DateService.getUTCDate(maxDate);
+      this.maxMonth = this.DateService.getUTCMonth(maxDate);
+      this.maxYear = this.DateService.getUTCFullYear(maxDate);
     } else {
-      maxDay = null;
-      maxMonth = null;
-      maxYear = null;
+      this.maxDay = null;
+      this.maxMonth = null;
+      this.maxYear = null;
     }
   }
 
   // Keydown as keypress did not work in chrome/safari
-  $ctrl.keyHandler = function(event) {
-    if (!$ctrl.ngModel) {
-      setModel(
+  keyHandler(event) {
+    if (!this.ngModel) {
+      this.setModel(
         // Always set model to UTC dates
-        TwDateService.getUTCDateFromParts($ctrl.year, $ctrl.month, $ctrl.day)
+        this.DateService.getUTCDateFromParts(this.year, this.month, this.day)
       );
       return;
     }
@@ -385,44 +382,47 @@ function TwDateLookupController($element, $scope, $timeout, TwDateService) {
     var characterCode = event.which || event.charCode || event.keyCode;
 
     if (characterCode === 37) { // Left arrow key
-      adjustDate($ctrl.mode, $ctrl.ngModel, -1, -1, -1);
+      this.adjustDate(this.mode, this.ngModel, -1, -1, -1);
     } else if (characterCode === 38) { // Up arrow key
       event.preventDefault(); // Prevent browser scroll
-      adjustDate($ctrl.mode, $ctrl.ngModel, -7, -4, -4);
+      this.adjustDate(this.mode, this.ngModel, -7, -4, -4);
     } else if (characterCode === 39) { // Right arrow key
-      adjustDate($ctrl.mode, $ctrl.ngModel, 1, 1, 1);
+      this.adjustDate(this.mode, this.ngModel, 1, 1, 1);
     } else if (characterCode === 40) { // Down arrow key
       event.preventDefault(); // Prevent browser scroll
-      adjustDate($ctrl.mode, $ctrl.ngModel, 7, 4, 4);
+      this.adjustDate(this.mode, this.ngModel, 7, 4, 4);
     }
 
-    findActiveLink();
+    this.findActiveLink();
 
     return true;
-  };
+  }
 
-  function findActiveLink() {
+  findActiveLink() {
     // Perform after current digest
-    $timeout(function () {
-      $element.find('a.active').focus();
+    this.$timeout(() => {
+      this.$element.find('a.active').focus();
     });
   }
 
-  function adjustDate(mode, date, days, months, years) {
-    var newDate = date;
-    if (mode === 'day') {
-      newDate = TwDateService.addDays(date, days);
-    }
-    if (mode === 'month') {
-      newDate = TwDateService.addMonths(date, months);
-    }
-    if (mode === 'year') {
-      newDate = TwDateService.addYears(date, years);
-    }
-    setModel(newDate);
+  resetFocus($element) {
+    // jqLite supports find by tag name
+    $element.find('button').focus();
   }
 
-  init();
+  adjustDate(mode, date, days, months, years) {
+    var newDate = date;
+    if (mode === 'day') {
+      newDate = this.DateService.addDays(date, days);
+    }
+    if (mode === 'month') {
+      newDate = this.DateService.addMonths(date, months);
+    }
+    if (mode === 'year') {
+      newDate = this.DateService.addYears(date, years);
+    }
+    this.setModel(newDate);
+  }
 }
 
 TwDateLookupController.$inject = [

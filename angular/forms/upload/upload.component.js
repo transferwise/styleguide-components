@@ -11,15 +11,15 @@ const Upload = {
     icon: '@',
     label: '@',
     placeholder: '@',
-    description: '@', // DEPRECATED
-    instructions: '@', // DEPRECATED
+    description: '@', // DEPRECATED for label
+    instructions: '@', // DEPRECATED for placeholder
     buttonText: '@',
     cancelText: '@',
     processingText: '@',
-    completeText: '@',
+    successText: '@',
     errorMessage: '@',
     tooLargeMessage: '@',
-    //wrongTypeText: '@',
+    //wrongTypeMessage: '@',
     size: '@',
     accept: '@',
     httpOptions: '<',
@@ -27,7 +27,7 @@ const Upload = {
     onSuccess: '=',
     onFailure: '=',
     onCancel: '=',
-    maxSize: '<'
+    maxSize: '<' // TODO move to ngMax?
   }
 };
 
