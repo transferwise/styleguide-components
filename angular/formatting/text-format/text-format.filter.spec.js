@@ -1,6 +1,6 @@
 'use strict';
 
-describe('TextFormatFilter, ', function() {
+describe('TextFormat filter, ', function() {
   var $compile,
       $rootScope,
       $scope,
