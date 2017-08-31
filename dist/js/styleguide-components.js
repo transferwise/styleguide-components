@@ -2264,6 +2264,9 @@
     }), exports["default"] = TwUploadDroppableDirective;
 }, function(module, exports, __webpack_require__) {
     "use strict";
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+    }
     function FileInputDirective() {
         return {
             restrict: "A",
@@ -2278,15 +2281,16 @@
             }
         };
     }
-    function FileInputController($element) {
-        var $ctrl = this;
-        $element.on("change", function(event) {
-            $ctrl.onUserInput && "function" == typeof $ctrl.onUserInput && $ctrl.onUserInput();
-        });
-    }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), FileInputController.$inject = [ "$element" ], exports["default"] = FileInputDirective;
+    });
+    var FileInputController = function FileInputController($element) {
+        var _this = this;
+        _classCallCheck(this, FileInputController), $element.on("change", function(event) {
+            _this.onUserInput && "function" == typeof _this.onUserInput && _this.onUserInput();
+        });
+    };
+    FileInputController.$inject = [ "$element" ], exports["default"] = FileInputDirective;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -3006,17 +3010,17 @@
     }), exports["default"] = TwDateService;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwDynamicAsyncValidator($log, $q, $http) {
-        function DyancicAsyncValidatorController() {
-            console.log("this.twDynamicAsyncValidator"), console.log(ctrl.twDynamicAsyncValidator);
-        }
-        function emailValidLink(scope, element, attrs, ngModel) {
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
+    }
+    function AsyncValidation($log, $q, $http) {
+        function AsyncValidationLink(scope, element, attrs, ngModel) {
             attrs["tw-dynamic-async-validator"];
         }
         return {
-            link: emailValidLink,
+            link: AsyncValidationLink,
             restrict: "A",
-            controller: DyancicAsyncValidatorController,
+            controller: AsyncValidatorController,
             contollerAs: "ctrl",
             bindToController: {
                 twDynamicAsyncValidator: "="
@@ -3025,7 +3029,11 @@
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), TwDynamicAsyncValidator.$inject = [ "$log", "$q", "$http" ], exports["default"] = TwDynamicAsyncValidator;
+    });
+    var AsyncValidatorController = function AsyncValidatorController() {
+        _classCallCheck(this, AsyncValidatorController);
+    };
+    AsyncValidation.$inject = [ "$log", "$q", "$http" ], exports["default"] = AsyncValidation;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {

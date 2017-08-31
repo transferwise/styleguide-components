@@ -14,14 +14,15 @@ function FileInputDirective() {
   };
 }
 
-function FileInputController($element) {
-  var $ctrl = this;
-  $element.on('change', function (event) {
-    if ($ctrl.onUserInput &&
-      typeof $ctrl.onUserInput === 'function') {
-      $ctrl.onUserInput();
-    }
-  });
+class FileInputController {
+  constructor($element) {
+    $element.on('change', (event) => {
+      if (this.onUserInput &&
+        typeof this.onUserInput === 'function') {
+        this.onUserInput();
+      }
+    });
+  }
 }
 
 FileInputController.$inject = ['$element'];

@@ -1,27 +1,30 @@
 
-function TwDynamicAsyncValidator($log, $q, $http) {
+class AsyncValidatorController {
+  constructor() {
+    //console.log("this.twDynamicAsyncValidator");
+    //console.log(ctrl.twDynamicAsyncValidator);
+  }
+}
+
+function AsyncValidation($log, $q, $http) {
   return {
     /*require: 'ngModel',*/
-    link: emailValidLink,
+    link: AsyncValidationLink,
     restrict: 'A',
-    controller: DyancicAsyncValidatorController,
+    controller: AsyncValidatorController,
     contollerAs: 'ctrl',
     bindToController: {
       twDynamicAsyncValidator: '='
     }
   };
 
-  function DyancicAsyncValidatorController() {
-    var $ctrl = this;
-    console.log("this.twDynamicAsyncValidator");
-    console.log(ctrl.twDynamicAsyncValidator);
-  }
-  function emailValidLink(scope, element, attrs, ngModel) {
+  function AsyncValidationLink(scope, element, attrs, ngModel) {
     var validatorSetting = attrs['tw-dynamic-async-validator'];
     //ngModel.$asyncValidators.async = dynamicAsyncValidator;
     //console.log(ngModel);
     //console.log(ngModel.twDynamicAsyncValidator);
   }
+
   function dynamicAsyncValidator(modelValue, viewValue) {
     var req = {
       method: 'GET',
@@ -43,6 +46,6 @@ function TwDynamicAsyncValidator($log, $q, $http) {
   }
 }
 
-TwDynamicAsyncValidator.$inject = ['$log', '$q', '$http'];
+AsyncValidation.$inject = ['$log', '$q', '$http'];
 
-export default TwDynamicAsyncValidator;
+export default AsyncValidation;
