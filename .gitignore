@@ -3,9 +3,9 @@
 /node_modules/
 /public/
 /build/
-/components/
+/demo/fonts/
+/demo/lib/
 npm-debug.log
-package-lock.json
 .env
 .DS_Store
 newrelic_agent.log

@@ -240,6 +240,40 @@ module.exports = function(grunt) {
             }
         },
         copy: {
+            demoJS: {
+              expand: true,
+              flatten: true,
+              src: [
+                'node_modules/jquery/dist/jquery.js',
+                'node_modules/jquery/dist/jquery.min.js',
+                'node_modules/angular/angular.js',
+                'node_modules/angular/angular.min.js',
+                'node_modules/bootstrap/dist/js/bootstrap.js',
+                'node_modules/bootstrap/dist/js/bootstrap.min.js',
+                'dist/js/styleguide-components.js'
+              ],
+              dest: 'demo/lib/'
+            },
+            demoCSS: {
+              expand: true,
+              flatten: true,
+              src: [
+                'node_modules/bootstrap/dist/css/bootstrap.css',
+                'node_modules/bootstrap/dist/css/bootstrap.css.map',
+                'node_modules/bootstrap/dist/css/bootstrap.min.css',
+                'node_modules/currency-flags/dist/currency-flags.css'
+              ],
+              dest: 'demo/lib/'
+            },
+            demoFonts: {
+              expand: true,
+              flatten: true,
+              src: [
+                'node_modules/bootstrap/fonts/*.*',
+                'node_modules/iconfont/*.*',
+              ],
+              dest: 'demo/fonts/'
+            },
             dist: {
               expand: true,
               src: 'dist/**/*.*',
@@ -247,27 +281,12 @@ module.exports = function(grunt) {
             },
             partials: {
               expand: true,
-              src: 'partials/*',
+              src: 'demo/partials/*',
               dest: 'gh-pages/'
             },
-            styles: {
+            ghPages: {
               expand: true,
-              src: 'styles/*',
-              dest: 'gh-pages/'
-            },
-            images: {
-              expand: true,
-              src: 'images/*',
-              dest: 'gh-pages/'
-            },
-            components: {
-              expand: true,
-              src: 'components/**/*.*',
-              dest: 'gh-pages/'
-            },
-            index: {
-              expand: true,
-              src: 'index.*',
+              src: 'demo/**/*.*',
               dest: 'gh-pages/'
             },
         }
