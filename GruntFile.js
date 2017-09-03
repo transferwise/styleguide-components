@@ -270,19 +270,9 @@ module.exports = function(grunt) {
               flatten: true,
               src: [
                 'node_modules/bootstrap/fonts/*.*',
-                'node_modules/iconfont/*.*',
+                'node_modules/iconfont/fonts/*.*',
               ],
               dest: 'demo/fonts/'
-            },
-            dist: {
-              expand: true,
-              src: 'dist/**/*.*',
-              dest: 'gh-pages/'
-            },
-            partials: {
-              expand: true,
-              src: 'demo/partials/*',
-              dest: 'gh-pages/'
             },
             ghPages: {
               expand: true,

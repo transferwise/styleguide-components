@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/transferwise/styleguide-components",
   "dependencies": {
-    "angular": "~1.5.8"
+    "angular": "~1.5.8",
+    "transferwise-iconfont": "git+ssh://git@github.com/transferwise/iconfont.git"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -45,7 +46,7 @@
     "grunt-webpack": "^3.0.2",
     "grunt-webpack-server": "^0.1.0",
     "html-loader": "^0.5.1",
-    "iconfont": "https://github.com/transferwise/iconfont.git",
+    "iconfont": "git+ssh://git@github.com/transferwise/iconfont.git",
     "jasmine-core": "^2.4.1",
     "jquery": "^3.2.1",
     "karma": "^0.13.21",
