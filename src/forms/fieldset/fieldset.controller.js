@@ -1,5 +1,9 @@
+import angular from 'angular';
+
 class FieldsetController {
-  constructor($scope) {
+  constructor($scope, $http) {
+    this.$http = $http;
+
     if (!this.model) {
       this.model = {};
     }
@@ -22,12 +26,12 @@ class FieldsetController {
 
     if (!this.validationMessages) {
       this.validationMessages = {
-        'required': 'Required',
-        'pattern': 'Incorrect format',
-        'min': 'The value is too low',
-        'max': 'The value is too high',
-        'minlength': 'The value is too short',
-        'maxlength': 'The value is too long'
+        required: 'Required',
+        pattern: 'Incorrect format',
+        min: 'The value is too low',
+        max: 'The value is too high',
+        minlength: 'The value is too short',
+        maxlength: 'The value is too long'
       };
     }
   }
@@ -39,13 +43,14 @@ class FieldsetController {
       return;
     }
     // TODO disabled the form while we refresh requirements?
-
-    if (false && this.onRefreshRequirements) {
+    /*
+    if (this.onRefreshRequirements) {
       // Should post the current model back to the requirements end
       // point and update the requirements.
       // TODO Can we handle this internally?
       this.onRefreshRequirements();
     }
+    */
   }
 
   onChange(field) {
@@ -60,11 +65,11 @@ class FieldsetController {
 }
 
 function prepFields(fields, model) {
-  fields.forEach(function(fieldGroup) {
+  fields.forEach((fieldGroup) => {
     if (fieldGroup.group.length) {
       fieldGroup.key = fieldGroup.group[0].key;
     }
-    fieldGroup.group.forEach(function(field) {
+    fieldGroup.group.forEach((field) => {
       if (field.type === 'upload') {
         fieldGroup.type = 'upload';
       }
@@ -79,8 +84,8 @@ function prepRegExp(field) {
   if (field.validationRegexp) {
     try {
       field.validationRegexp = new RegExp(field.validationRegexp);
-    } catch(ex) {
-      console.log("API regexp is invalid");
+    } catch (ex) {
+      console.log('API regexp is invalid');
       field.validationRegexp = false;
     }
   } else {
@@ -92,16 +97,16 @@ function prepValuesAsync(field, model) {
   if (!field.valuesAsync) {
     return;
   }
-  var postData = {};
+  let postData = {};
   if (field.valuesAsync.params &&
     field.valuesAsync.params.length) {
     postData = getParamValuesFromModel(model, field.valuesAsync.params);
   }
 
-  $http.post(field.valuesAsync.url, postData).then(function(response) {
+  this.$http.post(field.valuesAsync.url, postData).then((response) => {
     field.valuesAllowed = response.data;
     prepValuesAllowed(field);
-  }).catch(function() {
+  }).catch(() => {
     // TODO - RETRY?
   });
 }
@@ -110,15 +115,15 @@ function prepValuesAllowed(field) {
   if (!angular.isArray(field.valuesAllowed)) {
     return;
   }
-  field.valuesAllowed.forEach(function(valueAllowed) {
+  field.valuesAllowed.forEach((valueAllowed) => {
     valueAllowed.value = valueAllowed.key;
     valueAllowed.label = valueAllowed.name;
   });
 }
 
 function getParamValuesFromModel(model, params) {
-  var data = {};
-  params.forEach(function(param) {
+  const data = {};
+  params.forEach((param) => {
     if (model[param.key]) {
       data[param.parameterName] = model[param.key];
     } else if (param.required) {
@@ -128,6 +133,6 @@ function getParamValuesFromModel(model, params) {
   return data;
 }
 
-FieldsetController.$inject = ['$scope'];
+FieldsetController.$inject = ['$scope', '$http'];
 
 export default FieldsetController;

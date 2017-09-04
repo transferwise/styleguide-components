@@ -1,0 +1,21 @@
+{
+  "env": {
+    "browser": true,
+    "jasmine": true
+  },
+  "extends": "airbnb-base",
+  "parser": "babel-eslint",
+  "plugins": [
+
+  ],
+  "rules": {
+    "no-use-before-define": "off",
+    "comma-dangle": "off",
+    "import/extensions": "off",
+
+    "no-param-reassign": "off",
+    "no-plusplus": "off",
+    "arrow-body-style": "off",
+    "prefer-template": "off"
+  }
+}

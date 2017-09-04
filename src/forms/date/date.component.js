@@ -1,4 +1,4 @@
-import controller from  './date.controller.js';
+import controller from './date.controller.js';
 import template from './date.html';
 
 const DateControl = {

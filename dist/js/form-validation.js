@@ -137,19 +137,20 @@
     }), exports["default"] = TwValidation;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwFormValidation() {
+    function FormValidation() {
         return {
             restrict: "E",
-            link: function(scope, element) {
-                $(element).on("submit", function() {
-                    var elements = $(element).find("[tw-validation].ng-invalid");
-                    return elements.closest(".form-group").addClass("has-error"), elements.closest(".checkbox, .radio").addClass("has-error"), 
-                    !0;
-                });
-            }
+            link: FormValidationLink
         };
+    }
+    function FormValidationLink(scope, element) {
+        $(element).on("submit", function() {
+            var elements = $(element).find("[tw-validation].ng-invalid");
+            return elements.closest(".form-group").addClass("has-error"), elements.closest(".checkbox, .radio").addClass("has-error"), 
+            !0;
+        });
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), exports["default"] = TwFormValidation;
+    }), exports["default"] = FormValidation;
 } ]);

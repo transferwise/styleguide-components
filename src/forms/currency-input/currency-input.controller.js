@@ -2,7 +2,7 @@ import TwCurrencyService from '../../services/currency/';
 
 class TwCurrencyInputController {
   constructor($element, $scope, $timeout, TwCurrencyService) {
-    var $ngModel = $element.controller('ngModel');
+    const $ngModel = $element.controller('ngModel');
 
     this.$timeout = $timeout;
     this.showDecimals = true;

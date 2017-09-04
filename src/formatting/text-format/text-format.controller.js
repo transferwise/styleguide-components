@@ -8,14 +8,14 @@ class TextFormatController {
     TwUndoStackFactory
   ) {
     this.keydownCount = 0;
-    this.pattern = "";
+    this.pattern = '';
 
     this.undoStack = TwUndoStackFactory.new();
     this.$ngModel = $element.controller('ngModel');
     this.$timeout = $timeout;
     this.TextFormatService = TwTextFormatService;
 
-    this.element = $element[0];
+    [this.element] = $element;
 
     // We need the formatter for external model changes
     this.$ngModel.$formatters.push((value) => {
@@ -49,7 +49,7 @@ class TextFormatController {
       this.$timeout
     );
 
-    $scope.$watch('$ctrl.twTextFormat', (newValue, oldValue) => {
+    $scope.$watch('$ctrl.twTextFormat', (newValue) => {
       this.onPatternChange(newValue);
     });
     $scope.$watch('$ctrl.ngModel', (newValue, oldValue) => {
@@ -65,8 +65,9 @@ class TextFormatController {
     }
 
     // Preserve selection range after formatting
-    var selectionStart = this.element.selectionStart,
-      selectionEnd = this.element.selectionEnd;
+    const selectionStart = this.element.selectionStart;
+    const selectionEnd = this.element.selectionEnd;
+
     this.reformatControl(this.element, newModel);
     this.setSelection(selectionStart, selectionEnd);
   }
@@ -83,7 +84,7 @@ class TextFormatController {
       this.pattern = newPattern;
     }
 
-    var viewValue = this.element.value;
+    let viewValue = this.element.value;
     if (oldPattern) {
       viewValue = this.TextFormatService.unformatUsingPattern(viewValue, oldPattern);
     }
@@ -101,7 +102,7 @@ class TextFormatController {
       originalValue = element.value;
     }
 
-    var newValue = this.TextFormatService.reformatUsingPattern(
+    const newValue = this.TextFormatService.reformatUsingPattern(
       originalValue,
       this.pattern
     );
@@ -118,18 +119,16 @@ class TextFormatController {
   }
 
   onPaste(event) {
-    var selectionStart = this.element.selectionStart;
-    var originalLength = this.element.value.length;
+    const selectionStart = this.element.selectionStart;
+    const clipboardData = event.clipboardData || window.clipboardData;
+    const pastedData = clipboardData.getData('Text');
 
-    var clipboardData = event.clipboardData || window.clipboardData;
-    var pastedData = clipboardData.getData('Text');
-
-    var separatorsInPaste = this.TextFormatService.countSeparatorsInAppendedValue(
+    const separatorsInPaste = this.TextFormatService.countSeparatorsInAppendedValue(
       this.pattern, selectionStart, pastedData
     );
 
     this.$timeout(() => {
-      var newPosition = selectionStart + pastedData.length + separatorsInPaste;
+      const newPosition = selectionStart + pastedData.length + separatorsInPaste;
       this.reformatControl(this.element);
       this.undoStack.add(this.element.value);
       this.setSelection(newPosition, newPosition);
@@ -138,10 +137,10 @@ class TextFormatController {
 
   onKeydown(event) {
     this.keydownCount++;
-    var currentKeydownCount = this.keydownCount,
-      key = event.keyCode || event.which,
-      selectionStart = event.target.selectionStart,
-      selectionEnd = event.target.selectionEnd;
+    const currentKeydownCount = this.keydownCount;
+    const key = event.keyCode || event.which;
+    const selectionStart = event.target.selectionStart;
+    const selectionEnd = event.target.selectionEnd;
 
     if (reservedKeys.indexOf(key) >= 0 || event.metaKey || event.ctrlKey) {
       if (key === keys.z && (event.metaKey || event.ctrlKey)) {
@@ -170,7 +169,7 @@ class TextFormatController {
   }
 
   afterKeydown(key, currentKeydownCount, element, pattern, selectionStart, selectionEnd) {
-    var newVal;
+    let newVal;
     // If deleting move back
     if (key === keys.backspace) {
       newVal = this.doBackspace(element, pattern, selectionStart, selectionEnd);
@@ -182,12 +181,10 @@ class TextFormatController {
 
       // Also trigger model update, not sure why necessary...
       this.$ngModel.$setViewValue(newVal);
-    } else {
+    } else if (this.keydownCount === currentKeydownCount) {
       // If another keydown occurred before we were able to reposition the
       // cursor, we do not want to set it to an out of date value.
-      if (this.keydownCount === currentKeydownCount) {
-        this.doKeypress(element, pattern, selectionStart, selectionEnd);
-      }
+      this.doKeypress(element, pattern, selectionStart, selectionEnd);
     }
   }
 
@@ -198,7 +195,7 @@ class TextFormatController {
 
     this.undoStack.add(element.value);
 
-    var newPosition = this.getPositionAfterBackspace(
+    const newPosition = this.getPositionAfterBackspace(
       pattern, element, selectionStart, selectionEnd
     );
 
@@ -208,17 +205,17 @@ class TextFormatController {
   }
 
   getFormattedValueAfterBackspace(element, pattern, selectionStart, selectionEnd) {
-    var removeStart,
-      removeEnd,
-      newVal = element.value,
-      separatorsBeforeCursor = this.TextFormatService.countSeparatorsBeforeCursor(
-        pattern,
-        selectionStart
-      );
+    let removeStart;
+    let removeEnd;
+    let newVal = element.value;
+    const separatorsBeforeCursor = this.TextFormatService.countSeparatorsBeforeCursor(
+      pattern,
+      selectionStart
+    );
 
     if (separatorsBeforeCursor) {
       // If we have more separators, we must remove one less character
-      var adjust = (separatorsBeforeCursor > 1 ? 1 : 0);
+      const adjust = (separatorsBeforeCursor > 1 ? 1 : 0);
 
       if (selectionStart !== selectionEnd) {
         // A range is selected, remove one less character from start
@@ -228,7 +225,7 @@ class TextFormatController {
         removeStart = selectionStart - separatorsBeforeCursor;
         removeEnd = selectionStart - adjust;
       }
-      newVal = this.removeCharacters(element.value, removeStart, removeEnd);
+      newVal = removeCharacters(element.value, removeStart, removeEnd);
     }
 
     return this.TextFormatService.reformatUsingPattern(newVal, pattern);
@@ -251,17 +248,17 @@ class TextFormatController {
   }
 
   getFormattedValueAfterDelete(element, pattern, selectionStart, selectionEnd) {
-    var removeStart,
-      removeEnd,
-      newVal = element.value,
-      separatorsAfterCursor = this.TextFormatService.countSeparatorsAfterCursor(
-        pattern,
-        selectionStart
-      );
+    let removeStart;
+    let removeEnd;
+    let newVal = element.value;
+    const separatorsAfterCursor = this.TextFormatService.countSeparatorsAfterCursor(
+      pattern,
+      selectionStart
+    );
 
     if (separatorsAfterCursor) {
       // If we have more separators, we must remove one less character
-      var adjust = (separatorsAfterCursor > 1 ? 0 : 1);
+      const adjust = (separatorsAfterCursor > 1 ? 0 : 1);
 
       if (selectionStart !== selectionEnd) {
         // A range is selected, remove one less character from start
@@ -273,7 +270,7 @@ class TextFormatController {
         removeEnd = selectionStart + separatorsAfterCursor + 1;
       }
 
-      newVal = this.removeCharacters(element.value, removeStart, removeEnd);
+      newVal = removeCharacters(element.value, removeStart, removeEnd);
     }
     return this.TextFormatService.reformatUsingPattern(newVal, pattern);
   }
@@ -283,20 +280,20 @@ class TextFormatController {
     this.reformatControl(element);
     this.undoStack.add(element.value);
 
-    var newPosition = this.getPositionAfterKeypress(
+    const newPosition = this.getPositionAfterKeypress(
       pattern, element, selectionStart, selectionEnd
     );
     this.setSelection(newPosition, newPosition);
   }
 
   getPositionAfterBackspace(pattern, element, selectionStart, selectionEnd) {
-    var separatorsBefore = this.TextFormatService.countSeparatorsBeforeCursor(
+    const separatorsBefore = this.TextFormatService.countSeparatorsBeforeCursor(
       pattern,
       selectionStart
     );
-    var isRange = (selectionStart !== selectionEnd);
+    const isRange = (selectionStart !== selectionEnd);
     // If a range was selected, we don't delete a character before cursor
-    var proposedPosition = selectionStart - separatorsBefore - (isRange ? 0 : 1);
+    const proposedPosition = selectionStart - separatorsBefore - (isRange ? 0 : 1);
     return proposedPosition + this.TextFormatService.countSeparatorsAfterCursor(
       pattern,
       proposedPosition
@@ -304,7 +301,7 @@ class TextFormatController {
   }
 
   getPositionAfterKeypress(pattern, element, selectionStart, selectionEnd) {
-    var separatorsAfter;
+    let separatorsAfter;
     if (selectionStart !== selectionEnd) {
       separatorsAfter = this.TextFormatService.countSeparatorsAfterCursor(
         pattern,
@@ -326,19 +323,14 @@ class TextFormatController {
     return selectionStart + 1 + separatorsAfter;
   }
 
-  removeCharacters(value, first, last) {
-    return value.substring(0, first - 1) +
-      value.substring(last - 1, value.length);
-  }
-
-  onCut(event) {
-    var selectionStart = this.element.selectionStart;
+  onCut() {
+    const selectionStart = this.element.selectionStart;
     this.$timeout(() => {
       this.reformatControl(this.element);
       this.undoStack.add(this.element.value);
 
       // Also move cursor to the right of any separators
-      var newPosition = selectionStart +
+      const newPosition = selectionStart +
         this.TextFormatService.countSeparatorsAfterCursor(
           this.pattern,
           selectionStart
@@ -347,10 +339,10 @@ class TextFormatController {
     });
   }
 
-  onCopy(event) {
+  onCopy() {
     // Reset selection as otherwise lost
-    var selectionStart = this.element.selectionStart;
-    var selectionEnd = this.element.selectionEnd;
+    const selectionStart = this.element.selectionStart;
+    const selectionEnd = this.element.selectionEnd;
 
     this.$timeout(() => {
       this.setSelection(selectionStart, selectionEnd);
@@ -360,8 +352,8 @@ class TextFormatController {
   replaceLengthValidators($ngModel, TextFormatService, $timeout) {
     // We must wait until the default directives have loaded before replacing
     $timeout(() => {
-      var originalMinLength = $ngModel.$validators.minlength,
-          originalMaxLength = $ngModel.$validators.maxlength;
+      const originalMinLength = $ngModel.$validators.minlength;
+      const originalMaxLength = $ngModel.$validators.maxlength;
 
       if (originalMinLength) {
         $ngModel.$validators.minlength = (modelValue, viewValue) => {
@@ -381,6 +373,11 @@ class TextFormatController {
       }
     });
   }
+}
+
+function removeCharacters(value, first, last) {
+  return value.substring(0, first - 1) +
+    value.substring(last - 1, value.length);
 }
 
 const keys = {

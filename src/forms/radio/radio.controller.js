@@ -5,11 +5,11 @@ class RadioController {
     this.$element = $element;
     this.checked = this.isChecked();
 
-    $element.on('blur', (event) => {
+    $element.on('blur', () => {
       $ngModel.$setTouched();
     });
 
-    this.addWatchers($scope, $element, $ngModel);
+    this.addWatchers($scope, $element);
   }
 
   isChecked() {
@@ -17,7 +17,7 @@ class RadioController {
       this.value === this.ngModel;
   }
 
-  buttonClick($event) {
+  buttonClick() {
     if (this.ngDisabled) {
       return;
     }
@@ -44,7 +44,7 @@ class RadioController {
     }
   }
 
-  addWatchers($scope, $element, $ngModel) {
+  addWatchers($scope, $element) {
     $scope.$watch('$ctrl.ngModel', (newValue, oldValue) => {
       if (newValue !== oldValue) {
         this.$ngModel.$setDirty();

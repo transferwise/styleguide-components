@@ -16,7 +16,7 @@ function FileInputDirective() {
 
 class FileInputController {
   constructor($element) {
-    $element.on('change', (event) => {
+    $element.on('change', () => {
       if (this.onUserInput &&
         typeof this.onUserInput === 'function') {
         this.onUserInput();

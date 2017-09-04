@@ -8,8 +8,8 @@ const Radio = {
     $ngModel: 'ngModel'
   },
   bindings: {
-    name: "@",
-    value: "@",
+    name: '@',
+    value: '@',
     ngModel: '=',
     ngValue: '<',
     ngRequired: '<',

@@ -1,22 +1,24 @@
 
-function TwToolTip() {
+function ToolTip() {
   return {
     restrict: 'A',
-    link: function(scope, element) {
-      if (!element.tooltip) {
-        console.log('twToolTip requires bootstrap.js');
-        return;
-      }
-      var tag = element[0];
-      var options = {};
-      if (!tag.getAttribute('data-placement')) {
-        options.placement = 'top';
-      }
-      element.tooltip(options);
-      tag.setAttribute('tabindex', '0');
-      tag.setAttribute('data-toggle', 'tooltip');
-    }
+    link: ToolTipLink
   };
 }
 
-export default TwToolTip;
+function ToolTipLink(scope, element) {
+  if (!element.tooltip) {
+    console.log('twToolTip requires bootstrap.js');
+    return;
+  }
+  const tag = element[0];
+  const options = {};
+  if (!tag.getAttribute('data-placement')) {
+    options.placement = 'top';
+  }
+  element.tooltip(options);
+  tag.setAttribute('tabindex', '0');
+  tag.setAttribute('data-toggle', 'tooltip');
+}
+
+export default ToolTip;

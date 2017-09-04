@@ -29,18 +29,21 @@
     }, __webpack_require__.o = function(object, property) {
         return Object.prototype.hasOwnProperty.call(object, property);
     }, __webpack_require__.p = "", __webpack_require__(__webpack_require__.s = 6);
-}([ function(module, exports, __webpack_require__) {
+}([ function(module, exports) {
+    module.exports = angular;
+}, function(module, exports, __webpack_require__) {
     "use strict";
     function TwTextFormatService() {
         function positionIsSeparator(pattern, position) {
             return pattern[position] && "*" !== pattern[position];
         }
+        var _this = this;
         this.formatUsingPattern = function(value, pattern) {
             if (value || (value = ""), "string" != typeof pattern) return value;
             for (var newValue = "", separators = 0, charactersToAllocate = value.length, position = 0; charactersToAllocate; ) positionIsSeparator(pattern, position) ? (newValue += pattern[position], 
             separators++) : (newValue += value[position - separators], charactersToAllocate--), 
             position++;
-            var separatorsAfterCursor = this.countSeparatorsAfterCursor(pattern, position);
+            var separatorsAfterCursor = _this.countSeparatorsAfterCursor(pattern, position);
             return separatorsAfterCursor && (newValue += pattern.substr(position, separatorsAfterCursor)), 
             newValue;
         }, this.unformatUsingPattern = function(value, pattern) {
@@ -49,7 +52,7 @@
             for (var i = 0; i < pattern.length; i++) if (positionIsSeparator(pattern, i)) for (;value.indexOf(pattern[i]) >= 0; ) value = value.replace(pattern[i], "");
             return value;
         }, this.reformatUsingPattern = function(value, newPattern, oldPattern) {
-            return "undefined" == typeof oldPattern && (oldPattern = newPattern), this.formatUsingPattern(this.unformatUsingPattern(value, oldPattern), newPattern);
+            return "undefined" == typeof oldPattern && (oldPattern = newPattern), _this.formatUsingPattern(_this.unformatUsingPattern(value, oldPattern), newPattern);
         }, this.countSeparatorsBeforeCursor = function(pattern, position) {
             for (var separators = 0; positionIsSeparator(pattern, position - separators - 1); ) separators++;
             return separators;
@@ -91,8 +94,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _textFormatController = __webpack_require__(7), _textFormatController2 = _interopRequireDefault(_textFormatController), _undoStackService = __webpack_require__(8), _undoStackService2 = _interopRequireDefault(_undoStackService), _textFormatService = __webpack_require__(0), _textFormatService2 = _interopRequireDefault(_textFormatService);
-    exports["default"] = angular.module("tw.styleguide.formatting.text-format", []).service("TwUndoStackFactory", _undoStackService2["default"]).service("TwTextFormatService", _textFormatService2["default"]).directive("twTextFormat", TextFormat).name;
+    var _angular = __webpack_require__(0), _angular2 = _interopRequireDefault(_angular), _textFormatController = __webpack_require__(7), _textFormatController2 = _interopRequireDefault(_textFormatController), _undoStackService = __webpack_require__(8), _undoStackService2 = _interopRequireDefault(_undoStackService), _textFormatService = __webpack_require__(1), _textFormatService2 = _interopRequireDefault(_textFormatService);
+    exports["default"] = _angular2["default"].module("tw.styleguide.formatting.text-format", []).service("TwUndoStackFactory", _undoStackService2["default"]).service("TwTextFormatService", _textFormatService2["default"]).directive("twTextFormat", TextFormat).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -108,7 +111,7 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _textFormatService = __webpack_require__(0);
+    var _textFormatService = __webpack_require__(1);
     _interopRequireDefault(_textFormatService);
     TextFormatFilter.$inject = [ "TwTextFormatService" ], exports["default"] = angular.module("tw.styleguide.formatting.text-format").filter("twTextFormat", TextFormatFilter).name;
 }, function(module, exports, __webpack_require__) {
@@ -135,8 +138,6 @@
     });
     var _toolTipDirective = __webpack_require__(10), _toolTipDirective2 = _interopRequireDefault(_toolTipDirective);
     exports["default"] = angular.module("tw.styleguide.help.tooltip", []).directive("twToolTip", _toolTipDirective2["default"]).name;
-}, function(module, exports) {
-    module.exports = angular;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -147,17 +148,42 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _angular = __webpack_require__(5), _angular2 = _interopRequireDefault(_angular), _popOver = __webpack_require__(3), _popOver2 = _interopRequireDefault(_popOver), _toolTip = __webpack_require__(4), _toolTip2 = _interopRequireDefault(_toolTip), _textFormatDirective = __webpack_require__(1), _textFormatDirective2 = _interopRequireDefault(_textFormatDirective), _textFormatFilter = __webpack_require__(2), _textFormatFilter2 = _interopRequireDefault(_textFormatFilter);
+    var _angular = __webpack_require__(0), _angular2 = _interopRequireDefault(_angular), _popOver = __webpack_require__(4), _popOver2 = _interopRequireDefault(_popOver), _toolTip = __webpack_require__(5), _toolTip2 = _interopRequireDefault(_toolTip), _textFormatDirective = __webpack_require__(2), _textFormatDirective2 = _interopRequireDefault(_textFormatDirective), _textFormatFilter = __webpack_require__(3), _textFormatFilter2 = _interopRequireDefault(_textFormatFilter);
     exports["default"] = _angular2["default"].module("tw.form-styling", [ _popOver2["default"], _toolTip2["default"], _textFormatDirective2["default"], _textFormatFilter2["default"] ]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
     }
+    function removeCharacters(value, first, last) {
+        return value.substring(0, first - 1) + value.substring(last - 1, value.length);
+    }
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _createClass = function() {
+    var _slicedToArray = function() {
+        function sliceIterator(arr, i) {
+            var _arr = [], _n = !0, _d = !1, _e = void 0;
+            try {
+                for (var _s, _i = arr[Symbol.iterator](); !(_n = (_s = _i.next()).done) && (_arr.push(_s.value), 
+                !i || _arr.length !== i); _n = !0) ;
+            } catch (err) {
+                _d = !0, _e = err;
+            } finally {
+                try {
+                    !_n && _i["return"] && _i["return"]();
+                } finally {
+                    if (_d) throw _e;
+                }
+            }
+            return _arr;
+        }
+        return function(arr, i) {
+            if (Array.isArray(arr)) return arr;
+            if (Symbol.iterator in Object(arr)) return sliceIterator(arr, i);
+            throw new TypeError("Invalid attempt to destructure non-iterable instance");
+        };
+    }(), _createClass = function() {
         function defineProperties(target, props) {
             for (var i = 0; i < props.length; i++) {
                 var descriptor = props[i];
@@ -174,8 +200,9 @@
             var _this = this;
             _classCallCheck(this, TextFormatController), this.keydownCount = 0, this.pattern = "", 
             this.undoStack = TwUndoStackFactory["new"](), this.$ngModel = $element.controller("ngModel"), 
-            this.$timeout = $timeout, this.TextFormatService = TwTextFormatService, this.element = $element[0], 
-            this.$ngModel.$formatters.push(function(value) {
+            this.$timeout = $timeout, this.TextFormatService = TwTextFormatService;
+            var _$element = _slicedToArray($element, 1);
+            this.element = _$element[0], this.$ngModel.$formatters.push(function(value) {
                 return _this.TextFormatService.formatUsingPattern(value, _this.pattern);
             }), this.$ngModel.$parsers.push(function(value) {
                 return _this.TextFormatService.unformatUsingPattern(value, _this.pattern);
@@ -190,7 +217,7 @@
             }), this.element.addEventListener("copy", function(event) {
                 _this.onCopy(event);
             }), this.replaceLengthValidators(this.$ngModel, this.TextFormatService, this.$timeout), 
-            $scope.$watch("$ctrl.twTextFormat", function(newValue, oldValue) {
+            $scope.$watch("$ctrl.twTextFormat", function(newValue) {
                 _this.onPatternChange(newValue);
             }), $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
                 _this.onModelChange(newValue, oldValue);
@@ -229,8 +256,7 @@
         }, {
             key: "onPaste",
             value: function(event) {
-                var _this2 = this, selectionStart = this.element.selectionStart, clipboardData = (this.element.value.length, 
-                event.clipboardData || window.clipboardData), pastedData = clipboardData.getData("Text"), separatorsInPaste = this.TextFormatService.countSeparatorsInAppendedValue(this.pattern, selectionStart, pastedData);
+                var _this2 = this, selectionStart = this.element.selectionStart, clipboardData = event.clipboardData || window.clipboardData, pastedData = clipboardData.getData("Text"), separatorsInPaste = this.TextFormatService.countSeparatorsInAppendedValue(this.pattern, selectionStart, pastedData);
                 this.$timeout(function() {
                     var newPosition = selectionStart + pastedData.length + separatorsInPaste;
                     _this2.reformatControl(_this2.element), _this2.undoStack.add(_this2.element.value), 
@@ -252,7 +278,7 @@
         }, {
             key: "afterKeydown",
             value: function(key, currentKeydownCount, element, pattern, selectionStart, selectionEnd) {
-                var newVal;
+                var newVal = void 0;
                 key === keys.backspace ? (newVal = this.doBackspace(element, pattern, selectionStart, selectionEnd), 
                 this.$ngModel.$setViewValue(newVal)) : key === keys["delete"] ? (newVal = this.doDelete(element, pattern, selectionStart, selectionEnd), 
                 this.$ngModel.$setViewValue(newVal)) : this.keydownCount === currentKeydownCount && this.doKeypress(element, pattern, selectionStart, selectionEnd);
@@ -268,12 +294,12 @@
         }, {
             key: "getFormattedValueAfterBackspace",
             value: function(element, pattern, selectionStart, selectionEnd) {
-                var removeStart, removeEnd, newVal = element.value, separatorsBeforeCursor = this.TextFormatService.countSeparatorsBeforeCursor(pattern, selectionStart);
+                var removeStart = void 0, removeEnd = void 0, newVal = element.value, separatorsBeforeCursor = this.TextFormatService.countSeparatorsBeforeCursor(pattern, selectionStart);
                 if (separatorsBeforeCursor) {
                     var adjust = separatorsBeforeCursor > 1 ? 1 : 0;
                     selectionStart !== selectionEnd ? (removeStart = selectionStart - separatorsBeforeCursor + 1, 
                     removeEnd = selectionStart - adjust) : (removeStart = selectionStart - separatorsBeforeCursor, 
-                    removeEnd = selectionStart - adjust), newVal = this.removeCharacters(element.value, removeStart, removeEnd);
+                    removeEnd = selectionStart - adjust), newVal = removeCharacters(element.value, removeStart, removeEnd);
                 }
                 return this.TextFormatService.reformatUsingPattern(newVal, pattern);
             }
@@ -292,11 +318,11 @@
         }, {
             key: "getFormattedValueAfterDelete",
             value: function(element, pattern, selectionStart, selectionEnd) {
-                var removeStart, removeEnd, newVal = element.value, separatorsAfterCursor = this.TextFormatService.countSeparatorsAfterCursor(pattern, selectionStart);
+                var removeStart = void 0, removeEnd = void 0, newVal = element.value, separatorsAfterCursor = this.TextFormatService.countSeparatorsAfterCursor(pattern, selectionStart);
                 if (separatorsAfterCursor) {
                     var adjust = separatorsAfterCursor > 1 ? 0 : 1;
                     selectionStart !== selectionEnd ? (removeStart = selectionStart + adjust, removeEnd = selectionStart + separatorsAfterCursor + adjust) : (removeStart = selectionStart + separatorsAfterCursor, 
-                    removeEnd = selectionStart + separatorsAfterCursor + 1), newVal = this.removeCharacters(element.value, removeStart, removeEnd);
+                    removeEnd = selectionStart + separatorsAfterCursor + 1), newVal = removeCharacters(element.value, removeStart, removeEnd);
                 }
                 return this.TextFormatService.reformatUsingPattern(newVal, pattern);
             }
@@ -316,19 +342,14 @@
         }, {
             key: "getPositionAfterKeypress",
             value: function(pattern, element, selectionStart, selectionEnd) {
-                var separatorsAfter;
+                var separatorsAfter = void 0;
                 return selectionStart !== selectionEnd ? separatorsAfter = this.TextFormatService.countSeparatorsAfterCursor(pattern, selectionStart) : (separatorsAfter = this.TextFormatService.countSeparatorsAfterCursor(pattern, selectionStart), 
                 0 === separatorsAfter && (separatorsAfter = this.TextFormatService.countSeparatorsAfterCursor(pattern, selectionStart + 1))), 
                 selectionStart + 1 + separatorsAfter;
             }
         }, {
-            key: "removeCharacters",
-            value: function(value, first, last) {
-                return value.substring(0, first - 1) + value.substring(last - 1, value.length);
-            }
-        }, {
             key: "onCut",
-            value: function(event) {
+            value: function() {
                 var _this4 = this, selectionStart = this.element.selectionStart;
                 this.$timeout(function() {
                     _this4.reformatControl(_this4.element), _this4.undoStack.add(_this4.element.value);
@@ -338,7 +359,7 @@
             }
         }, {
             key: "onCopy",
-            value: function(event) {
+            value: function() {
                 var _this5 = this, selectionStart = this.element.selectionStart, selectionEnd = this.element.selectionEnd;
                 this.$timeout(function() {
                     _this5.setSelection(selectionStart, selectionEnd);
@@ -406,36 +427,38 @@
     }), exports["default"] = TwUndoStackFactory;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwPopOver() {
+    function PopOver() {
         return {
             restrict: "A",
-            link: function(scope, element) {
-                if (!element.popover) return void console.log("twPopOver requires tooltip from bootstrap.js");
-                var options = {}, tag = element[0];
-                tag.getAttribute("data-trigger") ? "hover" === tag.getAttribute("data-trigger") && (options.trigger = "hover focus") : options.trigger = "focus", 
-                tag.getAttribute("data-placement") || (options.placement = "top"), tag.getAttribute("data-content-html") && (options.html = !0), 
-                element.popover(options), tag.setAttribute("tabindex", "0"), tag.setAttribute("role", "button"), 
-                tag.setAttribute("data-toggle", "popover");
-            }
+            link: PopOverLink
         };
+    }
+    function PopOverLink(scope, element) {
+        if (!element.popover) return void console.log("twPopOver requires tooltip from bootstrap.js");
+        var options = {}, tag = element[0];
+        tag.getAttribute("data-trigger") ? "hover" === tag.getAttribute("data-trigger") && (options.trigger = "hover focus") : options.trigger = "focus", 
+        tag.getAttribute("data-placement") || (options.placement = "top"), tag.getAttribute("data-content-html") && (options.html = !0), 
+        element.popover(options), tag.setAttribute("tabindex", "0"), tag.setAttribute("role", "button"), 
+        tag.setAttribute("data-toggle", "popover");
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), exports["default"] = TwPopOver;
+    }), exports["default"] = PopOver;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwToolTip() {
+    function ToolTip() {
         return {
             restrict: "A",
-            link: function(scope, element) {
-                if (!element.tooltip) return void console.log("twToolTip requires bootstrap.js");
-                var tag = element[0], options = {};
-                tag.getAttribute("data-placement") || (options.placement = "top"), element.tooltip(options), 
-                tag.setAttribute("tabindex", "0"), tag.setAttribute("data-toggle", "tooltip");
-            }
+            link: ToolTipLink
         };
+    }
+    function ToolTipLink(scope, element) {
+        if (!element.tooltip) return void console.log("twToolTip requires bootstrap.js");
+        var tag = element[0], options = {};
+        tag.getAttribute("data-placement") || (options.placement = "top"), element.tooltip(options), 
+        tag.setAttribute("tabindex", "0"), tag.setAttribute("data-toggle", "tooltip");
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), exports["default"] = TwToolTip;
+    }), exports["default"] = ToolTip;
 } ]);

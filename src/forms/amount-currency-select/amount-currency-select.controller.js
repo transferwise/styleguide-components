@@ -2,10 +2,11 @@ import TwCurrencyService from '../../services/currency/';
 
 class AmountCurrencySelectController {
   constructor($element, $scope, $timeout, TwCurrencyService) {
-    var $ngModel = $element.controller('ngModel');
+    const $ngModel = $element.controller('ngModel');
 
     this.$timeout = $timeout;
     this.showDecimals = true;
+    this.CurrencyService = TwCurrencyService;
 
     $scope.$watch('$ctrl.ngModel', (newValue, oldValue) => {
       if (newValue !== oldValue) {
@@ -15,7 +16,7 @@ class AmountCurrencySelectController {
 
     $scope.$watch('$ctrl.currency', (newValue, oldValue) => {
       if (newValue && newValue !== oldValue) {
-        this.showDecimals = TwCurrencyService.getDecimals(newValue) > 0;
+        this.showDecimals = this.CurrencyService.getDecimals(newValue) > 0;
       }
     });
 
@@ -51,8 +52,8 @@ class AmountCurrencySelectController {
     if (this.onAmountChange) {
       // $timeout is needed to get the last ngModel value.
       // See: https://github.com/angular/angular.js/issues/4558
-      if (console & console.log) {
-        console.log("onAmountChange is deprecated in twAmountCurrencySelect, please use ngChange.");
+      if (console && console.log) {
+        console.log('onAmountChange is deprecated in twAmountCurrencySelect, please use ngChange.');
       }
       this.$timeout(this.onAmountChange);
     }

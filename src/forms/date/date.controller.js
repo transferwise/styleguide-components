@@ -36,27 +36,9 @@ class DateController {
 
     this.addValidators($ngModel);
     this.addWatchers($scope, $ngModel);
-    this.addBlurHandlers($element, $ngModel);
+    addBlurHandlers($element, $ngModel);
   }
 
-  addBlurHandlers($element, $ngModel) {
-    var dayTouched, yearTouched;
-
-    $element.find('input[name=day]').on('blur', function() {
-      dayTouched = true;
-      if (dayTouched && yearTouched) {
-        $ngModel.$setTouched();
-        $element.triggerHandler('blur');
-      }
-    });
-
-    $element.find('input[name=year]').on('blur', function() {
-      yearTouched = true;
-
-      $ngModel.$setTouched();
-      $element.triggerHandler('blur');
-    });
-  }
 
   applyDateModelIfValidOrThrowError() {
     if (validDate(this.ngModel)) {
@@ -78,7 +60,7 @@ class DateController {
     this.dateRequired =
       this.ngRequired !== undefined ? this.ngRequired : this.required !== undefined;
   }
-  
+
   setDateDisabled() {
     this.dateDisabled =
       this.ngDisabled !== undefined ? this.ngDisabled : this.disabled !== undefined;
@@ -92,7 +74,7 @@ class DateController {
   }
 
   explodeDateModel(date) {
-    var dateObj = typeof date === 'string' ? new Date(date) : date;
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
 
     this.day = dateObj.getUTCDate();
     this.month = dateObj.getUTCMonth();
@@ -101,15 +83,15 @@ class DateController {
 
   addValidators($ngModel) {
     $ngModel.$validators.min = (value) => {
-      var limit = prepDateLimitForComparison(this.ngMin, this.min);
-      var dateValue = prepDateValueForComparison(value);
+      const limit = prepDateLimitForComparison(this.ngMin, this.min);
+      const dateValue = prepDateValueForComparison(value);
 
       return !limit || !dateValue || dateValue >= limit;
     };
 
     $ngModel.$validators.max = (value) => {
-      var limit = prepDateLimitForComparison(this.ngMax, this.max);
-      var dateValue = prepDateValueForComparison(value);
+      const limit = prepDateLimitForComparison(this.ngMax, this.max);
+      const dateValue = prepDateValueForComparison(value);
 
       return !limit || !dateValue || dateValue <= limit;
     };
@@ -125,7 +107,7 @@ class DateController {
     $scope.$watch('$ctrl.month', (newValue, oldValue) => {
       if (newValue !== oldValue) {
         this.adjustLastDay();
-        $ngModel.$setTouched();  // Input watcher doesn't work for month
+        $ngModel.$setTouched(); // Input watcher doesn't work for month
         if (this.initialisedWithDate) {
           $ngModel.$setDirty();
         }
@@ -170,18 +152,17 @@ class DateController {
   }
 
   getMonthsBasedOnIntlSupportForLocale() {
-    var monthNames = this.DateService.getMonthNamesForLocale(this.locale);
+    const monthNames = this.DateService.getMonthNamesForLocale(this.locale);
 
     return extendMonthsWithIds(monthNames);
   }
 
   combineDate() {
-    var date = this.DateService.getUTCDateFromParts(
+    return this.DateService.getUTCDateFromParts(
       Number(this.year),
       Number(this.month),
       Number(this.day)
     );
-    return date;
   }
 
   updateDateModelAndValidationClasses() {
@@ -192,11 +173,11 @@ class DateController {
       return;
     }
 
-    var dateObj = this.combineDate();
+    const dateObj = this.combineDate();
 
     if (this.dateModelType === STRING_TYPE) {
-      var isoString = dateObj.toISOString();
-      var dateString = isoString.substring(0, isoString.indexOf('T'));
+      const isoString = dateObj.toISOString();
+      const dateString = isoString.substring(0, isoString.indexOf('T'));
 
       this.$ngModel.$setViewValue(dateString);
     } else {
@@ -205,11 +186,11 @@ class DateController {
   }
 
   adjustLastDay() {
-    var day = Number(this.day),
-      month = Number(this.month),
-      year = Number(this.year);
+    const day = Number(this.day);
+    const month = Number(this.month);
+    const year = Number(this.year);
 
-    var lastUTCDayForMonthAndYear = this.DateService.getLastDayOfMonth(year, month);
+    const lastUTCDayForMonthAndYear = this.DateService.getLastDayOfMonth(year, month);
 
     if (day > lastUTCDayForMonthAndYear) {
       // Using setViewValue does not update DOM, only model.
@@ -219,21 +200,6 @@ class DateController {
 }
 
 const DEFAULT_LOCALE_EN = 'en';
-const DEFAULT_MONTHS_EN = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December'
-];
-
 const STRING_TYPE = 'string';
 const OBJECT_TYPE = 'object';
 
@@ -265,7 +231,9 @@ function validDateString(dateString) {
 }
 
 function prepDateLimitForComparison(ngLimit, attrLimit) {
-  var limit = ngLimit ? ngLimit : (attrLimit ? attrLimit : false);
+  let limit = attrLimit ? attrLimit : false;
+  limit = ngLimit ? ngLimit : limit;
+
   if (!limit) {
     return false;
   }
@@ -281,11 +249,30 @@ function prepDateValueForComparison(dateValue) {
 }
 
 function extendMonthsWithIds(monthNames) {
-  return monthNames.map(function(monthName, index) {
+  return monthNames.map((monthName, index) => {
     return {
       value: index,
       label: monthName
     };
+  });
+}
+
+function addBlurHandlers($element, $ngModel) {
+  let dayTouched;
+  let yearTouched;
+
+  $element.find('input[name=day]').on('blur', () => {
+    dayTouched = true;
+    if (dayTouched && yearTouched) {
+      $ngModel.$setTouched();
+      $element.triggerHandler('blur');
+    }
+  });
+
+  $element.find('input[name=year]').on('blur', () => {
+    yearTouched = true;
+    $ngModel.$setTouched();
+    $element.triggerHandler('blur');
   });
 }
 

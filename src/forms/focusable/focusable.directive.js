@@ -1,10 +1,11 @@
+import angular from 'angular';
 
 /* TODO deprecate in V1, opt-in through tw-focusable */
 angular
   .module('tw.styleguide.styling.default-focus', [])
-  .directive('formControl', TwFormControlStyling);
+  .directive('formControl', FormControlStyling);
 
-function TwFormControlStyling() {
+function FormControlStyling() {
   return {
     restrict: 'C',
     link: FocusableLink
@@ -12,7 +13,7 @@ function TwFormControlStyling() {
 }
 
 
-function TwFocusable() {
+function Focusable() {
   return {
     restrict: 'A',
     link: FocusableLink
@@ -20,15 +21,15 @@ function TwFocusable() {
 }
 
 function FocusableLink(scope, element) {
-  var formGroup = $(element).closest('.form-group');
+  const formGroup = $(element).closest('.form-group');
 
   $(element)
-    .on('focus', function() {
+    .on('focus', () => {
       formGroup.addClass('focus');
     })
-    .on('blur', function() {
+    .on('blur', () => {
       formGroup.removeClass('focus');
     });
 }
 
-export default TwFocusable;
+export default Focusable;

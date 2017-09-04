@@ -214,6 +214,17 @@ module.exports = function(grunt) {
                 'src/**/*.service.js'
             ]
         },
+        eslint: {
+          options: {
+            config: ".eslintrc",
+          },
+          src: [
+            'src/**/*.component.js',
+            'src/**/*.controller.js',
+            'src/**/*.directive.js',
+            'src/**/*.service.js'
+          ]
+        },
         htmllint: {
             options: {
                 "attr-name-ignore-regex": "{{.*?}}",
@@ -289,6 +300,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-eslint');
     grunt.loadNpmTasks('grunt-htmllint');
     grunt.loadNpmTasks("grunt-webpack");
 

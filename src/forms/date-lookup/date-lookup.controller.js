@@ -27,7 +27,7 @@ class TwDateLookupController {
           // jqLite supprts triggerHandler
           $element.triggerHandler('blur');
         }
-      }, 150);   // need timeout because using dropdown.js,
+      }, 150); // need timeout because using dropdown.js,
     });
 
     this.setLocale(this.locale);
@@ -40,7 +40,7 @@ class TwDateLookupController {
     this.$ngModel.$setTouched();
     this.mode = 'day';
 
-    var viewDate = this.ngModel;
+    let viewDate = this.ngModel;
     if (this.ngMin && this.ngModel < this.ngMin) {
       viewDate = this.ngMin;
     }
@@ -63,7 +63,7 @@ class TwDateLookupController {
     this.day = day;
     // Always set model to UTC dates
     this.setModel(this.DateService.getUTCDateFromParts(year, month, day));
-    this.resetFocus(this.$element);
+    resetFocus(this.$element);
     this.updateCalendarDatePresentation();
   }
 
@@ -154,14 +154,14 @@ class TwDateLookupController {
   }
 
   switchToMonths($event) {
-    this.resetFocus($($event.target));
+    resetFocus($($event.target));
     this.findActiveLink();
     $event.stopPropagation();
     this.mode = 'month';
   }
 
   switchToYears($event) {
-    this.resetFocus($($event.target));
+    resetFocus($($event.target));
     this.findActiveLink();
     $event.stopPropagation();
     this.mode = 'year';
@@ -186,7 +186,7 @@ class TwDateLookupController {
 
   addValidators($ngModel, $element) {
     $ngModel.$validators.min = (modelValue, viewValue) => {
-      var value = modelValue || viewValue;
+      const value = modelValue || viewValue;
       if (value && value < this.ngMin) {
         // TODO remove jquery dependency
         $element.parents('.form-group').addClass('has-error');
@@ -195,7 +195,7 @@ class TwDateLookupController {
       return true;
     };
     $ngModel.$validators.max = (modelValue, viewValue) => {
-      var value = modelValue || viewValue;
+      const value = modelValue || viewValue;
       if (value && value > this.ngMax) {
         // TODO remove jquery dependency
         $element.parents('.form-group').addClass('has-error');
@@ -212,7 +212,7 @@ class TwDateLookupController {
       }
     });
 
-    $scope.$watch('$ctrl.ngRequired', (newValue, oldValue) => {
+    $scope.$watch('$ctrl.ngRequired', () => {
       $ngModel.$validate();
     });
 
@@ -223,7 +223,7 @@ class TwDateLookupController {
       }
     });
 
-    $scope.$watch('$ctrl.shortDate', (newValue, oldValue) => {
+    $scope.$watch('$ctrl.shortDate', () => {
       this.updateSelectedDatePresentation();
     });
 
@@ -234,7 +234,7 @@ class TwDateLookupController {
       }
     });
 
-    $scope.$watch('$ctrl.ngModel', (newValue, oldValue) => {
+    $scope.$watch('$ctrl.ngModel', (newValue) => {
       if (newValue) {
         this.selectedDate = this.DateService.getUTCDate(newValue);
         this.selectedMonth = this.DateService.getUTCMonth(newValue);
@@ -261,22 +261,22 @@ class TwDateLookupController {
   }
 
   getTableStructure() {
-    var firstDayOfMonth = this.DateService.getWeekday(this.year, this.month, 1);
+    let firstDayOfMonth = this.DateService.getWeekday(this.year, this.month, 1);
     if (firstDayOfMonth === 0) {
       firstDayOfMonth = 7;
     }
-    var daysInMonth = this.DateService.getLastDayOfMonth(this.year, this.month);
+    const daysInMonth = this.DateService.getLastDayOfMonth(this.year, this.month);
 
-    var days = [];
-    var weekNumber = 0;
-    var week = [];
-    var weeks = [];
+    let week = [];
+    const weeks = [];
+    let i;
+
     // Pad first week
-    for (var i=1; i<firstDayOfMonth; i++) {
+    for (i = 1; i < firstDayOfMonth; i++) {
       week.push(false);
     }
     // Fill in days
-    for (i=1; i<=daysInMonth; i++) {
+    for (i = 1; i <= daysInMonth; i++) {
       week.push(i);
       if ((firstDayOfMonth + i - 1) % 7 === 0) {
         weeks.push(week);
@@ -285,7 +285,7 @@ class TwDateLookupController {
     }
     if (week.length) {
       // Pad last week
-      for (i=week.length; i<7; i++) {
+      for (i = week.length; i < 7; i++) {
         week.push(false);
       }
       weeks.push(week);
@@ -295,7 +295,7 @@ class TwDateLookupController {
 
   setLocale(locale) {
     if (!locale) {
-      this.locale = "en-GB";
+      this.locale = 'en-GB';
     }
     this.monthBeforeDay = this.DateService.isMonthBeforeDay(this.locale);
     this.monthsOfYear = this.DateService.getMonthNamesForLocale(this.locale, 'long');
@@ -306,7 +306,7 @@ class TwDateLookupController {
   }
 
   updateSelectedDatePresentation() {
-    var monthsOfYear = this.shortDate ? this.shortMonthsOfYear : this.monthsOfYear;
+    const monthsOfYear = this.shortDate ? this.shortMonthsOfYear : this.monthsOfYear;
 
     this.selectedDateFormatted = this.DateService.getYearMonthDatePresentation(
       this.selectedYear,
@@ -379,7 +379,7 @@ class TwDateLookupController {
       return;
     }
 
-    var characterCode = event.which || event.charCode || event.keyCode;
+    const characterCode = event.which || event.charCode || event.keyCode;
 
     if (characterCode === 37) { // Left arrow key
       this.adjustDate(this.mode, this.ngModel, -1, -1, -1);
@@ -394,8 +394,6 @@ class TwDateLookupController {
     }
 
     this.findActiveLink();
-
-    return true;
   }
 
   findActiveLink() {
@@ -405,13 +403,9 @@ class TwDateLookupController {
     });
   }
 
-  resetFocus($element) {
-    // jqLite supports find by tag name
-    $element.find('button').focus();
-  }
 
   adjustDate(mode, date, days, months, years) {
-    var newDate = date;
+    let newDate = date;
     if (mode === 'day') {
       newDate = this.DateService.addDays(date, days);
     }
@@ -423,6 +417,11 @@ class TwDateLookupController {
     }
     this.setModel(newDate);
   }
+}
+
+function resetFocus($element) {
+  // jqLite supports find by tag name
+  $element.find('button').focus();
 }
 
 TwDateLookupController.$inject = [

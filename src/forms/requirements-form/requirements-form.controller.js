@@ -1,3 +1,4 @@
+import angular from 'angular';
 import RequirementsService from './requirements.service.js';
 
 class RequirementsFormController {
@@ -15,8 +16,9 @@ class RequirementsFormController {
     $scope.$watch('$ctrl.requirements', (newRequirements, oldRequirements) => {
       if (!angular.equals(newRequirements, oldRequirements)) {
         this.RequirementsService.prepRequirements(this.requirements);
-        var oldType = this.model.type;
-        var newType =
+
+        const oldType = this.model.type;
+        const newType =
           this.requirements.length ? this.requirements[0].type : null;
 
         this.model.type = newType;
@@ -51,25 +53,29 @@ class RequirementsFormController {
     }
     // TODO disabled the form while we refresh requirements?
 
+    /*
     if (false && this.onRefreshRequirements) {
       // Should post the current model back to the requirements end
       // point and update the requirements.
       // TODO Can we handle this internally?
       this.onRefreshRequirements();
     }
+    */
   }
 
   switchTab(newType, oldType) {
-    var oldRequirementType = this.RequirementsService.findRequirementByType(
-      oldType, this.requirements
+    const oldRequirementType = this.RequirementsService.findRequirementByType(
+      oldType,
+      this.requirements
     );
-    var newRequirementType = this.RequirementsService.findRequirementByType(
-      newType, this.requirements
+    const newRequirementType = this.RequirementsService.findRequirementByType(
+      newType,
+      this.requirements
     );
 
     if (!oldRequirementType || !newRequirementType) {
       if (!this.model) {
-          this.model = {};
+        this.model = {};
       }
       this.model.type = newType;
     }

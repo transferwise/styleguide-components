@@ -1,74 +1,73 @@
 
-  function TwRequirementsService() {
-    this.cleanRequirementsModel = function(model, oldRequirements, newRequirements) {
-      var oldFieldNames = getFieldNamesFromRequirement(oldRequirements);
-      var newFieldNames = getFieldNamesFromRequirement(newRequirements);
-      var obsoleteFieldNames = oldFieldNames.filter(function(fieldName) {
-        return newFieldNames.indexOf(fieldName) < 0;
-      });
-      obsoleteFieldNames.forEach(function(fieldName) {
-        delete model[fieldName];
-      });
-    };
+function TwRequirementsService() {
+  this.cleanRequirementsModel = (model, oldRequirements, newRequirements) => {
+    const oldFieldNames = getFieldNamesFromRequirement(oldRequirements);
+    const newFieldNames = getFieldNamesFromRequirement(newRequirements);
+    const obsoleteFieldNames = oldFieldNames.filter((fieldName) => {
+      return newFieldNames.indexOf(fieldName) < 0;
+    });
+    obsoleteFieldNames.forEach((fieldName) => {
+      delete model[fieldName];
+    });
+  };
 
-    this.cleanModel = function(
-      model,
-      oldRequirements, oldType,
-      newRequirements, newType
-    ) {
-      var oldRequirementType = this.findRequirementByType(oldType, oldRequirements);
-      var newRequirementType = this.findRequirementByType(newType, newRequirements);
+  this.cleanModel = (
+    model,
+    oldRequirements, oldType,
+    newRequirements, newType
+  ) => {
+    const oldRequirementType = this.findRequirementByType(oldType, oldRequirements);
+    const newRequirementType = this.findRequirementByType(newType, newRequirements);
 
-      this.cleanRequirementsModel(model, oldRequirementType, newRequirementType);
-    };
+    this.cleanRequirementsModel(model, oldRequirementType, newRequirementType);
+  };
 
-    this.findRequirementByType = function(type, requirements) {
-      if (!requirements) {
-        return false;
-      }
-
-      for (var i=0; i < requirements.length; i++) {
-        var modelType = requirements[i];
-        if (modelType.type === type) {
-          return modelType;
-        }
-      }
-
+  this.findRequirementByType = (type, requirements) => {
+    if (!requirements) {
       return false;
-    };
-
-    this.prepRequirements = function(types) {
-      types.forEach(function(type) {
-        prepType(type);
-      });
-    };
-
-    function getFieldNamesFromRequirement(modelRequirement) {
-      if (!modelRequirement.fields) {
-        return [];
-      }
-      var names = modelRequirement.fields.map(function(fieldGroup) {
-        return fieldGroup.group.map(function(field) {
-          return field.key;
-        });
-      });
-      return Array.prototype.concat.apply([], names);
     }
 
-    function prepType(type) {
-      if (!type.label) {
-        type.label = getTabName(type.type);
+    for (let i=0; i < requirements.length; i++) {
+      const modelType = requirements[i];
+      if (modelType.type === type) {
+        return modelType;
       }
     }
 
-    function getTabName(tabType) {
-      if (tabType && tabType.length > 0) {
-        var tabNameWithSpaces = tabType.toLowerCase().split('_').join(' '); // String.replace method only replaces first instance
-        return tabNameWithSpaces.charAt(0).toUpperCase() + tabNameWithSpaces.slice(1);
-      } else {
-        return '';
-      }
+    return false;
+  };
+
+  this.prepRequirements = (types) => {
+    types.forEach((type) => {
+      prepType(type);
+    });
+  };
+
+  function getFieldNamesFromRequirement(modelRequirement) {
+    if (!modelRequirement.fields) {
+      return [];
+    }
+    const names = modelRequirement.fields.map((fieldGroup) => {
+      return fieldGroup.group.map((field) => {
+        return field.key;
+      });
+    });
+    return Array.prototype.concat.apply([], names);
+  }
+
+  function prepType(type) {
+    if (!type.label) {
+      type.label = getTabName(type.type);
     }
   }
 
-  export default TwRequirementsService;
+  function getTabName(tabType) {
+    if (tabType && tabType.length > 0) {
+      const tabNameWithSpaces = tabType.toLowerCase().split('_').join(' '); // String.replace method only replaces first instance
+      return tabNameWithSpaces.charAt(0).toUpperCase() + tabNameWithSpaces.slice(1);
+    }
+    return '';
+  }
+}
+
+export default TwRequirementsService;

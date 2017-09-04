@@ -80,18 +80,24 @@
     exports["default"] = _angular2["default"].module("tw.layout-components", [ _cards2["default"] ]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            "default": obj
+        };
+    }
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var CardController = function CardController($transclude, CardsService) {
+    var _cardsService = __webpack_require__(0), CardController = (_interopRequireDefault(_cardsService), 
+    function CardController($transclude, CardsService) {
         _classCallCheck(this, CardController), this.hasForm = $transclude.isSlotFilled("cardForm"), 
         this.toggle = CardsService.toggle, this.addCard = CardsService.addCard, this.getExpandedIndex = CardsService.getExpandedIndex, 
         this.updateExpandedIndex = CardsService.updateExpandedIndex, this.getCard = CardsService.getCard, 
         this.getLength = CardsService.getLength;
-    };
+    });
     CardController.$inject = [ "$transclude", "TwCardsService" ], exports["default"] = CardController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
@@ -123,13 +129,14 @@
                 cardForm: "?cardForm",
                 cardIcon: "cardIcon"
             },
-            link: function($scope, $element, $attrs, $ctrl) {
-                var cardController = $scope.$ctrl;
-                cardController.addCard(cardController), cardController.index = cardController.getLength() - 1, 
-                cardController.inactive = $ctrl.cardContainerController.inactive, cardController.open === !0 && cardController.getExpandedIndex() === -1 ? cardController.updateExpandedIndex(cardController.index) : cardController.open = !1, 
-                null == cardController.disabled && (cardController.disabled = !1);
-            }
+            link: CardLink
         };
+    }
+    function CardLink($scope, $element, $attrs, $ctrl) {
+        var cardController = $scope.$ctrl;
+        cardController.addCard(cardController), cardController.index = cardController.getLength() - 1, 
+        cardController.inactive = $ctrl.cardContainerController.inactive, cardController.open === !0 && cardController.getExpandedIndex() === -1 ? cardController.updateExpandedIndex(cardController.index) : cardController.open = !1, 
+        null == cardController.disabled && (cardController.disabled = !1);
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0

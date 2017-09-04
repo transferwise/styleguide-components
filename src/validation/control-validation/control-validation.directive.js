@@ -9,26 +9,26 @@ function TwValidation() {
 }
 
 function validationLink(scope, element, attrs, ngModel) {
-  var formGroup = element.closest('.form-group');
+  const formGroup = element.closest('.form-group');
 
-  element.on("invalid", function(event) {
+  element.on('invalid', (event) => {
     // Prevent default validation tooltips
     event.preventDefault();
   });
 
   // We could do this in $validators but includes unnecessary DOM manipulation
-  ngModel.$validators.validation = function() {
+  ngModel.$validators.validation = () => {
     // Evaluate after ngModel updates, we are still in validation chain
-    scope.$evalAsync(function() {
+    scope.$evalAsync(() => {
       checkModelAndUpdate(ngModel, formGroup, element);
     });
     return true;
   };
 
   // The first time we blur, still pristine when model validation occurs, so perform again.
-  element.on("blur", function() {
+  element.on('blur', () => {
     // Custom elements must trigger blur manually for correct behaviour
-    scope.$evalAsync(function() {
+    scope.$evalAsync(() => {
       checkModelAndUpdate(ngModel, formGroup, element);
     });
   });
@@ -36,14 +36,14 @@ function validationLink(scope, element, attrs, ngModel) {
 
 function checkModelAndUpdate(ngModel, formGroup, element) {
   if (ngModel.$valid) {
-    formGroup.removeClass("has-error");
-    element.removeAttr("aria-invalid");
+    formGroup.removeClass('has-error');
+    element.removeAttr('aria-invalid');
     return;
   }
   if (ngModel.$touched && ngModel.$dirty) {
-    formGroup.addClass("has-error");
+    formGroup.addClass('has-error');
     // Set aria invalid for screen readers
-    element.attr("aria-invalid", true);
+    element.attr('aria-invalid', true);
   }
 }
 

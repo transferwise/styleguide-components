@@ -1,3 +1,4 @@
+import angular from 'angular';
 
 class UploadController {
   constructor(
@@ -24,7 +25,7 @@ class UploadController {
 
     this.processingState = null;
 
-    this.checkForTranscludedContent($transclude, this);
+    this.checkForTranscludedContent($transclude);
 
     $scope.$watch('$ctrl.icon', () => {
       this.viewIcon = this.icon ? this.icon : 'upload';
@@ -81,36 +82,35 @@ class UploadController {
       return;
     }
 
-    const $ctrl = this;
-
     if (this.httpOptions) {
       // Post file now
-      this.$q.all([
+      this.$q
+        .all([
           this.asyncPost(file),
           this.asyncFileRead(file)
         ])
         .then((response) => {
-          asyncSuccess(response[0], $ctrl);
+          asyncSuccess(response[0], this);
           return response;
         })
         .then((response) => {
-          showDataImage(response[1], $ctrl);
+          showDataImage(response[1], this);
           return response;
         })
         .catch((error) => {
-          return asyncFailure(error, $ctrl);
+          return asyncFailure(error, this);
         });
     } else {
       // Post on form submit
       this.asyncFileRead(file)
         .then((response) => {
-          return asyncSuccess(response, $ctrl);
+          return asyncSuccess(response, this);
         })
         .then((response) => {
-          return showDataImage(response, $ctrl);
+          return showDataImage(response, this);
         })
         .catch((error) => {
-          return asyncFailure(error, $ctrl);
+          return asyncFailure(error, this);
         });
     }
   }
@@ -158,16 +158,16 @@ class UploadController {
   }
 
   asyncPost(file) {
-    var formData = new FormData();
+    const formData = new FormData();
     formData.append(this.name, file);
 
-    var $httpOptions = prepareHttpOptions(angular.copy(this.httpOptions));
+    const $httpOptions = prepareHttpOptions(angular.copy(this.httpOptions));
     return this.$http.post($httpOptions.url, formData, $httpOptions);
   }
 
   asyncFileRead(file) {
-    var reader = new FileReader();
-    var deferred = this.$q.defer();
+    const reader = new FileReader();
+    const deferred = this.$q.defer();
 
     // When the reader finishes loading resolve the promise
     reader.onload = (event) => {
@@ -206,7 +206,7 @@ class UploadController {
     }, false);
   }
 
-  checkForTranscludedContent($transclude, $ctrl) {
+  checkForTranscludedContent($transclude) {
     $transclude((clone) => {
       if (clone.length > 1 || clone.text().trim() !== '') {
         this.hasTranscluded = true;
@@ -293,7 +293,7 @@ function asyncFailure(error, $ctrl) {
   $ctrl.$timeout(() => {
     triggerHandler($ctrl.onFailure, error);
     $ctrl.isDone = true;
-  }, 4100);  //3500); TODO for some reason more time is needed
+  }, 4100); // 3500); TODO for some reason more time is needed
 
   return error;
 }
