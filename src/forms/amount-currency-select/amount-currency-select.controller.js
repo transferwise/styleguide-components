@@ -40,6 +40,10 @@ class AmountCurrencySelectController {
 
       return viewValue <= this.ngMax;
     };
+    
+    if ($element[0].getAttribute('on-amount-change') && console && console.log) {
+      console.log('onAmountChange is deprecated in twAmountCurrencySelect, please use ngChange.');
+    }
   }
 
   changedAmount() {
@@ -52,9 +56,6 @@ class AmountCurrencySelectController {
     if (this.onAmountChange) {
       // $timeout is needed to get the last ngModel value.
       // See: https://github.com/angular/angular.js/issues/4558
-      if (console && console.log) {
-        console.log('onAmountChange is deprecated in twAmountCurrencySelect, please use ngChange.');
-      }
       this.$timeout(this.onAmountChange);
     }
   }

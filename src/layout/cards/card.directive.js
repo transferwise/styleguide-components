@@ -1,4 +1,4 @@
-import service from './cards.service.js';
+
 import controller from './card.controller.js';
 import template from './card.html';
 

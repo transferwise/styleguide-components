@@ -141,8 +141,7 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _cardsService = __webpack_require__(0), _cardController = (_interopRequireDefault(_cardsService), 
-    __webpack_require__(4)), _cardController2 = _interopRequireDefault(_cardController), _card = __webpack_require__(7), _card2 = _interopRequireDefault(_card);
+    var _cardController = __webpack_require__(4), _cardController2 = _interopRequireDefault(_cardController), _card = __webpack_require__(7), _card2 = _interopRequireDefault(_card);
     exports["default"] = Card;
 }, function(module, exports, __webpack_require__) {
     "use strict";

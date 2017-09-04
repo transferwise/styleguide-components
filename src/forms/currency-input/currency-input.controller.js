@@ -2,7 +2,7 @@ import TwCurrencyService from '../../services/currency/';
 
 class TwCurrencyInputController {
   constructor($element, $scope, $timeout, TwCurrencyService) {
-    const $ngModel = $element.controller('ngModel');
+    var $ngModel = $element.controller('ngModel');
 
     this.$timeout = $timeout;
     this.showDecimals = true;
@@ -23,7 +23,7 @@ class TwCurrencyInputController {
       $element.triggerHandler('blur');
     });
 
-    if (this.currencyCode && console && console.log) {
+    if ($element[0].getAttribute('currency-code') && console && console.log) {
       console.log('currency code is deprecated in twCurrencyInput, please use currency.');
     }
 

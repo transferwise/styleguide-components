@@ -161,29 +161,7 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _slicedToArray = function() {
-        function sliceIterator(arr, i) {
-            var _arr = [], _n = !0, _d = !1, _e = void 0;
-            try {
-                for (var _s, _i = arr[Symbol.iterator](); !(_n = (_s = _i.next()).done) && (_arr.push(_s.value), 
-                !i || _arr.length !== i); _n = !0) ;
-            } catch (err) {
-                _d = !0, _e = err;
-            } finally {
-                try {
-                    !_n && _i["return"] && _i["return"]();
-                } finally {
-                    if (_d) throw _e;
-                }
-            }
-            return _arr;
-        }
-        return function(arr, i) {
-            if (Array.isArray(arr)) return arr;
-            if (Symbol.iterator in Object(arr)) return sliceIterator(arr, i);
-            throw new TypeError("Invalid attempt to destructure non-iterable instance");
-        };
-    }(), _createClass = function() {
+    var _createClass = function() {
         function defineProperties(target, props) {
             for (var i = 0; i < props.length; i++) {
                 var descriptor = props[i];
@@ -200,9 +178,8 @@
             var _this = this;
             _classCallCheck(this, TextFormatController), this.keydownCount = 0, this.pattern = "", 
             this.undoStack = TwUndoStackFactory["new"](), this.$ngModel = $element.controller("ngModel"), 
-            this.$timeout = $timeout, this.TextFormatService = TwTextFormatService;
-            var _$element = _slicedToArray($element, 1);
-            this.element = _$element[0], this.$ngModel.$formatters.push(function(value) {
+            this.$timeout = $timeout, this.TextFormatService = TwTextFormatService, this.element = $element[0], 
+            this.$ngModel.$formatters.push(function(value) {
                 return _this.TextFormatService.formatUsingPattern(value, _this.pattern);
             }), this.$ngModel.$parsers.push(function(value) {
                 return _this.TextFormatService.unformatUsingPattern(value, _this.pattern);

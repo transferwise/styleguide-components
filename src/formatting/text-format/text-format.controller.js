@@ -15,7 +15,7 @@ class TextFormatController {
     this.$timeout = $timeout;
     this.TextFormatService = TwTextFormatService;
 
-    [this.element] = $element;
+    this.element = $element[0];
 
     // We need the formatter for external model changes
     this.$ngModel.$formatters.push((value) => {
