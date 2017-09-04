@@ -1,5 +1,5 @@
 
-function TwRequirementsService() {
+function RequirementsService() {
   this.cleanRequirementsModel = (model, oldRequirements, newRequirements) => {
     const oldFieldNames = getFieldNamesFromRequirement(oldRequirements);
     const newFieldNames = getFieldNamesFromRequirement(newRequirements);
@@ -27,7 +27,7 @@ function TwRequirementsService() {
       return false;
     }
 
-    for (let i=0; i < requirements.length; i++) {
+    for (let i = 0; i < requirements.length; i++) {
       const modelType = requirements[i];
       if (modelType.type === type) {
         return modelType;
@@ -70,4 +70,4 @@ function TwRequirementsService() {
   }
 }
 
-export default TwRequirementsService;
+export default RequirementsService;

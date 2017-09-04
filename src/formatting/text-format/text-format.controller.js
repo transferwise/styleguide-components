@@ -124,7 +124,9 @@ class TextFormatController {
     const pastedData = clipboardData.getData('Text');
 
     const separatorsInPaste = this.TextFormatService.countSeparatorsInAppendedValue(
-      this.pattern, selectionStart, pastedData
+      this.pattern,
+      selectionStart,
+      pastedData
     );
 
     this.$timeout(() => {
@@ -190,13 +192,19 @@ class TextFormatController {
 
   doBackspace(element, pattern, selectionStart, selectionEnd) {
     element.value = this.getFormattedValueAfterBackspace(
-      element, pattern, selectionStart, selectionEnd
+      element,
+      pattern,
+      selectionStart,
+      selectionEnd
     );
 
     this.undoStack.add(element.value);
 
     const newPosition = this.getPositionAfterBackspace(
-      pattern, element, selectionStart, selectionEnd
+      pattern,
+      element,
+      selectionStart,
+      selectionEnd
     );
 
     this.setSelection(newPosition, newPosition);
@@ -219,7 +227,7 @@ class TextFormatController {
 
       if (selectionStart !== selectionEnd) {
         // A range is selected, remove one less character from start
-        removeStart = selectionStart - separatorsBeforeCursor + 1;
+        removeStart = selectionStart - (separatorsBeforeCursor + 1);
         removeEnd = selectionStart - adjust;
       } else {
         removeStart = selectionStart - separatorsBeforeCursor;
@@ -233,7 +241,10 @@ class TextFormatController {
 
   doDelete(element, pattern, selectionStart, selectionEnd) {
     element.value = this.getFormattedValueAfterDelete(
-      element, pattern, selectionStart, selectionEnd
+      element,
+      pattern,
+      selectionStart,
+      selectionEnd
     );
 
     this.undoStack.add(element.value);
@@ -281,7 +292,10 @@ class TextFormatController {
     this.undoStack.add(element.value);
 
     const newPosition = this.getPositionAfterKeypress(
-      pattern, element, selectionStart, selectionEnd
+      pattern,
+      element,
+      selectionStart,
+      selectionEnd
     );
     this.setSelection(newPosition, newPosition);
   }

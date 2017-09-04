@@ -92,11 +92,11 @@
         value: !0
     });
     var _cardsService = __webpack_require__(0), CardController = (_interopRequireDefault(_cardsService), 
-    function CardController($transclude, CardsService) {
+    function CardController($transclude, TwCardsService) {
         _classCallCheck(this, CardController), this.hasForm = $transclude.isSlotFilled("cardForm"), 
-        this.toggle = CardsService.toggle, this.addCard = CardsService.addCard, this.getExpandedIndex = CardsService.getExpandedIndex, 
-        this.updateExpandedIndex = CardsService.updateExpandedIndex, this.getCard = CardsService.getCard, 
-        this.getLength = CardsService.getLength;
+        this.toggle = TwCardsService.toggle, this.addCard = TwCardsService.addCard, this.getExpandedIndex = TwCardsService.getExpandedIndex, 
+        this.updateExpandedIndex = TwCardsService.updateExpandedIndex, this.getCard = TwCardsService.getCard, 
+        this.getLength = TwCardsService.getLength;
     });
     CardController.$inject = [ "$transclude", "TwCardsService" ], exports["default"] = CardController;
 }, function(module, exports, __webpack_require__) {

@@ -1,5 +1,6 @@
 
 class AsyncValidatorController {
+  // eslint-disable-next-line no-useless-constructor
   constructor() {
     // console.log("this.twDynamicAsyncValidator");
     // console.log(ctrl.twDynamicAsyncValidator);
@@ -18,13 +19,16 @@ function AsyncValidation($log, $q, $http) {
     }
   };
 
+  // eslint-disable-next-line no-unused-vars
   function AsyncValidationLink(scope, element, attrs, ngModel) {
-    var validatorSetting = attrs['tw-dynamic-async-validator'];
+    // eslint-disable-next-line no-unused-vars
+    const validatorSetting = attrs['tw-dynamic-async-validator'];
     // ngModel.$asyncValidators.async = dynamicAsyncValidator;
     // console.log(ngModel);
     // console.log(ngModel.twDynamicAsyncValidator);
   }
 
+  // eslint-disable-next-line no-unused-vars
   function dynamicAsyncValidator(modelValue, viewValue) {
     const req = {
       method: 'GET',

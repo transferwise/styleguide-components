@@ -11,7 +11,8 @@ class CheckboxController {
 
   isChecked() {
     return (this.ngTrueValue && this.ngTrueValue === this.ngModel) ||
-      !this.ngTrueValue && this.ngModel || false;
+      (!this.ngTrueValue && this.ngModel) ||
+      false;
   }
 
   buttonClick($event) {
@@ -64,6 +65,7 @@ class CheckboxController {
   }
 
   // IE 'clicks' the hidden input when label is clicked
+  // eslint-disable-next-line class-methods-use-this
   hiddenClick($event) {
     $event.stopPropagation();
   }

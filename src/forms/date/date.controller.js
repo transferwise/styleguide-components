@@ -1,4 +1,4 @@
-import TwDateService from '../../services/date/';
+import DateService from '../../services/date/';
 
 class DateController {
   constructor($element, $log, $scope, TwDateService) {
@@ -15,9 +15,8 @@ class DateController {
         if (this.modelType === STRING_TYPE || this.modelType === OBJECT_TYPE) {
           this.dateModelType = this.modelType;
         } else {
-          throw new Error(
-            'Invalid modelType, should be ' + STRING_TYPE + ' or ' + OBJECT_TYPE
-          );
+          throw new Error('Invalid modelType, should be ' +
+            STRING_TYPE + ' or ' + OBJECT_TYPE);
         }
       } else {
         this.dateModelType = OBJECT_TYPE;
@@ -208,6 +207,7 @@ function isNumber(value) {
 }
 
 function isNumericString(value) {
+  // eslint-disable-next-line no-restricted-globals
   return typeof value === 'string' && !isNaN(Number(value));
 }
 
@@ -223,7 +223,7 @@ function validDate(date) {
 
 function validDateObject(dateObj) {
   return Object.prototype.toString.call(dateObj) === '[object Date]'
-    && !isNaN(dateObj.getTime());
+    && !isNaN(dateObj.getTime()); // eslint-disable-line no-restricted-globals
 }
 
 function validDateString(dateString) {
@@ -231,8 +231,8 @@ function validDateString(dateString) {
 }
 
 function prepDateLimitForComparison(ngLimit, attrLimit) {
-  let limit = attrLimit ? attrLimit : false;
-  limit = ngLimit ? ngLimit : limit;
+  // eslint-disable-next-line no-unneeded-ternary
+  let limit = ngLimit ? ngLimit : attrLimit;
 
   if (!limit) {
     return false;
@@ -280,7 +280,7 @@ DateController.$inject = [
   '$element',
   '$log',
   '$scope',
-  'TwDateService'
+  DateService
 ];
 
 export default DateController;

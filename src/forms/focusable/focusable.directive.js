@@ -1,4 +1,5 @@
 import angular from 'angular';
+import $ from 'jquery';
 
 /* TODO deprecate in V1, opt-in through tw-focusable */
 angular

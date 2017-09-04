@@ -274,7 +274,7 @@
                 var removeStart = void 0, removeEnd = void 0, newVal = element.value, separatorsBeforeCursor = this.TextFormatService.countSeparatorsBeforeCursor(pattern, selectionStart);
                 if (separatorsBeforeCursor) {
                     var adjust = separatorsBeforeCursor > 1 ? 1 : 0;
-                    selectionStart !== selectionEnd ? (removeStart = selectionStart - separatorsBeforeCursor + 1, 
+                    selectionStart !== selectionEnd ? (removeStart = selectionStart - (separatorsBeforeCursor + 1), 
                     removeEnd = selectionStart - adjust) : (removeStart = selectionStart - separatorsBeforeCursor, 
                     removeEnd = selectionStart - adjust), newVal = removeCharacters(element.value, removeStart, removeEnd);
                 }

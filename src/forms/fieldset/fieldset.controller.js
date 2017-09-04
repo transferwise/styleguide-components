@@ -40,6 +40,7 @@ class FieldsetController {
     this.removeFieldError(field.key);
 
     if (!field.refreshRequirementsOnChange) {
+      // eslint-disable-next-line no-useless-return
       return;
     }
     // TODO disabled the form while we refresh requirements?
@@ -85,6 +86,7 @@ function prepRegExp(field) {
     try {
       field.validationRegexp = new RegExp(field.validationRegexp);
     } catch (ex) {
+      // eslint-disable-next-line no-console
       console.log('API regexp is invalid');
       field.validationRegexp = false;
     }

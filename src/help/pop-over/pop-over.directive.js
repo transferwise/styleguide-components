@@ -8,6 +8,7 @@ function PopOver() {
 
 function PopOverLink(scope, element) {
   if (!element.popover) {
+    // eslint-disable-next-line no-console
     console.log('twPopOver requires tooltip from bootstrap.js');
     return;
   }

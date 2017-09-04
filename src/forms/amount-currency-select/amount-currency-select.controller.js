@@ -1,4 +1,4 @@
-import TwCurrencyService from '../../services/currency/';
+import CurrencyService from '../../services/currency/';
 
 class AmountCurrencySelectController {
   constructor($element, $scope, $timeout, TwCurrencyService) {
@@ -40,8 +40,10 @@ class AmountCurrencySelectController {
 
       return viewValue <= this.ngMax;
     };
-    
+
+    // eslint-disable-next-line no-console
     if ($element[0].getAttribute('on-amount-change') && console && console.log) {
+      // eslint-disable-next-line no-console
       console.log('onAmountChange is deprecated in twAmountCurrencySelect, please use ngChange.');
     }
   }
@@ -74,14 +76,14 @@ class AmountCurrencySelectController {
 }
 
 function isNumber(value) {
-  return !isNaN(parseFloat(value));
+  return !isNaN(parseFloat(value)); // eslint-disable-line no-restricted-globals
 }
 
 AmountCurrencySelectController.$inject = [
   '$element',
   '$scope',
   '$timeout',
-  'TwCurrencyService'
+  CurrencyService
 ];
 
 export default AmountCurrencySelectController;

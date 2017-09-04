@@ -1,4 +1,5 @@
 import angular from 'angular';
+import $ from 'jquery';
 
 class SelectController {
   constructor($element, $scope, $transclude, $timeout, $attrs) {
@@ -65,7 +66,10 @@ class SelectController {
     // Search for option based on character
     const character = getCharacterFromKeypress(event);
     continueSearchAndSelectMatch(
-      this.$ngModel, this, this.options, character
+      this.$ngModel,
+      this,
+      this.options,
+      character
     );
     this.$element.find('.active a').focus();
   }
@@ -271,6 +275,7 @@ function getCharacterFromKeypress(event) {
 }
 
 function escapeRegExp(str) {
+  // eslint-disable-next-line no-useless-escape
   return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
 }
 
@@ -363,15 +368,19 @@ function searchAndSelect($ngModel, $ctrl, options, term) {
     if (found || !option.label) {
       return;
     }
-    if (option.label.toLowerCase().indexOf(searchTerm) === 0 ||
-      option.note && option.note.toLowerCase().indexOf(searchTerm) === 0 ||
-      option.secondary && option.secondary.toLowerCase().indexOf(searchTerm) === 0 ||
-      option.searchable && option.searchable.toLowerCase().indexOf(searchTerm) === 0) {
+    if (containsSearch(options.label, searchTerm) ||
+      containsSearch(options.note, searchTerm) ||
+      containsSearch(options.secondary, searchTerm) ||
+      containsSearch(options.searchable, searchTerm)) {
       selectOption($ngModel, $ctrl, option);
       found = true;
     }
   });
   return found;
+}
+
+function containsSearch(term, search) {
+  return term && term.toLowerCase().indexOf(search) === 0;
 }
 
 function isValidModel(value) {

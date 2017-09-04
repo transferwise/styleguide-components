@@ -8,6 +8,7 @@ function TwAffix() {
 
 function AffixLink(scope, element) {
   if (!element.affix) {
+    // eslint-disable-next-line no-console
     console.log('twAffix requires bootstrap.js');
     return;
   }

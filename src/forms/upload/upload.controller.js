@@ -33,9 +33,7 @@ class UploadController {
 
     if ((this.processingText || this.successText || this.failureText) &&
         (!this.processingText || !this.successText || !this.failureText)) {
-      throw new Error(
-        'Supply all of processing, success, and failure text, or supply none.'
-      );
+      throw new Error('Supply all of processing, success, and failure text, or supply none.');
     }
 
     this.addDragHandlers($scope, $element);
@@ -245,6 +243,7 @@ function isSizeValid(file, maxSize) {
   return !(angular.isNumber(maxSize) && file.size > maxSize);
 }
 
+// eslint-disable-next-line no-unused-vars
 function isTypeValid(file, accept) {
   return true;
   // TODO validate file type

@@ -1,9 +1,10 @@
-import TwCurrencyService from '../../services/currency/';
+import CurrencyService from '../../services/currency/';
 
-class TwCurrencyInputController {
+class CurrencyInputController {
   constructor($element, $scope, $timeout, TwCurrencyService) {
-    var $ngModel = $element.controller('ngModel');
+    const $ngModel = $element.controller('ngModel');
 
+    this.CurrencyService = TwCurrencyService;
     this.$timeout = $timeout;
     this.showDecimals = true;
 
@@ -14,7 +15,7 @@ class TwCurrencyInputController {
     });
     $scope.$watch('$ctrl.currency', (newValue, oldValue) => {
       if (newValue !== oldValue) {
-        this.showDecimals = TwCurrencyService.getDecimals(newValue) > 0;
+        this.showDecimals = this.CurrencyService.getDecimals(newValue) > 0;
       }
     });
 
@@ -23,7 +24,9 @@ class TwCurrencyInputController {
       $element.triggerHandler('blur');
     });
 
+    // eslint-disable-next-line no-console
     if ($element[0].getAttribute('currency-code') && console && console.log) {
+      // eslint-disable-next-line no-console
       console.log('currency code is deprecated in twCurrencyInput, please use currency.');
     }
 
@@ -54,14 +57,14 @@ class TwCurrencyInputController {
 }
 
 function isNumber(value) {
-  return !isNaN(parseFloat(value));
+  return !isNaN(parseFloat(value)); // eslint-disable-line no-restricted-globals
 }
 
-TwCurrencyInputController.$inject = [
+CurrencyInputController.$inject = [
   '$element',
   '$scope',
   '$timeout',
-  'TwCurrencyService'
+  CurrencyService
 ];
 
-export default TwCurrencyInputController;
+export default CurrencyInputController;

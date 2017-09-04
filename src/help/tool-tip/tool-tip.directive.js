@@ -8,6 +8,7 @@ function ToolTip() {
 
 function ToolTipLink(scope, element) {
   if (!element.tooltip) {
+    // eslint-disable-next-line no-console
     console.log('twToolTip requires bootstrap.js');
     return;
   }

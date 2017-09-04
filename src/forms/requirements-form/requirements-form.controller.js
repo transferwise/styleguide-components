@@ -1,4 +1,5 @@
 import angular from 'angular';
+// eslint-disable-next-line no-unused-vars
 import RequirementsService from './requirements.service.js';
 
 class RequirementsFormController {
@@ -47,8 +48,10 @@ class RequirementsFormController {
   /**
    * Perform the refreshRequirementsOnChange check on blur
    */
+  // eslint-disable-next-line class-methods-use-this
   onBlur(field) {
     if (!field.refreshRequirementsOnChange) {
+      // eslint-disable-next-line no-useless-return
       return;
     }
     // TODO disabled the form while we refresh requirements?
@@ -88,6 +91,9 @@ class RequirementsFormController {
   }
 }
 
-RequirementsFormController.$inject = ['$scope', 'TwRequirementsService'];
+RequirementsFormController.$inject = [
+  '$scope',
+  'TwRequirementsService'
+];
 
 export default RequirementsFormController;

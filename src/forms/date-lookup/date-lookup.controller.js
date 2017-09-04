@@ -1,6 +1,7 @@
-import TwDateService from '../../services/date/';
+import $ from 'jquery';
+import DateService from '../../services/date/';
 
-class TwDateLookupController {
+class DateLookupController {
   constructor($element, $scope, $timeout, TwDateService) {
     const $ngModel = $element.controller('ngModel');
 
@@ -278,7 +279,7 @@ class TwDateLookupController {
     // Fill in days
     for (i = 1; i <= daysInMonth; i++) {
       week.push(i);
-      if ((firstDayOfMonth + i - 1) % 7 === 0) {
+      if (((firstDayOfMonth + i) - 1) % 7 === 0) {
         weeks.push(week);
         week = [];
       }
@@ -372,10 +373,13 @@ class TwDateLookupController {
   // Keydown as keypress did not work in chrome/safari
   keyHandler(event) {
     if (!this.ngModel) {
-      this.setModel(
-        // Always set model to UTC dates
-        this.DateService.getUTCDateFromParts(this.year, this.month, this.day)
+      // Always set model to UTC dates
+      const newDate = this.DateService.getUTCDateFromParts(
+        this.year,
+        this.month,
+        this.day
       );
+      this.setModel(newDate);
       return;
     }
 
@@ -424,11 +428,11 @@ function resetFocus($element) {
   $element.find('button').focus();
 }
 
-TwDateLookupController.$inject = [
+DateLookupController.$inject = [
   '$element',
   '$scope',
   '$timeout',
-  'TwDateService'
+  DateService
 ];
 
-export default TwDateLookupController;
+export default DateLookupController;

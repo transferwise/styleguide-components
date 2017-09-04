@@ -54,12 +54,12 @@ class RadioController {
 
     $scope.$watch('$ctrl.ngDisabled', (newValue, oldValue) => {
       if (newValue && !oldValue) {
-        this.$element
+        $element
           .closest('.radio')
           .addClass('disabled')
           .attr('disabled', true);
       } else if (!newValue && oldValue) {
-        this.$element
+        $element
           .closest('.radio')
           .removeClass('disabled')
           .removeAttr('disabled');
