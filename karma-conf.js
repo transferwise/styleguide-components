@@ -6,17 +6,15 @@ module.exports = function(config) {
         // files to include, ordered by dependencies
         files : [
             // include relevant Angular files and libs
-            'components/jquery/dist/jquery.js',
-            'components/bootstrap/dist/js/bootstrap.js',
-            'components/angular/angular.js',
-            'components/angular-mocks/angular-mocks.js',
+            'demo/lib/jquery.min.js',
+            'demo/lib/bootstrap.min.js',
+            'demo/lib/angular.min.js',
+            'node_modules/angular-mocks/angular-mocks.js',
 
             // include js files
-            //'angular/**/*.controller.js',
-            //'angular/**/*.directive.js',
             'dist/js/styleguide-components.js',
 
-            //'components/bootstrap/dist/css/bootstrap.css',
+            // 'dist/lib/bootstrap.css',
 
             // include unit test specs
             'src/**/*.spec.js'
