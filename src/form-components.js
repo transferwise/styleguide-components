@@ -1,3 +1,5 @@
+/* This module is deprecated, but in use in several places */
+
 import angular from 'angular';
 
 import Checkbox             from './forms/checkbox/';
@@ -17,6 +19,9 @@ import Loader               from './loading/loader/';
 import Process              from './loading/process/';
 
 import RequirementsForm     from './forms/requirements-form/';
+
+import DateService          from './services/date/';
+import CurrencyService      from './services/currency/';
 
 // Deprecated in favour of Upload
 import UploadDroppable      from './forms/upload-droppable/';
@@ -39,6 +44,9 @@ export default angular.module('tw.form-components', [
   Process,
 
   RequirementsForm,
+
+  DateService,
+  CurrencyService,
 
   UploadDroppable
 ]).name;

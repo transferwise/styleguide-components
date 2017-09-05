@@ -15,8 +15,6 @@
 
     "no-param-reassign": "off",
     "no-plusplus": "off",
-    "arrow-body-style": "off",
-    "prefer-template": "off",
     "prefer-destructuring": "off"
   }
 }

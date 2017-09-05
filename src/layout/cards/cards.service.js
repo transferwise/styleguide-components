@@ -20,21 +20,13 @@ function TwCardsService() {
     cards.push(scope);
   };
 
-  this.getExpandedIndex = () => {
-    return expandedIndex;
-  };
-
   this.updateExpandedIndex = (newExpandedIndex) => {
     expandedIndex = newExpandedIndex;
   };
 
-  this.getCard = (index) => {
-    return cards[index];
-  };
-
-  this.getLength = () => {
-    return cards.length;
-  };
+  this.getCard = index => cards[index];
+  this.getLength = () => cards.length;
+  this.getExpandedIndex = () => expandedIndex;
 }
 
 export default TwCardsService;

@@ -32,26 +32,10 @@ module.exports = function(grunt) {
             externals: webpackExternals,
             module: webpackModule
           },{
-            entry: './src/form-styling.js',
-            output: {
-              path: path.join(__dirname, './build'),
-              filename: 'form-styling.webpack.js'
-            },
-            externals: webpackExternals,
-            module: webpackModule
-          },{
             entry: './src/form-validation.js',
             output: {
               path: path.join(__dirname, './build'),
               filename: 'form-validation.webpack.js'
-            },
-            externals: webpackExternals,
-            module: webpackModule
-          },{
-            entry: './src/layout-components.js',
-            output: {
-              path: path.join(__dirname, './build'),
-              filename: 'layout-components.webpack.js'
             },
             externals: webpackExternals,
             module: webpackModule
@@ -100,26 +84,6 @@ module.exports = function(grunt) {
                     beautify: false
                 }
             },
-            styling: {
-                src: [
-                    'build/form-styling.webpack.js'
-                ],
-                dest: 'dist/js/form-styling.js',
-                options: {
-                    mangle: false,
-                    beautify: true
-                }
-            },
-            stylingMin: {
-                src: [
-                    'build/form-styling.webpack.js'
-                ],
-                dest: 'dist/js/form-styling.min.js',
-                options: {
-                    mangle: true,
-                    beautify: false
-                }
-            },
             formComponents: {
                 src: [
                     'build/form-components.webpack.js'
@@ -135,26 +99,6 @@ module.exports = function(grunt) {
                     'build/form-components.webpack.js'
                 ],
                 dest: 'dist/js/form-components.min.js',
-                options: {
-                    mangle: true,
-                    beautify: false
-                }
-            },
-            layoutComponents: {
-                src: [
-                    'build/layout-components.webpack.js'
-                ],
-                dest: 'dist/js/layout-components.js',
-                options: {
-                    mangle: false,
-                    beautify: true
-                }
-            },
-            layoutComponentsMin: {
-                src: [
-                    'build/layout-components.webpack.js'
-                ],
-                dest: 'dist/js/layout-components.min.js',
                 options: {
                     mangle: true,
                     beautify: false

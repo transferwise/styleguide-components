@@ -1,5 +1,5 @@
 
-function TwDateService() {
+function DateService() {
   this.getLocaleDate = (date) => {
     if (!date) { date = new Date(); }
     return date.getDate();
@@ -127,46 +127,36 @@ function TwDateService() {
     return false;
   };
 
-  this.addYears = (date, years) => {
-    return this.addToDate(date, years, 0, 0);
-  };
+  this.addYears = (date, years) => this.addToDate(date, years, 0, 0);
+  this.addMonths = (date, months) => this.addToDate(date, 0, months, 0);
+  this.addDays = (date, days) => this.addToDate(date, 0, 0, days);
 
-  this.addMonths = (date, months) => {
-    return this.addToDate(date, 0, months, 0);
-  };
-
-  this.addDays = (date, days) => {
-    return this.addToDate(date, 0, 0, days);
-  };
-
-  this.addToDate = (date, years, months, days) => {
-    return this.getUTCDateFromParts(
-      date.getUTCFullYear() + years,
-      date.getUTCMonth() + months,
-      date.getUTCDate() + days
-    );
-  };
+  this.addToDate = (date, years, months, days) => this.getUTCDateFromParts(
+    date.getUTCFullYear() + years,
+    date.getUTCMonth() + months,
+    date.getUTCDate() + days
+  );
 
   this.getYearAndMonthPresentation = (year, monthName, locale) => {
     const lang = getLanguageFromLocale(locale);
     if (lang === 'ja') {
-      return year + '年' + monthName;
+      return `${year}年${monthName}`;
     }
 
-    return monthName + ' ' + year;
+    return `${monthName} ${year}`;
   };
 
   this.getYearMonthDatePresentation = (year, monthName, date, locale) => {
     const lang = getLanguageFromLocale(locale);
     if (lang === 'ja') {
-      return year + '年' + monthName + date + '日';
+      return `${year}年${monthName}${date}日`;
     }
 
     if (locale.indexOf('US', locale.length - 2) !== -1) {
-      return monthName + ' ' + date + ', ' + year;
+      return `${monthName} ${date}, ${year}`;
     }
 
-    return date + ' ' + monthName + ' ' + year;
+    return `${date} ${monthName} ${year}`;
   };
 
   function getLocalisedDateName(date, locale, formattingObject) {
@@ -227,19 +217,44 @@ function TwDateService() {
 
   const DEFAULT_MONTH_NAMES_BY_LANGUAGE = {
     en: [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
     ],
     ja: [
-      '1月', '2月', '3月', '4月', '5月', '6月',
-      '7月', '8月', '9月', '10月', '11月', '12月'
+      '1月',
+      '2月',
+      '3月',
+      '4月',
+      '5月',
+      '6月',
+      '7月',
+      '8月',
+      '9月',
+      '10月',
+      '11月',
+      '12月'
     ]
   };
 
   const DEFAULT_DAY_NAMES_BY_LANGUAGE = {
     en: [
-      'Monday', 'Tuesday', 'Wednesday', 'Thursday',
-      'Friday', 'Saturday', 'Sunday'
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday'
     ],
     ja: [
       '月', '火', '水', '木', '金', '土', '日'
@@ -248,4 +263,4 @@ function TwDateService() {
   };
 }
 
-export default TwDateService;
+export default DateService;

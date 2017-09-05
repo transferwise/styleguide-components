@@ -3,9 +3,9 @@ function RequirementsService() {
   this.cleanRequirementsModel = (model, oldRequirements, newRequirements) => {
     const oldFieldNames = getFieldNamesFromRequirement(oldRequirements);
     const newFieldNames = getFieldNamesFromRequirement(newRequirements);
-    const obsoleteFieldNames = oldFieldNames.filter((fieldName) => {
-      return newFieldNames.indexOf(fieldName) < 0;
-    });
+    const obsoleteFieldNames =
+      oldFieldNames.filter(fieldName => newFieldNames.indexOf(fieldName) < 0);
+
     obsoleteFieldNames.forEach((fieldName) => {
       delete model[fieldName];
     });
@@ -47,11 +47,9 @@ function RequirementsService() {
     if (!modelRequirement.fields) {
       return [];
     }
-    const names = modelRequirement.fields.map((fieldGroup) => {
-      return fieldGroup.group.map((field) => {
-        return field.key;
-      });
-    });
+    const names = modelRequirement.fields.map(fieldGroup =>
+      fieldGroup.group.map(field => field.key));
+
     return Array.prototype.concat.apply([], names);
   }
 

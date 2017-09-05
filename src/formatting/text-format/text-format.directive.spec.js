@@ -1,6 +1,6 @@
 'use strict';
 
-describe('TextFormat directive, ', function() {
+fdescribe('TextFormat directive, ', function() {
   var $compile,
       $rootScope,
       $scope,
@@ -20,7 +20,7 @@ describe('TextFormat directive, ', function() {
   describe('Given there is a pattern', function() {
     describe('when typing first character', function() {
       describe('and pattern does not begin with a separator', function() {
-        beforeEach(function () {
+        beforeEach(function() {
           $scope.pattern = "**-**-**";
           $scope.ngModel = null;
           $element = getCompiledDirectiveElement($scope);
@@ -30,13 +30,13 @@ describe('TextFormat directive, ', function() {
           $timeout.flush(1000);
           $scope.$apply();
         });
-        it('should show the character', function () {
+        it('should show the character', function() {
           expect(input.value).toBe("1");
         });
-        it('should bind the character to the model', function () {
+        it('should bind the character to the model', function() {
           expect($scope.ngModel).toBe("1");
         });
-        it('should position the cursor after the character', function () {
+        it('should position the cursor after the character', function() {
           if (supportsCursorPosition()) {
             expect(input.selectionStart).toBe(1);
           }
@@ -44,7 +44,7 @@ describe('TextFormat directive, ', function() {
       });
 
       describe('and pattern begins with a single separator', function() {
-        beforeEach(function () {
+        beforeEach(function() {
           $scope.pattern = "(**) **-**";
           $scope.ngModel = null;
           $element = getCompiledDirectiveElement($scope);
@@ -54,13 +54,13 @@ describe('TextFormat directive, ', function() {
           $timeout.flush();
           $scope.$apply();
         });
-        it('should show the separator and the character', function () {
+        it('should show the separator and the character', function() {
           expect(input.value).toBe("(1");
         });
-        it('should bind the character to the model', function () {
+        it('should bind the character to the model', function() {
           expect($scope.ngModel).toBe("1");
         });
-        it('should position the cursor after the separator and character', function () {
+        it('should position the cursor after the separator and character', function() {
           if (supportsCursorPosition()) {
             expect(input.selectionStart).toBe(2);
           }
@@ -68,7 +68,7 @@ describe('TextFormat directive, ', function() {
       });
 
       describe('and pattern begins with more than one separator', function() {
-        beforeEach(function () {
+        beforeEach(function() {
           $scope.pattern = "(+**) **-**";
           $scope.ngModel = null;
           $element = getCompiledDirectiveElement($scope);
@@ -78,13 +78,13 @@ describe('TextFormat directive, ', function() {
           $timeout.flush();
           $scope.$apply();
         });
-        it('should show the separators and the character', function () {
+        it('should show the separators and the character', function() {
           expect(input.value).toBe("(+1");
         });
-        it('should bind the character to the model', function () {
+        it('should bind the character to the model', function() {
           expect($scope.ngModel).toBe("1");
         });
-        it('should position the cursor after the separators and character', function () {
+        it('should position the cursor after the separators and character', function() {
           if (supportsCursorPosition()) {
             expect(input.selectionStart).toBe(3);
           }
@@ -94,7 +94,7 @@ describe('TextFormat directive, ', function() {
 
     if (supportsCursorPosition()) {
       describe('when cursor', function() {
-        beforeEach(function () {
+        beforeEach(function() {
           $scope.pattern = "***/**/-/**";
           $scope.ngModel = "1234567";
         });
@@ -404,7 +404,7 @@ describe('TextFormat directive, ', function() {
       });
 
       describe('when cursor selection range', function() {
-        beforeEach(function () {
+        beforeEach(function() {
           $scope.pattern = "***/**/-/**";
           $scope.ngModel = "1234567";
         });
@@ -743,7 +743,7 @@ describe('TextFormat directive, ', function() {
 
     if (supportsCursorPosition()) {
       describe('when pasting ', function() {
-        beforeEach(function () {
+        beforeEach(function() {
           $scope.pattern = "***/**/-/**";
           $scope.ngModel = "1234567";
           $element = getCompiledDirectiveElement($scope);
@@ -751,145 +751,145 @@ describe('TextFormat directive, ', function() {
         });
 
         describe('and cursor follows a character', function() {
-          beforeEach(function () {
+          beforeEach(function() {
             input.focus();
             input.setSelectionRange(1, 1);
             pasteString(input, "89");
             $timeout.flush();
             $scope.$apply();
           });
-          it('should add the pasted characters', function () {
+          it('should add the pasted characters', function() {
             expect(input.value).toBe("189/23/-/4567");
             expect($scope.ngModel).toBe("189234567");
           });
-          it('should position the cursor after the pasted data', function () {
+          it('should position the cursor after the pasted data', function() {
             expect(input.selectionStart).toBe(3);
           });
         });
         describe('and cursor before separator', function() {
-          beforeEach(function () {
+          beforeEach(function() {
             input.focus();
             input.setSelectionRange(3, 3);
             pasteString(input, "89");
             $timeout.flush();
             $scope.$apply();
           });
-          it('should add the pasted characters', function () {
+          it('should add the pasted characters', function() {
             expect(input.value).toBe("123/89/-/4567");
             expect($scope.ngModel).toBe("123894567");
           });
-          it('should position the cursor after the pasted data', function () {
+          it('should position the cursor after the pasted data', function() {
             expect(input.selectionStart).toBe(6);
           });
         });
         describe('and value after separator', function() {
-          beforeEach(function () {
+          beforeEach(function() {
             input.focus();
             input.setSelectionRange(4, 4);
             pasteString(input, "89");
             $timeout.flush();
             $scope.$apply();
           });
-          it('should add the pasted characters', function () {
+          it('should add the pasted characters', function() {
             expect(input.value).toBe("123/89/-/4567");
             expect($scope.ngModel).toBe("123894567");
           });
-          it('should position the cursor after the pasted data', function () {
+          it('should position the cursor after the pasted data', function() {
             expect(input.selectionStart).toBe(6);
           });
         });
         describe('and value will include a separator', function() {
-          beforeEach(function () {
+          beforeEach(function() {
             input.focus();
             input.setSelectionRange(2, 2);
             pasteString(input, "89");
             $timeout.flush();
             $scope.$apply();
           });
-          it('should add the pasted characters', function () {
+          it('should add the pasted characters', function() {
             expect(input.value).toBe("128/93/-/4567");
             expect($scope.ngModel).toBe("128934567");
           });
-          it('should position the cursor after the pasted data', function () {
+          it('should position the cursor after the pasted data', function() {
             expect(input.selectionStart).toBe(5);
           });
         });
 
         describe('over a selection without separators', function() {
-          beforeEach(function () {
+          beforeEach(function() {
             input.focus();
             input.setSelectionRange(0, 2);
             pasteString(input, "89");
             $timeout.flush();
             $scope.$apply();
           });
-          it('should add the pasted characters', function () {
+          it('should add the pasted characters', function() {
             expect(input.value).toBe("893/45/-/67");
             expect($scope.ngModel).toBe("8934567");
           });
-          it('should position the cursor after the pasted data', function () {
+          it('should position the cursor after the pasted data', function() {
             expect(input.selectionStart).toBe(2);
           });
         });
         describe('over a selection including a separator', function() {
-          beforeEach(function () {
+          beforeEach(function() {
             input.focus();
             input.setSelectionRange(2, 5);
             pasteString(input, "89");
             $timeout.flush();
             $scope.$apply();
           });
-          it('should add the pasted characters', function () {
+          it('should add the pasted characters', function() {
             expect(input.value).toBe("128/95/-/67");
             expect($scope.ngModel).toBe("1289567");
           });
-          it('should position the cursor after the pasted data', function () {
+          it('should position the cursor after the pasted data', function() {
             expect(input.selectionStart).toBe(5);
           });
         });
         describe('over a selection including multiple separators', function() {
-          beforeEach(function () {
+          beforeEach(function() {
             input.focus();
             input.setSelectionRange(5, 10);
             pasteString(input, "89");
             $timeout.flush();
             $scope.$apply();
           });
-          it('should add the pasted characters', function () {
+          it('should add the pasted characters', function() {
             expect(input.value).toBe("123/48/-/97");
             expect($scope.ngModel).toBe("1234897");
           });
-          it('should position the cursor after the pasted data', function () {
+          it('should position the cursor after the pasted data', function() {
             expect(input.selectionStart).toBe(10);
           });
         });
         describe('and will exceed pattern length', function() {
-          beforeEach(function () {
+          beforeEach(function() {
             input.focus();
             input.setSelectionRange(10, 10);
             pasteString(input, "89");
             $timeout.flush();
             $scope.$apply();
           });
-          it('should add the pasted characters', function () {
+          it('should add the pasted characters', function() {
             expect(input.value).toBe("123/45/-/6897");
             expect($scope.ngModel).toBe("123456897");
           });
-          it('should position the cursor after the pasted data', function () {
+          it('should position the cursor after the pasted data', function() {
             expect(input.selectionStart).toBe(12);
           });
         });
       });
 
       describe('when using undo/redo ', function() {
-        beforeEach(function () {
+        beforeEach(function() {
           $scope.pattern = "***/**/-/**";
           $scope.ngModel = "";
           $element = getCompiledDirectiveElement($scope);
           input = $element[0];
         });
 
-        it('undo should go back to previous value', function () {
+        it('undo should go back to previous value', function() {
           typeCharacter(input, "1");
           $timeout.flush();
           typeCharacter(input, "2");
@@ -901,7 +901,7 @@ describe('TextFormat directive, ', function() {
           expect($scope.ngModel).toBe("1");
         });
 
-        it('undo should only go back to first value', function () {
+        it('undo should only go back to first value', function() {
           typeCharacter(input, "1");
           $timeout.flush();
           typeCharacter(input, "2");
@@ -915,7 +915,7 @@ describe('TextFormat directive, ', function() {
           expect($scope.ngModel).toBe("");
         });
 
-        it('redo should go forwards to value before undo', function () {
+        it('redo should go forwards to value before undo', function() {
           typeCharacter(input, "1");
           $timeout.flush();
           typeCharacter(input, "2");
@@ -928,7 +928,7 @@ describe('TextFormat directive, ', function() {
           expect($scope.ngModel).toBe("12");
         });
 
-        it('repeated redo should not go beyond last value', function () {
+        it('repeated redo should not go beyond last value', function() {
           typeCharacter(input, "1");
           $timeout.flush();
           typeCharacter(input, "2");
@@ -942,7 +942,7 @@ describe('TextFormat directive, ', function() {
           expect($scope.ngModel).toBe("12");
         });
 
-        it('typing new character after undo should cancel any redo', function () {
+        it('typing new character after undo should cancel any redo', function() {
           typeCharacter(input, "1");
           $timeout.flush();
           typeCharacter(input, "2");
@@ -961,13 +961,13 @@ describe('TextFormat directive, ', function() {
   });
 
   describe('Given an OR pattern (**-**||***-**) is supplied', function() {
-    beforeEach(function () {
+    beforeEach(function() {
       $scope.pattern = "**-**||***-**";
       $scope.ngModel = "123456";
       $element = getCompiledDirectiveElement($scope);
       input = $element[0];
     });
-    it('should use the first option', function () {
+    it('should use the first option', function() {
       expect(input.value).toBe("12-3456");
     });
   });
@@ -975,7 +975,7 @@ describe('TextFormat directive, ', function() {
   /**
    * Neither Firefox or Phantom correctly supports cursor position in tests
    * e.g. this fails:
-   * it('should support setting selection range', function () {
+   * it('should support setting selection range', function() {
    *   input.setSelectionRange(1,1);
    *   expect(input.selectionStart).toBe(1);
    * });

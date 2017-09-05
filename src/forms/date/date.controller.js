@@ -1,4 +1,4 @@
-import DateService from '../../services/date/';
+import DateService from '../../services/date/'; // eslint-disable-line no-unused-vars
 
 class DateController {
   constructor($element, $log, $scope, TwDateService) {
@@ -15,8 +15,7 @@ class DateController {
         if (this.modelType === STRING_TYPE || this.modelType === OBJECT_TYPE) {
           this.dateModelType = this.modelType;
         } else {
-          throw new Error('Invalid modelType, should be ' +
-            STRING_TYPE + ' or ' + OBJECT_TYPE);
+          throw new Error(`Invalid modelType, should be ${STRING_TYPE} or ${OBJECT_TYPE}`);
         }
       } else {
         this.dateModelType = OBJECT_TYPE;
@@ -249,6 +248,7 @@ function prepDateValueForComparison(dateValue) {
 }
 
 function extendMonthsWithIds(monthNames) {
+  // eslint-disable-next-line arrow-body-style
   return monthNames.map((monthName, index) => {
     return {
       value: index,
@@ -280,7 +280,7 @@ DateController.$inject = [
   '$element',
   '$log',
   '$scope',
-  DateService
+  'TwDateService'
 ];
 
 export default DateController;

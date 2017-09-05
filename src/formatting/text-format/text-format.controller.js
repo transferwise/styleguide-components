@@ -18,11 +18,16 @@ class TextFormatController {
     this.element = $element[0];
 
     // We need the formatter for external model changes
+    // eslint-disable-next-line
     this.$ngModel.$formatters.push((value) => {
-      return this.TextFormatService.formatUsingPattern(value, this.pattern);
+      // eslint-disable-next-line
+      return TwTextFormatService.formatUsingPattern(value, this.pattern);
     });
+
+    // eslint-disable-next-line
     this.$ngModel.$parsers.push((value) => {
-      return this.TextFormatService.unformatUsingPattern(value, this.pattern);
+      // eslint-disable-next-line
+      return TwTextFormatService.unformatUsingPattern(value, this.pattern);
     });
 
     this.element.addEventListener('change', (event) => {
@@ -370,20 +375,18 @@ class TextFormatController {
       const originalMaxLength = $ngModel.$validators.maxlength;
 
       if (originalMinLength) {
-        $ngModel.$validators.minlength = (modelValue, viewValue) => {
-          return originalMinLength(
+        $ngModel.$validators.minlength = (modelValue, viewValue) =>
+          originalMinLength(
             modelValue,
             TextFormatService.unformatUsingPattern(viewValue, this.pattern)
           );
-        };
       }
       if (originalMaxLength) {
-        $ngModel.$validators.maxlength = (modelValue, viewValue) => {
-          return originalMaxLength(
+        $ngModel.$validators.maxlength = (modelValue, viewValue) =>
+          originalMaxLength(
             modelValue,
             TextFormatService.unformatUsingPattern(viewValue, this.pattern)
           );
-        };
       }
     });
   }

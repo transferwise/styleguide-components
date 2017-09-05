@@ -412,7 +412,7 @@ function responsiveClasses(value) {
 
   breakpoints.forEach((breakpoint) => {
     if (validBreakpoints[breakpoint]) {
-      classes += 'hidden-' + breakpoint + ' ';
+      classes += `hidden-${breakpoint}`;
     }
   });
 

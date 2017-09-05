@@ -1,5 +1,5 @@
 
-function TwCurrencyService() {
+function CurrencyService() {
   const currencyDecimals = {
     BIF: 0,
     BYR: 0,
@@ -37,4 +37,4 @@ function TwCurrencyService() {
   };
 }
 
-export default TwCurrencyService;
+export default CurrencyService;

@@ -1,3 +1,5 @@
+/* This module is deprecated, but in use in several places */
+
 import angular from 'angular';
 
 import FormValidation         from './validation/form-validation/';

@@ -3264,14 +3264,14 @@
             cards[index].open = !0);
         }, this.addCard = function(scope) {
             cards.push(scope);
-        }, this.getExpandedIndex = function() {
-            return expandedIndex;
         }, this.updateExpandedIndex = function(newExpandedIndex) {
             expandedIndex = newExpandedIndex;
         }, this.getCard = function(index) {
             return cards[index];
         }, this.getLength = function() {
             return cards.length;
+        }, this.getExpandedIndex = function() {
+            return expandedIndex;
         };
     }
     Object.defineProperty(exports, "__esModule", {
@@ -3415,9 +3415,9 @@
             this.undoStack = TwUndoStackFactory["new"](), this.$ngModel = $element.controller("ngModel"), 
             this.$timeout = $timeout, this.TextFormatService = TwTextFormatService, this.element = $element[0], 
             this.$ngModel.$formatters.push(function(value) {
-                return _this.TextFormatService.formatUsingPattern(value, _this.pattern);
+                return TwTextFormatService.formatUsingPattern(value, _this.pattern);
             }), this.$ngModel.$parsers.push(function(value) {
-                return _this.TextFormatService.unformatUsingPattern(value, _this.pattern);
+                return TwTextFormatService.unformatUsingPattern(value, _this.pattern);
             }), this.element.addEventListener("change", function(event) {
                 _this.onChange(event);
             }), this.element.addEventListener("keydown", function(event) {
@@ -3748,7 +3748,8 @@
             return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
             Constructor;
         };
-    }(), _currency = __webpack_require__(3), _currency2 = _interopRequireDefault(_currency), AmountCurrencySelectController = function() {
+    }(), _currency = __webpack_require__(3), AmountCurrencySelectController = (_interopRequireDefault(_currency), 
+    function() {
         function AmountCurrencySelectController($element, $scope, $timeout, TwCurrencyService) {
             var _this = this;
             _classCallCheck(this, AmountCurrencySelectController);
@@ -3782,8 +3783,8 @@
                 this.onCustomAction && this.onCustomAction();
             }
         } ]), AmountCurrencySelectController;
-    }();
-    AmountCurrencySelectController.$inject = [ "$element", "$scope", "$timeout", _currency2["default"] ], 
+    }());
+    AmountCurrencySelectController.$inject = [ "$element", "$scope", "$timeout", "TwCurrencyService" ], 
     exports["default"] = AmountCurrencySelectController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
@@ -3972,7 +3973,8 @@
             return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
             Constructor;
         };
-    }(), _currency = __webpack_require__(3), _currency2 = _interopRequireDefault(_currency), CurrencyInputController = function() {
+    }(), _currency = __webpack_require__(3), CurrencyInputController = (_interopRequireDefault(_currency), 
+    function() {
         function CurrencyInputController($element, $scope, $timeout, TwCurrencyService) {
             var _this = this;
             _classCallCheck(this, CurrencyInputController);
@@ -3997,8 +3999,8 @@
                 this.ngChange && this.$timeout(this.ngChange);
             }
         } ]), CurrencyInputController;
-    }();
-    CurrencyInputController.$inject = [ "$element", "$scope", "$timeout", _currency2["default"] ], 
+    }());
+    CurrencyInputController.$inject = [ "$element", "$scope", "$timeout", "TwCurrencyService" ], 
     exports["default"] = CurrencyInputController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
@@ -4071,7 +4073,8 @@
             return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
             Constructor;
         };
-    }(), _jquery = __webpack_require__(1), _jquery2 = _interopRequireDefault(_jquery), _date = __webpack_require__(4), _date2 = _interopRequireDefault(_date), DateLookupController = function() {
+    }(), _jquery = __webpack_require__(1), _jquery2 = _interopRequireDefault(_jquery), _date = __webpack_require__(4), DateLookupController = (_interopRequireDefault(_date), 
+    function() {
         function DateLookupController($element, $scope, $timeout, TwDateService) {
             var _this = this;
             _classCallCheck(this, DateLookupController);
@@ -4315,8 +4318,8 @@
                 "year" === mode && (newDate = this.DateService.addYears(date, years)), this.setModel(newDate);
             }
         } ]), DateLookupController;
-    }();
-    DateLookupController.$inject = [ "$element", "$scope", "$timeout", _date2["default"] ], 
+    }());
+    DateLookupController.$inject = [ "$element", "$scope", "$timeout", "TwDateService" ], 
     exports["default"] = DateLookupController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
@@ -4428,7 +4431,8 @@
             return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
             Constructor;
         };
-    }(), _date = __webpack_require__(4), _date2 = _interopRequireDefault(_date), DateController = function() {
+    }(), _date = __webpack_require__(4), DateController = (_interopRequireDefault(_date), 
+    function() {
         function DateController($element, $log, $scope, TwDateService) {
             _classCallCheck(this, DateController);
             var $ngModel = $element.controller("ngModel");
@@ -4536,8 +4540,8 @@
                 day > lastUTCDayForMonthAndYear && (this.day = parseInt(lastUTCDayForMonthAndYear, 10));
             }
         } ]), DateController;
-    }(), DEFAULT_LOCALE_EN = "en", STRING_TYPE = "string", OBJECT_TYPE = "object";
-    DateController.$inject = [ "$element", "$log", "$scope", _date2["default"] ], exports["default"] = DateController;
+    }()), DEFAULT_LOCALE_EN = "en", STRING_TYPE = "string", OBJECT_TYPE = "object";
+    DateController.$inject = [ "$element", "$log", "$scope", "TwDateService" ], exports["default"] = DateController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -5158,7 +5162,7 @@
         };
         return "boolean" == typeof value && value ? "hidden" : value && value.toLowerCase && "true" === value.toLowerCase() ? "hidden" : (value && (breakpoints = value.split(",")), 
         breakpoints.forEach(function(breakpoint) {
-            validBreakpoints[breakpoint] && (classes += "hidden-" + breakpoint + " ");
+            validBreakpoints[breakpoint] && (classes += "hidden-" + breakpoint);
         }), classes);
     }
     Object.defineProperty(exports, "__esModule", {
@@ -5998,7 +6002,7 @@
     exports["default"] = TabsController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwCurrencyService() {
+    function CurrencyService() {
         var currencyDecimals = {
             BIF: 0,
             BYR: 0,
@@ -6029,10 +6033,10 @@
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), exports["default"] = TwCurrencyService;
+    }), exports["default"] = CurrencyService;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwDateService() {
+    function DateService() {
         function getLocalisedDateName(date, locale, formattingObject) {
             var name = date.toLocaleDateString(locale, formattingObject);
             return isLocaleTranslationRequiresStripping(locale) && (name = name.replace(/[0-9]|\s|,/g, "")), 
@@ -6135,7 +6139,7 @@
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    }), exports["default"] = TwDateService;
+    }), exports["default"] = DateService;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _classCallCheck(instance, Constructor) {

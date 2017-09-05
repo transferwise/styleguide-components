@@ -95,21 +95,13 @@ class UploadController {
           showDataImage(response[1], this);
           return response;
         })
-        .catch((error) => {
-          return asyncFailure(error, this);
-        });
+        .catch(error => asyncFailure(error, this));
     } else {
       // Post on form submit
       this.asyncFileRead(file)
-        .then((response) => {
-          return asyncSuccess(response, this);
-        })
-        .then((response) => {
-          return showDataImage(response, this);
-        })
-        .catch((error) => {
-          return asyncFailure(error, this);
-        });
+        .then(response => asyncSuccess(response, this))
+        .then(response => showDataImage(response, this))
+        .catch(error => asyncFailure(error, this));
     }
   }
 

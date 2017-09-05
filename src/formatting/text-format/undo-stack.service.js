@@ -1,8 +1,6 @@
 
 function TwUndoStackFactory() {
-  this.new = () => {
-    return new UndoStack();
-  };
+  this.new = () => new UndoStack();
 }
 
 /**

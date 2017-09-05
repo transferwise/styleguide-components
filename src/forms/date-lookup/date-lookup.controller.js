@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import DateService from '../../services/date/';
+import DateService from '../../services/date/'; // eslint-disable-line no-unused-vars
 
 class DateLookupController {
   constructor($element, $scope, $timeout, TwDateService) {
@@ -432,7 +432,7 @@ DateLookupController.$inject = [
   '$element',
   '$scope',
   '$timeout',
-  DateService
+  'TwDateService'
 ];
 
 export default DateLookupController;
