@@ -1,6 +1,6 @@
 'use strict';
 
-fdescribe('TextFormat directive, ', function() {
+describe('TextFormat directive, ', function() {
   var $compile,
       $rootScope,
       $scope,
@@ -418,7 +418,6 @@ fdescribe('TextFormat directive, ', function() {
           $timeout.flush();
           $scope.$apply();
           expect(input.selectionStart).toBe(1);
-          console.log($element.val());
         });
         it('supports selection range start', function() {
           $element = getCompiledDirectiveElement($scope);

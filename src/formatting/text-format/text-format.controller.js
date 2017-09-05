@@ -232,7 +232,7 @@ class TextFormatController {
 
       if (selectionStart !== selectionEnd) {
         // A range is selected, remove one less character from start
-        removeStart = selectionStart - (separatorsBeforeCursor + 1);
+        removeStart = (selectionStart - separatorsBeforeCursor) + 1;
         removeEnd = selectionStart - adjust;
       } else {
         removeStart = selectionStart - separatorsBeforeCursor;
