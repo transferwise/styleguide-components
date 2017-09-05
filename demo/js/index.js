@@ -285,7 +285,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 		$ctrl.model.firstName = '01010101010';
 
 		$scope.$watch('$ctrl.type', function(newVal) {
-			$http.get('partials/'+newVal+'-requirements.json').then(function(response) {
+			$http.get('json/'+newVal+'-requirements.json').then(function(response) {
 				$ctrl.requirements = response.data;
 			});
 		});

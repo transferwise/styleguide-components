@@ -240,34 +240,43 @@ module.exports = function(grunt) {
             }
         },
         copy: {
-            dist: {
+            demoJS: {
               expand: true,
-              src: 'dist/**/*.*',
-              dest: 'gh-pages/'
+              flatten: true,
+              src: [
+                'node_modules/jquery/dist/jquery.js',
+                'node_modules/jquery/dist/jquery.min.js',
+                'node_modules/angular/angular.js',
+                'node_modules/angular/angular.min.js',
+                'node_modules/bootstrap/dist/js/bootstrap.js',
+                'node_modules/bootstrap/dist/js/bootstrap.min.js',
+                'dist/js/styleguide-components.js'
+              ],
+              dest: 'demo/lib/'
             },
-            partials: {
+            demoCSS: {
               expand: true,
-              src: 'partials/*',
-              dest: 'gh-pages/'
+              flatten: true,
+              src: [
+                'node_modules/bootstrap/dist/css/bootstrap.css',
+                'node_modules/bootstrap/dist/css/bootstrap.css.map',
+                'node_modules/bootstrap/dist/css/bootstrap.min.css',
+                'node_modules/currency-flags/dist/currency-flags.css'
+              ],
+              dest: 'demo/lib/'
             },
-            styles: {
+            demoFonts: {
               expand: true,
-              src: 'styles/*',
-              dest: 'gh-pages/'
+              flatten: true,
+              src: [
+                'node_modules/bootstrap/fonts/*.*',
+                'node_modules/iconfont/fonts/*.*',
+              ],
+              dest: 'demo/fonts/'
             },
-            images: {
+            ghPages: {
               expand: true,
-              src: 'images/*',
-              dest: 'gh-pages/'
-            },
-            components: {
-              expand: true,
-              src: 'components/**/*.*',
-              dest: 'gh-pages/'
-            },
-            index: {
-              expand: true,
-              src: 'index.*',
+              src: 'demo/**/*.*',
               dest: 'gh-pages/'
             },
         }
