@@ -18,17 +18,11 @@ class TextFormatController {
     this.element = $element[0];
 
     // We need the formatter for external model changes
-    // eslint-disable-next-line
-    this.$ngModel.$formatters.push((value) => {
-      // eslint-disable-next-line
-      return TwTextFormatService.formatUsingPattern(value, this.pattern);
-    });
+    this.$ngModel.$formatters.push(value =>
+      TwTextFormatService.formatUsingPattern(value, this.pattern));
 
-    // eslint-disable-next-line
-    this.$ngModel.$parsers.push((value) => {
-      // eslint-disable-next-line
-      return TwTextFormatService.unformatUsingPattern(value, this.pattern);
-    });
+    this.$ngModel.$parsers.push(value =>
+      TwTextFormatService.unformatUsingPattern(value, this.pattern));
 
     this.element.addEventListener('change', (event) => {
       this.onChange(event);
