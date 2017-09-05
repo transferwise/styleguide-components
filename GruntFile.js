@@ -72,7 +72,7 @@ module.exports = function(grunt) {
             },
             components: {
                 files: ['src/**/*.js', 'src/**/*.html'],
-                tasks: ['webpack', 'uglify', 'jshint']
+                tasks: ['jshint', 'eslint', 'webpack', 'uglify']
             },
             templates: {
                 files: ['src/**/*.html'],
@@ -305,6 +305,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-webpack");
 
     // === REGISTER TASKS ===
-    grunt.registerTask('default', ['jshint', 'webpack', 'uglify', 'less', 'htmllint', 'copy', 'watch']);
-    grunt.registerTask('build', ['jshint', 'webpack', 'uglify', 'less', 'htmllint', 'copy']);
+    grunt.registerTask('default', ['jshint', 'eslint', 'webpack', 'uglify', 'less', 'htmllint', 'copy', 'watch']);
+    grunt.registerTask('build', ['jshint', 'eslint', 'webpack', 'uglify', 'less', 'htmllint', 'copy']);
 };
