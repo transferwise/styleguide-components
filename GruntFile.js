@@ -146,7 +146,7 @@ module.exports = function(grunt) {
                     jQuery: true,
                     console: true
                 },
-                '-W099': true, // allow mix tabs and spaces
+                '-W099': true, // allow a mix of tabs and spaces
                 '-W014': true, // allow ++
                 '-W043': true, // parseInt without radix parameter
                 '-W065': true  // allow \n for line endings
