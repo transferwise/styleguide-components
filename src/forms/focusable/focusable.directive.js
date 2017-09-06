@@ -1,18 +1,18 @@
 import angular from 'angular';
-import $ from 'jquery';
 
-/* TODO deprecate in V1, opt-in through tw-focusable */
-angular
-  .module('tw.styleguide.styling.default-focus', [])
-  .directive('formControl', FormControlStyling);
+function FocusableLink(scope, element) {
+  const formGroup = $(element).closest('.form-group'); // eslint-disable-line
+  const focusable = element[0];
 
-function FormControlStyling() {
-  return {
-    restrict: 'C',
-    link: FocusableLink
-  };
+  if (focusable && focusable.addEventListener) {
+    focusable.addEventListener('focus', () => {
+      formGroup.addClass('focus');
+    });
+    focusable.addEventListener('blur', () => {
+      formGroup.removeClass('focus');
+    });
+  }
 }
-
 
 function Focusable() {
   return {
@@ -21,16 +21,17 @@ function Focusable() {
   };
 }
 
-function FocusableLink(scope, element) {
-  const formGroup = $(element).closest('.form-group');
-
-  $(element)
-    .on('focus', () => {
-      formGroup.addClass('focus');
-    })
-    .on('blur', () => {
-      formGroup.removeClass('focus');
-    });
+// TODO this module is not loaded under styleguide-components
+function FormControlStyling() {
+  return {
+    restrict: 'C',
+    link: FocusableLink
+  };
 }
+
+/* TODO deprecate in V1, opt-in through tw-focusable */
+angular
+  .module('tw.styleguide.styling.default-focus', [])
+  .directive('formControl', FormControlStyling);
 
 export default Focusable;

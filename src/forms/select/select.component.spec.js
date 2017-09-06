@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: TwSelect', function() {
+describe('Select', function() {
   var $compile,
     $rootScope,
     $scope,
@@ -243,13 +243,15 @@ describe('Directive: TwSelect', function() {
   });
 
   describe('click controls', function() {
+    var button;
     beforeEach(function() {
       $scope.options = OPTIONS;
       $scope.ngModel = null;
       directiveElement = getCompiledDirectiveElement($scope);
+      button = directiveElement.find('.btn');
     });
     it('should open dropdown when button clicked', function() {
-      directiveElement.find('.btn').trigger('click');
+      button.trigger('click');
       $scope.$digest();
 
       // TODO problem with loading dropdown.js? Or timing?
@@ -263,14 +265,20 @@ describe('Directive: TwSelect', function() {
   });
 
   describe('keyboard controls', function() {
+    var $button,
+      button;
+
     beforeEach(function() {
       $scope.options = OPTIONS;
       $scope.ngModel = null;
       $scope.ngRequired = true;
       directiveElement = getCompiledDirectiveElement($scope);
+      $button = directiveElement.find('.btn');
+      button = $button[0];
     });
+
     it('should select matching option beginning with pressed letter', function() {
-      directiveElement.find('.btn').trigger(keypress('O'));
+      triggerKeypress(button, 'O');
       var selectedElements = directiveElement.find('.active');
       expect(selectedElements.length).toBe(1);
 
@@ -280,7 +288,7 @@ describe('Directive: TwSelect', function() {
       expect($(selectedOptionElement).text().trim()).toBe(OptionOne.label);
     });
     it('should select first matching option beginning with pressed letter', function() {
-      directiveElement.find('.btn').trigger(keypress('T'));
+      triggerKeypress(button, 'T');
       var selectedElements = directiveElement.find('.active');
       expect(selectedElements.length).toBe(1);
 
@@ -289,7 +297,7 @@ describe('Directive: TwSelect', function() {
       expect($(selectedOptionElement).text().trim()).toBe('Two');
     });
     it('should select option beginning with pressed letter case insensitively', function() {
-      directiveElement.find('.btn').trigger(keypress('t'));
+      triggerKeypress(button, 't');
       var selectedElements = directiveElement.find('.active');
       expect(selectedElements.length).toBe(1);
 
@@ -298,7 +306,8 @@ describe('Directive: TwSelect', function() {
       expect($(selectedOptionElement).text().trim()).toBe('Two');
     });
     it('should append to existing search string to match on subsequent letters', function() {
-      directiveElement.find('.btn').trigger(keypress('T')).trigger(keypress('h'));
+      triggerKeypress(button, 'T');
+      triggerKeypress(button, 'h');
       var selectedElements = directiveElement.find('.active');
       expect(selectedElements.length).toBe(1);
 
@@ -307,7 +316,8 @@ describe('Directive: TwSelect', function() {
       expect($(selectedOptionElement).text().trim()).toBe('Three');
     });
     it('should try a new search if appending to existing search produces no match', function() {
-      directiveElement.find('.btn').trigger(keypress('T')).trigger(keypress('o'));
+      triggerKeypress(button, 'T');
+      triggerKeypress(button, 'o');
       var selectedElements = directiveElement.find('.active');
       expect(selectedElements.length).toBe(1);
 
@@ -316,7 +326,9 @@ describe('Directive: TwSelect', function() {
       expect($(selectedOptionElement).text().trim()).toBe('One');
     });
     it('should not use new search if appending to existing search still produces a match', function() {
-      directiveElement.find('.btn').trigger(keypress('T')).trigger(keypress('w')).trigger(keypress('o'));
+      triggerKeypress(button, 'T');
+      triggerKeypress(button, 'w');
+      triggerKeypress(button, 'o');
       var selectedElements = directiveElement.find('.active');
       expect(selectedElements.length).toBe(1);
 
@@ -325,7 +337,8 @@ describe('Directive: TwSelect', function() {
       expect($(selectedOptionElement).text().trim()).not.toBe('One');
     });
     it('should open dropdown and select first option when down arrow pressed', function() {
-      directiveElement.find('.btn').focus().triggerHandler(keydownCode(SPECIAL_KEYS.down));
+      $button.focus();
+      triggerKeyCode(button, SPECIAL_KEYS.down);
       var selectedOptionElement = directiveElement.find('.active')[0];
       var firstOption = OPTIONS[0];
       expect($scope.ngModel).toBe(firstOption.value);
@@ -342,7 +355,8 @@ describe('Directive: TwSelect', function() {
         $scope.$digest();
 
         var secondLink = directiveElement.find('.active a')[0];
-        $(secondLink).focus().trigger(keydownCode(SPECIAL_KEYS.down));
+        $(secondLink).focus();
+        triggerKeyCode(secondLink, SPECIAL_KEYS.down);
 
         // Dropdown.js not working in tests
         var thirdLink = directiveElement.find('.active a')[0];
@@ -354,7 +368,8 @@ describe('Directive: TwSelect', function() {
         $scope.$digest();
 
         var thirdLink = directiveElement.find('.active a')[0];
-        $(thirdLink).focus().triggerHandler(keydownCode(SPECIAL_KEYS.up));
+        $(thirdLink).focus();
+        triggerKeyCode(thirdLink, SPECIAL_KEYS.up);
 
         // Dropdown.js not working in tests
         var secondLink = directiveElement.find('.active a')[0];
@@ -363,7 +378,9 @@ describe('Directive: TwSelect', function() {
       });
       it('should not select next option when tab presses', function() {
         var firstLink = directiveElement.find('.active a')[0];
-        $(firstLink).focus().triggerHandler(keydownCode(SPECIAL_KEYS.down));
+        $(firstLink).focus();
+        triggerKeyCode(firstLink, SPECIAL_KEYS.down);
+
         var activeLink = directiveElement.find('.active a')[0];
         // TODO this test is correct, but as dropdown.js not working,
         // not testing much right now
@@ -376,7 +393,9 @@ describe('Directive: TwSelect', function() {
         $scope.$digest();
 
         var firstLink = directiveElement.find('.active a')[0];
-        $(firstLink).focus().triggerHandler(keydownCode(SPECIAL_KEYS.down));
+        $(firstLink).focus();
+        triggerKeyCode(firstLink, SPECIAL_KEYS.down);
+
         var activeLink = directiveElement.find('.active a')[0];
         // TODO Dropdown.js not working in tests
         //expect($scope.ngModel).toBe(3);
@@ -388,7 +407,9 @@ describe('Directive: TwSelect', function() {
         $scope.$digest();
 
         var firstLink = directiveElement.find('.active a')[0];
-        $(firstLink).focus().triggerHandler(keydownCode(SPECIAL_KEYS.down));
+        $(firstLink).focus();
+        triggerKeyCode(firstLink, SPECIAL_KEYS.down);
+
         var activeLink = directiveElement.find('.active a')[0];
         // TODO Dropdown.js not working in tests
         //expect($scope.ngModel).toBe(3);
@@ -398,6 +419,7 @@ describe('Directive: TwSelect', function() {
   });
 
   describe('event handlers', function() {
+    var button;
     beforeEach(function() {
       $scope.options = OPTIONS;
       $scope.ngModel = '1';
@@ -411,6 +433,7 @@ describe('Directive: TwSelect', function() {
           ng-blur='onBlur()'> \
         </tw-select>";
       directiveElement = getCompiledDirectiveElement($scope, template);
+      button = directiveElement.find('.btn');
     });
     it('should trigger ngChange when internal model changes', function() {
       spyOn($scope, 'onChange');
@@ -426,13 +449,13 @@ describe('Directive: TwSelect', function() {
     });
     it('should not trigger ngChange on first open', function() {
       spyOn($scope, 'onChange');
-      directiveElement.find('.btn').trigger('click');
+      button.trigger('click');
       expect($scope.onChange).not.toHaveBeenCalled();
     });
     // TODO does not work because code must wait 150ms for dropdown.js
     xit('should trigger ngBlur once when control loses focus', function() {
       spyOn($scope, 'onBlur');
-      directiveElement.find('.btn').trigger('focusout');
+      button.trigger('focusout');
       expect($scope.onBlur).toHaveBeenCalled();
       expect($scope.onBlur.calls.count()).toEqual(1);
     });
@@ -472,7 +495,11 @@ describe('Directive: TwSelect', function() {
     });
   });
   describe('filter', function() {
-    var filterInput;
+    var $filterInput,
+      filterInput,
+      $button,
+      button;
+
     beforeEach(function() {
       $scope.options = OPTIONS;
       $scope.ngModel = '1';
@@ -487,79 +514,82 @@ describe('Directive: TwSelect', function() {
           </a> \
         </tw-select>";
       directiveElement = getCompiledDirectiveElement($scope, template);
-      filterInput = directiveElement.find(FILTER_INPUT_SELECTOR);
+      $filterInput = directiveElement.find(FILTER_INPUT_SELECTOR);
+      filterInput = $filterInput[0];
+      $button = directiveElement.find('.btn');
+      button = $button[0];
     });
     it('should render if non false value is passed', function() {
-      expect(filterInput.length).toBe(1);
+      expect($filterInput.length).toBe(1);
     });
 
     it('should move to the next option when down arrow pressed', function() {
       expect($scope.ngModel).toBe('1');
-      filterInput.trigger(keydownCode(SPECIAL_KEYS.down));
+      triggerKeyCode(filterInput, SPECIAL_KEYS.down);
       expect($scope.ngModel).toBe('2');
     });
     it('should move to the previous option when up arrow pressed', function() {
       $scope.ngModel = '3';
       $scope.$digest();
-      filterInput.trigger(keydownCode(SPECIAL_KEYS.up));
+      triggerKeyCode(filterInput, SPECIAL_KEYS.up);
       expect($scope.ngModel).toBe('2');
     });
 
     it('should move to the first option when down arrow pressed and nothing active', function() {
       $scope.ngModel = '99';
       $scope.$digest();
-      filterInput.trigger(keydownCode(SPECIAL_KEYS.down));
+      triggerKeyCode(filterInput, SPECIAL_KEYS.down);
       expect($scope.ngModel).toBe(OPTIONS[0].value);
     });
     it('should move to the last option when up arrow pressed and nothing active', function() {
       $scope.ngModel = '99';
       $scope.$digest();
-      filterInput.trigger(keydownCode(SPECIAL_KEYS.up));
+      triggerKeyCode(filterInput, SPECIAL_KEYS.up);
       expect($scope.ngModel).toBe(OPTIONS[OPTIONS.length - 1].value);
     });
 
     it('should retain focus when down arrow pressed', function() {
-      filterInput.focus();
-      filterInput.trigger(keydownCode(SPECIAL_KEYS.down));
-      expect(filterInput[0] === document.activeElement).toBe(true);
+      $filterInput.focus();
+      triggerKeyCode(filterInput, SPECIAL_KEYS.down);
+      expect(filterInput === document.activeElement).toBe(true);
     });
     it('should retain focus when up arrow pressed', function() {
-      filterInput.focus();
-      filterInput.trigger(keydownCode(SPECIAL_KEYS.up));
-      expect(filterInput[0] === document.activeElement).toBe(true);
+      $filterInput.focus();
+      triggerKeyCode(filterInput, SPECIAL_KEYS.up);
+      expect(filterInput === document.activeElement).toBe(true);
     });
     it('should focus back on the button when return key pressed', function() {
-      filterInput.trigger(keydownCode(SPECIAL_KEYS.return));
-      expect(directiveElement.find('.btn')[0] === document.activeElement).toBe(true);
+      triggerKeyCode(filterInput, SPECIAL_KEYS.return);
+      expect(button === document.activeElement).toBe(true);
     });
     it('should move focus to custom action if last option selected and down arrow pressed', function() {
       $scope.ngModel = '3';
       $scope.$digest();
-      filterInput.trigger(keydownCode(SPECIAL_KEYS.down));
+      triggerKeyCode(filterInput, SPECIAL_KEYS.down);
       expect(directiveElement.find('.custom-action')[0] === document.activeElement).toBe(true);
     });
 
     it('should filter the list if characters entered', function() {
-      filterInput.val("One").trigger('change');
+      $filterInput.val("One").trigger('change');
       var options = directiveElement.find(LIST_ITEMS_SELECTOR);
       expect(options.length).toBe(1);
       expect(optionText(options[0])).toBe('One');
     });
     it('should filter case insensitvely', function() {
-      filterInput.val("t").trigger('change');
+      $filterInput.val("t").trigger('change');
       var options = directiveElement.find(LIST_ITEMS_SELECTOR);
       expect(options.length).toBe(2);
       expect(optionText(options[0])).toBe('Two');
       expect(optionText(options[1])).toBe('Three');
     });
     it('should filter on substrings', function() {
-      filterInput.val("ne").trigger('change');
+      $filterInput.val("ne").trigger('change');
       var options = directiveElement.find(LIST_ITEMS_SELECTOR);
       expect(options.length).toBe(1);
       expect(optionText(options[0])).toBe('One');
     });
     it('should change ngModel to first visible option if none selected', function() {
-      filterInput.val("t").trigger('change');
+      $filterInput.val("t").trigger('change');
       var options = directiveElement.find(LIST_ITEMS_SELECTOR);
       expect($scope.ngModel).toBe('2');
       expect(optionText(options[0])).toBe('Two');
@@ -963,7 +993,7 @@ describe('Directive: TwSelect', function() {
   });
 
   describe('filter duplicates', function() {
-    var filterInput;
+    var $filterInput;
     beforeEach(function () {
       $scope.options = [{
         value: '0',
@@ -986,11 +1016,11 @@ describe('Directive: TwSelect', function() {
             </a> \
         </tw-select>";
       directiveElement = getCompiledDirectiveElement($scope, template);
-      filterInput = directiveElement.find(FILTER_INPUT_SELECTOR);
+      $filterInput = directiveElement.find(FILTER_INPUT_SELECTOR);
     });
 
     it('should show one result, removing dupliactes', function() {
-      filterInput.val("ca").trigger('change');
+      $filterInput.val("ca").trigger('change');
       var options = directiveElement.find(LIST_ITEMS_SELECTOR);
       expect(options.length).toBe(1);
       expect(optionText(options[0])).toBe('Cain');
@@ -1032,17 +1062,44 @@ describe('Directive: TwSelect', function() {
     return $(optionEl).text().trim();
   }
 
-  function keypress(letter) {
-    return keyEventByCode("keypress", letter.charCodeAt(0));
+  function triggerKeypress(target, letter) {
+    //$(target).trigger('keypress', keypress(letter, target));
+    triggerKeyCode(target, letter.charCodeAt(0));
   }
-  function keydownCode(charCode) {
-    return keyEventByCode("keydown", charCode);
+  function triggerKeyCode(target, charCode) {
+    //target.dispatchEvent(keyEventByCode('keydown', charCode, target));
+    //target.dispatchEvent(keyEventByCode('keypress', charCode, target));
+    //target.dispatchEvent(keyEventByCode('keyup', charCode, target));
+
+    $(target).trigger(jEventByCode('keydown', charCode, target));
+    $(target).trigger(jEventByCode('keypress', charCode, target));
+    $(target).trigger(jEventByCode('keyup', charCode, target));
   }
-  function keyEventByCode(eventName, charCode) {
+  /**/
+  function keypress(letter, target) {
+    return keyEventByCode("keypress", letter.charCodeAt(0), target);
+  }
+  function keydownCode(charCode, target) {
+    return keyEventByCode("keydown", charCode, target);
+  }
+  /**/
+  function keyEventByCode(eventName, charCode, target) {
+    // TODO KeyboardEvent only seems to work on FF
+    return new KeyboardEvent(eventName, {
+      key: String.fromCharCode(charCode),
+      keyCode: charCode,
+      which: charCode,
+      target: target
+    });
+  }
+
+  function jEventByCode(eventName, charCode, target) {
     return {
       type: eventName,
+      key: String.fromCharCode(charCode),
       keyCode: charCode,
-      which: charCode
+      which: charCode,
+      target: target
     };
   }
 

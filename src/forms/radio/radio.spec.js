@@ -98,7 +98,7 @@ describe('Radio', function() {
     });
 
     it('should style nearest parent form-group when focussed', function() {
-      buttonOne.triggerHandler('focus');
+      buttonOne[0].dispatchEvent(new Event('focus'));
       expect(directiveElement.closest('.form-group').hasClass('focus')).toBe(true);
     });
 

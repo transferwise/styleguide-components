@@ -1,10 +1,11 @@
 import angular from 'angular';
-import $ from 'jquery';
 
 class SelectController {
   constructor($element, $scope, $transclude, $timeout, $attrs) {
     this.$ngModel = $element.controller('ngModel');
     this.$element = $element;
+    this.element = $element[0];
+    this.button = $element[0].getElementsByClassName('btn')[0];
     this.search = '';
 
     preSelectModelValue(this.$ngModel, this);
@@ -43,7 +44,7 @@ class SelectController {
       return;
     }
     selectOption(this.$ngModel, this, option);
-    this.$element.find('.btn').focus();
+    this.button.focus();
   }
 
   optionFocus(option) {
@@ -52,7 +53,7 @@ class SelectController {
 
   optionKeypress(event) {
     // If we're in the filter don't allow normal behaviour
-    if ($(event.target).hasClass('tw-select-filter')) {
+    if (event.target.classList.contains('tw-select-filter')) {
       return;
     }
 
@@ -76,7 +77,7 @@ class SelectController {
 
   placeholderClick() {
     resetOption(this.$ngModel, this);
-    this.$element.find('.btn').focus();
+    this.button.focus();
   }
   placeholderFocus() {
     resetOption(this.$ngModel, this);
@@ -135,15 +136,15 @@ class SelectController {
     const activeLink = activeOption.find('a');
     const optionLinks = this.$element.find('.tw-select-option-link');
 
-    if (characterCode === 40) { // Down arrow key
+    if (characterCode === keys.down) {
       this.moveDownOneOption(activeOption, activeLink, optionLinks);
       event.preventDefault(); // Prevent cursor jumping around in input
-    } else if (characterCode === 38) { // Up arrow key
+    } else if (characterCode === keys.up) {
       this.moveUpOneOption(activeOption, activeLink, optionLinks);
       event.preventDefault(); // Prevent cursor jumping in input
-    } else if (characterCode === 13) { // Return key
+    } else if (characterCode === keys.return) {
       activeOption.click();
-      this.$element.find('.btn').focus();
+      this.button.focus();
       event.preventDefault(); // Prevent form action as input active
     }
     return true;
@@ -157,7 +158,7 @@ class SelectController {
   moveUpOneOption(activeOption, activeLink, optionLinks) {
     // If none active, select last
     if (!activeOption.length && optionLinks.length) {
-      this.selectOptionUsingLink($(optionLinks[optionLinks.length - 1]));
+      this.selectOptionUsingLink(angular.element(optionLinks[optionLinks.length - 1]));
       return;
     }
 
@@ -165,27 +166,29 @@ class SelectController {
     if (activeLink[0] !== optionLinks[0]) {
       // TODO prevAll is ineffeccient for longer lists
       const previousOptions = activeOption.prevAll('.tw-select-option');
-      this.selectOptionUsingLink($(previousOptions[0]).find('a'));
+      this.selectOptionUsingLink(angular.element(previousOptions[0]).find('a'));
     }
   }
 
   moveDownOneOption(activeOption, activeLink, optionLinks) {
     // If none active, select first
     if (!activeOption.length && optionLinks.length) {
-      this.selectOptionUsingLink($(optionLinks[0]));
+      this.selectOptionUsingLink(angular.element(optionLinks[0]));
       return;
     }
     // If active option not last, move down
     if (activeLink[0] !== optionLinks[optionLinks.length - 1]) {
       // TODO nextAll is ineffeccient for longer lists
       const nextOptions = activeOption.nextAll('.tw-select-option');
-      this.selectOptionUsingLink($(nextOptions[0]).find('a'));
+      this.selectOptionUsingLink(angular.element(nextOptions[0]).find('a'));
       return;
     }
     // If active is last and custom action, focus on it
-    const transcludedOption = $('.tw-select-transcluded');
+    const transcludedOption =
+      this.$element[0].getElementsByClassName('tw-select-transcluded');
+
     if (transcludedOption.length) {
-      transcludedOption.find('a').focus();
+      transcludedOption[0].getElementsByTagName('a')[0].focus();
     }
   }
 }
@@ -225,7 +228,7 @@ function addWatchers($ctrl, $scope, $ngModel, $element) {
 }
 
 function addEventHandlers($ctrl, $element, $ngModel, options, $timeout) {
-  $element.find('.btn, .dropdown-menu').on('focusout', () => {
+  const onFocusOut = () => {
     $timeout(() => {
       // If button isn't focused and dropdown not open, blur
       if ($element.find('.btn:focus').length === 0 &&
@@ -233,29 +236,40 @@ function addEventHandlers($ctrl, $element, $ngModel, options, $timeout) {
         $element.trigger('blur');
       }
     }, 150); // need timeout because using dropdown.js,
-  });
+  };
 
-  $element.on('blur', () => {
+  $element.find('.btn, .dropdown-menu').on('focusout', onFocusOut);
+
+  const element = $element[0];
+  const button = element.getElementsByClassName('btn')[0];
+  const list = element.getElementsByTagName('ul')[0];
+
+  element.addEventListener('blur', () => {
     $ngModel.$setTouched();
   });
 
+  // button.addEventListener('keypress', (event) => { // TODO doesn't work in tests????
   $element.find('.btn').on('keypress', (event) => {
     $ctrl.optionKeypress(event);
   });
 
-  $element.find('.btn').on('click', () => {
-    // Once dropdown is open, focus on active/selected option for keyboard support
+  button.addEventListener('click', () => {
+    const filterInput = element.getElementsByClassName('tw-select-filter')[0];
     $timeout(() => {
       if ($element.attr('filter')) {
-        $element.find('.tw-select-filter').focus();
+        // If filter in use, focus on that
+        filterInput.focus();
       } else {
+        // Otherwise focus on selected option
         $element.find('.active a').focus();
       }
     });
   });
 
-  $element.find('ul').on('keypress', 'a', (event) => {
-    $ctrl.optionKeypress(event);
+  list.addEventListener('keypress', (event) => {
+    if (event.target.tagName.toLowerCase() === 'a') {
+      $ctrl.optionKeypress(event);
+    }
   });
 }
 
@@ -270,6 +284,7 @@ function checkForTranscludedContent($transclude, $ctrl) {
 function getCharacterCodeFromKeypress(event) {
   return event.which || event.charCode || event.keyCode;
 }
+
 function getCharacterFromKeypress(event) {
   return String.fromCharCode(getCharacterCodeFromKeypress(event));
 }
@@ -365,13 +380,13 @@ function searchAndSelect($ngModel, $ctrl, options, term) {
   const searchTerm = term.toLowerCase();
 
   options.forEach((option) => {
-    if (found || !option.label) {
+    if (found) {
       return;
     }
-    if (containsSearch(options.label, searchTerm) ||
-      containsSearch(options.note, searchTerm) ||
-      containsSearch(options.secondary, searchTerm) ||
-      containsSearch(options.searchable, searchTerm)) {
+    if (containsSearch(option.label, searchTerm) ||
+      containsSearch(option.note, searchTerm) ||
+      containsSearch(option.secondary, searchTerm) ||
+      containsSearch(option.searchable, searchTerm)) {
       selectOption($ngModel, $ctrl, option);
       found = true;
     }
@@ -412,12 +427,18 @@ function responsiveClasses(value) {
 
   breakpoints.forEach((breakpoint) => {
     if (validBreakpoints[breakpoint]) {
-      classes += `hidden-${breakpoint}`;
+      classes += `hidden-${breakpoint} `;
     }
   });
 
   return classes;
 }
+
+const keys = {
+  up: 38,
+  down: 40,
+  return: 13
+};
 
 SelectController.$inject = [
   '$element',

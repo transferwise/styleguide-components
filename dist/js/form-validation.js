@@ -137,10 +137,12 @@
     }), exports["default"] = TwValidation;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : {
-            "default": obj
-        };
+    function FormValidationLink(scope, element) {
+        element[0].addEventListener("submit", function() {
+            var elements = element.querySelectorAll("[tw-validation].ng-invalid");
+            return $(elements).closest(".form-group").addClass("has-error"), $(elements).closest(".checkbox, .radio").addClass("has-error"), 
+            !0;
+        });
     }
     function FormValidation() {
         return {
@@ -148,18 +150,7 @@
             link: FormValidationLink
         };
     }
-    function FormValidationLink(scope, element) {
-        (0, _jquery2["default"])(element).on("submit", function() {
-            var elements = (0, _jquery2["default"])(element).find("[tw-validation].ng-invalid");
-            return elements.closest(".form-group").addClass("has-error"), elements.closest(".checkbox, .radio").addClass("has-error"), 
-            !0;
-        });
-    }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    });
-    var _jquery = __webpack_require__(8), _jquery2 = _interopRequireDefault(_jquery);
-    exports["default"] = FormValidation;
-}, function(module, exports) {
-    module.exports = jquery;
+    }), exports["default"] = FormValidation;
 } ]);

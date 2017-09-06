@@ -7,6 +7,7 @@ describe('AmountCurrencySelect', function() {
     $ngModel,
     templateElement,
     directiveElement,
+    $input,
     input;
 
   var DIRECTIVE_SELECTOR = 'tw-amount-currency-select';
@@ -60,27 +61,28 @@ describe('AmountCurrencySelect', function() {
       templateElement = getCompiledTemplateElement($scope);
       directiveElement = templateElement.find(DIRECTIVE_SELECTOR);
       $ngModel = directiveElement.controller('ngModel');
-      input = directiveElement.find(INPUT_SELECTOR);
+      $input = directiveElement.find(INPUT_SELECTOR);
+      input = $input[0];
     }));
 
     it('should change ngModel when value is changed', function() {
-      input.val('200.05').trigger('input');
+      $input.val('200.05').trigger('input');
       expect($scope.ngModel).toBe('200.05');
     });
 
     it('should set ngModel.$dirty when button clicked', function() {
-      input.val('100').trigger('input');
+      $input.val('100').trigger('input');
       expect($ngModel.$dirty).toBe(true);
     });
 
     it('should set ngModel.$touched when blured', function() {
-      input.triggerHandler('blur');
+      input.dispatchEvent(new Event('blur'));
       expect($ngModel.$touched).toBe(true);
     });
 
     it('should style nearest parent form-group when focussed', function() {
-      input.triggerHandler('focus');
-      expect(input.closest('.form-group').hasClass('focus')).toBe(true);
+      input.dispatchEvent(new Event('focus'));
+      expect($input.closest('.form-group').hasClass('focus')).toBe(true);
     });
 
     it('should trigger ngChange when internal model changes', function() {

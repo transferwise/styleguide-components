@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import angular from 'angular';
 import DateService from '../../services/date/'; // eslint-disable-line no-unused-vars
 
 class DateLookupController {
@@ -155,14 +155,14 @@ class DateLookupController {
   }
 
   switchToMonths($event) {
-    resetFocus($($event.target));
+    resetFocus(angular.element($event.target));
     this.findActiveLink();
     $event.stopPropagation();
     this.mode = 'month';
   }
 
   switchToYears($event) {
-    resetFocus($($event.target));
+    resetFocus(angular.element($event.target));
     this.findActiveLink();
     $event.stopPropagation();
     this.mode = 'year';

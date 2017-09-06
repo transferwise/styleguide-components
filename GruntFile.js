@@ -13,8 +13,7 @@ const webpackModule = {
 };
 
 const webpackExternals = [{
-  angular: 'angular',
-  jquery: 'jquery'
+  angular: 'angular'
 }];
 
 module.exports = function(grunt) {
