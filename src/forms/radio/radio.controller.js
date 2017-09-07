@@ -6,7 +6,7 @@ class RadioController {
     this.checked = this.isChecked();
     this.label = $element.closest('label')[0];
 
-    $element.on('blur', () => {
+    $element[0].addEventListener('blur', () => {
       $ngModel.$setTouched();
     });
 
@@ -64,7 +64,7 @@ class RadioController {
       }
       if (newValue && !oldValue) {
         radioLabel.classList.add('disabled');
-        radioLabel.setAttribute('disabled', true);
+        radioLabel.setAttribute('disabled', 'true');
       } else if (!newValue && oldValue) {
         radioLabel.classList.remove('disabled');
         radioLabel.removeAttribute('disabled');

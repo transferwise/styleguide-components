@@ -243,14 +243,14 @@ function addEventHandlers($ctrl, $element, $ngModel, options, $timeout) {
       // If button isn't focused and dropdown not open, blur
       if (button !== document.activeElement &&
         !buttonGroup.classList.contains('open')) {
-        $element.trigger('blur');
+        element.dispatchEvent(new Event('blur'));
       }
     }, 150); // need timeout because using dropdown.js,
   };
 
   const onButtonClick = () => {
     $timeout(() => {
-      if ($element.attr('filter')) {
+      if (element.getAttribute('filter')) {
         // If filter in use, focus on that
         const filterInput = element.getElementsByClassName('tw-select-filter')[0];
         filterInput.focus();

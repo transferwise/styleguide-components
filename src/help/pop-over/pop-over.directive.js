@@ -35,7 +35,7 @@ function PopOverLink(scope, element) {
 
   // TODO can we reinitialise popove when copy changes.
   // scope.$watch(attrs.title, function() {
-  //   console.log('watch.title ' + element.attr('title'));
+  //   console.log('watch.title ' + element.getAttribute('title'));
   // });
 }
 

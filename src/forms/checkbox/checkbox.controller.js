@@ -22,7 +22,7 @@ class CheckboxController {
       false;
   }
 
-  buttonClick($event) {
+  buttonClick(event) {
     if (this.checked) {
       this.checked = false;
       this.$ngModel.$setViewValue(this.ngFalseValue || false);
@@ -32,9 +32,9 @@ class CheckboxController {
     }
     this.$ngModel.$setTouched();
 
-    if ($event) {
+    if (event) {
       // Prevent button click propgation from firing label
-      $event.stopPropagation();
+      event.stopPropagation();
     }
 
     validateCheckbox(
@@ -76,10 +76,17 @@ class CheckboxController {
   }
 
   addLabelHandler() {
-    this.$element.closest('label').on('click', (event) => {
-      const button = this.element.getElementsByTagName('button')[0];
-      // Trigger our button, prevent default label behaviour
-      button.dispatchEvent(new Event('click'));
+    const label = this.$element.closest('label')[0];
+    if (!label) {
+      return;
+    }
+    label.addEventListener('click', (event) => {
+      const isDisabled = label.getAttribute('disabled');
+      if (!isDisabled) {
+        const button = this.element.getElementsByTagName('button')[0];
+        // Trigger our button, prevent default label behaviour
+        button.dispatchEvent(new Event('click'));
+      }
       event.preventDefault();
       event.stopPropagation();
     });
@@ -101,15 +108,18 @@ class CheckboxController {
 
     $scope.$watch('$ctrl.ngDisabled', (newValue, oldValue) => {
       const checkbox = $element.closest('.checkbox')[0];
+      const label = $element.closest('label')[0];
       if (!checkbox) {
         return;
       }
       if (newValue && !oldValue) {
         checkbox.classList.add('disabled');
-        checkbox.setAttribute('disabled', true);
+        // checkbox.setAttribute('disabled', true);
+        label.setAttribute('disabled', 'true');
       } else if (!newValue && oldValue) {
         checkbox.classList.remove('disabled');
-        checkbox.removeAttribute('disabled');
+        // checkbox.removeAttribute('disabled');
+        label.removeAttribute('disabled');
       }
     });
 

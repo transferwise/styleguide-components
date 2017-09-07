@@ -443,8 +443,6 @@ function resetFocus(element) {
   const button = element.getElementsByTagName('button')[0];
   if (button) {
     button.focus();
-  } else {
-    console.log('no button');
   }
 }
 

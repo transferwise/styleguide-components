@@ -8,10 +8,11 @@ function TwValidation() {
   };
 }
 
-function validationLink(scope, element, attrs, ngModel) {
-  const formGroup = element.closest('.form-group');
+function validationLink(scope, $element, attrs, ngModel) {
+  const element = $element[0];
+  const formGroup = $element.closest('.form-group')[0];
 
-  element.on('invalid', (event) => {
+  element.addEventListener('invalid', (event) => {
     // Prevent default validation tooltips
     event.preventDefault();
   });
@@ -26,7 +27,7 @@ function validationLink(scope, element, attrs, ngModel) {
   };
 
   // The first time we blur, still pristine when model validation occurs, so perform again.
-  element.on('blur', () => {
+  element.addEventListener('blur', () => {
     // Custom elements must trigger blur manually for correct behaviour
     scope.$evalAsync(() => {
       checkModelAndUpdate(ngModel, formGroup, element);
@@ -34,10 +35,7 @@ function validationLink(scope, element, attrs, ngModel) {
   });
 }
 
-function checkModelAndUpdate(ngModel, $formGroup, $element) {
-  const formGroup = $formGroup[0];
-  const element = $element[0];
-
+function checkModelAndUpdate(ngModel, formGroup, element) {
   if (ngModel.$valid) {
     if (formGroup) {
       formGroup.classList.remove('has-error');
@@ -51,7 +49,7 @@ function checkModelAndUpdate(ngModel, $formGroup, $element) {
       formGroup.classList.add('has-error');
     }
     // Set aria invalid for screen readers
-    element.setAttribute('aria-invalid');
+    element.setAttribute('aria-invalid', 'true');
   }
 }
 

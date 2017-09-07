@@ -849,10 +849,10 @@
             }
         }, {
             key: "buttonClick",
-            value: function($event) {
+            value: function(event) {
                 this.checked ? (this.checked = !1, this.$ngModel.$setViewValue(this.ngFalseValue || !1)) : (this.checked = !0, 
                 this.$ngModel.$setViewValue(this.ngTrueValue || !0)), this.$ngModel.$setTouched(), 
-                $event && $event.stopPropagation(), validateCheckbox(this.checked, this.$element, this.$ngModel, this.ngRequired);
+                event && event.stopPropagation(), validateCheckbox(this.checked, this.$element, this.$ngModel, this.ngRequired);
             }
         }, {
             key: "buttonFocus",
@@ -873,10 +873,14 @@
         }, {
             key: "addLabelHandler",
             value: function() {
-                var _this = this;
-                this.$element.closest("label").on("click", function(event) {
-                    var button = _this.element.getElementsByTagName("button")[0];
-                    button.dispatchEvent(new Event("click")), event.preventDefault(), event.stopPropagation();
+                var _this = this, label = this.$element.closest("label")[0];
+                label && label.addEventListener("click", function(event) {
+                    var isDisabled = label.getAttribute("disabled");
+                    if (!isDisabled) {
+                        var button = _this.element.getElementsByTagName("button")[0];
+                        button.dispatchEvent(new Event("click"));
+                    }
+                    event.preventDefault(), event.stopPropagation();
                 });
             }
         }, {
@@ -887,9 +891,9 @@
                     newValue !== oldValue && ($ngModel.$setDirty(), validateCheckbox(_this2.checked, $element, $ngModel, _this2.ngRequired), 
                     _this2.checked = _this2.isChecked());
                 }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
-                    var checkbox = $element.closest(".checkbox")[0];
-                    checkbox && (newValue && !oldValue ? (checkbox.classList.add("disabled"), checkbox.setAttribute("disabled", !0)) : !newValue && oldValue && (checkbox.classList.remove("disabled"), 
-                    checkbox.removeAttribute("disabled")));
+                    var checkbox = $element.closest(".checkbox")[0], label = $element.closest("label")[0];
+                    checkbox && (newValue && !oldValue ? (checkbox.classList.add("disabled"), label.setAttribute("disabled", "true")) : !newValue && oldValue && (checkbox.classList.remove("disabled"), 
+                    label.removeAttribute("disabled")));
                 }), $scope.$watch("$ctrl.ngRequired", function(newValue, oldValue) {
                     newValue !== oldValue && validateCheckbox(_this2.checked, $element, $ngModel, _this2.ngRequired);
                 });
@@ -1045,7 +1049,7 @@
     }
     function resetFocus(element) {
         var button = element.getElementsByTagName("button")[0];
-        button ? button.focus() : console.log("no button");
+        button && button.focus();
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
@@ -1856,7 +1860,7 @@
             _classCallCheck(this, RadioController);
             var $ngModel = $element.controller("ngModel");
             this.$element = $element, this.checked = this.isChecked(), this.label = $element.closest("label")[0], 
-            $element.on("blur", function() {
+            $element[0].addEventListener("blur", function() {
                 $ngModel.$setTouched();
             }), this.addWatchers($scope, $element);
         }
@@ -1893,7 +1897,7 @@
                     newValue !== oldValue && _this.$ngModel.$setDirty(), _this.checked = _this.isChecked();
                 }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
                     var radioLabel = $element.closest(".radio")[0];
-                    radioLabel && (newValue && !oldValue ? (radioLabel.classList.add("disabled"), radioLabel.setAttribute("disabled", !0)) : !newValue && oldValue && (radioLabel.classList.remove("disabled"), 
+                    radioLabel && (newValue && !oldValue ? (radioLabel.classList.add("disabled"), radioLabel.setAttribute("disabled", "true")) : !newValue && oldValue && (radioLabel.classList.remove("disabled"), 
                     radioLabel.removeAttribute("disabled")));
                 });
             }
@@ -2067,11 +2071,11 @@
     function addEventHandlers($ctrl, $element, $ngModel, options, $timeout) {
         var element = $element[0], button = element.getElementsByClassName("btn")[0], buttonGroup = element.getElementsByClassName("btn-group")[0], dropdown = element.getElementsByClassName("dropdown-menu")[0], onFocusOut = function() {
             $timeout(function() {
-                button === document.activeElement || buttonGroup.classList.contains("open") || $element.trigger("blur");
+                button === document.activeElement || buttonGroup.classList.contains("open") || element.dispatchEvent(new Event("blur"));
             }, 150);
         }, onButtonClick = function() {
             $timeout(function() {
-                if ($element.attr("filter")) {
+                if (element.getAttribute("filter")) {
                     var filterInput = element.getElementsByClassName("tw-select-filter")[0];
                     filterInput.focus();
                 } else focusOnActiveLink(element);
@@ -2321,8 +2325,9 @@
             link: FileSelectLink
         };
     }
-    function FileSelectLink(scope, element) {
-        element.on("change", function(event) {
+    function FileSelectLink(scope, $element) {
+        var element = $element[0];
+        element.addEventListener("change", function(event) {
             scope.$ctrl.onUserInput && "function" == typeof scope.$ctrl.onUserInput && scope.$ctrl.onUserInput(event);
         });
     }
@@ -2418,7 +2423,9 @@
     });
     var FileInputController = function FileInputController($element) {
         var _this = this;
-        _classCallCheck(this, FileInputController), $element.on("change", function() {
+        _classCallCheck(this, FileInputController);
+        var element = $element[0];
+        element.addEventListener("change", function() {
             _this.onUserInput && "function" == typeof _this.onUserInput && _this.onUserInput();
         });
     };
@@ -3199,24 +3206,23 @@
             link: validationLink
         };
     }
-    function validationLink(scope, element, attrs, ngModel) {
-        var formGroup = element.closest(".form-group");
-        element.on("invalid", function(event) {
+    function validationLink(scope, $element, attrs, ngModel) {
+        var element = $element[0], formGroup = $element.closest(".form-group")[0];
+        element.addEventListener("invalid", function(event) {
             event.preventDefault();
         }), ngModel.$validators.validation = function() {
             return scope.$evalAsync(function() {
                 checkModelAndUpdate(ngModel, formGroup, element);
             }), !0;
-        }, element.on("blur", function() {
+        }, element.addEventListener("blur", function() {
             scope.$evalAsync(function() {
                 checkModelAndUpdate(ngModel, formGroup, element);
             });
         });
     }
-    function checkModelAndUpdate(ngModel, $formGroup, $element) {
-        var formGroup = $formGroup[0], element = $element[0];
+    function checkModelAndUpdate(ngModel, formGroup, element) {
         return ngModel.$valid ? (formGroup && formGroup.classList.remove("has-error"), void element.removeAttribute("aria-invalid")) : void (ngModel.$touched && ngModel.$dirty && (formGroup && formGroup.classList.add("has-error"), 
-        element.setAttribute("aria-invalid")));
+        element.setAttribute("aria-invalid", "true")));
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0

@@ -114,24 +114,23 @@
             link: validationLink
         };
     }
-    function validationLink(scope, element, attrs, ngModel) {
-        var formGroup = element.closest(".form-group");
-        element.on("invalid", function(event) {
+    function validationLink(scope, $element, attrs, ngModel) {
+        var element = $element[0], formGroup = $element.closest(".form-group")[0];
+        element.addEventListener("invalid", function(event) {
             event.preventDefault();
         }), ngModel.$validators.validation = function() {
             return scope.$evalAsync(function() {
                 checkModelAndUpdate(ngModel, formGroup, element);
             }), !0;
-        }, element.on("blur", function() {
+        }, element.addEventListener("blur", function() {
             scope.$evalAsync(function() {
                 checkModelAndUpdate(ngModel, formGroup, element);
             });
         });
     }
-    function checkModelAndUpdate(ngModel, $formGroup, $element) {
-        var formGroup = $formGroup[0], element = $element[0];
+    function checkModelAndUpdate(ngModel, formGroup, element) {
         return ngModel.$valid ? (formGroup && formGroup.classList.remove("has-error"), void element.removeAttribute("aria-invalid")) : void (ngModel.$touched && ngModel.$dirty && (formGroup && formGroup.classList.add("has-error"), 
-        element.setAttribute("aria-invalid")));
+        element.setAttribute("aria-invalid", "true")));
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0

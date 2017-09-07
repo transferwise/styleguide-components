@@ -10,8 +10,9 @@ function FileSelectDirective() {
   };
 }
 
-function FileSelectLink(scope, element) {
-  element.on('change', (event) => {
+function FileSelectLink(scope, $element) {
+  const element = $element[0];
+  element.addEventListener('change', (event) => {
     if (scope.$ctrl.onUserInput && typeof scope.$ctrl.onUserInput === 'function') {
       scope.$ctrl.onUserInput(event);
     }

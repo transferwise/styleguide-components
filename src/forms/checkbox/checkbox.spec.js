@@ -70,13 +70,12 @@ describe('Checkbox', function() {
       expect($scope.ngModel).toBe(false);
     });
 
-    // Click doesn't seem to trigger button click, but does in browsers...
+    // Safari and Phantom double click for some reason,
+    // I suspect default label behaviour not prevented
     xit('should toggle state when containing label is clicked', function() {
-      var label = templateElement.find(LABEL_SELECTOR);
-      label.trigger('click');
+      var label = templateElement.find(LABEL_SELECTOR)[0];
+      label.dispatchEvent(new Event('click'));
       expect($scope.ngModel).toBe(true);
-      label.trigger('click');
-      expect($scope.ngModel).toBe(false);
     });
 
     it('should set ngModel.$dirty when button clicked', function() {
