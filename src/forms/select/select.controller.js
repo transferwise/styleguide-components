@@ -35,7 +35,8 @@ class SelectController {
   }
 
   buttonFocus() {
-    this.$element.triggerHandler('focus');
+    // this.$element.triggerHandler('focus');
+    this.element.dispatchEvent(new Event('focus'));
   }
 
   optionClick(option, $event) {

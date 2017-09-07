@@ -10,6 +10,7 @@ function TwValidation() {
 
 function validationLink(scope, $element, attrs, ngModel) {
   const element = $element[0];
+  // TODO remove jquery
   const formGroup = $element.closest('.form-group')[0];
 
   element.addEventListener('invalid', (event) => {

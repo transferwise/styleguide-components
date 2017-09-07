@@ -17,17 +17,21 @@ describe('Checkbox', function() {
   beforeEach(module('tw.styleguide.forms.checkbox'));
   beforeEach(module('tw.styleguide.forms.focusable'));
   beforeEach(module('tw.styleguide.validation'));
+  beforeEach(module('tw.styleguide.services'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');
     $compile = $injector.get('$compile');
     $scope = $rootScope.$new();
+
     $scope.ngModel = null;
     $scope.name = 'myCheckbox';
     $scope.ngRequired = true;
+
     $scope.ngClick = function() {};
     $scope.ngFocus = function() {};
     $scope.ngBlur = function() {};
+
     templateElement = getCompiledTemplateElement($scope);
     directiveElement = templateElement.find(DIRECTIVE_SELECTOR);
     $ngModel = directiveElement.controller('ngModel');

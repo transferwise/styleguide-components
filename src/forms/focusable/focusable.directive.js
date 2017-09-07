@@ -1,7 +1,12 @@
 import angular from 'angular';
+// import DomService from '../../services/dom/dom.service.js';
 
 function FocusableLink(scope, element) {
+  // TODO remove jquery
   const formGroup = $(element).closest('.form-group')[0]; // eslint-disable-line
+  // const dom = new DomService();
+
+  // const formGroup = DomService.getClosestParentByClassName(element, 'form-group');
   const focusable = element[0];
 
   if (formGroup && focusable) {

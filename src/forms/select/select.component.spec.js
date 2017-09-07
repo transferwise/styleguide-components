@@ -1028,7 +1028,7 @@ describe('Select', function() {
   });
 
   function getCompiledDirectiveElement($scope, template) {
-  if (!template) {
+    if (!template) {
       template = " \
         <tw-select \
           name='{{name}}' \

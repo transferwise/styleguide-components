@@ -1,7 +1,10 @@
+import DomService from '../../services/dom/'; // eslint-disable-line no-unused-vars
+
 class CheckboxController {
-  constructor($scope, $element) {
+  constructor($scope, $element, TwDomService) {
     const $ngModel = $element.controller('ngModel');
 
+    this.dom = TwDomService;
     this.$element = $element;
     this.element = $element[0];
     this.checked = this.isChecked();
@@ -9,7 +12,11 @@ class CheckboxController {
     this.addLabelHandler();
     this.addWatchers($scope, $element, $ngModel);
 
-    this.checkboxContainer = this.$element.closest('.checkbox')[0];
+    this.checkboxContainer = this.dom.getClosestParentByClassName(
+      this.element,
+      'checkbox'
+    );
+
     this.label =
       this.checkboxContainer ?
         this.checkboxContainer.getElementsByTagName('label')[0] :
@@ -41,7 +48,8 @@ class CheckboxController {
       this.checked,
       this.$element,
       this.$ngModel,
-      this.ngRequired
+      this.ngRequired,
+      this.dom
     );
   }
 
@@ -65,7 +73,8 @@ class CheckboxController {
       this.checked,
       this.$element,
       this.$ngModel,
-      this.ngRequired
+      this.ngRequired,
+      this.dom
     );
   }
 
@@ -76,7 +85,8 @@ class CheckboxController {
   }
 
   addLabelHandler() {
-    const label = this.$element.closest('label')[0];
+    const label = this.dom.getClosestParentByTagName(this.element, 'label');
+
     if (!label) {
       return;
     }
@@ -100,15 +110,18 @@ class CheckboxController {
           this.checked,
           $element,
           $ngModel,
-          this.ngRequired
+          this.ngRequired,
+          this.dom
         );
         this.checked = this.isChecked();
       }
     });
 
     $scope.$watch('$ctrl.ngDisabled', (newValue, oldValue) => {
-      const checkbox = $element.closest('.checkbox')[0];
-      const label = $element.closest('label')[0];
+      const element = $element[0];
+      const checkbox = this.dom.getClosestParentByClassName(element, 'checkbox');
+      const label = this.dom.getClosestParentByTagName(element, 'label');
+
       if (!checkbox) {
         return;
       }
@@ -129,21 +142,22 @@ class CheckboxController {
           this.checked,
           $element,
           $ngModel,
-          this.ngRequired
+          this.ngRequired,
+          this.dom
         );
       }
     });
   }
 }
 
-function validateCheckbox(isChecked, $element, $ngModel, isRequired) {
+function validateCheckbox(isChecked, $element, $ngModel, isRequired, dom) {
   if (!$ngModel.$touched) {
     return;
   }
-
-  const button = $element[0].getElementsByClassName('tw-checkbox-button')[0];
-  const checkboxLabel = $element.closest('.checkbox')[0];
-  const formGroup = $element.closest('.form-group')[0];
+  const element = $element[0];
+  const button = element.getElementsByClassName('tw-checkbox-button')[0];
+  const checkboxLabel = dom.getClosestParentByClassName(element, 'checkbox');
+  const formGroup = dom.getClosestParentByClassName(element, 'form-group');
 
   if (!isChecked && isRequired) {
     $ngModel.$setValidity('required', false);
@@ -166,6 +180,6 @@ function validateCheckbox(isChecked, $element, $ngModel, isRequired) {
   }
 }
 
-CheckboxController.$inject = ['$scope', '$element'];
+CheckboxController.$inject = ['$scope', '$element', 'TwDomService'];
 
 export default CheckboxController;

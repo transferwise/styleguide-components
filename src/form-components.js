@@ -20,8 +20,7 @@ import Process              from './loading/process/';
 
 import RequirementsForm     from './forms/requirements-form/';
 
-import DateService          from './services/date/';
-import CurrencyService      from './services/currency/';
+import Services             from './services/';
 
 // Deprecated in favour of Upload
 import UploadDroppable      from './forms/upload-droppable/';
@@ -44,9 +43,7 @@ export default angular.module('tw.form-components', [
   Process,
 
   RequirementsForm,
-
-  DateService,
-  CurrencyService,
+  Services,
 
   UploadDroppable
 ]).name;
