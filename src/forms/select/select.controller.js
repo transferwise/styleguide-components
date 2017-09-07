@@ -72,7 +72,7 @@ class SelectController {
       this.options,
       character
     );
-    this.$element.find('.active a').focus();
+    focusOnActiveLink(this.$element[0]);
   }
 
   placeholderClick() {
@@ -116,8 +116,11 @@ class SelectController {
     });
   }
 
-  filterFocus() {
-    this.$element.find('.tw-select-filter').focus();
+  focusOnFilterInput() {
+    const filterInput = this.element.getElementsByClassName('tw-select-filter')[0];
+    if (filterInput) {
+      filterInput.focus();
+    }
   }
   filterChange() {
     this.filteredOptions = this.getFilteredOptions();
@@ -132,9 +135,9 @@ class SelectController {
   // Keydown as keypress did not work in chrome/safari
   filterKeydown(event) {
     const characterCode = event.which || event.charCode || event.keyCode;
-    const activeOption = this.$element.find('.active');
-    const activeLink = activeOption.find('a');
-    const optionLinks = this.$element.find('.tw-select-option-link');
+    const activeOption = this.element.getElementsByClassName('active')[0];
+    const activeLink = activeOption ? activeOption.getElementsByTagName('a')[0] : false;
+    const optionLinks = this.element.getElementsByClassName('tw-select-option-link');
 
     if (characterCode === keys.down) {
       this.moveDownOneOption(activeOption, activeLink, optionLinks);
@@ -151,36 +154,38 @@ class SelectController {
   }
 
   selectOptionUsingLink(link) {
-    const option = this.filteredOptions[link.attr('index')];
+    const option = this.filteredOptions[link.getAttribute('index')];
     selectOption(this.$ngModel, this, option);
   }
 
   moveUpOneOption(activeOption, activeLink, optionLinks) {
     // If none active, select last
-    if (!activeOption.length && optionLinks.length) {
-      this.selectOptionUsingLink(angular.element(optionLinks[optionLinks.length - 1]));
+    if (!activeOption && optionLinks.length) {
+      this.selectOptionUsingLink(optionLinks[optionLinks.length - 1]);
       return;
     }
 
     // If active option not first, move up
-    if (activeLink[0] !== optionLinks[0]) {
+    if (activeLink !== optionLinks[0]) {
       // TODO prevAll is ineffeccient for longer lists
-      const previousOptions = activeOption.prevAll('.tw-select-option');
-      this.selectOptionUsingLink(angular.element(previousOptions[0]).find('a'));
+      const previousOptions = $(activeOption).prevAll('.tw-select-option'); // eslint-disable-line
+      const previousOptionLink = previousOptions[0].getElementsByTagName('a')[0];
+      this.selectOptionUsingLink(previousOptionLink);
     }
   }
 
   moveDownOneOption(activeOption, activeLink, optionLinks) {
     // If none active, select first
-    if (!activeOption.length && optionLinks.length) {
-      this.selectOptionUsingLink(angular.element(optionLinks[0]));
+    if (!activeOption && optionLinks.length) {
+      this.selectOptionUsingLink(optionLinks[0]);
       return;
     }
     // If active option not last, move down
-    if (activeLink[0] !== optionLinks[optionLinks.length - 1]) {
+    if (activeLink !== optionLinks[optionLinks.length - 1]) {
       // TODO nextAll is ineffeccient for longer lists
-      const nextOptions = activeOption.nextAll('.tw-select-option');
-      this.selectOptionUsingLink(angular.element(nextOptions[0]).find('a'));
+      const nextOptions = $(activeOption).nextAll('.tw-select-option'); // eslint-disable-line
+      const nextOptionLink = nextOptions[0].getElementsByTagName('a')[0];
+      this.selectOptionUsingLink(nextOptionLink);
       return;
     }
     // If active is last and custom action, focus on it
@@ -228,49 +233,63 @@ function addWatchers($ctrl, $scope, $ngModel, $element) {
 }
 
 function addEventHandlers($ctrl, $element, $ngModel, options, $timeout) {
+  const element = $element[0];
+  const button = element.getElementsByClassName('btn')[0];
+  const buttonGroup = element.getElementsByClassName('btn-group')[0];
+  const dropdown = element.getElementsByClassName('dropdown-menu')[0];
+
   const onFocusOut = () => {
     $timeout(() => {
       // If button isn't focused and dropdown not open, blur
-      if ($element.find('.btn:focus').length === 0 &&
-        !$element.find('.btn-group').hasClass('open')) {
+      if (button !== document.activeElement &&
+        !buttonGroup.classList.contains('open')) {
         $element.trigger('blur');
       }
     }, 150); // need timeout because using dropdown.js,
   };
 
-  $element.find('.btn, .dropdown-menu').on('focusout', onFocusOut);
-
-  const element = $element[0];
-  const button = element.getElementsByClassName('btn')[0];
-  const list = element.getElementsByTagName('ul')[0];
-
-  element.addEventListener('blur', () => {
-    $ngModel.$setTouched();
-  });
-
-  // button.addEventListener('keypress', (event) => { // TODO doesn't work in tests????
-  $element.find('.btn').on('keypress', (event) => {
-    $ctrl.optionKeypress(event);
-  });
-
-  button.addEventListener('click', () => {
-    const filterInput = element.getElementsByClassName('tw-select-filter')[0];
+  const onButtonClick = () => {
     $timeout(() => {
       if ($element.attr('filter')) {
         // If filter in use, focus on that
+        const filterInput = element.getElementsByClassName('tw-select-filter')[0];
         filterInput.focus();
       } else {
         // Otherwise focus on selected option
-        $element.find('.active a').focus();
+        focusOnActiveLink(element);
       }
     });
-  });
+  };
 
-  list.addEventListener('keypress', (event) => {
+  const onButtonKeypress = (event) => {
+    $ctrl.optionKeypress(event);
+  };
+
+  const onDrodownKeypress = (event) => {
     if (event.target.tagName.toLowerCase() === 'a') {
       $ctrl.optionKeypress(event);
     }
-  });
+  };
+
+  const onComponentBlur = () => {
+    $ngModel.$setTouched();
+  };
+
+  element.addEventListener('blur', onComponentBlur);
+  // TODO doesn't work in tests???? - change triggering style to native
+  // button.addEventListener('keypress', onButtonKeypress);
+  $(button).on('keypress', onButtonKeypress); // eslint-disable-line
+  button.addEventListener('click', onButtonClick);
+  button.addEventListener('focusout', onFocusOut);
+  dropdown.addEventListener('focusout', onFocusOut);
+  dropdown.addEventListener('keypress', onDrodownKeypress);
+}
+
+function focusOnActiveLink(element) {
+  const activeOption = element.getElementsByClassName('active')[0];
+  if (activeOption) {
+    activeOption.getElementsByTagName('a')[0].focus();
+  }
 }
 
 function checkForTranscludedContent($transclude, $ctrl) {

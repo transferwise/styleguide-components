@@ -4,6 +4,7 @@ class RadioController {
 
     this.$element = $element;
     this.checked = this.isChecked();
+    this.label = $element.closest('label')[0];
 
     $element.on('blur', () => {
       $ngModel.$setTouched();
@@ -27,12 +28,16 @@ class RadioController {
   }
 
   buttonFocus() {
-    this.$element.closest('label').addClass('focus');
+    if (this.label) {
+      this.label.classList.add('focus');
+    }
     this.$element.triggerHandler('focus');
   }
 
   buttonBlur() {
-    this.$element.closest('label').removeClass('focus');
+    if (this.label) {
+      this.label.classList.remove('focus');
+    }
     this.$element.triggerHandler('blur');
   }
 
@@ -53,16 +58,16 @@ class RadioController {
     });
 
     $scope.$watch('$ctrl.ngDisabled', (newValue, oldValue) => {
+      const radioLabel = $element.closest('.radio')[0];
+      if (!radioLabel) {
+        return;
+      }
       if (newValue && !oldValue) {
-        $element
-          .closest('.radio')
-          .addClass('disabled')
-          .attr('disabled', true);
+        radioLabel.classList.add('disabled');
+        radioLabel.setAttribute('disabled', true);
       } else if (!newValue && oldValue) {
-        $element
-          .closest('.radio')
-          .removeClass('disabled')
-          .removeAttr('disabled');
+        radioLabel.classList.remove('disabled');
+        radioLabel.removeAttribute('disabled');
       }
     });
   }

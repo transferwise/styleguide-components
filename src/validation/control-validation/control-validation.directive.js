@@ -34,16 +34,24 @@ function validationLink(scope, element, attrs, ngModel) {
   });
 }
 
-function checkModelAndUpdate(ngModel, formGroup, element) {
+function checkModelAndUpdate(ngModel, $formGroup, $element) {
+  const formGroup = $formGroup[0];
+  const element = $element[0];
+
   if (ngModel.$valid) {
-    formGroup.removeClass('has-error');
-    element.removeAttr('aria-invalid');
+    if (formGroup) {
+      formGroup.classList.remove('has-error');
+    }
+    element.removeAttribute('aria-invalid');
     return;
   }
+
   if (ngModel.$touched && ngModel.$dirty) {
-    formGroup.addClass('has-error');
+    if (formGroup) {
+      formGroup.classList.add('has-error');
+    }
     // Set aria invalid for screen readers
-    element.attr('aria-invalid', true);
+    element.setAttribute('aria-invalid');
   }
 }
 

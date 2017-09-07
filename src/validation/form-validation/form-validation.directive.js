@@ -4,9 +4,15 @@ function FormValidationLink(scope, element) {
     // Submitting the form won't trigger form controls own validation
     const elements = element.querySelectorAll('[tw-validation].ng-invalid');
 
-    $(elements).closest('.form-group').addClass('has-error'); // eslint-disable-line
-    $(elements).closest('.checkbox, .radio').addClass('has-error'); // eslint-disable-line
+    const formGroup = $(elements).closest('.form-group')[0]; // eslint-disable-line
+    const optionLabel = $(elements).closest('.checkbox, .radio')[0]; // eslint-disable-line
 
+    if (formGroup) {
+      formGroup.classList.add('has-error');
+    }
+    if (optionLabel) {
+      optionLabel.classList.add('has-error');
+    }
     return true;
   });
 }

@@ -128,9 +128,10 @@
             });
         });
     }
-    function checkModelAndUpdate(ngModel, formGroup, element) {
-        return ngModel.$valid ? (formGroup.removeClass("has-error"), void element.removeAttr("aria-invalid")) : void (ngModel.$touched && ngModel.$dirty && (formGroup.addClass("has-error"), 
-        element.attr("aria-invalid", !0)));
+    function checkModelAndUpdate(ngModel, $formGroup, $element) {
+        var formGroup = $formGroup[0], element = $element[0];
+        return ngModel.$valid ? (formGroup && formGroup.classList.remove("has-error"), void element.removeAttribute("aria-invalid")) : void (ngModel.$touched && ngModel.$dirty && (formGroup && formGroup.classList.add("has-error"), 
+        element.setAttribute("aria-invalid")));
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
@@ -139,8 +140,8 @@
     "use strict";
     function FormValidationLink(scope, element) {
         element[0].addEventListener("submit", function() {
-            var elements = element.querySelectorAll("[tw-validation].ng-invalid");
-            return $(elements).closest(".form-group").addClass("has-error"), $(elements).closest(".checkbox, .radio").addClass("has-error"), 
+            var elements = element.querySelectorAll("[tw-validation].ng-invalid"), formGroup = $(elements).closest(".form-group")[0], optionLabel = $(elements).closest(".checkbox, .radio")[0];
+            return formGroup && formGroup.classList.add("has-error"), optionLabel && optionLabel.classList.add("has-error"), 
             !0;
         });
     }

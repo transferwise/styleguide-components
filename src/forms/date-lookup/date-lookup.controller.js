@@ -1,4 +1,3 @@
-import angular from 'angular';
 import DateService from '../../services/date/'; // eslint-disable-line no-unused-vars
 
 class DateLookupController {
@@ -7,6 +6,7 @@ class DateLookupController {
 
     this.DateService = TwDateService;
     this.$element = $element;
+    this.element = $element[0];
     this.$timeout = $timeout;
     this.yearOffset = 0;
 
@@ -18,23 +18,35 @@ class DateLookupController {
       return newDate;
     });
 
-    $element.find('.btn, .dropdown-menu').on('focusout', () => {
+    // TODO remove jquery dependency
+    const formGroup = $element.parents('.form-group')[0];
+    const button = $element[0].getElementsByClassName('btn')[0];
+    const buttonGroup = $element[0].getElementsByClassName('btn-group')[0];
+    const dropdown = $element[0].getElementsByClassName('dropdown-menu')[0];
+
+    const onFocusOut = () => {
       $timeout(() => {
         // If button isn't focused and dropdown not open, then blur
-        if ($element.find('.btn:focus').length === 0 &&
-          !$element.find('.btn-group').hasClass('open')) {
-          // TODO remove jquery dependency
-          $element.parents('.form-group').removeClass('focus');
+        if (button !== document.activeElement &&
+          !buttonGroup.classList.contains('open')) {
+          if (formGroup) {
+            formGroup.classList.remove('focus');
+          }
           // jqLite supprts triggerHandler
           $element.triggerHandler('blur');
         }
       }, 150); // need timeout because using dropdown.js,
-    });
+    };
+
+    button.addEventListener('focusout', onFocusOut);
+    dropdown.addEventListener('focusout', onFocusOut);
 
     this.setLocale(this.locale);
 
     this.updateMinDateView(this.ngMin);
     this.updateMaxDateView(this.ngMax);
+
+    this.button = button;
   }
 
   openLookup() {
@@ -51,7 +63,8 @@ class DateLookupController {
     this.updateCalendarView(viewDate);
 
     this.$timeout(() => {
-      this.$element.find('.tw-date-lookup-month-label').focus();
+      const monthLabel = this.element.getElementsByClassName('tw-date-lookup-month-label')[0];
+      monthLabel.focus();
     });
   }
 
@@ -64,7 +77,7 @@ class DateLookupController {
     this.day = day;
     // Always set model to UTC dates
     this.setModel(this.DateService.getUTCDateFromParts(year, month, day));
-    resetFocus(this.$element);
+    resetFocus(this.element);
     this.updateCalendarDatePresentation();
   }
 
@@ -154,17 +167,15 @@ class DateLookupController {
     return (this.minYear && year < this.minYear) || (this.maxYear && year > this.maxYear);
   }
 
-  switchToMonths($event) {
-    resetFocus(angular.element($event.target));
+  switchToMonths(event) {
     this.findActiveLink();
-    $event.stopPropagation();
+    event.stopPropagation();
     this.mode = 'month';
   }
 
-  switchToYears($event) {
-    resetFocus(angular.element($event.target));
+  switchToYears(event) {
     this.findActiveLink();
-    $event.stopPropagation();
+    event.stopPropagation();
     this.mode = 'year';
   }
 
@@ -175,12 +186,10 @@ class DateLookupController {
 
   buttonFocus() {
     // TODO remove jquery dependency
-    this.$element.parents('.form-group').addClass('focus');
-    // jqLite supports triggerHandler
-    this.$element.triggerHandler('focus');
-  }
-
-  blur() {
+    const formGroup = this.$element.parents('.form-group')[0];
+    if (formGroup) {
+      formGroup.classList.add('focus');
+    }
     // jqLite supports triggerHandler
     this.$element.triggerHandler('focus');
   }
@@ -190,7 +199,10 @@ class DateLookupController {
       const value = modelValue || viewValue;
       if (value && value < this.ngMin) {
         // TODO remove jquery dependency
-        $element.parents('.form-group').addClass('has-error');
+        const formGroup = $element.parents('.form-group')[0];
+        if (formGroup) {
+          formGroup.classList.add('has-error');
+        }
         return false;
       }
       return true;
@@ -199,7 +211,10 @@ class DateLookupController {
       const value = modelValue || viewValue;
       if (value && value > this.ngMax) {
         // TODO remove jquery dependency
-        $element.parents('.form-group').addClass('has-error');
+        const formGroup = $element.parents('.form-group')[0];
+        if (formGroup) {
+          formGroup.classList.add('has-error');
+        }
         return false;
       }
       return true;
@@ -403,7 +418,8 @@ class DateLookupController {
   findActiveLink() {
     // Perform after current digest
     this.$timeout(() => {
-      this.$element.find('a.active').focus();
+      const activeLink = this.element.getElementsByClassName('active')[0];
+      activeLink.focus();
     });
   }
 
@@ -423,9 +439,13 @@ class DateLookupController {
   }
 }
 
-function resetFocus($element) {
-  // jqLite supports find by tag name
-  $element.find('button').focus();
+function resetFocus(element) {
+  const button = element.getElementsByTagName('button')[0];
+  if (button) {
+    button.focus();
+  } else {
+    console.log('no button');
+  }
 }
 
 DateLookupController.$inject = [

@@ -261,7 +261,10 @@ function addBlurHandlers($element, $ngModel) {
   let dayTouched;
   let yearTouched;
 
-  $element.find('input[name=day]').on('blur', () => {
+  const dayInput = $element[0].querySelector('input[name=day]');
+  const yearInput = $element[0].querySelector('input[name=year]');
+
+  dayInput.addEventListener('blur', () => {
     dayTouched = true;
     if (dayTouched && yearTouched) {
       $ngModel.$setTouched();
@@ -269,7 +272,7 @@ function addBlurHandlers($element, $ngModel) {
     }
   });
 
-  $element.find('input[name=year]').on('blur', () => {
+  yearInput.addEventListener('blur', () => {
     yearTouched = true;
     $ngModel.$setTouched();
     $element.triggerHandler('blur');

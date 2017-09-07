@@ -737,7 +737,9 @@
                 newValue !== oldValue && $ngModel.$setDirty();
             }), $scope.$watch("$ctrl.currency", function(newValue, oldValue) {
                 newValue && newValue !== oldValue && (_this.showDecimals = _this.CurrencyService.getDecimals(newValue) > 0);
-            }), $element.find("input").on("blur", function() {
+            });
+            var input = $element[0].getElementsByTagName("input")[0];
+            input.addEventListener("blur", function() {
                 $ngModel.$setTouched(), $element.triggerHandler("blur");
             }), $ngModel.$validators.min = function(modelValue, viewValue) {
                 return "undefined" == typeof _this.ngMin || null === _this.ngMin || !isNumber(viewValue) || viewValue >= _this.ngMin;
@@ -809,11 +811,13 @@
         if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
     }
     function validateCheckbox(isChecked, $element, $ngModel, isRequired) {
-        $ngModel.$touched && (!isChecked && isRequired ? ($ngModel.$setValidity("required", !1), 
-        $element.find(".tw-checkbox-button").addClass("has-error"), $element.closest(".checkbox").addClass("has-error"), 
-        $element.closest(".form-group").addClass("has-error")) : ($ngModel.$setValidity("required", !0), 
-        $element.find(".tw-checkbox-button").removeClass("has-error"), $element.closest(".checkbox").removeClass("has-error"), 
-        $element.closest(".form-group").removeClass("has-error")));
+        if ($ngModel.$touched) {
+            var button = $element[0].getElementsByClassName("tw-checkbox-button")[0], checkboxLabel = $element.closest(".checkbox")[0], formGroup = $element.closest(".form-group")[0];
+            !isChecked && isRequired ? ($ngModel.$setValidity("required", !1), button.classList.add("has-error"), 
+            checkboxLabel && checkboxLabel.classList.add("has-error"), formGroup && formGroup.classList.add("has-error")) : ($ngModel.$setValidity("required", !0), 
+            button.classList.remove("has-error"), checkboxLabel && checkboxLabel.classList.remove("has-error"), 
+            formGroup && formGroup.classList.remove("has-error"));
+        }
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
@@ -834,8 +838,9 @@
         function CheckboxController($scope, $element) {
             _classCallCheck(this, CheckboxController);
             var $ngModel = $element.controller("ngModel");
-            this.$element = $element, this.checked = this.isChecked(), this.addLabelHandler(), 
-            this.addWatchers($scope, $element, $ngModel);
+            this.$element = $element, this.element = $element[0], this.checked = this.isChecked(), 
+            this.addLabelHandler(), this.addWatchers($scope, $element, $ngModel), this.checkboxContainer = this.$element.closest(".checkbox")[0], 
+            this.label = !!this.checkboxContainer && this.checkboxContainer.getElementsByTagName("label")[0];
         }
         return _createClass(CheckboxController, [ {
             key: "isChecked",
@@ -852,12 +857,12 @@
         }, {
             key: "buttonFocus",
             value: function() {
-                this.$element.closest(".checkbox").find("label").addClass("focus"), this.$element.triggerHandler("focus");
+                this.label && this.label.classList.add("focus"), this.$element.triggerHandler("focus");
             }
         }, {
             key: "buttonBlur",
             value: function() {
-                this.$element.closest(".checkbox").find("label").removeClass("focus"), this.$element.triggerHandler("blur"), 
+                this.label && this.label.classList.remove("focus"), this.$element.triggerHandler("blur"), 
                 this.$ngModel.$setTouched(), validateCheckbox(this.checked, this.$element, this.$ngModel, this.ngRequired);
             }
         }, {
@@ -870,7 +875,8 @@
             value: function() {
                 var _this = this;
                 this.$element.closest("label").on("click", function(event) {
-                    _this.$element.find("button").trigger("click"), event.preventDefault(), event.stopPropagation();
+                    var button = _this.element.getElementsByTagName("button")[0];
+                    button.dispatchEvent(new Event("click")), event.preventDefault(), event.stopPropagation();
                 });
             }
         }, {
@@ -881,7 +887,9 @@
                     newValue !== oldValue && ($ngModel.$setDirty(), validateCheckbox(_this2.checked, $element, $ngModel, _this2.ngRequired), 
                     _this2.checked = _this2.isChecked());
                 }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
-                    newValue && !oldValue ? $element.closest(".checkbox").addClass("disabled").attr("disabled", !0) : !newValue && oldValue && $element.closest(".checkbox").removeClass("disabled").removeAttr("disabled");
+                    var checkbox = $element.closest(".checkbox")[0];
+                    checkbox && (newValue && !oldValue ? (checkbox.classList.add("disabled"), checkbox.setAttribute("disabled", !0)) : !newValue && oldValue && (checkbox.classList.remove("disabled"), 
+                    checkbox.removeAttribute("disabled")));
                 }), $scope.$watch("$ctrl.ngRequired", function(newValue, oldValue) {
                     newValue !== oldValue && validateCheckbox(_this2.checked, $element, $ngModel, _this2.ngRequired);
                 });
@@ -956,15 +964,17 @@
         function CurrencyInputController($element, $scope, $timeout, TwCurrencyService) {
             var _this = this;
             _classCallCheck(this, CurrencyInputController);
-            var $ngModel = $element.controller("ngModel");
+            var $ngModel = $element.controller("ngModel"), element = $element[0];
             this.CurrencyService = TwCurrencyService, this.$timeout = $timeout, this.showDecimals = !0, 
             $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
                 newValue !== oldValue && $ngModel.$setDirty();
             }), $scope.$watch("$ctrl.currency", function(newValue, oldValue) {
                 newValue !== oldValue && (_this.showDecimals = _this.CurrencyService.getDecimals(newValue) > 0);
-            }), $element.find("input").on("blur", function() {
+            });
+            var input = element.getElementsByTagName("input")[0];
+            input.addEventListener("blur", function() {
                 $ngModel.$setTouched(), $element.triggerHandler("blur");
-            }), $element[0].getAttribute("currency-code") && console && console.log && console.log("currency code is deprecated in twCurrencyInput, please use currency."), 
+            }), element.getAttribute("currency-code") && console && console.log && console.log("currency code is deprecated in twCurrencyInput, please use currency."), 
             $ngModel.$validators.min = function(modelValue, viewValue) {
                 return "undefined" == typeof _this.ngMin || null === _this.ngMin || !isNumber(viewValue) || viewValue >= _this.ngMin;
             }, $ngModel.$validators.max = function(modelValue, viewValue) {
@@ -1033,8 +1043,9 @@
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
     }
-    function resetFocus($element) {
-        $element.find("button").focus();
+    function resetFocus(element) {
+        var button = element.getElementsByTagName("button")[0];
+        button ? button.focus() : console.log("no button");
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
@@ -1051,22 +1062,26 @@
             return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
             Constructor;
         };
-    }(), _angular = __webpack_require__(0), _angular2 = _interopRequireDefault(_angular), _date = __webpack_require__(3), DateLookupController = (_interopRequireDefault(_date), 
+    }(), _date = __webpack_require__(3), DateLookupController = (_interopRequireDefault(_date), 
     function() {
         function DateLookupController($element, $scope, $timeout, TwDateService) {
             var _this = this;
             _classCallCheck(this, DateLookupController);
             var $ngModel = $element.controller("ngModel");
-            this.DateService = TwDateService, this.$element = $element, this.$timeout = $timeout, 
-            this.yearOffset = 0, this.addValidators($ngModel, $element), this.addWatchers($scope, $ngModel), 
-            $ngModel.$formatters.push(function(newDate) {
+            this.DateService = TwDateService, this.$element = $element, this.element = $element[0], 
+            this.$timeout = $timeout, this.yearOffset = 0, this.addValidators($ngModel, $element), 
+            this.addWatchers($scope, $ngModel), $ngModel.$formatters.push(function(newDate) {
                 return _this.updateCalendarView(newDate), newDate;
-            }), $element.find(".btn, .dropdown-menu").on("focusout", function() {
+            });
+            var formGroup = $element.parents(".form-group")[0], button = $element[0].getElementsByClassName("btn")[0], buttonGroup = $element[0].getElementsByClassName("btn-group")[0], dropdown = $element[0].getElementsByClassName("dropdown-menu")[0], onFocusOut = function() {
                 $timeout(function() {
-                    0 !== $element.find(".btn:focus").length || $element.find(".btn-group").hasClass("open") || ($element.parents(".form-group").removeClass("focus"), 
+                    button === document.activeElement || buttonGroup.classList.contains("open") || (formGroup && formGroup.classList.remove("focus"), 
                     $element.triggerHandler("blur"));
                 }, 150);
-            }), this.setLocale(this.locale), this.updateMinDateView(this.ngMin), this.updateMaxDateView(this.ngMax);
+            };
+            button.addEventListener("focusout", onFocusOut), dropdown.addEventListener("focusout", onFocusOut), 
+            this.setLocale(this.locale), this.updateMinDateView(this.ngMin), this.updateMaxDateView(this.ngMax), 
+            this.button = button;
         }
         return _createClass(DateLookupController, [ {
             key: "openLookup",
@@ -1076,14 +1091,15 @@
                 var viewDate = this.ngModel;
                 this.ngMin && this.ngModel < this.ngMin && (viewDate = this.ngMin), this.ngMax && this.ngModel > this.ngMax && (viewDate = this.ngMax), 
                 this.updateCalendarView(viewDate), this.$timeout(function() {
-                    _this2.$element.find(".tw-date-lookup-month-label").focus();
+                    var monthLabel = _this2.element.getElementsByClassName("tw-date-lookup-month-label")[0];
+                    monthLabel.focus();
                 });
             }
         }, {
             key: "selectDay",
             value: function($event, day, month, year) {
                 return this.isDayDisabled(day, month, year) ? void $event.stopPropagation() : (this.day = day, 
-                this.setModel(this.DateService.getUTCDateFromParts(year, month, day)), resetFocus(this.$element), 
+                this.setModel(this.DateService.getUTCDateFromParts(year, month, day)), resetFocus(this.element), 
                 void this.updateCalendarDatePresentation());
             }
         }, {
@@ -1142,15 +1158,13 @@
             }
         }, {
             key: "switchToMonths",
-            value: function($event) {
-                resetFocus(_angular2["default"].element($event.target)), this.findActiveLink(), 
-                $event.stopPropagation(), this.mode = "month";
+            value: function(event) {
+                this.findActiveLink(), event.stopPropagation(), this.mode = "month";
             }
         }, {
             key: "switchToYears",
-            value: function($event) {
-                resetFocus(_angular2["default"].element($event.target)), this.findActiveLink(), 
-                $event.stopPropagation(), this.mode = "year";
+            value: function(event) {
+                this.findActiveLink(), event.stopPropagation(), this.mode = "year";
             }
         }, {
             key: "setYearOffset",
@@ -1160,12 +1174,8 @@
         }, {
             key: "buttonFocus",
             value: function() {
-                this.$element.parents(".form-group").addClass("focus"), this.$element.triggerHandler("focus");
-            }
-        }, {
-            key: "blur",
-            value: function() {
-                this.$element.triggerHandler("focus");
+                var formGroup = this.$element.parents(".form-group")[0];
+                formGroup && formGroup.classList.add("focus"), this.$element.triggerHandler("focus");
             }
         }, {
             key: "addValidators",
@@ -1173,12 +1183,18 @@
                 var _this3 = this;
                 $ngModel.$validators.min = function(modelValue, viewValue) {
                     var value = modelValue || viewValue;
-                    return !(value && value < _this3.ngMin) || ($element.parents(".form-group").addClass("has-error"), 
-                    !1);
+                    if (value && value < _this3.ngMin) {
+                        var formGroup = $element.parents(".form-group")[0];
+                        return formGroup && formGroup.classList.add("has-error"), !1;
+                    }
+                    return !0;
                 }, $ngModel.$validators.max = function(modelValue, viewValue) {
                     var value = modelValue || viewValue;
-                    return !(value && value > _this3.ngMax) || ($element.parents(".form-group").addClass("has-error"), 
-                    !1);
+                    if (value && value > _this3.ngMax) {
+                        var formGroup = $element.parents(".form-group")[0];
+                        return formGroup && formGroup.classList.add("has-error"), !1;
+                    }
+                    return !0;
                 };
             }
         }, {
@@ -1285,7 +1301,8 @@
             value: function() {
                 var _this5 = this;
                 this.$timeout(function() {
-                    _this5.$element.find("a.active").focus();
+                    var activeLink = _this5.element.getElementsByClassName("active")[0];
+                    activeLink.focus();
                 });
             }
         }, {
@@ -1387,10 +1404,10 @@
         });
     }
     function addBlurHandlers($element, $ngModel) {
-        var dayTouched = void 0, yearTouched = void 0;
-        $element.find("input[name=day]").on("blur", function() {
+        var dayTouched = void 0, yearTouched = void 0, dayInput = $element[0].querySelector("input[name=day]"), yearInput = $element[0].querySelector("input[name=year]");
+        dayInput.addEventListener("blur", function() {
             dayTouched = !0, dayTouched && yearTouched && ($ngModel.$setTouched(), $element.triggerHandler("blur"));
-        }), $element.find("input[name=year]").on("blur", function() {
+        }), yearInput.addEventListener("blur", function() {
             yearTouched = !0, $ngModel.$setTouched(), $element.triggerHandler("blur");
         });
     }
@@ -1750,11 +1767,11 @@
         };
     }
     function FocusableLink(scope, element) {
-        var formGroup = $(element).closest(".form-group"), focusable = element[0];
-        focusable && focusable.addEventListener && (focusable.addEventListener("focus", function() {
-            formGroup.addClass("focus");
+        var formGroup = $(element).closest(".form-group")[0], focusable = element[0];
+        formGroup && focusable && (focusable.addEventListener("focus", function() {
+            formGroup.classList.add("focus");
         }), focusable.addEventListener("blur", function() {
-            formGroup.removeClass("focus");
+            formGroup.classList.remove("focus");
         }));
     }
     function Focusable() {
@@ -1838,7 +1855,8 @@
         function RadioController($scope, $element) {
             _classCallCheck(this, RadioController);
             var $ngModel = $element.controller("ngModel");
-            this.$element = $element, this.checked = this.isChecked(), $element.on("blur", function() {
+            this.$element = $element, this.checked = this.isChecked(), this.label = $element.closest("label")[0], 
+            $element.on("blur", function() {
                 $ngModel.$setTouched();
             }), this.addWatchers($scope, $element);
         }
@@ -1855,12 +1873,12 @@
         }, {
             key: "buttonFocus",
             value: function() {
-                this.$element.closest("label").addClass("focus"), this.$element.triggerHandler("focus");
+                this.label && this.label.classList.add("focus"), this.$element.triggerHandler("focus");
             }
         }, {
             key: "buttonBlur",
             value: function() {
-                this.$element.closest("label").removeClass("focus"), this.$element.triggerHandler("blur");
+                this.label && this.label.classList.remove("focus"), this.$element.triggerHandler("blur");
             }
         }, {
             key: "hiddenInputChange",
@@ -1874,7 +1892,9 @@
                 $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
                     newValue !== oldValue && _this.$ngModel.$setDirty(), _this.checked = _this.isChecked();
                 }), $scope.$watch("$ctrl.ngDisabled", function(newValue, oldValue) {
-                    newValue && !oldValue ? $element.closest(".radio").addClass("disabled").attr("disabled", !0) : !newValue && oldValue && $element.closest(".radio").removeClass("disabled").removeAttr("disabled");
+                    var radioLabel = $element.closest(".radio")[0];
+                    radioLabel && (newValue && !oldValue ? (radioLabel.classList.add("disabled"), radioLabel.setAttribute("disabled", !0)) : !newValue && oldValue && (radioLabel.classList.remove("disabled"), 
+                    radioLabel.removeAttribute("disabled")));
                 });
             }
         } ]), RadioController;
@@ -2045,25 +2065,31 @@
         });
     }
     function addEventHandlers($ctrl, $element, $ngModel, options, $timeout) {
-        var onFocusOut = function() {
+        var element = $element[0], button = element.getElementsByClassName("btn")[0], buttonGroup = element.getElementsByClassName("btn-group")[0], dropdown = element.getElementsByClassName("dropdown-menu")[0], onFocusOut = function() {
             $timeout(function() {
-                0 !== $element.find(".btn:focus").length || $element.find(".btn-group").hasClass("open") || $element.trigger("blur");
+                button === document.activeElement || buttonGroup.classList.contains("open") || $element.trigger("blur");
             }, 150);
-        };
-        $element.find(".btn, .dropdown-menu").on("focusout", onFocusOut);
-        var element = $element[0], button = element.getElementsByClassName("btn")[0], list = element.getElementsByTagName("ul")[0];
-        element.addEventListener("blur", function() {
-            $ngModel.$setTouched();
-        }), $element.find(".btn").on("keypress", function(event) {
-            $ctrl.optionKeypress(event);
-        }), button.addEventListener("click", function() {
-            var filterInput = element.getElementsByClassName("tw-select-filter")[0];
+        }, onButtonClick = function() {
             $timeout(function() {
-                $element.attr("filter") ? filterInput.focus() : $element.find(".active a").focus();
+                if ($element.attr("filter")) {
+                    var filterInput = element.getElementsByClassName("tw-select-filter")[0];
+                    filterInput.focus();
+                } else focusOnActiveLink(element);
             });
-        }), list.addEventListener("keypress", function(event) {
+        }, onButtonKeypress = function(event) {
+            $ctrl.optionKeypress(event);
+        }, onDrodownKeypress = function(event) {
             "a" === event.target.tagName.toLowerCase() && $ctrl.optionKeypress(event);
-        });
+        }, onComponentBlur = function() {
+            $ngModel.$setTouched();
+        };
+        element.addEventListener("blur", onComponentBlur), $(button).on("keypress", onButtonKeypress), 
+        button.addEventListener("click", onButtonClick), button.addEventListener("focusout", onFocusOut), 
+        dropdown.addEventListener("focusout", onFocusOut), dropdown.addEventListener("keypress", onDrodownKeypress);
+    }
+    function focusOnActiveLink(element) {
+        var activeOption = element.getElementsByClassName("active")[0];
+        activeOption && activeOption.getElementsByTagName("a")[0].focus();
     }
     function checkForTranscludedContent($transclude, $ctrl) {
         $transclude(function(clone) {
@@ -2200,7 +2226,7 @@
                     var characterCode = getCharacterCodeFromKeypress(event);
                     if (8 === characterCode) return void event.preventDefault();
                     var character = getCharacterFromKeypress(event);
-                    continueSearchAndSelectMatch(this.$ngModel, this, this.options, character), this.$element.find(".active a").focus();
+                    continueSearchAndSelectMatch(this.$ngModel, this, this.options, character), focusOnActiveLink(this.$element[0]);
                 }
             }
         }, {
@@ -2229,9 +2255,10 @@
                 });
             }
         }, {
-            key: "filterFocus",
+            key: "focusOnFilterInput",
             value: function() {
-                this.$element.find(".tw-select-filter").focus();
+                var filterInput = this.element.getElementsByClassName("tw-select-filter")[0];
+                filterInput && filterInput.focus();
             }
         }, {
             key: "filterChange",
@@ -2243,7 +2270,7 @@
         }, {
             key: "filterKeydown",
             value: function(event) {
-                var characterCode = event.which || event.charCode || event.keyCode, activeOption = this.$element.find(".active"), activeLink = activeOption.find("a"), optionLinks = this.$element.find(".tw-select-option-link");
+                var characterCode = event.which || event.charCode || event.keyCode, activeOption = this.element.getElementsByClassName("active")[0], activeLink = !!activeOption && activeOption.getElementsByTagName("a")[0], optionLinks = this.element.getElementsByClassName("tw-select-option-link");
                 return characterCode === keys.down ? (this.moveDownOneOption(activeOption, activeLink, optionLinks), 
                 event.preventDefault()) : characterCode === keys.up ? (this.moveUpOneOption(activeOption, activeLink, optionLinks), 
                 event.preventDefault()) : characterCode === keys["return"] && (activeOption.click(), 
@@ -2252,25 +2279,25 @@
         }, {
             key: "selectOptionUsingLink",
             value: function(link) {
-                var option = this.filteredOptions[link.attr("index")];
+                var option = this.filteredOptions[link.getAttribute("index")];
                 selectOption(this.$ngModel, this, option);
             }
         }, {
             key: "moveUpOneOption",
             value: function(activeOption, activeLink, optionLinks) {
-                if (!activeOption.length && optionLinks.length) return void this.selectOptionUsingLink(_angular2["default"].element(optionLinks[optionLinks.length - 1]));
-                if (activeLink[0] !== optionLinks[0]) {
-                    var previousOptions = activeOption.prevAll(".tw-select-option");
-                    this.selectOptionUsingLink(_angular2["default"].element(previousOptions[0]).find("a"));
+                if (!activeOption && optionLinks.length) return void this.selectOptionUsingLink(optionLinks[optionLinks.length - 1]);
+                if (activeLink !== optionLinks[0]) {
+                    var previousOptions = $(activeOption).prevAll(".tw-select-option"), previousOptionLink = previousOptions[0].getElementsByTagName("a")[0];
+                    this.selectOptionUsingLink(previousOptionLink);
                 }
             }
         }, {
             key: "moveDownOneOption",
             value: function(activeOption, activeLink, optionLinks) {
-                if (!activeOption.length && optionLinks.length) return void this.selectOptionUsingLink(_angular2["default"].element(optionLinks[0]));
-                if (activeLink[0] !== optionLinks[optionLinks.length - 1]) {
-                    var nextOptions = activeOption.nextAll(".tw-select-option");
-                    return void this.selectOptionUsingLink(_angular2["default"].element(nextOptions[0]).find("a"));
+                if (!activeOption && optionLinks.length) return void this.selectOptionUsingLink(optionLinks[0]);
+                if (activeLink !== optionLinks[optionLinks.length - 1]) {
+                    var nextOptions = $(activeOption).nextAll(".tw-select-option"), nextOptionLink = nextOptions[0].getElementsByTagName("a")[0];
+                    return void this.selectOptionUsingLink(nextOptionLink);
                 }
                 var transcludedOption = this.$element[0].getElementsByClassName("tw-select-transcluded");
                 transcludedOption.length && transcludedOption[0].getElementsByTagName("a")[0].focus();
@@ -3186,9 +3213,10 @@
             });
         });
     }
-    function checkModelAndUpdate(ngModel, formGroup, element) {
-        return ngModel.$valid ? (formGroup.removeClass("has-error"), void element.removeAttr("aria-invalid")) : void (ngModel.$touched && ngModel.$dirty && (formGroup.addClass("has-error"), 
-        element.attr("aria-invalid", !0)));
+    function checkModelAndUpdate(ngModel, $formGroup, $element) {
+        var formGroup = $formGroup[0], element = $element[0];
+        return ngModel.$valid ? (formGroup && formGroup.classList.remove("has-error"), void element.removeAttribute("aria-invalid")) : void (ngModel.$touched && ngModel.$dirty && (formGroup && formGroup.classList.add("has-error"), 
+        element.setAttribute("aria-invalid")));
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
@@ -3209,8 +3237,8 @@
     "use strict";
     function FormValidationLink(scope, element) {
         element[0].addEventListener("submit", function() {
-            var elements = element.querySelectorAll("[tw-validation].ng-invalid");
-            return $(elements).closest(".form-group").addClass("has-error"), $(elements).closest(".checkbox, .radio").addClass("has-error"), 
+            var elements = element.querySelectorAll("[tw-validation].ng-invalid"), formGroup = $(elements).closest(".form-group")[0], optionLabel = $(elements).closest(".checkbox, .radio")[0];
+            return formGroup && formGroup.classList.add("has-error"), optionLabel && optionLabel.classList.add("has-error"), 
             !0;
         });
     }
@@ -3254,7 +3282,7 @@
 }, function(module, exports) {
     module.exports = '<tw-tabs\n  ng-if="$ctrl.requirements.length > 1"\n  tabs="$ctrl.requirements"\n  active="$ctrl.model.type">\n</tw-tabs>\n<div class="tab-content" ng-form="twForm">\n  <div ng-repeat="requirementType in $ctrl.requirements"\n    ng-if="$ctrl.model.type == requirementType.type"\n    class="tab-pane active"\n    id="{{requirementType.type}}">\n    <p>{{requirementType.description}}</p>\n    <tw-fieldset\n      fields="requirementType.fields"\n      model="$ctrl.model"\n      upload-options="$ctrl.uploadOptions"\n      locale="{{$ctrl.locale}}"\n      onRefreshRequirements="$ctrl.onRefreshRequirements()"\n      validation-messages="$ctrl.validationMessages"\n      error-messages="$ctrl.errorMessages">\n    </tw-fieldset>\n  </div>\n</div>\n';
 }, function(module, exports) {
-    module.exports = '<div class="btn-group btn-block tw-select"\n  ng-class="{\n    dropdown: !$ctrl.dropdownUp,\n    dropup: $ctrl.dropdownUp\n  }" aria-hidden="false">\n\n  <button type="button" class="btn btn-input dropdown-toggle"\n    ng-class="{\n      \'btn-input-inverse\': $ctrl.inverse,\n      \'btn-addon\': $ctrl.inverse,\n      \'btn-sm\': $ctrl.size === \'sm\',\n      \'btn-lg\': $ctrl.size === \'lg\'\n    }"\n    data-toggle="dropdown" aria-expanded="false"\n    ng-disabled="$ctrl.ngDisabled"\n    ng-focus="$ctrl.buttonFocus()"\n    tw-focusable>\n\n    <span class="tw-select-selected" ng-if="$ctrl.selected">\n      <span class="circle circle-inverse pull-xs-left circle-sm"\n        ng-if="$ctrl.selected && $ctrl.selected.icon && $ctrl.selected.secondary">\n        <span class="icon {{$ctrl.selected.icon}}"></span>\n      </span>\n\n      <span class="circle circle-inverse pull-xs-left"\n        ng-class="$ctrl.circleClasses($ctrl.hideCircle)"\n        ng-if="($ctrl.selected.circleText || $ctrl.selected.circleImage || $ctrl.selected.circleIcon)">\n        <span ng-if="$ctrl.selected.circleText">{{$ctrl.selected.circleText}}</span>\n        <img alt="{{$ctrl.selected.label}}"\n          ng-if="$ctrl.selected.circleImage"\n          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="\n          ng-src="{{$ctrl.selected.circleImage}}" />\n        <span ng-if="$ctrl.selected.circleIcon" class="icon {{$ctrl.selected.circleIcon}}"></span>\n      </span>\n\n      <span class="text-ellipsis">\n        <span class="currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}}"\n          ng-if="$ctrl.selected && $ctrl.selected.currency"\n          ng-class="$ctrl.responsiveClasses($ctrl.hideCurrency)"\n        ></span>\n        <span class="icon {{$ctrl.selected.icon}}"\n          ng-if="$ctrl.selected && $ctrl.selected.icon && !$ctrl.selected.secondary"\n          ng-class="$ctrl.responsiveClasses($ctrl.hideIcon)"\n        ></span>\n        <span class="tw-select-label"\n          ng-class="$ctrl.responsiveClasses($ctrl.hideLabel)">\n          {{$ctrl.selected.label}}\n        </span>\n        <span\n          ng-if="$ctrl.selected.note"\n          ng-class="$ctrl.responsiveClasses($ctrl.hideNote)"\n          class="tw-select-note small m-l-1">\n          {{$ctrl.selected.note}}\n        </span>\n\n        <span\n          ng-if="$ctrl.selected.secondary"\n          ng-class="$ctrl.responsiveClasses($ctrl.hideSecondary)"\n          class="tw-select-secondary small secondary text-ellipsis">\n          {{$ctrl.selected.secondary}}\n        </span>\n      </span>\n    </span>\n\n    <span class="form-control-placeholder" ng-if="!$ctrl.selected">{{$ctrl.placeholder}}</span>\n    <span class="caret"></span>\n  </button>\n  <ul class="dropdown-menu" role="menu" ng-class="{\n      \'dropdown-menu-xs-right\': $ctrl.dropdownRight === \'xs\',\n      \'dropdown-menu-sm-right\': $ctrl.dropdownRight === \'sm\',\n      \'dropdown-menu-md-right\': $ctrl.dropdownRight === \'md\',\n      \'dropdown-menu-lg-right\': $ctrl.dropdownRight === \'lg\',\n      \'dropdown-menu-xl-right\': $ctrl.dropdownRight === \'xl\',\n      \'dropdown-menu-sm\': $ctrl.dropdownWidth === \'sm\',\n      \'dropdown-menu-md\': $ctrl.dropdownWidth === \'md\',\n      \'dropdown-menu-lg\': $ctrl.dropdownWidth === \'lg\'\n    }">\n\n    <li ng-if="$ctrl.filter">\n      <a href="" class="tw-select-filter-link p-a-0" tabindex="-1"\n        ng-focus="$ctrl.filterFocus()">\n        <div class="input-group">\n          <span class="input-group-addon"><span class="icon icon-search"></span> </span>\n          <input type="text"\n            class="form-control tw-select-filter"\n            placeholder="{{$ctrl.filter}}"\n            ng-model="$ctrl.filterString"\n            ng-change="$ctrl.filterChange()"\n            ng-keydown="$ctrl.filterKeydown($event)" />\n        </div>\n      </a>\n    </li>\n\n    <li ng-class="{active: !$ctrl.selected}"\n      ng-if="$ctrl.placeholder && !$ctrl.ngRequired && !$ctrl.filter">\n      <a href="" tabindex="-1"\n        ng-click="$ctrl.placeholderClick()"\n        ng-focus="$ctrl.placeholderFocus()"\n        class="tw-select-placeholder" tw-focusable>\n        {{$ctrl.placeholder}}\n      </a>\n    </li>\n\n    <li ng-if="($ctrl.placeholder && !$ctrl.ngRequired) || $ctrl.filter" class="divider"></li>\n\n    <li\n      ng-repeat="option in $ctrl.filteredOptions"\n      ng-class="{\n        \'active\': $ctrl.ngModel === option.value,\n        \'disabled\': option.disabled,\n        \'dropdown-header\': option.header,\n        \'tw-select-option\': !option.header && !option.disabled\n      }">\n      <span ng-if="option.header" class="text-ellipsis">{{option.header}}</span>\n      <a href=""\n        ng-if="!option.header"\n        ng-click="$ctrl.optionClick(option, $event)"\n        ng-focus="$ctrl.optionFocus(option)"\n        ng-class="{\'tw-select-option-link\': !option.disabled}"\n        index="{{$index}}"\n        tabindex="-1"\n        tw-focusable >\n        <div ng-if="option.icon && option.secondary"\n          class="circle circle-inverse pull-xs-left circle-sm">\n          <span class="icon {{option.icon}}"></span>\n        </div>\n        <span ng-if="option.icon && !option.secondary"\n          class="icon {{option.icon}} pull-xs-left" >\n        </span> <span ng-if="option.currency"\n          class="currency-flag currency-flag-{{option.currency | lowercase}} pull-xs-left" >\n        </span> <span class="circle circle-inverse pull-xs-left"\n          ng-class="{\n            \'circle-sm\': option.secondary,\n            \'circle-xs\': !option.secondary\n          }"\n          ng-if="option.circleText || option.circleImage || option.circleIcon">\n          <span class="tw-select-circle-text"\n            ng-if="option.circleText">{{option.circleText}}</span>\n          <img alt="{{option.label}}"\n            ng-if="option.circleImage"\n            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="\n            ng-src="{{option.circleImage}}" />\n          <span ng-if="option.circleIcon" class="icon {{option.circleIcon}}"></span>\n        </span>{{option.label}}<span\n          ng-if="option.note" class="tw-select-note small m-l-1">{{option.note}}</span><span\n          ng-if="option.secondary"\n          class="tw-select-secondary small text-ellipsis">{{option.secondary}}</span>\n      </a>\n    </li>\n\n    <li ng-if="$ctrl.hasTranscluded" class="divider"></li>\n\n    <li ng-transclude ng-if="$ctrl.hasTranscluded" class="tw-select-transcluded"></li>\n  </ul>\n</div>\n<input type="hidden" class="tw-select-hidden"\n  name="{{$ctrl.name}}"\n  value="{{$ctrl.ngModel}}"\n  ng-disabled="$ctrl.ngDisabled" />\n';
+    module.exports = '<div class="btn-group btn-block tw-select"\n  ng-class="{\n    dropdown: !$ctrl.dropdownUp,\n    dropup: $ctrl.dropdownUp\n  }" aria-hidden="false">\n\n  <button type="button" class="btn btn-input dropdown-toggle"\n    ng-class="{\n      \'btn-input-inverse\': $ctrl.inverse,\n      \'btn-addon\': $ctrl.inverse,\n      \'btn-sm\': $ctrl.size === \'sm\',\n      \'btn-lg\': $ctrl.size === \'lg\'\n    }"\n    data-toggle="dropdown" aria-expanded="false"\n    ng-disabled="$ctrl.ngDisabled"\n    ng-focus="$ctrl.buttonFocus()"\n    tw-focusable>\n\n    <span class="tw-select-selected" ng-if="$ctrl.selected">\n      <span class="circle circle-inverse pull-xs-left circle-sm"\n        ng-if="$ctrl.selected && $ctrl.selected.icon && $ctrl.selected.secondary">\n        <span class="icon {{$ctrl.selected.icon}}"></span>\n      </span>\n\n      <span class="circle circle-inverse pull-xs-left"\n        ng-class="$ctrl.circleClasses($ctrl.hideCircle)"\n        ng-if="($ctrl.selected.circleText || $ctrl.selected.circleImage || $ctrl.selected.circleIcon)">\n        <span ng-if="$ctrl.selected.circleText">{{$ctrl.selected.circleText}}</span>\n        <img alt="{{$ctrl.selected.label}}"\n          ng-if="$ctrl.selected.circleImage"\n          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="\n          ng-src="{{$ctrl.selected.circleImage}}" />\n        <span ng-if="$ctrl.selected.circleIcon" class="icon {{$ctrl.selected.circleIcon}}"></span>\n      </span>\n\n      <span class="text-ellipsis">\n        <span class="currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}}"\n          ng-if="$ctrl.selected && $ctrl.selected.currency"\n          ng-class="$ctrl.responsiveClasses($ctrl.hideCurrency)"\n        ></span>\n        <span class="icon {{$ctrl.selected.icon}}"\n          ng-if="$ctrl.selected && $ctrl.selected.icon && !$ctrl.selected.secondary"\n          ng-class="$ctrl.responsiveClasses($ctrl.hideIcon)"\n        ></span>\n        <span class="tw-select-label"\n          ng-class="$ctrl.responsiveClasses($ctrl.hideLabel)">\n          {{$ctrl.selected.label}}\n        </span>\n        <span\n          ng-if="$ctrl.selected.note"\n          ng-class="$ctrl.responsiveClasses($ctrl.hideNote)"\n          class="tw-select-note small m-l-1">\n          {{$ctrl.selected.note}}\n        </span>\n\n        <span\n          ng-if="$ctrl.selected.secondary"\n          ng-class="$ctrl.responsiveClasses($ctrl.hideSecondary)"\n          class="tw-select-secondary small secondary text-ellipsis">\n          {{$ctrl.selected.secondary}}\n        </span>\n      </span>\n    </span>\n\n    <span class="form-control-placeholder" ng-if="!$ctrl.selected">{{$ctrl.placeholder}}</span>\n    <span class="caret"></span>\n  </button>\n  <ul class="dropdown-menu" role="menu" ng-class="{\n      \'dropdown-menu-xs-right\': $ctrl.dropdownRight === \'xs\',\n      \'dropdown-menu-sm-right\': $ctrl.dropdownRight === \'sm\',\n      \'dropdown-menu-md-right\': $ctrl.dropdownRight === \'md\',\n      \'dropdown-menu-lg-right\': $ctrl.dropdownRight === \'lg\',\n      \'dropdown-menu-xl-right\': $ctrl.dropdownRight === \'xl\',\n      \'dropdown-menu-sm\': $ctrl.dropdownWidth === \'sm\',\n      \'dropdown-menu-md\': $ctrl.dropdownWidth === \'md\',\n      \'dropdown-menu-lg\': $ctrl.dropdownWidth === \'lg\'\n    }">\n\n    <li ng-if="$ctrl.filter">\n      <a href="" class="tw-select-filter-link p-a-0" tabindex="-1"\n        ng-focus="$ctrl.focusOnFilterInput()">\n        <div class="input-group">\n          <span class="input-group-addon"><span class="icon icon-search"></span> </span>\n          <input type="text"\n            class="form-control tw-select-filter"\n            placeholder="{{$ctrl.filter}}"\n            ng-model="$ctrl.filterString"\n            ng-change="$ctrl.filterChange()"\n            ng-keydown="$ctrl.filterKeydown($event)" />\n        </div>\n      </a>\n    </li>\n\n    <li ng-class="{active: !$ctrl.selected}"\n      ng-if="$ctrl.placeholder && !$ctrl.ngRequired && !$ctrl.filter">\n      <a href="" tabindex="-1"\n        ng-click="$ctrl.placeholderClick()"\n        ng-focus="$ctrl.placeholderFocus()"\n        class="tw-select-placeholder" tw-focusable>\n        {{$ctrl.placeholder}}\n      </a>\n    </li>\n\n    <li ng-if="($ctrl.placeholder && !$ctrl.ngRequired) || $ctrl.filter" class="divider"></li>\n\n    <li\n      ng-repeat="option in $ctrl.filteredOptions"\n      ng-class="{\n        \'active\': $ctrl.ngModel === option.value,\n        \'disabled\': option.disabled,\n        \'dropdown-header\': option.header,\n        \'tw-select-option\': !option.header && !option.disabled\n      }">\n      <span ng-if="option.header" class="text-ellipsis">{{option.header}}</span>\n      <a href=""\n        ng-if="!option.header"\n        ng-click="$ctrl.optionClick(option, $event)"\n        ng-focus="$ctrl.optionFocus(option)"\n        ng-class="{\'tw-select-option-link\': !option.disabled}"\n        index="{{$index}}"\n        tabindex="-1"\n        tw-focusable >\n        <div ng-if="option.icon && option.secondary"\n          class="circle circle-inverse pull-xs-left circle-sm">\n          <span class="icon {{option.icon}}"></span>\n        </div>\n        <span ng-if="option.icon && !option.secondary"\n          class="icon {{option.icon}} pull-xs-left" >\n        </span> <span ng-if="option.currency"\n          class="currency-flag currency-flag-{{option.currency | lowercase}} pull-xs-left" >\n        </span> <span class="circle circle-inverse pull-xs-left"\n          ng-class="{\n            \'circle-sm\': option.secondary,\n            \'circle-xs\': !option.secondary\n          }"\n          ng-if="option.circleText || option.circleImage || option.circleIcon">\n          <span class="tw-select-circle-text"\n            ng-if="option.circleText">{{option.circleText}}</span>\n          <img alt="{{option.label}}"\n            ng-if="option.circleImage"\n            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="\n            ng-src="{{option.circleImage}}" />\n          <span ng-if="option.circleIcon" class="icon {{option.circleIcon}}"></span>\n        </span>{{option.label}}<span\n          ng-if="option.note" class="tw-select-note small m-l-1">{{option.note}}</span><span\n          ng-if="option.secondary"\n          class="tw-select-secondary small text-ellipsis">{{option.secondary}}</span>\n      </a>\n    </li>\n\n    <li ng-if="$ctrl.hasTranscluded" class="divider"></li>\n\n    <li ng-transclude ng-if="$ctrl.hasTranscluded" class="tw-select-transcluded"></li>\n  </ul>\n</div>\n<input type="hidden" class="tw-select-hidden"\n  name="{{$ctrl.name}}"\n  value="{{$ctrl.ngModel}}"\n  ng-disabled="$ctrl.ngDisabled" />\n';
 }, function(module, exports) {
     module.exports = '<div class="text-center tw-upload-droppable-box"\n  ng-class="{\'active\': $ctrl.isActive}">\n  <span class="icon icon-upload tw-upload-droppable-icon"></span>\n  <h4 class="m-t-2" ng-if="$ctrl.title">{{$ctrl.title}}</h4>\n  <div class="row">\n    <div class="col-xs-12 col-sm-6 col-sm-offset-3 m-t-1">\n    <ng-transclude></ng-transclude>\n    <label class="link" for="file-upload">{{$ctrl.cta}}</label>\n    <input tw-file-select id="file-upload"\n      type="file"\n      accept="{{$ctrl.accept}}"\n      class="hidden"\n      on-user-input="$ctrl.onManualUpload"/>\n    </div>\n  </div>\n</div>\n';
 }, function(module, exports) {

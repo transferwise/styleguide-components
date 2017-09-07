@@ -3,6 +3,7 @@ import CurrencyService from '../../services/currency/'; // eslint-disable-line n
 class CurrencyInputController {
   constructor($element, $scope, $timeout, TwCurrencyService) {
     const $ngModel = $element.controller('ngModel');
+    const element = $element[0];
 
     this.CurrencyService = TwCurrencyService;
     this.$timeout = $timeout;
@@ -19,13 +20,14 @@ class CurrencyInputController {
       }
     });
 
-    $element.find('input').on('blur', () => {
+    const input = element.getElementsByTagName('input')[0];
+    input.addEventListener('blur', () => {
       $ngModel.$setTouched();
       $element.triggerHandler('blur');
     });
 
     // eslint-disable-next-line no-console
-    if ($element[0].getAttribute('currency-code') && console && console.log) {
+    if (element.getAttribute('currency-code') && console && console.log) {
       // eslint-disable-next-line no-console
       console.log('currency code is deprecated in twCurrencyInput, please use currency.');
     }

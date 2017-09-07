@@ -1,15 +1,15 @@
 import angular from 'angular';
 
 function FocusableLink(scope, element) {
-  const formGroup = $(element).closest('.form-group'); // eslint-disable-line
+  const formGroup = $(element).closest('.form-group')[0]; // eslint-disable-line
   const focusable = element[0];
 
-  if (focusable && focusable.addEventListener) {
+  if (formGroup && focusable) {
     focusable.addEventListener('focus', () => {
-      formGroup.addClass('focus');
+      formGroup.classList.add('focus');
     });
     focusable.addEventListener('blur', () => {
-      formGroup.removeClass('focus');
+      formGroup.classList.remove('focus');
     });
   }
 }

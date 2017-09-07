@@ -20,7 +20,8 @@ class AmountCurrencySelectController {
       }
     });
 
-    $element.find('input').on('blur', () => {
+    const input = $element[0].getElementsByTagName('input')[0];
+    input.addEventListener('blur', () => {
       $ngModel.$setTouched();
       $element.triggerHandler('blur');
     });

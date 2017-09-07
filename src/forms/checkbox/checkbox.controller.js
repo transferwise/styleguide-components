@@ -3,10 +3,17 @@ class CheckboxController {
     const $ngModel = $element.controller('ngModel');
 
     this.$element = $element;
+    this.element = $element[0];
     this.checked = this.isChecked();
 
     this.addLabelHandler();
     this.addWatchers($scope, $element, $ngModel);
+
+    this.checkboxContainer = this.$element.closest('.checkbox')[0];
+    this.label =
+      this.checkboxContainer ?
+        this.checkboxContainer.getElementsByTagName('label')[0] :
+        false;
   }
 
   isChecked() {
@@ -39,19 +46,17 @@ class CheckboxController {
   }
 
   buttonFocus() {
-    this.$element
-      .closest('.checkbox')
-      .find('label')
-      .addClass('focus');
+    if (this.label) {
+      this.label.classList.add('focus');
+    }
 
     this.$element.triggerHandler('focus');
   }
 
   buttonBlur() {
-    this.$element
-      .closest('.checkbox')
-      .find('label')
-      .removeClass('focus');
+    if (this.label) {
+      this.label.classList.remove('focus');
+    }
 
     this.$element.triggerHandler('blur');
     this.$ngModel.$setTouched();
@@ -72,8 +77,9 @@ class CheckboxController {
 
   addLabelHandler() {
     this.$element.closest('label').on('click', (event) => {
+      const button = this.element.getElementsByTagName('button')[0];
       // Trigger our button, prevent default label behaviour
-      this.$element.find('button').trigger('click');
+      button.dispatchEvent(new Event('click'));
       event.preventDefault();
       event.stopPropagation();
     });
@@ -94,16 +100,16 @@ class CheckboxController {
     });
 
     $scope.$watch('$ctrl.ngDisabled', (newValue, oldValue) => {
+      const checkbox = $element.closest('.checkbox')[0];
+      if (!checkbox) {
+        return;
+      }
       if (newValue && !oldValue) {
-        $element
-          .closest('.checkbox')
-          .addClass('disabled')
-          .attr('disabled', true);
+        checkbox.classList.add('disabled');
+        checkbox.setAttribute('disabled', true);
       } else if (!newValue && oldValue) {
-        $element
-          .closest('.checkbox')
-          .removeClass('disabled')
-          .removeAttr('disabled');
+        checkbox.classList.remove('disabled');
+        checkbox.removeAttribute('disabled');
       }
     });
 
@@ -125,16 +131,28 @@ function validateCheckbox(isChecked, $element, $ngModel, isRequired) {
     return;
   }
 
+  const button = $element[0].getElementsByClassName('tw-checkbox-button')[0];
+  const checkboxLabel = $element.closest('.checkbox')[0];
+  const formGroup = $element.closest('.form-group')[0];
+
   if (!isChecked && isRequired) {
     $ngModel.$setValidity('required', false);
-    $element.find('.tw-checkbox-button').addClass('has-error');
-    $element.closest('.checkbox').addClass('has-error');
-    $element.closest('.form-group').addClass('has-error');
+    button.classList.add('has-error');
+    if (checkboxLabel) {
+      checkboxLabel.classList.add('has-error');
+    }
+    if (formGroup) {
+      formGroup.classList.add('has-error');
+    }
   } else {
     $ngModel.$setValidity('required', true);
-    $element.find('.tw-checkbox-button').removeClass('has-error');
-    $element.closest('.checkbox').removeClass('has-error');
-    $element.closest('.form-group').removeClass('has-error');
+    button.classList.remove('has-error');
+    if (checkboxLabel) {
+      checkboxLabel.classList.remove('has-error');
+    }
+    if (formGroup) {
+      formGroup.classList.remove('has-error');
+    }
   }
 }
 
