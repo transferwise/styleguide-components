@@ -276,9 +276,7 @@ function addEventHandlers($ctrl, $element, $ngModel, options, $timeout) {
   };
 
   element.addEventListener('blur', onComponentBlur);
-  // TODO doesn't work in tests???? - change triggering style to native
-  // button.addEventListener('keypress', onButtonKeypress);
-  $(button).on('keypress', onButtonKeypress); // eslint-disable-line
+  button.addEventListener('keypress', onButtonKeypress);
   button.addEventListener('click', onButtonClick);
   button.addEventListener('focusout', onFocusOut);
   dropdown.addEventListener('focusout', onFocusOut);

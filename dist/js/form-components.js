@@ -1729,7 +1729,7 @@
         }, onComponentBlur = function() {
             $ngModel.$setTouched();
         };
-        element.addEventListener("blur", onComponentBlur), $(button).on("keypress", onButtonKeypress), 
+        element.addEventListener("blur", onComponentBlur), button.addEventListener("keypress", onButtonKeypress), 
         button.addEventListener("click", onButtonClick), button.addEventListener("focusout", onFocusOut), 
         dropdown.addEventListener("focusout", onFocusOut), dropdown.addEventListener("keypress", onDrodownKeypress);
     }

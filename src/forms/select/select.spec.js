@@ -1064,34 +1064,29 @@ describe('Select', function() {
   }
 
   function triggerKeypress(target, letter) {
-    //$(target).trigger('keypress', keypress(letter, target));
     triggerKeyCode(target, letter.charCodeAt(0));
   }
+  
   function triggerKeyCode(target, charCode) {
-    //target.dispatchEvent(keyEventByCode('keydown', charCode, target));
-    //target.dispatchEvent(keyEventByCode('keypress', charCode, target));
-    //target.dispatchEvent(keyEventByCode('keyup', charCode, target));
-
-    $(target).trigger(jEventByCode('keydown', charCode, target));
-    $(target).trigger(jEventByCode('keypress', charCode, target));
-    $(target).trigger(jEventByCode('keyup', charCode, target));
+    target.dispatchEvent(keyEventByCode('keydown', charCode, target));
+    target.dispatchEvent(keyEventByCode('keypress', charCode, target));
+    target.dispatchEvent(keyEventByCode('keyup', charCode, target));
   }
-  /**/
+
   function keypress(letter, target) {
     return keyEventByCode("keypress", letter.charCodeAt(0), target);
   }
+
   function keydownCode(charCode, target) {
     return keyEventByCode("keydown", charCode, target);
   }
-  /**/
+
   function keyEventByCode(eventName, charCode, target) {
-    // TODO KeyboardEvent only seems to work on FF
-    return new KeyboardEvent(eventName, {
-      key: String.fromCharCode(charCode),
-      keyCode: charCode,
-      which: charCode,
-      target: target
-    });
+    var event = document.createEvent('Event');
+    event.initEvent(eventName);
+    event.keyCode = charCode;
+    event.which = charCode;
+    return event;
   }
 
   function jEventByCode(eventName, charCode, target) {
