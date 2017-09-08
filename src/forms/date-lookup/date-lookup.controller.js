@@ -1,7 +1,8 @@
 import DateService from '../../services/date/'; // eslint-disable-line no-unused-vars
+import DomService from '../../services/dom/'; // eslint-disable-line no-unused-vars
 
 class DateLookupController {
-  constructor($element, $scope, $timeout, TwDateService) {
+  constructor($element, $scope, $timeout, TwDateService, TwDomService) {
     const $ngModel = $element.controller('ngModel');
 
     this.DateService = TwDateService;
@@ -18,19 +19,19 @@ class DateLookupController {
       return newDate;
     });
 
-    // TODO remove jquery dependency
-    const formGroup = $element.parents('.form-group')[0];
-    const button = $element[0].getElementsByClassName('btn')[0];
-    const buttonGroup = $element[0].getElementsByClassName('btn-group')[0];
-    const dropdown = $element[0].getElementsByClassName('dropdown-menu')[0];
+    this.formGroup = TwDomService.getClosestParentByClassName(this.element, 'form-group');
+
+    const button = this.element.getElementsByClassName('btn')[0];
+    const buttonGroup = this.element.getElementsByClassName('btn-group')[0];
+    const dropdown = this.element.getElementsByClassName('dropdown-menu')[0];
 
     const onFocusOut = () => {
       $timeout(() => {
         // If button isn't focused and dropdown not open, then blur
         if (button !== document.activeElement &&
           !buttonGroup.classList.contains('open')) {
-          if (formGroup) {
-            formGroup.classList.remove('focus');
+          if (this.formGroup) {
+            this.formGroup.classList.remove('focus');
           }
           // jqLite supprts triggerHandler
           $element.triggerHandler('blur');
@@ -185,23 +186,19 @@ class DateLookupController {
   }
 
   buttonFocus() {
-    // TODO remove jquery dependency
-    const formGroup = this.$element.parents('.form-group')[0];
-    if (formGroup) {
-      formGroup.classList.add('focus');
+    if (this.formGroup) {
+      this.formGroup.classList.add('focus');
     }
     // jqLite supports triggerHandler
     this.$element.triggerHandler('focus');
   }
 
-  addValidators($ngModel, $element) {
+  addValidators($ngModel) {
     $ngModel.$validators.min = (modelValue, viewValue) => {
       const value = modelValue || viewValue;
       if (value && value < this.ngMin) {
-        // TODO remove jquery dependency
-        const formGroup = $element.parents('.form-group')[0];
-        if (formGroup) {
-          formGroup.classList.add('has-error');
+        if (this.formGroup) {
+          this.formGroup.classList.add('has-error');
         }
         return false;
       }
@@ -210,10 +207,8 @@ class DateLookupController {
     $ngModel.$validators.max = (modelValue, viewValue) => {
       const value = modelValue || viewValue;
       if (value && value > this.ngMax) {
-        // TODO remove jquery dependency
-        const formGroup = $element.parents('.form-group')[0];
-        if (formGroup) {
-          formGroup.classList.add('has-error');
+        if (this.formGroup) {
+          this.formGroup.classList.add('has-error');
         }
         return false;
       }
@@ -450,7 +445,8 @@ DateLookupController.$inject = [
   '$element',
   '$scope',
   '$timeout',
-  'TwDateService'
+  'TwDateService',
+  'TwDomService'
 ];
 
 export default DateLookupController;

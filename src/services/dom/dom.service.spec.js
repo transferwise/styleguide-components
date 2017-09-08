@@ -31,6 +31,14 @@ describe('DomService', function() {
       var parent = dom.getClosestParentByTagName(element, 'div');
       expect(parent).toEqual(outer);
     });
+    it('should not return subsequent matching elements', function () {
+      var parent = dom.getClosestParentByTagName(element, 'div');
+      expect(parent).not.toEqual(outermost);
+    });
+    it('should return matches case-insensitively', function () {
+      var parent = dom.getClosestParentByTagName(element, 'DIV');
+      expect(parent).toEqual(outer);
+    });
     it('should return null if no matching element', function () {
       var parent = dom.getClosestParentByTagName(element, 'span');
       expect(parent).toBe(null);
@@ -39,7 +47,7 @@ describe('DomService', function() {
 
   describe('when asking for parent class', function() {
     it('should return the first matching element', function () {
-      var parent = dom.getClosestParentByClassName(element, 'sharedClass');
+      var parent = dom.getClosestParentByClassName(element, 'shared-class');
       expect(parent).toEqual(outer);
     });
     it('should return null if no matching element', function () {
@@ -51,8 +59,8 @@ describe('DomService', function() {
   function getCompiledElement($scope, template) {
     if (!template) {
       template = " \
-        <div class='outermost sharedClass'> \
-          <div class='outer sharedClass'> \
+        <div class='outermost shared-class'> \
+          <div class='outer shared-class CASE-SENSITIVE'> \
             <div class='element'></div> \
           </div> \
         </div>";

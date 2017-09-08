@@ -18,6 +18,7 @@ describe('Radio', function() {
 
   beforeEach(module('tw.styleguide.forms'));
   beforeEach(module('tw.styleguide.validation'));
+  beforeEach(module('tw.styleguide.services'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');

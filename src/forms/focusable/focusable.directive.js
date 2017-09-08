@@ -1,28 +1,28 @@
 import angular from 'angular';
-// import DomService from '../../services/dom/dom.service.js';
+import DomService from '../../services/dom/dom.service.js'; // eslint-disable-line
 
-function FocusableLink(scope, element) {
-  // TODO remove jquery
-  const formGroup = $(element).closest('.form-group')[0]; // eslint-disable-line
-  // const dom = new DomService();
+class FocusableController {
+  constructor($element, TwDomService) {
+    const element = $element[0];
+    const formGroup = TwDomService.getClosestParentByClassName(element, 'form-group');
 
-  // const formGroup = DomService.getClosestParentByClassName(element, 'form-group');
-  const focusable = element[0];
-
-  if (formGroup && focusable) {
-    focusable.addEventListener('focus', () => {
-      formGroup.classList.add('focus');
-    });
-    focusable.addEventListener('blur', () => {
-      formGroup.classList.remove('focus');
-    });
+    if (formGroup && element) {
+      element.addEventListener('focus', () => {
+        formGroup.classList.add('focus');
+      });
+      element.addEventListener('blur', () => {
+        formGroup.classList.remove('focus');
+      });
+    }
   }
 }
+
+FocusableController.$inject = ['$element', 'TwDomService'];
 
 function Focusable() {
   return {
     restrict: 'A',
-    link: FocusableLink
+    controller: FocusableController
   };
 }
 
@@ -30,7 +30,7 @@ function Focusable() {
 function FormControlStyling() {
   return {
     restrict: 'C',
-    link: FocusableLink
+    controller: FocusableController
   };
 }
 

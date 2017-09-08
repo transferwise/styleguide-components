@@ -56,11 +56,7 @@ module.exports = function(grunt) {
             },
             components: {
                 files: ['src/**/*.js', 'src/**/*.html'],
-                tasks: ['jshint', 'eslint', 'webpack', 'uglify']
-            },
-            templates: {
-                files: ['src/**/*.html'],
-                tasks: ['copy']
+                tasks: ['jshint', 'eslint', 'webpack', 'uglify', 'copy']
             }
         },
         uglify: {

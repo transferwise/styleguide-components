@@ -10,6 +10,7 @@ describe('Focusable', function() {
   var FOCUSABLE_SELECTOR = '[tw-focusable]';
 
   beforeEach(module('tw.styleguide.forms'));
+  beforeEach(module('tw.styleguide.services'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');

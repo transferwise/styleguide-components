@@ -9,6 +9,7 @@ describe('DateLookup, ', function() {
 
   beforeEach(module('tw.styleguide.forms.date-lookup'));
   beforeEach(module('tw.styleguide.services.date'));
+  beforeEach(module('tw.styleguide.services.dom'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');

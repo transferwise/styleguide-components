@@ -29,6 +29,7 @@ describe('Select', function() {
   var OPTION_DISABLED_SELECTOR = '.dropdown-menu .disabled';
 
   beforeEach(module('tw.styleguide.forms'));
+  beforeEach(module('tw.styleguide.services'));
 
   beforeEach(inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
@@ -1019,7 +1020,7 @@ describe('Select', function() {
       $filterInput = directiveElement.find(FILTER_INPUT_SELECTOR);
     });
 
-    it('should show one result, removing dupliactes', function() {
+    it('should show one result, removing duplicates', function() {
       $filterInput.val("ca").trigger('change');
       var options = directiveElement.find(LIST_ITEMS_SELECTOR);
       expect(options.length).toBe(1);
