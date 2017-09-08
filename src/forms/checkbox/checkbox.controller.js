@@ -58,7 +58,7 @@ class CheckboxController {
       this.label.classList.add('focus');
     }
 
-    this.$element.triggerHandler('focus');
+    this.element.dispatchEvent(new Event('focus'));
   }
 
   buttonBlur() {
@@ -66,7 +66,7 @@ class CheckboxController {
       this.label.classList.remove('focus');
     }
 
-    this.$element.triggerHandler('blur');
+    this.element.dispatchEvent(new Event('blur'));
     this.$ngModel.$setTouched();
 
     validateCheckbox(

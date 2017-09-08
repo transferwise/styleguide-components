@@ -33,8 +33,7 @@ class DateLookupController {
           if (this.formGroup) {
             this.formGroup.classList.remove('focus');
           }
-          // jqLite supprts triggerHandler
-          $element.triggerHandler('blur');
+          this.element.dispatchEvent(new Event('blur'));
         }
       }, 150); // need timeout because using dropdown.js,
     };
@@ -189,8 +188,7 @@ class DateLookupController {
     if (this.formGroup) {
       this.formGroup.classList.add('focus');
     }
-    // jqLite supports triggerHandler
-    this.$element.triggerHandler('focus');
+    this.element.dispatchEvent(new Event('focus'));
   }
 
   addValidators($ngModel) {

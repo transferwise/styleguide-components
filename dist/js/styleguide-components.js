@@ -759,7 +759,7 @@
             var _this = this;
             _classCallCheck(this, AmountCurrencySelectController);
             var $ngModel = $element.controller("ngModel");
-            this.$timeout = $timeout, this.showDecimals = !0, this.CurrencyService = TwCurrencyService, 
+            this.element = $element[0], this.$timeout = $timeout, this.showDecimals = !0, this.CurrencyService = TwCurrencyService, 
             $scope.$watch("$ctrl.ngModel", function(newValue, oldValue) {
                 newValue !== oldValue && $ngModel.$setDirty();
             }), $scope.$watch("$ctrl.currency", function(newValue, oldValue) {
@@ -767,12 +767,12 @@
             });
             var input = $element[0].getElementsByTagName("input")[0];
             input.addEventListener("blur", function() {
-                $ngModel.$setTouched(), $element.triggerHandler("blur");
+                $ngModel.$setTouched(), _this.element.dispatchEvent(new Event("blur"));
             }), $ngModel.$validators.min = function(modelValue, viewValue) {
                 return "undefined" == typeof _this.ngMin || null === _this.ngMin || !isNumber(viewValue) || viewValue >= _this.ngMin;
             }, $ngModel.$validators.max = function(modelValue, viewValue) {
                 return "undefined" == typeof _this.ngMax || null === _this.ngMax || !isNumber(viewValue) || viewValue <= _this.ngMax;
-            }, $element[0].getAttribute("on-amount-change") && console && console.log && console.log("onAmountChange is deprecated in twAmountCurrencySelect, please use ngChange.");
+            }, this.element.getAttribute("on-amount-change") && console && console.log && console.log("onAmountChange is deprecated in twAmountCurrencySelect, please use ngChange.");
         }
         return _createClass(AmountCurrencySelectController, [ {
             key: "changedAmount",
@@ -890,12 +890,12 @@
         }, {
             key: "buttonFocus",
             value: function() {
-                this.label && this.label.classList.add("focus"), this.$element.triggerHandler("focus");
+                this.label && this.label.classList.add("focus"), this.element.dispatchEvent(new Event("focus"));
             }
         }, {
             key: "buttonBlur",
             value: function() {
-                this.label && this.label.classList.remove("focus"), this.$element.triggerHandler("blur"), 
+                this.label && this.label.classList.remove("focus"), this.element.dispatchEvent(new Event("blur")), 
                 this.$ngModel.$setTouched(), validateCheckbox(this.checked, this.$element, this.$ngModel, this.ngRequired, this.dom);
             }
         }, {
@@ -1010,7 +1010,7 @@
             });
             var input = element.getElementsByTagName("input")[0];
             input.addEventListener("blur", function() {
-                $ngModel.$setTouched(), $element.triggerHandler("blur");
+                $ngModel.$setTouched(), element.dispatchEvent(new Event("blur"));
             }), element.getAttribute("currency-code") && console && console.log && console.log("currency code is deprecated in twCurrencyInput, please use currency."), 
             $ngModel.$validators.min = function(modelValue, viewValue) {
                 return "undefined" == typeof _this.ngMin || null === _this.ngMin || !isNumber(viewValue) || viewValue >= _this.ngMin;
@@ -1113,7 +1113,7 @@
             var button = this.element.getElementsByClassName("btn")[0], buttonGroup = this.element.getElementsByClassName("btn-group")[0], dropdown = this.element.getElementsByClassName("dropdown-menu")[0], onFocusOut = function() {
                 $timeout(function() {
                     button === document.activeElement || buttonGroup.classList.contains("open") || (_this.formGroup && _this.formGroup.classList.remove("focus"), 
-                    $element.triggerHandler("blur"));
+                    _this.element.dispatchEvent(new Event("blur")));
                 }, 150);
             };
             button.addEventListener("focusout", onFocusOut), dropdown.addEventListener("focusout", onFocusOut), 
@@ -1211,7 +1211,7 @@
         }, {
             key: "buttonFocus",
             value: function() {
-                this.formGroup && this.formGroup.classList.add("focus"), this.$element.triggerHandler("focus");
+                this.formGroup && this.formGroup.classList.add("focus"), this.element.dispatchEvent(new Event("focus"));
             }
         }, {
             key: "addValidators",
@@ -1636,7 +1636,7 @@
             var _this = this;
             _classCallCheck(this, FormControlController);
             var $ngModel = $element.controller("ngModel");
-            this.$element = $element, $ngModel.$validators.minlength = function(modelValue, viewValue) {
+            this.$element = $element, this.element = $element[0], $ngModel.$validators.minlength = function(modelValue, viewValue) {
                 var value = modelValue || viewValue;
                 return "text" !== _this.type || !_this.ngMinlength || (!value || value.length >= _this.ngMinlength);
             }, $ngModel.$validators.maxlength = function(modelValue, viewValue) {
@@ -1658,12 +1658,12 @@
         }, {
             key: "focus",
             value: function() {
-                this.$element.triggerHandler("focus");
+                this.element.dispatchEvent(new Event("focus"));
             }
         }, {
             key: "blur",
             value: function() {
-                this.$ngModel.$setTouched(), this.$element.triggerHandler("blur");
+                this.$ngModel.$setTouched(), this.element.dispatchEvent(new Event("blur"));
             }
         } ]), FormControlController;
     }();

@@ -4,6 +4,7 @@ class AmountCurrencySelectController {
   constructor($element, $scope, $timeout, TwCurrencyService) {
     const $ngModel = $element.controller('ngModel');
 
+    this.element = $element[0];
     this.$timeout = $timeout;
     this.showDecimals = true;
     this.CurrencyService = TwCurrencyService;
@@ -23,7 +24,7 @@ class AmountCurrencySelectController {
     const input = $element[0].getElementsByTagName('input')[0];
     input.addEventListener('blur', () => {
       $ngModel.$setTouched();
-      $element.triggerHandler('blur');
+      this.element.dispatchEvent(new Event('blur'));
     });
 
     $ngModel.$validators.min = (modelValue, viewValue) => {
@@ -43,7 +44,7 @@ class AmountCurrencySelectController {
     };
 
     // eslint-disable-next-line no-console
-    if ($element[0].getAttribute('on-amount-change') && console && console.log) {
+    if (this.element.getAttribute('on-amount-change') && console && console.log) {
       // eslint-disable-next-line no-console
       console.log('onAmountChange is deprecated in twAmountCurrencySelect, please use ngChange.');
     }

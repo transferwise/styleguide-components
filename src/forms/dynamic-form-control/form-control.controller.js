@@ -4,6 +4,7 @@ class FormControlController {
     const $ngModel = $element.controller('ngModel');
 
     this.$element = $element;
+    this.element = $element[0];
 
     $ngModel.$validators.minlength = (modelValue, viewValue) => {
       const value = modelValue || viewValue;
@@ -69,12 +70,12 @@ class FormControlController {
   }
 
   focus() {
-    this.$element.triggerHandler('focus');
+    this.element.dispatchEvent(new Event('focus'));
   }
 
   blur() {
     this.$ngModel.$setTouched();
-    this.$element.triggerHandler('blur');
+    this.element.dispatchEvent(new Event('blur'));
   }
 }
 

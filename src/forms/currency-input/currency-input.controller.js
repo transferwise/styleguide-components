@@ -23,7 +23,7 @@ class CurrencyInputController {
     const input = element.getElementsByTagName('input')[0];
     input.addEventListener('blur', () => {
       $ngModel.$setTouched();
-      $element.triggerHandler('blur');
+      element.dispatchEvent(new Event('blur'));
     });
 
     // eslint-disable-next-line no-console

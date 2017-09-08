@@ -35,7 +35,6 @@ class RadioController {
     if (this.label) {
       this.label.classList.add('focus');
     }
-    // this.$element.triggerHandler('focus');
     this.element.dispatchEvent(new Event('focus'));
   }
 
@@ -43,7 +42,6 @@ class RadioController {
     if (this.label) {
       this.label.classList.remove('focus');
     }
-    // this.$element.triggerHandler('blur');
     this.element.dispatchEvent(new Event('blur'));
   }
 
