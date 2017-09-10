@@ -899,11 +899,6 @@
                 this.$ngModel.$setTouched(), validateCheckbox(this.checked, this.$element, this.$ngModel, this.ngRequired, this.dom);
             }
         }, {
-            key: "hiddenClick",
-            value: function($event) {
-                $event.stopPropagation();
-            }
-        }, {
             key: "addLabelHandler",
             value: function() {
                 var _this = this, label = this.dom.getClosestParentByTagName(this.element, "label");
@@ -930,6 +925,11 @@
                 }), $scope.$watch("$ctrl.ngRequired", function(newValue, oldValue) {
                     newValue !== oldValue && validateCheckbox(_this2.checked, $element, $ngModel, _this2.ngRequired, _this2.dom);
                 });
+            }
+        } ], [ {
+            key: "hiddenClick",
+            value: function($event) {
+                $event.stopPropagation();
             }
         } ]), CheckboxController;
     }());
@@ -1419,7 +1419,7 @@
         return "string" == typeof dateString && validDateObject(new Date(dateString));
     }
     function prepDateLimitForComparison(ngLimit, attrLimit) {
-        var limit = ngLimit ? ngLimit : attrLimit;
+        var limit = ngLimit || attrLimit;
         return !!limit && (limit = "string" == typeof limit ? new Date(limit) : limit, !!validDateObject(limit) && limit);
     }
     function prepDateValueForComparison(dateValue) {

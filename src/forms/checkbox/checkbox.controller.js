@@ -79,8 +79,7 @@ class CheckboxController {
   }
 
   // IE 'clicks' the hidden input when label is clicked
-  // eslint-disable-next-line class-methods-use-this
-  hiddenClick($event) {
+  static hiddenClick($event) {
     $event.stopPropagation();
   }
 

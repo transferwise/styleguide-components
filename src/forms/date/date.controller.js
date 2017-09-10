@@ -230,8 +230,7 @@ function validDateString(dateString) {
 }
 
 function prepDateLimitForComparison(ngLimit, attrLimit) {
-  // eslint-disable-next-line no-unneeded-ternary
-  let limit = ngLimit ? ngLimit : attrLimit;
+  let limit = ngLimit || attrLimit;
 
   if (!limit) {
     return false;
