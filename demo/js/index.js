@@ -470,4 +470,7 @@ angular.module('my-app', ['tw.styleguide-components'])
                 <div class="media-right text-xs-right" ng-transclude="collapseRight"></div> \
             </div>'
     };
+})
+.component('twDropdownDocs', {
+	templateUrl: 'partials/tw-dropdown.html'
 });

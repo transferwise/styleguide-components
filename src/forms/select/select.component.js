@@ -1,5 +1,6 @@
 import controller from './select.controller.js';
 import template from './select.html';
+import dropdown from '../../utils/dropdown/'; // eslint-disable-line
 
 const Select = {
   controller,

@@ -39,3 +39,6 @@ ng-transclude.error-messages,
   width: 52px;
 }
 /* Delete above after Bootstrap update */
+*:focus {
+  background-color: green !important;
+}

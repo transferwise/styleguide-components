@@ -9,6 +9,7 @@ import Help from './help/';
 import Layout from './layout/';
 import Loading from './loading/';
 import Navigation from './navigation/';
+import Utils from './utils/';
 
 export default angular.module('tw.styleguide-components', [
   Forms,
@@ -18,5 +19,6 @@ export default angular.module('tw.styleguide-components', [
   Help,
   Layout,
   Loading,
-  Navigation
+  Navigation,
+  Utils
 ]).name;

@@ -51,7 +51,7 @@ module.exports = function(grunt) {
         },
         watch: {
             less: {
-                files: ['styles/**/*.less'],
+                files: ['demo/**/*.less'],
                 tasks: ['less']
             },
             components: {
@@ -127,7 +127,7 @@ module.exports = function(grunt) {
                     paths: [""]
                 },
                 files: {
-                    "styles/examples.css": ["styles/**/*.less"]
+                    "demo/css/examples.css": ["demo/**/*.less"]
                 }
             }
         },

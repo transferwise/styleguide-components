@@ -393,14 +393,14 @@ class DateLookupController {
 
     const characterCode = event.which || event.charCode || event.keyCode;
 
-    if (characterCode === 37) { // Left arrow key
+    if (characterCode === keys.left) {
       this.adjustDate(this.mode, this.ngModel, -1, -1, -1);
-    } else if (characterCode === 38) { // Up arrow key
+    } else if (characterCode === keys.up) {
       event.preventDefault(); // Prevent browser scroll
       this.adjustDate(this.mode, this.ngModel, -7, -4, -4);
-    } else if (characterCode === 39) { // Right arrow key
+    } else if (characterCode === keys.right) {
       this.adjustDate(this.mode, this.ngModel, 1, 1, 1);
-    } else if (characterCode === 40) { // Down arrow key
+    } else if (characterCode === keys.down) {
       event.preventDefault(); // Prevent browser scroll
       this.adjustDate(this.mode, this.ngModel, 7, 4, 4);
     }
@@ -438,6 +438,13 @@ function resetFocus(element) {
     button.focus();
   }
 }
+
+const keys = {
+  left: 37,
+  up: 38,
+  right: 39,
+  down: 40
+};
 
 DateLookupController.$inject = [
   '$element',
