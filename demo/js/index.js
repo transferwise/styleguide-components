@@ -15,9 +15,7 @@ angular.module('tw.styleguide.docs', [])
 	templateUrl: 'partials/forms/index.html'
 })
 .controller('PageController', function() {
-	this.log = function(message) {
-		console.log(message);
-	};
+	this.log = function(message) { console.log(message); };
 
 	this.model = {
 		components: {}
@@ -115,6 +113,8 @@ angular.module('tw.styleguide.docs', [])
 			lockTooltipTitle: 'some title',
 			lockTooltipContent: 'some content'
 		};
+
+		this.log = function(message) { console.log(message); };
 	},
 	templateUrl: 'partials/forms/amount-currency-select.html'
 })
@@ -124,6 +124,7 @@ angular.module('tw.styleguide.docs', [])
 	},
 	controller: function() {
 		this.checkbox = { required: true };
+		this.log = function(message) { console.log(message); };
 	},
 	templateUrl: 'partials/forms/checkbox.html'
 })
@@ -133,6 +134,7 @@ angular.module('tw.styleguide.docs', [])
 	},
 	controller: function() {
 		this.radio = { required: true };
+		this.log = function(message) { console.log(message); };
 	},
 	templateUrl: 'partials/forms/radio.html'
 })
@@ -142,8 +144,7 @@ angular.module('tw.styleguide.docs', [])
 		model: '='
 	},
 	controller: function() {
-		var $ctrl = this;
-		$ctrl.select = {
+		this.select = {
 			required: true,
 			empty: 'Select an option...',
 			type: 'standard',
@@ -226,10 +227,10 @@ angular.module('tw.styleguide.docs', [])
 			}
 		};
 		for(var i=0; i<999; i++) {
-			$ctrl.select.options.long.push({value: String(i), label: String(i)});
+			this.select.options.long.push({value: String(i), label: String(i)});
 		}
 
-		$ctrl.hideOptions = [
+		this.hideOptions = [
 			{value: 'true', label: 'All widths'},
 			{value: 'xs', label: 'xs grid'},
 			{value: 'sm', label: 'sm grid'},
@@ -240,9 +241,7 @@ angular.module('tw.styleguide.docs', [])
 			{value: 'md,lg,xl', label: 'md, lg and xl grid'}
 		];
 
-		$ctrl.log = function(message) {
-			console.log(message);
-		}
+		this.log = function(message) { console.log(message); };
 	}
 })
 .component('twUploadDocs', {
@@ -252,13 +251,13 @@ angular.module('tw.styleguide.docs', [])
 	},
 	controller: ['$timeout', '$q', '$http', function($timeout, $q, $http) {
 		var $ctrl = this;
-		$ctrl.onStart = function(file) {
+		this.onStart = function(file) {
 			console.log("File upload starting");
 		};
-		$ctrl.onSuccess = function(response) {
+		this.onSuccess = function(response) {
 			console.log('File upload complete');
 		};
-		$ctrl.onFailure = function(error) {
+		this.onFailure = function(error) {
 			console.log('File upload failure');
 			if (error.status === 404) {
 				$ctrl.errorMessage = 'Bad URL';
@@ -266,24 +265,26 @@ angular.module('tw.styleguide.docs', [])
 				$ctrl.errorMessage = 'Unknown error';
 			}
 		};
-		$ctrl.onCancel= function() {
+		this.onCancel= function() {
 			console.log('File upload cancelled');
 		};
 
-		$ctrl.makeFancy = function() {
+		this.makeFancy = function() {
 			$ctrl.label = "Front of your ID document";
 			$ctrl.processingText = "Processing...";
 			$ctrl.successText = "Upload complete!";
 			$ctrl.failureText = "Upload failed!";
 		};
 
-		$ctrl.acceptOptions = [
+		this.acceptOptions = [
 			{value: '.png', label: 'PNG (.png)'},
 			{value: '.jpg,.jpeg', label: 'JPG (.jpg,.jpeg)'},
 			{value: 'image/*', label: 'Images (image/*)'},
 			{value: 'video/*', label: 'Video (video/*)'},
 			{value: 'audio/*', label: 'Audio (audio/*)'}
 		];
+
+		this.log = function(message) { console.log(message); };
 	}],
 	templateUrl: 'partials/forms/upload.html'
 })
@@ -295,6 +296,7 @@ angular.module('tw.styleguide.docs', [])
 	},
 	controller: function() {
 		this.date = {required: true};
+		this.log = function(message) { console.log(message); };
 	},
 	templateUrl: 'partials/forms/date.html'
 })
@@ -307,6 +309,7 @@ angular.module('tw.styleguide.docs', [])
 	controller: function() {
 		var initialDate = new Date('2000-01-10');
 		this.model = initialDate;
+		this.log = function(message) { console.log(message); };
 	},
 	templateUrl: 'partials/forms/date-lookup.html'
 })
@@ -314,6 +317,9 @@ angular.module('tw.styleguide.docs', [])
 	bindings: {
 		model: '=',
 		sizes: '='
+	},
+	controller: function() {
+		this.log = function(message) { console.log(message); };
 	},
 	templateUrl: 'partials/forms/currency-input.html'
 })
@@ -342,6 +348,7 @@ angular.module('tw.styleguide.docs', [])
 				{'value': 'date', 'label': 'Date'}
 			]
 		};
+		this.log = function(message) { console.log(message); };
 	},
 	templateUrl: 'partials/forms/dynamic-control.html'
 })
