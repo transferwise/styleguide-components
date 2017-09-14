@@ -12,7 +12,7 @@ angular.module('tw.styleguide.docs', [])
 		locales: '=',
 		sizes: '='
 	},
-	templateUrl: 'partials/form-components.html'
+	templateUrl: 'partials/forms/index.html'
 })
 .controller('PageController', function() {
 	this.log = function(message) {
@@ -116,7 +116,7 @@ angular.module('tw.styleguide.docs', [])
 			lockTooltipContent: 'some content'
 		};
 	},
-	templateUrl: 'partials/tw-amount-currency-select.html'
+	templateUrl: 'partials/forms/amount-currency-select.html'
 })
 .component('twCheckboxDocs', {
 	bindings: {
@@ -125,7 +125,7 @@ angular.module('tw.styleguide.docs', [])
 	controller: function() {
 		this.checkbox = { required: true };
 	},
-	templateUrl: 'partials/tw-checkbox.html'
+	templateUrl: 'partials/forms/checkbox.html'
 })
 .component('twRadioDocs', {
 	bindings: {
@@ -134,10 +134,10 @@ angular.module('tw.styleguide.docs', [])
 	controller: function() {
 		this.radio = { required: true };
 	},
-	templateUrl: 'partials/tw-radio.html'
+	templateUrl: 'partials/forms/radio.html'
 })
 .component('twSelectDocs', {
-	templateUrl: 'partials/tw-select.html',
+	templateUrl: 'partials/forms/select.html',
 	bindings: {
 		model: '='
 	},
@@ -285,7 +285,7 @@ angular.module('tw.styleguide.docs', [])
 			{value: 'audio/*', label: 'Audio (audio/*)'}
 		];
 	}],
-	templateUrl: 'partials/tw-upload.html'
+	templateUrl: 'partials/forms/upload.html'
 })
 .component('twDateDocs', {
 	bindings: {
@@ -296,7 +296,7 @@ angular.module('tw.styleguide.docs', [])
 	controller: function() {
 		this.date = {required: true};
 	},
-	templateUrl: 'partials/tw-date.html'
+	templateUrl: 'partials/forms/date.html'
 })
 .component('twDateLookupDocs', {
 	bindings: {
@@ -308,14 +308,14 @@ angular.module('tw.styleguide.docs', [])
 		var initialDate = new Date('2000-01-10');
 		this.model = initialDate;
 	},
-	templateUrl: 'partials/tw-date-lookup.html'
+	templateUrl: 'partials/forms/date-lookup.html'
 })
 .component('twCurrencyInputDocs', {
 	bindings: {
 		model: '=',
 		sizes: '='
 	},
-	templateUrl: 'partials/tw-currency-input.html'
+	templateUrl: 'partials/forms/currency-input.html'
 })
 .component('twDynamicControlDocs', {
 	bindings: {
@@ -343,7 +343,7 @@ angular.module('tw.styleguide.docs', [])
 			]
 		};
 	},
-	templateUrl: 'partials/tw-dynamic-control.html'
+	templateUrl: 'partials/forms/dynamic-control.html'
 })
 .component('twRequirementsFormDocs', {
 	controller: ['$scope', '$http', function($scope, $http) {
@@ -387,10 +387,13 @@ angular.module('tw.styleguide.docs', [])
 	bindings: {
 		model: "="
 	},
-	templateUrl: 'partials/tw-requirements-form.html'
+	templateUrl: 'partials/forms/requirements-form.html'
 })
-.directive('twValidationDocs', function() {
-	return {templateUrl: 'partials/tw-validation.html'};
+.component('twValidationDocs', {
+	bindings: {
+		model: "="
+	},
+	templateUrl: 'partials/tw-validation.html'
 })
 .directive('twFocusableDocs', function() {
 	return {templateUrl: 'partials/tw-focusable.html'};
