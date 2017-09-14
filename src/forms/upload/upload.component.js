@@ -19,7 +19,7 @@ const Upload = {
     successText: '@',
     errorMessage: '@',
     tooLargeMessage: '@',
-    //wrongTypeMessage: '@',
+    // wrongTypeMessage: '@',
     size: '@',
     accept: '@',
     httpOptions: '<',

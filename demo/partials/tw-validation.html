@@ -19,7 +19,6 @@
 
 <form
 	name="exampleForm"
-	ng-submit="vm.submit()"
 	novalidate>
 
 	<div class="form-group">
@@ -29,7 +28,7 @@
 		<input type="text" required tw-validation
 			class="form-control"
 			placeholder="Placeholder"
-			ng-model="vm.model.text" />
+			ng-model="$ctrl.model.text" />
 		<docs-error-messages></docs-error-messages>
 		<docs-status-messages></docs-status-messages>
 	</div>
@@ -46,8 +45,8 @@
 			Select - required
 		</label>
 		<select class="form-control" required tw-validation
-			ng-model="vm.model.select"
-			ng-change="vm.log()">
+			ng-model="$ctrl.model.select"
+			ng-change="$ctrl.log()">
 			<option value="">Please choose..</option>
 			<option value="1">Option 1</option>
 			<option value="2">Option 2</option>
@@ -71,7 +70,7 @@
 		<div class="checkbox">
 			<label>
 				<input type="checkbox" tw-validation tw-focusable
-					ng-model="vm.model.checkbox1"
+					ng-model="$ctrl.model.checkbox1"
 					ng-required="true" />
 				Checkbox 1 - required
 			</label>
@@ -79,14 +78,14 @@
 		<div class="checkbox">
 			<label>
 				<input type="checkbox" tw-validation tw-focusable
-					ng-model="vm.model.checkbox2" />
+					ng-model="$ctrl.model.checkbox2" />
 				Checkbox 2
 			</label>
 		</div>
 		<div class="checkbox disabled">
 			<label>
 				<input type="checkbox" tw-validation tw-focusable
-					ng-model="vm.model.checkbox3"
+					ng-model="$ctrl.model.checkbox3"
 					disabled />
 				Checkbox 3 - disabled
 			</label>
@@ -105,7 +104,7 @@
 			<label>
 				<input type="radio" name="simple-radio"
 					value="1" required="true"
-					ng-model="vm.model.radio" tw-validation tw-focusable />
+					ng-model="$ctrl.model.radio" tw-validation tw-focusable />
 				Radio 1
 			</label>
 		</div>
@@ -113,7 +112,7 @@
 			<label>
 				<input type="radio" name="simple-radio"
 					value="2" required="true"
-					ng-model="vm.model.radio" tw-validation tw-focusable />
+					ng-model="$ctrl.model.radio" tw-validation tw-focusable />
 				Radio 2
 				<small>Subsequent information, subsequent
 					information, subsequent information.</small>
@@ -123,7 +122,7 @@
 			<label>
 				<input type="radio" name="simple-radio" disabled
 					value="3"
-					ng-model="vm.model.radio" tw-validation tw-focusable />
+					ng-model="$ctrl.model.radio" tw-validation tw-focusable />
 				Radio 3 - disabled
 			</label>
 		</div>
@@ -141,7 +140,7 @@
 			name="textareaSimple"
 			class="form-control"
 			placeholder="Required"
-			ng-model="vm.model.textareaSimple"
+			ng-model="$ctrl.model.textareaSimple"
 			></textarea>
 		<docs-error-messages></docs-error-messages>
 		<docs-status-messages></docs-status-messages>
@@ -162,7 +161,7 @@
 			name="textComplex"
 			class="form-control"
 			placeholder="a-z only, 2 to 6 chars"
-			ng-model="vm.model.textComplex"
+			ng-model="$ctrl.model.textComplex"
 			ng-pattern="/^[a-z]+$/"
 			ng-minlength="2"
 			ng-maxlength="6" />
@@ -190,7 +189,7 @@
 			name="numberComplex"
 			class="form-control"
 			placeholder="min 5, max 10"
-			ng-model="vm.model.numberComplex"
+			ng-model="$ctrl.model.numberComplex"
 			ng-min="5"
 			ng-max="10" />
 		<div class="error-messages">
@@ -227,9 +226,9 @@
 			twSelect - required
 		</label>
 		<tw-select tw-validation
-			ng-model="vm.model.twSelect"
+			ng-model="$ctrl.model.twSelect"
 			ng-required="true"
-			options="vm.basicSelect"
+			options="$ctrl.basicSelect"
 			placeholder="Select an option..."></tw-select>
 		<docs-error-messages></docs-error-messages>
 		<docs-status-messages></docs-status-messages>
@@ -249,7 +248,7 @@
 		<div class="checkbox">
 			<label>
 				<tw-checkbox tw-validation
-					ng-model="vm.model.twCheckbox1"
+					ng-model="$ctrl.model.twCheckbox1"
 					ng-required="true" />
 				Checkbox 1 - required
 			</label>
@@ -257,7 +256,7 @@
 		<div class="checkbox">
 			<label>
 				<tw-checkbox
-					ng-model="vm.model.twCheckbox1" />
+					ng-model="$ctrl.model.twCheckbox1" />
 				Checkbox 2
 			</label>
 		</div>
@@ -274,7 +273,7 @@
 		<div class="radio">
 			<label>
 				<tw-radio name="simple-radio" value="1" tw-validation
-					ng-model="vm.model.twRadio"
+					ng-model="$ctrl.model.twRadio"
 					ng-required="true" />
 				Radio 1
 			</label>
@@ -282,7 +281,7 @@
 		<div class="radio">
 			<label>
 				<tw-radio name="simple-radio" value="2" tw-validation
-					ng-model="vm.model.twRadio"
+					ng-model="$ctrl.model.twRadio"
 					ng-required="true" />
 				Radio 2
 			</label>

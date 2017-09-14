@@ -24,6 +24,7 @@
   "homepage": "https://github.com/transferwise/styleguide-components",
   "dependencies": {
     "angular": "~1.5.8",
+    "jquery": "^3.2.1",
     "transferwise-iconfont": "git+ssh://git@github.com/transferwise/iconfont.git"
   },
   "devDependencies": {
@@ -35,6 +36,9 @@
     "bootstrap": "git+https://github.com/transferwise/bootstrap.git",
     "bower": "*",
     "currency-flags": "git+https://github.com/transferwise/currency-flags.git",
+    "eslint": "^4.6.0",
+    "eslint-config-airbnb-base": "^12.0.0",
+    "eslint-plugin-import": "^2.7.0",
     "grunt": "^0.4.5",
     "grunt-bower-task": "^0.4.0",
     "grunt-contrib-copy": "^1.0.0",
@@ -42,6 +46,7 @@
     "grunt-contrib-less": "^1.2.0",
     "grunt-contrib-uglify": "^1.0.0",
     "grunt-contrib-watch": "^0.6.1",
+    "grunt-eslint": "^20.1.0",
     "grunt-htmllint": "^0.2.7",
     "grunt-karma": "^0.12.1",
     "grunt-webpack": "^3.0.2",
@@ -49,7 +54,6 @@
     "html-loader": "^0.5.1",
     "iconfont": "git+ssh://git@github.com/transferwise/iconfont.git",
     "jasmine-core": "^2.8.0",
-    "jquery": "^3.2.1",
     "karma": "^0.13.21",
     "karma-chrome-launcher": "^0.2.2",
     "karma-coverage": "^0.5.5",

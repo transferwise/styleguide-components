@@ -1,8 +1,6 @@
 
 function TwUndoStackFactory() {
-  this.new = function() {
-    return new UndoStack();
-  };
+  this.new = () => new UndoStack();
 }
 
 /**
@@ -11,15 +9,15 @@ function TwUndoStackFactory() {
  * our own undo stack.
  */
 function UndoStack() {
-  var pointer = 0;
-  var stack = [];
+  let pointer = 0;
+  let stack = [];
 
-  this.reset = function(value) {
+  this.reset = (value) => {
     stack = [value];
     pointer = 0;
   };
 
-  this.add = function(value) {
+  this.add = (value) => {
     if (stack.length - 1 > pointer) {
       stack = stack.slice(0, pointer + 1);
     }
@@ -29,17 +27,17 @@ function UndoStack() {
     }
   };
 
-  this.undo = function() {
+  this.undo = () => {
     if (pointer >= 0 &&
-      typeof stack[pointer - 1] !== "undefined") {
+      typeof stack[pointer - 1] !== 'undefined') {
       pointer--;
     }
     return stack[pointer];
   };
 
-  this.redo = function() {
+  this.redo = () => {
     if (pointer < stack.length &&
-      typeof stack[pointer + 1] !== "undefined") {
+      typeof stack[pointer + 1] !== 'undefined') {
       pointer++;
     }
     return stack[pointer];

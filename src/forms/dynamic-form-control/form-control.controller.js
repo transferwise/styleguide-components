@@ -1,13 +1,13 @@
 
 class FormControlController {
-  constructor($element, $scope) {
-    var $ctrl = this;
-    var $ngModel = $element.controller('ngModel');
+  constructor($element) {
+    const $ngModel = $element.controller('ngModel');
 
     this.$element = $element;
+    this.element = $element[0];
 
     $ngModel.$validators.minlength = (modelValue, viewValue) => {
-      var value = modelValue || viewValue;
+      const value = modelValue || viewValue;
       if (this.type !== 'text' || !this.ngMinlength) {
         return true;
       }
@@ -15,7 +15,7 @@ class FormControlController {
     };
 
     $ngModel.$validators.maxlength = (modelValue, viewValue) => {
-      var value = modelValue || viewValue;
+      const value = modelValue || viewValue;
       if (this.type !== 'text' || !this.ngMaxlength) {
         return true;
       }
@@ -24,12 +24,12 @@ class FormControlController {
 
     // Min and max do not work on custom elements, add manual validators
     $ngModel.$validators.min = (modelValue, viewValue) => {
-      var value = modelValue || viewValue;
-      if (typeof this.ngMin === "undefined") {
+      const value = modelValue || viewValue;
+      if (typeof this.ngMin === 'undefined') {
         return true;
       }
-      if (typeof value === "number" &&
-        typeof this.ngMin === "number" &&
+      if (typeof value === 'number' &&
+        typeof this.ngMin === 'number' &&
         value < this.ngMin) {
         return false;
       }
@@ -43,12 +43,12 @@ class FormControlController {
     };
 
     $ngModel.$validators.max = (modelValue, viewValue) => {
-      var value = modelValue || viewValue;
-      if (typeof this.ngMax === "undefined") {
+      const value = modelValue || viewValue;
+      if (typeof this.ngMax === 'undefined') {
         return true;
       }
-      if (typeof value === "number" &&
-        typeof this.ngMax === "number" &&
+      if (typeof value === 'number' &&
+        typeof this.ngMax === 'number' &&
         value > this.ngMax) {
         return false;
       }
@@ -70,15 +70,15 @@ class FormControlController {
   }
 
   focus() {
-    this.$element.triggerHandler('focus');
+    this.element.dispatchEvent(new Event('focus'));
   }
 
   blur() {
     this.$ngModel.$setTouched();
-    this.$element.triggerHandler('blur');
+    this.element.dispatchEvent(new Event('blur'));
   }
 }
 
-FormControlController.$inject = ['$element', '$scope'];
+FormControlController.$inject = ['$element'];
 
 export default FormControlController;

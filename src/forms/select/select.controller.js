@@ -1,12 +1,14 @@
+import angular from 'angular';
 
 class SelectController {
   constructor($element, $scope, $transclude, $timeout, $attrs) {
-
     this.$ngModel = $element.controller('ngModel');
     this.$element = $element;
-    this.search = "";
+    this.element = $element[0];
+    this.button = $element[0].getElementsByClassName('btn')[0];
+    this.search = '';
 
-    preSelectModelValue(this.$ngModel, this, this.options);
+    preSelectModelValue(this.$ngModel, this);
     setDefaultIfRequired(this.$ngModel, this, $element, $attrs);
 
     addWatchers(this, $scope, this.$ngModel, $element);
@@ -16,24 +18,24 @@ class SelectController {
 
     this.responsiveClasses = responsiveClasses;
 
-    this.filterString = "";
+    this.filterString = '';
     this.filteredOptions = this.getFilteredOptions();
   }
 
   circleClasses(responsiveOption) {
-    var classes = responsiveClasses(responsiveOption);
-    var secondaryClasses = responsiveClasses(this.hideSecondary);
+    let classes = responsiveClasses(responsiveOption);
+    const secondaryClasses = responsiveClasses(this.hideSecondary);
     // If secondary text line, and it won't be hidden at some point, use larger circle
     if (this.selected.secondary && secondaryClasses.length === 0) {
-      classes += " circle-sm";
+      classes += ' circle-sm';
     } else {
-      classes += " circle-xs";
+      classes += ' circle-xs';
     }
     return classes;
   }
 
   buttonFocus() {
-    this.$element.triggerHandler('focus');
+    this.element.dispatchEvent(new Event('focus'));
   }
 
   optionClick(option, $event) {
@@ -42,7 +44,7 @@ class SelectController {
       return;
     }
     selectOption(this.$ngModel, this, option);
-    this.$element.find('.btn').focus();
+    this.button.focus();
   }
 
   optionFocus(option) {
@@ -51,28 +53,31 @@ class SelectController {
 
   optionKeypress(event) {
     // If we're in the filter don't allow normal behaviour
-    if ($(event.target).hasClass('tw-select-filter')) {
+    if (event.target.classList.contains('tw-select-filter')) {
       return;
     }
 
     // Prevent delete taking us back
-    var characterCode = getCharacterCodeFromKeypress(event);
+    const characterCode = getCharacterCodeFromKeypress(event);
     if (characterCode === 8) {
       event.preventDefault();
-      return false;
+      return;
     }
 
     // Search for option based on character
-    var character = getCharacterFromKeypress(event);
+    const character = getCharacterFromKeypress(event);
     continueSearchAndSelectMatch(
-      this.$ngModel, this, this.options, character
+      this.$ngModel,
+      this,
+      this.options,
+      character
     );
-    this.$element.find('.active a').focus();
+    focusOnActiveLink(this.$element[0]);
   }
 
-  placeholderClick(option) {
+  placeholderClick() {
     resetOption(this.$ngModel, this);
-    this.$element.find('.btn').focus();
+    this.button.focus();
   }
   placeholderFocus() {
     resetOption(this.$ngModel, this);
@@ -83,21 +88,21 @@ class SelectController {
       return [];
     }
 
-    var filteredLabels = [];
+    const filteredLabels = [];
     return this.options.filter((option) => {
-      var filterStringLower =
+      const filterStringLower =
         this.filterString && escapeRegExp(this.filterString.toLowerCase());
 
       if (!filterStringLower) {
         return true;
       }
 
-      var duplicate = false;
+      let duplicate = false;
       if (filteredLabels.indexOf(option.label) > -1) {
         duplicate = true;
       }
 
-      var addOption = (
+      const addOption = (
         labelMatches(option, filterStringLower) ||
         noteMatches(option, filterStringLower) ||
         secondaryMatches(option, filterStringLower) ||
@@ -111,12 +116,15 @@ class SelectController {
     });
   }
 
-  filterFocus() {
-    this.$element.find('.tw-select-filter').focus();
+  focusOnFilterInput() {
+    const filterInput = this.element.getElementsByClassName('tw-select-filter')[0];
+    if (filterInput) {
+      filterInput.focus();
+    }
   }
   filterChange() {
     this.filteredOptions = this.getFilteredOptions();
-    var selectedOption = findSelected(this.filteredOptions, this.selected);
+    const selectedOption = findSelected(this.filteredOptions, this.selected);
 
     // Choose a new selected value if the old one was hidden
     if (!selectedOption && this.filteredOptions.length) {
@@ -126,63 +134,66 @@ class SelectController {
 
   // Keydown as keypress did not work in chrome/safari
   filterKeydown(event) {
-    var characterCode = event.which || event.charCode || event.keyCode,
-      activeOption = this.$element.find('.active'),
-      activeLink = activeOption.find('a'),
-      optionLinks = this.$element.find(".tw-select-option-link");
+    const characterCode = event.which || event.charCode || event.keyCode;
+    const activeOption = this.element.getElementsByClassName('active')[0];
+    const activeLink = activeOption ? activeOption.getElementsByTagName('a')[0] : false;
+    const optionLinks = this.element.getElementsByClassName('tw-select-option-link');
 
-    if (characterCode === 40) { // Down arrow key
+    if (characterCode === keys.down) {
       this.moveDownOneOption(activeOption, activeLink, optionLinks);
       event.preventDefault(); // Prevent cursor jumping around in input
-    } else if (characterCode === 38) { // Up arrow key
+    } else if (characterCode === keys.up) {
       this.moveUpOneOption(activeOption, activeLink, optionLinks);
       event.preventDefault(); // Prevent cursor jumping in input
-    } else if (characterCode === 13) { // Return key
+    } else if (characterCode === keys.return) {
       activeOption.click();
-      this.$element.find('.btn').focus();
+      this.button.focus();
       event.preventDefault(); // Prevent form action as input active
     }
     return true;
   }
 
   selectOptionUsingLink(link) {
-    var option = this.filteredOptions[link.attr('index')];
+    const option = this.filteredOptions[link.getAttribute('index')];
     selectOption(this.$ngModel, this, option);
   }
 
   moveUpOneOption(activeOption, activeLink, optionLinks) {
     // If none active, select last
-    if (!activeOption.length && optionLinks.length) {
-      this.selectOptionUsingLink($(optionLinks[optionLinks.length - 1]));
+    if (!activeOption && optionLinks.length) {
+      this.selectOptionUsingLink(optionLinks[optionLinks.length - 1]);
       return;
     }
+
     // If active option not first, move up
-    if (activeLink[0] !== optionLinks[0]) {
+    if (activeLink !== optionLinks[0]) {
       // TODO prevAll is ineffeccient for longer lists
-      var previousOptions = activeOption.prevAll('.tw-select-option');
-      this.selectOptionUsingLink($(previousOptions[0]).find('a'));
-      return;
+      const previousOptions = $(activeOption).prevAll('.tw-select-option'); // eslint-disable-line
+      const previousOptionLink = previousOptions[0].getElementsByTagName('a')[0];
+      this.selectOptionUsingLink(previousOptionLink);
     }
   }
 
   moveDownOneOption(activeOption, activeLink, optionLinks) {
     // If none active, select first
-    if (!activeOption.length && optionLinks.length) {
-      this.selectOptionUsingLink($(optionLinks[0]));
+    if (!activeOption && optionLinks.length) {
+      this.selectOptionUsingLink(optionLinks[0]);
       return;
     }
     // If active option not last, move down
-    if (activeLink[0] !== optionLinks[optionLinks.length - 1]) {
+    if (activeLink !== optionLinks[optionLinks.length - 1]) {
       // TODO nextAll is ineffeccient for longer lists
-      var nextOptions = activeOption.nextAll('.tw-select-option');
-      this.selectOptionUsingLink($(nextOptions[0]).find('a'));
+      const nextOptions = $(activeOption).nextAll('.tw-select-option'); // eslint-disable-line
+      const nextOptionLink = nextOptions[0].getElementsByTagName('a')[0];
+      this.selectOptionUsingLink(nextOptionLink);
       return;
     }
     // If active is last and custom action, focus on it
-    var transcludedOption = $('.tw-select-transcluded');
+    const transcludedOption =
+      this.$element[0].getElementsByClassName('tw-select-transcluded');
+
     if (transcludedOption.length) {
-      transcludedOption.find('a').focus();
-      return;
+      transcludedOption[0].getElementsByTagName('a')[0].focus();
     }
   }
 }
@@ -213,7 +224,7 @@ function addWatchers($ctrl, $scope, $ngModel, $element) {
   $scope.$watch('$ctrl.options', (newValue, oldValue) => {
     if (newValue !== oldValue) {
       // Reinitialise selected valus
-      preSelectModelValue($ngModel, $ctrl, $ctrl.options);
+      preSelectModelValue($ngModel, $ctrl);
       setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl);
 
       $ctrl.filteredOptions = $ctrl.getFilteredOptions();
@@ -222,38 +233,61 @@ function addWatchers($ctrl, $scope, $ngModel, $element) {
 }
 
 function addEventHandlers($ctrl, $element, $ngModel, options, $timeout) {
-  $element.find('.btn, .dropdown-menu').on('focusout', () => {
+  const element = $element[0];
+  const button = element.getElementsByClassName('btn')[0];
+  const buttonGroup = element.getElementsByClassName('btn-group')[0];
+  const dropdown = element.getElementsByClassName('dropdown-menu')[0];
+
+  const onFocusOut = () => {
     $timeout(() => {
       // If button isn't focused and dropdown not open, blur
-      if ($element.find('.btn:focus').length === 0 &&
-        !$element.find('.btn-group').hasClass('open')) {
-        $element.trigger('blur');
+      if (button !== document.activeElement &&
+        !buttonGroup.classList.contains('open')) {
+        element.dispatchEvent(new Event('blur'));
       }
-    }, 150);   // need timeout because using dropdown.js,
-  });
+    }, 150); // need timeout because using dropdown.js,
+  };
 
-  $element.on('blur', (event) => {
-    $ngModel.$setTouched();
-  });
-
-  $element.find('.btn').on('keypress', (event) => {
-    $ctrl.optionKeypress(event);
-  });
-
-  $element.find('.btn').on('click', () => {
-    // Once dropdown is open, focus on active/selected option for keyboard support
+  const onButtonClick = () => {
     $timeout(() => {
-      if ($element.attr('filter')) {
-        $element.find('.tw-select-filter').focus();
+      if (element.getAttribute('filter')) {
+        // If filter in use, focus on that
+        const filterInput = element.getElementsByClassName('tw-select-filter')[0];
+        filterInput.focus();
       } else {
-        $element.find('.active a').focus();
+        // Otherwise focus on selected option
+        focusOnActiveLink(element);
       }
     });
-  });
+  };
 
-  $element.find('ul').on('keypress', 'a', (event) => {
+  const onButtonKeypress = (event) => {
     $ctrl.optionKeypress(event);
-  });
+  };
+
+  const onDrodownKeypress = (event) => {
+    if (event.target.tagName.toLowerCase() === 'a') {
+      $ctrl.optionKeypress(event);
+    }
+  };
+
+  const onComponentBlur = () => {
+    $ngModel.$setTouched();
+  };
+
+  element.addEventListener('blur', onComponentBlur);
+  button.addEventListener('keypress', onButtonKeypress);
+  button.addEventListener('click', onButtonClick);
+  button.addEventListener('focusout', onFocusOut);
+  dropdown.addEventListener('focusout', onFocusOut);
+  dropdown.addEventListener('keypress', onDrodownKeypress);
+}
+
+function focusOnActiveLink(element) {
+  const activeOption = element.getElementsByClassName('active')[0];
+  if (activeOption) {
+    activeOption.getElementsByTagName('a')[0].focus();
+  }
 }
 
 function checkForTranscludedContent($transclude, $ctrl) {
@@ -267,17 +301,19 @@ function checkForTranscludedContent($transclude, $ctrl) {
 function getCharacterCodeFromKeypress(event) {
   return event.which || event.charCode || event.keyCode;
 }
+
 function getCharacterFromKeypress(event) {
   return String.fromCharCode(getCharacterCodeFromKeypress(event));
 }
 
 function escapeRegExp(str) {
-  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+  // eslint-disable-next-line no-useless-escape
+  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
 }
 
-function preSelectModelValue($ngModel, $ctrl, options) {
+function preSelectModelValue($ngModel, $ctrl) {
   if (isValidModel($ctrl.ngModel)) {
-    var option = findOptionFromValue($ctrl.options, $ctrl.ngModel);
+    const option = findOptionFromValue($ctrl.options, $ctrl.ngModel);
     selectOption($ngModel, $ctrl, option);
   }
 }
@@ -287,7 +323,7 @@ function modelChange(newVal, oldVal, $ctrl) {
     return;
   }
 
-  var option = findOptionFromValue($ctrl.options, newVal);
+  const option = findOptionFromValue($ctrl.options, newVal);
   if (option) {
     $ctrl.selected = option;
   } else {
@@ -296,8 +332,8 @@ function modelChange(newVal, oldVal, $ctrl) {
 }
 
 function findOptionFromValue(options, value) {
-  var optionMatch = false;
-  options.forEach(function(option) {
+  let optionMatch = false;
+  options.forEach((option) => {
     if (angular.equals(option.value, value)) {
       optionMatch = option;
     }
@@ -308,7 +344,7 @@ function findOptionFromValue(options, value) {
 function setDefaultIfRequired($ngModel, $ctrl, $element, $attrs) {
   // If required and model empty, select first option with value
   if (($ctrl.ngRequired || $attrs.required) && !isValidModel($ctrl.ngModel) && !$ctrl.placeholder) {
-    for (var i = 0; i < $ctrl.options.length; i++) {
+    for (let i = 0; i < $ctrl.options.length; i++) {
       if (isValidModel($ctrl.options[i].value)) {
         selectOption($ngModel, $ctrl, $ctrl.options[i]);
         break;
@@ -329,7 +365,7 @@ function selectOption($ngModel, $ctrl, option) {
 
 function findSelected(options, selected) {
   // Prefer forEach over find for browser support
-  var selectedOption;
+  let selectedOption;
   options.forEach((option) => {
     if (selected && angular.equals(selected.value, option.value)) {
       selectedOption = selected;
@@ -346,7 +382,7 @@ function resetOption($ngModel, $ctrl) {
 }
 
 function continueSearchAndSelectMatch($ngModel, $ctrl, options, letter) {
-  var found = searchAndSelect($ngModel, $ctrl, options, $ctrl.search + letter);
+  let found = searchAndSelect($ngModel, $ctrl, options, $ctrl.search + letter);
   if (found) {
     $ctrl.search += letter;
   } else {
@@ -357,17 +393,17 @@ function continueSearchAndSelectMatch($ngModel, $ctrl, options, letter) {
 }
 
 function searchAndSelect($ngModel, $ctrl, options, term) {
-  var found = false,
-    searchTerm = term.toLowerCase();
+  let found = false;
+  const searchTerm = term.toLowerCase();
 
   options.forEach((option) => {
-    if (found || !option.label) {
+    if (found) {
       return;
     }
-    if (option.label.toLowerCase().indexOf(searchTerm) === 0 ||
-      option.note && option.note.toLowerCase().indexOf(searchTerm) === 0 ||
-      option.secondary && option.secondary.toLowerCase().indexOf(searchTerm) === 0||
-      option.searchable && option.searchable.toLowerCase().indexOf(searchTerm) === 0) {
+    if (containsSearch(option.label, searchTerm) ||
+      containsSearch(option.note, searchTerm) ||
+      containsSearch(option.secondary, searchTerm) ||
+      containsSearch(option.searchable, searchTerm)) {
       selectOption($ngModel, $ctrl, option);
       found = true;
     }
@@ -375,14 +411,24 @@ function searchAndSelect($ngModel, $ctrl, options, term) {
   return found;
 }
 
+function containsSearch(term, search) {
+  return term && term.toLowerCase().indexOf(search) === 0;
+}
+
 function isValidModel(value) {
   return value || value === 0 || value === false;
 }
 
 function responsiveClasses(value) {
-  var classes = '',
-    validBreakpoints = {xs:true, sm:true, md:true, lg:true, xl:true},
-    breakpoints = [];
+  let classes = '';
+  let breakpoints = [];
+  const validBreakpoints = {
+    xs: true,
+    sm: true,
+    md: true,
+    lg: true,
+    xl: true
+  };
 
   if (typeof value === 'boolean' && value) {
     return 'hidden';
@@ -398,12 +444,18 @@ function responsiveClasses(value) {
 
   breakpoints.forEach((breakpoint) => {
     if (validBreakpoints[breakpoint]) {
-      classes += 'hidden-' + breakpoint + ' ';
+      classes += `hidden-${breakpoint} `;
     }
   });
 
   return classes;
 }
+
+const keys = {
+  up: 38,
+  down: 40,
+  return: 13
+};
 
 SelectController.$inject = [
   '$element',

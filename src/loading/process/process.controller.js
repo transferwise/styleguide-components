@@ -8,14 +8,14 @@ class ProcessController {
     this.processing = this.state;
 
     // This allows us to cancel the interval when not needed.
-    $scope.$watch('$ctrl.state', (newVal) => {
+    $scope.$watch('$ctrl.state', () => {
       if (isStopped(this.processing)) {
         this.processing = null;
         this.startProcess();
       }
     });
 
-    $scope.$watch('$ctrl.size', (newVal) => {
+    $scope.$watch('$ctrl.size', () => {
       // Kill the interval and restart on size change as animation will restart
       $interval.cancel(this.interval);
       this.startProcess();
@@ -24,7 +24,7 @@ class ProcessController {
         this.size = 'sm';
       }
       // 46% is ok for most cases, but we can make it perfect.
-      switch(this.size) {
+      switch (this.size) {
         case 'xs':
           this.radius = '11';
           break;

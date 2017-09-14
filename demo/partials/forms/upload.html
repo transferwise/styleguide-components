@@ -47,7 +47,7 @@
 		<div class="form-group">
 			<tw-upload
 				ng-if="!$ctrl.customComplete"
-				ng-model="$ctrl.ngModel"
+				ng-model="$ctrl.model"
 				name="$ctrl.name"
 				icon="{{$ctrl.icon}}"
 				size="{{$ctrl.size}}"
@@ -75,7 +75,7 @@
 			</tw-upload>
 			<tw-upload
 				ng-if="$ctrl.customComplete"
-				ng-model="$ctrl.ngModel"
+				ng-model="$ctrl.model"
 				name="$ctrl.name"
 				icon="{{$ctrl.icon}}"
 				size="{{$ctrl.size}}"
@@ -119,7 +119,7 @@
 		</div>
 		<h5>Configuration</h5>
 <pre>&lt;tw-upload<span ng-if="$ctrl.showNgModel">
-  ng-model="{{$ctrl.ngModel | limitTo : 30}}..."</span>
+  ng-model="{{$ctrl.model | limitTo : 30}}..."</span>
   name="{{$ctrl.name}}"<span ng-if="$ctrl.icon">
   icon="{{$ctrl.icon}}"</span><span ng-if="$ctrl.size !== 'md'">
   size="{{$ctrl.size}}"</span><span ng-if="$ctrl.label">

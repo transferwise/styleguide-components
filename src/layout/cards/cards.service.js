@@ -1,10 +1,10 @@
 
 function TwCardsService() {
-  var expandedIndex = -1; // index of expanded card, -1 when all closed
-  var cards = []; // boolean array of card controllers
+  let expandedIndex = -1; // index of expanded card, -1 when all closed
+  const cards = []; // boolean array of card controllers
 
-  this.toggle = function(index) {
-    if (expandedIndex !== -1  && expandedIndex !== index) {
+  this.toggle = (index) => {
+    if (expandedIndex !== -1 && expandedIndex !== index) {
       cards[expandedIndex].open = false;
       expandedIndex = -1;
     }
@@ -16,25 +16,17 @@ function TwCardsService() {
     }
   };
 
-  this.addCard = function(scope) {
+  this.addCard = (scope) => {
     cards.push(scope);
   };
 
-  this.getExpandedIndex = function() {
-    return expandedIndex;
-  };
-
-  this.updateExpandedIndex = function(newExpandedIndex) {
+  this.updateExpandedIndex = (newExpandedIndex) => {
     expandedIndex = newExpandedIndex;
   };
 
-  this.getCard = function(index) {
-    return cards[index];
-  };
-
-  this.getLength = function() {
-    return cards.length;
-  };
+  this.getCard = index => cards[index];
+  this.getLength = () => cards.length;
+  this.getExpandedIndex = () => expandedIndex;
 }
 
 export default TwCardsService;

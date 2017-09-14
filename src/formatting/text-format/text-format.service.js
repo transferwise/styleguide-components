@@ -1,19 +1,19 @@
 
 function TwTextFormatService() {
-
-  this.formatUsingPattern = function(value, pattern) {
+  this.formatUsingPattern = (value, pattern) => {
     if (!value) {
-      value = "";
+      value = '';
     }
-    if (typeof pattern !== "string") {
+    if (typeof pattern !== 'string') {
       return value;
     }
-    var newValue = "",
-      separators = 0;
 
-    var charactersToAllocate = value.length;
-    var position = 0;
-    while(charactersToAllocate) {
+    let newValue = '';
+    let separators = 0;
+    let charactersToAllocate = value.length;
+    let position = 0;
+
+    while (charactersToAllocate) {
       if (positionIsSeparator(pattern, position)) {
         newValue += pattern[position];
         separators++;
@@ -24,33 +24,33 @@ function TwTextFormatService() {
       position++;
     }
 
-    var separatorsAfterCursor = this.countSeparatorsAfterCursor(pattern, position);
+    const separatorsAfterCursor = this.countSeparatorsAfterCursor(pattern, position);
     if (separatorsAfterCursor) {
       newValue += pattern.substr(position, separatorsAfterCursor);
     }
     return newValue;
   };
 
-  this.unformatUsingPattern = function(value, pattern) {
+  this.unformatUsingPattern = (value, pattern) => {
     if (!value) {
-      return "";
+      return '';
     }
-    if (typeof pattern !== "string") {
+    if (typeof pattern !== 'string') {
       return value;
     }
-    for(var i = 0; i < pattern.length; i++) {
+    for (let i = 0; i < pattern.length; i++) {
       if (positionIsSeparator(pattern, i)) {
         // Not very efficient, but regex tricky because of special characters
-        while(value.indexOf(pattern[i]) >= 0) {
-          value = value.replace(pattern[i], "");
+        while (value.indexOf(pattern[i]) >= 0) {
+          value = value.replace(pattern[i], '');
         }
       }
     }
     return value;
   };
 
-  this.reformatUsingPattern = function(value, newPattern, oldPattern) {
-    if (typeof oldPattern === "undefined") {
+  this.reformatUsingPattern = (value, newPattern, oldPattern) => {
+    if (typeof oldPattern === 'undefined') {
       oldPattern = newPattern;
     }
     return this.formatUsingPattern(
@@ -59,16 +59,16 @@ function TwTextFormatService() {
     );
   };
 
-  this.countSeparatorsBeforeCursor = function(pattern, position) {
-    var separators = 0;
+  this.countSeparatorsBeforeCursor = (pattern, position) => {
+    let separators = 0;
     while (positionIsSeparator(pattern, position - separators - 1)) {
       separators++;
     }
     return separators;
   };
 
-  this.countSeparatorsAfterCursor = function(pattern, position) {
-    var separators = 0;
+  this.countSeparatorsAfterCursor = (pattern, position) => {
+    let separators = 0;
     while (positionIsSeparator(pattern, position + separators)) {
       separators++;
     }
@@ -76,11 +76,11 @@ function TwTextFormatService() {
   };
 
   // How long will a value be after separators have been inserted
-  this.countSeparatorsInAppendedValue = function(pattern, position, value) {
-    var separators = 0;
-    var i = 0;
-    var toAllocate = value.length;
-    while(toAllocate) {
+  this.countSeparatorsInAppendedValue = (pattern, position, value) => {
+    let separators = 0;
+    let i = 0;
+    let toAllocate = value.length;
+    while (toAllocate) {
       if (positionIsSeparator(pattern, position + i)) {
         separators++;
       } else {
@@ -91,9 +91,9 @@ function TwTextFormatService() {
     return separators;
   };
 
-  this.countSeparatorsInPattern = function(pattern) {
-    var separators = 0;
-    for(var i = 0; i < pattern.length; i++) {
+  this.countSeparatorsInPattern = (pattern) => {
+    let separators = 0;
+    for (let i = 0; i < pattern.length; i++) {
       if (positionIsSeparator(pattern, i)) {
         separators++;
       }
@@ -102,7 +102,7 @@ function TwTextFormatService() {
   };
 
   function positionIsSeparator(pattern, position) {
-    return pattern[position] && pattern[position] !== "*";
+    return pattern[position] && pattern[position] !== '*';
   }
 }
 

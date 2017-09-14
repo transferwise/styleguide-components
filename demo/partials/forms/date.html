@@ -10,13 +10,13 @@
 				Example date control
 			</label>
 			<tw-date name="date" tw-validation
-				ng-model="vm.model.components.date"
-				ng-required="vm.date.required"
-				ng-disabled="vm.date.disabled"
-				ng-change="vm.log('date change')"
-				locale="{{vm.date.locale}}"
+				ng-model="$ctrl.model"
+				ng-required="$ctrl.date.required"
+				ng-disabled="$ctrl.date.disabled"
+				ng-change="$ctrl.log('date change')"
+				locale="{{$ctrl.date.locale}}"
 				min="1990-01-01"
-				max="2015-12-31" />
+				max="2015-12-31"></tw-date>
 			<div class="error-messages">
 				<div class="error-required">Required</div>
 				<div class="error-min">Too early</div>
@@ -26,10 +26,10 @@
 		</div>
 		<h5>Configuration</h5>
 <pre>&lt;tw-date
-  ng-model="{{vm.model.components.date}}"
-  ng-required="{{vm.date.required}}"
-  ng-disabled="{{vm.date.disabled}}"
-  locale="{{vm.date.locale}}"
+  ng-model="{{$ctrl.model}}"
+  ng-required="{{$ctrl.date.required}}"
+  ng-disabled="{{$ctrl.date.disabled}}"
+  locale="{{$ctrl.date.locale}}"
   min="1990-01-01"
   max="2015-12-31"
   ng-change="..."
@@ -46,7 +46,7 @@
 				</label>
 				<div class="checkbox">
 					<label>
-						<tw-checkbox ng-model="vm.date.required" />
+						<tw-checkbox ng-model="$ctrl.date.required" />
 						Is the control required?
 					</label>
 				</div>
@@ -57,19 +57,19 @@
 				</label>
 				<div class="checkbox">
 					<label>
-						<tw-checkbox ng-model="vm.date.disabled" />
+						<tw-checkbox ng-model="$ctrl.date.disabled" />
 						Is the control disabled?
 					</label>
 				</div>
 			</div>
-			<div class="form-group" ng-init="vm.date.locale = 'en-GB';">
+			<div class="form-group" ng-init="$ctrl.date.locale = 'en-GB';">
 				<label class="control-label">
 					Locale
 				</label>
 				<tw-select
-					options="vm.locales"
-					ng-model="vm.date.locale"
-					ng-init="vm.date.locale = 'en-GB'" />
+					options="$ctrl.locales"
+					ng-model="$ctrl.date.locale"
+					ng-init="$ctrl.date.locale = 'en-GB'" />
 			</div>
 			<input type="submit" class="btn btn-primary btn-block" value="Submit form" />
 		</div>
