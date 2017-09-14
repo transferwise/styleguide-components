@@ -13,38 +13,38 @@
 			</label>
 			<tw-dynamic-form-control
 				name="dynamic"
-				type="{{vm.dynamic.type}}"
-				placeholder="{{vm.dynamic.placeholder}}"
-				options="vm.dynamic.options"
-				locale="{{vm.dynamic.locale}}"
-				ng-model="vm.model.dynamicFormControl"
-				ng-required="vm.dynamic.required"
-				ng-disabled="vm.dynamic.disabled"
-				ng-minlength="vm.dynamic.minlength"
-				ng-maxlength="vm.dynamic.maxlength"
-				ng-pattern="vm.dynamic.pattern"
-				ng-min="vm.dynamic.min"
-				ng-max="vm.dynamic.max"
-				ng-change="vm.log('dynamic change')"
-				ng-focus="vm.log('dynamic focus')"
-				ng-blur="vm.log('dynamic blur')"
-				upload-options="vm.dynamic.uploadOptions"
+				type="{{$ctrl.dynamic.type}}"
+				placeholder="{{$ctrl.dynamic.placeholder}}"
+				options="$ctrl.dynamic.options"
+				locale="{{$ctrl.dynamic.locale}}"
+				ng-model="$ctrl.model"
+				ng-required="$ctrl.dynamic.required"
+				ng-disabled="$ctrl.dynamic.disabled"
+				ng-minlength="$ctrl.dynamic.minlength"
+				ng-maxlength="$ctrl.dynamic.maxlength"
+				ng-pattern="$ctrl.dynamic.pattern"
+				ng-min="$ctrl.dynamic.min"
+				ng-max="$ctrl.dynamic.max"
+				ng-change="$ctrl.log('dynamic change')"
+				ng-focus="$ctrl.log('dynamic focus')"
+				ng-blur="$ctrl.log('dynamic blur')"
+				upload-options="$ctrl.dynamic.uploadOptions"
 				tw-validation />
 			<div class="error-messages">
 				<div class="error-required">
 					Required
 				</div>
 				<div class="error-minlength">
-					Must be at least {{vm.dynamic.minlength}} characters
+					Must be at least {{$ctrl.dynamic.minlength}} characters
 				</div>
 				<div class="error-maxlength">
-					Must not be longer than {{vm.dynamic.maxlength}} characters
+					Must not be longer than {{$ctrl.dynamic.maxlength}} characters
 				</div>
 				<div class="error-min">
-					Must be at least {{vm.dynamic.min}}
+					Must be at least {{$ctrl.dynamic.min}}
 				</div>
 				<div class="error-max">
-					Must not be higher than {{vm.dynamic.max}}
+					Must not be higher than {{$ctrl.dynamic.max}}
 				</div>
 				<div class="error-pattern">
 					Invalid characters
@@ -58,22 +58,22 @@
 
 		<h5>Configuration</h5>
 <pre>&lt;tw-dynamic-form-control
-  type="{{vm.dynamic.type}}"<span ng-if="vm.dynamic.type !== 'radio' && vm.dynamic.type !== 'date'">
-  placeholder="{{vm.dynamic.placeholder}}"</span><span ng-if="vm.dynamic.type === 'radio' || vm.dynamic.type === 'select'">
-  options="{{vm.dynamic.options}}"</span><span ng-if="vm.dynamic.type === 'date'">
-  locale="{{vm.dynamic.locale}}"</span>
-  ng-model="{{vm.model.dynamicFormControl}}"<span ng-if="vm.dynamic.required">
-  ng-required="{{vm.dynamic.required}}"</span><span ng-if="vm.dynamic.disabled">
-  ng-disabled="{{vm.dynamic.disabled}}"</span><span ng-if="vm.dynamic.type === 'text'"><span ng-if="vm.dynamic.minlength">
-  ng-minlength="{{vm.dynamic.minlength}}"</span><span ng-if="vm.dynamic.maxlength">
-  ng-maxlength="{{vm.dynamic.maxlength}}"</span><span ng-if="vm.dynamic.pattern">
-  ng-pattern="{{vm.dynamic.pattern}}"</span></span><span ng-if="vm.dynamic.type === 'number' || vm.dynamic.type === 'date'"><span ng-if="vm.dynamic.min">
-  ng-min="{{vm.dynamic.min}}"</span><span ng-if="vm.dynamic.max">
-  ng-max="{{vm.dynamic.max}}"</span></span>
+  type="{{$ctrl.dynamic.type}}"<span ng-if="$ctrl.dynamic.type !== 'radio' && $ctrl.dynamic.type !== 'date'">
+  placeholder="{{$ctrl.dynamic.placeholder}}"</span><span ng-if="$ctrl.dynamic.type === 'radio' || $ctrl.dynamic.type === 'select'">
+  options="{{$ctrl.dynamic.options}}"</span><span ng-if="$ctrl.dynamic.type === 'date'">
+  locale="{{$ctrl.dynamic.locale}}"</span>
+  ng-model="{{$ctrl.model}}"<span ng-if="$ctrl.dynamic.required">
+  ng-required="{{$ctrl.dynamic.required}}"</span><span ng-if="$ctrl.dynamic.disabled">
+  ng-disabled="{{$ctrl.dynamic.disabled}}"</span><span ng-if="$ctrl.dynamic.type === 'text'"><span ng-if="$ctrl.dynamic.minlength">
+  ng-minlength="{{$ctrl.dynamic.minlength}}"</span><span ng-if="$ctrl.dynamic.maxlength">
+  ng-maxlength="{{$ctrl.dynamic.maxlength}}"</span><span ng-if="$ctrl.dynamic.pattern">
+  ng-pattern="{{$ctrl.dynamic.pattern}}"</span></span><span ng-if="$ctrl.dynamic.type === 'number' || $ctrl.dynamic.type === 'date'"><span ng-if="$ctrl.dynamic.min">
+  ng-min="{{$ctrl.dynamic.min}}"</span><span ng-if="$ctrl.dynamic.max">
+  ng-max="{{$ctrl.dynamic.max}}"</span></span>
   ng-change='...'
   ng-focus='...'
-  ng-blur='...'<span ng-if="vm.dynamic.type === 'upload'">
-  upload-options="{{vm.dynamic.uploadOptions}}"</span>
+  ng-blur='...'<span ng-if="$ctrl.dynamic.type === 'upload'">
+  upload-options="{{$ctrl.dynamic.uploadOptions}}"</span>
   tw-validation /&gt;</pre>
 	</div>
 	<div class="col-md-6">
@@ -82,23 +82,14 @@
 				Edit configuration
 			</h5>
 
-			<div class="form-group" ng-init="vm.dynamic.types = [
-				{'value': 'text', 'label': 'Text'},
-				{'value': 'password', 'label': 'Password'},
-				{'value': 'number', 'label': 'Number'},
-				{'value': 'select', 'label': 'Select'},
-				{'value': 'radio', 'label': 'Radio'},
-				{'value': 'checkbox', 'label': 'Checkbox'},
-				{'value': 'upload', 'label': 'Upload'},
-				{'value': 'date', 'label': 'Date'}
-				]; vm.dynamic.type = 'text';">
+			<div class="form-group" ng-init="$ctrl.dynamic.type = 'text';">
 				<label class="control-label">
 					Type
 				</label>
 				<tw-select
-					options="vm.dynamic.types"
-					ng-model="vm.dynamic.type"
-					ng-change="vm.model.dynamicFormControl = null">
+					options="$ctrl.dynamic.types"
+					ng-model="$ctrl.dynamic.type"
+					ng-change="$ctrl.model = null">
 				</tw-select>
 			</div>
 
@@ -108,7 +99,7 @@
 				</label>
 				<div class="checkbox">
 					<label>
-						<tw-checkbox ng-model="vm.dynamic.required" />
+						<tw-checkbox ng-model="$ctrl.dynamic.required" />
 						Is the control required?
 					</label>
 				</div>
@@ -120,14 +111,14 @@
 				</label>
 				<div class="checkbox">
 					<label>
-						<tw-checkbox ng-model="vm.dynamic.disabled" />
+						<tw-checkbox ng-model="$ctrl.dynamic.disabled" />
 						Is the control disabled?
 					</label>
 				</div>
 			</div>
 
 			<div class="form-group"
-				ng-if="vm.dynamic.type === 'text'">
+				ng-if="$ctrl.dynamic.type === 'text'">
 				<label class="control-label">
 					Min/Max length
 				</label>
@@ -136,26 +127,26 @@
 						<input type="number"
 							class="form-control"
 							placeholder="Minlength"
-							ng-model="vm.dynamic.minlength" />
+							ng-model="$ctrl.dynamic.minlength" />
 					</div>
 					<div class="col-xs-6">
 						<input type="number"
 							class="form-control"
 							placeholder="Maxlength"
-							ng-model="vm.dynamic.maxlength" />
+							ng-model="$ctrl.dynamic.maxlength" />
 					</div>
 				</div>
 			</div>
 
 			<div class="form-group"
-				ng-if="vm.dynamic.type === 'text'">
+				ng-if="$ctrl.dynamic.type === 'text'">
 				<label class="control-label">
 					Pattern
 				</label>
 				<input type="text"
 					class="form-control"
 					placeholder="e.g. [a-z]+"
-					ng-model="vm.dynamic.pattern"
+					ng-model="$ctrl.dynamic.pattern"
 					validate-regexp tw-validation />
 				<div class="error-messages">
 					<div class="error-async">Invalid regex</div>
@@ -163,7 +154,7 @@
 			</div>
 
 			<div class="form-group"
-				ng-if="vm.dynamic.type === 'number'">
+				ng-if="$ctrl.dynamic.type === 'number'">
 				<label class="control-label">
 					Min/Max
 				</label>
@@ -172,19 +163,19 @@
 						<input type="number"
 							class="form-control"
 							placeholder="Min"
-							ng-model="vm.dynamic.min" />
+							ng-model="$ctrl.dynamic.min" />
 					</div>
 					<div class="col-xs-6">
 						<input type="number"
 							class="form-control"
 							placeholder="Max"
-							ng-model="vm.dynamic.max" />
+							ng-model="$ctrl.dynamic.max" />
 					</div>
 				</div>
 			</div>
 
 			<div class="form-group"
-				ng-if="vm.dynamic.type === 'date'">
+				ng-if="$ctrl.dynamic.type === 'date'">
 				<label class="control-label">
 					Min/Max ('YYYY-mm-dd')
 				</label>
@@ -193,56 +184,47 @@
 						<input type="text"
 							class="form-control"
 							placeholder="Min"
-							ng-model="vm.dynamic.min" />
+							ng-model="$ctrl.dynamic.min" />
 					</div>
 					<div class="col-xs-6">
 						<input type="text"
 							class="form-control"
 							placeholder="Max"
-							ng-model="vm.dynamic.max" />
+							ng-model="$ctrl.dynamic.max" />
 					</div>
 				</div>
 			</div>
 
-			<div class="form-group" ng-if="vm.dynamic.type === 'date'"
-				ng-init="vm.dynamic.locales = [
-					{'value': 'en-GB', 'label': 'English UK'},
-					{'value': 'en-US', 'label': 'English US'},
-					{'value': 'fr-FR', 'label': 'French'},
-					{'value': 'es-ES', 'label': 'Spanish'},
-					{'value': 'es-US', 'label': 'Spanish US'},
-					{'value': 'pt-BR', 'label': 'Brazillian Portuguese'},
-					{'value': 'ss-SS', 'label': 'Unknown locale'}
-				]; vm.dynamic.locale='en-GB';">
+			<div class="form-group" ng-if="$ctrl.dynamic.type === 'date'">
 				<label class="control-label">
 					Locale
 				</label>
 				<tw-select
-					options="vm.dynamic.locales"
-					ng-model="vm.dynamic.locale"
-					ng-init="vm.dynamic.locale='en-GB'" />
+					options="$ctrl.locales"
+					ng-model="$ctrl.dynamic.locale"
+					ng-init="$ctrl.dynamic.locale='en-GB'" />
 			</div>
 
 			<div class="form-group"
-				ng-if="vm.dynamic.type !== 'radio' && vm.dynamic.type !== 'date'">
+				ng-if="$ctrl.dynamic.type !== 'radio' && $ctrl.dynamic.type !== 'date'">
 				<label class="control-label">
 					Placeholder
 				</label>
 				<input type="text"
 					class="form-control"
-					ng-model="vm.dynamic.placeholder"
-					ng-init="vm.dynamic.placeholder = 'Example'" />
+					ng-model="$ctrl.dynamic.placeholder"
+					ng-init="$ctrl.dynamic.placeholder = 'Example'" />
 			</div>
 
 			<div class="form-group"
-				ng-if="vm.dynamic.type === 'upload'">
+				ng-if="$ctrl.dynamic.type === 'upload'">
 				<label class="control-label">
 					Upload Button Text
 				</label>
 				<input type="text"
 					class="form-control"
-					ng-model="vm.dynamic.uploadOptions.buttonText"
-					ng-init="vm.dynamic.uploadOptions.buttonText = 'Upload a file'" />
+					ng-model="$ctrl.dynamic.uploadOptions.buttonText"
+					ng-init="$ctrl.dynamic.uploadOptions.buttonText = 'Upload a file'" />
 			</div>
 			<input type="submit" class="btn btn-primary btn-block" value="Submit form" />
 		</div>

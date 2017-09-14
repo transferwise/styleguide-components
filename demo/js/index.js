@@ -1,40 +1,32 @@
 
-angular.module('my-app', ['tw.styleguide-components'])
+angular.module('tw.styleguide.docs', [])
 .config(['$compileProvider', function ($compileProvider) {
 	$compileProvider.debugInfoEnabled(false);
 }])
-.controller('PageController', [function() {
-	var vm = this;
+.component('docsNavigation', {
+	templateUrl: 'partials/navigation.html'
+})
+.component('formComponents', {
+	bindings: {
+		model: '=',
+		locales: '=',
+		sizes: '='
+	},
+	templateUrl: 'partials/form-components.html'
+})
+.controller('PageController', function() {
 	this.log = function(message) {
 		console.log(message);
 	};
-	this.radio = {required: true};
-	this.checkbox = {required: true};
 
-	this.date = {required: true};
-	this.dynamic = {
-		required: true,
-		options: [
-			{value: '1', label: 'One'},
-			{value: '2', label: 'Two'},
-			{value: '3', label: 'Three'},
-		]
+	this.model = {
+		components: {}
 	};
 
 	this.sizes = [
-		{value:'sm',label:'Small'},
-		{value:'md',label:'Medium'},
-		{value:'lg',label:'Large'}
-	];
-
-	// Used by twAmountCurrencySelect docs
-	this.currencySelect = [
-		{header: 'Popular currencies'},
-		{value: 'eur', label: 'EUR', note: 'Euro', currency: 'EUR', searchable: 'Spain, Germany, France, Austria, Estonia'},
-		{value: 'gbp', label: 'GBP', note: 'Great British Pound', currency: 'GBP', searchable: 'England, Scotland, Wales'},
-		{value: 'usd', label: 'USD', note: 'United States Dollar', currency: 'USD', searchable: 'Hong Kong, Saudi Arabia'},
-		{header: 'All currencies'},
-		{value: 'aud', label: 'AUD', note: 'Australian Dollar', currency: 'AUD'}
+		{value:'sm', label:'Small'},
+		{value:'md', label:'Medium'},
+		{value:'lg', label:'Large'}
 	];
 
 	// Used by twValidation docs
@@ -55,14 +47,7 @@ angular.module('my-app', ['tw.styleguide-components'])
 		{'value': 'ja-JP', 'label': 'Japanese'},
 		{'value': 'xx-XX', 'label': 'Unknown locale'}
 	];
-
-	var initialDate = new Date('2000-01-10');
-	this.model = {
-		components: {
-			dateLookup: initialDate
-		}
-	};
-}])
+})
 .directive('validateRegexp', function($q) {
 	return {
 		require: 'ngModel',
@@ -103,14 +88,53 @@ angular.module('my-app', ['tw.styleguide-components'])
 		</div>"
 	};
 })
-.directive('twAmountCurrencySelectDocs', function() {
-	return {templateUrl: 'partials/tw-amount-currency-select.html'};
+.component('twAmountCurrencySelectDocs', {
+	bindings: {
+		model: '=',
+		currency: '=',
+		sizes: '='
+	},
+	controller: function() {
+		this.currencySelect = [
+			{header: 'Popular currencies'},
+			{value: 'eur', label: 'EUR', note: 'Euro', currency: 'EUR', searchable: 'Spain, Germany, France, Austria, Estonia'},
+			{value: 'gbp', label: 'GBP', note: 'Great British Pound', currency: 'GBP', searchable: 'England, Scotland, Wales'},
+			{value: 'usd', label: 'USD', note: 'United States Dollar', currency: 'USD', searchable: 'Hong Kong, Saudi Arabia'},
+			{header: 'All currencies'},
+			{value: 'aud', label: 'AUD', note: 'Australian Dollar', currency: 'AUD'}
+		];
+
+		this.currency = 'eur';
+
+		this.amountCurrencySelect = {
+			size: 'md',
+			required: false,
+			disabled: false,
+			customActionLabel: 'Can\'t find your currency?',
+			currencyFilterPlaceholder: 'Search...',
+			lockTooltipTitle: 'some title',
+			lockTooltipContent: 'some content'
+		};
+	},
+	templateUrl: 'partials/tw-amount-currency-select.html'
 })
-.directive('twCheckboxDocs', function() {
-	return {templateUrl: 'partials/tw-checkbox.html'};
+.component('twCheckboxDocs', {
+	bindings: {
+		model: '='
+	},
+	controller: function() {
+		this.checkbox = { required: true };
+	},
+	templateUrl: 'partials/tw-checkbox.html'
 })
-.directive('twRadioDocs', function() {
-	return {templateUrl: 'partials/tw-radio.html'};
+.component('twRadioDocs', {
+	bindings: {
+		model: '='
+	},
+	controller: function() {
+		this.radio = { required: true };
+	},
+	templateUrl: 'partials/tw-radio.html'
 })
 .component('twSelectDocs', {
 	templateUrl: 'partials/tw-select.html',
@@ -222,54 +246,104 @@ angular.module('my-app', ['tw.styleguide-components'])
 	}
 })
 .component('twUploadDocs', {
-		controller: ['$timeout', '$q', '$http', function($timeout, $q, $http) {
-			var $ctrl = this;
-			$ctrl.onStart = function(file) {
-				console.log("File upload starting");
-			};
-			$ctrl.onSuccess = function(response) {
-				console.log('File upload complete');
-			};
-			$ctrl.onFailure = function(error) {
-				console.log('File upload failure');
-				if (error.status === 404) {
-					$ctrl.errorMessage = 'Bad URL';
-				} else {
-					$ctrl.errorMessage = 'Unknown error';
-				}
-			};
-			$ctrl.onCancel= function() {
-				console.log('File upload cancelled');
-			};
+	bindings: {
+		model: '=',
+		sizes: '='
+	},
+	controller: ['$timeout', '$q', '$http', function($timeout, $q, $http) {
+		var $ctrl = this;
+		$ctrl.onStart = function(file) {
+			console.log("File upload starting");
+		};
+		$ctrl.onSuccess = function(response) {
+			console.log('File upload complete');
+		};
+		$ctrl.onFailure = function(error) {
+			console.log('File upload failure');
+			if (error.status === 404) {
+				$ctrl.errorMessage = 'Bad URL';
+			} else {
+				$ctrl.errorMessage = 'Unknown error';
+			}
+		};
+		$ctrl.onCancel= function() {
+			console.log('File upload cancelled');
+		};
 
-			$ctrl.makeFancy = function() {
-				$ctrl.label = "Front of your ID document";
-				$ctrl.processingText = "Processing...";
-				$ctrl.successText = "Upload complete!";
-				$ctrl.failureText = "Upload failed!";
-			};
+		$ctrl.makeFancy = function() {
+			$ctrl.label = "Front of your ID document";
+			$ctrl.processingText = "Processing...";
+			$ctrl.successText = "Upload complete!";
+			$ctrl.failureText = "Upload failed!";
+		};
 
-			$ctrl.acceptOptions = [
-				{value: '.png', label: 'PNG (.png)'},
-				{value: '.jpg,.jpeg', label: 'JPG (.jpg,.jpeg)'},
-				{value: 'image/*', label: 'Images (image/*)'},
-				{value: 'video/*', label: 'Video (video/*)'},
-				{value: 'audio/*', label: 'Audio (audio/*)'}
-			];
-		}],
-		templateUrl: 'partials/tw-upload.html'
+		$ctrl.acceptOptions = [
+			{value: '.png', label: 'PNG (.png)'},
+			{value: '.jpg,.jpeg', label: 'JPG (.jpg,.jpeg)'},
+			{value: 'image/*', label: 'Images (image/*)'},
+			{value: 'video/*', label: 'Video (video/*)'},
+			{value: 'audio/*', label: 'Audio (audio/*)'}
+		];
+	}],
+	templateUrl: 'partials/tw-upload.html'
 })
-.directive('twDateDocs', function() {
-	return {templateUrl: 'partials/tw-date.html'};
+.component('twDateDocs', {
+	bindings: {
+		model: '=',
+		locales: '=',
+		sizes: '='
+	},
+	controller: function() {
+		this.date = {required: true};
+	},
+	templateUrl: 'partials/tw-date.html'
 })
-.directive('twDateLookupDocs', function() {
-	return {templateUrl: 'partials/tw-date-lookup.html'};
+.component('twDateLookupDocs', {
+	bindings: {
+		model: '=',
+		locales: '=',
+		sizes: '='
+	},
+	controller: function() {
+		var initialDate = new Date('2000-01-10');
+		this.model = initialDate;
+	},
+	templateUrl: 'partials/tw-date-lookup.html'
 })
-.directive('twCurrencyInputDocs', function() {
-	return {templateUrl: 'partials/tw-currency-input.html'};
+.component('twCurrencyInputDocs', {
+	bindings: {
+		model: '=',
+		sizes: '='
+	},
+	templateUrl: 'partials/tw-currency-input.html'
 })
-.directive('twDynamicControlDocs', function() {
-	return {templateUrl: 'partials/tw-dynamic-control.html'};
+.component('twDynamicControlDocs', {
+	bindings: {
+		model: '=',
+		locales: '=',
+		sizes: '='
+	},
+	controller: function() {
+		this.dynamic = {
+			required: true,
+			options: [
+				{value: '1', label: 'One'},
+				{value: '2', label: 'Two'},
+				{value: '3', label: 'Three'},
+			],
+			types: [
+				{'value': 'text', 'label': 'Text'},
+				{'value': 'password', 'label': 'Password'},
+				{'value': 'number', 'label': 'Number'},
+				{'value': 'select', 'label': 'Select'},
+				{'value': 'radio', 'label': 'Radio'},
+				{'value': 'checkbox', 'label': 'Checkbox'},
+				{'value': 'upload', 'label': 'Upload'},
+				{'value': 'date', 'label': 'Date'}
+			]
+		};
+	},
+	templateUrl: 'partials/tw-dynamic-control.html'
 })
 .component('twRequirementsFormDocs', {
 	controller: ['$scope', '$http', function($scope, $http) {
