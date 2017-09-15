@@ -8,7 +8,7 @@ class TabsController {
   switchTab(tab) {
     this.active = tab;
     if (this.onChange) {
-      this.onChange( {tab} );
+      this.onChange({ tab });
     }
   }
 }
