@@ -2465,7 +2465,9 @@
         return _createClass(TabsController, [ {
             key: "switchTab",
             value: function(tab) {
-                this.active = tab, this.onChange && this.onChange(tab);
+                this.active = tab, this.onChange && this.onChange({
+                    tab: tab
+                });
             }
         } ]), TabsController;
     }();
