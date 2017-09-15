@@ -24,6 +24,30 @@ function DomService() {
     }
     return null;
   };
+
+  this.getPreviousSiblingWithClassName = (element, className) => {
+    let sibling = element.previousElementSibling;
+
+    while (sibling) {
+      if (sibling.classList.contains(className)) {
+        return sibling;
+      }
+      sibling = sibling.previousElementSibling;
+    }
+    return null;
+  };
+
+  this.getNextSiblingWithClassName = (element, className) => {
+    let sibling = element.nextElementSibling;
+
+    while (sibling) {
+      if (sibling.classList.contains(className)) {
+        return sibling;
+      }
+      sibling = sibling.nextElementSibling;
+    }
+    return null;
+  };
 }
 
 export default DomService;

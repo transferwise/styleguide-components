@@ -1,12 +1,14 @@
 import angular from 'angular';
+import DomService from '../../services/dom/'; // eslint-disable-line no-unused-vars
 
 class SelectController {
-  constructor($element, $scope, $transclude, $timeout, $attrs) {
+  constructor($element, $scope, $transclude, $timeout, $attrs, TwDomService) {
     this.$ngModel = $element.controller('ngModel');
-    this.$element = $element;
     this.element = $element[0];
-    this.button = $element[0].getElementsByClassName('btn')[0];
+    this.button = this.element.getElementsByClassName('btn')[0];
     this.search = '';
+
+    this.dom = TwDomService;
 
     preSelectModelValue(this.$ngModel, this);
     setDefaultIfRequired(this.$ngModel, this, $element, $attrs);
@@ -72,7 +74,7 @@ class SelectController {
       this.options,
       character
     );
-    focusOnActiveLink(this.$element[0]);
+    focusOnActiveLink(this.element);
   }
 
   placeholderClick() {
@@ -167,10 +169,14 @@ class SelectController {
 
     // If active option not first, move up
     if (activeLink !== optionLinks[0]) {
-      // TODO prevAll is ineffeccient for longer lists
-      const previousOptions = $(activeOption).prevAll('.tw-select-option'); // eslint-disable-line
-      const previousOptionLink = previousOptions[0].getElementsByTagName('a')[0];
-      this.selectOptionUsingLink(previousOptionLink);
+      const previousOption = this.dom.getPreviousSiblingWithClassName(
+        activeOption,
+        'tw-select-option'
+      );
+      if (previousOption) {
+        const previousOptionLink = previousOption.getElementsByTagName('a')[0];
+        this.selectOptionUsingLink(previousOptionLink);
+      }
     }
   }
 
@@ -182,15 +188,19 @@ class SelectController {
     }
     // If active option not last, move down
     if (activeLink !== optionLinks[optionLinks.length - 1]) {
-      // TODO nextAll is ineffeccient for longer lists
-      const nextOptions = $(activeOption).nextAll('.tw-select-option'); // eslint-disable-line
-      const nextOptionLink = nextOptions[0].getElementsByTagName('a')[0];
-      this.selectOptionUsingLink(nextOptionLink);
-      return;
+      const nextOption = this.dom.getNextSiblingWithClassName(
+        activeOption,
+        'tw-select-option'
+      );
+      if (nextOption) {
+        const nextOptionLink = nextOption.getElementsByTagName('a')[0];
+        this.selectOptionUsingLink(nextOptionLink);
+        return;
+      }
     }
     // If active is last and custom action, focus on it
     const transcludedOption =
-      this.$element[0].getElementsByClassName('tw-select-transcluded');
+      this.element.getElementsByClassName('tw-select-transcluded');
 
     if (transcludedOption.length) {
       transcludedOption[0].getElementsByTagName('a')[0].focus();
@@ -462,7 +472,8 @@ SelectController.$inject = [
   '$scope',
   '$transclude',
   '$timeout',
-  '$attrs'
+  '$attrs',
+  'TwDomService'
 ];
 
 export default SelectController;

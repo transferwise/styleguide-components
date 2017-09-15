@@ -253,6 +253,18 @@
         }, this.getClosestParentByClassName = function(element, className) {
             for (var parent = element; parent; ) if (parent = parent.parentNode, parent && parent.classList && parent.classList.contains(className)) return parent;
             return null;
+        }, this.getPreviousSiblingWithClassName = function(element, className) {
+            for (var sibling = element.previousElementSibling; sibling; ) {
+                if (sibling.classList.contains(className)) return sibling;
+                sibling = sibling.previousElementSibling;
+            }
+            return null;
+        }, this.getNextSiblingWithClassName = function(element, className) {
+            for (var sibling = element.nextElementSibling; sibling; ) {
+                if (sibling.classList.contains(className)) return sibling;
+                sibling = sibling.nextElementSibling;
+            }
+            return null;
         };
     }
     Object.defineProperty(exports, "__esModule", {
