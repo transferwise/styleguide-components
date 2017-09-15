@@ -1,11 +1,13 @@
-import TwCurrencyService from '../../services/currency/';
+import CurrencyService from '../../services/currency/'; // eslint-disable-line no-unused-vars
 
 class AmountCurrencySelectController {
   constructor($element, $scope, $timeout, TwCurrencyService) {
-    var $ngModel = $element.controller('ngModel');
+    const $ngModel = $element.controller('ngModel');
 
+    this.element = $element[0];
     this.$timeout = $timeout;
     this.showDecimals = true;
+    this.CurrencyService = TwCurrencyService;
 
     $scope.$watch('$ctrl.ngModel', (newValue, oldValue) => {
       if (newValue !== oldValue) {
@@ -15,13 +17,14 @@ class AmountCurrencySelectController {
 
     $scope.$watch('$ctrl.currency', (newValue, oldValue) => {
       if (newValue && newValue !== oldValue) {
-        this.showDecimals = TwCurrencyService.getDecimals(newValue) > 0;
+        this.showDecimals = this.CurrencyService.getDecimals(newValue) > 0;
       }
     });
 
-    $element.find('input').on('blur', () => {
+    const input = $element[0].getElementsByTagName('input')[0];
+    input.addEventListener('blur', () => {
       $ngModel.$setTouched();
-      $element.triggerHandler('blur');
+      this.element.dispatchEvent(new Event('blur'));
     });
 
     $ngModel.$validators.min = (modelValue, viewValue) => {
@@ -39,6 +42,12 @@ class AmountCurrencySelectController {
 
       return viewValue <= this.ngMax;
     };
+
+    // eslint-disable-next-line no-console
+    if (this.element.getAttribute('on-amount-change') && console && console.log) {
+      // eslint-disable-next-line no-console
+      console.log('onAmountChange is deprecated in twAmountCurrencySelect, please use ngChange.');
+    }
   }
 
   changedAmount() {
@@ -51,9 +60,6 @@ class AmountCurrencySelectController {
     if (this.onAmountChange) {
       // $timeout is needed to get the last ngModel value.
       // See: https://github.com/angular/angular.js/issues/4558
-      if (console & console.log) {
-        console.log("onAmountChange is deprecated in twAmountCurrencySelect, please use ngChange.");
-      }
       this.$timeout(this.onAmountChange);
     }
   }
@@ -72,7 +78,7 @@ class AmountCurrencySelectController {
 }
 
 function isNumber(value) {
-  return !isNaN(parseFloat(value));
+  return !isNaN(parseFloat(value)); // eslint-disable-line no-restricted-globals
 }
 
 AmountCurrencySelectController.$inject = [

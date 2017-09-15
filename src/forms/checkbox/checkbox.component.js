@@ -9,7 +9,7 @@ const Checkbox = {
     $ngModel: 'ngModel'
   },
   bindings: {
-    name: "@",
+    name: '@',
     ngModel: '=',
     ngTrueValue: '<',
     ngFalseValue: '<',

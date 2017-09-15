@@ -7,6 +7,7 @@ describe('CurrencyInput', function() {
     $ngModel,
     templateElement,
     directiveElement,
+    $input,
     input;
 
   var DIRECTIVE_SELECTOR = 'tw-currency-input';
@@ -56,26 +57,27 @@ describe('CurrencyInput', function() {
       templateElement = getCompiledTemplateElement($scope);
       directiveElement = templateElement.find(DIRECTIVE_SELECTOR);
       $ngModel = directiveElement.controller('ngModel');
-      input = directiveElement.find(INPUT_SELECTOR);
+      $input = directiveElement.find(INPUT_SELECTOR);
+      input = $input[0];
     }));
 
     it('should change ngModel when value is changed', function() {
-      input.val('200.05').trigger('input');
+      $input.val('200.05').trigger('input');
       expect($scope.ngModel).toBe('200.05');
     });
 
     it('should set ngModel.$dirty when button clicked', function() {
-      input.val('100').trigger('input');
+      $input.val('100').trigger('input');
       expect($ngModel.$dirty).toBe(true);
     });
 
     it('should set ngModel.$touched when blured', function() {
-      input.triggerHandler('blur');
+      input.dispatchEvent(new Event('blur'));
       expect($ngModel.$touched).toBe(true);
     });
 
     it('should style nearest parent form-group when focussed', function() {
-      input.triggerHandler('focus');
+      input.dispatchEvent(new Event('focus'));
       expect(directiveElement.closest('.form-group').hasClass('focus')).toBe(true);
     });
 
@@ -96,27 +98,27 @@ describe('CurrencyInput', function() {
       templateElement = getCompiledTemplateElement($scope);
       directiveElement = templateElement.find(DIRECTIVE_SELECTOR);
       $ngModel = directiveElement.controller('ngModel');
-      input = directiveElement.find(INPUT_SELECTOR);
+      $input = directiveElement.find(INPUT_SELECTOR);
     }));
 
     it('should be valid when not required and empty', function() {
       $scope.isRequired = false;
       templateElement = getCompiledTemplateElement($scope);
-      input.trigger('input');
+      $input.trigger('input');
 
       expect(templateElement.find(DIRECTIVE_SELECTOR).hasClass('ng-invalid')).toBe(false);
     });
 
     it('should be invalid when required and empty', function() {
       $scope.isRequired = true;
-      input.trigger('input');
+      $input.trigger('input');
 
       expect(directiveElement.hasClass('ng-invalid')).toBe(true);
       expect(directiveElement.hasClass('ng-invalid-required')).toBe(true);
     });
 
     it('should be invalid when min is not reached', function() {
-      input.val('5').trigger('input');
+      $input.val('5').trigger('input');
 
       expect(directiveElement.hasClass('ng-invalid')).toBe(true);
       expect(directiveElement.hasClass('ng-invalid-min')).toBe(true);
@@ -125,14 +127,14 @@ describe('CurrencyInput', function() {
     });
 
     it('should be invalid when min is zero', function() {
-      input.val('0').trigger('input');
+      $input.val('0').trigger('input');
 
       expect(directiveElement.hasClass('ng-invalid')).toBe(true);
       expect(directiveElement.hasClass('ng-invalid-min')).toBe(true);
     });
 
     it('should be invalid when max is not reached', function() {
-      input.val('500').trigger('input');
+      $input.val('500').trigger('input');
 
       expect(directiveElement.hasClass('ng-invalid')).toBe(true);
       expect(directiveElement.hasClass('ng-invalid-min')).toBe(false);
@@ -141,7 +143,7 @@ describe('CurrencyInput', function() {
     });
 
     it('should be valid when value is correct', function() {
-      input.val('50').trigger('input');
+      $input.val('50').trigger('input');
 
       expect(templateElement.find(DIRECTIVE_SELECTOR).hasClass('ng-invalid')).toBe(false);
     });

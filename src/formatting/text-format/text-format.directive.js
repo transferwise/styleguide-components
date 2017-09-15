@@ -1,3 +1,4 @@
+import angular from 'angular';
 import TextFormatController from './text-format.controller.js';
 import UndoStackFactory from './undo-stack.service.js';
 import TextFormatService from './text-format.service.js';
@@ -10,7 +11,7 @@ function TextFormat() {
     controllerAs: '$ctrl',
     scope: {
       ngModel: '<',
-      twTextFormat: "@"
+      twTextFormat: '@'
     },
     controller: TextFormatController
   };

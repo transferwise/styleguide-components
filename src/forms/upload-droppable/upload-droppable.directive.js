@@ -1,4 +1,7 @@
 /* DEPRECATED in favour of upload */
+import angular from 'angular';
+
+import template from './upload-droppable.html';
 
 function TwUploadDroppableDirective() {
   return {
@@ -15,35 +18,24 @@ function TwUploadDroppableDirective() {
       accept: '='
     },
     link: TwUploadDroppableLink,
-    template:
-    '<div class="text-center tw-upload-droppable-box" ng-class="{\'active\': $ctrl.isActive}"> \
-      <i class="icon icon-upload tw-upload-droppable-icon"></i>\
-      <h4 class="m-t-2" ng-if="$ctrl.title">{{$ctrl.title}}</h4>\
-      <div class="row">\
-        <div class="col-xs-12 col-sm-6 col-sm-offset-3 m-t-1">\
-        <ng-transclude></ng-transclude>\
-        <label class="link" for="file-upload">{{$ctrl.cta}}</label>\
-        <input tw-file-select id="file-upload" type="file" accept={{$ctrl.accept}} class="hidden" on-user-input="$ctrl.onManualUpload"/>\
-        </div>\
-      </div>\
-    </div>'
+    template
   };
 }
 
 
 function TwUploadDroppableController() {
-  var $ctrl = this;
+  const $ctrl = this;
 
   $ctrl.dragCounter = 0;
   $ctrl.isActive = false;
 
-  $ctrl.onManualUpload = function(event) {
+  $ctrl.onManualUpload = (event) => {
     if ($ctrl.onUpload && typeof $ctrl.onUpload === 'function') {
       $ctrl.onUpload(angular.element(document.querySelector('#file-upload'))[0].files[0], event);
     }
   };
 
-  $ctrl.onDrop = function(file, event) {
+  $ctrl.onDrop = (file, event) => {
     if ($ctrl.onUpload && typeof $ctrl.onUpload === 'function') {
       $ctrl.onUpload(file, event);
     }
@@ -51,7 +43,7 @@ function TwUploadDroppableController() {
     $ctrl.dropCounter = 0;
   };
 
-  $ctrl.onDragChange = function(enter) {
+  $ctrl.onDragChange = (enter) => {
     if (enter) {
       $ctrl.dragCounter++;
       if ($ctrl.dragCounter === 1) {
@@ -64,27 +56,26 @@ function TwUploadDroppableController() {
       }
     }
   };
-
 }
 
-function TwUploadDroppableLink(scope, element, attr) {
-  element[0].addEventListener('dragenter', function (event) {
+function TwUploadDroppableLink(scope, element) {
+  element[0].addEventListener('dragenter', (event) => {
     event.preventDefault();
     scope.$ctrl.onDragChange(true);
     scope.$apply();
   }, false);
 
-  element[0].addEventListener('dragover', function (event) {
+  element[0].addEventListener('dragover', (event) => {
     event.preventDefault();
-  },false);
+  }, false);
 
-  element[0].addEventListener('dragleave', function (event) {
+  element[0].addEventListener('dragleave', (event) => {
     event.preventDefault();
     scope.$ctrl.onDragChange(false);
     scope.$apply();
   }, false);
 
-  element[0].addEventListener('drop', function (event) {
+  element[0].addEventListener('drop', (event) => {
     event.preventDefault();
     scope.$ctrl.onDrop(event.dataTransfer.files[0]);
     scope.$apply();

@@ -1,4 +1,4 @@
-import controller from  './currency-input.controller.js';
+import controller from './currency-input.controller.js';
 import template from './currency-input.html';
 
 const CurrencyInput = {
@@ -8,7 +8,7 @@ const CurrencyInput = {
     $ngModel: 'ngModel'
   },
   transclude: {
-    'addon': '?addon'
+    addon: '?addon'
   },
   bindings: {
     ngModel: '=',

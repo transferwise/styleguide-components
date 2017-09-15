@@ -18,6 +18,7 @@ describe('Radio', function() {
 
   beforeEach(module('tw.styleguide.forms'));
   beforeEach(module('tw.styleguide.validation'));
+  beforeEach(module('tw.styleguide.services'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');
@@ -98,7 +99,7 @@ describe('Radio', function() {
     });
 
     it('should style nearest parent form-group when focussed', function() {
-      buttonOne.triggerHandler('focus');
+      buttonOne[0].dispatchEvent(new Event('focus'));
       expect(directiveElement.closest('.form-group').hasClass('focus')).toBe(true);
     });
 

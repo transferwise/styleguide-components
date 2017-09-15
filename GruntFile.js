@@ -32,26 +32,10 @@ module.exports = function(grunt) {
             externals: webpackExternals,
             module: webpackModule
           },{
-            entry: './src/form-styling.js',
-            output: {
-              path: path.join(__dirname, './build'),
-              filename: 'form-styling.webpack.js'
-            },
-            externals: webpackExternals,
-            module: webpackModule
-          },{
             entry: './src/form-validation.js',
             output: {
               path: path.join(__dirname, './build'),
               filename: 'form-validation.webpack.js'
-            },
-            externals: webpackExternals,
-            module: webpackModule
-          },{
-            entry: './src/layout-components.js',
-            output: {
-              path: path.join(__dirname, './build'),
-              filename: 'layout-components.webpack.js'
             },
             externals: webpackExternals,
             module: webpackModule
@@ -72,11 +56,7 @@ module.exports = function(grunt) {
             },
             components: {
                 files: ['src/**/*.js', 'src/**/*.html'],
-                tasks: ['webpack', 'uglify', 'jshint']
-            },
-            templates: {
-                files: ['src/**/*.html'],
-                tasks: ['copy']
+                tasks: ['jshint', 'eslint', 'webpack', 'uglify', 'copy']
             }
         },
         uglify: {
@@ -100,26 +80,6 @@ module.exports = function(grunt) {
                     beautify: false
                 }
             },
-            styling: {
-                src: [
-                    'build/form-styling.webpack.js'
-                ],
-                dest: 'dist/js/form-styling.js',
-                options: {
-                    mangle: false,
-                    beautify: true
-                }
-            },
-            stylingMin: {
-                src: [
-                    'build/form-styling.webpack.js'
-                ],
-                dest: 'dist/js/form-styling.min.js',
-                options: {
-                    mangle: true,
-                    beautify: false
-                }
-            },
             formComponents: {
                 src: [
                     'build/form-components.webpack.js'
@@ -135,26 +95,6 @@ module.exports = function(grunt) {
                     'build/form-components.webpack.js'
                 ],
                 dest: 'dist/js/form-components.min.js',
-                options: {
-                    mangle: true,
-                    beautify: false
-                }
-            },
-            layoutComponents: {
-                src: [
-                    'build/layout-components.webpack.js'
-                ],
-                dest: 'dist/js/layout-components.js',
-                options: {
-                    mangle: false,
-                    beautify: true
-                }
-            },
-            layoutComponentsMin: {
-                src: [
-                    'build/layout-components.webpack.js'
-                ],
-                dest: 'dist/js/layout-components.min.js',
                 options: {
                     mangle: true,
                     beautify: false
@@ -202,7 +142,7 @@ module.exports = function(grunt) {
                     jQuery: true,
                     console: true
                 },
-                '-W099': true, // allow mix tabs and spaces
+                '-W099': true, // allow a mix of tabs and spaces
                 '-W014': true, // allow ++
                 '-W043': true, // parseInt without radix parameter
                 '-W065': true  // allow \n for line endings
@@ -213,6 +153,17 @@ module.exports = function(grunt) {
                 'src/**/*.directive.js',
                 'src/**/*.service.js'
             ]
+        },
+        eslint: {
+          options: {
+            config: ".eslintrc",
+          },
+          src: [
+            'src/**/*.component.js',
+            'src/**/*.controller.js',
+            'src/**/*.directive.js',
+            'src/**/*.service.js'
+          ]
         },
         htmllint: {
             options: {
@@ -289,10 +240,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-eslint');
     grunt.loadNpmTasks('grunt-htmllint');
     grunt.loadNpmTasks("grunt-webpack");
 
     // === REGISTER TASKS ===
-    grunt.registerTask('default', ['jshint', 'webpack', 'uglify', 'less', 'htmllint', 'copy', 'watch']);
-    grunt.registerTask('build', ['jshint', 'webpack', 'uglify', 'less', 'htmllint', 'copy']);
+    grunt.registerTask('default', ['jshint', 'eslint', 'webpack', 'uglify', 'less', 'htmllint', 'copy', 'watch']);
+    grunt.registerTask('build', ['jshint', 'eslint', 'webpack', 'uglify', 'less', 'htmllint', 'copy']);
 };

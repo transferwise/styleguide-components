@@ -1,15 +1,20 @@
+import DomService from '../../services/dom/'; // eslint-disable-line no-unused-vars
+
 class RadioController {
-  constructor($scope, $element) {
+  constructor($scope, $element, TwDomService) {
     const $ngModel = $element.controller('ngModel');
 
+    this.dom = TwDomService;
     this.$element = $element;
+    this.element = $element[0];
     this.checked = this.isChecked();
+    this.label = this.dom.getClosestParentByTagName(this.element, 'label');
 
-    $element.on('blur', (event) => {
+    $element[0].addEventListener('blur', () => {
       $ngModel.$setTouched();
     });
 
-    this.addWatchers($scope, $element, $ngModel);
+    this.addWatchers($scope, this.element);
   }
 
   isChecked() {
@@ -17,7 +22,7 @@ class RadioController {
       this.value === this.ngModel;
   }
 
-  buttonClick($event) {
+  buttonClick() {
     if (this.ngDisabled) {
       return;
     }
@@ -27,13 +32,17 @@ class RadioController {
   }
 
   buttonFocus() {
-    this.$element.closest('label').addClass('focus');
-    this.$element.triggerHandler('focus');
+    if (this.label) {
+      this.label.classList.add('focus');
+    }
+    this.element.dispatchEvent(new Event('focus'));
   }
 
   buttonBlur() {
-    this.$element.closest('label').removeClass('focus');
-    this.$element.triggerHandler('blur');
+    if (this.label) {
+      this.label.classList.remove('focus');
+    }
+    this.element.dispatchEvent(new Event('blur'));
   }
 
   hiddenInputChange() {
@@ -44,7 +53,7 @@ class RadioController {
     }
   }
 
-  addWatchers($scope, $element, $ngModel) {
+  addWatchers($scope, element) {
     $scope.$watch('$ctrl.ngModel', (newValue, oldValue) => {
       if (newValue !== oldValue) {
         this.$ngModel.$setDirty();
@@ -53,21 +62,22 @@ class RadioController {
     });
 
     $scope.$watch('$ctrl.ngDisabled', (newValue, oldValue) => {
+      const radioLabel = this.dom.getClosestParentByClassName(element, 'radio');
+
+      if (!radioLabel) {
+        return;
+      }
       if (newValue && !oldValue) {
-        this.$element
-          .closest('.radio')
-          .addClass('disabled')
-          .attr('disabled', true);
+        radioLabel.classList.add('disabled');
+        radioLabel.setAttribute('disabled', 'true');
       } else if (!newValue && oldValue) {
-        this.$element
-          .closest('.radio')
-          .removeClass('disabled')
-          .removeAttr('disabled');
+        radioLabel.classList.remove('disabled');
+        radioLabel.removeAttribute('disabled');
       }
     });
   }
 }
 
-RadioController.$inject = ['$scope', '$element'];
+RadioController.$inject = ['$scope', '$element', 'TwDomService'];
 
 export default RadioController;

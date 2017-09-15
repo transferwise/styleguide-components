@@ -553,80 +553,80 @@ describe('Date', function() {
 
   describe('watchers on shared $scope', function() {
     describe('ngModel', function() {
-      var dayInput, monthInput, yearInput,
+      var $dayInput, $monthInput, $yearInput,
           monthModelController;
 
       beforeEach(function() {
         $scope.ngModel = new Date('1989-02-20');
         element = getCompiledDirectiveElement($scope);
-        dayInput = element.find(DAY_SELECTOR);
-        monthInput = element.find(MONTH_SELECTOR);
-        yearInput = element.find(YEAR_SELECTOR);
+        $dayInput = element.find(DAY_SELECTOR);
+        $monthInput = element.find(MONTH_SELECTOR);
+        $yearInput = element.find(YEAR_SELECTOR);
       });
       it('should re-explode date correctly if new date is valid', function() {
         $scope.ngModel = new Date('1990-01-12');
         $scope.$digest();
 
-        expect(dayInput.val()).toBe('12');
-        expect(monthInput.val()).toBe('0');
-        expect(yearInput.val()).toBe('1990');
+        expect($dayInput.val()).toBe('12');
+        expect($monthInput.val()).toBe('0');
+        expect($yearInput.val()).toBe('1990');
       });
       it('should not re-explode date if new date is not valid', function() {
         $scope.ngModel = new Date('invalid');
         $scope.$digest();
 
-        expect(dayInput.val()).toBe('20');
-        expect(monthInput.val()).toBe('1');
-        expect(yearInput.val()).toBe('1989');
+        expect($dayInput.val()).toBe('20');
+        expect($monthInput.val()).toBe('1');
+        expect($yearInput.val()).toBe('1989');
       });
     });
     describe('ngRequired', function() {
-      var dayInput, monthInput, yearInput;
+      var $dayInput, $monthInput, $yearInput;
       beforeEach(function() {
         $scope.ngModel = null;
         $scope.ngRequired = true;
         element = getCompiledDirectiveElement($scope);
-        dayInput = element.find(DAY_SELECTOR);
-        monthInput = element.find(MONTH_SELECTOR);
-        yearInput = element.find(YEAR_SELECTOR);
+        $dayInput = element.find(DAY_SELECTOR);
+        $monthInput = element.find(MONTH_SELECTOR);
+        $yearInput = element.find(YEAR_SELECTOR);
       });
       it('should require controls', function() {
-        expect(dayInput.is(':required')).toBe(true);
-        //expect(monthInput.is(':required')).toBe(true);
-        expect(yearInput.is(':required')).toBe(true);
+        expect($dayInput.is(':required')).toBe(true);
+        //expect($monthInput.is(':required')).toBe(true);
+        expect($yearInput.is(':required')).toBe(true);
       });
 
       it('should not require controls on change', function() {
         $scope.ngRequired = false;
         $scope.$digest();
 
-        expect(dayInput.is(':required')).toBe(false);
-        //expect(monthInput.is(':required')).toBe(false);
-        expect(yearInput.is(':required')).toBe(false);
+        expect($dayInput.is(':required')).toBe(false);
+        //expect($monthInput.is(':required')).toBe(false);
+        expect($yearInput.is(':required')).toBe(false);
       });
     });
     describe('ngDisabled', function() {
-      var dayInput, monthInput, yearInput;
+      var $dayInput, $monthInput, $yearInput;
       beforeEach(function() {
         $scope.ngModel = null;
         $scope.ngDisabled = true;
         element = getCompiledDirectiveElement($scope);
-        dayInput = element.find(DAY_SELECTOR);
-        monthInput = element.find(MONTH_SELECTOR);
-        yearInput = element.find(YEAR_SELECTOR);
+        $dayInput = element.find(DAY_SELECTOR);
+        $monthInput = element.find(MONTH_SELECTOR);
+        $yearInput = element.find(YEAR_SELECTOR);
       });
       it('should disable controls', function() {
-        expect(dayInput.is(':disabled')).toBe(true);
-        expect(monthInput.is(':disabled')).toBe(true);
-        expect(yearInput.is(':disabled')).toBe(true);
+        expect($dayInput.is(':disabled')).toBe(true);
+        expect($monthInput.is(':disabled')).toBe(true);
+        expect($yearInput.is(':disabled')).toBe(true);
       });
       it('should enable controls on change', function() {
         $scope.ngDisabled = false;
         $scope.$digest();
 
-        expect(dayInput.is(':disabled')).toBe(false);
-        expect(monthInput.is(':disabled')).toBe(false);
-        expect(yearInput.is(':disabled')).toBe(false);
+        expect($dayInput.is(':disabled')).toBe(false);
+        expect($monthInput.is(':disabled')).toBe(false);
+        expect($yearInput.is(':disabled')).toBe(false);
       });
     });
     describe('locale', function() {
@@ -655,64 +655,64 @@ describe('Date', function() {
       it('should show day before month if locale not US', function () {
         $scope.locale = LOCALES.fr;
         $scope.$digest();
-        var dayInput = element.find('.tw-date-day-column'),
-            monthInput = element.find('.tw-date-month-column');
+        var $dayInput = element.find('.tw-date-day-column'),
+            $monthInput = element.find('.tw-date-month-column');
 
-        expect(dayInput.index()).toBeLessThan(monthInput.index());
+        expect($dayInput.index()).toBeLessThan($monthInput.index());
       });
       it('should show month before day if locale is US', function () {
         $scope.locale = LOCALES.us;
         $scope.$digest();
-        var dayInput = element.find('.tw-date-day-column'),
-            monthInput = element.find('.tw-date-month-column');
+        var $dayInput = element.find('.tw-date-day-column'),
+            $monthInput = element.find('.tw-date-month-column');
 
-        expect(dayInput.index()).toBeGreaterThan(monthInput.index());
+        expect($dayInput.index()).toBeGreaterThan($monthInput.index());
       });
       it('should show month before day if locale language is Japanese', function () {
         $scope.locale = LOCALES.jp;
         $scope.$digest();
-        var dayInput = element.find('.tw-date-day-column'),
-            monthInput = element.find('.tw-date-month-column');
+        var $dayInput = element.find('.tw-date-day-column'),
+            $monthInput = element.find('.tw-date-month-column');
 
-        expect(dayInput.index()).toBeGreaterThan(monthInput.index());
+        expect($dayInput.index()).toBeGreaterThan($monthInput.index());
       });
     });
   });
 
   describe('user interactions', function() {
     var element, ngModelController,
-        dayInput, monthInput, yearInput;
+        $dayInput, $monthInput, $yearInput;
 
     beforeEach(function() {
       $scope.ngModel = '2001-01-01';
       element = getCompiledDirectiveElement($scope);
       ngModelController = element.controller('ngModel');
 
-      dayInput = element.find(DAY_SELECTOR);
-      monthInput = element.find(MONTH_SELECTOR);
-      yearInput = element.find(YEAR_SELECTOR);
+      $dayInput = element.find(DAY_SELECTOR);
+      $monthInput = element.find(MONTH_SELECTOR);
+      $yearInput = element.find(YEAR_SELECTOR);
     });
 
     describe('with day input', function() {
       it('should update day and ngModel', function () {
-        dayInput.val(15).triggerHandler('input');
+        $dayInput.val(15).triggerHandler('input');
         expect($scope.ngModel).toBe('2001-01-15');
       });
       it('should not update touched status on blur if year input not blurred', function () {
-        dayInput.trigger('blur');
+        $dayInput.trigger('blur');
         expect(ngModelController.$touched).toBe(false);
       });
       it('should update touched status on blur if year input already blurred', function () {
-        yearInput.trigger('blur');
-        dayInput.trigger('blur');
+        $yearInput[0].dispatchEvent(new Event('blur'));
+        $dayInput[0].dispatchEvent(new Event('blur'));
         expect(ngModelController.$touched).toBe(true);
       });
       it('should update pristine status on change', function () {
-        dayInput.val(15).triggerHandler('input');
+        $dayInput.val(15).triggerHandler('input');
         expect(ngModelController.$pristine).toBe(false);
       });
       it('should null ngModel when invalid', function () {
-        dayInput.val('a').triggerHandler('input');
+        $dayInput.val('a').triggerHandler('input');
         expect($scope.ngModel).toBe(null);
       });
     });
@@ -720,7 +720,7 @@ describe('Date', function() {
     describe('with month select', function() {
       var monthModelController;
       beforeEach(function() {
-          monthModelController = monthInput.controller('ngModel');
+          monthModelController = $monthInput.controller('ngModel');
       });
 
       it('should update month and ngModel', function () {
@@ -737,48 +737,48 @@ describe('Date', function() {
         expect(ngModelController.$pristine).toBe(false);
       });
       it('should correct days too high in February', function() {
-        dayInput.val(30).triggerHandler('input');
+        $dayInput.val(30).triggerHandler('input');
         expect($scope.ngModel).toBe('2001-01-30');
 
         // Months are 0 indexed, 1 = Feb
         monthModelController.$setViewValue('1');
 
-        expect(dayInput.val()).toBe('28');
-        expect(monthInput.val()).toBe('1');
+        expect($dayInput.val()).toBe('28');
+        expect($monthInput.val()).toBe('1');
         expect($scope.ngModel).toBe('2001-02-28');
       });
       it('should correct days too high in February in a leap year', function() {
-        dayInput.val(30).triggerHandler('input');
+        $dayInput.val(30).triggerHandler('input');
         expect($scope.ngModel).toBe('2001-01-30');
 
-        yearInput.val(2000).triggerHandler('input');
+        $yearInput.val(2000).triggerHandler('input');
         expect($scope.ngModel).toBe('2000-01-30');
 
         // Months are 0 indexed, 1 = Feb
         monthModelController.$setViewValue('1');
 
-        expect(dayInput.val()).toBe('29');
-        expect(monthInput.val()).toBe('1');
+        expect($dayInput.val()).toBe('29');
+        expect($monthInput.val()).toBe('1');
         expect($scope.ngModel).toBe('2000-02-29');
       });
       it('should correct days too high in April', function() {
-        dayInput.val(31).triggerHandler('input');
+        $dayInput.val(31).triggerHandler('input');
         expect($scope.ngModel).toBe('2001-01-31');
 
         // Months are 0 indexed, 3 = April
         monthModelController.$setViewValue('3');
 
-        expect(dayInput.val()).toBe('30');
-        expect(monthInput.val()).toBe('3');
+        expect($dayInput.val()).toBe('30');
+        expect($monthInput.val()).toBe('3');
         expect($scope.ngModel).toBe('2001-04-30');
       });
 
       it('should lower days if value entered too high', function() {
-        dayInput.val(32).triggerHandler('input');
-        expect(dayInput.val()).toBe('31');
+        $dayInput.val(32).triggerHandler('input');
+        expect($dayInput.val()).toBe('31');
 
-        dayInput.val(321).triggerHandler('input');
-        expect(dayInput.val()).toBe('31');
+        $dayInput.val(321).triggerHandler('input');
+        expect($dayInput.val()).toBe('31');
 
         expect($scope.ngModel).toBe('2001-01-31');
       });
@@ -786,19 +786,20 @@ describe('Date', function() {
 
     describe('with year input', function() {
       it('should update year and ngModel', function () {
-        yearInput.val(1990).triggerHandler('input');
+        $yearInput.val(1990).triggerHandler('input');
         expect($scope.ngModel).toBe('1990-01-01');
       });
       it('should update touched status on blur', function () {
-        yearInput.focus().blur();
+        $yearInput[0].focus();
+        $yearInput[0].dispatchEvent(new Event ('blur'));
         expect(ngModelController.$touched).toBe(true);
       });
       it('should update pristine status on change', function () {
-        yearInput.val(2000).triggerHandler('input');
+        $yearInput.val(2000).triggerHandler('input');
         expect(ngModelController.$pristine).toBe(false);
       });
       it('should null ngModel when invalid', function () {
-        yearInput.val('a').triggerHandler('input');
+        $yearInput.val('a').triggerHandler('input');
         expect($scope.ngModel).toBe(null);
       });
     });

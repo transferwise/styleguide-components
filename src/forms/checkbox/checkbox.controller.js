@@ -1,20 +1,35 @@
+import DomService from '../../services/dom/'; // eslint-disable-line no-unused-vars
+
 class CheckboxController {
-  constructor($scope, $element) {
+  constructor($scope, $element, TwDomService) {
     const $ngModel = $element.controller('ngModel');
 
+    this.dom = TwDomService;
     this.$element = $element;
+    this.element = $element[0];
     this.checked = this.isChecked();
 
     this.addLabelHandler();
     this.addWatchers($scope, $element, $ngModel);
+
+    this.checkboxContainer = this.dom.getClosestParentByClassName(
+      this.element,
+      'checkbox'
+    );
+
+    this.label =
+      this.checkboxContainer ?
+        this.checkboxContainer.getElementsByTagName('label')[0] :
+        false;
   }
 
   isChecked() {
     return (this.ngTrueValue && this.ngTrueValue === this.ngModel) ||
-      !this.ngTrueValue && this.ngModel || false;
+      (!this.ngTrueValue && this.ngModel) ||
+      false;
   }
 
-  buttonClick($event) {
+  buttonClick(event) {
     if (this.checked) {
       this.checked = false;
       this.$ngModel.$setViewValue(this.ngFalseValue || false);
@@ -24,54 +39,63 @@ class CheckboxController {
     }
     this.$ngModel.$setTouched();
 
-    if ($event) {
+    if (event) {
       // Prevent button click propgation from firing label
-      $event.stopPropagation();
+      event.stopPropagation();
     }
 
     validateCheckbox(
       this.checked,
       this.$element,
       this.$ngModel,
-      this.ngRequired
+      this.ngRequired,
+      this.dom
     );
   }
 
   buttonFocus() {
-    this.$element
-      .closest('.checkbox')
-      .find('label')
-      .addClass('focus');
+    if (this.label) {
+      this.label.classList.add('focus');
+    }
 
-    this.$element.triggerHandler('focus');
+    this.element.dispatchEvent(new Event('focus'));
   }
 
   buttonBlur() {
-    this.$element
-      .closest('.checkbox')
-      .find('label')
-      .removeClass('focus');
+    if (this.label) {
+      this.label.classList.remove('focus');
+    }
 
-    this.$element.triggerHandler('blur');
+    this.element.dispatchEvent(new Event('blur'));
     this.$ngModel.$setTouched();
 
     validateCheckbox(
       this.checked,
       this.$element,
       this.$ngModel,
-      this.ngRequired
+      this.ngRequired,
+      this.dom
     );
   }
 
   // IE 'clicks' the hidden input when label is clicked
-  hiddenClick($event) {
+  static hiddenClick($event) {
     $event.stopPropagation();
   }
 
   addLabelHandler() {
-    this.$element.closest('label').on('click', (event) => {
-      // Trigger our button, prevent default label behaviour
-      this.$element.find('button').trigger('click');
+    const label = this.dom.getClosestParentByTagName(this.element, 'label');
+
+    if (!label) {
+      return;
+    }
+    label.addEventListener('click', (event) => {
+      const isDisabled = label.getAttribute('disabled');
+      if (!isDisabled) {
+        const button = this.element.getElementsByTagName('button')[0];
+        // Trigger our button, prevent default label behaviour
+        button.dispatchEvent(new Event('click'));
+      }
       event.preventDefault();
       event.stopPropagation();
     });
@@ -85,23 +109,29 @@ class CheckboxController {
           this.checked,
           $element,
           $ngModel,
-          this.ngRequired
+          this.ngRequired,
+          this.dom
         );
         this.checked = this.isChecked();
       }
     });
 
     $scope.$watch('$ctrl.ngDisabled', (newValue, oldValue) => {
+      const element = $element[0];
+      const checkbox = this.dom.getClosestParentByClassName(element, 'checkbox');
+      const label = this.dom.getClosestParentByTagName(element, 'label');
+
+      if (!checkbox) {
+        return;
+      }
       if (newValue && !oldValue) {
-        $element
-          .closest('.checkbox')
-          .addClass('disabled')
-          .attr('disabled', true);
+        checkbox.classList.add('disabled');
+        // checkbox.setAttribute('disabled', true);
+        label.setAttribute('disabled', 'true');
       } else if (!newValue && oldValue) {
-        $element
-          .closest('.checkbox')
-          .removeClass('disabled')
-          .removeAttr('disabled');
+        checkbox.classList.remove('disabled');
+        // checkbox.removeAttribute('disabled');
+        label.removeAttribute('disabled');
       }
     });
 
@@ -111,31 +141,44 @@ class CheckboxController {
           this.checked,
           $element,
           $ngModel,
-          this.ngRequired
+          this.ngRequired,
+          this.dom
         );
       }
     });
   }
 }
 
-function validateCheckbox(isChecked, $element, $ngModel, isRequired) {
+function validateCheckbox(isChecked, $element, $ngModel, isRequired, dom) {
   if (!$ngModel.$touched) {
     return;
   }
+  const element = $element[0];
+  const button = element.getElementsByClassName('tw-checkbox-button')[0];
+  const checkboxLabel = dom.getClosestParentByClassName(element, 'checkbox');
+  const formGroup = dom.getClosestParentByClassName(element, 'form-group');
 
   if (!isChecked && isRequired) {
     $ngModel.$setValidity('required', false);
-    $element.find('.tw-checkbox-button').addClass('has-error');
-    $element.closest('.checkbox').addClass('has-error');
-    $element.closest('.form-group').addClass('has-error');
+    button.classList.add('has-error');
+    if (checkboxLabel) {
+      checkboxLabel.classList.add('has-error');
+    }
+    if (formGroup) {
+      formGroup.classList.add('has-error');
+    }
   } else {
     $ngModel.$setValidity('required', true);
-    $element.find('.tw-checkbox-button').removeClass('has-error');
-    $element.closest('.checkbox').removeClass('has-error');
-    $element.closest('.form-group').removeClass('has-error');
+    button.classList.remove('has-error');
+    if (checkboxLabel) {
+      checkboxLabel.classList.remove('has-error');
+    }
+    if (formGroup) {
+      formGroup.classList.remove('has-error');
+    }
   }
 }
 
-CheckboxController.$inject = ['$scope', '$element'];
+CheckboxController.$inject = ['$scope', '$element', 'TwDomService'];
 
 export default CheckboxController;

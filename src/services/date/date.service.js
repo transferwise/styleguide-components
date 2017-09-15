@@ -1,21 +1,23 @@
 
-function TwDateService() {
-
-  this.getLocaleDate = function(date) {
+function DateService() {
+  this.getLocaleDate = (date) => {
     if (!date) { date = new Date(); }
     return date.getDate();
   };
-  this.getLocaleMonth = function(date) {
+
+  this.getLocaleMonth = (date) => {
     if (!date) { date = new Date(); }
     return date.getMonth();
   };
-  this.getLocaleFullYear = function(date) {
+
+  this.getLocaleFullYear = (date) => {
     if (!date) { date = new Date(); }
     return date.getFullYear();
   };
+
   // get UTC date for users current day
-  this.getLocaleToday = function() {
-    var now = new Date();
+  this.getLocaleToday = () => {
+    const now = new Date();
     return this.getUTCDateFromParts(
       this.getLocaleFullYear(now),
       this.getLocaleMonth(now),
@@ -23,20 +25,23 @@ function TwDateService() {
     );
   };
 
-  this.getUTCDate = function(date) {
+  this.getUTCDate = (date) => {
     if (!date) { date = new Date(); }
     return date.getUTCDate();
   };
-  this.getUTCMonth = function(date) {
+
+  this.getUTCMonth = (date) => {
     if (!date) { date = new Date(); }
     return date.getUTCMonth();
   };
-  this.getUTCFullYear = function(date) {
+
+  this.getUTCFullYear = (date) => {
     if (!date) { date = new Date(); }
     return date.getUTCFullYear();
   };
-  this.getUTCToday = function() {
-    var now = new Date();
+
+  this.getUTCToday = () => {
+    const now = new Date();
     return this.getUTCDateFromParts(
       this.getUTCFullYear(now),
       this.getUTCMonth(now),
@@ -45,13 +50,13 @@ function TwDateService() {
   };
 
 
-  this.getLastDayOfMonth = function(year, month) {
-    var lastDay = this.getUTCDateFromParts(year, month + 1, 0);
+  this.getLastDayOfMonth = (year, month) => {
+    const lastDay = this.getUTCDateFromParts(year, month + 1, 0);
     return lastDay.getUTCDate();
   };
 
-  this.getUTCDateFromParts = function(year, month, day) {
-    var date = new Date();
+  this.getUTCDateFromParts = (year, month, day) => {
+    const date = new Date();
     date.setUTCFullYear(year, month, day);
     date.setUTCHours(0);
     date.setUTCMinutes(0);
@@ -60,8 +65,11 @@ function TwDateService() {
     return date;
   };
 
-  this.getDayNamesForLocale = function(locale, format) {
-    var date, days = [], language = getLanguageFromLocale(locale);
+  this.getDayNamesForLocale = (locale, format) => {
+    let date;
+    const days = [];
+    const language = getLanguageFromLocale(locale);
+
     if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language]) {
       return DEFAULT_DAY_NAMES_BY_LANGUAGE[language];
     }
@@ -69,42 +77,47 @@ function TwDateService() {
     format = getValidDateFormat(format);
     locale = getValidLocale(locale);
 
-    for(var i = 1; i <= 7; i++) {
+    for (let i = 1; i <= 7; i++) {
       date = this.getUTCDateFromParts(2001, 0, i); // This day was a monday
-      days.push(getLocalisedDateName(date, locale, {weekday: format}));
+      days.push(getLocalisedDateName(date, locale, { weekday: format }));
     }
     return days;
   };
 
-  this.getMonthNamesForLocale = function(locale, format) {
-    var date, months = [], month, language = getLanguageFromLocale(locale);
-    if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] && (format === 'long' || language === 'ja')) {
+  this.getMonthNamesForLocale = (locale, format) => {
+    let date;
+    let month;
+    const months = [];
+    const language = getLanguageFromLocale(locale);
+
+    if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] &&
+      (format === 'long' || language === 'ja')) {
       return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language];
     }
 
     format = getValidDateFormat(format);
     locale = getValidLocale(locale);
 
-    for(var i = 0; i < 12; i++) {
+    for (let i = 0; i < 12; i++) {
       // Day in middle of month avoids timezone issues
       date = this.getUTCDateFromParts(2000, i, 15);
       if (format === 'short') {
-        month = getLocalisedDateName(date, locale, {month: 'long'});
+        month = getLocalisedDateName(date, locale, { month: 'long' });
         month = (month.length > 4) ? month.slice(0, 3) : month;
         months.push(month);
       } else {
-        months.push(getLocalisedDateName(date, locale, {month: format}));
+        months.push(getLocalisedDateName(date, locale, { month: format }));
       }
     }
     return months;
   };
 
-  this.getWeekday = function(year, month, day) {
-    var utcDate = this.getUTCDateFromParts(year, month, day);
+  this.getWeekday = (year, month, day) => {
+    const utcDate = this.getUTCDateFromParts(year, month, day);
     return utcDate.getUTCDay();
   };
 
-  this.isMonthBeforeDay = function(locale) {
+  this.isMonthBeforeDay = (locale) => {
     if (locale.indexOf('US', locale.length - 2) !== -1) {
       return true;
     } else if (getLanguageFromLocale(locale) === 'ja') {
@@ -114,51 +127,44 @@ function TwDateService() {
     return false;
   };
 
-  this.addYears = function(date, years) {
-    return this.addToDate(date, years, 0, 0);
-  };
-  this.addMonths = function(date, months) {
-    return this.addToDate(date, 0, months, 0);
-  };
-  this.addDays = function(date, days) {
-    return this.addToDate(date, 0, 0, days);
-  };
+  this.addYears = (date, years) => this.addToDate(date, years, 0, 0);
+  this.addMonths = (date, months) => this.addToDate(date, 0, months, 0);
+  this.addDays = (date, days) => this.addToDate(date, 0, 0, days);
 
-  this.addToDate = function(date, years, months, days) {
-    return this.getUTCDateFromParts(
-      date.getUTCFullYear() + years,
-      date.getUTCMonth() + months,
-      date.getUTCDate() + days
-    );
-  };
+  this.addToDate = (date, years, months, days) => this.getUTCDateFromParts(
+    date.getUTCFullYear() + years,
+    date.getUTCMonth() + months,
+    date.getUTCDate() + days
+  );
 
-  this.getYearAndMonthPresentation = function(year, monthName, locale) {
-    var lang = getLanguageFromLocale(locale);
+  this.getYearAndMonthPresentation = (year, monthName, locale) => {
+    const lang = getLanguageFromLocale(locale);
     if (lang === 'ja') {
-      return year + '年' + monthName;
+      return `${year}年${monthName}`;
     }
 
-    return monthName + ' ' + year;
+    return `${monthName} ${year}`;
   };
 
-  this.getYearMonthDatePresentation = function(year, monthName, date, locale) {
-    var lang = getLanguageFromLocale(locale);
+  this.getYearMonthDatePresentation = (year, monthName, date, locale) => {
+    const lang = getLanguageFromLocale(locale);
     if (lang === 'ja') {
-      return year + '年' + monthName + date + '日';
+      return `${year}年${monthName}${date}日`;
     }
 
     if (locale.indexOf('US', locale.length - 2) !== -1) {
-      return monthName + ' ' + date + ', ' + year;
+      return `${monthName} ${date}, ${year}`;
     }
 
-    return date + ' ' + monthName + ' ' + year;
+    return `${date} ${monthName} ${year}`;
   };
 
   function getLocalisedDateName(date, locale, formattingObject) {
-    var name = date.toLocaleDateString(locale, formattingObject);
+    let name = date.toLocaleDateString(locale, formattingObject);
 
     if (isLocaleTranslationRequiresStripping(locale)) {
-      // strip out any numbers, spaces and commas in case browser (cough...Safari) doesn't respect format
+      // strip out any numbers, spaces and commas in case browser (cough...Safari)
+      // doesn't respect format
       name = name.replace(/[0-9]|\s|,/g, '');
     }
 
@@ -166,7 +172,7 @@ function TwDateService() {
   }
 
   function getValidDateFormat(format) {
-    var validFormats = ['narrow', 'short', 'long'];
+    const validFormats = ['narrow', 'short', 'long'];
     if (!format || validFormats.indexOf(format) < 0) {
       return 'long';
     }
@@ -175,16 +181,16 @@ function TwDateService() {
 
   function getValidLocale(locale) {
     if (!isIntlSupportedForLocale(locale)) {
-      return "en-GB";
+      return 'en-GB';
     }
     return locale;
   }
 
   function isIntlSupportedForLocale(locale) {
     try {
-      var supportedLocales = window.Intl.DateTimeFormat.supportedLocalesOf([locale]);
+      const supportedLocales = window.Intl.DateTimeFormat.supportedLocalesOf([locale]);
       return supportedLocales.length > 0;
-    } catch(error) {
+    } catch (error) {
       return false;
     }
   }
@@ -194,7 +200,7 @@ function TwDateService() {
       return true;
     }
 
-    var lang = getLanguageFromLocale(locale);
+    const lang = getLanguageFromLocale(locale);
     if (lang === 'ja') {
       return false;
     }
@@ -209,26 +215,52 @@ function TwDateService() {
     return locale.substring(0, 2);
   }
 
-  var DEFAULT_MONTH_NAMES_BY_LANGUAGE = {
-    'en': [
-      'January', 'February', 'March','April', 'May', 'June',
-      'July', 'August', 'September', 'October','November', 'December'
+  const DEFAULT_MONTH_NAMES_BY_LANGUAGE = {
+    en: [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
     ],
-    'ja': [
-      '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'
+    ja: [
+      '1月',
+      '2月',
+      '3月',
+      '4月',
+      '5月',
+      '6月',
+      '7月',
+      '8月',
+      '9月',
+      '10月',
+      '11月',
+      '12月'
     ]
   };
 
-  var DEFAULT_DAY_NAMES_BY_LANGUAGE = {
-    'en': [
-      'Monday', 'Tuesday', 'Wednesday', 'Thursday',
-      'Friday', 'Saturday', 'Sunday'
+  const DEFAULT_DAY_NAMES_BY_LANGUAGE = {
+    en: [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday'
     ],
-    'ja':[
+    ja: [
       '月', '火', '水', '木', '金', '土', '日'
     ]
 
   };
 }
 
-export default TwDateService;
+export default DateService;

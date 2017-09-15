@@ -1,14 +1,34 @@
+import DomService from '../../services/dom/'; // eslint-disable-line no-unused-vars
 
-function TwFormValidation() {
+function FormValidation(TwDomService) {
   return {
     restrict: 'E',
-    link: function(scope, element) {
-      $(element).on('submit', function() {
-        // Submitting the form won't trigger form controls own validation
-        var elements = $(element).find("[tw-validation].ng-invalid");
+    link: (scope, $element) => {
+      const form = $element[0];
 
-        elements.closest(".form-group").addClass("has-error");
-        elements.closest(".checkbox, .radio").addClass("has-error");
+      // Submitting the form won't trigger form controls own validation, so check them
+      form.addEventListener('submit', () => {
+        let formGroup;
+        let checkboxContainer;
+        let radioContainer;
+
+        const controls = form.querySelectorAll('[tw-validation].ng-invalid');
+
+        controls.forEach((control) => {
+          formGroup = TwDomService.getClosestParentByClassName(control, 'form-group');
+          radioContainer = TwDomService.getClosestParentByClassName(control, 'radio');
+          checkboxContainer = TwDomService.getClosestParentByClassName(control, 'checkbox');
+
+          if (formGroup) {
+            formGroup.classList.add('has-error');
+          }
+          if (radioContainer) {
+            radioContainer.classList.add('has-error');
+          }
+          if (checkboxContainer) {
+            checkboxContainer.classList.add('has-error');
+          }
+        });
 
         return true;
       });
@@ -16,4 +36,6 @@ function TwFormValidation() {
   };
 }
 
-export default TwFormValidation;
+FormValidation.$inject = ['TwDomService'];
+
+export default FormValidation;

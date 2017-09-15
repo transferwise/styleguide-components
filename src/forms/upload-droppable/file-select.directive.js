@@ -1,23 +1,22 @@
 /* DEPRECATED in favour of upload */
 
-function TwFileSelectDirective() {
+function FileSelectDirective() {
   return {
-    bindToController: true,
-    controller: function(){},
-    controllerAs: '$ctrl',
-    replace: false,
     restrict: 'A',
     scope: {
       onUserInput: '='
     },
-    link: function(scope, element) {
-      element.on('change', function (event) {
-        if (scope.$ctrl.onUserInput && typeof scope.$ctrl.onUserInput === 'function') {
-          scope.$ctrl.onUserInput(event);
-        }
-      });
-    }
+    link: FileSelectLink
   };
 }
 
-export default TwFileSelectDirective;
+function FileSelectLink(scope, $element) {
+  const element = $element[0];
+  element.addEventListener('change', (event) => {
+    if (scope.$ctrl.onUserInput && typeof scope.$ctrl.onUserInput === 'function') {
+      scope.$ctrl.onUserInput(event);
+    }
+  });
+}
+
+export default FileSelectDirective;
