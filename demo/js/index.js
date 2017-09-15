@@ -556,5 +556,8 @@ angular.module('tw.styleguide.docs', [])
     };
 })
 .component('twDropdownDocs', {
-	templateUrl: 'partials/tw-dropdown.html'
+  templateUrl: 'partials/tw-dropdown.html',
+  controller: function() {
+    this.log = function (message) { console.log(message); };
+  }
 });
