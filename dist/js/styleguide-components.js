@@ -301,6 +301,18 @@
         }, this.getClosestParentByClassName = function(element, className) {
             for (var parent = element; parent; ) if (parent = parent.parentNode, parent && parent.classList && parent.classList.contains(className)) return parent;
             return null;
+        }, this.getPreviousSiblingWithClassName = function(element, className) {
+            for (var sibling = element.previousElementSibling; sibling; ) {
+                if (sibling.classList.contains(className)) return sibling;
+                sibling = sibling.previousElementSibling;
+            }
+            return null;
+        }, this.getNextSiblingWithClassName = function(element, className) {
+            for (var sibling = element.nextElementSibling; sibling; ) {
+                if (sibling.classList.contains(className)) return sibling;
+                sibling = sibling.nextElementSibling;
+            }
+            return null;
         };
     }
     Object.defineProperty(exports, "__esModule", {
@@ -2258,14 +2270,15 @@
             return protoProps && defineProperties(Constructor.prototype, protoProps), staticProps && defineProperties(Constructor, staticProps), 
             Constructor;
         };
-    }(), _angular = __webpack_require__(0), _angular2 = _interopRequireDefault(_angular), SelectController = function() {
-        function SelectController($element, $scope, $transclude, $timeout, $attrs) {
+    }(), _angular = __webpack_require__(0), _angular2 = _interopRequireDefault(_angular), _dom = __webpack_require__(1), SelectController = (_interopRequireDefault(_dom), 
+    function() {
+        function SelectController($element, $scope, $transclude, $timeout, $attrs, TwDomService) {
             _classCallCheck(this, SelectController), this.$ngModel = $element.controller("ngModel"), 
-            this.$element = $element, this.element = $element[0], this.button = $element[0].getElementsByClassName("btn")[0], 
-            this.search = "", preSelectModelValue(this.$ngModel, this), setDefaultIfRequired(this.$ngModel, this, $element, $attrs), 
-            addWatchers(this, $scope, this.$ngModel, $element), addEventHandlers(this, $element, this.$ngModel, this.options, $timeout), 
-            checkForTranscludedContent($transclude, this), this.responsiveClasses = responsiveClasses, 
-            this.filterString = "", this.filteredOptions = this.getFilteredOptions();
+            this.element = $element[0], this.button = this.element.getElementsByClassName("btn")[0], 
+            this.search = "", this.dom = TwDomService, preSelectModelValue(this.$ngModel, this), 
+            setDefaultIfRequired(this.$ngModel, this, $element, $attrs), addWatchers(this, $scope, this.$ngModel, $element), 
+            addEventHandlers(this, $element, this.$ngModel, this.options, $timeout), checkForTranscludedContent($transclude, this), 
+            this.responsiveClasses = responsiveClasses, this.filterString = "", this.filteredOptions = this.getFilteredOptions();
         }
         return _createClass(SelectController, [ {
             key: "circleClasses",
@@ -2296,7 +2309,7 @@
                     var characterCode = getCharacterCodeFromKeypress(event);
                     if (8 === characterCode) return void event.preventDefault();
                     var character = getCharacterFromKeypress(event);
-                    continueSearchAndSelectMatch(this.$ngModel, this, this.options, character), focusOnActiveLink(this.$element[0]);
+                    continueSearchAndSelectMatch(this.$ngModel, this, this.options, character), focusOnActiveLink(this.element);
                 }
             }
         }, {
@@ -2357,8 +2370,11 @@
             value: function(activeOption, activeLink, optionLinks) {
                 if (!activeOption && optionLinks.length) return void this.selectOptionUsingLink(optionLinks[optionLinks.length - 1]);
                 if (activeLink !== optionLinks[0]) {
-                    var previousOptions = $(activeOption).prevAll(".tw-select-option"), previousOptionLink = previousOptions[0].getElementsByTagName("a")[0];
-                    this.selectOptionUsingLink(previousOptionLink);
+                    var previousOption = this.dom.getPreviousSiblingWithClassName(activeOption, "tw-select-option");
+                    if (previousOption) {
+                        var previousOptionLink = previousOption.getElementsByTagName("a")[0];
+                        this.selectOptionUsingLink(previousOptionLink);
+                    }
                 }
             }
         }, {
@@ -2366,19 +2382,22 @@
             value: function(activeOption, activeLink, optionLinks) {
                 if (!activeOption && optionLinks.length) return void this.selectOptionUsingLink(optionLinks[0]);
                 if (activeLink !== optionLinks[optionLinks.length - 1]) {
-                    var nextOptions = $(activeOption).nextAll(".tw-select-option"), nextOptionLink = nextOptions[0].getElementsByTagName("a")[0];
-                    return void this.selectOptionUsingLink(nextOptionLink);
+                    var nextOption = this.dom.getNextSiblingWithClassName(activeOption, "tw-select-option");
+                    if (nextOption) {
+                        var nextOptionLink = nextOption.getElementsByTagName("a")[0];
+                        return void this.selectOptionUsingLink(nextOptionLink);
+                    }
                 }
-                var transcludedOption = this.$element[0].getElementsByClassName("tw-select-transcluded");
+                var transcludedOption = this.element.getElementsByClassName("tw-select-transcluded");
                 transcludedOption.length && transcludedOption[0].getElementsByTagName("a")[0].focus();
             }
         } ]), SelectController;
-    }(), keys = {
+    }()), keys = {
         up: 38,
         down: 40,
         "return": 13
     };
-    SelectController.$inject = [ "$element", "$scope", "$transclude", "$timeout", "$attrs" ], 
+    SelectController.$inject = [ "$element", "$scope", "$transclude", "$timeout", "$attrs", "TwDomService" ], 
     exports["default"] = SelectController;
 }, function(module, exports, __webpack_require__) {
     "use strict";
