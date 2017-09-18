@@ -3,7 +3,8 @@
 /node_modules/
 /public/
 /build/
-/components/
+/demo/fonts/
+/demo/lib/
 npm-debug.log
 .env
 .DS_Store

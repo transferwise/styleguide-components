@@ -6,20 +6,18 @@ module.exports = function(config) {
         // files to include, ordered by dependencies
         files : [
             // include relevant Angular files and libs
-            'components/jquery/dist/jquery.js',
-            'components/bootstrap/dist/js/bootstrap.js',
-            'components/angular/angular.js',
-            'components/angular-mocks/angular-mocks.js',
+            'demo/lib/jquery.min.js',
+            'demo/lib/bootstrap.min.js',
+            'demo/lib/angular.min.js',
+            'node_modules/angular-mocks/angular-mocks.js',
 
             // include js files
-            //'angular/**/*.controller.js',
-            //'angular/**/*.directive.js',
             'dist/js/styleguide-components.js',
 
-            //'components/bootstrap/dist/css/bootstrap.css',
+            // 'dist/lib/bootstrap.css',
 
             // include unit test specs
-            'angular/**/*.spec.js'
+            'src/**/*.spec.js'
         ],
         // files to exclude
         exclude : [],
@@ -31,14 +29,19 @@ module.exports = function(config) {
         frameworks: ['jasmine'],
 
         // browsers to test against, be sure to install the correct karma browser launcher plugin
-        browsers : ['PhantomJS', 'Chrome', 'Firefox', 'Safari'], // npm install karma-chrome-launcher --save-dev
+        browsers : [
+          'PhantomJS',
+          'Chrome',
+          'Firefox',
+          'Safari'
+        ],
 
         // 'progress' is the default reporter
         reporters: ['coverage', 'mocha'],
 
         // map of preprocessors that is used mostly for plugins
         preprocessors: {
-            'angular/**/*.controller.js': ['coverage']
+            'src/**/*.controller.js': ['coverage']
         },
 
         // list of karma plugins

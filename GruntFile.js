@@ -1,151 +1,121 @@
+const webpack = require('webpack'); //to access built-in plugins
+const path = require('path');
+
+const webpackModule = {
+  rules: [{
+    test: /\.html$/,
+    loader: 'html-loader?root=.'
+  },{
+    test: /\.js$/,
+    exclude: [/node_modules/],
+    loader: 'babel-loader'
+  }]
+};
+
+const webpackExternals = [{
+  angular: 'angular'
+}];
+
 module.exports = function(grunt) {
+
+    //dist: require("./webpack.config.js")
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-
+        webpack: {
+          options: {},
+          build: [{
+            entry: './src/form-components.js',
+            output: {
+              path: path.join(__dirname, './build'),
+              filename: 'form-components.webpack.js'
+            },
+            externals: webpackExternals,
+            module: webpackModule
+          },{
+            entry: './src/form-validation.js',
+            output: {
+              path: path.join(__dirname, './build'),
+              filename: 'form-validation.webpack.js'
+            },
+            externals: webpackExternals,
+            module: webpackModule
+          },{
+            entry: './src/index.js',
+            output: {
+              path: path.join(__dirname, './build'),
+              filename: 'styleguide-components.webpack.js'
+            },
+            externals: webpackExternals,
+            module: webpackModule
+          }]
+        },
         watch: {
             less: {
                 files: ['styles/**/*.less'],
                 tasks: ['less']
             },
             components: {
-                files: ['angular/**/*.js'],
-                tasks: ['uglify', 'jshint']
-            },
-            templates: {
-                files: ['angular/**/*.html'],
-                tasks: ['copy']
+                files: ['src/**/*.js', 'src/**/*.html'],
+                tasks: ['jshint', 'eslint', 'webpack', 'uglify', 'copy']
             }
         },
         uglify: {
-            combined: {
-                src: [
-                    'angular/**/*.controller.js',
-                    'angular/**/*.directive.js',
-                    'angular/**/*.service.js'
-                ],
-                dest: 'dist/js/styleguide-components.js',
-                options: {
-                    banner: 'angular.module("tw.form-validation", []);\n' +
-                        'angular.module("tw.form-styling", []);\n' +
-                        'angular.module("tw.form-components", []);\n' +
-                        'angular.module("tw.layout-components", []);\n' +
-                        'angular.module("tw.styleguide-components", [\'tw.form-validation\', \'tw.form-styling\', \'tw.form-components\', \'tw.layout-components\']);\n',
-                    mangle: false,
-                    beautify: true
-                }
-            },
-            combinedMin: {
-                src: [
-                    'angular/**/*.controller.js',
-                    'angular/**/*.directive.js',
-                    'angular/**/*.service.js'
-                ],
-                dest: 'dist/js/styleguide-components.min.js',
-                options: {
-                    banner: 'angular.module("tw.form-validation", []);\n' +
-                        'angular.module("tw.form-styling", []);\n' +
-                        'angular.module("tw.form-components", []);\n' +
-                        'angular.module("tw.layout-components", []);\n' +
-                        'angular.module("tw.styleguide-components", [\'tw.form-validation\', \'tw.form-styling\', \'tw.form-components\', \'tw.layout-components\']);\n',
-                    mangle: true,
-                    beautify: false
-                }
-            },
             validation: {
                 src: [
-                    'angular/validation/**/*.controller.js',
-                    'angular/validation/**/*.directive.js'
+                    'build/form-validation.webpack.js'
                 ],
                 dest: 'dist/js/form-validation.js',
                 options: {
-                    banner: 'angular.module("tw.form-validation", []);\n',
                     mangle: false,
                     beautify: true
                 }
             },
             validationMin: {
                 src: [
-                    'angular/validation/**/*.controller.js',
-                    'angular/validation/**/*.directive.js'
+                    'build/form-validation.webpack.js'
                 ],
                 dest: 'dist/js/form-validation.min.js',
                 options: {
-                    banner: 'angular.module("tw.form-validation", []);\n',
-                    mangle: true,
-                    beautify: false
-                }
-            },
-            styling: {
-                src: [
-                    'angular/styling/**/*.controller.js',
-                    'angular/styling/**/*.directive.js'
-                ],
-                dest: 'dist/js/form-styling.js',
-                options: {
-                    banner: 'angular.module("tw.form-styling", []);\n',
-                    mangle: false,
-                    beautify: true
-                }
-            },
-            stylingMin: {
-                src: [
-                    'angular/styling/**/*.controller.js',
-                    'angular/styling/**/*.directive.js'
-                ],
-                dest: 'dist/js/form-styling.min.js',
-                options: {
-                    banner: 'angular.module("tw.form-styling", []);\n',
                     mangle: true,
                     beautify: false
                 }
             },
             formComponents: {
                 src: [
-                    'angular/form-components/**/*.controller.js',
-                    'angular/form-components/**/*.directive.js',
-                    'angular/**/*.service.js'
+                    'build/form-components.webpack.js'
                 ],
                 dest: 'dist/js/form-components.js',
                 options: {
-                    banner: 'angular.module("tw.form-components", []);\n',
                     mangle: false,
                     beautify: true
                 }
             },
             formComponentsMin: {
                 src: [
-                    'angular/form-components/**/*.controller.js',
-                    'angular/form-components/**/*.directive.js',
-                    'angular/**/*.service.js'
+                    'build/form-components.webpack.js'
                 ],
                 dest: 'dist/js/form-components.min.js',
                 options: {
-                    banner: 'angular.module("tw.form-components", []);\n',
                     mangle: true,
                     beautify: false
                 }
             },
-            layoutComponents: {
+            combined: {
                 src: [
-                    'angular/layout-components/**/*.controller.js',
-                    'angular/layout-components/**/*.directive.js'
+                    'build/styleguide-components.webpack.js'
                 ],
-                dest: 'dist/js/layout-components.js',
+                dest: 'dist/js/styleguide-components.js',
                 options: {
-                    banner: 'angular.module("tw.layout-components", []);\n',
                     mangle: false,
                     beautify: true
                 }
             },
-            layoutComponentsMin: {
+            combinedMin: {
                 src: [
-                    'angular/layout-components/**/*.controller.js',
-                    'angular/layout-components/**/*.directive.js',
-                    'angular/**/*.service.js'
+                    'build/styleguide-components.webpack.js'
                 ],
-                dest: 'dist/js/layout-components.min.js',
+                dest: 'dist/js/styleguide-components.min.js',
                 options: {
-                    banner: 'angular.module("tw.layout-components", []);\n',
                     mangle: true,
                     beautify: false
                 }
@@ -167,20 +137,33 @@ module.exports = function(grunt) {
                 eqeqeq: true,
                 eqnull: true,
                 browser: true,
+                esversion: 6,
                 globals: {
                     jQuery: true,
                     console: true
                 },
-                '-W099': true, // allow mix tabs and spaces
+                '-W099': true, // allow a mix of tabs and spaces
                 '-W014': true, // allow ++
                 '-W043': true, // parseInt without radix parameter
                 '-W065': true  // allow \n for line endings
             },
             files: [
-                'angular/**/*.controller.js',
-                'angular/**/*.directive.js',
-                'angular/**/*.service.js'
+                'src/**/*.component.js',
+                'src/**/*.controller.js',
+                'src/**/*.directive.js',
+                'src/**/*.service.js'
             ]
+        },
+        eslint: {
+          options: {
+            config: ".eslintrc",
+          },
+          src: [
+            'src/**/*.component.js',
+            'src/**/*.controller.js',
+            'src/**/*.directive.js',
+            'src/**/*.service.js'
+          ]
         },
         htmllint: {
             options: {
@@ -194,7 +177,7 @@ module.exports = function(grunt) {
                 "indent-width": false
             },
             files: [
-                'angular/**/*.html',
+                'src/**/*.html',
                 'partials/**/*.html',
                 'index.html'
             ]
@@ -208,34 +191,43 @@ module.exports = function(grunt) {
             }
         },
         copy: {
-            dist: {
+            demoJS: {
               expand: true,
-              src: 'dist/**/*.*',
-              dest: 'gh-pages/'
+              flatten: true,
+              src: [
+                'node_modules/jquery/dist/jquery.js',
+                'node_modules/jquery/dist/jquery.min.js',
+                'node_modules/angular/angular.js',
+                'node_modules/angular/angular.min.js',
+                'node_modules/bootstrap/dist/js/bootstrap.js',
+                'node_modules/bootstrap/dist/js/bootstrap.min.js',
+                'dist/js/styleguide-components.js'
+              ],
+              dest: 'demo/lib/'
             },
-            partials: {
+            demoCSS: {
               expand: true,
-              src: 'partials/*',
-              dest: 'gh-pages/'
+              flatten: true,
+              src: [
+                'node_modules/bootstrap/dist/css/bootstrap.css',
+                'node_modules/bootstrap/dist/css/bootstrap.css.map',
+                'node_modules/bootstrap/dist/css/bootstrap.min.css',
+                'node_modules/currency-flags/dist/currency-flags.css'
+              ],
+              dest: 'demo/lib/'
             },
-            styles: {
+            demoFonts: {
               expand: true,
-              src: 'styles/*',
-              dest: 'gh-pages/'
+              flatten: true,
+              src: [
+                'node_modules/bootstrap/fonts/*.*',
+                'node_modules/iconfont/fonts/*.*',
+              ],
+              dest: 'demo/fonts/'
             },
-            images: {
+            ghPages: {
               expand: true,
-              src: 'images/*',
-              dest: 'gh-pages/'
-            },
-            components: {
-              expand: true,
-              src: 'components/**/*.*',
-              dest: 'gh-pages/'
-            },
-            index: {
-              expand: true,
-              src: 'index.*',
+              src: 'demo/**/*.*',
               dest: 'gh-pages/'
             },
         }
@@ -248,9 +240,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-eslint');
     grunt.loadNpmTasks('grunt-htmllint');
+    grunt.loadNpmTasks("grunt-webpack");
 
     // === REGISTER TASKS ===
-    grunt.registerTask('default', ['jshint', 'uglify', 'less', 'htmllint', 'copy', 'watch']);
-    grunt.registerTask('build', ['jshint', 'uglify', 'less', 'htmllint', 'copy']);
+    grunt.registerTask('default', ['jshint', 'eslint', 'webpack', 'uglify', 'less', 'htmllint', 'copy', 'watch']);
+    grunt.registerTask('build', ['jshint', 'eslint', 'webpack', 'uglify', 'less', 'htmllint', 'copy']);
 };
