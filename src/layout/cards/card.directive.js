@@ -36,7 +36,6 @@ function CardLink($scope, $element, $attrs, $ctrl) {
   cardController.addCard(cardController);
   cardController.index = cardController.getLength() - 1;
   cardController.inactive = $ctrl.cardContainerController.inactive;
-  // cardController.showform = c.showform;
 
   if (cardController.open === true &&
     cardController.getExpandedIndex() === -1) { // only takes first pre-expanded card
