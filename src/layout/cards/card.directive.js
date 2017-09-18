@@ -15,6 +15,7 @@ function Card() {
     scope: {
       state: '@',
       index: '<',
+      showform: '<?',
       open: '<?',
       disabled: '=?',
       inactive: '<'
@@ -42,6 +43,7 @@ function CardLink($scope, $element, $attrs, $ctrl) {
   } else {
     cardController.open = false;
   }
+
   if (cardController.disabled == null) {
     cardController.disabled = false;
   }

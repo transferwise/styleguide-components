@@ -3,7 +3,6 @@ import CardsService from './cards.service.js';
 
 class CardController {
   constructor($transclude, TwCardsService) {
-    this.hasForm = $transclude.isSlotFilled('cardForm');
     this.toggle = TwCardsService.toggle;
     this.addCard = TwCardsService.addCard;
     this.getExpandedIndex = TwCardsService.getExpandedIndex;
