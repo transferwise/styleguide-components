@@ -1,0 +1,16 @@
+/nbproject/private/
+/nbproject/
+/node_modules/
+/public/
+/build/
+/demo/fonts/
+/demo/lib/
+npm-debug.log
+.env
+.DS_Store
+newrelic_agent.log
+
+.idea/
+*.iml
+.gradle/
+/gh-pages/

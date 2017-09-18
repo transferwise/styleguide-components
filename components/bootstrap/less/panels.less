@@ -1,0 +1,555 @@
+//
+// Panels
+// --------------------------------------------------
+
+// Base class
+.panel {
+  margin-bottom: @spacing-1-mobile;
+  background-color: @panel-bg;
+  border: 0;
+  margin-left: (-@spacing-1-mobile);
+  margin-right: (-@spacing-1-mobile);
+}
+
+// Panel contents
+.panel-body {
+  padding: @spacing-1-mobile;
+  background-color: #fff;
+  &:extend(.clearfix all);
+}
+
+// Optional heading
+.panel-heading {
+  padding: (@spacing-1-desktop / 2) @spacing-1-mobile 8px @spacing-1-mobile;
+
+  > .dropdown .dropdown-toggle {
+    color: inherit;
+  }
+}
+
+
+// Within heading, strip any `h*` tag of its default margins for spacing.
+.panel-title {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: (@line-height-computed + 8px);
+
+  > a {
+    text-decoration: none;
+  }
+}
+
+// Optional footer (stays gray in every modifier class)
+.panel-footer {
+  padding: @spacing-1-mobile;
+}
+
+@media (min-width: @screen-sm-min) {
+  .panel {
+    margin-bottom: @spacing-1-tablet;
+    margin-left: (-@spacing-1-tablet);
+    margin-right: (-@spacing-1-tablet);
+  }
+  .panel-heading {
+    padding: (@spacing-1-desktop / 2) @spacing-1-tablet 8px @spacing-1-tablet;
+
+  }
+  .panel-body {
+    padding: @spacing-1-tablet;
+  }
+  .panel-footer {
+    padding: @spacing-1-tablet;
+  }
+}
+@media (min-width: @screen-md-min) {
+  .panel {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .panel-heading {
+    padding: (@spacing-1-desktop / 2) 0 8px 0;
+  }
+}
+@media (min-width: @screen-lg-min) {
+  .panel {
+    margin-bottom: @spacing-1-desktop;
+    border-radius: @panel-border-radius;
+  }
+  .panel-body {
+    padding: @spacing-1-desktop;
+  }
+  .panel-footer {
+    padding: @spacing-1-desktop;
+  }
+}
+@media (min-width: @screen-md-min) {
+  .panel-title {
+    line-height: (@line-height-computed * 2);
+  }
+  .panel-heading {
+    > .btn-sm {
+      margin-top: 8px;
+    }
+  }
+}
+
+
+// List groups in panels
+//
+// By default, space out list group content from panel headings to account for
+// any kind of custom content between the two.
+
+.panel {
+  > .list-group,
+  > .panel-collapse > .list-group {
+    margin-bottom: 0;
+    border-left: 0;
+    border-right: 0;
+
+    .list-group-item {
+      border-radius: 0;
+    }
+  }
+  > .panel-heading + .panel-collapse > .list-group {
+    .list-group-item:first-child {
+      .border-top-radius(0);
+    }
+  }
+}
+.panel-list-group {
+  margin-bottom: 0;
+  border-left: 0;
+  border-right: 0;
+}
+
+// Collapse space between when there's no additional content.
+.list-group + .panel-footer {
+  border-top-width: 0;
+}
+
+// Tables in panels
+//
+// Place a non-bordered `.table` within a panel (not within a `.panel-body`) and
+// watch it go full width.
+
+.panel {
+  > .table,
+  > .table-responsive > .table,
+  > .panel-collapse > .table {
+    margin-bottom: 0;
+
+    caption {
+      padding-left: @spacing-1-desktop;
+      padding-right: @spacing-1-desktop;
+    }
+  }
+  // Add border top radius for first one
+  > .table:first-child,
+  > .table-responsive:first-child > .table:first-child {
+    .border-top-radius((@panel-border-radius - 1));
+
+    > thead:first-child,
+    > tbody:first-child {
+      > tr:first-child {
+        border-top-left-radius: (@panel-border-radius - 1);
+        border-top-right-radius: (@panel-border-radius - 1);
+
+        td:first-child,
+        th:first-child {
+          border-top-left-radius: (@panel-border-radius - 1);
+        }
+        td:last-child,
+        th:last-child {
+          border-top-right-radius: (@panel-border-radius - 1);
+        }
+      }
+    }
+  }
+  // Add border bottom radius for last one
+  > .table:last-child,
+  > .table-responsive:last-child > .table:last-child {
+    .border-bottom-radius((@panel-border-radius - 1));
+
+    > tbody:last-child,
+    > tfoot:last-child {
+      > tr:last-child {
+        border-bottom-left-radius: (@panel-border-radius - 1);
+        border-bottom-right-radius: (@panel-border-radius - 1);
+
+        td:first-child,
+        th:first-child {
+          border-bottom-left-radius: (@panel-border-radius - 1);
+        }
+        td:last-child,
+        th:last-child {
+          border-bottom-right-radius: (@panel-border-radius - 1);
+        }
+      }
+    }
+  }
+  > .panel-body + .table,
+  > .panel-body + .table-responsive,
+  > .table + .panel-body,
+  > .table-responsive + .panel-body {
+    border-top: 1px solid @table-border-color;
+  }
+  > .table > tbody:first-child > tr:first-child th,
+  > .table > tbody:first-child > tr:first-child td {
+    border-top: 0;
+  }
+  > .table-bordered,
+  > .table-responsive > .table-bordered {
+    border: 0;
+    > thead,
+    > tbody,
+    > tfoot {
+      > tr {
+        > th:first-child,
+        > td:first-child {
+          border-left: 0;
+        }
+        > th:last-child,
+        > td:last-child {
+          border-right: 0;
+        }
+      }
+    }
+    > thead,
+    > tbody {
+      > tr:first-child {
+        > td,
+        > th {
+          border-bottom: 0;
+        }
+      }
+    }
+    > tbody,
+    > tfoot {
+      > tr:last-child {
+        > td,
+        > th {
+          border-bottom: 0;
+        }
+      }
+    }
+  }
+  > .table-responsive {
+    border: 0;
+    margin-bottom: 0;
+  }
+
+  > .table tr > :first-child,
+  > .table-responsive tr > :first-child {
+    padding-left: @spacing-1-mobile;
+  }
+  > .table tr > :last-child,
+  > .table-responsive tr > :last-child {
+    padding-right: @spacing-1-mobile;
+  }
+
+  @media (min-width: @screen-md-min) {
+    > .table tr > :first-child,
+    > .table-responsive tr > :first-child {
+      padding-left: @spacing-1-tablet;
+    }
+    > .table tr > :last-child,
+    > .table-responsive tr > :last-child {
+      padding-right: @spacing-1-tablet;
+    }
+  }
+
+  @media (min-width: @screen-lg-min) {
+    > .table tr > :first-child,
+    > .table-responsive tr > :first-child {
+      padding-left: @spacing-1-desktop;
+    }
+    > .table tr > :last-child,
+    > .table-responsive tr > :last-child {
+      padding-right: @spacing-1-desktop;
+    }
+  }
+}
+
+
+// Collapsable panels (aka, accordion)
+//
+// Wrap a series of panels in `.panel-group` to turn them into an accordion with
+// the help of our collapse JavaScript plugin.
+
+.panel-group {
+  margin-bottom: @line-height-computed;
+
+  // Tighten up margin so it's only between panels
+  .panel {
+    margin-bottom: 0;
+    border-radius: @panel-border-radius;
+
+    + .panel {
+      margin-top: 8px;
+    }
+  }
+
+  .panel-heading {
+    border-bottom: 0;
+
+    + .panel-collapse > .panel-body,
+    + .panel-collapse > .list-group {
+      border-top: 1px solid @panel-inner-border;
+    }
+  }
+
+  .panel-footer {
+    border-top: 0;
+    + .panel-collapse .panel-body {
+      border-bottom: 1px solid @panel-inner-border;
+    }
+  }
+}
+
+
+// Contextual variations
+.panel-default {
+  .panel-variant(@panel-default-border; @panel-default-text; @panel-default-heading-bg; @panel-default-border);
+}
+.panel-primary {
+  .panel-variant(@panel-primary-border; @panel-primary-text; @panel-primary-heading-bg; @panel-primary-border);
+}
+.panel-success {
+  .panel-variant(@panel-success-border; @panel-success-text; @panel-success-heading-bg; @panel-success-border);
+}
+.panel-info {
+  .panel-variant(@panel-info-border; @panel-info-text; @panel-info-heading-bg; @panel-info-border);
+}
+.panel-warning {
+  .panel-variant(@panel-warning-border; @panel-warning-text; @panel-warning-heading-bg; @panel-warning-border);
+}
+.panel-danger {
+  .panel-variant(@panel-danger-border; @panel-danger-text; @panel-danger-heading-bg; @panel-danger-border);
+}
+
+.panel ul:last-child {
+    margin-bottom: 0;
+}
+
+// Cop Arrows from popover for TW theme
+//
+// .arrow is outer, .arrow:after is inner
+
+.panel > .arrow {
+  &,
+  &:after {
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+  }
+}
+.panel > .arrow {
+  border-width: @popover-arrow-outer-width;
+}
+.panel > .arrow:after {
+  border-width: @popover-arrow-width;
+  content: "";
+}
+
+.panel {
+  &.top,
+  &.right,
+  &.bottom,
+  &.left {
+    position: relative;
+  }
+
+  &.top > .arrow {
+    right: 11px;
+    margin-left: -@popover-arrow-outer-width;
+    border-bottom-width: 0;
+    border-top-color: @popover-arrow-outer-fallback-color; // IE8 fallback
+    border-top-color: @popover-arrow-outer-color;
+    bottom: -@popover-arrow-outer-width;
+    &:after {
+      content: " ";
+      bottom: 1px;
+      margin-left: -@popover-arrow-width;
+      border-bottom-width: 0;
+      border-top-color: @popover-arrow-color;
+    }
+  }
+  &.right > .arrow {
+    top: (@padding-base-vertical * 3);
+    left: -@popover-arrow-outer-width;
+    margin-top: -@popover-arrow-outer-width;
+    border-left-width: 0;
+    border-right-color: @popover-arrow-outer-fallback-color; // IE8 fallback
+    border-right-color: @popover-arrow-outer-color;
+    &:after {
+      content: " ";
+      left: 1px;
+      bottom: -@popover-arrow-width;
+      border-left-width: 0;
+      border-right-color: @popover-arrow-color;
+    }
+  }
+  &.bottom > .arrow {
+    right: 11px;
+    margin-left: -@popover-arrow-outer-width;
+    border-top-width: 0;
+    border-bottom-color: @popover-arrow-outer-fallback-color; // IE8 fallback
+    border-bottom-color: @popover-arrow-outer-color;
+    top: -@popover-arrow-outer-width;
+    &:after {
+      content: " ";
+      top: 1px;
+      margin-left: -@popover-arrow-width;
+      border-top-width: 0;
+      border-bottom-color: @popover-arrow-color;
+    }
+  }
+
+  &.left > .arrow {
+    top: (@padding-base-vertical * 3);
+    right: -@popover-arrow-outer-width;
+    margin-top: -@popover-arrow-outer-width;
+    border-right-width: 0;
+    border-left-color: @popover-arrow-outer-fallback-color; // IE8 fallback
+    border-left-color: @popover-arrow-outer-color;
+    &:after {
+      content: " ";
+      right: 1px;
+      border-right-width: 0;
+      border-left-color: @popover-arrow-color;
+      bottom: -@popover-arrow-width;
+    }
+  }
+
+  &.panel-default {
+    &.top > .arrow {
+      border-top-color: @panel-default-border;
+    }
+    &.right > .arrow {
+      border-right-color: @panel-default-border;
+    }
+    &.bottom > .arrow {
+      border-bottom-color: @panel-default-border;
+    }
+    &.left > .arrow {
+      border-left-color: @panel-default-border;
+    }
+  }
+  &.panel-primary {
+    &.top > .arrow {
+      border-top-color: @panel-primary-border;
+    }
+    &.right > .arrow {
+      border-right-color: @panel-primary-border;
+    }
+    &.bottom > .arrow {
+      border-bottom-color: @panel-primary-border;
+    }
+    &.left > .arrow {
+      border-left-color: @panel-primary-border;
+    }
+  }
+  &.panel-success {
+    &.top > .arrow {
+      border-top-color: @panel-success-border;
+    }
+    &.right > .arrow {
+      border-right-color: @panel-success-border;
+    }
+    &.bottom > .arrow {
+      border-bottom-color: @panel-success-border;
+    }
+    &.left > .arrow {
+      border-left-color: @panel-success-border;
+    }
+  }
+  &.panel-info {
+      &.top > .arrow {
+        border-top-color: @panel-info-border;
+      }
+      &.right > .arrow {
+        border-right-color: @panel-info-border;
+      }
+      &.bottom > .arrow {
+        border-bottom-color: @panel-info-border;
+      }
+      &.left > .arrow {
+        border-left-color: @panel-info-border;
+      }
+  }
+  &.panel-warning {
+      &.top > .arrow {
+        border-top-color: @panel-warning-border;
+      }
+      &.right > .arrow {
+        border-right-color: @panel-warning-border;
+      }
+      &.bottom > .arrow {
+        border-bottom-color: @panel-warning-border;
+      }
+      &.left > .arrow {
+        border-left-color: @panel-warning-border;
+      }
+  }
+  &.panel-danger {
+      &.top > .arrow {
+        border-top-color: @panel-danger-border;
+      }
+      &.right > .arrow {
+        border-right-color: @panel-danger-border;
+      }
+      &.bottom > .arrow {
+        border-bottom-color: @panel-danger-border;
+      }
+      &.left > .arrow {
+        border-left-color: @panel-danger-border;
+      }
+  }
+}
+
+.input-lg,
+.input-group-lg,
+.form-group-lg {
+    + .panel.top > .arrow,
+    + .panel.bottom > .arrow {
+        right: 11px;
+    }
+}
+
+.panel-group {
+    .panel {
+        margin-left: 0;
+        margin-right: 0;
+        border: 1px solid @brand-smoke-plus-10;
+    }
+    .panel-heading,
+    .panel-footer {
+        padding: @spacing-1-mobile;
+    }
+}
+
+@media (min-width: @screen-sm-min) {
+    .panel-group .panel {
+        .panel-heading,
+        .panel-footer {
+            padding: @spacing-1-tablet !important;
+        }
+    }
+}
+@media (min-width: @screen-lg-min) {
+    .panel-group .panel {
+        .panel-heading,
+        .panel-footer {
+            padding: @spacing-1-tablet @spacing-1-desktop;
+        }
+    }
+}
+@media (min-width: @screen-md-min) {
+    .panel {
+      margin-left: 0;
+      margin-right: 0;
+    }
+}

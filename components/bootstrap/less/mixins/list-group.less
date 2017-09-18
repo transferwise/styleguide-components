@@ -1,0 +1,22 @@
+// List Groups
+
+.list-group-item-variant(@state; @background; @color) {
+  .list-group-item-@{state} {
+    border-left: 3px solid @color;
+
+    .list-group-item& {
+      background-color: @brand-white;
+    }
+
+    .list-group-item-text {
+      color: @color;
+    }
+
+    a& {
+      color: @color;
+      &:hover {
+        color: @color;
+      }
+    }
+  }
+}

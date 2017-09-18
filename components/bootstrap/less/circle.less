@@ -1,0 +1,198 @@
+@circle-xs-diameter: 24px;
+@circle-sm-diameter: 48px;
+@circle-md-diameter: 72px;
+@circle-lg-diameter: 96px;
+
+@circle-xs-font-size: 10px;
+@circle-sm-font-size: 16px;
+@circle-md-font-size: 24px;
+@circle-lg-font-size: 32px;
+
+@circle-xs-icon-size: 14px;
+@circle-sm-icon-size: 24px;
+@circle-md-icon-size: 32px;
+@circle-lg-icon-size: 40px;
+
+@circle-inverse-bg: @brand-smoke-plus-20;
+
+
+.circle {
+    color: @brand-navy-minus-10;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    border: 1px solid transparent;
+    background-color: @brand-white;
+    border-radius: 50%;
+
+    background-repeat:no-repeat;
+    background-size: cover;
+    background-position: center;
+
+    display: block;
+    overflow: hidden;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    transition: background-color ease @transition-duration,
+                border-color ease @transition-duration,
+                color ease @transition-duration;
+
+    &.active {
+        border-color: @brand-info;
+        background-color: @brand-info;
+        color: #FFF;
+    }
+
+    img {
+        width: 100%;
+        border-radius: 50%;
+    }
+    img& {
+        background-color: transparent;
+        border-radius: 50%;
+    }
+    &[style] {
+        border: 0;
+        border-radius: 50% !important;
+    }
+    a& {
+        &[style]:hover {
+            border: 1px solid @brand-info;
+        }
+    }
+
+    .navbar-nav > li > a & {
+      width: @navbar-line-height;
+      height: @navbar-line-height;
+      line-height: @navbar-line-height;
+    }
+}
+
+.circle,
+.circle-sm {
+    .circle-variant(@circle-sm-diameter, @circle-sm-font-size, @circle-sm-icon-size);
+    .glyphicon { margin-top: 0px; }
+}
+.circle-xs {
+    .circle-variant(@circle-xs-diameter, @circle-xs-font-size, @circle-xs-icon-size);
+    .glyphicon { margin-top: 0px; }
+}
+.circle-md {
+    .circle-variant(@circle-md-diameter, @circle-md-font-size, @circle-md-icon-size);
+    .glyphicon { margin-top: -1px; }
+}
+.circle-lg {
+    .circle-variant(@circle-lg-diameter, @circle-lg-font-size, @circle-lg-icon-size);
+    .glyphicon { margin-top: -2px; }
+}
+
+a.circle,
+a.circle .icon,
+a.circle .glyphicon, {
+  text-decoration: none;
+}
+a:hover .circle,
+a.circle:hover {
+  border-color: @brand-info;
+  color: @brand-info;
+  text-decoration: none;
+}
+a:hover .circle.active,
+a.circle.active:hover {
+  text-decoration: none;
+  color: #FFF;
+}
+
+/* TODO this could be tidier, ideally change the general link behaviour */
+.dropdown-menu li a:hover .circle {
+  background-color: #FFF;
+  border-color: #FFF;
+  color: @dropdown-link-color;
+}
+.dropdown-menu .disabled a:hover .circle {
+  background-color: @circle-inverse-bg;
+  border-color: transparent;
+  color: @link-disabled-color;
+}
+
+.circle-inverse {
+  background-color: @circle-inverse-bg;
+}
+
+.circle-responsive {
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  width: @line-height-computed;
+  height: @line-height-computed;
+  line-height: @line-height-computed;
+  font-size: @circle-sm-font-size;
+  overflow: visible;
+
+  .glyphicon,
+  .icon {
+      font-size: @circle-sm-icon-size;
+      line-height: @circle-sm-icon-size;
+  }
+
+  &.circle-lg {
+    border-radius: 50%;
+    background-color: @brand-white;
+    &.circle-inverse {
+      background-color: @brand-smoke-plus-20;
+    }
+    .circle-variant(@circle-sm-diameter, @circle-sm-font-size, @circle-sm-icon-size);
+    .glyphicon { margin-top: 0px; }
+  }
+}
+@media (min-width: @screen-sm-min) {
+  .circle-responsive {
+    border-radius: 50%;
+    background-color: @brand-white;
+    &.circle-inverse {
+      background-color: @brand-smoke-plus-20;
+    }
+  }
+
+  .circle-responsive {
+    &.circle,
+    &.circle-sm,
+    &.circle-md {
+      .circle-variant(@circle-sm-diameter, @circle-sm-font-size, @circle-sm-icon-size);
+      .glyphicon { margin-top: 0px;}
+    }
+    &.circle-lg {
+      .circle-variant(@circle-md-diameter, @circle-md-font-size, @circle-md-icon-size);
+      .glyphicon { margin-top: -1px; }
+    }
+  }
+}
+@media (min-width: @screen-md-min) {
+  .circle-responsive {
+    &.circle-md {
+      .circle-variant(@circle-md-diameter, @circle-md-font-size, @circle-md-icon-size);
+      .glyphicon { margin-top: -1px; }
+    }
+    &.circle-lg {
+      .circle-variant(@circle-lg-diameter, @circle-lg-font-size, @circle-lg-icon-size);
+      .glyphicon { margin-top: -2px; }
+    }
+  }
+}
+
+.dropdown-menu {
+  li,
+  li > a {
+    > .circle-sm:first-child {
+      margin-right: 12px;
+    }
+  }
+}
+.btn {
+  .circle-sm:first-child {
+      margin-right: 12px;
+  }
+}

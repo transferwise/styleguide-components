@@ -1,0 +1,23 @@
+{
+  "name": "tw-styleguide-components",
+  "version": "2.0.0",
+  "componentsDirectory": "components/",
+  "directory": "components",
+  "dependencies": {
+    "bootstrap": "https://github.com/transferwise/bootstrap.git",
+    "currency-flags": "https://github.com/transferwise/currency-flags.git",
+    "angular": "~1.5.8",
+    "angular-mocks": "~1.5.8"
+  },
+  "private": true,
+  "homepage": "https://github.com/transferwise/styleguide-components",
+  "_release": "2.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.0.0",
+    "commit": "56242f15ff77f2e6888356b448421e69b37d4989"
+  },
+  "_source": "https://github.com/transferwise/styleguide-components.git",
+  "_target": "*",
+  "_originalSource": "https://github.com/transferwise/styleguide-components.git"
+}

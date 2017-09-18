@@ -1,0 +1,79 @@
+//
+// Alerts
+// --------------------------------------------------
+
+
+// Base styles
+// -------------------------
+
+.alert {
+  padding: @spacing-1-mobile;
+  margin-bottom: @spacing-1-mobile;
+  border-radius: @alert-border-radius;
+
+  // Headings for larger alerts
+  h4, .h4, h5, .h5 {
+    color: inherit;
+    font-size: 16px;
+  }
+
+
+  // Improve alignment and spacing of inner content
+  p,
+  ul {
+    margin-bottom: 0;
+  }
+
+  p + p {
+    margin-top: 8px;
+  }
+}
+
+
+@media (min-width: @screen-sm-min) {
+  .alert {
+    padding: @spacing-1-tablet;
+    margin-bottom: @spacing-1-tablet;
+  }
+}
+@media (min-width: @screen-lg-min) {
+  .alert {
+    padding: @spacing-1-desktop;
+    margin-bottom: @spacing-1-desktop;
+  }
+}
+
+// Dismissible alerts
+//
+// Expand the right padding and account for the close button's positioning.
+
+.alert-dismissable, // The misspelled .alert-dismissable was deprecated in 3.2.0.
+.alert-dismissible {
+  // Adjust close link position
+  .close {
+    position: relative;
+    top: -2px;
+    color: inherit;
+    margin-left: 8px;
+  }
+}
+
+// Alternate styles
+//
+// Generate contextual modifier classes for colorizing the alert.
+
+.alert-success {
+  .alert-variant(@alert-success-bg; @alert-success-border; @alert-success-text; @alert-success-text-hover);
+}
+
+.alert-info {
+  .alert-variant(@alert-info-bg; @alert-info-border; @alert-info-text; @alert-info-text-hover);
+}
+
+.alert-warning {
+  .alert-variant(@alert-warning-bg; @alert-warning-border; @alert-warning-text; @alert-warning-text-hover);
+}
+
+.alert-danger {
+  .alert-variant(@alert-danger-bg; @alert-danger-border; @alert-danger-text; @alert-danger-text-hover);
+}

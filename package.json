@@ -7,7 +7,7 @@
     "test": "grunt karma",
     "prestart": "bower install",
     "start": "grunt",
-    "dev": "live-server --port=8181"
+    "dev": "live-server --port=8182 --open=demo/index.html"
   },
   "repository": {
     "type": "git",
@@ -39,7 +39,7 @@
     "eslint": "^4.6.0",
     "eslint-config-airbnb-base": "^12.0.0",
     "eslint-plugin-import": "^2.7.0",
-    "grunt": "^0.4.5",
+    "grunt": "^1.0.1",
     "grunt-bower-task": "^0.4.0",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-jshint": "^1.0.0",

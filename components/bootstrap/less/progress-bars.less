@@ -1,0 +1,136 @@
+//
+// Progress bars
+// --------------------------------------------------
+
+
+// Bar animations
+// -------------------------
+
+// WebKit
+@-webkit-keyframes progress-bar-stripes {
+  from  { background-position: 40px 0; }
+  to    { background-position: 0 0; }
+}
+
+// Spec and IE10+
+@keyframes progress-bar-stripes {
+  from  { background-position: 40px 0; }
+  to    { background-position: 0 0; }
+}
+
+
+// Bar itself
+// -------------------------
+
+// Outer container
+.progress {
+  height: @progress-height;
+  margin-top: ((@line-height-computed - @progress-height) / 2);
+  margin-bottom: ((@line-height-computed - @progress-height) / 2);
+  background-color: @progress-bg;
+  border-radius: (@progress-height / 2);
+}
+
+// Bar of progress
+.progress-bar {
+  float: left;
+  width: 0%;
+  height: 100%;
+  font-size: @font-size-base;
+  font-weight: bold;
+  color: @progress-bar-color;
+  text-align: right;
+  background-color: @progress-bar-bg;
+  .transition(width .6s ease);
+
+  &:after {
+    float: right;
+    margin-top: ((-@progress-pip-size / 2) + 1);
+    margin-right: (-@progress-pip-size / 2);
+    content: "";
+    width: @progress-pip-size;
+    height: @progress-pip-size;
+    background-color: inherit;
+    border-radius: (@progress-pip-size / 2);
+  }
+
+  &:first-child {
+      border-top-left-radius: (@progress-height / 2);
+      border-bottom-left-radius: (@progress-height / 2);
+  }
+
+  &:last-child {
+      border-top-right-radius: (@progress-height / 2);
+      border-bottom-right-radius: (@progress-height / 2);
+  }
+}
+
+.progress-lg {
+  height: @progress-height-lg;
+  border-radius: (@progress-height-lg / 2);
+  margin-bottom: @line-height-computed;
+
+  .progress-bar {
+    line-height: @progress-height-lg;
+    min-width: @progress-height-lg;
+    padding-right: 8px;
+    padding-left: 5px;
+
+    &:after {
+      content: none;
+    }
+  }
+
+  .progress-bar:first-child {
+      border-top-left-radius: (@progress-height-lg / 2);
+      border-bottom-left-radius: (@progress-height-lg / 2);
+  }
+  .progress-bar:last-child {
+      border-top-right-radius: (@progress-height-lg / 2);
+      border-bottom-right-radius: (@progress-height-lg / 2);
+  }
+}
+
+
+// Striped bars
+//
+// `.progress-striped .progress-bar` is deprecated as of v3.2.0 in favor of the
+// `.progress-bar-striped` class, which you just add to an existing
+// `.progress-bar`.
+//.progress-striped .progress-bar,
+//.progress-bar-striped {
+//  #gradient > .striped();
+//  background-size: 40px 40px;
+//}
+
+// Call animation for the active one
+//
+// `.progress.active .progress-bar` is deprecated as of v3.2.0 in favor of the
+// `.progress-bar.active` approach.
+//.progress.active .progress-bar,
+//.progress-bar.active {
+//  .animation(progress-bar-stripes 2s linear infinite);
+//}
+
+
+// Variations
+// -------------------------
+.progress-bar-primary {
+  .progress-bar-variant(@progress-bar-primary-bg);
+}
+
+.progress-bar-success {
+  .progress-bar-variant(@progress-bar-success-bg);
+}
+
+.progress-bar-info {
+  .progress-bar-variant(@progress-bar-info-bg);
+}
+
+.progress-bar-warning {
+  .progress-bar-variant(@progress-bar-warning-bg);
+}
+
+.progress-bar-danger {
+  .progress-bar-variant(@progress-bar-danger-bg);
+}

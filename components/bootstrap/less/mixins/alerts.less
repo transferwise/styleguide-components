@@ -1,0 +1,27 @@
+// Alerts
+
+.alert-variant(@background; @border; @text-color; @text-hover) {
+  background-color: @background;
+  border-color: @border;
+  color: @text-color;
+
+  a,
+  b,
+  strong,
+  .close,
+  .alert-link,
+  .icon {
+    color: @text-color;
+  }
+  hr {
+    border-top-color: @border;
+  }
+  a:hover,
+  a:focus,
+  .alert-link:hover,
+  .alert-link:focus,
+  .close:hover,
+  .close:focus {
+      color: @text-hover;
+  }
+}

@@ -15,6 +15,7 @@ function Card() {
     scope: {
       state: '@',
       index: '<',
+      showform: '<?',
       open: '<?',
       disabled: '=?',
       inactive: '<'
@@ -35,6 +36,7 @@ function CardLink($scope, $element, $attrs, $ctrl) {
   cardController.addCard(cardController);
   cardController.index = cardController.getLength() - 1;
   cardController.inactive = $ctrl.cardContainerController.inactive;
+  // cardController.showform = c.showform;
 
   if (cardController.open === true &&
     cardController.getExpandedIndex() === -1) { // only takes first pre-expanded card
@@ -42,6 +44,7 @@ function CardLink($scope, $element, $attrs, $ctrl) {
   } else {
     cardController.open = false;
   }
+
   if (cardController.disabled == null) {
     cardController.disabled = false;
   }

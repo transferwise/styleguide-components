@@ -1,0 +1,258 @@
+//
+// List groups
+// --------------------------------------------------
+
+
+// Base class
+//
+// Easily usable on <ul>, <ol>, or <div>.
+
+.list-group {
+  // No need to set list-style: none; since .list-group-item is block level
+  margin-bottom: 20px;
+  padding-left: 0; // reset padding because ul and ol
+  border-left: 1px solid @brand-smoke-plus-20;
+  border-right: 1px solid @brand-smoke-plus-20;
+  border-bottom: 1px solid @brand-smoke-plus-20;
+}
+
+// Individual list items
+//
+// Use on `li`s or `div`s within the `.list-group` parent.
+
+.list-group-item {
+  display: block;
+  padding: @spacing-1-mobile @spacing-1-mobile @spacing-1-mobile (@spacing-1-mobile - 2px);
+  // Place the border on the list items and negative margin up for better styling
+  background-color: @list-group-bg;
+  border-left: 2px solid transparent;
+  margin-top: 1px;
+
+  line-height: @line-height-computed;
+  transition: all ease @panel-focus-transtion;
+
+  .panel-group & {
+    border-top: 1px solid @brand-smoke-plus-20;
+    margin-top: 0;
+  }
+}
+
+@media (min-width: @screen-sm-min) {
+  .list-group-item {
+    padding: @spacing-1-tablet @spacing-1-tablet @spacing-1-tablet (@spacing-1-tablet - 2px);
+  }
+}
+@media (min-width: @screen-lg-min) {
+  .list-group-item {
+    padding: @spacing-1-desktop @spacing-1-desktop @spacing-1-desktop (@spacing-1-desktop - 2px);
+  }
+}
+
+// Custom content options
+//
+// Extra classes for creating well-formatted content within `.list-group-item`s.
+
+.list-group-item-heading {
+  margin-bottom: 0;
+  font-size: @font-size-base;
+  font-weight: @font-weight-normal;
+  color: @headings-color;
+}
+.list-group-item-text {
+  margin-bottom: 0;
+  color: @text-color;
+}
+
+// Linked list items
+//
+// Use anchor elements instead of `li`s or `div`s to create linked list items.
+// Includes an extra `.active` modifier class for showing selected items.
+
+a.list-group-item {
+  color: @list-group-link-color;
+  text-decoration: none;
+
+  .list-group-item-heading {
+    color: @list-group-link-heading-color;
+  }
+
+  // Hover state
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    color: @list-group-link-hover-color;
+    background-color: @list-group-hover-bg;
+  }
+}
+
+.list-group-item {
+  // Ideally would use role=button on list group item but invalid markup on li
+  &[ng-click] {
+    cursor: pointer;
+
+    &:hover {
+      // tell the browser there is a likelihood this will animate when clicked
+      will-change: margin, contents;
+    }
+  }
+
+  // Disabled state
+  &.disabled {
+    color: @list-group-disabled-color;
+
+    .list-group-item-heading,
+    .list-group-item-text,
+    b,
+    strong,
+    .circle,
+    .icon {
+      color: @list-group-disabled-color;
+    }
+  }
+
+  // Active class on item itself, not parent
+  &.active {
+    z-index: 2; // Place active items above their siblings for proper border styling
+    background-color: @list-group-active-bg;
+    box-shadow: 0 1px 10px @brand-smoke-plus-10;
+    margin-top: @line-height-computed;
+    margin-bottom: @line-height-computed;
+
+    &:first-child {
+      margin-top: 1px;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    + .list-group-item {
+      border-top-width: 0;
+    }
+  }
+
+  @media (min-width: @screen-md-min) {
+    &.active {
+      margin-left: -12px;
+      margin-right: -12px;
+    }
+
+    .media-body {
+      // In combination with applying extra padding to the media-body,
+      // this prevents text reflow on panel expansion
+      transition: padding ease @panel-focus-transtion;
+    }
+  }
+}
+
+.list-group-inactive {
+  .list-group-item {
+    background-color: transparent;
+    border-top: 1px solid @brand-smoke-plus-10;
+    margin-top: 0;
+
+    &:hover,
+    &.active {
+      background-color: @brand-white;
+
+      @media (min-width: @screen-sm-min) {
+        .circle {
+          background-color: @brand-smoke-plus-20;
+        }
+      }
+    }
+    &.active {
+      border-top: 0;
+      margin-top: @line-height-computed;
+    }
+  }
+}
+
+// Contextual variants
+//
+// Add modifier classes to change text and background color on individual items.
+// Organizationally, this must come after the `:hover` states.
+
+.list-group-item-variant(success; @state-success-bg; @state-success-text);
+.list-group-item-variant(info; @state-info-bg; @state-info-text);
+.list-group-item-variant(warning; @state-warning-bg; @state-warning-text);
+.list-group-item-variant(danger; @state-danger-bg; @state-danger-text);
+
+// Hover states
+.list-group:hover {
+  .list-group-item:not(.active) {
+    background-color: #fbfcfd;
+
+    .media {
+      opacity: .94;
+    }
+  }
+  .list-group-item:hover {
+    background-color: @brand-white;
+
+    .media {
+      opacity: 1;
+    }
+  }
+}
+.list-group-inactive:hover {
+  .list-group-item:not(.active) {
+    background-color: @brand-smoke-plus-20;
+  }
+  .list-group-item:hover {
+    background-color: @brand-white;
+  }
+}
+
+@keyframes listSlideOver {
+  0% {transform: translateX(100vw);}
+  100% {transform: translateX(0vw);}
+}
+
+@media (max-width: @screen-sm-max) {
+  .list-group-slide-out {
+    .list-group-item {
+      .collapse {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        overflow-y: auto;
+        background-color: #fff;
+        animation: listSlideOver 0.15s ease-out forwards;
+        z-index: 3;
+
+        .media-left {
+          display: none;
+        }
+        .well {
+          border-radius: 0;
+          margin-bottom: 0;
+        }
+      }
+    }
+    .list-group-item.active,
+    .list-group-inactive .list-group-item.active {
+      margin-top: 1px;
+      margin-bottom: 0;
+      box-shadow: none !important;
+    }
+    .list-group-inactive .list-group-item.active {
+      border-top: 1px solid @brand-smoke-plus-10;
+      border-bottom: 1px solid @brand-smoke-plus-10;
+    }
+
+    .list-group-item.active .collapse {
+      height: 100vh;
+      overflow-y: auto;
+      // Annoying but makes sure the last content is visible in iOS safari
+      padding-bottom: 72px;
+    }
+    .list-group-item.active .collapse .well {
+      // Annoying but makes sure the last content is visible in iOS safari
+      padding-bottom: 72px;
+      margin-bottom: -72px;
+    }
+  }
+}
