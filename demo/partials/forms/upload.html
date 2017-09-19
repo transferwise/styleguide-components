@@ -1,40 +1,40 @@
 <h4 id="upload">TW Upload</h4>
 <p><code>tw-upload</code> is a component for uploading a single file. It is
-	designed to be used multiple times when more than one file is required.</p>
+  designed to be used multiple times when more than one file is required.</p>
 <ul>
-	<li>Files can be saved immediately by passing in a set of <code>http-options</code>,
-		to be used with Angular's
-		<a href="https://docs.angularjs.org/api/ng/service/$http" target="_new">$http service</a>.</li>
-	<li>If an <code>ngModel</code> binding is supplied the component will bind the
-		base64 encoded file to that property, ready for an asynchronous
-		<code>multipart/form-data</code> POST.</li>
-	<li>The component also contains an HTML file input which can be submitted in
-		a standard <code>multipart/form-data</code> form (which requires a
-		<code>name</code>).</li>
+  <li>Files can be saved immediately by passing in a set of <code>http-options</code>,
+    to be used with Angular's
+    <a href="https://docs.angularjs.org/api/ng/service/$http" target="_new">$http service</a>.</li>
+  <li>If an <code>ngModel</code> binding is supplied the component will bind the
+    base64 encoded file to that property, ready for an asynchronous
+    <code>multipart/form-data</code> POST.</li>
+  <li>The component also contains an HTML file input which can be submitted in
+    a standard <code>multipart/form-data</code> form (which requires a
+    <code>name</code>).</li>
 </ul>
 <p>A number of event handlers are available during the component lifecycle:</p>
 <ul>
-	<li><p><code>on-start(File)</code> - fired when we start processing the file, the
-		file object is passed to the handler, containing the size, name, and type of
-		the file (but not the data, use ngModel).</p></li>
-	<li><p><code>on-success($httpResponse)</code> - fired when we successfully
-		process the file and internal animations are complete.  The success handler
-		will be passed the response from the $http service if
-		<code>http-options</code> were supplied.</p></li>
-	<li><p><code>on-failure($httpResponse)</code> - fired when we fail to process
-		the file after internal animations finish.  The failure handler
-		will be passed the response from the $http service if
-		<code>http-options</code> were supplied.</p>
-		<p>If you supply a <code>max-size</code> the component will validate client
-			side and fail with an $httResponse, status: '413 - Request Entity Too Large'.
-			For all other errors, interrogate the response and supply an appropriate
-			<code>error-message</code> to the component</p>
-	</li>
-	<li><p><code>on-cancel()</code> - fired when we reset the control to it's initial
-		state ready to accept a new file.</p></li>
+  <li><p><code>on-start(File)</code> - fired when we start processing the file, the
+    file object is passed to the handler, containing the size, name, and type of
+    the file (but not the data, use ngModel).</p></li>
+  <li><p><code>on-success($httpResponse)</code> - fired when we successfully
+    process the file and internal animations are complete.  The success handler
+    will be passed the response from the $http service if
+    <code>http-options</code> were supplied.</p></li>
+  <li><p><code>on-failure($httpResponse)</code> - fired when we fail to process
+    the file after internal animations finish.  The failure handler
+    will be passed the response from the $http service if
+    <code>http-options</code> were supplied.</p>
+    <p>If you supply a <code>max-size</code> the component will validate client
+      side and fail with an $httResponse, status: '413 - Request Entity Too Large'.
+      For all other errors, interrogate the response and supply an appropriate
+      <code>error-message</code> to the component</p>
+  </li>
+  <li><p><code>on-cancel()</code> - fired when we reset the control to it's initial
+    state ready to accept a new file.</p></li>
 </ul>
 <p>The component's post upload screen can be fully customised by transcluding
-	new content to replace the default behaviour.</p>
+  new content to replace the default behaviour.</p>
 <pre>
 &lt;tw-upload ...&gt;
   &lt;custom-success-screen /&gt;
@@ -43,81 +43,81 @@
 
 <form action="/file" method="POST" enctype="multipart/form-data">
 <div class="row m-b-3">
-	<div class="col-md-6">
-		<div class="form-group">
-			<tw-upload
-				ng-if="!$ctrl.customComplete"
-				ng-model="$ctrl.model"
-				name="$ctrl.name"
-				icon="{{$ctrl.icon}}"
-				size="{{$ctrl.size}}"
-				accept="{{$ctrl.accept}}"
-				max-size="$ctrl.maxSize"
-				label="{{$ctrl.label}}"
-				placeholder="{{$ctrl.placeholder}}"
+  <div class="col-md-6">
+    <div class="form-group">
+      <tw-upload
+        ng-if="!$ctrl.customComplete"
+        ng-model="$ctrl.model"
+        name="$ctrl.name"
+        icon="{{$ctrl.icon}}"
+        size="{{$ctrl.size}}"
+        accept="{{$ctrl.accept}}"
+        max-size="$ctrl.maxSize"
+        label="{{$ctrl.label}}"
+        placeholder="{{$ctrl.placeholder}}"
 
-				button-text="{{$ctrl.buttonText}}"
-				cancel-text="{{$ctrl.cancelText}}"
+        button-text="{{$ctrl.buttonText}}"
+        cancel-text="{{$ctrl.cancelText}}"
 
-				too-large-message="{{$ctrl.tooLargeMessage}}"
-				error-message="{{$ctrl.errorMessage}}"
+        too-large-message="{{$ctrl.tooLargeMessage}}"
+        error-message="{{$ctrl.errorMessage}}"
 
-				processing-text="{{$ctrl.processingText}}"
-				success-text="{{$ctrl.successText}}"
-				failure-text="{{$ctrl.failureText}}"
+        processing-text="{{$ctrl.processingText}}"
+        success-text="{{$ctrl.successText}}"
+        failure-text="{{$ctrl.failureText}}"
 
-				on-start="$ctrl.onStart"
-				on-success="$ctrl.onSuccess"
-				on-failure="$ctrl.onFailure"
-				on-cancel="$ctrl.onCancel"
+        on-start="$ctrl.onStart"
+        on-success="$ctrl.onSuccess"
+        on-failure="$ctrl.onFailure"
+        on-cancel="$ctrl.onCancel"
 
-				http-options="$ctrl.httpOptions">
-			</tw-upload>
-			<tw-upload
-				ng-if="$ctrl.customComplete"
-				ng-model="$ctrl.model"
-				name="$ctrl.name"
-				icon="{{$ctrl.icon}}"
-				size="{{$ctrl.size}}"
-				accept="{{$ctrl.accept}}"
-				max-size="$ctrl.maxSize"
-				label="{{$ctrl.label}}"
-				placeholder="{{$ctrl.placeholder}}"
+        http-options="$ctrl.httpOptions">
+      </tw-upload>
+      <tw-upload
+        ng-if="$ctrl.customComplete"
+        ng-model="$ctrl.model"
+        name="$ctrl.name"
+        icon="{{$ctrl.icon}}"
+        size="{{$ctrl.size}}"
+        accept="{{$ctrl.accept}}"
+        max-size="$ctrl.maxSize"
+        label="{{$ctrl.label}}"
+        placeholder="{{$ctrl.placeholder}}"
 
-				button-text="{{$ctrl.buttonText}}"
-				cancel-text="{{$ctrl.cancelText}}"
+        button-text="{{$ctrl.buttonText}}"
+        cancel-text="{{$ctrl.cancelText}}"
 
-				too-large-message="{{$ctrl.tooLargeMessage}}"
-				error-message="{{$ctrl.errorMessage}}"
+        too-large-message="{{$ctrl.tooLargeMessage}}"
+        error-message="{{$ctrl.errorMessage}}"
 
-				processing-text="{{$ctrl.processingText}}"
-				success-text="{{$ctrl.successText}}"
-				failure-text="{{$ctrl.failureText}}"
+        processing-text="{{$ctrl.processingText}}"
+        success-text="{{$ctrl.successText}}"
+        failure-text="{{$ctrl.failureText}}"
 
-				on-start="$ctrl.onStart"
-				on-success="$ctrl.onSuccess"
-				on-failure="$ctrl.onFailure"
-				on-cancel="$ctrl.onCancel"
+        on-start="$ctrl.onStart"
+        on-success="$ctrl.onSuccess"
+        on-failure="$ctrl.onFailure"
+        on-cancel="$ctrl.onCancel"
 
-				http-options="$ctrl.httpOptions">
-				<h1>Custom completion card</h1>
-			</tw-upload>
-			<!--
-			<div class="thumbnail">
-			  <img ng-src="{{$ctrl.image}}" alt="...">
-			  <div class="caption">
-			    <p>{{$ctrl.fileName}}</p>
-			  </div>
-			</div>
+        http-options="$ctrl.httpOptions">
+        <h1>Custom completion card</h1>
+      </tw-upload>
+      <!--
+      <div class="thumbnail">
+        <img ng-src="{{$ctrl.image}}" alt="...">
+        <div class="caption">
+          <p>{{$ctrl.fileName}}</p>
+        </div>
+      </div>
 
-			<h4 class="m-b-2">MikeMarter.jpg</h4>
-			<img ng-src="{{$ctrl.image}}" class="circle circle-lg fade-in" />
+      <h4 class="m-b-2">MikeMarter.jpg</h4>
+      <img ng-src="{{$ctrl.image}}" class="circle circle-lg fade-in" />
 
-			<h4 class="m-b-2 fade-in">Processing file...</h4>
-			<tw-process size='sm' class="fade-in"></tw-process>
-			-->
-		</div>
-		<h5>Configuration</h5>
+      <h4 class="m-b-2 fade-in">Processing file...</h4>
+      <tw-process size='sm' class="fade-in"></tw-process>
+      -->
+    </div>
+    <h5>Configuration</h5>
 <pre>&lt;tw-upload<span ng-if="$ctrl.showNgModel">
   ng-model="{{$ctrl.model | limitTo : 30}}..."</span>
   name="{{$ctrl.name}}"<span ng-if="$ctrl.icon">
@@ -145,150 +145,150 @@
   &lt;h1&gt;Custom completion card&lt;/h1&gt;</span>
 &lt;/tw-upload&gt;
 </pre>
-	</div>
-	<div class="col-md-6">
-		<div class="well">
-			<h5 class="page-header">
-				Edit configuration
-				<button type="button" class="btn btn-sm btn-default pull-xs-right" ng-click="$ctrl.makeFancy()">Make fancy</button>
-			</h5>
-			<div class="form-group" ng-init="$ctrl.name = 'file'">
-				<label class="control-label">
-					Name of the form field
-				</label>
-				<input type="text" class="form-control" ng-model="$ctrl.name" />
-			</div>
+  </div>
+  <div class="col-md-6">
+    <div class="well">
+      <h5 class="page-header">
+        Edit configuration
+        <button type="button" class="btn btn-sm btn-default pull-xs-right" ng-click="$ctrl.makeFancy()">Make fancy</button>
+      </h5>
+      <div class="form-group" ng-init="$ctrl.name = 'file'">
+        <label class="control-label">
+          Name of the form field
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.name" />
+      </div>
 
-			<div class="form-group">
-				<label class="control-label">
-					Label
-				</label>
-				<input type="text" class="form-control" ng-model="$ctrl.label" />
-			</div>
-			<div class="form-group" ng-init="$ctrl.placeholder = 'Drag and drop a file less than 1MB'">
-				<label class="control-label">
-					Placeholder text
-				</label>
-				<input type="text" class="form-control" ng-model="$ctrl.placeholder" />
-			</div>
+      <div class="form-group">
+        <label class="control-label">
+          Label
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.label" />
+      </div>
+      <div class="form-group" ng-init="$ctrl.placeholder = 'Drag and drop a file less than 1MB'">
+        <label class="control-label">
+          Placeholder text
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.placeholder" />
+      </div>
 
-			<div class="form-group" ng-init="$ctrl.buttonText = 'Or choose file'">
-				<label class="control-label">
-					Button text
-				</label>
-				<input type="text" class="form-control" ng-model="$ctrl.buttonText" />
-			</div>
-			<div class="form-group" ng-init="$ctrl.cancelText = 'Choose a different file?'">
-				<label class="control-label">
-					Cancel text
-				</label>
-				<input type="text" class="form-control" ng-model="$ctrl.cancelText" />
-			</div>
+      <div class="form-group" ng-init="$ctrl.buttonText = 'Or choose file'">
+        <label class="control-label">
+          Button text
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.buttonText" />
+      </div>
+      <div class="form-group" ng-init="$ctrl.cancelText = 'Choose a different file?'">
+        <label class="control-label">
+          Cancel text
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.cancelText" />
+      </div>
 
-			<div class="form-group">
-				<label class="control-label">
-					Icon
-				</label>
-				<tw-select
-					placeholder="Default icon"
-					ng-model="$ctrl.icon"
-					options="[{value: 'upload', label: 'Upload'},{value: 'id', label: 'ID'},{value: 'pdf', label: 'PDF'}]"></tw-select>
-			</div>
+      <div class="form-group">
+        <label class="control-label">
+          Icon
+        </label>
+        <tw-select
+          placeholder="Default icon"
+          ng-model="$ctrl.icon"
+          options="[{value: 'upload', label: 'Upload'},{value: 'id', label: 'ID'},{value: 'pdf', label: 'PDF'}]"></tw-select>
+      </div>
 
-			<div class="form-group">
-				<label class="control-label">
-					Processing text
-				</label>
-				<input type="text" class="form-control" ng-model="$ctrl.processingText" />
-			</div>
-			<div class="form-group">
-				<label class="control-label">
-					Success text
-				</label>
-				<input type="text" class="form-control" ng-model="$ctrl.successText" />
-			</div>
-			<div class="form-group">
-				<label class="control-label">
-					Failure text
-				</label>
-				<input type="text" class="form-control" ng-model="$ctrl.failureText" />
-			</div>
+      <div class="form-group">
+        <label class="control-label">
+          Processing text
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.processingText" />
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          Success text
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.successText" />
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          Failure text
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.failureText" />
+      </div>
 
-			<div class="form-group">
-				<span class="control-label">Toggles</span>
-				<div class="checkbox">
-					<label>
-						<tw-checkbox ng-model="$ctrl.httpOptions" ng-true-value="{url: 'partials/image-upload.json'}" ng-false-value="false" />
-						POST immmediately?
-					</label>
-				</div>
-				<div class="checkbox">
-					<label>
-						<tw-checkbox ng-model="$ctrl.httpOptions" ng-true-value="{url: '404'}" ng-false-value="false" />
-						Post to a 404 for testing?
-					</label>
-				</div>
-				<div class="checkbox">
-					<label>
-						<tw-checkbox ng-model="$ctrl.showNgModel" />
-					 	Bind to ngModel?
-					</label>
-				</div>
-				<div class="checkbox">
-					<label>
-						<tw-checkbox ng-model="$ctrl.customComplete" />
-					 	Custom complete screen?
-					</label>
-				</div>
-			</div>
+      <div class="form-group">
+        <span class="control-label">Toggles</span>
+        <div class="checkbox">
+          <label>
+            <tw-checkbox ng-model="$ctrl.httpOptions" ng-true-value="{url: 'partials/image-upload.json'}" ng-false-value="false" />
+            POST immmediately?
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <tw-checkbox ng-model="$ctrl.httpOptions" ng-true-value="{url: '404'}" ng-false-value="false" />
+            Post to a 404 for testing?
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <tw-checkbox ng-model="$ctrl.showNgModel" />
+             Bind to ngModel?
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <tw-checkbox ng-model="$ctrl.customComplete" />
+             Custom complete screen?
+          </label>
+        </div>
+      </div>
 
-			<div class="form-group" ng-init="$ctrl.size = 'md'">
-				<label class="control-label">
-					Size
-				</label>
-				<tw-select
-					placeholder="Size"
-					ng-required="true"
-					ng-model="$ctrl.size"
-					options="[{value: 'sm', label: 'Small'},{value: 'md', label: 'Medium'},{value: 'lg', label: 'Large'}]"></tw-select>
-			</div>
+      <div class="form-group" ng-init="$ctrl.size = 'md'">
+        <label class="control-label">
+          Size
+        </label>
+        <tw-select
+          placeholder="Size"
+          ng-required="true"
+          ng-model="$ctrl.size"
+          options="[{value: 'sm', label: 'Small'},{value: 'md', label: 'Medium'},{value: 'lg', label: 'Large'}]"></tw-select>
+      </div>
 
-			<div class="form-group" ng-init="$ctrl.accept = 'image/*'">
-				<label class="control-label">
-					Accept (CSV of file extensions)
-				</label>
-				<tw-select
-					placeholder="Any file type"
-					ng-model="$ctrl.accept"
-					options="$ctrl.acceptOptions"></tw-select>
-			</div>
-			<!--
-			<div class="form-group" ng-init="$ctrl.wrongTypeMessage = 'The file must be an image'">
-				<label class="control-label">
-					Wrong type text
-				</label>
-				<input type="text" class="form-control" ng-model="$ctrl.wrongTypeMessage" />
-			</div>
-			-->
-			<div class="form-group" ng-init="$ctrl.maxSize = 1000000">
-				<label class="control-label">
-					Max file size
-				</label>
-				<input type="number" step="1" class="form-control" ng-model="$ctrl.maxSize" />
-			</div>
-			<div class="form-group" ng-init="$ctrl.tooLargeMessage = 'The file must be smaller than 1Mb'">
-				<label class="control-label">
-					Too large message
-				</label>
-				<input type="text" class="form-control" ng-model="$ctrl.tooLargeMessage" />
-			</div>
-			<div class="form-group">
-				<label class="control-label">
-					Error message
-				</label>
-				<input type="text" class="form-control" ng-model="$ctrl.errorMessage" placeholder="Populate using on-failure..." />
-			</div>
-		</div>
-	</div>
+      <div class="form-group" ng-init="$ctrl.accept = 'image/*'">
+        <label class="control-label">
+          Accept (CSV of file extensions)
+        </label>
+        <tw-select
+          placeholder="Any file type"
+          ng-model="$ctrl.accept"
+          options="$ctrl.acceptOptions"></tw-select>
+      </div>
+      <!--
+      <div class="form-group" ng-init="$ctrl.wrongTypeMessage = 'The file must be an image'">
+        <label class="control-label">
+          Wrong type text
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.wrongTypeMessage" />
+      </div>
+      -->
+      <div class="form-group" ng-init="$ctrl.maxSize = 1000000">
+        <label class="control-label">
+          Max file size
+        </label>
+        <input type="number" step="1" class="form-control" ng-model="$ctrl.maxSize" />
+      </div>
+      <div class="form-group" ng-init="$ctrl.tooLargeMessage = 'The file must be smaller than 1Mb'">
+        <label class="control-label">
+          Too large message
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.tooLargeMessage" />
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          Error message
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.errorMessage" placeholder="Populate using on-failure..." />
+      </div>
+    </div>
+  </div>
 </div>
 </form>
