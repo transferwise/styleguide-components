@@ -10,6 +10,11 @@ import Layout from './layout/';
 import Loading from './loading/';
 import Navigation from './navigation/';
 
+// DEPRECATED This is required to support old usages of the sub modules when
+// importing the full JS library.  
+import OldFormComponentModule from './form-components.js';
+import OldFormValidationModule from './form-validation.js';
+
 export default angular.module('tw.styleguide-components', [
   Forms,
   Validation,
@@ -18,5 +23,7 @@ export default angular.module('tw.styleguide-components', [
   Help,
   Layout,
   Loading,
-  Navigation
+  Navigation,
+  OldFormComponentModule,
+  OldFormValidationModule
 ]).name;
