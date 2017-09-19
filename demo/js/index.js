@@ -307,8 +307,6 @@ angular.module('tw.styleguide.docs', [])
 		sizes: '='
 	},
 	controller: function() {
-		var initialDate = new Date('2000-01-10');
-		this.model = initialDate;
 		this.log = function(message) { console.log(message); };
 	},
 	templateUrl: 'partials/forms/date-lookup.html'

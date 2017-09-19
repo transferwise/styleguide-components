@@ -12,12 +12,13 @@
       'btn-lg': $ctrl.size ==='lg'
     }">
 
-    <span ng-if="!$ctrl.ngModel"
-      class="form-control-placeholder tw-date-lookup-placeholder">
+    <span ng-if="$ctrl.label"
+      class="control-label small m-r-1">{{$ctrl.label}}</span
+    ><span ng-if="!$ctrl.ngModel"
+      class="form-control-placeholder tw-date-lookup-placeholder"
+      style="display: inline;">
       {{$ctrl.placeholder}}
     </span
-    ><span ng-if="$ctrl.label && $ctrl.ngModel"
-      class="control-label small m-r-1">{{$ctrl.label}}</span
     ><span ng-if="$ctrl.ngModel" class="tw-date-lookup-selected">
       {{$ctrl.selectedDateFormatted}}
     </span>
