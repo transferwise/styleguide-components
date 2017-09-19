@@ -15,8 +15,9 @@
     <span ng-if="$ctrl.label"
       class="control-label small m-r-1">{{$ctrl.label}}</span
     ><span ng-if="!$ctrl.ngModel"
-      class="form-control-placeholder tw-date-lookup-placeholder"
-      style="display: inline;">
+      class="form-control-placeholder tw-date-lookup-placeholder
+        visible-xs-inline visible-sm-inline visible-md-inline
+        visible-lg-inline visible-xl-inline">
       {{$ctrl.placeholder}}
     </span
     ><span ng-if="$ctrl.ngModel" class="tw-date-lookup-selected">
