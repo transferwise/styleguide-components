@@ -7,7 +7,7 @@ module.exports = function(config) {
         files : [
             // include relevant Angular files and libs
             'demo/lib/jquery.min.js',
-            'demo/lib/bootstrap.min.js',
+            // 'demo/lib/bootstrap.min.js',
             'demo/lib/angular.min.js',
             'dev/test.utils.js',
             'node_modules/angular-mocks/angular-mocks.js',

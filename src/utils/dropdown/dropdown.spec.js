@@ -4,6 +4,7 @@ fdescribe('Dropdown', function() {
   var $compile,
     $rootScope,
     $scope,
+    $document,
     template,
     trigger,
     parent,
@@ -20,14 +21,26 @@ fdescribe('Dropdown', function() {
   var LINK_ONE_SELECTOR = 'link-one';
   var LINK_TWO_SELECTOR = 'link-two';
 
+  var doc;
+
   testUtils = new TestUtils();
 
-  beforeEach(module('tw.styleguide.utils'));
+  beforeEach(function() {
+    // Create a new virtual document
+    doc = document.implementation.createHTMLDocument();
+
+    module('tw.styleguide.utils', function($provide) {
+      // Use our virtual document when $document service injected
+      $provide.value('$document', angular.element(doc));
+    });
+  });
+  //beforeEach(module('tw.styleguide.utils'));
   // beforeEach(module('tw.styleguide.services'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');
     $compile = $injector.get('$compile');
+    $document = $injector.get('$document');
     $scope = $rootScope.$new();
 
     template = getCompiledTemplateElement($scope)[0];
@@ -41,24 +54,25 @@ fdescribe('Dropdown', function() {
 
   describe('when clicking on trigger', function() {
     beforeEach(function() {
+      console.log('click to open');
       trigger.dispatchEvent(new Event('click'));
+      console.log(parent.classList);
     });
     it('should open the dropdown', function() {
       expect(parent.classList.contains('open')).toBe(true);
     });
 
-    fdescribe('and then clicking outside', function() {
+    describe('and then clicking outside', function() {
       beforeEach(function() {
-        outside.dispatchEvent(new Event('click'));
+        console.log('click outside...');
+        console.log(parent.classList);
+        var body = doc.getElementsByTagName('body')[0];
+        body.dispatchEvent(new Event('click'));
+        // outside.dispatchEvent(new Event('click')); // TODO doesn't trigger body handler?
       });
       it('should close the dropdown', function() {
         // console.log(document);
         expect(parent.classList.contains('open')).toBe(false);
-      });
-
-      it('should handle clicks on the body', function() {
-        document.getElementsByTagName('body')[0].dispatchEvent(new Event('Click'));
-        expect(true).toBe(false);
       });
     });
 
@@ -76,16 +90,21 @@ fdescribe('Dropdown', function() {
         testUtils.typeKeyCode(trigger, testUtils.keys.down);
       });
       it('should focus on first option', function() {
-        expect(linkOne).toBe(document.activeElement);
+        expect(linkOne).toBe(doc.activeElement);
       });
     });
   });
 
-  describe('when focused on a dropdown link', function() {
+  fdescribe('when focused on a dropdown link', function() {
     beforeEach(function() {
       // Open drop down
       trigger.dispatchEvent(new Event('click'));
       linkOne.focus();
+    });
+    fit('should be focussed', function() {
+      console.log(linkOne);
+      console.log(doc.activeElement);
+      expect(doc.activeElement).toBe(linkOne);
     });
 
     describe('and press return', function() {
@@ -105,7 +124,10 @@ fdescribe('Dropdown', function() {
         testUtils.typeKeyCode(linkOne, testUtils.keys.down);
       });
       it('should move focus to next link', function() {
-        expect(linkTwo).toBe(document.activeElement);
+        console.log(linkTwo);
+        console.log(doc.activeElement);
+        //expect(document.activeElement).toBe(linkTwo);
+        expect($(linkTwo).is(':focus')).toBe(linkTwo);
       });
     });
 
@@ -114,7 +136,7 @@ fdescribe('Dropdown', function() {
         testUtils.typeKeyCode(linkOne, testUtils.keys.up);
       });
       it('should move focus to next link', function() {
-        expect(linkOne).toBe(document.activeElement);
+        expect(linkOne).toBe(doc.activeElement);
       });
     });
   });
@@ -135,6 +157,9 @@ fdescribe('Dropdown', function() {
           <div class='outside'></div> \
         </div>";
     }
-    return testUtils.compileTemplate($scope, $compile, template);
+    var compiled = testUtils.compileTemplate($scope, $compile, template);
+    angular.element(doc).find('body').append(compiled);
+    // angular.element('body').append(compiled);
+    return compiled;
   }
 });

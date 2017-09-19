@@ -2630,69 +2630,70 @@
     }), exports["default"] = DateService;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwDropdown() {
+    function TwDropdown($document) {
         return {
             restrict: "A",
-            link: DropdownLink
-        };
-    }
-    function DropdownLink(scope, $element) {
-        var trigger = $element[0], parent = trigger.parentNode, dropdown = parent.getElementsByClassName("dropdown-menu")[0], open = function() {
-            closeAll(), parent.classList.add("open"), trigger.setAttribute("aria-expanded", "true");
-        }, close = function() {
-            parent.classList.remove("open"), trigger.setAttribute("aria-expanded", "false");
-        }, closeAll = function() {
-            var openTrigger = void 0, openDropdowns = document.querySelectorAll(".dropdown.open");
-            openDropdowns.length && openDropdowns.forEach(function(openDropdown) {
-                openDropdown.classList.remove("open"), openTrigger = openDropdown.querySelector("[tw-dropdown]")[0], 
-                openTrigger ? openTrigger.setAttribute("aria-expanded", "false") : console.log("no trigger found");
-            });
-        }, onTriggerClick = function() {
-            parent.classList.contains("open") ? close() : open();
-        }, onParentClick = function(event) {
-            event.stopPropagation();
-        }, onDropdownClick = function(event) {
-            "a" === event.target.tagName.toLowerCase() && (close(), trigger.focus());
-        }, onDropdownKeypress = function(event) {
-            console.log("dropdown keypress"), console.log(event.target.tagName), "a" === event.target.tagName.toLowerCase() && keyHandler(event);
-        }, onTriggerKeypress = function(event) {
-            event.keyCode === keys.down && open(), console.log("trigger keypress"), console.log(event.target.tagName), 
-            keyHandler(event);
-        }, keyHandler = function(event) {
-            var characterCode = event.which || event.charCode || event.keyCode;
-            console.log(characterCode), characterCode === keys.up ? (event.preventDefault(), 
-            moveUpOneLink()) : characterCode === keys.down && (event.preventDefault(), moveDownOneLink());
-        }, onDocumentClick = function() {
-            console.log("document"), closeAll();
-        };
-        if (parent.addEventListener("click", onParentClick), trigger.addEventListener("click", onTriggerClick), 
-        trigger.addEventListener("keypress", onTriggerKeypress), dropdown.addEventListener("click", onDropdownClick), 
-        dropdown.addEventListener("keypress", onDropdownKeypress), !window.twDropdownInitialised) {
-            console.log("add body listener"), window.twDropdownInitialised = !0;
-            var body = document.getElementsByTagName("body")[0];
-            body.addEventListener("click", onDocumentClick);
-        }
-        var moveDownOneLink = function() {
-            console.log("move down");
-            var links = dropdown.querySelectorAll("li a");
-            console.log(links);
-            for (var found = !1, i = 0; i < links.length; i++) if (links[i] === document.activeElement && links[i + 1]) {
-                console.log("Focus " + i), links[i + 1].focus(), found = !0;
-                break;
+            link: function(scope, $element) {
+                var document = $document[0], trigger = $element[0], parent = trigger.parentNode, dropdown = parent.getElementsByClassName("dropdown-menu")[0], open = function() {
+                    parent.classList.add("open"), trigger.setAttribute("aria-expanded", "true");
+                }, close = function() {
+                    parent.classList.remove("open"), trigger.setAttribute("aria-expanded", "false");
+                }, closeAll = function() {
+                    console.log("close all");
+                    var openDropdown = void 0, openTrigger = void 0, openDropdowns = document.getElementsByClassName("open");
+                    console.log(document.getElementsByTagName("div")), console.log("openDropdowns " + openDropdowns.length);
+                    for (var i = 0; i < openDropdowns.length; i++) openDropdown = openDropdowns.item(i), 
+                    openDropdown.classList.remove("open"), openTrigger = openDropdown.querySelector("[tw-dropdown]")[0], 
+                    openTrigger ? openTrigger.setAttribute("aria-expanded", "false") : console.log("no trigger found");
+                }, onTriggerClick = function(event) {
+                    console.log("onTriggerClick"), parent.classList.contains("open") ? close() : open(), 
+                    console.log("catch click at trigger"), event.stopPropagation();
+                }, onParentClick = function(event) {
+                    console.log("catch click at parent"), event.stopPropagation();
+                }, onDropdownClick = function(event) {
+                    "a" === event.target.tagName.toLowerCase() && (close(), trigger.focus());
+                }, onDropdownKeypress = function(event) {
+                    console.log("dropdown keypress"), console.log(event.target.tagName), "a" === event.target.tagName.toLowerCase() && keyHandler(event);
+                }, onTriggerKeypress = function(event) {
+                    event.keyCode === keys.down && open(), console.log("trigger keypress"), console.log(event.target.tagName), 
+                    keyHandler(event);
+                }, keyHandler = function(event) {
+                    var characterCode = event.which || event.charCode || event.keyCode;
+                    console.log(characterCode), characterCode === keys.up ? (event.preventDefault(), 
+                    moveUpOneLink()) : characterCode === keys.down && (event.preventDefault(), moveDownOneLink());
+                }, onDocumentClick = function() {
+                    console.log("document click"), closeAll();
+                };
+                if (parent.addEventListener("click", onParentClick), trigger.addEventListener("click", onTriggerClick), 
+                trigger.addEventListener("keydown", onTriggerKeypress), dropdown.addEventListener("click", onDropdownClick), 
+                dropdown.addEventListener("keydown", onDropdownKeypress), !window.twDropdownInitialised) {
+                    console.log("add body listener"), window.twDropdownInitialised = !0;
+                    var body = document.getElementsByTagName("body")[0];
+                    body.addEventListener("click", onDocumentClick);
+                }
+                var moveDownOneLink = function() {
+                    console.log("move down");
+                    var links = dropdown.querySelectorAll("li a");
+                    console.log(links);
+                    for (var found = !1, i = 0; i < links.length; i++) if (links[i] === document.activeElement && links[i + 1]) {
+                        console.log("Focus " + i), links[i + 1].focus(), found = !0;
+                        break;
+                    }
+                    !found && links[0] && (console.log("not found"), links[0].focus());
+                }, moveUpOneLink = function() {
+                    console.log("move up");
+                    for (var links = dropdown.querySelectorAll("li a"), found = !1, i = 0; i < links.length; i++) if (links[i] === document.activeElement && links[i - 1]) {
+                        links[i - 1].focus(), found = !0;
+                        break;
+                    }
+                    !found && links.length && links[links.length - 1].focus();
+                };
             }
-            !found && links[0] && (console.log("not found"), links[0].focus());
-        }, moveUpOneLink = function() {
-            console.log("move up");
-            for (var links = dropdown.querySelectorAll("li a"), found = !1, i = 0; i < links.length; i++) if (links[i] === document.activeElement && links[i - 1]) {
-                links[i - 1].focus(), found = !0;
-                break;
-            }
-            !found && links.length && links[links.length - 1].focus();
         };
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    });
+    }), TwDropdown.$inject = [ "$document" ];
     var keys = {
         up: 38,
         down: 40

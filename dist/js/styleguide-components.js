@@ -2750,13 +2750,28 @@
             link: PopOverLink
         };
     }
-    function PopOverLink(scope, element) {
-        if (!element.popover) return void console.log("twPopOver requires tooltip from bootstrap.js");
-        var options = {}, tag = element[0];
-        tag.getAttribute("data-trigger") ? "hover" === tag.getAttribute("data-trigger") && (options.trigger = "hover focus") : options.trigger = "focus", 
-        tag.getAttribute("data-placement") || (options.placement = "top"), tag.getAttribute("data-content-html") && (options.html = !0), 
-        element.popover(options), tag.setAttribute("tabindex", "0"), tag.setAttribute("role", "button"), 
-        tag.setAttribute("data-toggle", "popover");
+    function PopOverLink(scope, $element) {
+        if (!$element.popover) return void console.log("twPopOver requires tooltip from bootstrap.js");
+        var options = {
+            trigger: "focus",
+            placement: "bottom"
+        }, element = $element[0];
+        "hover" === element.getAttribute("data-trigger") && (options.trigger = "hover focus"), 
+        element.getAttribute("data-placement") && (options.placement = element.getAttribute("data-placement")), 
+        element.getAttribute("data-title") && (options.title = element.getAttribute("data-title")), 
+        element.getAttribute("data-original-title") && (options.title = element.getAttribute("data-original-title")), 
+        element.getAttribute("data-content") && (options.content = element.getAttribute("data-content")), 
+        element.getAttribute("data-content-html") && (options.html = !0), element.popover(options), 
+        element.setAttribute("tabindex", "0"), element.setAttribute("role", "button"), element.setAttribute("data-toggle", "popover");
+        var popover = '\n    <div class="popover ' + options.placement + '">\n      <div class="arrow"></div>\n      <h3 class="popover-title">' + options.title + '</h3>\n      <div class="popover-content">\n        ' + options.content + "\n      </div>\n    </div>", body = document.getElementsByTagName("body")[0];
+        element.addEventListener("click", function() {
+            body.innerHTml += popover;
+            var rectangle = element.getBoundingClientRect(), size = {
+                width: rectangle.right - rectangle.left,
+                height: rectangle.bottom - rectangle.top
+            }, offsetX = element.offsetWidth + size.width, offsetY = element.offsetHeight + size.height;
+            popover.setAttribute("style", "left: " + offsetX + "; top: " + offsetY);
+        });
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
@@ -3246,69 +3261,70 @@
     }), exports["default"] = DateService;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    function TwDropdown() {
+    function TwDropdown($document) {
         return {
             restrict: "A",
-            link: DropdownLink
-        };
-    }
-    function DropdownLink(scope, $element) {
-        var trigger = $element[0], parent = trigger.parentNode, dropdown = parent.getElementsByClassName("dropdown-menu")[0], open = function() {
-            closeAll(), parent.classList.add("open"), trigger.setAttribute("aria-expanded", "true");
-        }, close = function() {
-            parent.classList.remove("open"), trigger.setAttribute("aria-expanded", "false");
-        }, closeAll = function() {
-            var openTrigger = void 0, openDropdowns = document.querySelectorAll(".dropdown.open");
-            openDropdowns.length && openDropdowns.forEach(function(openDropdown) {
-                openDropdown.classList.remove("open"), openTrigger = openDropdown.querySelector("[tw-dropdown]")[0], 
-                openTrigger ? openTrigger.setAttribute("aria-expanded", "false") : console.log("no trigger found");
-            });
-        }, onTriggerClick = function() {
-            parent.classList.contains("open") ? close() : open();
-        }, onParentClick = function(event) {
-            event.stopPropagation();
-        }, onDropdownClick = function(event) {
-            "a" === event.target.tagName.toLowerCase() && (close(), trigger.focus());
-        }, onDropdownKeypress = function(event) {
-            console.log("dropdown keypress"), console.log(event.target.tagName), "a" === event.target.tagName.toLowerCase() && keyHandler(event);
-        }, onTriggerKeypress = function(event) {
-            event.keyCode === keys.down && open(), console.log("trigger keypress"), console.log(event.target.tagName), 
-            keyHandler(event);
-        }, keyHandler = function(event) {
-            var characterCode = event.which || event.charCode || event.keyCode;
-            console.log(characterCode), characterCode === keys.up ? (event.preventDefault(), 
-            moveUpOneLink()) : characterCode === keys.down && (event.preventDefault(), moveDownOneLink());
-        }, onDocumentClick = function() {
-            console.log("document"), closeAll();
-        };
-        if (parent.addEventListener("click", onParentClick), trigger.addEventListener("click", onTriggerClick), 
-        trigger.addEventListener("keypress", onTriggerKeypress), dropdown.addEventListener("click", onDropdownClick), 
-        dropdown.addEventListener("keypress", onDropdownKeypress), !window.twDropdownInitialised) {
-            console.log("add body listener"), window.twDropdownInitialised = !0;
-            var body = document.getElementsByTagName("body")[0];
-            body.addEventListener("click", onDocumentClick);
-        }
-        var moveDownOneLink = function() {
-            console.log("move down");
-            var links = dropdown.querySelectorAll("li a");
-            console.log(links);
-            for (var found = !1, i = 0; i < links.length; i++) if (links[i] === document.activeElement && links[i + 1]) {
-                console.log("Focus " + i), links[i + 1].focus(), found = !0;
-                break;
+            link: function(scope, $element) {
+                var document = $document[0], trigger = $element[0], parent = trigger.parentNode, dropdown = parent.getElementsByClassName("dropdown-menu")[0], open = function() {
+                    parent.classList.add("open"), trigger.setAttribute("aria-expanded", "true");
+                }, close = function() {
+                    parent.classList.remove("open"), trigger.setAttribute("aria-expanded", "false");
+                }, closeAll = function() {
+                    console.log("close all");
+                    var openDropdown = void 0, openTrigger = void 0, openDropdowns = document.getElementsByClassName("open");
+                    console.log(document.getElementsByTagName("div")), console.log("openDropdowns " + openDropdowns.length);
+                    for (var i = 0; i < openDropdowns.length; i++) openDropdown = openDropdowns.item(i), 
+                    openDropdown.classList.remove("open"), openTrigger = openDropdown.querySelector("[tw-dropdown]")[0], 
+                    openTrigger ? openTrigger.setAttribute("aria-expanded", "false") : console.log("no trigger found");
+                }, onTriggerClick = function(event) {
+                    console.log("onTriggerClick"), parent.classList.contains("open") ? close() : open(), 
+                    console.log("catch click at trigger"), event.stopPropagation();
+                }, onParentClick = function(event) {
+                    console.log("catch click at parent"), event.stopPropagation();
+                }, onDropdownClick = function(event) {
+                    "a" === event.target.tagName.toLowerCase() && (close(), trigger.focus());
+                }, onDropdownKeypress = function(event) {
+                    console.log("dropdown keypress"), console.log(event.target.tagName), "a" === event.target.tagName.toLowerCase() && keyHandler(event);
+                }, onTriggerKeypress = function(event) {
+                    event.keyCode === keys.down && open(), console.log("trigger keypress"), console.log(event.target.tagName), 
+                    keyHandler(event);
+                }, keyHandler = function(event) {
+                    var characterCode = event.which || event.charCode || event.keyCode;
+                    console.log(characterCode), characterCode === keys.up ? (event.preventDefault(), 
+                    moveUpOneLink()) : characterCode === keys.down && (event.preventDefault(), moveDownOneLink());
+                }, onDocumentClick = function() {
+                    console.log("document click"), closeAll();
+                };
+                if (parent.addEventListener("click", onParentClick), trigger.addEventListener("click", onTriggerClick), 
+                trigger.addEventListener("keydown", onTriggerKeypress), dropdown.addEventListener("click", onDropdownClick), 
+                dropdown.addEventListener("keydown", onDropdownKeypress), !window.twDropdownInitialised) {
+                    console.log("add body listener"), window.twDropdownInitialised = !0;
+                    var body = document.getElementsByTagName("body")[0];
+                    body.addEventListener("click", onDocumentClick);
+                }
+                var moveDownOneLink = function() {
+                    console.log("move down");
+                    var links = dropdown.querySelectorAll("li a");
+                    console.log(links);
+                    for (var found = !1, i = 0; i < links.length; i++) if (links[i] === document.activeElement && links[i + 1]) {
+                        console.log("Focus " + i), links[i + 1].focus(), found = !0;
+                        break;
+                    }
+                    !found && links[0] && (console.log("not found"), links[0].focus());
+                }, moveUpOneLink = function() {
+                    console.log("move up");
+                    for (var links = dropdown.querySelectorAll("li a"), found = !1, i = 0; i < links.length; i++) if (links[i] === document.activeElement && links[i - 1]) {
+                        links[i - 1].focus(), found = !0;
+                        break;
+                    }
+                    !found && links.length && links[links.length - 1].focus();
+                };
             }
-            !found && links[0] && (console.log("not found"), links[0].focus());
-        }, moveUpOneLink = function() {
-            console.log("move up");
-            for (var links = dropdown.querySelectorAll("li a"), found = !1, i = 0; i < links.length; i++) if (links[i] === document.activeElement && links[i - 1]) {
-                links[i - 1].focus(), found = !0;
-                break;
-            }
-            !found && links.length && links[links.length - 1].focus();
         };
     }
     Object.defineProperty(exports, "__esModule", {
         value: !0
-    });
+    }), TwDropdown.$inject = [ "$document" ];
     var keys = {
         up: 38,
         down: 40
