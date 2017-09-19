@@ -15,7 +15,7 @@ function Card() {
     scope: {
       state: '@',
       index: '<',
-      showform: '<?',
+      showForm: '<?',
       open: '<?',
       disabled: '=?',
       inactive: '<'
