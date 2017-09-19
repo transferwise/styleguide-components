@@ -194,7 +194,7 @@ class DateLookupController {
   addValidators($ngModel) {
     $ngModel.$validators.min = (modelValue, viewValue) => {
       const value = modelValue || viewValue;
-      if (value && value < this.ngMin) {
+      if (value && this.ngMin && value < this.ngMin) {
         if (this.formGroup) {
           this.formGroup.classList.add('has-error');
         }
@@ -204,7 +204,7 @@ class DateLookupController {
     };
     $ngModel.$validators.max = (modelValue, viewValue) => {
       const value = modelValue || viewValue;
-      if (value && value > this.ngMax) {
+      if (value && this.ngMax && value > this.ngMax) {
         if (this.formGroup) {
           this.formGroup.classList.add('has-error');
         }
@@ -415,7 +415,6 @@ class DateLookupController {
       activeLink.focus();
     });
   }
-
 
   adjustDate(mode, date, days, months, years) {
     let newDate = date;
