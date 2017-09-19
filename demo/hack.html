@@ -1,192 +1,192 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Styleguide Components - TransferWise</title>
-	<meta charset="UTF-8">
-	<meta name="viewport"
-		content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Styleguide Components - TransferWise</title>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-	<script src="lib/jquery.js"></script>
-	<script src="lib/angular.js"></script>
-	<script src="lib/styleguide-components.js"></script>
+  <script src="lib/jquery.js"></script>
+  <script src="lib/angular.js"></script>
+  <script src="lib/styleguide-components.js"></script>
 
-	<script src="lib/bootstrap.js"></script>
-	<script src="js/index.js"></script>
+  <script src="lib/bootstrap.js"></script>
+  <script src="js/index.js"></script>
 
-	<link type="text/css" rel="stylesheet" href="lib/bootstrap.min.css" />
-	<link type="text/css" rel="stylesheet" href="styles/examples.css" />
+  <link type="text/css" rel="stylesheet" href="lib/bootstrap.min.css" />
+  <link type="text/css" rel="stylesheet" href="styles/examples.css" />
 
-	<script>
-	angular.module('my-app', ['tw.styleguide-components'])
-	.config(['$compileProvider', function ($compileProvider) {
-		$compileProvider.debugInfoEnabled(false);
-	}])
-	.controller('PageController', ['$scope', '$http', function($scope, $http) {
-		var $ctrl = this;
+  <script>
+  angular.module('my-app', ['tw.styleguide-components'])
+  .config(['$compileProvider', function ($compileProvider) {
+    $compileProvider.debugInfoEnabled(false);
+  }])
+  .controller('PageController', ['$scope', '$http', function($scope, $http) {
+    var $ctrl = this;
 
-		$ctrl.types = [
-			{'value': 'shareholder', 'label': 'Shareholders'},
-			{'value': 'account', 'label': 'Account'},
-			{'value': 'profile', 'label': 'Profile'},
-			{'value': 'verification', 'label': 'Verification'}
-		];
-		$ctrl.type = 'shareholder';
+    $ctrl.types = [
+      {'value': 'shareholder', 'label': 'Shareholders'},
+      {'value': 'account', 'label': 'Account'},
+      {'value': 'profile', 'label': 'Profile'},
+      {'value': 'verification', 'label': 'Verification'}
+    ];
+    $ctrl.type = 'shareholder';
 
-		$scope.$watch('$ctrl.type', function(newVal) {
-			$http.get('partials/'+newVal+'-requirements.json').then(function(response) {
-				$ctrl.requirements = response.data;
-			});
-		});
-	}])
-	.directive('twHackForm', function() {
-		return {
-			controllerAs: "$ctrl",
-			bindToController: true,
-			controller: ['$scope', 'TwRequirementsService', function($scope, TwRequirementsService) {
-				var $ctrl = this;
+    $scope.$watch('$ctrl.type', function(newVal) {
+      $http.get('partials/'+newVal+'-requirements.json').then(function(response) {
+        $ctrl.requirements = response.data;
+      });
+    });
+  }])
+  .directive('twHackForm', function() {
+    return {
+      controllerAs: "$ctrl",
+      bindToController: true,
+      controller: ['$scope', 'TwRequirementsService', function($scope, TwRequirementsService) {
+        var $ctrl = this;
 
-				$ctrl.removeIndex = function(index) {
-					$ctrl.model.splice(index, 1);
-				};
+        $ctrl.removeIndex = function(index) {
+          $ctrl.model.splice(index, 1);
+        };
 
-				$ctrl.addServerError = function() {
-					$ctrl.repeatErrors = [
-						{ firstName: "Incorrect first name!", lastName: "Incorrect last name!" }
-					];
-				};
+        $ctrl.addServerError = function() {
+          $ctrl.repeatErrors = [
+            { firstName: "Incorrect first name!", lastName: "Incorrect last name!" }
+          ];
+        };
 
-				function init() {
-					$scope.$watch('$ctrl.requirements', function(newValue, oldValue) {
-						if (!angular.equals(newValue, oldValue)) {
-							TwRequirementsService.prepRequirements($ctrl.requirements);
-							if ($ctrl.requirements.length) {
-								$ctrl.activeType = $ctrl.requirements[0].type;
-							}
-							initModel(TwRequirementsService.findRequirementByType(
-								$ctrl.activeType,
-								$ctrl.requirements
-							));
-						}
-					});
-					$scope.$watch('$ctrl.activeType', function(newValue, oldValue) {
-						$ctrl.activeType = newValue;
-						initModel(TwRequirementsService.findRequirementByType(
-							newValue,
-							$ctrl.requirements
-						));
-					});
-				}
+        function init() {
+          $scope.$watch('$ctrl.requirements', function(newValue, oldValue) {
+            if (!angular.equals(newValue, oldValue)) {
+              TwRequirementsService.prepRequirements($ctrl.requirements);
+              if ($ctrl.requirements.length) {
+                $ctrl.activeType = $ctrl.requirements[0].type;
+              }
+              initModel(TwRequirementsService.findRequirementByType(
+                $ctrl.activeType,
+                $ctrl.requirements
+              ));
+            }
+          });
+          $scope.$watch('$ctrl.activeType', function(newValue, oldValue) {
+            $ctrl.activeType = newValue;
+            initModel(TwRequirementsService.findRequirementByType(
+              newValue,
+              $ctrl.requirements
+            ));
+          });
+        }
 
-				function initModel(requirements) {
-					if (requirements.repeatable) {
-						$ctrl.model = [{type: requirements.type}];
-					} else {
-						$ctrl.model = {type: requirements.type};
-					}
-				}
+        function initModel(requirements) {
+          if (requirements.repeatable) {
+            $ctrl.model = [{type: requirements.type}];
+          } else {
+            $ctrl.model = {type: requirements.type};
+          }
+        }
 
-				init();
-		}],
-		scope: {
-			requirements: "=",
-			model: "=",
-			addText: "@",
-			uploadOptions: "=",
-			locale: "@",
-			onRefreshRequirements: '&'
-		},
-		template: ' \
-			<tw-tabs \
-				ng-if="$ctrl.requirements.length > 1" \
-				tabs="$ctrl.requirements" \
-				active="$ctrl.activeType"> \
-			</tw-tabs> \
-			<div class="tab-content m-b-3"> \
-				<div ng-repeat="requirementType in $ctrl.requirements" \
-					ng-if="$ctrl.activeType == requirementType.type" \
-					class="tab-pane active"> \
-					<p ng-if="requirementType.description"> \
-						{{requirementType.description}} \
-					</p> \
-					<tw-fieldset \
-						ng-if="!requirementType.repeatable" \
-						fields="requirementType.fields" \
-						model="$ctrl.model" \
-						upload-options="$ctrl.uploadOptions" \
-						locale="{{$ctrl.locale}}"> \
-					</tw-fieldset> \
-					<div ng-if="requirementType.repeatable"> \
-						<div ng-repeat="iterator in $ctrl.model track by $index" \
-							class="m-b-1"> \
-							<h5 class="m-b-2"> \
-								{{requirementType.label}} {{$index + 1}} \
-								<button type="button" class="close" \
-									ng-click="$ctrl.removeIndex($index)" \
-									ng-if="$index > 0"> \
-									&times; \
-								</button> \
-							</h5> \
-							<tw-fieldset \
-								fields="requirementType.fields" \
-								error-messages="$ctrl.repeatErrors[$index]" \
-								model="iterator" \
-								upload-options="$ctrl.uploadOptions" \
-								locale="{{$ctrl.locale}}"> \
-							</tw-fieldset> \
-						</div> \
-						<div class="row"> \
-							<div class="col-md-6"> \
-							<button type="button" ng-click="$ctrl.model.push({type: requirementType.type})" \
-									class="btn btn-default btn-block"> \
-									{{$ctrl.addText}} \
-								</button> \
-							</div> \		\
-							<div class="col-md-6"> \
-							<button type="button" ng-click="$ctrl.addServerError()" \
-									class="btn btn-warning btn-block"> \
-									Add server errors \
-								</button> \
-							</div> \					\
-							<div class="col-md-6"> \
-						</div> \
-					</div> \
-				</div> \
-			</div>'
-		};
-	});
-	</script>
+        init();
+    }],
+    scope: {
+      requirements: "=",
+      model: "=",
+      addText: "@",
+      uploadOptions: "=",
+      locale: "@",
+      onRefreshRequirements: '&'
+    },
+    template: ' \
+      <tw-tabs \
+        ng-if="$ctrl.requirements.length > 1" \
+        tabs="$ctrl.requirements" \
+        active="$ctrl.activeType"> \
+      </tw-tabs> \
+      <div class="tab-content m-b-3"> \
+        <div ng-repeat="requirementType in $ctrl.requirements" \
+          ng-if="$ctrl.activeType == requirementType.type" \
+          class="tab-pane active"> \
+          <p ng-if="requirementType.description"> \
+            {{requirementType.description}} \
+          </p> \
+          <tw-fieldset \
+            ng-if="!requirementType.repeatable" \
+            fields="requirementType.fields" \
+            model="$ctrl.model" \
+            upload-options="$ctrl.uploadOptions" \
+            locale="{{$ctrl.locale}}"> \
+          </tw-fieldset> \
+          <div ng-if="requirementType.repeatable"> \
+            <div ng-repeat="iterator in $ctrl.model track by $index" \
+              class="m-b-1"> \
+              <h5 class="m-b-2"> \
+                {{requirementType.label}} {{$index + 1}} \
+                <button type="button" class="close" \
+                  ng-click="$ctrl.removeIndex($index)" \
+                  ng-if="$index > 0"> \
+                  &times; \
+                </button> \
+              </h5> \
+              <tw-fieldset \
+                fields="requirementType.fields" \
+                error-messages="$ctrl.repeatErrors[$index]" \
+                model="iterator" \
+                upload-options="$ctrl.uploadOptions" \
+                locale="{{$ctrl.locale}}"> \
+              </tw-fieldset> \
+            </div> \
+            <div class="row"> \
+              <div class="col-md-6"> \
+              <button type="button" ng-click="$ctrl.model.push({type: requirementType.type})" \
+                  class="btn btn-default btn-block"> \
+                  {{$ctrl.addText}} \
+                </button> \
+              </div> \    \
+              <div class="col-md-6"> \
+              <button type="button" ng-click="$ctrl.addServerError()" \
+                  class="btn btn-warning btn-block"> \
+                  Add server errors \
+                </button> \
+              </div> \          \
+              <div class="col-md-6"> \
+            </div> \
+          </div> \
+        </div> \
+      </div>'
+    };
+  });
+  </script>
 </head>
 <body ng-app="my-app" class="bg-default">
-	<div class="container" ng-controller="PageController as $ctrl">
-		<div class="panel">
-			<div class="panel-heading">
-				<h3 class="panel-title">Hack form example</h3>
-			</div>
-			<div class="panel-body">
-				<div class="well">
-					<tw-select
-						options="$ctrl.types"
-						ng-model="$ctrl.type">
-					</tw-select>
-				</div>
+  <div class="container" ng-controller="PageController as $ctrl">
+    <div class="panel">
+      <div class="panel-heading">
+        <h3 class="panel-title">Hack form example</h3>
+      </div>
+      <div class="panel-body">
+        <div class="well">
+          <tw-select
+            options="$ctrl.types"
+            ng-model="$ctrl.type">
+          </tw-select>
+        </div>
 
-				<pre>model: {{$ctrl.model | json}}</pre>
-				<tw-hack-form
-					requirements="$ctrl.requirements"
-					model="$ctrl.model"
-					add-text="Add"
-					on-refresh-requirements=""
-					upload-options="{
-						buttonText: 'Choose file...',
-						cancelText: 'Choose a different file?'
-					}"></tw-hack-form>
-				<div class="row">
-					<div class="col-md-6">
-						<button class="btn btn-primary btn-block">Next</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+        <pre>model: {{$ctrl.model | json}}</pre>
+        <tw-hack-form
+          requirements="$ctrl.requirements"
+          model="$ctrl.model"
+          add-text="Add"
+          on-refresh-requirements=""
+          upload-options="{
+            buttonText: 'Choose file...',
+            cancelText: 'Choose a different file?'
+          }"></tw-hack-form>
+        <div class="row">
+          <div class="col-md-6">
+            <button class="btn btn-primary btn-block">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
