@@ -14,6 +14,11 @@ function FormValidation(TwDomService) {
 
         const controls = form.querySelectorAll('[tw-validation].ng-invalid');
 
+        // Shouldn't be necessary, but PhantomJS was complaining
+        if (!controls.forEach) {
+          return true;
+        }
+
         controls.forEach((control) => {
           formGroup = TwDomService.getClosestParentByClassName(control, 'form-group');
           radioContainer = TwDomService.getClosestParentByClassName(control, 'radio');
