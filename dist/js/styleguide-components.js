@@ -3361,12 +3361,12 @@
                 var form = $element[0];
                 form.addEventListener("submit", function() {
                     var formGroup = void 0, checkboxContainer = void 0, radioContainer = void 0, controls = form.querySelectorAll("[tw-validation].ng-invalid");
-                    return controls.forEach(function(control) {
+                    return !controls.forEach || (controls.forEach(function(control) {
                         formGroup = TwDomService.getClosestParentByClassName(control, "form-group"), radioContainer = TwDomService.getClosestParentByClassName(control, "radio"), 
                         checkboxContainer = TwDomService.getClosestParentByClassName(control, "checkbox"), 
                         formGroup && formGroup.classList.add("has-error"), radioContainer && radioContainer.classList.add("has-error"), 
                         checkboxContainer && checkboxContainer.classList.add("has-error");
-                    }), !0;
+                    }), !0);
                 });
             }
         };
