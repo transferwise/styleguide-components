@@ -1,62 +1,12 @@
-const webpack = require('webpack'); //to access built-in plugins
-const path = require('path');
-
-const webpackModule = {
-  rules: [{
-    test: /\.html$/,
-    loader: 'html-loader?root=.'
-  },
-  /*{
-    enforce: 'pre',
-    test: /\.js$/,
-    exclude: [/node_modules/],
-    loader: 'eslint-loader'
-  },{
-    enforce: 'pre',
-    test: /\.html$/,
-    exclude: [/node_modules/],
-    loader: 'htmllint-loader',
-    query: {
-      config: '.htmllintrc',
-      failOnError: true,
-      failOnWarning: false,
-    }
-  },*/
-  {
-    test: /\.js$/,
-    exclude: [/node_modules/],
-    loader: 'babel-loader'
-  }]
-};
-
-const webpackExternals = [{
-  angular: 'angular'
-}];
 
 module.exports = function(grunt) {
 
-    //dist: require("./webpack.config.js")
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+
         webpack: {
           options: {},
-          build: [{
-            entry: './src/form-validation.js',
-            output: {
-              path: path.join(__dirname, './dist/js'),
-              filename: 'form-validation.js'
-            },
-            externals: webpackExternals,
-            module: webpackModule
-          },{
-            entry: './src/index.js',
-            output: {
-              path: path.join(__dirname, './dist/js'),
-              filename: 'styleguide-components.js'
-            },
-            externals: webpackExternals,
-            module: webpackModule
-          }]
+          build: require("./webpack.config.js")
         },
         watch: {
             less: {
@@ -156,11 +106,8 @@ module.exports = function(grunt) {
               expand: true,
               flatten: true,
               src: [
-                'node_modules/jquery/dist/jquery.js',
                 'node_modules/jquery/dist/jquery.min.js',
-                'node_modules/angular/angular.js',
                 'node_modules/angular/angular.min.js',
-                'node_modules/bootstrap/dist/js/bootstrap.js',
                 'node_modules/bootstrap/dist/js/bootstrap.min.js',
                 'dist/js/styleguide-components.js'
               ],
@@ -171,8 +118,6 @@ module.exports = function(grunt) {
               flatten: true,
               src: [
                 'node_modules/bootstrap/dist/css/bootstrap.css',
-                'node_modules/bootstrap/dist/css/bootstrap.css.map',
-                'node_modules/bootstrap/dist/css/bootstrap.min.css',
                 'node_modules/currency-flags/dist/currency-flags.css'
               ],
               dest: 'demo/lib/'
