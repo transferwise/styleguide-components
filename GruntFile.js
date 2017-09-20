@@ -41,26 +41,18 @@ module.exports = function(grunt) {
         webpack: {
           options: {},
           build: [{
-            entry: './src/form-components.js',
-            output: {
-              path: path.join(__dirname, './build'),
-              filename: 'form-components.webpack.js'
-            },
-            externals: webpackExternals,
-            module: webpackModule
-          },{
             entry: './src/form-validation.js',
             output: {
-              path: path.join(__dirname, './build'),
-              filename: 'form-validation.webpack.js'
+              path: path.join(__dirname, './dist/js'),
+              filename: 'form-validation.js'
             },
             externals: webpackExternals,
             module: webpackModule
           },{
             entry: './src/index.js',
             output: {
-              path: path.join(__dirname, './build'),
-              filename: 'styleguide-components.webpack.js'
+              path: path.join(__dirname, './dist/js'),
+              filename: 'styleguide-components.js'
             },
             externals: webpackExternals,
             module: webpackModule
@@ -77,19 +69,9 @@ module.exports = function(grunt) {
             }
         },
         uglify: {
-            validation: {
-                src: [
-                    'build/form-validation.webpack.js'
-                ],
-                dest: 'dist/js/form-validation.js',
-                options: {
-                    mangle: false,
-                    beautify: true
-                }
-            },
             validationMin: {
                 src: [
-                    'build/form-validation.webpack.js'
+                    'dist/js/form-validation.js'
                 ],
                 dest: 'dist/js/form-validation.min.js',
                 options: {
@@ -97,39 +79,9 @@ module.exports = function(grunt) {
                     beautify: false
                 }
             },
-            formComponents: {
-                src: [
-                    'build/form-components.webpack.js'
-                ],
-                dest: 'dist/js/form-components.js',
-                options: {
-                    mangle: false,
-                    beautify: true
-                }
-            },
-            formComponentsMin: {
-                src: [
-                    'build/form-components.webpack.js'
-                ],
-                dest: 'dist/js/form-components.min.js',
-                options: {
-                    mangle: true,
-                    beautify: false
-                }
-            },
-            combined: {
-                src: [
-                    'build/styleguide-components.webpack.js'
-                ],
-                dest: 'dist/js/styleguide-components.js',
-                options: {
-                    mangle: false,
-                    beautify: true
-                }
-            },
             combinedMin: {
                 src: [
-                    'build/styleguide-components.webpack.js'
+                    'dist/js/styleguide-components.js'
                 ],
                 dest: 'dist/js/styleguide-components.min.js',
                 options: {
