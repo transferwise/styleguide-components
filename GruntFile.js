@@ -5,12 +5,24 @@ const webpackModule = {
   rules: [{
     test: /\.html$/,
     loader: 'html-loader?root=.'
-  },{
+  },
+  /*{
     enforce: 'pre',
     test: /\.js$/,
     exclude: [/node_modules/],
     loader: 'eslint-loader'
   },{
+    enforce: 'pre',
+    test: /\.html$/,
+    exclude: [/node_modules/],
+    loader: 'htmllint-loader',
+    query: {
+      config: '.htmllintrc',
+      failOnError: true,
+      failOnWarning: false,
+    }
+  },*/
+  {
     test: /\.js$/,
     exclude: [/node_modules/],
     loader: 'babel-loader'
@@ -132,9 +144,20 @@ module.exports = function(grunt) {
                     paths: [""]
                 },
                 files: {
-                    "demo/styles/examples.css": ["demo/styles/*.less"]
+                    "demo/css/examples.css": ["demo/css/*.less"]
                 }
             }
+        },
+        eslint: {
+          options: {
+            config: ".eslintrc",
+          },
+          src: [
+            'src/**/*.component.js',
+            'src/**/*.controller.js',
+            'src/**/*.directive.js',
+            'src/**/*.service.js'
+          ]
         },
         jshint: {
             options: {
@@ -161,19 +184,11 @@ module.exports = function(grunt) {
         },
         htmllint: {
             options: {
-                "attr-name-ignore-regex": "{{.*?}}",
-                "attr-name-style": false,
-                "label-req-for": false,
-                "attr-req-value": false,
-                "id-class-style": false,
-                "line-end-style": false,
-                "indent-style": false,
-                "indent-width": false
+                htmllintrc: true
             },
             files: [
                 'src/**/*.html',
-                'partials/**/*.html',
-                'index.html'
+                'demo/**/*.html'
             ]
         },
         karma: {
@@ -239,6 +254,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-webpack");
 
     // === REGISTER TASKS ===
-    grunt.registerTask('default', ['jshint', 'webpack', 'uglify', 'less', 'htmllint', 'copy', 'watch']);
-    grunt.registerTask('build', ['jshint', 'webpack', 'uglify', 'less', 'htmllint', 'copy']);
+    grunt.registerTask('default', ['jshint', 'eslint', 'webpack', 'uglify', 'less', 'htmllint', 'copy', 'watch']);
+    grunt.registerTask('build', ['jshint', 'eslint', 'webpack', 'uglify', 'less', 'htmllint', 'copy']);
 };

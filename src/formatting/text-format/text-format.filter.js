@@ -14,7 +14,7 @@ function TextFormatFilter(TwTextFormatService) {
 TextFormatFilter.$inject = ['TwTextFormatService'];
 
 export default angular
-  .module('tw.styleguide.formatting.text-format', [
+  .module('tw.styleguide.formatting.text-format.filter', [
     TextFormatService
   ])
   .filter('twTextFormat', TextFormatFilter).name;

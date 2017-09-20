@@ -7,7 +7,13 @@
     "test": "grunt karma",
     "prestart": "bower install",
     "start": "grunt",
-    "dev": "live-server --port=8181 --open=demo/index.html"
+    "dev": "live-server --port=8181 --open=demo/index.html",
+    "htmllint": "htmllint src/**/*.html; htmllint demo/**/*.html; exit 0",
+    "eslint": "eslint src; exit 0",
+    "less": "grunt less",
+    "copy": "grunt copy",
+    "uglify": "grunt uglify",
+    "watch": "grunt watch"
   },
   "repository": {
     "type": "git",
@@ -53,6 +59,9 @@
     "grunt-webpack": "^3.0.2",
     "grunt-webpack-server": "^0.1.0",
     "html-loader": "^0.5.1",
+    "htmllint": "^0.6.0",
+    "htmllint-cli": "0.0.6",
+    "htmllint-loader": "^1.3.8",
     "iconfont": "git+ssh://git@github.com/transferwise/iconfont.git",
     "jasmine-core": "^2.8.0",
     "jshint-loader": "^0.8.4",

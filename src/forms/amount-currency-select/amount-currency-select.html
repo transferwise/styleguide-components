@@ -1,8 +1,9 @@
-<div class="input-group" ng-class="{
-  'input-group-sm': $ctrl.size === 'sm',
-  'input-group-lg': $ctrl.size === 'lg',
-  'disabled': $ctrl.ngDisabled
-}">
+<div class="input-group"
+  ng-class="{
+    'input-group-sm': $ctrl.size === 'sm',
+    'input-group-lg': $ctrl.size === 'lg',
+    'disabled': $ctrl.ngDisabled
+  }">
   <input
     type="tel"
     autocomplete="off"
@@ -17,7 +18,8 @@
     ng-model="$ctrl.ngModel"
     ng-disabled="$ctrl.ngDisabled" />
   <span class="input-group-addon"
-    ng-class="{'input-lg': $ctrl.size ==='lg'}" ng-transclude="addon"></span>
+    ng-class="{'input-lg': $ctrl.size ==='lg'}"
+    ng-transclude="addon"></span>
   <span class="input-group-btn">
     <tw-select
       ng-model="$ctrl.currency"
@@ -32,9 +34,11 @@
       options="$ctrl.currencies"
       filter="{{ $ctrl.currencyFilterPlaceholder }}"
       ng-change="$ctrl.changedCurrency()">
-        <a href="" ng-if="!!$ctrl.customActionLabel" ng-click="$ctrl.onCustomAction()">
-          {{ $ctrl.customActionLabel }}
-        </a>
+      <a href=""
+        ng-if="!!$ctrl.customActionLabel"
+        ng-click="$ctrl.onCustomAction()">
+        {{ $ctrl.customActionLabel }}
+      </a>
     </tw-select>
   </span>
 </div>
