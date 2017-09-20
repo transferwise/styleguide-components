@@ -1,3 +1,4 @@
+import angular from 'angular';
 import DateLookup from './date-lookup.component.js';
 
 export default angular

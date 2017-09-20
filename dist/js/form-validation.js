@@ -41,8 +41,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _domService = __webpack_require__(9), _domService2 = _interopRequireDefault(_domService);
-    exports["default"] = angular.module("tw.styleguide.services.dom", []).service("TwDomService", _domService2["default"]).name;
+    var _angular = __webpack_require__(0), _angular2 = _interopRequireDefault(_angular), _domService = __webpack_require__(9), _domService2 = _interopRequireDefault(_domService);
+    exports["default"] = _angular2["default"].module("tw.styleguide.services.dom", []).service("TwDomService", _domService2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -123,8 +123,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _currencyService = __webpack_require__(5), _currencyService2 = _interopRequireDefault(_currencyService);
-    exports["default"] = angular.module("tw.styleguide.services.currency", []).service("TwCurrencyService", _currencyService2["default"]).name;
+    var _angular = __webpack_require__(0), _angular2 = _interopRequireDefault(_angular), _currencyService = __webpack_require__(5), _currencyService2 = _interopRequireDefault(_currencyService);
+    exports["default"] = _angular2["default"].module("tw.styleguide.services.currency", []).service("TwCurrencyService", _currencyService2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function DateService() {
@@ -241,8 +241,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _dateService = __webpack_require__(7), _dateService2 = _interopRequireDefault(_dateService);
-    exports["default"] = angular.module("tw.styleguide.services.date", []).service("TwDateService", _dateService2["default"]).name;
+    var _angular = __webpack_require__(0), _angular2 = _interopRequireDefault(_angular), _dateService = __webpack_require__(7), _dateService2 = _interopRequireDefault(_dateService);
+    exports["default"] = _angular2["default"].module("tw.styleguide.services.date", []).service("TwDateService", _dateService2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function DomService() {
@@ -306,8 +306,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _asyncValidationDirective = __webpack_require__(10), _asyncValidationDirective2 = _interopRequireDefault(_asyncValidationDirective);
-    exports["default"] = angular.module("tw.styleguide.validation.async", []).directive("twAsyncValidation", _asyncValidationDirective2["default"]).name;
+    var _angular = __webpack_require__(0), _angular2 = _interopRequireDefault(_angular), _asyncValidationDirective = __webpack_require__(10), _asyncValidationDirective2 = _interopRequireDefault(_asyncValidationDirective);
+    exports["default"] = _angular2["default"].module("tw.styleguide.validation.async", []).directive("twAsyncValidation", _asyncValidationDirective2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -375,8 +375,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _controlValidationDirective = __webpack_require__(13), _controlValidationDirective2 = _interopRequireDefault(_controlValidationDirective);
-    exports["default"] = angular.module("tw.stylguide.validation.control", []).directive("twValidation", _controlValidationDirective2["default"]).name;
+    var _angular = __webpack_require__(0), _angular2 = _interopRequireDefault(_angular), _controlValidationDirective = __webpack_require__(13), _controlValidationDirective2 = _interopRequireDefault(_controlValidationDirective);
+    exports["default"] = _angular2["default"].module("tw.stylguide.validation.control", []).directive("twValidation", _controlValidationDirective2["default"]).name;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     function _interopRequireDefault(obj) {
@@ -417,6 +417,6 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    var _formValidationDirective = __webpack_require__(15), _formValidationDirective2 = _interopRequireDefault(_formValidationDirective);
-    exports["default"] = angular.module("tw.styleguide.validation.form", []).directive("form", _formValidationDirective2["default"]).name;
+    var _angular = __webpack_require__(0), _angular2 = _interopRequireDefault(_angular), _formValidationDirective = __webpack_require__(15), _formValidationDirective2 = _interopRequireDefault(_formValidationDirective);
+    exports["default"] = _angular2["default"].module("tw.styleguide.validation.form", []).directive("form", _formValidationDirective2["default"]).name;
 } ]);

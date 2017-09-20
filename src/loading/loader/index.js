@@ -1,3 +1,4 @@
+import angular from 'angular';
 import Loader from './loader.component.js';
 
 export default angular

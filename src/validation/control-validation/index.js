@@ -1,3 +1,4 @@
+import angular from 'angular';
 import ControlValidation from './control-validation.directive.js';
 
 export default angular

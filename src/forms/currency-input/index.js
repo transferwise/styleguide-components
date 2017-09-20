@@ -1,3 +1,4 @@
+import angular from 'angular';
 import CurrencyInput from './currency-input.component.js';
 
 export default angular

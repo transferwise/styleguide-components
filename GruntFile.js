@@ -6,6 +6,11 @@ const webpackModule = {
     test: /\.html$/,
     loader: 'html-loader?root=.'
   },{
+    enforce: 'pre',
+    test: /\.js$/,
+    exclude: [/node_modules/],
+    loader: 'eslint-loader'
+  },{
     test: /\.js$/,
     exclude: [/node_modules/],
     loader: 'babel-loader'
@@ -127,7 +132,7 @@ module.exports = function(grunt) {
                     paths: [""]
                 },
                 files: {
-                    "styles/examples.css": ["styles/**/*.less"]
+                    "demo/styles/examples.css": ["demo/styles/*.less"]
                 }
             }
         },
@@ -153,17 +158,6 @@ module.exports = function(grunt) {
                 'src/**/*.directive.js',
                 'src/**/*.service.js'
             ]
-        },
-        eslint: {
-          options: {
-            config: ".eslintrc",
-          },
-          src: [
-            'src/**/*.component.js',
-            'src/**/*.controller.js',
-            'src/**/*.directive.js',
-            'src/**/*.service.js'
-          ]
         },
         htmllint: {
             options: {
@@ -245,6 +239,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-webpack");
 
     // === REGISTER TASKS ===
-    grunt.registerTask('default', ['jshint', 'eslint', 'webpack', 'uglify', 'less', 'htmllint', 'copy', 'watch']);
-    grunt.registerTask('build', ['jshint', 'eslint', 'webpack', 'uglify', 'less', 'htmllint', 'copy']);
+    grunt.registerTask('default', ['jshint', 'webpack', 'uglify', 'less', 'htmllint', 'copy', 'watch']);
+    grunt.registerTask('build', ['jshint', 'webpack', 'uglify', 'less', 'htmllint', 'copy']);
 };

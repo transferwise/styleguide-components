@@ -1,3 +1,5 @@
+import angular from 'angular';
+
 import Upload from './upload.component.js';
 import FileInput from './file-input.directive.js';
 

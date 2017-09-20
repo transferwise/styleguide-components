@@ -1,3 +1,4 @@
+import angular from 'angular';
 import DateControl from './date.component.js';
 
 export default angular

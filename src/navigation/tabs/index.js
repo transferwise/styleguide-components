@@ -1,3 +1,4 @@
+import angular from 'angular';
 import Tabs from './tabs.component.js';
 
 export default angular

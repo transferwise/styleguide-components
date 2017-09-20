@@ -1,3 +1,4 @@
+import angular from 'angular';
 import Radio from './radio.component.js';
 
 export default angular

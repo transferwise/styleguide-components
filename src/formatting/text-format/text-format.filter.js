@@ -1,7 +1,8 @@
+import angular from 'angular';
 import TextFormatService from './text-format.service.js';
 
 function TextFormatFilter(TwTextFormatService) {
-  return function(input, pattern) {
+  return (input, pattern) => {
     input = input || '';
     if (!pattern) {
       return input;
@@ -13,5 +14,7 @@ function TextFormatFilter(TwTextFormatService) {
 TextFormatFilter.$inject = ['TwTextFormatService'];
 
 export default angular
-  .module('tw.styleguide.formatting.text-format')
+  .module('tw.styleguide.formatting.text-format', [
+    TextFormatService
+  ])
   .filter('twTextFormat', TextFormatFilter).name;
