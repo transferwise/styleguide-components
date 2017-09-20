@@ -256,6 +256,7 @@ describe('DateLookup, ', function() {
               </tw-date-lookup> \
             </div>";
         });
+
         describe('and ngModel is null', function () {
           beforeEach(function() {
             $scope.ngModel = null;
@@ -270,6 +271,7 @@ describe('DateLookup, ', function() {
             expect(element.hasClass('ng-invalid-max')).toBe(false);
           });
         });
+
         describe('and ngModel is earlier than min', function () {
           beforeEach(function() {
             $scope.ngModel = getUTCDate(1980, 0, 1);
@@ -288,6 +290,7 @@ describe('DateLookup, ', function() {
             expect(formGroup.hasClass('has-error')).toBe(true);
           });
         });
+
         describe('and ngModel is later than max', function () {
           beforeEach(function() {
             $scope.ngModel = getUTCDate(2020, 0, 1);
@@ -307,6 +310,7 @@ describe('DateLookup, ', function() {
             expect(formGroup.hasClass('has-error')).toBe(true);
           });
         });
+
         describe('and ngModel is between min and max', function () {
           beforeEach(function() {
             $scope.ngModel = getUTCDate(2000, 0, 1);
@@ -323,6 +327,7 @@ describe('DateLookup, ', function() {
           });
         });
       });
+
       describe('as invalid Date objects', function () {
         beforeEach(function() {
           $scope.ngModel = null;
@@ -332,6 +337,24 @@ describe('DateLookup, ', function() {
           ngModelController = element.controller('ngModel');
         });
         it('should set ngModel to valid', function() {
+          $scope.ngModel = new Date('2000-01-01');
+          $scope.$digest();
+          expect(ngModelController.$valid).toBe(true);
+          expect(element.hasClass('ng-invalid')).toBe(false);
+          expect(element.hasClass('ng-invalid-min')).toBe(false);
+          expect(element.hasClass('ng-invalid-max')).toBe(false);
+        });
+      });
+
+      describe('as null', function () {
+        beforeEach(function() {
+          $scope.ngModel = null;
+          $scope.ngMin = null;
+          $scope.ngMax = null;
+          element = getCompiledDirectiveElement($scope);
+          ngModelController = element.controller('ngModel');
+        });
+        it('should not set ngModel to invalid', function() {
           $scope.ngModel = new Date('2000-01-01');
           $scope.$digest();
           expect(ngModelController.$valid).toBe(true);
