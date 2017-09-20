@@ -2869,7 +2869,7 @@
                 index: "<",
                 showForm: "<?",
                 open: "<?",
-                disabled: "=?",
+                disabled: "<?",
                 inactive: "<"
             },
             transclude: {
