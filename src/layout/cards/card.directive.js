@@ -17,7 +17,7 @@ function Card() {
       index: '<',
       showForm: '<?',
       open: '<?',
-      disabled: '=?',
+      disabled: '<?',
       inactive: '<'
     },
     transclude: {
