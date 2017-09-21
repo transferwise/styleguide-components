@@ -141,21 +141,21 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _formValidation = __webpack_require__(16);
+var _formValidation = __webpack_require__(14);
 
 var _formValidation2 = _interopRequireDefault(_formValidation);
 
-var _controlValidation = __webpack_require__(14);
+var _controlValidation = __webpack_require__(12);
 
 var _controlValidation2 = _interopRequireDefault(_controlValidation);
 
-var _asyncValidation = __webpack_require__(11);
-
-var _asyncValidation2 = _interopRequireDefault(_asyncValidation);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.validation', [_formValidation2.default, _controlValidation2.default, _asyncValidation2.default]).name;
+// import AsyncValidation from './async-validation/';
+
+exports.default = _angular2.default.module('tw.styleguide.validation', [_formValidation2.default, _controlValidation2.default
+// ,AsyncValidation
+]).name;
 
 /***/ }),
 /* 4 */
@@ -606,106 +606,6 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var AsyncValidatorController =
-// eslint-disable-next-line no-useless-constructor
-function AsyncValidatorController() {
-  // console.log("this.twDynamicAsyncValidator");
-  // console.log(ctrl.twDynamicAsyncValidator);
-
-  _classCallCheck(this, AsyncValidatorController);
-};
-
-function AsyncValidation($log, $q, $http) {
-  return {
-    /* require: 'ngModel', */
-    link: AsyncValidationLink,
-    restrict: 'A',
-    controller: AsyncValidatorController,
-    contollerAs: 'ctrl',
-    bindToController: {
-      twDynamicAsyncValidator: '='
-    }
-  };
-
-  // eslint-disable-next-line no-unused-vars
-  function AsyncValidationLink(scope, element, attrs, ngModel) {
-    // eslint-disable-next-line no-unused-vars
-    var validatorSetting = attrs['tw-dynamic-async-validator'];
-    // ngModel.$asyncValidators.async = dynamicAsyncValidator;
-    // console.log(ngModel);
-    // console.log(ngModel.twDynamicAsyncValidator);
-  }
-
-  // eslint-disable-next-line no-unused-vars
-  function dynamicAsyncValidator(modelValue, viewValue) {
-    var req = {
-      method: 'GET',
-      url: 'partials/requirements.json', // TODO!!!!!
-      params: {
-        email: null
-      }
-    };
-    req.params.email = modelValue || viewValue;
-    return $http(req).catch(function (response) {
-      $log.warn('emailValidValidator', 'response', response);
-      return response;
-    }).then(function (response) {
-      if (response.data.errors) {
-        return $q.reject(response.data.errors[0].message);
-      }
-      return true;
-    });
-  }
-}
-
-AsyncValidation.$inject = ['$log', '$q', '$http'];
-
-exports.default = AsyncValidation;
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _angular = __webpack_require__(0);
-
-var _angular2 = _interopRequireDefault(_angular);
-
-var _asyncValidationDirective = __webpack_require__(10);
-
-var _asyncValidationDirective2 = _interopRequireDefault(_asyncValidationDirective);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _angular2.default.module('tw.styleguide.validation.async', []).directive('twAsyncValidation', _asyncValidationDirective2.default).name;
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _dom = __webpack_require__(1);
-
-var _dom2 = _interopRequireDefault(_dom);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-// eslint-disable-line no-unused-vars
-
 var ValidationController = function ValidationController($scope, $element, TwDomService) {
   _classCallCheck(this, ValidationController);
 
@@ -760,7 +660,7 @@ ValidationController.$inject = ['$scope', '$element', 'TwDomService'];
 exports.default = ValidationController;
 
 /***/ }),
-/* 13 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -770,7 +670,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _controlValidationController = __webpack_require__(12);
+var _controlValidationController = __webpack_require__(10);
 
 var _controlValidationController2 = _interopRequireDefault(_controlValidationController);
 
@@ -789,7 +689,7 @@ function TwValidation() {
 exports.default = TwValidation;
 
 /***/ }),
-/* 14 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -803,16 +703,20 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _controlValidationDirective = __webpack_require__(13);
+var _controlValidationDirective = __webpack_require__(11);
 
 var _controlValidationDirective2 = _interopRequireDefault(_controlValidationDirective);
 
+var _dom = __webpack_require__(1);
+
+var _dom2 = _interopRequireDefault(_dom);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.stylguide.validation.control', []).directive('twValidation', _controlValidationDirective2.default).name;
+exports.default = _angular2.default.module('tw.stylguide.validation.control', [_dom2.default]).directive('twValidation', _controlValidationDirective2.default).name;
 
 /***/ }),
-/* 15 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -821,14 +725,6 @@ exports.default = _angular2.default.module('tw.stylguide.validation.control', []
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _dom = __webpack_require__(1);
-
-var _dom2 = _interopRequireDefault(_dom);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// eslint-disable-line no-unused-vars
 
 function FormValidation(TwDomService) {
   return {
@@ -876,7 +772,7 @@ FormValidation.$inject = ['TwDomService'];
 exports.default = FormValidation;
 
 /***/ }),
-/* 16 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -890,13 +786,17 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _formValidationDirective = __webpack_require__(15);
+var _formValidationDirective = __webpack_require__(13);
 
 var _formValidationDirective2 = _interopRequireDefault(_formValidationDirective);
 
+var _dom = __webpack_require__(1);
+
+var _dom2 = _interopRequireDefault(_dom);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.validation.form', []).directive('form', _formValidationDirective2.default).name;
+exports.default = _angular2.default.module('tw.styleguide.validation.form', [_dom2.default]).directive('form', _formValidationDirective2.default).name;
 
 /***/ })
 /******/ ]);

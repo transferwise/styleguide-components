@@ -1,5 +1,3 @@
-import DateService from '../../services/date/'; // eslint-disable-line no-unused-vars
-import DomService from '../../services/dom/'; // eslint-disable-line no-unused-vars
 
 class DateLookupController {
   constructor($element, $scope, $timeout, TwDateService, TwDomService) {
