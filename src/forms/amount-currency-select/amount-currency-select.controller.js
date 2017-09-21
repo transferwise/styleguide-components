@@ -1,4 +1,3 @@
-import CurrencyService from '../../services/currency/'; // eslint-disable-line no-unused-vars
 
 class AmountCurrencySelectController {
   constructor($element, $scope, $timeout, TwCurrencyService) {

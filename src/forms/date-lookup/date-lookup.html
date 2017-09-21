@@ -44,16 +44,23 @@
           </a>
         </div>
       </div>
-      <table class="table table-condensed table-bordered table-calendar m-b-0">
+      <table class="table table-condensed table-bordered table-calendar m-b-0"><thead
+        class="sr-only">
+          <tr>
+            <th colspan="4">{{$ctrl.placeholder}}</th>
+          </tr>
+        </thead>
         <tbody>
           <tr ng-repeat="row in [0,4,8,12,16]">
             <td ng-repeat="col in [0,1,2,3]">
               <a href=""
-                ng-click="$ctrl.selectYear($event, $ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)"
-                ng-disabled="$ctrl.isYearDisabled($ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)"
-                ng-class="{'active': $ctrl.selectedYear === ($ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)}"
+                ng-click="$ctrl.selectYear($event, $ctrl.calculateYear(row, col))"
+                ng-disabled="$ctrl.isYearDisabled($ctrl.calculateYear(row, col))"
+                ng-class="{
+                  'active': $ctrl.selectedYear === $ctrl.calculateYear(row, col)
+                }"
                 class="tw-date-lookup-year-option">
-                {{$ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset}}
+                {{$ctrl.calculateYear(row, col)}}
               </a>
             </td>
           </tr>
@@ -78,7 +85,12 @@
           </a>
         </div>
       </div>
-      <table class="table table-condensed table-bordered table-calendar m-b-0">
+      <table class="table table-condensed table-bordered table-calendar m-b-0"><thead
+        class="sr-only">
+          <tr>
+            <th colspan="3">{{$ctrl.placeholder}}</th>
+          </tr>
+        </thead>
         <tbody>
           <tr ng-repeat="row in [0,4,8]">
             <td ng-repeat="col in [0,1,2,3]">
@@ -116,8 +128,7 @@
           </a>
         </div>
       </div>
-      <table class="table table-condensed table-bordered table-calendar m-b-0">
-        <thead>
+      <table class="table table-condensed table-bordered table-calendar m-b-0"><thead>
           <tr>
             <th ng-repeat="day in $ctrl.daysOfWeek track by $index">
               <span class="hidden-xs">{{day | limitTo : 3}}</span>

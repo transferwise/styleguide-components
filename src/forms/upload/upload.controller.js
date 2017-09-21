@@ -71,6 +71,7 @@ class UploadController {
       return;
     }
 
+    /*
     if (!isTypeValid(file, this.accept)) {
       this.isWrongType = true;
       this.asyncFailure({
@@ -79,6 +80,7 @@ class UploadController {
       });
       return;
     }
+    */
 
     if (this.httpOptions) {
       // Post file now
@@ -235,12 +237,13 @@ function isSizeValid(file, maxSize) {
   return !(angular.isNumber(maxSize) && file.size > maxSize);
 }
 
-// eslint-disable-next-line no-unused-vars
+/*
+// TODO validate file type
 function isTypeValid(file, accept) {
   return true;
-  // TODO validate file type
   // this.isWrongType = true;
 }
+*/
 
 function showDataImage(dataUrl, $ctrl) {
   $ctrl.setNgModel(dataUrl);

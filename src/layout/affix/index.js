@@ -1,3 +1,4 @@
+import angular from 'angular';
 import Affix from './affix.directive.js';
 
 export default angular

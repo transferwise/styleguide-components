@@ -1,5 +1,3 @@
-import DateService from '../../services/date/'; // eslint-disable-line no-unused-vars
-
 class DateController {
   constructor($element, $log, $scope, TwDateService) {
     const $ngModel = $element.controller('ngModel');

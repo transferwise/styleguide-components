@@ -1,3 +1,4 @@
+import angular from 'angular';
 import DomService from './dom.service.js';
 
 export default angular

@@ -18,7 +18,8 @@ function TextFormat() {
 }
 
 export default angular
-  .module('tw.styleguide.formatting.text-format', [])
-  .service('TwUndoStackFactory', UndoStackFactory)
-  .service('TwTextFormatService', TextFormatService)
+  .module('tw.styleguide.formatting.text-format.directive', [
+    UndoStackFactory,
+    TextFormatService
+  ])
   .directive('twTextFormat', TextFormat).name;
