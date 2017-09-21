@@ -24,7 +24,7 @@
     "copy-demo-fonts": "cp node_modules/bootstrap/fonts/*.* demo/fonts; cp node_modules/transferwise-iconfont/fonts/*.* demo/fonts",
     "copy-demo-js": "npm run copy-jq-js && npm run copy-ang-js && npm run copy-bs-js;",
     "copy-demo-css": "npm run copy-bs-css && npm run copy-flags-css;",
-    "copy-demo": "npm run copy-demo-css && npm run copy-demo-js && npm run copy-demo-fonts;",
+    "copy-demo": "mkdir demo/lib; npm run copy-demo-css && npm run copy-demo-js && npm run copy-demo-fonts;",
     "copy-ghpages": "cp -R demo/ gh-pages",
     "webpack": "webpack --watch",
     "deploy": "git-directory-deploy --directory demo --branch gh-pages --message 'Update docs'"
