@@ -54,18 +54,13 @@
           <tr ng-repeat="row in [0,4,8,12,16]">
             <td ng-repeat="col in [0,1,2,3]">
               <a href=""
-                ng-click="$ctrl.selectYear(
-                  $event,
-                  $ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset
-                )"
-                ng-disabled="$ctrl.isYearDisabled(
-                  $ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset
-                )"
+                ng-click="$ctrl.selectYear($event, $ctrl.calculateYear(row, col))"
+                ng-disabled="$ctrl.isYearDisabled($ctrl.calculateYear(row, col))"
                 ng-class="{
-                  'active': $ctrl.selectedYear === ($ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset)
+                  'active': $ctrl.selectedYear === $ctrl.calculateYear(row, col)
                 }"
                 class="tw-date-lookup-year-option">
-                {{$ctrl.year - ($ctrl.year % 20) + row + col + $ctrl.yearOffset}}
+                {{$ctrl.calculateYear(row, col)}}
               </a>
             </td>
           </tr>

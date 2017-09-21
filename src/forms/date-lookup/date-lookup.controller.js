@@ -427,6 +427,10 @@ class DateLookupController {
     }
     this.setModel(newDate);
   }
+
+  calculateYear(row, column) {
+    return (this.year - (this.year % 20)) + row + column + this.yearOffset;
+  }
 }
 
 function resetFocus(element) {
