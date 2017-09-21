@@ -1,5 +1,3 @@
-import DateService from '../../services/date/'; // eslint-disable-line no-unused-vars
-import DomService from '../../services/dom/'; // eslint-disable-line no-unused-vars
 
 class DateLookupController {
   constructor($element, $scope, $timeout, TwDateService, TwDomService) {
@@ -428,6 +426,10 @@ class DateLookupController {
       newDate = this.DateService.addYears(date, years);
     }
     this.setModel(newDate);
+  }
+
+  calculateYear(row, column) {
+    return (this.year - (this.year % 20)) + row + column + this.yearOffset;
   }
 }
 

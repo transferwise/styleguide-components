@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-unused-vars
-import CardsService from './cards.service.js';
 
 class CardController {
   constructor($transclude, TwCardsService) {

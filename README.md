@@ -5,10 +5,11 @@ dynamic form components, validation, and some styling directives.
 Live demo and documentation http://transferwise.github.io/styleguide-components/
 
 ### Installation
-It is recommended to use yarn, npm or bower to import the latest version
+Use yarn, npm or bower to import the latest version.  Specify at least a major
+version so that you can manage breaking changes.
 ```
 dependencies: {
-    "styleguide-components": "https://github.com/transferwise/styleguide-components.git#v1.2.0",
+    "styleguide-components": "https://github.com/transferwise/styleguide-components.git#vX.X.X",
 }
 ```
 
@@ -23,9 +24,10 @@ angular.module('my-app', ['tw.styleguide-components']);
 ```
 
 ### Contributing
-To try a live example clone this project, run `npm install` and open index.html in the examples folder.
+Clone the project and run `npm start`, this will build the project and set up a
+watch for changes.
 
-For live reload on port 8181, you can run the following:
+To run the local server with live reload you can run the following:
 ```
 npm run dev
 ```
@@ -36,15 +38,17 @@ In order to release a new version, here are the steps necessary:
 
 1. **Build your files and commit them**
 
-    Simply running `npm start` will build them, then you should see changes in `/dist`, you should commit both source and distribution files.
+    Simply running `npm build` will build them, your changes will appear in `/dist`,
+    you should commit both source and distribution files.  This will also set up
+    a watch to reprocess files as you save them.
 
 2. **Run the tests**
 
-    `npm test` will do the trick but make sure you run these after building the `/dist` files
+    `npm test`
 
 3. **Bump the version in `package.json`**
 
-    Recommended to stick to semver for this: http://semver.org
+    Use semver: http://semver.org
 
 4. **Make a pull request**
 
