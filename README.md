@@ -27,7 +27,7 @@ angular.module('my-app', ['tw.styleguide-components']);
 Clone the project and run `npm start`, this will build the project and set up a
 watch for changes.
 
-To setup the local server with live reload (on port 8181), you can run the following:
+To run the local server with live reload you can run the following:
 ```
 npm run dev
 ```
