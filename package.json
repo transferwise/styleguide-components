@@ -21,7 +21,7 @@
     "copy-bs-js": "cp node_modules/bootstrap/dist/js/bootstrap.min.js demo/lib/",
     "copy-bs-css": "cp node_modules/bootstrap/dist/css/bootstrap.css demo/lib/",
     "copy-flags-css": "cp node_modules/currency-flags/dist/currency-flags.css demo/lib/",
-    "copy-demo-fonts": "cp node_modules/bootstrap/fonts/*.* demo/fonts; cp node_modules/transferwise-iconfont/fonts/*.* demo/fonts",
+    "copy-demo-fonts": "mkdir demo/fonts; cp node_modules/bootstrap/fonts/*.* demo/fonts; cp node_modules/transferwise-iconfont/fonts/*.* demo/fonts",
     "copy-demo-js": "npm run copy-jq-js && npm run copy-ang-js && npm run copy-bs-js;",
     "copy-demo-css": "npm run copy-bs-css && npm run copy-flags-css;",
     "copy-demo": "mkdir demo/lib; npm run copy-demo-css && npm run copy-demo-js && npm run copy-demo-fonts;",
