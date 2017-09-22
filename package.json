@@ -43,11 +43,11 @@
   },
   "homepage": "https://github.com/transferwise/styleguide-components",
   "dependencies": {
-    "angular": "~1.5.8",
+    "angular": "<1.6",
     "jquery": "^3.2.1"
   },
   "devDependencies": {
-    "angular-mocks": "^1.5.11",
+    "angular-mocks": "<1.6",
     "babel-core": "^6.26.0",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.2",
