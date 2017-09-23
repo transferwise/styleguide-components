@@ -13,7 +13,8 @@
 
   <script src="js/index.js"></script>
   <script>
-  angular.module('my-app', ['tw.styleguide-components', 'tw.styleguide.docs']);
+  angular.module('my-app', ['tw.styleguide-components', 'tw.styleguide.docs', 
+    'tw.styleguide.formatting']);
   </script>
 
   <link type="text/css" rel="stylesheet" href="lib/bootstrap.css" />
@@ -28,6 +29,12 @@
     <div class="row m-t-3">
       <div class="col-lg-9">
         <div class="panel">
+          <span>
+            {{vm.date | twTextFormat}}
+          </span>
+          <span>
+            {{vm.date | twDateFormat}}
+          </span>
           <div class="panel-heading">
             <h2 class="panel-title">Form Styling &amp; Validation</h2>
           </div>

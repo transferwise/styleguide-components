@@ -1,4 +1,3 @@
-
 angular.module('tw.styleguide.docs', [])
 .config(['$compileProvider', function ($compileProvider) {
   $compileProvider.debugInfoEnabled(false);
@@ -10,12 +9,15 @@ angular.module('tw.styleguide.docs', [])
   bindings: {
     model: '=',
     locales: '=',
-    sizes: '='
+    sizes: '=',
+    date: '='
   },
   templateUrl: 'partials/forms/index.html'
 })
 .controller('PageController', function() {
   this.log = function(message) { console.log(message); };
+
+  this.date = new Date();
 
   this.model = {
     components: {}
