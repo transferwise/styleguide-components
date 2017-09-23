@@ -5,12 +5,12 @@
   "license": "MIT",
   "scripts": {
     "pretest": "",
-    "test": "karma start karma-conf.js --single-run",
+    "test": "npm run lint; karma start karma-conf.js --single-run",
     "test-dev": "karma start karma-conf.dev.js --single-run",
     "prestart": "npm install",
-    "start": "npm run jshint && npm run copy-demo && npm run less && webpack;",
+    "start": "npm run copy-demo && npm run less && webpack;",
     "dev": "live-server --port=1666 --open=demo/index.html",
-    "build": "npm run jshint && npm run less && webpack --watch;",
+    "build": "npm run less && webpack --watch;",
     "htmllint": "htmllint src/**/*.html; htmllint demo/**/*.html; exit 0",
     "jshint": "jshint src/**/* --exclude-path .jshintignore; exit 0",
     "eslint": "eslint src; exit 0",
@@ -43,11 +43,11 @@
   },
   "homepage": "https://github.com/transferwise/styleguide-components",
   "dependencies": {
-    "angular": "<1.6",
+    "angular": "^1.5.0",
     "jquery": "^3.2.1"
   },
   "devDependencies": {
-    "angular-mocks": "<1.6",
+    "angular-mocks": "^1.5.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.2",

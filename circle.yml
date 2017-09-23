@@ -19,7 +19,7 @@ dependencies:
 
 test:
   override:
-    - yarn install; yarn start; yarn test;
+    - yarn test;
 
 # deployment:
 #  master:
