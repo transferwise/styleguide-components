@@ -5,5 +5,5 @@ function DateFormatFilter() {
 }
 
 export default angular
-.module('tw.styleguide.formatting')
+.module('tw.styleguide.formatting.date', [])
 .filter('twDateFormat', DateFormatFilter).name;
