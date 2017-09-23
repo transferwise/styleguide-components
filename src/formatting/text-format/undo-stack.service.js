@@ -1,3 +1,4 @@
+import angular from 'angular';
 
 function TwUndoStackFactory() {
   this.new = () => new UndoStack();
@@ -44,4 +45,6 @@ function UndoStack() {
   };
 }
 
-export default TwUndoStackFactory;
+export default angular
+  .module('tw.styleguide.formatting.text-format.undo-stack', [])
+  .service('TwUndoStackFactory', TwUndoStackFactory).name;

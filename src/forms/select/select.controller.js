@@ -1,5 +1,4 @@
 import angular from 'angular';
-import DomService from '../../services/dom/'; // eslint-disable-line no-unused-vars
 
 class SelectController {
   constructor($element, $scope, $transclude, $timeout, $attrs, TwDomService) {

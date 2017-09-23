@@ -1,4 +1,3 @@
-import DomService from '../../services/dom/'; // eslint-disable-line no-unused-vars
 
 function FormValidation(TwDomService) {
   return {

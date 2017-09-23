@@ -1,3 +1,4 @@
+import angular from 'angular';
 import DateService from './date.service.js';
 
 export default angular

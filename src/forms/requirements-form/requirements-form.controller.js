@@ -1,6 +1,4 @@
 import angular from 'angular';
-// eslint-disable-next-line no-unused-vars
-import RequirementsService from './requirements.service.js';
 
 class RequirementsFormController {
   constructor($scope, TwRequirementsService) {
