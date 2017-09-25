@@ -1,8 +1,10 @@
 
-function TwDropdown($document) {
+function TwDropdown($document) { // eslint-disable-line
   return {
     restrict: 'A',
-    link: (scope, $element) => {
+    link: (scope, $element) => { // eslint-disable-line
+
+      /*
       const document = $document[0];
       const trigger = $element[0];
       const parent = trigger.parentNode;
@@ -155,13 +157,15 @@ function TwDropdown($document) {
       };
 
       // TODO clicking a different dropdown, doesn't close other open ones.
+
+      */
     }
   };
 }
 
 TwDropdown.$inject = ['$document'];
 
-const keys = {
+const keys = {  // eslint-disable-line
   up: 38,
   down: 40
 };

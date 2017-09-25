@@ -7,11 +7,6 @@ function PopOver() {
 }
 
 function PopOverLink(scope, $element) {
-  if (!$element.popover) {
-    // eslint-disable-next-line no-console
-    console.log('twPopOver requires tooltip from bootstrap.js');
-    return;
-  }
   const options = {
     trigger: 'focus',
     placement: 'bottom'
@@ -20,7 +15,7 @@ function PopOverLink(scope, $element) {
   const element = $element[0];
 
   if (element.getAttribute('data-trigger') === 'hover') {
-    options.trigger = 'hover focus';
+    options.trigger = 'hover focus'; // TODO we don't support this, remove??
   }
   if (element.getAttribute('data-placement')) {
     options.placement = element.getAttribute('data-placement');
@@ -35,48 +30,41 @@ function PopOverLink(scope, $element) {
     options.content = element.getAttribute('data-content');
   }
   if (element.getAttribute('data-content-html')) {
-    options.html = true;
+    options.html = true; // TODO add support for this
   }
-
-  element.popover(options);
 
   element.setAttribute('tabindex', '0');
   element.setAttribute('role', 'button');
   element.setAttribute('data-toggle', 'popover');
 
-  const popover = `
-    <div class="popover ${options.placement}">
+  const body = document.getElementsByTagName('body')[0];
+
+  element.addEventListener('click', () => {
+    const popover = document.createElement('div');
+    popover.classList.add('popover');
+    popover.classList.add('in');
+    popover.classList.add(options.placement);
+    popover.setAttribute('role', 'popover');
+
+    popover.innerHTML = `
       <div class="arrow"></div>
       <h3 class="popover-title">${options.title}</h3>
       <div class="popover-content">
         ${options.content}
-      </div>
-    </div>`;
+      </div>`;
 
-  const body = document.getElementsByTagName('body')[0];
-
-  element.addEventListener('click', () => {
-    const popoverElement = document.createElement('div');
-    popoverElement.innerHTml = popover;
-    body.appendChild(popoverElement);
+    body.appendChild(popover);
 
     const rectangle = element.getBoundingClientRect();
-    const size = {
-      width: rectangle.right - rectangle.left,
-      height: rectangle.bottom - rectangle.top
-    };
 
-    const offsetX = element.offsetWidth + size.width;
-    const offsetY = element.offsetHeight + size.height;
+    // TODO position the popover correctly
+    const offsetX = rectangle.left; // element.offsetWidth +
+    const offsetY = rectangle.top; // element.offsetHeight +
 
-    popoverElement.setAttribute('style', `left: ${offsetX}; top: ${offsetY}`);
+    popover.setAttribute('style', `display: block; left: ${offsetX}px; top: ${offsetY}px`);
   });
 
-
-  // TODO can we reinitialise popove when copy changes.
-  // scope.$watch(attrs.title, function() {
-  //   console.log('watch.title ' + element.getAttribute('title'));
-  // });
+  // TODO close all popovers when a click reaches body tag
 }
 
 export default PopOver;

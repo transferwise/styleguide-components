@@ -5018,11 +5018,6 @@ function PopOver() {
 }
 
 function PopOverLink(scope, $element) {
-  if (!$element.popover) {
-    // eslint-disable-next-line no-console
-    console.log('twPopOver requires tooltip from bootstrap.js');
-    return;
-  }
   var options = {
     trigger: 'focus',
     placement: 'bottom'
@@ -5031,7 +5026,7 @@ function PopOverLink(scope, $element) {
   var element = $element[0];
 
   if (element.getAttribute('data-trigger') === 'hover') {
-    options.trigger = 'hover focus';
+    options.trigger = 'hover focus'; // TODO we don't support this, remove??
   }
   if (element.getAttribute('data-placement')) {
     options.placement = element.getAttribute('data-placement');
@@ -5046,40 +5041,36 @@ function PopOverLink(scope, $element) {
     options.content = element.getAttribute('data-content');
   }
   if (element.getAttribute('data-content-html')) {
-    options.html = true;
+    options.html = true; // TODO add support for this
   }
-
-  element.popover(options);
 
   element.setAttribute('tabindex', '0');
   element.setAttribute('role', 'button');
   element.setAttribute('data-toggle', 'popover');
 
-  var popover = '\n    <div class="popover ' + options.placement + '">\n      <div class="arrow"></div>\n      <h3 class="popover-title">' + options.title + '</h3>\n      <div class="popover-content">\n        ' + options.content + '\n      </div>\n    </div>';
-
   var body = document.getElementsByTagName('body')[0];
 
   element.addEventListener('click', function () {
-    var popoverElement = document.createElement('div');
-    popoverElement.innerHTml = popover;
-    body.appendChild(popoverElement);
+    var popover = document.createElement('div');
+    popover.classList.add('popover');
+    popover.classList.add('in');
+    popover.classList.add(options.placement);
+    popover.setAttribute('role', 'popover');
+
+    popover.innerHTML = '\n      <div class="arrow"></div>\n      <h3 class="popover-title">' + options.title + '</h3>\n      <div class="popover-content">\n        ' + options.content + '\n      </div>';
+
+    body.appendChild(popover);
 
     var rectangle = element.getBoundingClientRect();
-    var size = {
-      width: rectangle.right - rectangle.left,
-      height: rectangle.bottom - rectangle.top
-    };
 
-    var offsetX = element.offsetWidth + size.width;
-    var offsetY = element.offsetHeight + size.height;
+    // TODO position the popover correctly
+    var offsetX = rectangle.left; // element.offsetWidth +
+    var offsetY = rectangle.top; // element.offsetHeight +
 
-    popoverElement.setAttribute('style', 'left: ' + offsetX + '; top: ' + offsetY);
+    popover.setAttribute('style', 'display: block; left: ' + offsetX + 'px; top: ' + offsetY + 'px');
   });
 
-  // TODO can we reinitialise popove when copy changes.
-  // scope.$watch(attrs.title, function() {
-  //   console.log('watch.title ' + element.getAttribute('title'));
-  // });
+  // TODO close all popovers when a click reaches body tag
 }
 
 exports.default = PopOver;
@@ -6132,36 +6123,34 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 function TwDropdown($document) {
+  // eslint-disable-line
   return {
     restrict: 'A',
-    link: function link(scope, $element) {
-      var document = $document[0];
-      var trigger = $element[0];
-      var parent = trigger.parentNode;
-      var dropdown = parent.getElementsByClassName('dropdown-menu')[0];
+    link: function link(scope, $element) {// eslint-disable-line
 
-      var open = function open() {
+      /*
+      const document = $document[0];
+      const trigger = $element[0];
+      const parent = trigger.parentNode;
+      const dropdown = parent.getElementsByClassName('dropdown-menu')[0];
+       const open = () => {
         // closeAll(); // TODO is this ok?
         parent.classList.add('open');
         trigger.setAttribute('aria-expanded', 'true');
       };
-
-      var close = function close() {
+       const close = () => {
         parent.classList.remove('open');
         trigger.setAttribute('aria-expanded', 'false');
       };
-
-      var closeAll = function closeAll() {
+       const closeAll = () => {
         console.log('close all');
         // const doc = $document[0];
-        var openDropdown = void 0;
-        var openTrigger = void 0;
-        var openDropdowns = document.getElementsByClassName('open');
-
-        console.log(document.getElementsByTagName('div'));
-        console.log('openDropdowns ' + openDropdowns.length);
-
-        for (var i = 0; i < openDropdowns.length; i++) {
+        let openDropdown;
+        let openTrigger;
+        const openDropdowns = document.getElementsByClassName('open');
+         console.log(document.getElementsByTagName('div'));
+        console.log(`openDropdowns ${openDropdowns.length}`);
+         for (let i = 0; i < openDropdowns.length; i++) {
           openDropdown = openDropdowns.item(i);
           openDropdown.classList.remove('open');
           openTrigger = openDropdown.querySelector('[tw-dropdown]')[0];
@@ -6172,8 +6161,7 @@ function TwDropdown($document) {
           }
         }
       };
-
-      var onTriggerClick = function onTriggerClick(event) {
+       const onTriggerClick = (event) => {
         console.log('onTriggerClick');
         // TODO parent = Dom.getClosestParentByClassName('dropdown');
         if (parent.classList.contains('open')) {
@@ -6184,29 +6172,25 @@ function TwDropdown($document) {
         console.log('catch click at trigger');
         event.stopPropagation();
       };
-
-      var onParentClick = function onParentClick(event) {
+       const onParentClick = (event) => {
         // Clicks within dropdown should not propogate to document
         console.log('catch click at parent');
         event.stopPropagation();
       };
-
-      var onDropdownClick = function onDropdownClick(event) {
+       const onDropdownClick = (event) => {
         if (event.target.tagName.toLowerCase() === 'a') {
           close();
           trigger.focus();
         }
       };
-
-      var onDropdownKeypress = function onDropdownKeypress(event) {
+       const onDropdownKeypress = (event) => {
         console.log('dropdown keypress');
         console.log(event.target.tagName);
         if (event.target.tagName.toLowerCase() === 'a') {
           keyHandler(event);
         }
       };
-
-      var onTriggerKeypress = function onTriggerKeypress(event) {
+       const onTriggerKeypress = (event) => {
         if (event.keyCode === keys.down) {
           open();
         }
@@ -6214,9 +6198,8 @@ function TwDropdown($document) {
         console.log(event.target.tagName);
         keyHandler(event);
       };
-
-      var keyHandler = function keyHandler(event) {
-        var characterCode = event.which || event.charCode || event.keyCode;
+       const keyHandler = (event) => {
+        const characterCode = event.which || event.charCode || event.keyCode;
         console.log(characterCode);
         if (characterCode === keys.up) {
           event.preventDefault(); // Prevent browser scroll
@@ -6226,74 +6209,65 @@ function TwDropdown($document) {
           moveDownOneLink();
         }
       };
-
-      var onDocumentClick = function onDocumentClick() {
+       const onDocumentClick = () => {
         console.log('document click');
         closeAll();
       };
-
-      parent.addEventListener('click', onParentClick);
-
-      trigger.addEventListener('click', onTriggerClick);
+       parent.addEventListener('click', onParentClick);
+       trigger.addEventListener('click', onTriggerClick);
       // trigger.addEventListener('keypress', onTriggerKeypress);
       trigger.addEventListener('keydown', onTriggerKeypress);
-
-      dropdown.addEventListener('click', onDropdownClick);
+       dropdown.addEventListener('click', onDropdownClick);
       // dropdown.addEventListener('keypress', onDropdownKeypress);
       dropdown.addEventListener('keydown', onDropdownKeypress);
-
-      if (!window.twDropdownInitialised) {
+       if (!window.twDropdownInitialised) {
         console.log('add body listener');
         window.twDropdownInitialised = true;
-        var body = document.getElementsByTagName('body')[0];
+        const body = document.getElementsByTagName('body')[0];
         body.addEventListener('click', onDocumentClick);
       }
-
-      var moveDownOneLink = function moveDownOneLink() {
+       const moveDownOneLink = () => {
         console.log('move down');
-        var links = dropdown.querySelectorAll('li a');
+        const links = dropdown.querySelectorAll('li a');
         console.log(links);
-        var found = false;
-        for (var i = 0; i < links.length; i++) {
+        let found = false;
+        for (let i = 0; i < links.length; i++) {
           if (links[i] === document.activeElement && links[i + 1]) {
-            console.log('Focus ' + i);
+            console.log(`Focus ${i}`);
             links[i + 1].focus();
             found = true;
             break;
           }
         }
-
-        if (!found && links[0]) {
+         if (!found && links[0]) {
           console.log('not found');
           links[0].focus();
         }
       };
-
-      var moveUpOneLink = function moveUpOneLink() {
+       const moveUpOneLink = () => {
         console.log('move up');
-        var links = dropdown.querySelectorAll('li a');
-        var found = false;
-        for (var i = 0; i < links.length; i++) {
+        const links = dropdown.querySelectorAll('li a');
+        let found = false;
+        for (let i = 0; i < links.length; i++) {
           if (links[i] === document.activeElement && links[i - 1]) {
             links[i - 1].focus();
             found = true;
             break;
           }
         }
-
-        if (!found && links.length) {
+         if (!found && links.length) {
           links[links.length - 1].focus();
         }
       };
-
-      // TODO clicking a different dropdown, doesn't close other open ones.
+       // TODO clicking a different dropdown, doesn't close other open ones.
+       */
     }
   };
 }
 
 TwDropdown.$inject = ['$document'];
 
-var keys = {
+var keys = { // eslint-disable-line
   up: 38,
   down: 40
 };
