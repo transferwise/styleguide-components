@@ -1,3 +1,4 @@
+import angular from 'angular';
 import Process from './process.component.js';
 
 export default angular

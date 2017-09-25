@@ -1,5 +1,3 @@
-import DateService from '../../services/date/'; // eslint-disable-line no-unused-vars
-import DomService from '../../services/dom/'; // eslint-disable-line no-unused-vars
 
 class DateLookupController {
   constructor($element, $scope, $timeout, TwDateService, TwDomService) {
@@ -194,7 +192,7 @@ class DateLookupController {
   addValidators($ngModel) {
     $ngModel.$validators.min = (modelValue, viewValue) => {
       const value = modelValue || viewValue;
-      if (value && value < this.ngMin) {
+      if (value && this.ngMin && value < this.ngMin) {
         if (this.formGroup) {
           this.formGroup.classList.add('has-error');
         }
@@ -204,7 +202,7 @@ class DateLookupController {
     };
     $ngModel.$validators.max = (modelValue, viewValue) => {
       const value = modelValue || viewValue;
-      if (value && value > this.ngMax) {
+      if (value && this.ngMax && value > this.ngMax) {
         if (this.formGroup) {
           this.formGroup.classList.add('has-error');
         }
@@ -416,7 +414,6 @@ class DateLookupController {
     });
   }
 
-
   adjustDate(mode, date, days, months, years) {
     let newDate = date;
     if (mode === 'day') {
@@ -429,6 +426,10 @@ class DateLookupController {
       newDate = this.DateService.addYears(date, years);
     }
     this.setModel(newDate);
+  }
+
+  calculateYear(row, column) {
+    return (this.year - (this.year % 20)) + row + column + this.yearOffset;
   }
 }
 

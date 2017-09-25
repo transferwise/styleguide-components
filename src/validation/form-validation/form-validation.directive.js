@@ -1,4 +1,3 @@
-import DomService from '../../services/dom/'; // eslint-disable-line no-unused-vars
 
 function FormValidation(TwDomService) {
   return {
@@ -13,6 +12,11 @@ function FormValidation(TwDomService) {
         let radioContainer;
 
         const controls = form.querySelectorAll('[tw-validation].ng-invalid');
+
+        // Shouldn't be necessary, but PhantomJS was complaining
+        if (!controls.forEach) {
+          return true;
+        }
 
         controls.forEach((control) => {
           formGroup = TwDomService.getClosestParentByClassName(control, 'form-group');

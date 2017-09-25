@@ -1,3 +1,4 @@
+import angular from 'angular';
 import CurrencyService from './currency.service.js';
 
 export default angular

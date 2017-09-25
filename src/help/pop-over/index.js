@@ -1,3 +1,4 @@
+import angular from 'angular';
 import PopOver from './pop-over.directive.js';
 
 export default angular

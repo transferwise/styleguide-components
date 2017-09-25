@@ -29,7 +29,8 @@
         <span ng-if="$ctrl.selected.circleText">{{$ctrl.selected.circleText}}</span>
         <img alt="{{$ctrl.selected.label}}"
           ng-if="$ctrl.selected.circleImage"
-          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+          src="data:image/png;base64,
+            iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
           ng-src="{{$ctrl.selected.circleImage}}" />
         <span ng-if="$ctrl.selected.circleIcon" class="icon {{$ctrl.selected.circleIcon}}"></span>
       </span>
@@ -66,7 +67,8 @@
     <span class="form-control-placeholder" ng-if="!$ctrl.selected">{{$ctrl.placeholder}}</span>
     <span class="caret"></span>
   </button>
-  <ul class="dropdown-menu" role="menu" ng-class="{
+  <ul class="dropdown-menu" role="menu"
+    ng-class="{
       'dropdown-menu-xs-right': $ctrl.dropdownRight === 'xs',
       'dropdown-menu-sm-right': $ctrl.dropdownRight === 'sm',
       'dropdown-menu-md-right': $ctrl.dropdownRight === 'md',
@@ -139,7 +141,8 @@
             ng-if="option.circleText">{{option.circleText}}</span>
           <img alt="{{option.label}}"
             ng-if="option.circleImage"
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+            src="data:image/png;base64,
+              iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
             ng-src="{{option.circleImage}}" />
           <span ng-if="option.circleIcon" class="icon {{option.circleIcon}}"></span>
         </span>{{option.label}}<span

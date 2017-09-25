@@ -1,5 +1,6 @@
+import angular from 'angular';
 
-function TwTextFormatService() {
+function TextFormatService() {
   this.formatUsingPattern = (value, pattern) => {
     if (!value) {
       value = '';
@@ -106,4 +107,6 @@ function TwTextFormatService() {
   }
 }
 
-export default TwTextFormatService;
+export default angular
+  .module('tw.styleguide.formatting.text-format.service', [])
+  .service('TwTextFormatService', TextFormatService).name;

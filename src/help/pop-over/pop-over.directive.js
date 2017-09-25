@@ -56,7 +56,10 @@ function PopOverLink(scope, $element) {
   const body = document.getElementsByTagName('body')[0];
 
   element.addEventListener('click', () => {
-    body.innerHTml += popover;
+    const popoverElement = document.createElement('div');
+    popoverElement.innerHTml = popover;
+    body.appendChild(popoverElement);
+
     const rectangle = element.getBoundingClientRect();
     const size = {
       width: rectangle.right - rectangle.left,
@@ -66,7 +69,7 @@ function PopOverLink(scope, $element) {
     const offsetX = element.offsetWidth + size.width;
     const offsetY = element.offsetHeight + size.height;
 
-    popover.setAttribute('style', `left: ${offsetX}; top: ${offsetY}`);
+    popoverElement.setAttribute('style', `left: ${offsetX}; top: ${offsetY}`);
   });
 
 
