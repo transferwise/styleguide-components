@@ -1,0 +1,43 @@
+{
+  "basePath": "",
+  "files": [
+    "node_modules/jquery/dist/jquery.min.js",
+    "node_modules/bootstrap/dist/js/bootstrap.min.js",
+    "node_modules/angular/angular.min.js",
+    "node_modules/angular-mocks/angular-mocks.js",
+
+    "dist/js/styleguide-components.js",
+
+    "src/**/*.spec.js"
+  ],
+  "exclude": [],
+  "autoWatch": false,
+  "frameworks": ["jasmine"],
+  "browsers": [
+    "PhantomJS"
+  ],
+  "reporters": ["coverage", "mocha"],
+  "preprocessors": {
+    "src/**/*.controller.js": ["coverage"]
+  },
+  "plugins": [
+    "karma-phantomjs-launcher",
+    "karma-jasmine",
+    "karma-coverage",
+    "karma-mocha-reporter"
+  ],
+  "coverageReporter": {
+    "reporters": [{
+      "type": "text",
+      "dir": "build/coverage/",
+      "file": "coverage.txt"
+    },{
+      "type": "cobertura",
+      "dir": "build/coverage/",
+      "file": "coverage.xml"
+    }]
+  },
+  "mochaReporter": {
+    "output": "minimal"
+  }
+}

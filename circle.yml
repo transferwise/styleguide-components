@@ -1,0 +1,14 @@
+machine:
+  node:
+    version: 8.5.0
+
+
+# deployment:
+#  master:
+#    branch: master
+#    commands:
+#      - yarn build && yarn copy-files-to-dist && yarn deploy
+#  releases:
+#    branch: releases
+#    commands:
+#      - yarn release-to-github
