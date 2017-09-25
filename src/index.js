@@ -25,10 +25,7 @@ export default angular.module('tw.styleguide-components', [
   Layout,
   Loading,
   Navigation,
-<<<<<<< HEAD
-  Utils
-=======
+  Utils,
   OldFormComponentModule,
   OldFormValidationModule
->>>>>>> master
 ]).name;

@@ -13,7 +13,7 @@ import Fieldset from './fieldset/';
 import RequirementsForm from './requirements-form/';
 import Focusable from './focusable/';
 
-import Dropdown             from '../utils/dropdown/';
+import Dropdown from '../utils/dropdown/';
 
 // Deprecated
 import UploadDroppable from './upload-droppable/';

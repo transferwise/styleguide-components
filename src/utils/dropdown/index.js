@@ -1,3 +1,4 @@
+import angular from 'angular';
 import Dropdown from './dropdown.directive.js';
 
 export default angular
