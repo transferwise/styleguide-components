@@ -30,10 +30,11 @@
       <div class="col-lg-9">
         <div class="panel">
           <span>
-            {{vm.date | twTextFormat}}
+            {{vm.date | twDateFormat:'ja'}}
           </span>
+          <br />
           <span>
-            {{vm.date | twDateFormat}}
+            {{vm.date | twDateFormat:'en_GB':'LongDateWeekday'}}
           </span>
           <div class="panel-heading">
             <h2 class="panel-title">Form Styling &amp; Validation</h2>
