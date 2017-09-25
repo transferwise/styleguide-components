@@ -1,9 +1,9 @@
 {
   "basePath": "",
   "files": [
-    "demo/lib/jquery.min.js",
-    "demo/lib/bootstrap.min.js",
-    "demo/lib/angular.min.js",
+    "node_modules/jquery/dist/jquery.min.js",
+    "node_modules/bootstrap/dist/js/bootstrap.min.js",
+    "node_modules/angular/angular.min.js",
     "node_modules/angular-mocks/angular-mocks.js",
 
     "dist/js/styleguide-components.js",
