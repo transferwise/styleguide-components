@@ -414,7 +414,33 @@ function DateService() {
     return _this.getUTCDateFromParts(date.getUTCFullYear() + years, date.getUTCMonth() + months, date.getUTCDate() + days);
   };
 
+  this.getDateTimePresentation = function (hours, minutes, locale) {
+    var lang = getLanguageFromLocale(locale);
+    if (hours < 10) {
+      hours += '0';
+    }
+    if (minutes < 10) {
+      minutes += '0';
+    }
+
+    if (lang === 'ja') {
+      return hours + ':' + minutes + '\u306E';
+    }
+
+    if (locale.startsWith('en')) {
+      var ampm = hours >= 12 ? 'PM' : 'AM';
+      hours %= 12;
+      if (hours === 0) {
+        hours = 12;
+      }
+      return hours + ':' + minutes + ' ' + ampm;
+    }
+
+    return hours + ':' + minutes;
+  };
+
   this.getYearAndMonthPresentation = function (year, monthName, locale) {
+    locale = getValidLocale(locale);
     var lang = getLanguageFromLocale(locale);
     if (lang === 'ja') {
       return year + '\u5E74' + monthName;
@@ -423,7 +449,18 @@ function DateService() {
     return monthName + ' ' + year;
   };
 
+  this.getYearAndMonthShortPresentation = function (year, month, locale) {
+    locale = getValidLocale(locale);
+    var lang = getLanguageFromLocale(locale);
+    if (lang === 'ja') {
+      return year + '\u5E74' + month + '\u6708';
+    }
+
+    return month + '/' + year;
+  };
+
   this.getYearMonthDatePresentation = function (year, monthName, date, locale) {
+    locale = getValidLocale(locale);
     var lang = getLanguageFromLocale(locale);
     if (lang === 'ja') {
       return year + '\u5E74' + monthName + date + '\u65E5';
@@ -434,6 +471,48 @@ function DateService() {
     }
 
     return date + ' ' + monthName + ' ' + year;
+  };
+
+  this.getYearMonthDateShortPresentation = function (year, month, date, locale) {
+    locale = getValidLocale(locale);
+    var lang = getLanguageFromLocale(locale);
+    if (lang === 'ja') {
+      return year + '\u5E74' + month + '\u6708' + date + '\u65E5';
+    }
+
+    if (locale.indexOf('US', locale.length - 2) !== -1) {
+      return month + '/' + date + '/' + year;
+    }
+
+    return date + '/' + month + '/' + year;
+  };
+
+  this.getMonthDatePresentation = function (monthName, date, locale) {
+    locale = getValidLocale(locale);
+    var lang = getLanguageFromLocale(locale);
+    if (lang === 'ja') {
+      return '' + monthName + date + '\u65E5';
+    }
+
+    if (locale.indexOf('US', locale.length - 2) !== -1) {
+      return monthName + ' ' + date;
+    }
+
+    return date + ' ' + monthName;
+  };
+
+  this.getMonthDateShortPresentation = function (month, date, locale) {
+    locale = getValidLocale(locale);
+    var lang = getLanguageFromLocale(locale);
+    if (lang === 'ja') {
+      return month + '\u6708' + date + '\u65E5';
+    }
+
+    if (locale.indexOf('US', locale.length - 2) !== -1) {
+      return month + '/' + date;
+    }
+
+    return date + '/' + month;
   };
 
   function getLocalisedDateName(date, locale, formattingObject) {

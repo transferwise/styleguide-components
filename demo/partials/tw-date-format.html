@@ -1,0 +1,46 @@
+<h4 id="date-format">TW Date Format</h4>
+<p>
+  <code>twDateFormat</code> is an Angular.js custom filter to format dates.
+</p>
+<div class="row m-b-3">    
+  <div class="col-md-6">
+    <div class="well">
+      <h5 class="page-header">Edit configuration</h5>
+      <div class="form-group">
+        <label class="control-label">Pattern</label>
+        <tw-select
+          placeholder="Choose pattern..."
+          options="$ctrl.patterns"
+          ng-model="$ctrl.pattern"
+          ng-change="$ctrl.changePattern()"></tw-select>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <h5>Date format filter</h5>
+  <p>
+    <code>twDateFormat</code> is an Angular.js custom filter to format dates. It is useful for internationalization 
+    since different countries follow during date formats (e.g. dd/MM/yyyy vs MM/dd/yyyy vs yyyy/MM/dd) and time formats (12h vs 24h).
+    The twDateFormat filter takes 5 optional parameters:
+      <ol>
+        <li>locale</li>
+        <li>patternName, which can be one of the following values: LongDate, LongDateShortYear, LongDateNoYear, ShortDate, ShortDateLongYear and ShortDateNoYear</li>
+        <li>hasWeekday (e.g. Monday)</li>
+        <li>hasDayTime (e.g. 2:35 PM)</li>
+        <li>hasSuffix (e.g. 21st)</li>
+      </ol>
+  </p>
+  <dl>
+    <dt>Date filter</dt>
+    <dd>{{$ctrl.model | twDateFormat:$ctrl.pattern.locale:$ctrl.pattern.patternName:$ctrl.pattern.hasWeekday:$ctrl.pattern.hasDayTime:$ctrl.pattern.hasSuffix }}</dd>
+  </dl>
+<pre>
+&lt;dl&gt;
+  &lt;dt&gt;Date filter&lt;/dt&gt;
+  &lt;dd&gt;<code ng-non-bindable>{{</code> $ctrl.date | twDateFormat:"{{$ctrl.pattern.locale}}":"{{$ctrl.pattern.patternName}}":{{$ctrl.pattern.hasWeekday}}:{{$ctrl.pattern.hasDayTime}}:{{$ctrl.pattern.hasSuffix}} <code ng-non-bindable>}}</code>&lt;/dd&gt;
+&lt;/dl&gt;
+</pre>
+
+</div>
+<hr class="m-b-5" />

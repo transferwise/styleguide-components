@@ -29,13 +29,6 @@
     <div class="row m-t-3">
       <div class="col-lg-9">
         <div class="panel">
-          <span>
-            {{vm.date | twDateFormat:'ja'}}
-          </span>
-          <br />
-          <span>
-            {{vm.date | twDateFormat:'en_GB':'LongDateWeekday'}}
-          </span>
           <div class="panel-heading">
             <h2 class="panel-title">Form Styling &amp; Validation</h2>
           </div>
@@ -45,6 +38,7 @@
             <tw-tool-tip-docs></tw-tool-tip-docs>
             <tw-focusable-docs></tw-focusable-docs>
             <tw-text-format-docs model="vm.model.presentation"></tw-text-format-docs>
+            <tw-date-format-docs model="vm.date"></tw-date-format-docs>
             <tw-validation-docs model="vm.model"></tw-validation-docs>
           </div>
         </div>

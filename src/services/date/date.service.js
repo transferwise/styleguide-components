@@ -137,7 +137,33 @@ function DateService() {
     date.getUTCDate() + days
   );
 
+  this.getDateTimePresentation = (hours, minutes, locale) => {
+    const lang = getLanguageFromLocale(locale);
+    if (hours < 10) {
+      hours += '0';
+    }
+    if (minutes < 10) {
+      minutes += '0';
+    }
+
+    if (lang === 'ja') {
+      return `${hours}:${minutes}の`;
+    }
+
+    if (locale.startsWith('en')) {
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours %= 12;
+      if (hours === 0) {
+        hours = 12;
+      }
+      return `${hours}:${minutes} ${ampm}`;
+    }
+
+    return `${hours}:${minutes}`;
+  };
+
   this.getYearAndMonthPresentation = (year, monthName, locale) => {
+    locale = getValidLocale(locale);
     const lang = getLanguageFromLocale(locale);
     if (lang === 'ja') {
       return `${year}年${monthName}`;
@@ -146,7 +172,18 @@ function DateService() {
     return `${monthName} ${year}`;
   };
 
+  this.getYearAndMonthShortPresentation = (year, month, locale) => {
+    locale = getValidLocale(locale);
+    const lang = getLanguageFromLocale(locale);
+    if (lang === 'ja') {
+      return `${year}年${month}月`;
+    }
+
+    return `${month}/${year}`;
+  };
+
   this.getYearMonthDatePresentation = (year, monthName, date, locale) => {
+    locale = getValidLocale(locale);
     const lang = getLanguageFromLocale(locale);
     if (lang === 'ja') {
       return `${year}年${monthName}${date}日`;
@@ -157,6 +194,48 @@ function DateService() {
     }
 
     return `${date} ${monthName} ${year}`;
+  };
+
+  this.getYearMonthDateShortPresentation = (year, month, date, locale) => {
+    locale = getValidLocale(locale);
+    const lang = getLanguageFromLocale(locale);
+    if (lang === 'ja') {
+      return `${year}年${month}月${date}日`;
+    }
+
+    if (locale.indexOf('US', locale.length - 2) !== -1) {
+      return `${month}/${date}/${year}`;
+    }
+
+    return `${date}/${month}/${year}`;
+  };
+
+  this.getMonthDatePresentation = (monthName, date, locale) => {
+    locale = getValidLocale(locale);
+    const lang = getLanguageFromLocale(locale);
+    if (lang === 'ja') {
+      return `${monthName}${date}日`;
+    }
+
+    if (locale.indexOf('US', locale.length - 2) !== -1) {
+      return `${monthName} ${date}`;
+    }
+
+    return `${date} ${monthName}`;
+  };
+
+  this.getMonthDateShortPresentation = (month, date, locale) => {
+    locale = getValidLocale(locale);
+    const lang = getLanguageFromLocale(locale);
+    if (lang === 'ja') {
+      return `${month}月${date}日`;
+    }
+
+    if (locale.indexOf('US', locale.length - 2) !== -1) {
+      return `${month}/${date}`;
+    }
+
+    return `${date}/${month}`;
   };
 
   function getLocalisedDateName(date, locale, formattingObject) {

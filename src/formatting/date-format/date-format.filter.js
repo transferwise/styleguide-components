@@ -1,28 +1,20 @@
 import angular from 'angular';
-import moment from 'moment';
 import DateFormatService from './date-format.service.js';
 
 function DateFormatFilter(TwDateFormatService) {
-  return (date, locale, patternName) => {
-    let format;
+  return (date, locale, patternName, hasWeekday, hasDayTime, hasSuffix) => {
     if (!date) {
       return date;
     }
 
-    if (locale) {
-      moment.locale(locale);
-    }
-
-    switch (moment.locale()) {
-      case 'ja':
-        format = TwDateFormatService.getJaFormat(patternName);
-        break;
-      default:
-        format = TwDateFormatService.getDefaultFormat(patternName);
-        break;
-    }
-
-    return moment(date).format(format);
+    return TwDateFormatService.getDateFormat(
+      date,
+      locale,
+      patternName,
+      hasWeekday,
+      hasDayTime,
+      hasSuffix
+    );
   };
 }
 

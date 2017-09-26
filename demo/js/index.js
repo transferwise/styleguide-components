@@ -479,6 +479,77 @@ angular.module('tw.styleguide.docs', [])
   },
   templateUrl: 'partials/tw-text-format.html'
 })
+.component('twDateFormatDocs', {
+  controller: function() {
+    var $ctrl = this;
+    $ctrl.patterns = [
+      {
+        value: {
+          locale: 'en_US',
+          patternName: 'LongDate',
+          hasWeekday: true,
+          hasDayTime: false,
+          hasSuffix: true
+        },
+        label: "US long date with weekday and suffix"
+      },
+      {
+        value: {
+          locale: 'ja',
+          patternName: 'LongDateShortYear',
+          hasWeekday: false,
+          hasDayTime: false,
+          hasSuffix: true
+        },
+        label: "JA long date short year"
+      },
+      {
+        value: {
+          locale: 'en_GB',
+          patternName: 'LongDateNoYear',
+          hasWeekday: false,
+          hasDayTime: true,
+          hasSuffix: false
+        },
+        label: "GB long date no year with time"
+      },
+      {
+        value: {
+          locale: 'en_US',
+          patternName: 'ShortDate',
+          hasWeekday: false,
+          hasDayTime: true,
+          hasSuffix: false
+        },
+        label: "US short date with time"
+      },
+      {
+        value: {
+          locale: 'ja',
+          patternName: 'ShortDateLongYear',
+          hasWeekday: true,
+          hasDayTime: true,
+          hasSuffix: true
+        },
+        label: "JA short date no year with weekday and time"
+      },
+      {
+        value: {
+          locale: 'en_GB',
+          patternName: 'ShortDateNoYear',
+          hasWeekday: false,
+          hasDayTime: false,
+          hasSuffix: false
+        },
+        label: "GB short date no year"
+      }
+    ];
+  },
+  bindings: {
+    model: "="
+  },
+  templateUrl: 'partials/tw-date-format.html'
+})
 .directive('twPopOverDocs', function() {
   return {templateUrl: 'partials/tw-pop-over.html'};
 })
