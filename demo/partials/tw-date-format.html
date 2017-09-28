@@ -1,0 +1,67 @@
+<h4 id="date-format">TW Date Format</h4>
+<p>
+  <code>twDate</code> and <code>twDateTime</code> are two Angular.js custom filter to format dates. 
+  The first one only shows the date while the second one displays both the date and the time. 
+  Dates older than 7 days are displayed without the weekday and dates from the same year are displayed without the year.
+</p>
+<div class="row m-b-3">    
+  <div class="col-md-6">
+    <div class="well">
+      <h5 class="page-header">Edit configuration</h5>
+      <div class="form-group" ng-init="$ctrl.date.locale = 'en-GB';">
+        <label class="control-label">
+          Locale
+        </label>
+        <tw-select
+          options="$ctrl.locales"
+          ng-model="$ctrl.date.locale"
+          ng-init="$ctrl.date.locale = 'en-GB'" />
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <h5>Date format filter</h5>
+  <p>
+    <code>twDate</code> is an Angular.js custom filter to format dates. It is useful for internationalization 
+    since different countries follow during date formats (e.g. dd/MM/yyyy vs MM/dd/yyyy vs yyyy/MM/dd) and time formats (12h vs 24h).
+    The twDate filter takes 1 parameter: locale.
+  </p>
+  <dl>
+    <dt>Date filter (now)</dt>
+    <dd>{{$ctrl.dates.now | twDate:$ctrl.date.locale }}</dd>
+    <dt>Date filter (7 days ago)</dt>
+    <dd>{{$ctrl.dates.oneWeekAgo | twDate:$ctrl.date.locale }}</dd>
+    <dt>Date filter (365 days ago)</dt>
+    <dd>{{$ctrl.dates.oneYearAgo | twDate:$ctrl.date.locale }}</dd>
+  </dl>
+<pre>
+&lt;dl&gt;
+  &lt;dt&gt;Date filter&lt;/dt&gt;
+  &lt;dd&gt;<code ng-non-bindable>{{</code> $ctrl.model | twDate:"{{$ctrl.date.locale}}" <code ng-non-bindable>}}</code>&lt;/dd&gt;
+&lt;/dl&gt;
+</pre>
+</div>
+<div>
+  <h5>Date-time format filter</h5>
+  <p>
+    <code>twDateTime</code> is an Angular.js custom filter to format dates and times. It is useful for internationalization 
+    since different countries follow during date formats (e.g. dd/MM/yyyy vs MM/dd/yyyy vs yyyy/MM/dd) and time formats (12h vs 24h).
+    The twDateTime filter takes 1 parameter: locale.
+  </p>
+  <dl>
+    <dt>Date-time filter (now)</dt>
+    <dd>{{$ctrl.dates.now | twDateTime:$ctrl.date.locale }}</dd>
+    <dt>Date-timefilter (7 days ago)</dt>
+    <dd>{{$ctrl.dates.oneWeekAgo | twDateTime:$ctrl.date.locale }}</dd>
+    <dt>Date-time filter (365 days ago)</dt>
+    <dd>{{$ctrl.dates.oneYearAgo | twDateTime:$ctrl.date.locale }}</dd>
+  </dl>
+<pre>
+&lt;dl&gt;
+  &lt;dt&gt;Date filter&lt;/dt&gt;
+  &lt;dd&gt;<code ng-non-bindable>{{</code> $ctrl.model | twDateTime:"{{$ctrl.date.locale}}" <code ng-non-bindable>}}</code>&lt;/dd&gt;
+&lt;/dl&gt;
+</pre>
+</div>
+<hr class="m-b-5" />

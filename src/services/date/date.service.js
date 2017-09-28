@@ -118,13 +118,13 @@ function DateService() {
   };
 
   this.isMonthBeforeDay = (locale) => {
-    if (locale.indexOf('US', locale.length - 2) !== -1) {
-      return true;
-    } else if (getLanguageFromLocale(locale) === 'ja') {
-      return true;
-    }
+    const lang = getLanguageFromLocale(locale);
+    return ((lang === 'ja') || (locale && locale.indexOf('US', locale.length - 2) !== -1));
+  };
 
-    return false;
+  this.isYearBeforeMonth = (locale) => {
+    const lang = getLanguageFromLocale(locale);
+    return (lang === 'ja');
   };
 
   this.addYears = (date, years) => this.addToDate(date, years, 0, 0);
@@ -137,26 +137,92 @@ function DateService() {
     date.getUTCDate() + days
   );
 
-  this.getYearAndMonthPresentation = (year, monthName, locale) => {
+  this.getTimePresentation = (hours, minutes, locale) => {
     const lang = getLanguageFromLocale(locale);
-    if (lang === 'ja') {
-      return `${year}年${monthName}`;
+    if (hours < 10) {
+      hours = `0${hours}`;
+    }
+    if (minutes < 10) {
+      minutes = `0${minutes}`;
     }
 
-    return `${monthName} ${year}`;
+    if (lang === 'ja') {
+      return `${hours}:${minutes}の`;
+    }
+
+    if (lang === 'en') {
+      const ampm = hours >= 12 ? 'pm' : 'am';
+      hours %= 12;
+      if (hours === 0) {
+        hours = 12;
+      }
+      return `${hours}:${minutes}${ampm}`;
+    }
+    return `${hours}:${minutes}`;
   };
 
-  this.getYearMonthDatePresentation = (year, monthName, date, locale) => {
+  this.getYearAndMonthPresentation = (year, monthName, locale) => {
     const lang = getLanguageFromLocale(locale);
-    if (lang === 'ja') {
-      return `${year}年${monthName}${date}日`;
+    const yearSuffix = getSuffix(YEAR_SUFFIXES_BY_LANGUAGE, year, lang);
+    const delimiter = getDelimiter(lang);
+
+    return this.isYearBeforeMonth(locale)
+      ? `${year}${yearSuffix}${delimiter}${monthName}`
+      : `${monthName}${delimiter}${year}${yearSuffix}`;
+  };
+
+  this.getYearMonthDatePresentation = (year, monthName, day, locale) => {
+    const lang = getLanguageFromLocale(locale);
+    const yearSuffix = getSuffix(YEAR_SUFFIXES_BY_LANGUAGE, year, lang);
+    const daySuffix = getSuffix(DAY_SUFFIXES_BY_LANGUAGE, day, lang);
+    const delimiter = getDelimiter(lang);
+
+    if (this.isYearBeforeMonth(locale)) {
+      return `${year}${yearSuffix}${delimiter}${monthName}${delimiter}${day}${daySuffix}`;
+    }
+    if (this.isMonthBeforeDay(locale)) {
+      return `${monthName}${delimiter}${day}${daySuffix},${delimiter}${year}${yearSuffix}`;
+    }
+    return `${day}${daySuffix}${delimiter}${monthName}${delimiter}${year}${yearSuffix}`;
+  };
+
+  this.getMonthDatePresentation = (monthName, day, locale) => {
+    const lang = getLanguageFromLocale(locale);
+    const daySuffix = getSuffix(DAY_SUFFIXES_BY_LANGUAGE, day, lang);
+    const delimiter = getDelimiter(lang);
+
+    return this.isMonthBeforeDay(locale)
+      ? `${monthName}${delimiter}${day}${daySuffix}`
+      : `${day}${daySuffix}${delimiter}${monthName}`;
+  };
+
+  this.getDateFormat = (date, locale) => {
+    // Check that the date exists
+    if (!date) {
+      return date;
     }
 
-    if (locale.indexOf('US', locale.length - 2) !== -1) {
-      return `${monthName} ${date}, ${year}`;
-    }
+    // Initialize variables
+    const weekday = this.getDayNamesForLocale(locale, 'long')[date.getDay()];
+    const year = date.getFullYear();
+    const month = this.getMonthNamesForLocale(locale, 'long')[date.getMonth()];
+    const monthDate = date.getDate();
+    const now = new Date();
+    const hasWeekday = (now - date) < 604800000; // 1 week in milliseconds
+    const hasYear = now.getFullYear() !== year;
 
-    return `${date} ${monthName} ${year}`;
+    // Return the result
+    const lang = getLanguageFromLocale(locale);
+    const result = hasYear
+      ? this.getYearMonthDatePresentation(year, month, monthDate, locale)
+      : this.getMonthDatePresentation(month, monthDate, locale);
+    if (hasWeekday) {
+      if (lang === 'ja') {
+        return `${result} (${weekday})`;
+      }
+      return `${weekday} ${result}`;
+    }
+    return result;
   };
 
   function getLocalisedDateName(date, locale, formattingObject) {
@@ -215,6 +281,23 @@ function DateService() {
     return locale.substring(0, 2);
   }
 
+  function getDelimiter(lang) {
+    return (DELIMITERS_BY_LANGUAGE[lang] !== undefined) ? DELIMITERS_BY_LANGUAGE[lang] : ' ';
+  }
+
+  function getSuffix(suffixes, value, lang) {
+    if (!suffixes[lang]) {
+      return '';
+    }
+    if (suffixes[lang].exactMatch && suffixes[lang].exactMatch[value]) {
+      return suffixes[lang].exactMatch[value];
+    }
+    if (suffixes[lang].endsWith && suffixes[lang].endsWith[value % 10]) {
+      return suffixes[lang].endsWith[value % 10];
+    }
+    return suffixes[lang].default;
+  }
+
   const DEFAULT_MONTH_NAMES_BY_LANGUAGE = {
     en: [
       'January',
@@ -259,7 +342,41 @@ function DateService() {
     ja: [
       '月', '火', '水', '木', '金', '土', '日'
     ]
+  };
 
+  const DAY_SUFFIXES_BY_LANGUAGE = {
+    en: {
+      exactMatch: {
+        11: 'th',
+        12: 'th',
+        13: 'th'
+      },
+      endsWith: {
+        1: 'st',
+        2: 'nd',
+        3: 'rd'
+      },
+      default: 'th'
+    },
+    de: {
+      default: '.'
+    },
+    fi: {
+      default: '.'
+    },
+    ja: {
+      default: '日'
+    }
+  };
+
+  const YEAR_SUFFIXES_BY_LANGUAGE = {
+    ja: {
+      default: '年'
+    }
+  };
+
+  const DELIMITERS_BY_LANGUAGE = {
+    ja: ''
   };
 }
 

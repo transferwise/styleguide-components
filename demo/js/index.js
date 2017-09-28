@@ -1,4 +1,3 @@
-
 angular.module('tw.styleguide.docs', [])
 .config(['$compileProvider', function ($compileProvider) {
   $compileProvider.debugInfoEnabled(false);
@@ -476,6 +475,30 @@ angular.module('tw.styleguide.docs', [])
     model: "="
   },
   templateUrl: 'partials/tw-text-format.html'
+})
+.component('twDateFormatDocs', {
+  controller: function() {
+    var $ctrl = this;
+    $ctrl.locales = [
+      {'value': 'en-GB', 'label': 'English UK'},
+      {'value': 'en-US', 'label': 'English US'},
+      {'value': 'fr-FR', 'label': 'French'},
+      {'value': 'es-ES', 'label': 'Spanish'},
+      {'value': 'es-US', 'label': 'Spanish US'},
+      {'value': 'pt-BR', 'label': 'Brazillian Portuguese'},
+      {'value': 'ja-JP', 'label': 'Japanese'},
+      {'value': 'fi-FI', 'label': 'Finnish'},
+      {'value': 'de-DE', 'label': 'German'},
+      {'value': 'xx-XX', 'label': 'Unknown locale'}
+    ];
+    var now = new Date();
+    $ctrl.dates = {
+      now: now,
+      oneWeekAgo: new Date(now.getTime() - 604800000),
+      oneYearAgo: new Date(now.getTime() - 31536000000)
+    };
+  },
+  templateUrl: 'partials/tw-date-format.html'
 })
 .directive('twPopOverDocs', function() {
   return {templateUrl: 'partials/tw-pop-over.html'};
