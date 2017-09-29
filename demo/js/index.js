@@ -494,8 +494,7 @@ angular.module('tw.styleguide.docs', [])
     var now = new Date();
     $ctrl.dates = {
       now: now,
-      oneWeekAgo: new Date(now.getTime() - 604800000),
-      oneYearAgo: new Date(now.getTime() - 31536000000)
+      oneWeekAgo: new Date(now.getTime() - 604800000)
     };
   },
   templateUrl: 'partials/tw-date-format.html'
