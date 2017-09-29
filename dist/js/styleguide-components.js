@@ -888,13 +888,17 @@ function DateFormatFilter(TwDateService) {
       return date;
     }
 
-    return TwDateService.getDateFormat(date, locale);
+    if (typeof date === 'string' && new Date(date)) {
+      date = new Date(date);
+    }
+
+    return TwDateService.getLocaleDateString(date, locale);
   };
 }
 
 DateFormatFilter.$inject = ['TwDateService'];
 
-exports.default = _angular2.default.module('tw.styleguide.formatting.date-format', [_index2.default]).filter('twDate', DateFormatFilter).name;
+exports.default = _angular2.default.module('tw.styleguide.formatting.date', [_index2.default]).filter('twDate', DateFormatFilter).name;
 
 /***/ }),
 /* 25 */
@@ -923,15 +927,19 @@ function DateTimeFormatFilter(TwDateService) {
       return date;
     }
 
-    var dateText = TwDateService.getDateFormat(date, locale);
-    var timeText = TwDateService.getTimePresentation(date.getHours(), date.getMinutes(), locale);
+    if (typeof date === 'string' && new Date(date)) {
+      date = new Date(date);
+    }
+
+    var dateText = TwDateService.getLocaleDateString(date, locale);
+    var timeText = TwDateService.getLocaleTimeString(date, locale);
     return dateText + ' ' + timeText;
   };
 }
 
 DateTimeFormatFilter.$inject = ['TwDateService'];
 
-exports.default = _angular2.default.module('tw.styleguide.formatting.date-time-format', [_index2.default]).filter('twDateTime', DateTimeFormatFilter).name;
+exports.default = _angular2.default.module('tw.styleguide.formatting.date-time', [_index2.default]).filter('twDateTime', DateTimeFormatFilter).name;
 
 /***/ }),
 /* 26 */
@@ -5950,8 +5958,10 @@ function DateService() {
     return _this.getUTCDateFromParts(date.getUTCFullYear() + years, date.getUTCMonth() + months, date.getUTCDate() + days);
   };
 
-  this.getTimePresentation = function (hours, minutes, locale) {
+  this.getLocaleTimeString = function (date, locale) {
     var lang = getLanguageFromLocale(locale);
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
     if (hours < 10) {
       hours = '0' + hours;
     }
@@ -6005,7 +6015,7 @@ function DateService() {
     return _this.isMonthBeforeDay(locale) ? '' + monthName + delimiter + day + daySuffix : '' + day + daySuffix + delimiter + monthName;
   };
 
-  this.getDateFormat = function (date, locale) {
+  this.getLocaleDateString = function (date, locale) {
     // Check that the date exists
     if (!date) {
       return date;

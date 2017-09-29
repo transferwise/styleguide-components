@@ -25,15 +25,15 @@
   <p>
     <code>twDate</code> is an Angular.js custom filter to format dates. It is useful for internationalization 
     since different countries follow during date formats (e.g. dd/MM/yyyy vs MM/dd/yyyy vs yyyy/MM/dd) and time formats (12h vs 24h).
-    The twDate filter takes 1 parameter: locale.
+    The twDate filter takes 1 parameter: locale. The date can be either a Date object or a string.
   </p>
   <dl>
     <dt>Date filter (now)</dt>
     <dd>{{$ctrl.dates.now | twDate:$ctrl.date.locale }}</dd>
     <dt>Date filter (7 days ago)</dt>
     <dd>{{$ctrl.dates.oneWeekAgo | twDate:$ctrl.date.locale }}</dd>
-    <dt>Date filter (365 days ago)</dt>
-    <dd>{{$ctrl.dates.oneYearAgo | twDate:$ctrl.date.locale }}</dd>
+    <dt>Date filter (2016)</dt>
+    <dd>{{'2016-02-03 15:20' | twDate:$ctrl.date.locale }}</dd>
   </dl>
 <pre>
 &lt;dl&gt;
@@ -47,15 +47,15 @@
   <p>
     <code>twDateTime</code> is an Angular.js custom filter to format dates and times. It is useful for internationalization 
     since different countries follow during date formats (e.g. dd/MM/yyyy vs MM/dd/yyyy vs yyyy/MM/dd) and time formats (12h vs 24h).
-    The twDateTime filter takes 1 parameter: locale.
+    The twDateTime filter takes 1 parameter: locale. The date can be either a Date object or a string.
   </p>
   <dl>
     <dt>Date-time filter (now)</dt>
     <dd>{{$ctrl.dates.now | twDateTime:$ctrl.date.locale }}</dd>
     <dt>Date-timefilter (7 days ago)</dt>
     <dd>{{$ctrl.dates.oneWeekAgo | twDateTime:$ctrl.date.locale }}</dd>
-    <dt>Date-time filter (365 days ago)</dt>
-    <dd>{{$ctrl.dates.oneYearAgo | twDateTime:$ctrl.date.locale }}</dd>
+    <dt>Date-time filter (2016)</dt>
+    <dd>{{'2016-02-03 15:20' | twDateTime:$ctrl.date.locale }}</dd>
   </dl>
 <pre>
 &lt;dl&gt;

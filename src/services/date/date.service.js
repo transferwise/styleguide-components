@@ -137,8 +137,10 @@ function DateService() {
     date.getUTCDate() + days
   );
 
-  this.getTimePresentation = (hours, minutes, locale) => {
+  this.getLocaleTimeString = (date, locale) => {
     const lang = getLanguageFromLocale(locale);
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
     if (hours < 10) {
       hours = `0${hours}`;
     }
@@ -196,7 +198,7 @@ function DateService() {
       : `${day}${daySuffix}${delimiter}${monthName}`;
   };
 
-  this.getDateFormat = (date, locale) => {
+  this.getLocaleDateString = (date, locale) => {
     // Check that the date exists
     if (!date) {
       return date;

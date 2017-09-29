@@ -7,12 +7,12 @@ function DateTimeFormatFilter(TwDateService) {
       return date;
     }
 
-    const dateText = TwDateService.getDateFormat(date, locale);
-    const timeText = TwDateService.getTimePresentation(
-      date.getHours(),
-      date.getMinutes(),
-      locale
-    );
+    if (typeof date === 'string' && new Date(date)) {
+      date = new Date(date);
+    }
+
+    const dateText = TwDateService.getLocaleDateString(date, locale);
+    const timeText = TwDateService.getLocaleTimeString(date, locale);
     return `${dateText} ${timeText}`;
   };
 }
@@ -20,5 +20,5 @@ function DateTimeFormatFilter(TwDateService) {
 DateTimeFormatFilter.$inject = ['TwDateService'];
 
 export default angular
-  .module('tw.styleguide.formatting.date-time-format', [DateService])
+  .module('tw.styleguide.formatting.date-time', [DateService])
   .filter('twDateTime', DateTimeFormatFilter).name;

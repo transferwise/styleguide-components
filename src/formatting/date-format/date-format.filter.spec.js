@@ -18,7 +18,7 @@ describe('DateFormat filter, ', function() {
   describe('Given the locale is en-GB', function() {
     beforeEach(function() {
       $scope.locale = "en-GB";
-      $scope.value = new Date(2016,10,5);
+      $scope.value = "2016/11/5";
       $element = getCompiledDirectiveElement($scope);
       $scope.$apply();
     });

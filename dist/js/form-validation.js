@@ -414,8 +414,10 @@ function DateService() {
     return _this.getUTCDateFromParts(date.getUTCFullYear() + years, date.getUTCMonth() + months, date.getUTCDate() + days);
   };
 
-  this.getTimePresentation = function (hours, minutes, locale) {
+  this.getLocaleTimeString = function (date, locale) {
     var lang = getLanguageFromLocale(locale);
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
     if (hours < 10) {
       hours = '0' + hours;
     }
@@ -469,7 +471,7 @@ function DateService() {
     return _this.isMonthBeforeDay(locale) ? '' + monthName + delimiter + day + daySuffix : '' + day + daySuffix + delimiter + monthName;
   };
 
-  this.getDateFormat = function (date, locale) {
+  this.getLocaleDateString = function (date, locale) {
     // Check that the date exists
     if (!date) {
       return date;
