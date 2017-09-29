@@ -487,8 +487,6 @@ angular.module('tw.styleguide.docs', [])
       {'value': 'es-US', 'label': 'Spanish US'},
       {'value': 'pt-BR', 'label': 'Brazillian Portuguese'},
       {'value': 'ja-JP', 'label': 'Japanese'},
-      {'value': 'fi-FI', 'label': 'Finnish'},
-      {'value': 'de-DE', 'label': 'German'},
       {'value': 'xx-XX', 'label': 'Unknown locale'}
     ];
     var now = new Date();
