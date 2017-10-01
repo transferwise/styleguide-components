@@ -46,7 +46,7 @@ describe('DateFormat filter, ', function() {
   function getCompiledDirectiveElement(scope, template) {
     if (!template) {
       template = " \
-        <span>{{value | twDate:locale}}</span>";
+        <span>{{value | twDateFormat:locale}}</span>";
     }
 
     var element = angular.element(template);
