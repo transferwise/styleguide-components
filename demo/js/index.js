@@ -529,10 +529,6 @@ angular.module('tw.styleguide.docs', [])
         }
       };
       this.dateChange = () => {
-        console.log(this.model);
-        console.log(this.hours);
-        console.log(this.minutes);
-
         this.model.setHours(this.hours);
         this.model.setMinutes(this.minutes);
       };
