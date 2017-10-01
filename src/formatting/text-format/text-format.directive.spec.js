@@ -21,20 +21,20 @@ describe('TextFormat directive, ', function() {
     describe('when typing first character', function() {
       describe('and pattern does not begin with a separator', function() {
         beforeEach(function() {
-          $scope.pattern = "**-**-**";
+          $scope.pattern = '**-**-**';
           $scope.ngModel = null;
           $element = getCompiledDirectiveElement($scope);
           input = $element[0];
           input.focus();
-          typeCharacter(input, "1");
+          typeCharacter(input, '1');
           $timeout.flush(1000);
           $scope.$apply();
         });
         it('should show the character', function() {
-          expect(input.value).toBe("1");
+          expect(input.value).toBe('1');
         });
         it('should bind the character to the model', function() {
-          expect($scope.ngModel).toBe("1");
+          expect($scope.ngModel).toBe('1');
         });
         it('should position the cursor after the character', function() {
           if (supportsCursorPosition()) {
@@ -45,20 +45,20 @@ describe('TextFormat directive, ', function() {
 
       describe('and pattern begins with a single separator', function() {
         beforeEach(function() {
-          $scope.pattern = "(**) **-**";
+          $scope.pattern = '(**) **-**';
           $scope.ngModel = null;
           $element = getCompiledDirectiveElement($scope);
           input = $element[0];
           input.focus();
-          typeCharacter(input, "1");
+          typeCharacter(input, '1');
           $timeout.flush();
           $scope.$apply();
         });
         it('should show the separator and the character', function() {
-          expect(input.value).toBe("(1");
+          expect(input.value).toBe('(1');
         });
         it('should bind the character to the model', function() {
-          expect($scope.ngModel).toBe("1");
+          expect($scope.ngModel).toBe('1');
         });
         it('should position the cursor after the separator and character', function() {
           if (supportsCursorPosition()) {
@@ -69,20 +69,20 @@ describe('TextFormat directive, ', function() {
 
       describe('and pattern begins with more than one separator', function() {
         beforeEach(function() {
-          $scope.pattern = "(+**) **-**";
+          $scope.pattern = '(+**) **-**';
           $scope.ngModel = null;
           $element = getCompiledDirectiveElement($scope);
           input = $element[0];
           input.focus();
-          typeCharacter(input, "1");
+          typeCharacter(input, '1');
           $timeout.flush();
           $scope.$apply();
         });
         it('should show the separators and the character', function() {
-          expect(input.value).toBe("(+1");
+          expect(input.value).toBe('(+1');
         });
         it('should bind the character to the model', function() {
-          expect($scope.ngModel).toBe("1");
+          expect($scope.ngModel).toBe('1');
         });
         it('should position the cursor after the separators and character', function() {
           if (supportsCursorPosition()) {
@@ -95,8 +95,8 @@ describe('TextFormat directive, ', function() {
     if (supportsCursorPosition()) {
       describe('when cursor', function() {
         beforeEach(function() {
-          $scope.pattern = "***/**/-/**";
-          $scope.ngModel = "1234567";
+          $scope.pattern = '***/**/-/**';
+          $scope.ngModel = '1234567';
         });
         describe('follows a character', function() {
           beforeEach(function() {
@@ -106,15 +106,15 @@ describe('TextFormat directive, ', function() {
           });
           describe('and type a character', function() {
             beforeEach(function() {
-              typeCharacter(input, "8");
+              typeCharacter(input, '8');
               $timeout.flush();
               $scope.$apply();
             });
             it('should correctly insert the types value', function() {
-              expect(input.value).toBe("182/34/-/567");
+              expect(input.value).toBe('182/34/-/567');
             });
             it('should correctly update the model', function() {
-              expect($scope.ngModel).toBe("18234567");
+              expect($scope.ngModel).toBe('18234567');
             });
             it('should position the cursor after the typed character', function() {
               expect(input.selectionStart).toBe(2);
@@ -128,8 +128,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the character before the cursor', function() {
-              expect(input.value).toBe("234/56/-/7");
-              expect($scope.ngModel).toBe("234567");
+              expect(input.value).toBe('234/56/-/7');
+              expect($scope.ngModel).toBe('234567');
             });
             it('should move the cursor position back', function() {
               expect(input.selectionStart).toBe(0);
@@ -143,8 +143,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the following character', function() {
-              expect(input.value).toBe("134/56/-/7");
-              expect($scope.ngModel).toBe("134567");
+              expect(input.value).toBe('134/56/-/7');
+              expect($scope.ngModel).toBe('134567');
             });
             it('should not move the cursor position', function() {
               expect(input.selectionStart).toBe(1);
@@ -160,13 +160,13 @@ describe('TextFormat directive, ', function() {
           });
           describe('and type a character', function() {
             beforeEach(function() {
-              typeCharacter(input, "8");
+              typeCharacter(input, '8');
               $timeout.flush();
               $scope.$apply();
             });
             it('should position the typed character after the cursor', function() {
-              expect(input.value).toBe("123/84/-/567");
-              expect($scope.ngModel).toBe("12384567");
+              expect(input.value).toBe('123/84/-/567');
+              expect($scope.ngModel).toBe('12384567');
             });
             it('should position the cursor after the typed character', function() {
               expect(input.selectionStart).toBe(5);
@@ -179,8 +179,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the character before the separator', function() {
-              expect(input.value).toBe("124/56/-/7");
-              expect($scope.ngModel).toBe("124567");
+              expect(input.value).toBe('124/56/-/7');
+              expect($scope.ngModel).toBe('124567');
             });
             it('should move the cursor position back', function() {
               expect(input.selectionStart).toBe(2);
@@ -193,8 +193,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the following character', function() {
-              expect(input.value).toBe("123/56/-/7");
-              expect($scope.ngModel).toBe("123567");
+              expect(input.value).toBe('123/56/-/7');
+              expect($scope.ngModel).toBe('123567');
             });
             it('should not move the cursor position ', function() {
               expect(input.selectionStart).toBe(4);
@@ -210,13 +210,13 @@ describe('TextFormat directive, ', function() {
           });
           describe('and type a character', function() {
             beforeEach(function() {
-              typeCharacter(input, "8");
+              typeCharacter(input, '8');
               $timeout.flush();
               $scope.$apply();
             });
             it('should position the typed character after the cursor', function() {
-              expect(input.value).toBe("123/84/-/567");
-              expect($scope.ngModel).toBe("12384567");
+              expect(input.value).toBe('123/84/-/567');
+              expect($scope.ngModel).toBe('12384567');
             });
             it('should position the cursor after the typed character', function() {
               expect(input.selectionStart).toBe(5);
@@ -229,8 +229,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the character before the cursor', function() {
-              expect(input.value).toBe("124/56/-/7");
-              expect($scope.ngModel).toBe("124567");
+              expect(input.value).toBe('124/56/-/7');
+              expect($scope.ngModel).toBe('124567');
             });
             it('should move the cursor position back', function() {
               expect(input.selectionStart).toBe(2);
@@ -243,8 +243,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the character after the separator', function() {
-              expect(input.value).toBe("123/56/-/7");
-              expect($scope.ngModel).toBe("123567");
+              expect(input.value).toBe('123/56/-/7');
+              expect($scope.ngModel).toBe('123567');
             });
             it('should not move the cursor position', function() {
               expect(input.selectionStart).toBe(3);
@@ -260,13 +260,13 @@ describe('TextFormat directive, ', function() {
           });
           describe('and type a character', function() {
             beforeEach(function() {
-              typeCharacter(input, "8");
+              typeCharacter(input, '8');
               $timeout.flush();
               $scope.$apply();
             });
             it('should position the typed character after the cursor', function() {
-              expect(input.value).toBe("123/45/-/867");
-              expect($scope.ngModel).toBe("12345867");
+              expect(input.value).toBe('123/45/-/867');
+              expect($scope.ngModel).toBe('12345867');
             });
             it('should position the cursor after the typed character', function() {
               expect(input.selectionStart).toBe(10);
@@ -279,8 +279,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the character before the separators', function() {
-              expect(input.value).toBe("123/46/-/7");
-              expect($scope.ngModel).toBe("123467");
+              expect(input.value).toBe('123/46/-/7');
+              expect($scope.ngModel).toBe('123467');
             });
             it('should move the cursor position back', function() {
               expect(input.selectionStart).toBe(5);
@@ -293,8 +293,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the following character', function() {
-              expect(input.value).toBe("123/45/-/7");
-              expect($scope.ngModel).toBe("123457");
+              expect(input.value).toBe('123/45/-/7');
+              expect($scope.ngModel).toBe('123457');
             });
             it('should not move the cursor position', function() {
               expect(input.selectionStart).toBe(9);
@@ -310,13 +310,13 @@ describe('TextFormat directive, ', function() {
           });
           describe('and type a character', function() {
             beforeEach(function() {
-              typeCharacter(input, "8");
+              typeCharacter(input, '8');
               $timeout.flush();
               $scope.$apply();
             });
             it('should position the typed character after the cursor', function() {
-              expect(input.value).toBe("123/45/-/867");
-              expect($scope.ngModel).toBe("12345867");
+              expect(input.value).toBe('123/45/-/867');
+              expect($scope.ngModel).toBe('12345867');
             });
             it('should position the cursor after the typed character', function() {
               expect(input.selectionStart).toBe(10);
@@ -329,8 +329,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the character before the cursor', function() {
-              expect(input.value).toBe("123/46/-/7");
-              expect($scope.ngModel).toBe("123467");
+              expect(input.value).toBe('123/46/-/7');
+              expect($scope.ngModel).toBe('123467');
             });
             it('should move the cursor position back', function() {
               expect(input.selectionStart).toBe(5);
@@ -343,8 +343,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the character following the separators', function() {
-              expect(input.value).toBe("123/45/-/7");
-              expect($scope.ngModel).toBe("123457");
+              expect(input.value).toBe('123/45/-/7');
+              expect($scope.ngModel).toBe('123457');
             });
             it('should not move the cursor position', function() {
               expect(input.selectionStart).toBe(6);
@@ -360,13 +360,13 @@ describe('TextFormat directive, ', function() {
           });
           describe('and type a character', function() {
             beforeEach(function() {
-              typeCharacter(input, "8");
+              typeCharacter(input, '8');
               $timeout.flush();
               $scope.$apply();
             });
             it('should position the typed character after the cursor', function() {
-              expect(input.value).toBe("123/45/-/867");
-              expect($scope.ngModel).toBe("12345867");
+              expect(input.value).toBe('123/45/-/867');
+              expect($scope.ngModel).toBe('12345867');
             });
             it('should position the cursor after the typed character', function() {
               expect(input.selectionStart).toBe(10);
@@ -379,8 +379,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the character before the separators', function() {
-              expect(input.value).toBe("123/46/-/7");
-              expect($scope.ngModel).toBe("123467");
+              expect(input.value).toBe('123/46/-/7');
+              expect($scope.ngModel).toBe('123467');
             });
             it('should move the cursor position back', function() {
               expect(input.selectionStart).toBe(5);
@@ -393,8 +393,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the character following the separators', function() {
-              expect(input.value).toBe("123/45/-/7");
-              expect($scope.ngModel).toBe("123457");
+              expect(input.value).toBe('123/45/-/7');
+              expect($scope.ngModel).toBe('123457');
             });
             it('should not move the cursor position', function() {
               expect(input.selectionStart).toBe(7);
@@ -405,8 +405,8 @@ describe('TextFormat directive, ', function() {
 
       describe('when cursor selection range', function() {
         beforeEach(function() {
-          $scope.pattern = "***/**/-/**";
-          $scope.ngModel = "1234567";
+          $scope.pattern = '***/**/-/**';
+          $scope.ngModel = '1234567';
         });
 
         /*
@@ -445,13 +445,13 @@ describe('TextFormat directive, ', function() {
           });
           describe('and type a character', function() {
             beforeEach(function() {
-              typeCharacter(input, "8");
+              typeCharacter(input, '8');
               $timeout.flush();
               $scope.$apply();
             });
             it('should position the typed character after the cursor', function() {
-              expect(input.value).toBe("183/45/-/67");
-              expect($scope.ngModel).toBe("1834567");
+              expect(input.value).toBe('183/45/-/67');
+              expect($scope.ngModel).toBe('1834567');
             });
             it('should position the cursor after the typed character', function() {
               expect(input.selectionStart).toBe(2);
@@ -464,8 +464,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the characters inside the range', function() {
-              expect(input.value).toBe("134/56/-/7");
-              expect($scope.ngModel).toBe("134567");
+              expect(input.value).toBe('134/56/-/7');
+              expect($scope.ngModel).toBe('134567');
             });
             it('should move the cursor position to selection start', function() {
               expect(input.selectionStart).toBe(1);
@@ -478,8 +478,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the characters inside the range', function() {
-              expect(input.value).toBe("134/56/-/7");
-              expect($scope.ngModel).toBe("134567");
+              expect(input.value).toBe('134/56/-/7');
+              expect($scope.ngModel).toBe('134567');
             });
             it('should move the cursor position to selection start', function() {
               expect(input.selectionStart).toBe(1);
@@ -495,13 +495,13 @@ describe('TextFormat directive, ', function() {
           });
           describe('and type a character', function() {
             beforeEach(function() {
-              typeCharacter(input, "8");
+              typeCharacter(input, '8');
               $timeout.flush();
               $scope.$apply();
             });
             it('should position the typed character after the cursor', function() {
-              expect(input.value).toBe("123/85/-/67");
-              expect($scope.ngModel).toBe("1238567");
+              expect(input.value).toBe('123/85/-/67');
+              expect($scope.ngModel).toBe('1238567');
             });
             it('should position the cursor after the typed character', function() {
               expect(input.selectionStart).toBe(5);
@@ -514,8 +514,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the characters inside the range', function() {
-              expect(input.value).toBe("123/56/-/7");
-              expect($scope.ngModel).toBe("123567");
+              expect(input.value).toBe('123/56/-/7');
+              expect($scope.ngModel).toBe('123567');
             });
             it('should move the cursor position to selection start', function() {
               expect(input.selectionStart).toBe(4);
@@ -528,8 +528,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the characters inside the range', function() {
-              expect(input.value).toBe("123/56/-/7");
-              expect($scope.ngModel).toBe("123567");
+              expect(input.value).toBe('123/56/-/7');
+              expect($scope.ngModel).toBe('123567');
             });
             it('should move the cursor position to selection start', function() {
               expect(input.selectionStart).toBe(4);
@@ -545,13 +545,13 @@ describe('TextFormat directive, ', function() {
           });
           describe('and type a character', function() {
             beforeEach(function() {
-              typeCharacter(input, "8");
+              typeCharacter(input, '8');
               $timeout.flush();
               $scope.$apply();
             });
             it('should position the typed character after the cursor', function() {
-              expect(input.value).toBe("128/45/-/67");
-              expect($scope.ngModel).toBe("1284567");
+              expect(input.value).toBe('128/45/-/67');
+              expect($scope.ngModel).toBe('1284567');
             });
             it('should position the cursor after the typed character and separator', function() {
               expect(input.selectionStart).toBe(3); // TODO should this be 4???
@@ -564,8 +564,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the characters inside the range', function() {
-              expect(input.value).toBe("124/56/-/7");
-              expect($scope.ngModel).toBe("124567");
+              expect(input.value).toBe('124/56/-/7');
+              expect($scope.ngModel).toBe('124567');
             });
             it('should move the cursor position to selection start', function() {
               expect(input.selectionStart).toBe(2);
@@ -578,8 +578,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the characters inside the range', function() {
-              expect(input.value).toBe("124/56/-/7");
-              expect($scope.ngModel).toBe("124567");
+              expect(input.value).toBe('124/56/-/7');
+              expect($scope.ngModel).toBe('124567');
             });
             it('should move the cursor position to selection start', function() {
               expect(input.selectionStart).toBe(2);
@@ -595,13 +595,13 @@ describe('TextFormat directive, ', function() {
           });
           describe('and type a character', function() {
             beforeEach(function() {
-              typeCharacter(input, "8");
+              typeCharacter(input, '8');
               $timeout.flush();
               $scope.$apply();
             });
             it('should position the typed character after the cursor', function() {
-              expect(input.value).toBe("123/45/-/87");
-              expect($scope.ngModel).toBe("1234587");
+              expect(input.value).toBe('123/45/-/87');
+              expect($scope.ngModel).toBe('1234587');
             });
             it('should position the cursor after the typed character', function() {
               expect(input.selectionStart).toBe(10);
@@ -614,8 +614,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the characters inside the range', function() {
-              expect(input.value).toBe("123/45/-/7");
-              expect($scope.ngModel).toBe("123457");
+              expect(input.value).toBe('123/45/-/7');
+              expect($scope.ngModel).toBe('123457');
             });
             it('should move the cursor position to selection start', function() {
               expect(input.selectionStart).toBe(9);
@@ -628,8 +628,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the characters inside the range', function() {
-              expect(input.value).toBe("123/45/-/7");
-              expect($scope.ngModel).toBe("123457");
+              expect(input.value).toBe('123/45/-/7');
+              expect($scope.ngModel).toBe('123457');
             });
             it('should move the cursor position to selection start', function() {
               expect(input.selectionStart).toBe(9);
@@ -645,13 +645,13 @@ describe('TextFormat directive, ', function() {
           });
           describe('and type a character', function() {
             beforeEach(function() {
-              typeCharacter(input, "8");
+              typeCharacter(input, '8');
               $timeout.flush();
               $scope.$apply();
             });
             it('should position the typed character after the cursor', function() {
-              expect(input.value).toBe("123/48/-/67");
-              expect($scope.ngModel).toBe("1234867");
+              expect(input.value).toBe('123/48/-/67');
+              expect($scope.ngModel).toBe('1234867');
             });
             it('should position the cursor after the typed character and separator', function() {
               expect(input.selectionStart).toBe(6); // TODO should this be 9???
@@ -664,8 +664,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the characters inside the range', function() {
-              expect(input.value).toBe("123/46/-/7");
-              expect($scope.ngModel).toBe("123467");
+              expect(input.value).toBe('123/46/-/7');
+              expect($scope.ngModel).toBe('123467');
             });
             it('should move the cursor position to selection start', function() {
               expect(input.selectionStart).toBe(5);
@@ -678,8 +678,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the characters inside the range', function() {
-              expect(input.value).toBe("123/46/-/7");
-              expect($scope.ngModel).toBe("123467");
+              expect(input.value).toBe('123/46/-/7');
+              expect($scope.ngModel).toBe('123467');
             });
             it('should move the cursor position to selection start', function() {
               expect(input.selectionStart).toBe(5);
@@ -695,13 +695,13 @@ describe('TextFormat directive, ', function() {
           });
           describe('and type a character', function() {
             beforeEach(function() {
-              typeCharacter(input, "8");
+              typeCharacter(input, '8');
               $timeout.flush();
               $scope.$apply();
             });
             it('should position the typed character after the cursor', function() {
-              expect(input.value).toBe("128/56/-/7");
-              expect($scope.ngModel).toBe("128567");
+              expect(input.value).toBe('128/56/-/7');
+              expect($scope.ngModel).toBe('128567');
             });
             it('should position the cursor after the typed character and separator', function() {
               expect(input.selectionStart).toBe(3);
@@ -714,8 +714,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the characters inside the range', function() {
-              expect(input.value).toBe("125/67/-/");
-              expect($scope.ngModel).toBe("12567");
+              expect(input.value).toBe('125/67/-/');
+              expect($scope.ngModel).toBe('12567');
             });
             it('should move the cursor position to selection start', function() {
               expect(input.selectionStart).toBe(2);
@@ -728,8 +728,8 @@ describe('TextFormat directive, ', function() {
               $scope.$apply();
             });
             it('should delete the characters inside the range', function() {
-              expect(input.value).toBe("125/67/-/");
-              expect($scope.ngModel).toBe("12567");
+              expect(input.value).toBe('125/67/-/');
+              expect($scope.ngModel).toBe('12567');
             });
             it('should move the cursor position to selection start', function() {
               expect(input.selectionStart).toBe(2);
@@ -743,8 +743,8 @@ describe('TextFormat directive, ', function() {
     if (supportsCursorPosition()) {
       describe('when pasting ', function() {
         beforeEach(function() {
-          $scope.pattern = "***/**/-/**";
-          $scope.ngModel = "1234567";
+          $scope.pattern = '***/**/-/**';
+          $scope.ngModel = '1234567';
           $element = getCompiledDirectiveElement($scope);
           input = $element[0];
         });
@@ -753,13 +753,13 @@ describe('TextFormat directive, ', function() {
           beforeEach(function() {
             input.focus();
             input.setSelectionRange(1, 1);
-            pasteString(input, "89");
+            pasteString(input, '89');
             $timeout.flush();
             $scope.$apply();
           });
           it('should add the pasted characters', function() {
-            expect(input.value).toBe("189/23/-/4567");
-            expect($scope.ngModel).toBe("189234567");
+            expect(input.value).toBe('189/23/-/4567');
+            expect($scope.ngModel).toBe('189234567');
           });
           it('should position the cursor after the pasted data', function() {
             expect(input.selectionStart).toBe(3);
@@ -769,13 +769,13 @@ describe('TextFormat directive, ', function() {
           beforeEach(function() {
             input.focus();
             input.setSelectionRange(3, 3);
-            pasteString(input, "89");
+            pasteString(input, '89');
             $timeout.flush();
             $scope.$apply();
           });
           it('should add the pasted characters', function() {
-            expect(input.value).toBe("123/89/-/4567");
-            expect($scope.ngModel).toBe("123894567");
+            expect(input.value).toBe('123/89/-/4567');
+            expect($scope.ngModel).toBe('123894567');
           });
           it('should position the cursor after the pasted data', function() {
             expect(input.selectionStart).toBe(6);
@@ -785,13 +785,13 @@ describe('TextFormat directive, ', function() {
           beforeEach(function() {
             input.focus();
             input.setSelectionRange(4, 4);
-            pasteString(input, "89");
+            pasteString(input, '89');
             $timeout.flush();
             $scope.$apply();
           });
           it('should add the pasted characters', function() {
-            expect(input.value).toBe("123/89/-/4567");
-            expect($scope.ngModel).toBe("123894567");
+            expect(input.value).toBe('123/89/-/4567');
+            expect($scope.ngModel).toBe('123894567');
           });
           it('should position the cursor after the pasted data', function() {
             expect(input.selectionStart).toBe(6);
@@ -801,13 +801,13 @@ describe('TextFormat directive, ', function() {
           beforeEach(function() {
             input.focus();
             input.setSelectionRange(2, 2);
-            pasteString(input, "89");
+            pasteString(input, '89');
             $timeout.flush();
             $scope.$apply();
           });
           it('should add the pasted characters', function() {
-            expect(input.value).toBe("128/93/-/4567");
-            expect($scope.ngModel).toBe("128934567");
+            expect(input.value).toBe('128/93/-/4567');
+            expect($scope.ngModel).toBe('128934567');
           });
           it('should position the cursor after the pasted data', function() {
             expect(input.selectionStart).toBe(5);
@@ -818,13 +818,13 @@ describe('TextFormat directive, ', function() {
           beforeEach(function() {
             input.focus();
             input.setSelectionRange(0, 2);
-            pasteString(input, "89");
+            pasteString(input, '89');
             $timeout.flush();
             $scope.$apply();
           });
           it('should add the pasted characters', function() {
-            expect(input.value).toBe("893/45/-/67");
-            expect($scope.ngModel).toBe("8934567");
+            expect(input.value).toBe('893/45/-/67');
+            expect($scope.ngModel).toBe('8934567');
           });
           it('should position the cursor after the pasted data', function() {
             expect(input.selectionStart).toBe(2);
@@ -834,13 +834,13 @@ describe('TextFormat directive, ', function() {
           beforeEach(function() {
             input.focus();
             input.setSelectionRange(2, 5);
-            pasteString(input, "89");
+            pasteString(input, '89');
             $timeout.flush();
             $scope.$apply();
           });
           it('should add the pasted characters', function() {
-            expect(input.value).toBe("128/95/-/67");
-            expect($scope.ngModel).toBe("1289567");
+            expect(input.value).toBe('128/95/-/67');
+            expect($scope.ngModel).toBe('1289567');
           });
           it('should position the cursor after the pasted data', function() {
             expect(input.selectionStart).toBe(5);
@@ -850,13 +850,13 @@ describe('TextFormat directive, ', function() {
           beforeEach(function() {
             input.focus();
             input.setSelectionRange(5, 10);
-            pasteString(input, "89");
+            pasteString(input, '89');
             $timeout.flush();
             $scope.$apply();
           });
           it('should add the pasted characters', function() {
-            expect(input.value).toBe("123/48/-/97");
-            expect($scope.ngModel).toBe("1234897");
+            expect(input.value).toBe('123/48/-/97');
+            expect($scope.ngModel).toBe('1234897');
           });
           it('should position the cursor after the pasted data', function() {
             expect(input.selectionStart).toBe(10);
@@ -866,13 +866,13 @@ describe('TextFormat directive, ', function() {
           beforeEach(function() {
             input.focus();
             input.setSelectionRange(10, 10);
-            pasteString(input, "89");
+            pasteString(input, '89');
             $timeout.flush();
             $scope.$apply();
           });
           it('should add the pasted characters', function() {
-            expect(input.value).toBe("123/45/-/6897");
-            expect($scope.ngModel).toBe("123456897");
+            expect(input.value).toBe('123/45/-/6897');
+            expect($scope.ngModel).toBe('123456897');
           });
           it('should position the cursor after the pasted data', function() {
             expect(input.selectionStart).toBe(12);
@@ -882,78 +882,78 @@ describe('TextFormat directive, ', function() {
 
       describe('when using undo/redo ', function() {
         beforeEach(function() {
-          $scope.pattern = "***/**/-/**";
-          $scope.ngModel = "";
+          $scope.pattern = '***/**/-/**';
+          $scope.ngModel = '';
           $element = getCompiledDirectiveElement($scope);
           input = $element[0];
         });
 
         it('undo should go back to previous value', function() {
-          typeCharacter(input, "1");
+          typeCharacter(input, '1');
           $timeout.flush();
-          typeCharacter(input, "2");
+          typeCharacter(input, '2');
           $timeout.flush();
           typeUndo(input);
           $scope.$apply();
 
-          expect(input.value).toBe("1");
-          expect($scope.ngModel).toBe("1");
+          expect(input.value).toBe('1');
+          expect($scope.ngModel).toBe('1');
         });
 
         it('undo should only go back to first value', function() {
-          typeCharacter(input, "1");
+          typeCharacter(input, '1');
           $timeout.flush();
-          typeCharacter(input, "2");
+          typeCharacter(input, '2');
           $timeout.flush();
           typeUndo(input);
           typeUndo(input);
           typeUndo(input);
           $scope.$apply();
 
-          expect(input.value).toBe("");
-          expect($scope.ngModel).toBe("");
+          expect(input.value).toBe('');
+          expect($scope.ngModel).toBe('');
         });
 
         it('redo should go forwards to value before undo', function() {
-          typeCharacter(input, "1");
+          typeCharacter(input, '1');
           $timeout.flush();
-          typeCharacter(input, "2");
+          typeCharacter(input, '2');
           $timeout.flush();
           typeUndo(input);
           typeRedo(input);
           $scope.$apply();
 
-          expect(input.value).toBe("12");
-          expect($scope.ngModel).toBe("12");
+          expect(input.value).toBe('12');
+          expect($scope.ngModel).toBe('12');
         });
 
         it('repeated redo should not go beyond last value', function() {
-          typeCharacter(input, "1");
+          typeCharacter(input, '1');
           $timeout.flush();
-          typeCharacter(input, "2");
+          typeCharacter(input, '2');
           $timeout.flush();
           typeUndo(input);
           typeRedo(input);
           typeRedo(input);
           $scope.$apply();
 
-          expect(input.value).toBe("12");
-          expect($scope.ngModel).toBe("12");
+          expect(input.value).toBe('12');
+          expect($scope.ngModel).toBe('12');
         });
 
         it('typing new character after undo should cancel any redo', function() {
-          typeCharacter(input, "1");
+          typeCharacter(input, '1');
           $timeout.flush();
-          typeCharacter(input, "2");
+          typeCharacter(input, '2');
           $timeout.flush();
           typeUndo(input);
-          typeCharacter(input, "3");
+          typeCharacter(input, '3');
           $timeout.flush();
           typeRedo(input);
           $scope.$apply();
 
-          expect(input.value).toBe("13");
-          expect($scope.ngModel).toBe("13");
+          expect(input.value).toBe('13');
+          expect($scope.ngModel).toBe('13');
         });
       });
     }
@@ -961,13 +961,69 @@ describe('TextFormat directive, ', function() {
 
   describe('Given an OR pattern (**-**||***-**) is supplied', function() {
     beforeEach(function() {
-      $scope.pattern = "**-**||***-**";
-      $scope.ngModel = "123456";
+      $scope.pattern = '**-**||***-**';
+      $scope.ngModel = '123456';
       $element = getCompiledDirectiveElement($scope);
       input = $element[0];
     });
     it('should use the first option', function() {
-      expect(input.value).toBe("12-3456");
+      expect(input.value).toBe('12-3456');
+    });
+  });
+
+  describe('when used with validation', function() {
+    beforeEach(function() {
+      $scope.ngModel = '123';
+      $scope.pattern = '**-**';
+    });
+    describe('minlength', function() {
+      beforeEach(function() {
+        $scope.ngMinlength = 4;
+        $element = getCompiledDirectiveElement($scope);
+        input = $element[0];
+        $timeout.flush(); // Make sure validator is replaced
+      });
+      it('should not count separators', function() {
+        angular.element(input).trigger('input');
+        expect(input.classList.contains('ng-valid')).toBe(false);
+      });
+      it('should validate correctly', function() {
+        typeCharacter(input, '4');
+        expect(input.classList.contains('ng-valid')).toBe(true);
+      });
+    });
+    describe('maxlength', function() {
+      beforeEach(function() {
+        $scope.ngMaxlength = 4;
+        $element = getCompiledDirectiveElement($scope);
+        input = $element[0];
+        $timeout.flush(); // Make sure validator is replaced
+      });
+      it('should not count separators', function() {
+        typeCharacter(input, '4');
+        expect(input.classList.contains('ng-valid')).toBe(true);
+      });
+      it('should validate correctly', function() {
+        typeCharacter(input, '4');
+        typeCharacter(input, '5');
+        expect(input.classList.contains('ng-valid')).toBe(false);
+      });
+    });
+    describe('pattern', function() {
+      beforeEach(function() {
+        $scope.ngPattern = new RegExp('^[0-9]*$');
+        $element = getCompiledDirectiveElement($scope);
+        input = $element[0];
+        $timeout.flush(); // Make sure validator is replaced
+      });
+      it('should not validate separators', function() {
+        typeCharacter(input, '4');
+        expect(input.classList.contains('ng-valid')).toBe(true);
+      });
+      it('should validate correctly', function() {
+        typeCharacter(input, 'A');
+        expect(input.classList.contains('ng-valid')).toBe(false);
+      });
     });
   });
 
@@ -1092,7 +1148,7 @@ describe('TextFormat directive, ', function() {
   }
 
   function pasteString(input, pasteValue) {
-    var pasteEvent = new Event("paste");
+    var pasteEvent = new Event('paste');
     window.clipboardData = {
       getData: function() {
         return pasteValue;
@@ -1116,7 +1172,8 @@ describe('TextFormat directive, ', function() {
           ng-model='ngModel' \
           ng-required='ngRequired' \
           ng-minlength='ngMinlength' \
-          ng-maxlength='ngMaxlength' />";
+          ng-maxlength='ngMaxlength' \
+          ng-pattern='ngPattern' />";
     }
 
     var element = angular.element(template);

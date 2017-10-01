@@ -412,6 +412,7 @@ angular.module('tw.styleguide.docs', [])
           format: '**** **** **** ****',
           minlength: 16,
           maxlength: 20,
+          pattern: '^[0-9]*$',
           placeholder: 'Number on the front of your card',
           helpText: 'Credit/debit cards have either 16 or 20 digits'
         },
@@ -423,6 +424,7 @@ angular.module('tw.styleguide.docs', [])
           format: '** / **',
           minlength: 4,
           maxlength: 4,
+          pattern: '^[0-9]*$',
           placeholder: 'MM / YY',
           helpText: 'Month, then year'
         },
@@ -434,6 +436,7 @@ angular.module('tw.styleguide.docs', [])
           format: '** - ** - **',
           minlength: 6,
           maxlength: 7,
+          pattern: '^[0-9]*$',
           placeholder: '** - ** - **',
           helpText: 'UK sort codes have 6 or 7 digits'
         },
@@ -445,6 +448,7 @@ angular.module('tw.styleguide.docs', [])
           format: '(+**) **** *** ***',
           minlength: 10,
           maxlength: 12,
+          pattern: '^[0-9]*$',
           placeholder: '(+**) **** *** ***'
         },
         label: 'UK phone number',
