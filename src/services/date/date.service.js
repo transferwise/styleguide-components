@@ -49,68 +49,82 @@ function DateService() {
     );
   };
 
-
   this.getLastDayOfMonth = (year, month) => {
     const lastDay = this.getUTCDateFromParts(year, month + 1, 0);
     return lastDay.getUTCDate();
   };
 
-  this.getUTCDateFromParts = (year, month, day) => {
+  this.getUTCDateFromParts = (year, month, day, hours, minutes, seconds) => {
     const date = new Date();
     date.setUTCFullYear(year, month, day);
-    date.setUTCHours(0);
-    date.setUTCMinutes(0);
-    date.setUTCSeconds(0);
+    date.setUTCHours(hours || 0);
+    date.setUTCMinutes(minutes || 0);
+    date.setUTCSeconds(seconds || 0);
     date.setUTCMilliseconds(0);
     return date;
   };
 
+  this.getLocaleDateFromParts = (year, month, day, hours, minutes, seconds) => {
+    const date = new Date();
+    date.setFullYear(year, month, day);
+    date.setHours(hours || 0);
+    date.setMinutes(minutes || 0);
+    date.setSeconds(seconds || 0);
+    date.setMilliseconds(0);
+    return date;
+  };
+
+  // Sunday is first day of the week in JS
   this.getDayNamesForLocale = (locale, format) => {
-    let date;
     const days = [];
-    const language = getLanguageFromLocale(locale);
-
-    if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language]) {
-      return DEFAULT_DAY_NAMES_BY_LANGUAGE[language];
-    }
-
-    format = getValidDateFormat(format);
-    locale = getValidLocale(locale);
-
-    for (let i = 1; i <= 7; i++) {
-      date = this.getUTCDateFromParts(2001, 0, i); // This day was a monday
-      days.push(getLocalisedDateName(date, locale, { weekday: format }));
+    const validFormat = getValidDateFormat(format);
+    for (let day = 0; day < 7; day++) {
+      days.push(this.getDayNameForLocale(day, locale, validFormat));
     }
     return days;
   };
 
-  this.getMonthNamesForLocale = (locale, format) => {
-    let date;
-    let month;
-    const months = [];
+  this.getDayNameForLocale = (dayOfWeek, locale, format) => {
     const language = getLanguageFromLocale(locale);
-
-    if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] &&
-      (format === 'long' || language === 'ja')) {
-      return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language];
+    if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language] &&
+      (format !== 'short' || language === 'ja')) {
+      return DEFAULT_DAY_NAMES_BY_LANGUAGE[language][dayOfWeek];
     }
 
-    format = getValidDateFormat(format);
-    locale = getValidLocale(locale);
+    const validLocale = getValidLocale(locale);
+    const date = this.getUTCDateFromParts(2006, 0, dayOfWeek + 1); // 2006 started with a Sunday
 
-    for (let i = 0; i < 12; i++) {
-      // Day in middle of month avoids timezone issues
-      date = this.getUTCDateFromParts(2000, i, 15);
-      if (format === 'short') {
-        month = getLocalisedDateName(date, locale, { month: 'long' });
-        month = (month.length > 4) ? month.slice(0, 3) : month;
-        months.push(month);
-      } else {
-        months.push(getLocalisedDateName(date, locale, { month: format }));
-      }
+    return getLocalisedDateName(date, validLocale, { weekday: format });
+  };
+
+  this.getMonthNamesForLocale = (locale, format) => {
+    const months = [];
+    const validFormat = getValidDateFormat(format);
+
+    for (let month = 0; month < 12; month++) {
+      months.push(this.getMonthNameForLocale(month, locale, validFormat));
     }
+
     return months;
   };
+
+  this.getMonthNameForLocale = (month, locale, format) => {
+    const language = getLanguageFromLocale(locale);
+    if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] &&
+      (format !== 'short' || language === 'ja')) {
+      return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language][month];
+    }
+
+    const validLocale = getValidLocale(locale);
+    // Day in middle of month avoids timezone issues
+    const date = this.getUTCDateFromParts(2000, month, 15);
+    if (format === 'short') {
+      month = getLocalisedDateName(date, validLocale, { month: 'long' });
+      return (month.length > 4) ? month.slice(0, 3) : month;
+    }
+    return getLocalisedDateName(date, validLocale, { month: format });
+  };
+
 
   this.getWeekday = (year, month, day) => {
     const utcDate = this.getUTCDateFromParts(year, month, day);
@@ -141,6 +155,7 @@ function DateService() {
     const lang = getLanguageFromLocale(locale);
     let hours = date.getHours();
     let minutes = date.getMinutes();
+
     if (hours < 10) {
       hours = `0${hours}`;
     }
@@ -158,74 +173,130 @@ function DateService() {
       if (hours === 0) {
         hours = 12;
       }
+      if (minutes === '00') {
+        return `${hours}${ampm}`;
+      }
       return `${hours}:${minutes}${ampm}`;
     }
     return `${hours}:${minutes}`;
   };
 
-  this.getYearAndMonthPresentation = (year, monthName, locale) => {
-    const lang = getLanguageFromLocale(locale);
-    const yearSuffix = getSuffix(YEAR_SUFFIXES_BY_LANGUAGE, year, lang);
-    const delimiter = getDelimiter(lang);
+  this.getYearAndMonthPresentation = (year, month, locale, format) => {
+    const yearName = getYearName(year, locale);
+    const monthName = this.getMonthNameForLocale(month, locale, format || 'long');
 
-    return this.isYearBeforeMonth(locale)
-      ? `${year}${yearSuffix}${delimiter}${monthName}`
-      : `${monthName}${delimiter}${year}${yearSuffix}`;
-  };
-
-  this.getYearMonthDatePresentation = (year, monthName, day, locale) => {
-    const lang = getLanguageFromLocale(locale);
-    const yearSuffix = getSuffix(YEAR_SUFFIXES_BY_LANGUAGE, year, lang);
-    const daySuffix = getSuffix(DAY_SUFFIXES_BY_LANGUAGE, day, lang);
-    const delimiter = getDelimiter(lang);
+    const language = getLanguageFromLocale(locale);
+    const delimiter = getDelimiter(language);
 
     if (this.isYearBeforeMonth(locale)) {
-      return `${year}${yearSuffix}${delimiter}${monthName}${delimiter}${day}${daySuffix}`;
+      return [yearName, monthName].join(delimiter);
+    }
+    return [monthName, yearName].join(delimiter);
+  };
+
+  this.getYearMonthDatePresentation = (year, month, day, locale, format) => {
+    const yearName = getYearName(year, locale);
+    const monthName = this.getMonthNameForLocale(month, locale, format || 'long');
+    const dateName = getDateName(day, locale);
+
+    const language = getLanguageFromLocale(locale);
+    const delimiter = getDelimiter(language);
+
+    if (this.isYearBeforeMonth(locale)) {
+      return [yearName, monthName, dateName].join(delimiter);
     }
     if (this.isMonthBeforeDay(locale)) {
-      return `${monthName}${delimiter}${day}${daySuffix},${delimiter}${year}${yearSuffix}`;
+      const dateString = [monthName, dateName].join(delimiter);
+      return `${dateString}, ${yearName}`;
     }
-    return `${day}${daySuffix}${delimiter}${monthName}${delimiter}${year}${yearSuffix}`;
+    return [dateName, monthName, yearName].join(delimiter);
   };
 
-  this.getMonthDatePresentation = (monthName, day, locale) => {
+  this.getLocaleFullDate = (date, locale) => {
+    const dateString = this.getYearMonthDatePresentation(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      locale
+    );
+
+    const weekdayName = this.getDayNameForLocale(date.getDay(), locale, 'long').trim();
     const lang = getLanguageFromLocale(locale);
-    const daySuffix = getSuffix(DAY_SUFFIXES_BY_LANGUAGE, day, lang);
-    const delimiter = getDelimiter(lang);
 
-    return this.isMonthBeforeDay(locale)
-      ? `${monthName}${delimiter}${day}${daySuffix}`
-      : `${day}${daySuffix}${delimiter}${monthName}`;
+    if (lang === 'ja') {
+      return `${dateString} (${weekdayName})`;
+    }
+    return `${weekdayName}, ${dateString}`;
   };
 
-  this.getLocaleDateString = (date, locale) => {
+  this.getLocaleNow = () => new Date();
+
+  this.getLocaleDateString = (date, locale, short) => {
     // Check that the date exists
     if (!date) {
       return date;
     }
 
     // Initialize variables
-    const weekday = this.getDayNamesForLocale(locale, 'long')[date.getDay()];
     const year = date.getFullYear();
-    const month = this.getMonthNamesForLocale(locale, 'long')[date.getMonth()];
-    const monthDate = date.getDate();
-    const now = new Date();
-    const hasWeekday = (now - date) < 604800000; // 1 week in milliseconds
-    const hasYear = now.getFullYear() !== year;
+    const month = date.getMonth();
+    const dayOfMonth = date.getDate();
+    const dayOfWeek = date.getDay();
 
-    // Return the result
+    const now = this.getLocaleNow();
+    const fourtyEightHours = 48 * 60 * 60 * 1000;
+    const eightDays = 8 * 24 * 60 * 60 * 1000;
+
+    const hasTime = Math.abs(now - date) < fourtyEightHours;
+    const hasDate = !hasTime;
+    const hasWeekday = Math.abs(now - date) < eightDays;
+    const hasMonth = !hasWeekday;
+    const hasYear = !hasWeekday && now.getFullYear() !== year;
+
+    const yearName = hasYear ? getYearName(year, locale) : '';
+    const monthName = hasMonth ? this.getMonthNameForLocale(month, locale, short ? 'short' : 'long') : '';
+    const dateName = hasDate ? getDateName(dayOfMonth, locale) : '';
+    const weekdayName = hasWeekday ? this.getDayNameForLocale(dayOfWeek, locale, short ? 'short' : 'long') : '';
+    const timeName = hasTime ? this.getLocaleTimeString(date, locale) : '';
+
     const lang = getLanguageFromLocale(locale);
-    const result = hasYear
-      ? this.getYearMonthDatePresentation(year, month, monthDate, locale)
-      : this.getMonthDatePresentation(month, monthDate, locale);
+    const delimiter = getDelimiter(lang);
+
+    let dateString;
+    if (this.isYearBeforeMonth(locale)) {
+      dateString = [yearName, monthName, dateName].join(delimiter).trim();
+    } else if (this.isMonthBeforeDay(locale)) {
+      dateString = [monthName, dateName].join(delimiter).trim();
+      if (hasYear) {
+        dateString += `, ${yearName}`;
+      }
+    } else {
+      dateString = [dateName, monthName, yearName].join(delimiter).trim();
+    }
+
     if (hasWeekday) {
       if (lang === 'ja') {
-        return `${result} (${weekday})`;
+        dateString = `${dateString} (${weekdayName})`.trim();
+      } else {
+        dateString = `${weekdayName} ${dateString}`.trim();
       }
-      return `${weekday} ${result}`;
     }
-    return result;
+    dateString = `${dateString} ${timeName}`;
+
+    return dateString.trim();
   };
+
+  function getDateName(dayOfMonth, locale) {
+    const lang = getLanguageFromLocale(locale);
+    const suffix = getSuffix(DAY_SUFFIXES_BY_LANGUAGE, dayOfMonth, lang) || '';
+    return `${dayOfMonth}${suffix}`;
+  }
+
+  function getYearName(year, locale) {
+    const lang = getLanguageFromLocale(locale);
+    const suffix = getSuffix(YEAR_SUFFIXES_BY_LANGUAGE, year, lang);
+    return `${year}${suffix}`;
+  }
 
   function getLocalisedDateName(date, locale, formattingObject) {
     let name = date.toLocaleDateString(locale, formattingObject);
@@ -333,16 +404,16 @@ function DateService() {
 
   const DEFAULT_DAY_NAMES_BY_LANGUAGE = {
     en: [
+      'Sunday',
       'Monday',
       'Tuesday',
       'Wednesday',
       'Thursday',
       'Friday',
-      'Saturday',
-      'Sunday'
+      'Saturday'
     ],
     ja: [
-      '月', '火', '水', '木', '金', '土', '日'
+      '日', '月', '火', '水', '木', '金', '土'
     ]
   };
 

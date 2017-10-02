@@ -1,8 +1,6 @@
-import angular from 'angular';
-import DateService from '../../services/date/index.js';
 
 function DateFormatFilter(TwDateService) {
-  return (date, locale) => {
+  return (date, locale, format) => {
     if (!date) {
       return date;
     }
@@ -11,12 +9,14 @@ function DateFormatFilter(TwDateService) {
       date = new Date(date);
     }
 
-    return TwDateService.getLocaleDateString(date, locale);
+    if (format === 'long') {
+      return TwDateService.getLocaleFullDate(date, locale);
+    }
+
+    return TwDateService.getLocaleDateString(date, locale, format === 'short');
   };
 }
 
 DateFormatFilter.$inject = ['TwDateService'];
 
-export default angular
-  .module('tw.styleguide.formatting.date', [DateService])
-  .filter('twDate', DateFormatFilter).name;
+export default DateFormatFilter;
