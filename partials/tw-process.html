@@ -1,16 +1,16 @@
 
 <h4 id="process">TW Process</h4>
 <p>A component for conveying that a process is occuring, and for
-	communicating a successful or unsuccessful result.</p>
+  communicating a successful or unsuccessful result.</p>
 <div class="row m-b-3">
-	<div class="col-md-6">
-		<div class="m-y-3">
-			<tw-process
-				state="vm.process.state"
-				size="{{vm.process.size}}"
-				on-stop="vm.log('stopped')">
-			</tw-process>
-		</div>
+  <div class="col-md-6">
+    <div class="m-y-3">
+      <tw-process
+        state="vm.process.state"
+        size="{{vm.process.size}}"
+        on-stop="vm.log('stopped')">
+      </tw-process>
+    </div>
 <pre>
 &lt;tw-process
   state='{{vm.process.state}}'
@@ -18,30 +18,30 @@
   on-stop='vm.log('stopped')'&gt;
 &lt;/tw-process&gt;
 </pre>
-	</div>
-	<div class="col-md-6">
-		<div class="well">
-			<h5 class="page-header">
-				Edit configuration
-			</h5>
-			<div class="form-group" ng-init="vm.process.state = null">
-				<label class="control-label">
-					State
-				</label>
-				<tw-select ng-model="vm.process.state"
-					options="[{value: null, label: 'Processing'},{value: -1, label: 'Failed'},{value: 0, label: 'Hidden'},{value: 1, label: 'Success'}]">
-				</tw-select>
-			</div>
-			<div class="form-group" ng-init="vm.process.size = 'xl'">
-				<label class="control-label">
-					Size?
-				</label>
-				<tw-select
-					ng-required="true"
-					ng-model="vm.process.size"
-					options="[{value: 'xs', label: 'Extra small'},{value: 'sm', label: 'Small'},{value: 'xl', label: 'Extra large'}]">
-				</tw-select>
-			</div>
-		</div>
-	</div>
+  </div>
+  <div class="col-md-6">
+    <div class="well">
+      <h5 class="page-header">
+        Edit configuration
+      </h5>
+      <div class="form-group" ng-init="vm.process.state = null">
+        <label class="control-label">
+          State
+        </label>
+        <tw-select ng-model="vm.process.state"
+          options="[{value: null, label: 'Processing'},{value: -1, label: 'Failed'},{value: 0, label: 'Hidden'},{value: 1, label: 'Success'}]">
+        </tw-select>
+      </div>
+      <div class="form-group" ng-init="vm.process.size = 'xl'">
+        <label class="control-label">
+          Size?
+        </label>
+        <tw-select
+          ng-required="true"
+          ng-model="vm.process.size"
+          options="[{value: 'xs', label: 'Extra small'},{value: 'sm', label: 'Small'},{value: 'xl', label: 'Extra large'}]">
+        </tw-select>
+      </div>
+    </div>
+  </div>
 </div>

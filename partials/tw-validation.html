@@ -1,38 +1,37 @@
 <h4 id="validation">TW Validation</h4>
 <p><code>tw-validation</code> is an attribute based directive that provides
-	validation behaviour for any HTML element also using <code>ng-model</code>.</p>
+  validation behaviour for any HTML element also using <code>ng-model</code>.</p>
 <p>The validation rules are more complex than the standard angular validation
-	to provide a better customer experience. Validation will only occur if:</p>
+  to provide a better customer experience. Validation will only occur if:</p>
 <ul>
-	<li>The user has focused and changed the value of the element, and has left
-		it in an invalid state.</li>
-	<li>The user submits the form containing the element, but has not set the
-		element to a valid value.</li>
+  <li>The user has focused and changed the value of the element, and has left
+    it in an invalid state.</li>
+  <li>The user submits the form containing the element, but has not set the
+    element to a valid value.</li>
 </ul>
 <p>Similar to <code>tw-focusable</code>, the attribute will seek out any parent
-	<code>.form-group</code> and apply the <code>.has-error</code> class to
-	style an associated label.</p>
+  <code>.form-group</code> and apply the <code>.has-error</code> class to
+  style an associated label.</p>
 <p>There is an associated directive that is applied to all forms if you have
-	included the module.  It simply checks whether any elements with
-	<code>[tw-validation]</code> are in an invalid state and triggers the
-	validation styles.</p>
+  included the module.  It simply checks whether any elements with
+  <code>[tw-validation]</code> are in an invalid state and triggers the
+  validation styles.</p>
 
 <form
-	name="exampleForm"
-	ng-submit="vm.submit()"
-	novalidate>
+  name="exampleForm"
+  novalidate>
 
-	<div class="form-group">
-		<label class="control-label">
-			Text input - required
-		</label>
-		<input type="text" required tw-validation
-			class="form-control"
-			placeholder="Placeholder"
-			ng-model="vm.model.text" />
-		<docs-error-messages></docs-error-messages>
-		<docs-status-messages></docs-status-messages>
-	</div>
+  <div class="form-group">
+    <label class="control-label">
+      Text input - required
+    </label>
+    <input type="text" required tw-validation
+      class="form-control"
+      placeholder="Placeholder"
+      ng-model="$ctrl.model.text" />
+    <docs-error-messages></docs-error-messages>
+    <docs-status-messages></docs-status-messages>
+  </div>
 <pre class="m-b-3">
 &lt;input type="text" class="form-control" tw-validation tw-focusable
   ng-model="..." ng-required="true" /&gt;
@@ -41,21 +40,21 @@
 &lt;/div&gt;
 </pre>
 
-	<div class="form-group">
-		<label class="control-label">
-			Select - required
-		</label>
-		<select class="form-control" required tw-validation
-			ng-model="vm.model.select"
-			ng-change="vm.log()">
-			<option value="">Please choose..</option>
-			<option value="1">Option 1</option>
-			<option value="2">Option 2</option>
-			<option value="3">Option 3</option>
-		</select>
-		<docs-error-messages></docs-error-messages>
-		<docs-status-messages></docs-status-messages>
-	</div>
+  <div class="form-group">
+    <label class="control-label">
+      Select - required
+    </label>
+    <select class="form-control" required tw-validation
+      ng-model="$ctrl.model.select"
+      ng-change="$ctrl.log()">
+      <option value="">Please choose..</option>
+      <option value="1">Option 1</option>
+      <option value="2">Option 2</option>
+      <option value="3">Option 3</option>
+    </select>
+    <docs-error-messages></docs-error-messages>
+    <docs-status-messages></docs-status-messages>
+  </div>
 <pre class="m-b-3">
 &lt;select class="form-control" tw-validation tw-focusable
   ng-model="..." ng-required="true"&gt;...&lt;/select&gt;
@@ -64,88 +63,88 @@
 &lt;/div&gt;
 </pre>
 
-	<div class="form-group">
-		<label class="control-label">
-			Checkboxes
-		</label>
-		<div class="checkbox">
-			<label>
-				<input type="checkbox" tw-validation tw-focusable
-					ng-model="vm.model.checkbox1"
-					ng-required="true" />
-				Checkbox 1 - required
-			</label>
-		</div>
-		<div class="checkbox">
-			<label>
-				<input type="checkbox" tw-validation tw-focusable
-					ng-model="vm.model.checkbox2" />
-				Checkbox 2
-			</label>
-		</div>
-		<div class="checkbox disabled">
-			<label>
-				<input type="checkbox" tw-validation tw-focusable
-					ng-model="vm.model.checkbox3"
-					disabled />
-				Checkbox 3 - disabled
-			</label>
-		</div>
-	</div>
+  <div class="form-group">
+    <label class="control-label">
+      Checkboxes
+    </label>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" tw-validation tw-focusable
+          ng-model="$ctrl.model.checkbox1"
+          ng-required="true" />
+        Checkbox 1 - required
+      </label>
+    </div>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" tw-validation tw-focusable
+          ng-model="$ctrl.model.checkbox2" />
+        Checkbox 2
+      </label>
+    </div>
+    <div class="checkbox disabled">
+      <label>
+        <input type="checkbox" tw-validation tw-focusable
+          ng-model="$ctrl.model.checkbox3"
+          disabled />
+        Checkbox 3 - disabled
+      </label>
+    </div>
+  </div>
 <pre class="m-b-3">
 &lt;input type="checkbox" name="myCheckbox" tw-validation tw-focusable
   ng-model="..." ng-required="true" /&gt;
 </pre>
 
-	<div class="form-group">
-		<label class="control-label">
-			Radio buttons - required
-		</label>
-		<div class="radio">
-			<label>
-				<input type="radio" name="simple-radio"
-					value="1" required="true"
-					ng-model="vm.model.radio" tw-validation tw-focusable />
-				Radio 1
-			</label>
-		</div>
-		<div class="radio radio-lg">
-			<label>
-				<input type="radio" name="simple-radio"
-					value="2" required="true"
-					ng-model="vm.model.radio" tw-validation tw-focusable />
-				Radio 2
-				<small>Subsequent information, subsequent
-					information, subsequent information.</small>
-			</label>
-		</div>
-		<div class="radio disabled">
-			<label>
-				<input type="radio" name="simple-radio" disabled
-					value="3"
-					ng-model="vm.model.radio" tw-validation tw-focusable />
-				Radio 3 - disabled
-			</label>
-		</div>
-	</div>
+  <div class="form-group">
+    <label class="control-label">
+      Radio buttons - required
+    </label>
+    <div class="radio">
+      <label>
+        <input type="radio" name="simple-radio"
+          value="1" required="true"
+          ng-model="$ctrl.model.radio" tw-validation tw-focusable />
+        Radio 1
+      </label>
+    </div>
+    <div class="radio radio-lg">
+      <label>
+        <input type="radio" name="simple-radio"
+          value="2" required="true"
+          ng-model="$ctrl.model.radio" tw-validation tw-focusable />
+        Radio 2
+        <small>Subsequent information, subsequent
+          information, subsequent information.</small>
+      </label>
+    </div>
+    <div class="radio disabled">
+      <label>
+        <input type="radio" name="simple-radio" disabled
+          value="3"
+          ng-model="$ctrl.model.radio" tw-validation tw-focusable />
+        Radio 3 - disabled
+      </label>
+    </div>
+  </div>
 <pre class="m-b-3">
 &lt;input type="radio" name="myRadio" tw-validation tw-focusable
   ng-model="..." ng-required="true" /&gt;
 </pre>
 
-	<div class="form-group">
-		<label class="control-label">
-			Textarea - required
-		</label>
-		<textarea required tw-validation
-			name="textareaSimple"
-			class="form-control"
-			placeholder="Required"
-			ng-model="vm.model.textareaSimple"
-			></textarea>
-		<docs-error-messages></docs-error-messages>
-		<docs-status-messages></docs-status-messages>
-	</div>
+  <div class="form-group">
+    <label class="control-label">
+      Textarea - required
+    </label>
+    <textarea required tw-validation
+      name="textareaSimple"
+      class="form-control"
+      placeholder="Required"
+      ng-model="$ctrl.model.textareaSimple"
+      ></textarea>
+    <docs-error-messages></docs-error-messages>
+    <docs-status-messages></docs-status-messages>
+  </div>
 <pre class="m-b-3">
 &lt;textarea class="form-control" tw-validation tw-focusable
   ng-model="..." ng-required="true"&gt;...&lt;/textarea&gt;
@@ -154,21 +153,21 @@
 &lt;/div&gt;
 </pre>
 
-	<div class="form-group">
-		<label class="control-label">
-			Text - complex validation
-		</label>
-		<input type="text" required tw-validation
-			name="textComplex"
-			class="form-control"
-			placeholder="a-z only, 2 to 6 chars"
-			ng-model="vm.model.textComplex"
-			ng-pattern="/^[a-z]+$/"
-			ng-minlength="2"
-			ng-maxlength="6" />
-		<docs-error-messages></docs-error-messages>
-		<docs-status-messages></docs-status-messages>
-	</div>
+  <div class="form-group">
+    <label class="control-label">
+      Text - complex validation
+    </label>
+    <input type="text" required tw-validation
+      name="textComplex"
+      class="form-control"
+      placeholder="a-z only, 2 to 6 chars"
+      ng-model="$ctrl.model.textComplex"
+      ng-pattern="/^[a-z]+$/"
+      ng-minlength="2"
+      ng-maxlength="6" />
+    <docs-error-messages></docs-error-messages>
+    <docs-status-messages></docs-status-messages>
+  </div>
 <pre class="m-b-3">
 &lt;input type="text" class="form-control" tw-validation tw-focusable
   ng-model="..."
@@ -182,24 +181,24 @@
 &lt;/div&gt;
 </pre>
 
-	<div class="form-group">
-		<label class="control-label">
-			Number - complex validation
-		</label>
-		<input type="number" required tw-validation
-			name="numberComplex"
-			class="form-control"
-			placeholder="min 5, max 10"
-			ng-model="vm.model.numberComplex"
-			ng-min="5"
-			ng-max="10" />
-		<div class="error-messages">
-			<div class="error-required">Required</div>
-			<div class="error-min">Number must be at least 5</div>
-			<div class="error-max">Number must be at most 10</div>
-			<div class="error-number">Must be a number</div>
-		</div>
-	</div>
+  <div class="form-group">
+    <label class="control-label">
+      Number - complex validation
+    </label>
+    <input type="number" required tw-validation
+      name="numberComplex"
+      class="form-control"
+      placeholder="min 5, max 10"
+      ng-model="$ctrl.model.numberComplex"
+      ng-min="5"
+      ng-max="10" />
+    <div class="error-messages">
+      <div class="error-required">Required</div>
+      <div class="error-min">Number must be at least 5</div>
+      <div class="error-max">Number must be at most 10</div>
+      <div class="error-number">Must be a number</div>
+    </div>
+  </div>
 <pre class="m-b-3">
 &lt;input type="number" class="form-control" tw-validation tw-focusable
   ng-model="..." ng-required="true" ng-min="5" ng-max="10" /&gt;
@@ -211,29 +210,29 @@
 &lt;/div&gt;
 </pre>
 
-	<button type="submit" class="btn btn-primary btn-block m-b-3">
-		Submit form
-	</button>
-	<hr class="m-b-5" />
+  <button type="submit" class="btn btn-primary btn-block m-b-3">
+    Submit form
+  </button>
+  <hr class="m-b-5" />
 
 
 
-	<h4>Tw Validation with Tw components</h4>
-	<p>Validation works exactly the same for our custom components, simply add
-		the <code>[tw-validation]</code> attribute to the element.</p>
+  <h4>Tw Validation with Tw components</h4>
+  <p>Validation works exactly the same for our custom components, simply add
+    the <code>[tw-validation]</code> attribute to the element.</p>
 
-	<div class="form-group">
-		<label class="control-label">
-			twSelect - required
-		</label>
-		<tw-select tw-validation
-			ng-model="vm.model.twSelect"
-			ng-required="true"
-			options="vm.basicSelect"
-			placeholder="Select an option..."></tw-select>
-		<docs-error-messages></docs-error-messages>
-		<docs-status-messages></docs-status-messages>
-	</div>
+  <div class="form-group">
+    <label class="control-label">
+      twSelect - required
+    </label>
+    <tw-select tw-validation
+      ng-model="$ctrl.model.twSelect"
+      ng-required="true"
+      options="$ctrl.basicSelect"
+      placeholder="Select an option..."></tw-select>
+    <docs-error-messages></docs-error-messages>
+    <docs-status-messages></docs-status-messages>
+  </div>
 <pre class="m-b-3">
 &lt;tw-select options="..." tw-validation
   ng-model="..." ng-required="true" /&gt;
@@ -242,58 +241,58 @@
 &lt;/div&gt;
 </pre>
 
-	<div class="form-group">
-		<label class="control-label">
-			Checkboxes
-		</label>
-		<div class="checkbox">
-			<label>
-				<tw-checkbox tw-validation
-					ng-model="vm.model.twCheckbox1"
-					ng-required="true" />
-				Checkbox 1 - required
-			</label>
-		</div>
-		<div class="checkbox">
-			<label>
-				<tw-checkbox
-					ng-model="vm.model.twCheckbox1" />
-				Checkbox 2
-			</label>
-		</div>
-	</div>
+  <div class="form-group">
+    <label class="control-label">
+      Checkboxes
+    </label>
+    <div class="checkbox">
+      <label>
+        <tw-checkbox tw-validation
+          ng-model="$ctrl.model.twCheckbox1"
+          ng-required="true"></tw-checkbox>
+        Checkbox 1 - required
+      </label>
+    </div>
+    <div class="checkbox">
+      <label>
+        <tw-checkbox
+          ng-model="$ctrl.model.twCheckbox1"></tw-checkbox>
+        Checkbox 2
+      </label>
+    </div>
+  </div>
 <pre class="m-b-3">
 &lt;tw-checkbox tw-validation
   ng-model="..." ng-required="true" /&gt;
 </pre>
 
-	<div class="form-group">
-		<label class="control-label">
-			Radio buttons - required
-		</label>
-		<div class="radio">
-			<label>
-				<tw-radio name="simple-radio" value="1" tw-validation
-					ng-model="vm.model.twRadio"
-					ng-required="true" />
-				Radio 1
-			</label>
-		</div>
-		<div class="radio">
-			<label>
-				<tw-radio name="simple-radio" value="2" tw-validation
-					ng-model="vm.model.twRadio"
-					ng-required="true" />
-				Radio 2
-			</label>
-		</div>
-	</div>
+  <div class="form-group">
+    <label class="control-label">
+      Radio buttons - required
+    </label>
+    <div class="radio">
+      <label>
+        <tw-radio name="simple-radio" value="1" tw-validation
+          ng-model="$ctrl.model.twRadio"
+          ng-required="true"></tw-radio>
+        Radio 1
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <tw-radio name="simple-radio" value="2" tw-validation
+          ng-model="$ctrl.model.twRadio"
+          ng-required="true"></tw-radio>
+        Radio 2
+      </label>
+    </div>
+  </div>
 <pre class="m-b-3">
 &lt;tw-radio tw-validation
   ng-model="..." ng-required="true" /&gt;
 </pre>
 
-	<button type="submit" class="btn btn-primary btn-block">
-		Submit form
-	</button>
+  <button type="submit" class="btn btn-primary btn-block">
+    Submit form
+  </button>
 </form>

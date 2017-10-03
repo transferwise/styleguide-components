@@ -1,133 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Styleguide Components - TransferWise</title>
-	<meta charset="UTF-8">
-	<meta name="viewport"
-		content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Styleguide Components - TransferWise</title>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-	<script src="components/jquery/dist/jquery.min.js"></script>
-	<script src="components/angular/angular.js"></script>
-	<script src="dist/js/styleguide-components.js"></script>
+  <script src="lib/jquery.min.js"></script>
+  <script src="lib/angular.min.js"></script>
+  <script src="lib/bootstrap.min.js"></script>
+  <script src="lib/styleguide-components.js"></script>
 
-	<script src="components/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script src="index.js"></script>
+  <script src="js/index.js"></script>
+  <script>
+  angular.module('my-app', ['tw.styleguide-components', 'tw.styleguide.docs']);
+  </script>
 
-	<link type="text/css" rel="stylesheet"
-		href="components/bootstrap/dist/css/bootstrap.min.css" />
-	<!--<link type="text/css" rel="stylesheet"
-		href="http://localhost:9001/dist/css/bootstrap.min.css" />-->
-	<link type="text/css" rel="stylesheet"
-		href="components/currency-flags/dist/currency-flags.min.css" />
-	<link type="text/css" rel="stylesheet" href="styles/examples.css" />
+  <link type="text/css" rel="stylesheet" href="lib/bootstrap.css" />
+  <!--<link type="text/css" rel="stylesheet"
+    href="http://localhost:9001/dist/css/bootstrap.min.css" />-->
+  <link type="text/css" rel="stylesheet" href="lib/currency-flags.css" />
+  <link type="text/css" rel="stylesheet" href="css/examples.css" />
 
 </head>
 <body ng-app="my-app" class="bg-default">
-	<div class="container" ng-controller="PageController as vm">
-		<div class="row m-t-3">
-			<div class="col-lg-9">
-				<div class="panel">
-					<div class="panel-heading">
-						<h2 class="panel-title">Form Styling &amp; Validation</h2>
-					</div>
-					<div class="panel-body">
-						<tw-affix-docs></tw-affix-docs>
-						<tw-pop-over-docs></tw-pop-over-docs>
-						<tw-tool-tip-docs></tw-tool-tip-docs>
-						<tw-focusable-docs></tw-focusable-docs>
-						<tw-text-format-docs model="vm.model.presentation"></tw-text-format-docs>
-						<tw-validation-docs></tw-validation-docs>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-3">
-				<div data-spy="affix" data-offset-top="0">
-					<h4>Jump to:</h4>
-					<h5>Form Styling &amp; Validation:</h5>
-					<ul class="list-unstyled">
-						<li><a href="#focusable">Focusable</a></li>
-						<li><a href="#pop-over">Pop over</a></li>
-						<li><a href="#text-format">Text format</a></li>
-						<li><a href="#tool-tip">Tool tip</a></li>
-						<li><a href="#validation">Validation</a></li>
-					</ul>
-					<h5>Form components:</h5>
-					<ul class="list-unstyled">
-						<li><a href="#amount-currency-select">Amount currency select</a></li>
-						<li><a href="#checkbox">Checkbox</a></li>
-						<li><a href="#currency-input">Currency input</a></li>
-						<li><a href="#date">Date</a></li>
-						<li><a href="#date-lookup">Date lookup</a></li>
-						<li><a href="#dynamic">Dynamic control</a></li>
-						<li><a href="#radio">Radio</a></li>
-						<li><a href="#requirements-form">Requirements form</a></li>
-						<li><a href="#select">Select</a></li>
-						<li><a href="#upload">Upload</a></li>
-					</ul>
-					<h5>Layout components:</h5>
-					<ul class="list-unstyled">
-						<li><a href="#cards">Cards</a></li>
-					</ul>
-					<h5>Other components:</h5>
-					<ul class="list-unstyled">
-						<li><a href="#process">Process</a></li>
-						<li><a href="#loader">Loader</a></li>
-					</ul>
-					<h5>Data Model</h5>
-					<pre>{{vm.model | json}}</pre>
-				</div>
-			</div>
-		</div>
-		<div class="row m-t-3">
-			<div class="col-lg-9">
-				<div class="panel-heading">
-					<h2 class="panel-title">Form components</h2>
-				</div>
-				<div class="panel-body" ng-init="vm.requirementsForm = {}">
-					<tw-amount-currency-select-docs></tw-amount-currency-select-docs>
-					<tw-checkbox-docs></tw-checkbox-docs>
-					<tw-currency-input-docs></tw-currency-input-docs>
-					<tw-date-docs></tw-date-docs>
-					<tw-date-lookup-docs></tw-date-lookup-docs>
-					<tw-dynamic-control-docs></tw-dynamic-control-docs>
-					<tw-radio-docs></tw-radio-docs>
-					<tw-requirements-form-docs model="vm.requirementsForm"></tw-requirements-form-docs>
-					<tw-select-docs model="vm.model"></tw-select-docs>
-					<tw-upload-docs></tw-upload-docs>
-				</div>
-			</div>
-		</div>
-		<div class="row m-t-3">
-			<div class="col-lg-9">
-				<div class="panel-heading">
-					<h3 class="panel-title">Layout components</h3>
-				</div>
-				<div class="panel-body">
-					<tw-cards-docs></tw-cards-docs>
-				</div>
-			</div>
-		</div>
-		<div class="row m-t-3">
-			<div class="col-lg-9">
-				<div class="panel">
-					<div class="panel-heading">
-						<h2 class="panel-title">Other components</h2>
-					</div>
-					<div class="panel-body">
-						<tw-process-docs></tw-process-docs>
-						<h4 id="loader">TW Loader</h4>
-						<p>A directive to add the HTML necessary for our
-							loading indicator.  Simply use:</p>
+  <div class="container" ng-controller="PageController as vm">
+    <div class="row m-t-3">
+      <div class="col-lg-9">
+        <div class="panel">
+          <div class="panel-heading">
+            <h2 class="panel-title">Form Styling &amp; Validation</h2>
+          </div>
+          <div class="panel-body">
+            <tw-affix-docs></tw-affix-docs>
+            <tw-pop-over-docs></tw-pop-over-docs>
+            <tw-tool-tip-docs></tw-tool-tip-docs>
+            <tw-focusable-docs></tw-focusable-docs>
+            <tw-text-format-docs model="vm.model.presentation"></tw-text-format-docs>
+            <tw-validation-docs model="vm.model"></tw-validation-docs>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div data-spy="affix" data-offset-top="0">
+          <docs-navigation></docs-navigation>
+
+          <h5>Data Model</h5>
+          <pre>{{vm.model | json}}</pre>
+        </div>
+      </div>
+    </div>
+    <div class="row m-t-3">
+      <div class="col-lg-9">
+
+        <form-components
+          model="vm.model"
+          locales="vm.locales"
+          sizes="vm.sizes">
+        </form-components>
+
+      </div>
+    </div>
+    <div class="row m-t-3">
+      <div class="col-lg-9">
+        <div class="panel-heading">
+          <h3 class="panel-title">Layout components</h3>
+        </div>
+        <div class="panel-body">
+          <tw-cards-docs></tw-cards-docs>
+        </div>
+      </div>
+    </div>
+    <div class="row m-t-3">
+      <div class="col-lg-9">
+        <div class="panel">
+          <div class="panel-heading">
+            <h2 class="panel-title">Other components</h2>
+          </div>
+          <div class="panel-body">
+            <tw-process-docs></tw-process-docs>
+            <h4 id="loader">TW Loader</h4>
+            <p>A directive to add the HTML necessary for our
+              loading indicator.  Simply use:</p>
 <pre>
 &lt;tw-loader /&gt;
 </pre>
-						<div class="m-y-3 text-xs-center">
-							<tw-loader />
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+            <div class="m-y-3 text-xs-center">
+              <tw-loader />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
