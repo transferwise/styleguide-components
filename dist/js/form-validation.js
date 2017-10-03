@@ -329,60 +329,73 @@ function DateService() {
     return lastDay.getUTCDate();
   };
 
-  this.getUTCDateFromParts = function (year, month, day) {
+  this.getUTCDateFromParts = function (year, month, day, hours, minutes, seconds) {
     var date = new Date();
     date.setUTCFullYear(year, month, day);
-    date.setUTCHours(0);
-    date.setUTCMinutes(0);
-    date.setUTCSeconds(0);
+    date.setUTCHours(hours || 0);
+    date.setUTCMinutes(minutes || 0);
+    date.setUTCSeconds(seconds || 0);
     date.setUTCMilliseconds(0);
     return date;
   };
 
+  this.getLocaleDateFromParts = function (year, month, day, hours, minutes, seconds) {
+    var date = new Date();
+    date.setFullYear(year, month, day);
+    date.setHours(hours || 0);
+    date.setMinutes(minutes || 0);
+    date.setSeconds(seconds || 0);
+    date.setMilliseconds(0);
+    return date;
+  };
+
+  // Sunday is first day of the week in JS
   this.getDayNamesForLocale = function (locale, format) {
-    var date = void 0;
     var days = [];
-    var language = getLanguageFromLocale(locale);
-
-    if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language]) {
-      return DEFAULT_DAY_NAMES_BY_LANGUAGE[language];
-    }
-
-    format = getValidDateFormat(format);
-    locale = getValidLocale(locale);
-
-    for (var i = 1; i <= 7; i++) {
-      date = _this.getUTCDateFromParts(2001, 0, i); // This day was a monday
-      days.push(getLocalisedDateName(date, locale, { weekday: format }));
+    var validFormat = getValidDateFormat(format);
+    for (var day = 0; day < 7; day++) {
+      days.push(_this.getDayNameForLocale(day, locale, validFormat));
     }
     return days;
   };
 
-  this.getMonthNamesForLocale = function (locale, format) {
-    var date = void 0;
-    var month = void 0;
-    var months = [];
+  this.getDayNameForLocale = function (dayOfWeek, locale, format) {
     var language = getLanguageFromLocale(locale);
-
-    if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] && (format === 'long' || language === 'ja')) {
-      return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language];
+    if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language] && (format !== 'short' || language === 'ja')) {
+      return DEFAULT_DAY_NAMES_BY_LANGUAGE[language][dayOfWeek];
     }
 
-    format = getValidDateFormat(format);
-    locale = getValidLocale(locale);
+    var validLocale = getValidLocale(locale);
+    var date = _this.getUTCDateFromParts(2006, 0, dayOfWeek + 1); // 2006 started with a Sunday
 
-    for (var i = 0; i < 12; i++) {
-      // Day in middle of month avoids timezone issues
-      date = _this.getUTCDateFromParts(2000, i, 15);
-      if (format === 'short') {
-        month = getLocalisedDateName(date, locale, { month: 'long' });
-        month = month.length > 4 ? month.slice(0, 3) : month;
-        months.push(month);
-      } else {
-        months.push(getLocalisedDateName(date, locale, { month: format }));
-      }
+    return getLocalisedDateName(date, validLocale, { weekday: format });
+  };
+
+  this.getMonthNamesForLocale = function (locale, format) {
+    var months = [];
+    var validFormat = getValidDateFormat(format);
+
+    for (var month = 0; month < 12; month++) {
+      months.push(_this.getMonthNameForLocale(month, locale, validFormat));
     }
+
     return months;
+  };
+
+  this.getMonthNameForLocale = function (month, locale, format) {
+    var language = getLanguageFromLocale(locale);
+    if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] && (format !== 'short' || language === 'ja')) {
+      return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language][month];
+    }
+
+    var validLocale = getValidLocale(locale);
+    // Day in middle of month avoids timezone issues
+    var date = _this.getUTCDateFromParts(2000, month, 15);
+    if (format === 'short') {
+      month = getLocalisedDateName(date, validLocale, { month: 'long' });
+      return month.length > 4 ? month.slice(0, 3) : month;
+    }
+    return getLocalisedDateName(date, validLocale, { month: format });
   };
 
   this.getWeekday = function (year, month, day) {
@@ -391,13 +404,13 @@ function DateService() {
   };
 
   this.isMonthBeforeDay = function (locale) {
-    if (locale.indexOf('US', locale.length - 2) !== -1) {
-      return true;
-    } else if (getLanguageFromLocale(locale) === 'ja') {
-      return true;
-    }
+    var lang = getLanguageFromLocale(locale);
+    return lang === 'ja' || locale && locale.indexOf('US', locale.length - 2) !== -1;
+  };
 
-    return false;
+  this.isYearBeforeMonth = function (locale) {
+    var lang = getLanguageFromLocale(locale);
+    return lang === 'ja';
   };
 
   this.addYears = function (date, years) {
@@ -414,27 +427,144 @@ function DateService() {
     return _this.getUTCDateFromParts(date.getUTCFullYear() + years, date.getUTCMonth() + months, date.getUTCDate() + days);
   };
 
-  this.getYearAndMonthPresentation = function (year, monthName, locale) {
+  this.getLocaleTimeString = function (date, locale) {
     var lang = getLanguageFromLocale(locale);
-    if (lang === 'ja') {
-      return year + '\u5E74' + monthName;
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+
+    if (hours < 10) {
+      hours = '0' + hours;
+    }
+    if (minutes < 10) {
+      minutes = '0' + minutes;
     }
 
-    return monthName + ' ' + year;
+    if (lang === 'en') {
+      var ampm = hours >= 12 ? 'pm' : 'am';
+      hours %= 12;
+      if (hours === 0) {
+        hours = 12;
+      }
+      if (minutes === '00') {
+        return '' + hours + ampm;
+      }
+      return hours + ':' + minutes + ampm;
+    }
+    return hours + ':' + minutes;
   };
 
-  this.getYearMonthDatePresentation = function (year, monthName, date, locale) {
-    var lang = getLanguageFromLocale(locale);
-    if (lang === 'ja') {
-      return year + '\u5E74' + monthName + date + '\u65E5';
-    }
+  this.getYearAndMonthPresentation = function (year, month, locale, format) {
+    var yearName = getYearName(year, locale);
+    var monthName = _this.getMonthNameForLocale(month, locale, format || 'long');
 
-    if (locale.indexOf('US', locale.length - 2) !== -1) {
-      return monthName + ' ' + date + ', ' + year;
-    }
+    var language = getLanguageFromLocale(locale);
+    var delimiter = getDelimiter(language);
 
-    return date + ' ' + monthName + ' ' + year;
+    if (_this.isYearBeforeMonth(locale)) {
+      return [yearName, monthName].join(delimiter);
+    }
+    return [monthName, yearName].join(delimiter);
   };
+
+  this.getYearMonthDatePresentation = function (year, month, day, locale, format) {
+    var yearName = getYearName(year, locale);
+    var monthName = _this.getMonthNameForLocale(month, locale, format || 'long');
+    var dateName = getDateName(day, locale);
+
+    var language = getLanguageFromLocale(locale);
+    var delimiter = getDelimiter(language);
+
+    if (_this.isYearBeforeMonth(locale)) {
+      return [yearName, monthName, dateName].join(delimiter);
+    }
+    if (_this.isMonthBeforeDay(locale)) {
+      var dateString = [monthName, dateName].join(delimiter);
+      return dateString + ', ' + yearName;
+    }
+    return [dateName, monthName, yearName].join(delimiter);
+  };
+
+  this.getLocaleFullDate = function (date, locale) {
+    var dateString = _this.getYearMonthDatePresentation(date.getFullYear(), date.getMonth(), date.getDate(), locale);
+
+    var weekdayName = _this.getDayNameForLocale(date.getDay(), locale, 'long').trim();
+    var lang = getLanguageFromLocale(locale);
+
+    if (lang === 'ja') {
+      return dateString + ' (' + weekdayName + ')';
+    }
+    return weekdayName + ', ' + dateString;
+  };
+
+  this.getLocaleNow = function () {
+    return new Date();
+  };
+
+  this.getLocaleDateString = function (date, locale, short) {
+    // Check that the date exists
+    if (!date) {
+      return date;
+    }
+
+    // Initialize variables
+    var year = date.getFullYear();
+    var month = date.getMonth();
+    var dayOfMonth = date.getDate();
+    var dayOfWeek = date.getDay();
+
+    var now = _this.getLocaleNow();
+    var fourtyEightHours = 48 * 60 * 60 * 1000;
+    var eightDays = 8 * 24 * 60 * 60 * 1000;
+
+    var hasTime = Math.abs(now - date) < fourtyEightHours;
+    var hasDate = !hasTime;
+    var hasWeekday = Math.abs(now - date) < eightDays;
+    var hasMonth = !hasWeekday;
+    var hasYear = !hasWeekday && now.getFullYear() !== year;
+
+    var yearName = hasYear ? getYearName(year, locale) : '';
+    var monthName = hasMonth ? _this.getMonthNameForLocale(month, locale, short ? 'short' : 'long') : '';
+    var dateName = hasDate ? getDateName(dayOfMonth, locale) : '';
+    var weekdayName = hasWeekday ? _this.getDayNameForLocale(dayOfWeek, locale, short ? 'short' : 'long') : '';
+    var timeName = hasTime ? _this.getLocaleTimeString(date, locale) : '';
+
+    var lang = getLanguageFromLocale(locale);
+    var delimiter = getDelimiter(lang);
+
+    var dateString = void 0;
+    if (_this.isYearBeforeMonth(locale)) {
+      dateString = [yearName, monthName, dateName].join(delimiter).trim();
+    } else if (_this.isMonthBeforeDay(locale)) {
+      dateString = [monthName, dateName].join(delimiter).trim();
+      if (hasYear) {
+        dateString += ', ' + yearName;
+      }
+    } else {
+      dateString = [dateName, monthName, yearName].join(delimiter).trim();
+    }
+
+    if (hasWeekday) {
+      if (lang === 'ja') {
+        return (dateString + ' ' + timeName + ' (' + weekdayName + ')').trim();
+      }
+      dateString = (weekdayName + ' ' + dateString).trim();
+    }
+    dateString = dateString + ' ' + timeName;
+
+    return dateString.trim();
+  };
+
+  function getDateName(dayOfMonth, locale) {
+    var lang = getLanguageFromLocale(locale);
+    var suffix = getSuffix(DAY_SUFFIXES_BY_LANGUAGE, dayOfMonth, lang) || '';
+    return '' + dayOfMonth + suffix;
+  }
+
+  function getYearName(year, locale) {
+    var lang = getLanguageFromLocale(locale);
+    var suffix = getSuffix(YEAR_SUFFIXES_BY_LANGUAGE, year, lang);
+    return '' + year + suffix;
+  }
 
   function getLocalisedDateName(date, locale, formattingObject) {
     var name = date.toLocaleDateString(locale, formattingObject);
@@ -492,15 +622,66 @@ function DateService() {
     return locale.substring(0, 2);
   }
 
+  function getDelimiter(lang) {
+    return DELIMITERS_BY_LANGUAGE[lang] !== undefined ? DELIMITERS_BY_LANGUAGE[lang] : ' ';
+  }
+
+  function getSuffix(suffixes, value, lang) {
+    if (!suffixes[lang]) {
+      return '';
+    }
+    if (suffixes[lang].exactMatch && suffixes[lang].exactMatch[value]) {
+      return suffixes[lang].exactMatch[value];
+    }
+    if (suffixes[lang].endsWith && suffixes[lang].endsWith[value % 10]) {
+      return suffixes[lang].endsWith[value % 10];
+    }
+    return suffixes[lang].default;
+  }
+
   var DEFAULT_MONTH_NAMES_BY_LANGUAGE = {
     en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     ja: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
   };
 
   var DEFAULT_DAY_NAMES_BY_LANGUAGE = {
-    en: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-    ja: ['月', '火', '水', '木', '金', '土', '日']
+    en: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    ja: ['日', '月', '火', '水', '木', '金', '土']
+  };
 
+  var DAY_SUFFIXES_BY_LANGUAGE = {
+    en: {
+      exactMatch: {
+        11: 'th',
+        12: 'th',
+        13: 'th'
+      },
+      endsWith: {
+        1: 'st',
+        2: 'nd',
+        3: 'rd'
+      },
+      default: 'th'
+    },
+    de: {
+      default: '.'
+    },
+    fi: {
+      default: '.'
+    },
+    ja: {
+      default: '日'
+    }
+  };
+
+  var YEAR_SUFFIXES_BY_LANGUAGE = {
+    ja: {
+      default: '年'
+    }
+  };
+
+  var DELIMITERS_BY_LANGUAGE = {
+    ja: ''
   };
 }
 
