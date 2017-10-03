@@ -163,10 +163,6 @@ function DateService() {
       minutes = `0${minutes}`;
     }
 
-    if (lang === 'ja') {
-      return `${hours}:${minutes}の`;
-    }
-
     if (lang === 'en') {
       const ampm = hours >= 12 ? 'pm' : 'am';
       hours %= 12;
@@ -276,10 +272,9 @@ function DateService() {
 
     if (hasWeekday) {
       if (lang === 'ja') {
-        dateString = `${dateString} (${weekdayName})`.trim();
-      } else {
-        dateString = `${weekdayName} ${dateString}`.trim();
+        return `${dateString} ${timeName} (${weekdayName})`.trim();
       }
+      dateString = `${weekdayName} ${dateString}`.trim();
     }
     dateString = `${dateString} ${timeName}`;
 
