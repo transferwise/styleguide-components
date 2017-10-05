@@ -45,7 +45,7 @@
               <!-- tw-dynamic-async-validator="field.validationAsync" -->
             </tw-dynamic-form-control>
             <div class="error-messages">
-              <div ng-repeat="(validationType, validationMessage) in $ctrl.validationMessages"
+              <div ng-repeat="(validationType, validationMessage) in field.validationMessages"
                 class="error-{{validationType}}">
                 {{validationMessage}}
               </div>

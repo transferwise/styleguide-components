@@ -372,7 +372,8 @@ angular.module('tw.styleguide.docs', [])
         { value: 'account', label: 'Account' },
         { value: 'profile', label: 'Profile' },
         { value: 'verification', label: 'Verification' },
-        { value: 'pay-in', label: 'Pay in' }
+        { value: 'pay-in', label: 'Pay in' },
+        { value: 'transfer', label: 'Transfer' }
       ];
       $ctrl.type = 'profile';
       if (!$ctrl.model) {

@@ -47,6 +47,24 @@ describe('Fieldset', function() {
     });
   });
 
+  describe('validationMessages', function() {
+    beforeEach(function() {
+      $scope.fields = getRequirement()[0].fields;
+      $scope.validationMessages = {
+        required: 'default required'
+      };
+      directiveElement = getCompiledDirectiveElement();
+    });
+
+    it('should contain custom messages', function() {
+      var requiredErrorSortCode = directiveElement.find('.tw-form-group-sortCode .error-messages .error-required');
+      var requiredErrorIBAN = directiveElement.find('.tw-form-group-iban .error-messages .error-required');
+
+      expect(requiredErrorSortCode.text()).toContain('sortCode required');
+      expect(requiredErrorIBAN.text()).toContain('default required');
+    });
+  });
+
   function getCompiledDirectiveElement() {
     var template = " \
       <tw-fieldset \
@@ -75,7 +93,27 @@ describe('Fieldset', function() {
                 {
                   "key": "sortCode",
                   "type": "text",
-                  "refreshRequirementsOnChange": false,
+                  "refreshRequirementsOnChange": true,
+                  "required": true,
+                  "displayFormat": "**-**-**",
+                  "example": "40-30-20",
+                  "minLength": 6,
+                  "maxLength": 8,
+                  "validationRegexp": null,
+                  "valuesAllowed": null,
+                  "validationMessages": {
+                    "required": "sortCode required"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "IBAN",
+              "group": [
+                {
+                  "key": "iban",
+                  "type": "text",
+                  "refreshRequirementsOnChange": true,
                   "required": true,
                   "displayFormat": "**-**-**",
                   "example": "40-30-20",
