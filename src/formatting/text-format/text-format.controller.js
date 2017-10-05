@@ -367,6 +367,7 @@ class TextFormatController {
     $timeout(() => {
       const originalMinLength = $ngModel.$validators.minlength;
       const originalMaxLength = $ngModel.$validators.maxlength;
+      const originalPattern = $ngModel.$validators.pattern;
 
       if (originalMinLength) {
         $ngModel.$validators.minlength = (modelValue, viewValue) =>
@@ -378,6 +379,13 @@ class TextFormatController {
       if (originalMaxLength) {
         $ngModel.$validators.maxlength = (modelValue, viewValue) =>
           originalMaxLength(
+            modelValue,
+            TextFormatService.unformatUsingPattern(viewValue, this.pattern)
+          );
+      }
+      if (originalPattern) {
+        $ngModel.$validators.pattern = (modelValue, viewValue) =>
+          originalPattern(
             modelValue,
             TextFormatService.unformatUsingPattern(viewValue, this.pattern)
           );

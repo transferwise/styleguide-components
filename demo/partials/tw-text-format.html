@@ -11,6 +11,7 @@
         ng-model="$ctrl.model"
         ng-minlength="$ctrl.pattern.minlength"
         ng-maxlength="$ctrl.pattern.maxlength"
+        ng-pattern="$ctrl.pattern.pattern"
         ng-required="true"
         placeholder="{{$ctrl.pattern.placeholder}}"
         tw-focusable
@@ -24,9 +25,10 @@
 <pre>
 &lt;input type="text"
   class="form-control"
-  ng-model="{{$ctrl.model}}"
-  ng-minlength="{{$ctrl.pattern.minlength}}"
-  ng-maxlength="{{$ctrl.pattern.maxlength}}"
+  ng-model="{{$ctrl.model}}"<span ng-if="$ctrl.pattern.minlength">
+  ng-minlength="{{$ctrl.pattern.minlength}}"</span><span ng-if="$ctrl.pattern.maxlength">
+  ng-maxlength="{{$ctrl.pattern.maxlength}}"</span><span ng-if="$ctrl.pattern.pattern">
+  ng-pattern="{{$ctrl.pattern.pattern}}"</span>
   ng-required="true"
   placeholder="{{$ctrl.pattern.placeholder}}"
   tw-text-format="{{$ctrl.pattern.format}}"

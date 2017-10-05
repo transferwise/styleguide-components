@@ -1294,6 +1294,7 @@ var TextFormatController = function () {
       $timeout(function () {
         var originalMinLength = $ngModel.$validators.minlength;
         var originalMaxLength = $ngModel.$validators.maxlength;
+        var originalPattern = $ngModel.$validators.pattern;
 
         if (originalMinLength) {
           $ngModel.$validators.minlength = function (modelValue, viewValue) {
@@ -1303,6 +1304,11 @@ var TextFormatController = function () {
         if (originalMaxLength) {
           $ngModel.$validators.maxlength = function (modelValue, viewValue) {
             return originalMaxLength(modelValue, TextFormatService.unformatUsingPattern(viewValue, _this6.pattern));
+          };
+        }
+        if (originalPattern) {
+          $ngModel.$validators.pattern = function (modelValue, viewValue) {
+            return originalPattern(modelValue, TextFormatService.unformatUsingPattern(viewValue, _this6.pattern));
           };
         }
       });
