@@ -375,6 +375,9 @@ angular.module('tw.styleguide.docs', [])
         { value: 'pay-in', label: 'Pay in' }
       ];
       $ctrl.type = 'profile';
+      if (!$ctrl.model) {
+        $ctrl.model = {};
+      }
 
       $ctrl.model.firstName = '01010101010';
 
