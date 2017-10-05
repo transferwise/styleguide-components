@@ -3,19 +3,27 @@ import angular from 'angular';
 class SelectController {
   constructor($element, $scope, $transclude, $timeout, $attrs, TwDomService) {
     this.$ngModel = $element.controller('ngModel');
+    this.$scope = $scope;
+    this.$element = $element;
+    this.$attrs = $attrs;
+    this.$timeout = $timeout;
+    this.$transclude = $transclude;
+    this.dom = TwDomService;
+
     this.element = $element[0];
+  }
+
+  $onInit() {
     this.button = this.element.getElementsByClassName('btn')[0];
     this.search = '';
 
-    this.dom = TwDomService;
-
     preSelectModelValue(this.$ngModel, this);
-    setDefaultIfRequired(this.$ngModel, this, $element, $attrs);
+    setDefaultIfRequired(this.$ngModel, this, this.$element, this.$attrs);
 
-    addWatchers(this, $scope, this.$ngModel, $element);
-    addEventHandlers(this, $element, this.$ngModel, this.options, $timeout);
+    addWatchers(this, this.$scope, this.$ngModel, this.$element);
+    addEventHandlers(this, this.$element, this.$ngModel, this.options, this.$timeout);
 
-    checkForTranscludedContent($transclude, this);
+    checkForTranscludedContent(this.$transclude, this);
 
     this.responsiveClasses = responsiveClasses;
 
@@ -230,12 +238,13 @@ function addWatchers($ctrl, $scope, $ngModel, $element) {
     modelChange(newValue, oldValue, $ctrl);
   });
 
-  $scope.$watch('$ctrl.options', () => {
-    // TODO only do this if newvalue change?  Started failing in 1.6
-    preSelectModelValue($ngModel, $ctrl);
-    setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl);
+  $scope.$watch('$ctrl.options', (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+      preSelectModelValue($ngModel, $ctrl);
+      setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl);
 
-    $ctrl.filteredOptions = $ctrl.getFilteredOptions();
+      $ctrl.filteredOptions = $ctrl.getFilteredOptions();
+    }
   });
 }
 
