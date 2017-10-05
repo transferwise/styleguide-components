@@ -44,14 +44,12 @@ class FieldsetController {
       return;
     }
     // TODO disabled the form while we refresh requirements?
-    /*
     if (this.onRefreshRequirements) {
       // Should post the current model back to the requirements end
       // point and update the requirements.
       // TODO Can we handle this internally?
       this.onRefreshRequirements();
     }
-    */
   }
 
   onChange(field) {

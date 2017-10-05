@@ -12,6 +12,7 @@ describe('Fieldset', function() {
     $rootScope = $injector.get('$rootScope');
     $compile = $injector.get('$compile');
     $scope = $rootScope.$new();
+    $scope.onRefreshRequirements = function () {}
   }));
 
   describe('validation', function() {
@@ -47,6 +48,21 @@ describe('Fieldset', function() {
     });
   });
 
+  describe('onRefreshRequirements', function() {
+    beforeEach(function() {
+      $scope.fields = getRequirement()[0].fields;
+      directiveElement = getCompiledDirectiveElement();
+      spyOn($scope, 'onRefreshRequirements');
+    });
+
+    it('should be triggered onBlur', function() {
+      var dynamicForm = directiveElement.find('.form-control');
+      dynamicForm.triggerHandler('blur');
+
+      expect($scope.onRefreshRequirements).toHaveBeenCalled()
+    });
+  });
+
   describe('validationMessages', function() {
     beforeEach(function() {
       $scope.fields = getRequirement()[0].fields;
@@ -72,6 +88,7 @@ describe('Fieldset', function() {
         fields='fields' \
         validation-messages='validationMessages' \
         error-messages='errorMessages' \
+        on-refresh-requirements='onRefreshRequirements()' \
         is-valid='isValid'> \
       </tw-fieldset>";
     var compiledElement = $compile(template)($scope);
