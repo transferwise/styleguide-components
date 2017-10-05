@@ -23,7 +23,7 @@
     <tw-requirements-form
       requirements="$ctrl.requirements"
       model="$ctrl.model"
-      on-refresh-requirements=""
+      on-refresh-requirements="$ctrl.onRefreshRequirements()"
       upload-options="{
         buttonText: 'Choose file...',
         cancelText: 'Choose a different file?'
@@ -52,7 +52,7 @@
 <pre>&lt;tw-requirements-form
   requirements="$ctrl.requirements"
   model="{{$ctrl.model | json}}"
-  on-refresh-requirements=""
+  on-refresh-requirements="$ctrl.onRefreshRequirements()"
   upload-options="{
     buttonText: 'Choose file...',
     cancelText: 'Choose a different file'
