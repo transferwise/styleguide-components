@@ -1,6 +1,6 @@
 {
   "name": "tw-styleguide-components",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "TransfeWise AngularJS 1.x Styleguide Components",
   "license": "MIT",
   "scripts": {
@@ -8,7 +8,7 @@
     "test": "npm run lint; karma start karma-conf.js --single-run",
     "test:dev": "karma start karma-conf.dev.js --single-run",
     "prestart": "npm install",
-    "start": "npm run copy-demo && npm run less && webpack;",
+    "start": "npm run copy:demo && npm run less && webpack;",
     "dev": "live-server --port=1666 --open=demo/index.html",
     "build": "npm run less && webpack --watch;",
     "htmllint": "htmllint src/**/*.html; htmllint demo/**/*.html; exit 0",
@@ -51,8 +51,8 @@
     "babel-preset-es2015": "^6.24.1",
     "bootstrap": "git+https://github.com/transferwise/bootstrap.git",
     "currency-flags": "git+https://github.com/transferwise/currency-flags.git",
-    "eslint": "^4.6.0",
-    "eslint-config-airbnb-base": "^12.0.0",
+    "eslint": "^4.8.0",
+    "eslint-config-airbnb-base": "^12.0.2",
     "eslint-loader": "^1.9.0",
     "eslint-plugin-import": "^2.7.0",
     "git-directory-deploy": "^1.5.1",
@@ -60,7 +60,6 @@
     "htmllint": "^0.6.0",
     "htmllint-cli": "0.0.6",
     "htmllint-loader": "^1.3.8",
-    "transferwise-iconfont": "git+ssh://git@github.com/transferwise/iconfont.git",
     "jasmine-core": "^2.8.0",
     "jshint": "^2.9.5",
     "jshint-loader": "^0.8.4",
@@ -76,9 +75,10 @@
     "less": "^2.7.2",
     "live-server": "^1.1.0",
     "phantomjs-prebuilt": "^2.1.5",
-    "uglify-js": "^3.1.1",
+    "transferwise-iconfont": "git+ssh://git@github.com/transferwise/iconfont.git",
+    "uglify-js": "^3.1.3",
     "uglifyjs-webpack-plugin": "^0.4.6",
     "webpack": "^2.5.1",
-    "webpack-dev-server": "^2.4.5"
+    "webpack-dev-server": "^2.9.1"
   }
 }
