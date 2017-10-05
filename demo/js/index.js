@@ -405,13 +405,13 @@ angular.module('tw.styleguide.docs', [])
       }
     }],
     bindings: {
-      model: "="
+      model: '='
     },
     templateUrl: 'partials/forms/requirements-form.html'
   })
   .component('twValidationDocs', {
     bindings: {
-      model: "="
+      model: '='
     },
     templateUrl: 'partials/tw-validation.html'
   })
