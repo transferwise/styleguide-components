@@ -1,0 +1,9 @@
+<span tw-tool-tip
+  data-original-title="{{ $ctrl.date | twDateFormat : $ctrl.locale : 'long' }}">
+  <span class="hidden-xs hidden-sm">
+    {{ $ctrl.date | twDateFormat : $ctrl.locale : $ctrl.format }}
+  </span>
+  <span class="hidden-md hidden-lg hidden-xl">
+    {{ $ctrl.date | twDateFormat : $ctrl.locale : 'short' }}
+  </span>
+</span>

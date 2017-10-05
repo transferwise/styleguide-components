@@ -528,7 +528,7 @@ describe('DateLookup, ', function() {
       it('should show month before day if locale is US', function () {
         $scope.locale = LOCALES.us;
         $scope.$digest();
-        expect(selectedDate.text().trim().replace(/\s\s+/g, ' ')).toEqual('January 1, 2000');
+        expect(selectedDate.text().trim().replace(/\s\s+/g, ' ')).toEqual('January 1st, 2000');
       });
       it('should show date in Japanese format', function () {
           $scope.locale = LOCALES.jp;

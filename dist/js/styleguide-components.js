@@ -772,9 +772,13 @@ var _textFormatFilter = __webpack_require__(29);
 
 var _textFormatFilter2 = _interopRequireDefault(_textFormatFilter);
 
+var _dateFormat = __webpack_require__(26);
+
+var _dateFormat2 = _interopRequireDefault(_dateFormat);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.formatting', [_textFormatDirective2.default, _textFormatFilter2.default]).name;
+exports.default = _angular2.default.module('tw.styleguide.formatting', [_textFormatDirective2.default, _textFormatFilter2.default, _dateFormat2.default]).name;
 
 /***/ }),
 /* 21 */
@@ -854,9 +858,94 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.navigation', [_tabs2.default]).name;
 
 /***/ }),
-/* 24 */,
-/* 25 */,
-/* 26 */,
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _dateFormat = __webpack_require__(92);
+
+var _dateFormat2 = _interopRequireDefault(_dateFormat);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var DateDisplay = {
+  template: _dateFormat2.default,
+  bindings: {
+    date: '<',
+    locale: '<',
+    format: '<'
+  }
+};
+
+exports.default = DateDisplay;
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function DateFormatFilter(TwDateService) {
+  return function (date, locale, format) {
+    if (!date) {
+      return date;
+    }
+
+    if (typeof date === 'string' && new Date(date)) {
+      date = new Date(date);
+    }
+
+    if (format === 'long') {
+      return TwDateService.getLocaleFullDate(date, locale);
+    }
+
+    return TwDateService.getLocaleDateString(date, locale, format === 'short');
+  };
+}
+
+DateFormatFilter.$inject = ['TwDateService'];
+
+exports.default = DateFormatFilter;
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _dateFormat = __webpack_require__(24);
+
+var _dateFormat2 = _interopRequireDefault(_dateFormat);
+
+var _dateFormat3 = __webpack_require__(25);
+
+var _dateFormat4 = _interopRequireDefault(_dateFormat3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.styleguide.formatting.date', []).component('twDateFormat', _dateFormat2.default).filter('twDateFormat', _dateFormat4.default).name;
+
+/***/ }),
 /* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2385,21 +2474,25 @@ var DateLookupController = function () {
       this.monthBeforeDay = this.DateService.isMonthBeforeDay(this.locale);
       this.monthsOfYear = this.DateService.getMonthNamesForLocale(this.locale, 'long');
       this.shortMonthsOfYear = this.DateService.getMonthNamesForLocale(this.locale, 'short');
-      this.daysOfWeek = this.DateService.getDayNamesForLocale(this.locale, 'short');
-      this.shortDaysOfWeek = this.DateService.getDayNamesForLocale(this.locale, 'narrow');
+
+      // JS days start from Sunday, but we present from Monday
+      var jsDays = this.DateService.getDayNamesForLocale(this.locale, 'short');
+      var jsShortDays = this.DateService.getDayNamesForLocale(this.locale, 'narrow');
+      jsDays.push(jsDays.shift());
+      jsShortDays.push(jsShortDays.shift());
+      this.daysOfWeek = jsDays;
+      this.shortDaysOfWeek = jsShortDays;
       this.updateSelectedDatePresentation();
     }
   }, {
     key: 'updateSelectedDatePresentation',
     value: function updateSelectedDatePresentation() {
-      var monthsOfYear = this.shortDate ? this.shortMonthsOfYear : this.monthsOfYear;
-
-      this.selectedDateFormatted = this.DateService.getYearMonthDatePresentation(this.selectedYear, monthsOfYear[this.selectedMonth], this.selectedDate, this.locale);
+      this.selectedDateFormatted = this.DateService.getYearMonthDatePresentation(this.selectedYear, this.selectedMonth, this.selectedDate, this.locale, this.shortDate ? 'short' : 'long');
     }
   }, {
     key: 'updateCalendarDatePresentation',
     value: function updateCalendarDatePresentation() {
-      this.yearMonthFormatted = this.DateService.getYearAndMonthPresentation(this.year, this.monthsOfYear[this.month], this.locale);
+      this.yearMonthFormatted = this.DateService.getYearAndMonthPresentation(this.year, this.month, this.locale, this.shortDate ? 'short' : 'long');
     }
   }, {
     key: 'moveDateToWithinRange',
@@ -2491,7 +2584,9 @@ var DateLookupController = function () {
       // Perform after current digest
       this.$timeout(function () {
         var activeLink = _this5.element.getElementsByClassName('active')[0];
-        activeLink.focus();
+        if (activeLink) {
+          activeLink.focus();
+        }
       });
     }
   }, {
@@ -5794,60 +5889,73 @@ function DateService() {
     return lastDay.getUTCDate();
   };
 
-  this.getUTCDateFromParts = function (year, month, day) {
+  this.getUTCDateFromParts = function (year, month, day, hours, minutes, seconds) {
     var date = new Date();
     date.setUTCFullYear(year, month, day);
-    date.setUTCHours(0);
-    date.setUTCMinutes(0);
-    date.setUTCSeconds(0);
+    date.setUTCHours(hours || 0);
+    date.setUTCMinutes(minutes || 0);
+    date.setUTCSeconds(seconds || 0);
     date.setUTCMilliseconds(0);
     return date;
   };
 
+  this.getLocaleDateFromParts = function (year, month, day, hours, minutes, seconds) {
+    var date = new Date();
+    date.setFullYear(year, month, day);
+    date.setHours(hours || 0);
+    date.setMinutes(minutes || 0);
+    date.setSeconds(seconds || 0);
+    date.setMilliseconds(0);
+    return date;
+  };
+
+  // Sunday is first day of the week in JS
   this.getDayNamesForLocale = function (locale, format) {
-    var date = void 0;
     var days = [];
-    var language = getLanguageFromLocale(locale);
-
-    if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language]) {
-      return DEFAULT_DAY_NAMES_BY_LANGUAGE[language];
-    }
-
-    format = getValidDateFormat(format);
-    locale = getValidLocale(locale);
-
-    for (var i = 1; i <= 7; i++) {
-      date = _this.getUTCDateFromParts(2001, 0, i); // This day was a monday
-      days.push(getLocalisedDateName(date, locale, { weekday: format }));
+    var validFormat = getValidDateFormat(format);
+    for (var day = 0; day < 7; day++) {
+      days.push(_this.getDayNameForLocale(day, locale, validFormat));
     }
     return days;
   };
 
-  this.getMonthNamesForLocale = function (locale, format) {
-    var date = void 0;
-    var month = void 0;
-    var months = [];
+  this.getDayNameForLocale = function (dayOfWeek, locale, format) {
     var language = getLanguageFromLocale(locale);
-
-    if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] && (format === 'long' || language === 'ja')) {
-      return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language];
+    if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language] && (format !== 'short' || language === 'ja')) {
+      return DEFAULT_DAY_NAMES_BY_LANGUAGE[language][dayOfWeek];
     }
 
-    format = getValidDateFormat(format);
-    locale = getValidLocale(locale);
+    var validLocale = getValidLocale(locale);
+    var date = _this.getUTCDateFromParts(2006, 0, dayOfWeek + 1); // 2006 started with a Sunday
 
-    for (var i = 0; i < 12; i++) {
-      // Day in middle of month avoids timezone issues
-      date = _this.getUTCDateFromParts(2000, i, 15);
-      if (format === 'short') {
-        month = getLocalisedDateName(date, locale, { month: 'long' });
-        month = month.length > 4 ? month.slice(0, 3) : month;
-        months.push(month);
-      } else {
-        months.push(getLocalisedDateName(date, locale, { month: format }));
-      }
+    return getLocalisedDateName(date, validLocale, { weekday: format });
+  };
+
+  this.getMonthNamesForLocale = function (locale, format) {
+    var months = [];
+    var validFormat = getValidDateFormat(format);
+
+    for (var month = 0; month < 12; month++) {
+      months.push(_this.getMonthNameForLocale(month, locale, validFormat));
     }
+
     return months;
+  };
+
+  this.getMonthNameForLocale = function (month, locale, format) {
+    var language = getLanguageFromLocale(locale);
+    if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] && (format !== 'short' || language === 'ja')) {
+      return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language][month];
+    }
+
+    var validLocale = getValidLocale(locale);
+    // Day in middle of month avoids timezone issues
+    var date = _this.getUTCDateFromParts(2000, month, 15);
+    if (format === 'short') {
+      month = getLocalisedDateName(date, validLocale, { month: 'long' });
+      return month.length > 4 ? month.slice(0, 3) : month;
+    }
+    return getLocalisedDateName(date, validLocale, { month: format });
   };
 
   this.getWeekday = function (year, month, day) {
@@ -5856,13 +5964,13 @@ function DateService() {
   };
 
   this.isMonthBeforeDay = function (locale) {
-    if (locale.indexOf('US', locale.length - 2) !== -1) {
-      return true;
-    } else if (getLanguageFromLocale(locale) === 'ja') {
-      return true;
-    }
+    var lang = getLanguageFromLocale(locale);
+    return lang === 'ja' || locale && locale.indexOf('US', locale.length - 2) !== -1;
+  };
 
-    return false;
+  this.isYearBeforeMonth = function (locale) {
+    var lang = getLanguageFromLocale(locale);
+    return lang === 'ja';
   };
 
   this.addYears = function (date, years) {
@@ -5879,27 +5987,144 @@ function DateService() {
     return _this.getUTCDateFromParts(date.getUTCFullYear() + years, date.getUTCMonth() + months, date.getUTCDate() + days);
   };
 
-  this.getYearAndMonthPresentation = function (year, monthName, locale) {
+  this.getLocaleTimeString = function (date, locale) {
     var lang = getLanguageFromLocale(locale);
-    if (lang === 'ja') {
-      return year + '\u5E74' + monthName;
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+
+    if (hours < 10) {
+      hours = '0' + hours;
+    }
+    if (minutes < 10) {
+      minutes = '0' + minutes;
     }
 
-    return monthName + ' ' + year;
+    if (lang === 'en') {
+      var ampm = hours >= 12 ? 'pm' : 'am';
+      hours %= 12;
+      if (hours === 0) {
+        hours = 12;
+      }
+      if (minutes === '00') {
+        return '' + hours + ampm;
+      }
+      return hours + ':' + minutes + ampm;
+    }
+    return hours + ':' + minutes;
   };
 
-  this.getYearMonthDatePresentation = function (year, monthName, date, locale) {
-    var lang = getLanguageFromLocale(locale);
-    if (lang === 'ja') {
-      return year + '\u5E74' + monthName + date + '\u65E5';
-    }
+  this.getYearAndMonthPresentation = function (year, month, locale, format) {
+    var yearName = getYearName(year, locale);
+    var monthName = _this.getMonthNameForLocale(month, locale, format || 'long');
 
-    if (locale.indexOf('US', locale.length - 2) !== -1) {
-      return monthName + ' ' + date + ', ' + year;
-    }
+    var language = getLanguageFromLocale(locale);
+    var delimiter = getDelimiter(language);
 
-    return date + ' ' + monthName + ' ' + year;
+    if (_this.isYearBeforeMonth(locale)) {
+      return [yearName, monthName].join(delimiter);
+    }
+    return [monthName, yearName].join(delimiter);
   };
+
+  this.getYearMonthDatePresentation = function (year, month, day, locale, format) {
+    var yearName = getYearName(year, locale);
+    var monthName = _this.getMonthNameForLocale(month, locale, format || 'long');
+    var dateName = getDateName(day, locale);
+
+    var language = getLanguageFromLocale(locale);
+    var delimiter = getDelimiter(language);
+
+    if (_this.isYearBeforeMonth(locale)) {
+      return [yearName, monthName, dateName].join(delimiter);
+    }
+    if (_this.isMonthBeforeDay(locale)) {
+      var dateString = [monthName, dateName].join(delimiter);
+      return dateString + ', ' + yearName;
+    }
+    return [dateName, monthName, yearName].join(delimiter);
+  };
+
+  this.getLocaleFullDate = function (date, locale) {
+    var dateString = _this.getYearMonthDatePresentation(date.getFullYear(), date.getMonth(), date.getDate(), locale);
+
+    var weekdayName = _this.getDayNameForLocale(date.getDay(), locale, 'long').trim();
+    var lang = getLanguageFromLocale(locale);
+
+    if (lang === 'ja') {
+      return dateString + ' (' + weekdayName + ')';
+    }
+    return weekdayName + ', ' + dateString;
+  };
+
+  this.getLocaleNow = function () {
+    return new Date();
+  };
+
+  this.getLocaleDateString = function (date, locale, short) {
+    // Check that the date exists
+    if (!date) {
+      return date;
+    }
+
+    // Initialize variables
+    var year = date.getFullYear();
+    var month = date.getMonth();
+    var dayOfMonth = date.getDate();
+    var dayOfWeek = date.getDay();
+
+    var now = _this.getLocaleNow();
+    var fourtyEightHours = 48 * 60 * 60 * 1000;
+    var eightDays = 8 * 24 * 60 * 60 * 1000;
+
+    var hasTime = Math.abs(now - date) < fourtyEightHours;
+    var hasDate = !hasTime;
+    var hasWeekday = Math.abs(now - date) < eightDays;
+    var hasMonth = !hasWeekday;
+    var hasYear = !hasWeekday && now.getFullYear() !== year;
+
+    var yearName = hasYear ? getYearName(year, locale) : '';
+    var monthName = hasMonth ? _this.getMonthNameForLocale(month, locale, short ? 'short' : 'long') : '';
+    var dateName = hasDate ? getDateName(dayOfMonth, locale) : '';
+    var weekdayName = hasWeekday ? _this.getDayNameForLocale(dayOfWeek, locale, short ? 'short' : 'long') : '';
+    var timeName = hasTime ? _this.getLocaleTimeString(date, locale) : '';
+
+    var lang = getLanguageFromLocale(locale);
+    var delimiter = getDelimiter(lang);
+
+    var dateString = void 0;
+    if (_this.isYearBeforeMonth(locale)) {
+      dateString = [yearName, monthName, dateName].join(delimiter).trim();
+    } else if (_this.isMonthBeforeDay(locale)) {
+      dateString = [monthName, dateName].join(delimiter).trim();
+      if (hasYear) {
+        dateString += ', ' + yearName;
+      }
+    } else {
+      dateString = [dateName, monthName, yearName].join(delimiter).trim();
+    }
+
+    if (hasWeekday) {
+      if (lang === 'ja') {
+        return (dateString + ' ' + timeName + ' (' + weekdayName + ')').trim();
+      }
+      dateString = (weekdayName + ' ' + dateString).trim();
+    }
+    dateString = dateString + ' ' + timeName;
+
+    return dateString.trim();
+  };
+
+  function getDateName(dayOfMonth, locale) {
+    var lang = getLanguageFromLocale(locale);
+    var suffix = getSuffix(DAY_SUFFIXES_BY_LANGUAGE, dayOfMonth, lang) || '';
+    return '' + dayOfMonth + suffix;
+  }
+
+  function getYearName(year, locale) {
+    var lang = getLanguageFromLocale(locale);
+    var suffix = getSuffix(YEAR_SUFFIXES_BY_LANGUAGE, year, lang);
+    return '' + year + suffix;
+  }
 
   function getLocalisedDateName(date, locale, formattingObject) {
     var name = date.toLocaleDateString(locale, formattingObject);
@@ -5957,15 +6182,66 @@ function DateService() {
     return locale.substring(0, 2);
   }
 
+  function getDelimiter(lang) {
+    return DELIMITERS_BY_LANGUAGE[lang] !== undefined ? DELIMITERS_BY_LANGUAGE[lang] : ' ';
+  }
+
+  function getSuffix(suffixes, value, lang) {
+    if (!suffixes[lang]) {
+      return '';
+    }
+    if (suffixes[lang].exactMatch && suffixes[lang].exactMatch[value]) {
+      return suffixes[lang].exactMatch[value];
+    }
+    if (suffixes[lang].endsWith && suffixes[lang].endsWith[value % 10]) {
+      return suffixes[lang].endsWith[value % 10];
+    }
+    return suffixes[lang].default;
+  }
+
   var DEFAULT_MONTH_NAMES_BY_LANGUAGE = {
     en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     ja: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
   };
 
   var DEFAULT_DAY_NAMES_BY_LANGUAGE = {
-    en: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-    ja: ['月', '火', '水', '木', '金', '土', '日']
+    en: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    ja: ['日', '月', '火', '水', '木', '金', '土']
+  };
 
+  var DAY_SUFFIXES_BY_LANGUAGE = {
+    en: {
+      exactMatch: {
+        11: 'th',
+        12: 'th',
+        13: 'th'
+      },
+      endsWith: {
+        1: 'st',
+        2: 'nd',
+        3: 'rd'
+      },
+      default: 'th'
+    },
+    de: {
+      default: '.'
+    },
+    fi: {
+      default: '.'
+    },
+    ja: {
+      default: '日'
+    }
+  };
+
+  var YEAR_SUFFIXES_BY_LANGUAGE = {
+    ja: {
+      default: '年'
+    }
+  };
+
+  var DELIMITERS_BY_LANGUAGE = {
+    ja: ''
   };
 }
 
@@ -6241,7 +6517,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.validation.form', [_dom2.default]).directive('form', _formValidationDirective2.default).name;
 
 /***/ }),
-/* 92 */,
+/* 92 */
+/***/ (function(module, exports) {
+
+module.exports = "<span tw-tool-tip\n  data-original-title=\"{{ $ctrl.date | twDateFormat : $ctrl.locale : 'long' }}\">\n  <span class=\"hidden-xs hidden-sm\">\n    {{ $ctrl.date | twDateFormat : $ctrl.locale : $ctrl.format }}\n  </span>\n  <span class=\"hidden-md hidden-lg hidden-xl\">\n    {{ $ctrl.date | twDateFormat : $ctrl.locale : 'short' }}\n  </span>\n</span>\n";
+
+/***/ }),
 /* 93 */
 /***/ (function(module, exports) {
 
@@ -6263,7 +6544,7 @@ module.exports = "<div class=\"input-group\" ng-class=\"{\n  'input-group-sm': $
 /* 96 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"btn-group btn-block dropdown\"\n  ng-keydown=\"$ctrl.keyHandler($event)\">\n\n  <button\n    class=\"btn btn-input dropdown-toggle tw-date-lookup-button\"\n    data-toggle=\"dropdown\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-click=\"$ctrl.openLookup()\"\n    ng-focus=\"$ctrl.buttonFocus()\"\n    ng-class=\"{\n      'btn-sm': $ctrl.size ==='sm',\n      'btn-lg': $ctrl.size ==='lg'\n    }\">\n\n    <span ng-if=\"$ctrl.label\"\n      class=\"control-label small m-r-1\">{{$ctrl.label}}</span\n    ><span ng-if=\"!$ctrl.ngModel\"\n      class=\"form-control-placeholder tw-date-lookup-placeholder\n        visible-xs-inline visible-sm-inline visible-md-inline\n        visible-lg-inline visible-xl-inline\">\n      {{$ctrl.placeholder}}\n    </span\n    ><span ng-if=\"$ctrl.ngModel\" class=\"tw-date-lookup-selected\">\n      {{$ctrl.selectedDateFormatted}}\n    </span>\n    <span class=\"caret\"></span>\n\n  </button>\n\n  <div class=\"dropdown-menu\">\n\n    <div ng-if=\"$ctrl.mode ==='year'\" class=\"tw-date-lookup-years\">\n      <div class=\"text-xs-center p-t-1 p-b-2\">\n        <div class=\"pull-xs-left p-b-2\">\n          <a href=\"\" ng-click=\"$ctrl.setYearOffset($event, -20)\"\n            class=\"text-no-decoration tw-date-lookup-previous-years\">\n            <span class=\"icon icon-left icon-lg\"></span>\n          </a>\n        </div>\n        <div class=\"pull-xs-right p-b-2\">\n          <a href=\"\" ng-click=\"$ctrl.setYearOffset($event, 20)\"\n            class=\"text-no-decoration tw-date-lookup-next-years\">\n            <span class=\"icon icon-right icon-lg\"></span>\n          </a>\n        </div>\n      </div>\n      <table class=\"table table-condensed table-bordered table-calendar m-b-0\"><thead\n        class=\"sr-only\">\n          <tr>\n            <th colspan=\"4\">{{$ctrl.placeholder}}</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr ng-repeat=\"row in [0,4,8,12,16]\">\n            <td ng-repeat=\"col in [0,1,2,3]\">\n              <a href=\"\"\n                ng-click=\"$ctrl.selectYear($event, $ctrl.calculateYear(row, col))\"\n                ng-disabled=\"$ctrl.isYearDisabled($ctrl.calculateYear(row, col))\"\n                ng-class=\"{\n                  'active': $ctrl.selectedYear === $ctrl.calculateYear(row, col)\n                }\"\n                class=\"tw-date-lookup-year-option\">\n                {{$ctrl.calculateYear(row, col)}}\n              </a>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n\n    <div ng-if=\"$ctrl.mode ==='month'\" class=\"tw-date-lookup-months\">\n      <div class=\"text-xs-center p-t-1 p-b-2\">\n        <div class=\"pull-xs-left\">\n          <a href=\"\" ng-click=\"$ctrl.yearBefore($event)\" class=\"text-no-decoration\">\n            <span class=\"icon icon-left icon-lg\"></span>\n          </a>\n        </div>\n        <a href=\"\" ng-click=\"$ctrl.switchToYears($event)\"\n          class=\"tw-date-lookup-year-label\">\n          {{$ctrl.year}}\n        </a>\n        <div class=\"pull-xs-right\">\n          <a href=\"\" ng-click=\"$ctrl.yearAfter($event)\" class=\"text-no-decoration\">\n            <span class=\"icon icon-right icon-lg\"></span>\n          </a>\n        </div>\n      </div>\n      <table class=\"table table-condensed table-bordered table-calendar m-b-0\"><thead\n        class=\"sr-only\">\n          <tr>\n            <th colspan=\"3\">{{$ctrl.placeholder}}</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr ng-repeat=\"row in [0,4,8]\">\n            <td ng-repeat=\"col in [0,1,2,3]\">\n              <a href=\"\"\n                ng-click=\"$ctrl.selectMonth($event, row+col, $ctrl.year)\"\n                ng-disabled=\"$ctrl.isMonthDisabled(row + col, $ctrl.year)\"\n                ng-class=\"{\n                  'active': $ctrl.selectedMonth === (row + col) && $ctrl.selectedYear === $ctrl.year\n                }\"\n                class=\"tw-date-lookup-month-option\">\n                {{$ctrl.shortMonthsOfYear[row+col] | limitTo:5}}\n              </a>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n\n    <div ng-if=\"$ctrl.mode ==='day'\" class=\"tw-date-lookup-days\">\n      <div class=\"text-xs-center p-t-1 p-b-2\">\n        <div class=\"pull-xs-left\">\n          <a href=\"\" ng-click=\"$ctrl.monthBefore($event)\"\n            class=\"text-no-decoration tw-date-lookup-previous-month\">\n            <span class=\"icon icon-left icon-lg\"></span>\n          </a>\n        </div>\n        <a href=\"\" ng-click=\"$ctrl.switchToYears($event)\"\n          class=\"tw-date-lookup-month-label\">\n          {{$ctrl.yearMonthFormatted}}\n        </a>\n        <div class=\"pull-xs-right\">\n          <a href=\"\" ng-click=\"$ctrl.monthAfter($event)\"\n            class=\"text-no-decoration tw-date-lookup-next-month\">\n            <span class=\"icon icon-right icon-lg\"></span>\n          </a>\n        </div>\n      </div>\n      <table class=\"table table-condensed table-bordered table-calendar m-b-0\"><thead>\n          <tr>\n            <th ng-repeat=\"day in $ctrl.daysOfWeek track by $index\">\n              <span class=\"hidden-xs\">{{day | limitTo : 3}}</span>\n              <span class=\"visible-xs-inline-block\">{{$ctrl.shortDaysOfWeek[$index] | limitTo : 2}}</span>\n            </th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr ng-repeat=\"week in $ctrl.weeks\">\n            <td ng-repeat=\"day in week track by $index\"\n              ng-class=\"{\n                'default': $index > 4\n              }\">\n              <a href=\"\" title=\"{{day}} {{$ctrl.monthsOfYear[$ctrl.month]}} {{$ctrl.year}}\"\n                ng-if=\"day\"\n                ng-click=\"$ctrl.selectDay($event, day, $ctrl.month, $ctrl.year)\"\n                ng-disabled=\"$ctrl.isDayDisabled(day, $ctrl.month, $ctrl.year)\"\n                ng-class=\"{\n                  'active': $ctrl.isCurrentlySelected(day, $ctrl.month, $ctrl.year)\n                }\"\n                class=\"tw-date-lookup-day-option\" tabindex=\"0\">\n                {{day}}\n              </a>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n\n  </div>\n</div>\n";
+module.exports = "<div class=\"btn-group btn-block dropdown\"\n  ng-keydown=\"$ctrl.keyHandler($event)\">\n\n  <button\n    class=\"btn btn-input dropdown-toggle tw-date-lookup-button\"\n    data-toggle=\"dropdown\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-click=\"$ctrl.openLookup()\"\n    ng-focus=\"$ctrl.buttonFocus()\"\n    ng-class=\"{\n      'btn-sm': $ctrl.size ==='sm',\n      'btn-lg': $ctrl.size ==='lg'\n    }\">\n\n    <span ng-if=\"$ctrl.label\"\n      class=\"control-label small m-r-1\">{{$ctrl.label}}</span\n    ><span ng-if=\"!$ctrl.ngModel\"\n      class=\"form-control-placeholder tw-date-lookup-placeholder\n        visible-xs-inline visible-sm-inline visible-md-inline\n        visible-lg-inline visible-xl-inline\">\n      {{$ctrl.placeholder}}\n    </span\n    ><span ng-if=\"$ctrl.ngModel\" class=\"tw-date-lookup-selected\">\n      {{$ctrl.selectedDateFormatted}}\n    </span>\n    <span class=\"caret\"></span>\n\n  </button>\n\n  <div class=\"dropdown-menu\">\n\n    <!-- YEAR CALENDAR -->\n    <div ng-if=\"$ctrl.mode ==='year'\" class=\"tw-date-lookup-years\">\n      <div class=\"text-xs-center p-t-1 p-b-2\">\n        <div class=\"pull-xs-left p-b-2\">\n          <a href=\"\" ng-click=\"$ctrl.setYearOffset($event, -20)\"\n            class=\"text-no-decoration tw-date-lookup-previous-years\">\n            <span class=\"icon icon-left icon-lg\"></span>\n          </a>\n        </div>\n        <div class=\"pull-xs-right p-b-2\">\n          <a href=\"\" ng-click=\"$ctrl.setYearOffset($event, 20)\"\n            class=\"text-no-decoration tw-date-lookup-next-years\">\n            <span class=\"icon icon-right icon-lg\"></span>\n          </a>\n        </div>\n      </div>\n      <table class=\"table table-condensed table-bordered table-calendar m-b-0\"><thead\n        class=\"sr-only\">\n          <tr>\n            <th colspan=\"4\">{{$ctrl.placeholder}}</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr ng-repeat=\"row in [0,4,8,12,16]\">\n            <td ng-repeat=\"col in [0,1,2,3]\">\n              <a href=\"\"\n                ng-click=\"$ctrl.selectYear($event, $ctrl.calculateYear(row, col))\"\n                ng-disabled=\"$ctrl.isYearDisabled($ctrl.calculateYear(row, col))\"\n                ng-class=\"{\n                  'active': $ctrl.selectedYear === $ctrl.calculateYear(row, col)\n                }\"\n                class=\"tw-date-lookup-year-option\">\n                {{$ctrl.calculateYear(row, col)}}\n              </a>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n\n    <!-- MONTH CALENDAR -->\n    <div ng-if=\"$ctrl.mode ==='month'\" class=\"tw-date-lookup-months\">\n      <div class=\"text-xs-center p-t-1 p-b-2\">\n        <div class=\"pull-xs-left\">\n          <a href=\"\" ng-click=\"$ctrl.yearBefore($event)\" class=\"text-no-decoration\">\n            <span class=\"icon icon-left icon-lg\"></span>\n          </a>\n        </div>\n        <a href=\"\" ng-click=\"$ctrl.switchToYears($event)\"\n          class=\"tw-date-lookup-year-label\">\n          {{$ctrl.year}}\n        </a>\n        <div class=\"pull-xs-right\">\n          <a href=\"\" ng-click=\"$ctrl.yearAfter($event)\" class=\"text-no-decoration\">\n            <span class=\"icon icon-right icon-lg\"></span>\n          </a>\n        </div>\n      </div>\n      <table class=\"table table-condensed table-bordered table-calendar m-b-0\"><thead\n        class=\"sr-only\">\n          <tr>\n            <th colspan=\"3\">{{$ctrl.placeholder}}</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr ng-repeat=\"row in [0,4,8]\">\n            <td ng-repeat=\"col in [0,1,2,3]\">\n              <a href=\"\"\n                ng-click=\"$ctrl.selectMonth($event, row+col, $ctrl.year)\"\n                ng-disabled=\"$ctrl.isMonthDisabled(row + col, $ctrl.year)\"\n                ng-class=\"{\n                  'active': $ctrl.selectedMonth === (row + col) && $ctrl.selectedYear === $ctrl.year\n                }\"\n                class=\"tw-date-lookup-month-option\">\n                {{$ctrl.shortMonthsOfYear[row+col] | limitTo:5}}\n              </a>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n\n    <!-- DAY CALENDAR -->\n    <div ng-if=\"$ctrl.mode ==='day'\" class=\"tw-date-lookup-days\">\n      <div class=\"text-xs-center p-t-1 p-b-2\">\n        <div class=\"pull-xs-left\">\n          <a href=\"\" ng-click=\"$ctrl.monthBefore($event)\"\n            class=\"text-no-decoration tw-date-lookup-previous-month\">\n            <span class=\"icon icon-left icon-lg\"></span>\n          </a>\n        </div>\n        <a href=\"\" ng-click=\"$ctrl.switchToYears($event)\"\n          class=\"tw-date-lookup-month-label\">\n          {{$ctrl.yearMonthFormatted}}\n        </a>\n        <div class=\"pull-xs-right\">\n          <a href=\"\" ng-click=\"$ctrl.monthAfter($event)\"\n            class=\"text-no-decoration tw-date-lookup-next-month\">\n            <span class=\"icon icon-right icon-lg\"></span>\n          </a>\n        </div>\n      </div>\n      <table class=\"table table-condensed table-bordered table-calendar m-b-0\"><thead>\n          <tr>\n            <th ng-repeat=\"day in $ctrl.daysOfWeek track by $index\">\n              <span class=\"hidden-xs\">{{day | limitTo : 3}}</span>\n              <span class=\"visible-xs-inline-block\">{{$ctrl.shortDaysOfWeek[$index] | limitTo : 2}}</span>\n            </th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr ng-repeat=\"week in $ctrl.weeks\">\n            <td ng-repeat=\"day in week track by $index\"\n              ng-class=\"{\n                'default': $index > 4\n              }\">\n              <a href=\"\" title=\"{{day}} {{$ctrl.monthsOfYear[$ctrl.month]}} {{$ctrl.year}}\"\n                ng-if=\"day\"\n                ng-click=\"$ctrl.selectDay($event, day, $ctrl.month, $ctrl.year)\"\n                ng-disabled=\"$ctrl.isDayDisabled(day, $ctrl.month, $ctrl.year)\"\n                ng-class=\"{\n                  'active': $ctrl.isCurrentlySelected(day, $ctrl.month, $ctrl.year)\n                }\"\n                class=\"tw-date-lookup-day-option\" tabindex=\"0\">\n                {{day}}\n              </a>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n\n  </div>\n</div>\n";
 
 /***/ }),
 /* 97 */

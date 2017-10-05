@@ -307,27 +307,33 @@ class DateLookupController {
     this.monthBeforeDay = this.DateService.isMonthBeforeDay(this.locale);
     this.monthsOfYear = this.DateService.getMonthNamesForLocale(this.locale, 'long');
     this.shortMonthsOfYear = this.DateService.getMonthNamesForLocale(this.locale, 'short');
-    this.daysOfWeek = this.DateService.getDayNamesForLocale(this.locale, 'short');
-    this.shortDaysOfWeek = this.DateService.getDayNamesForLocale(this.locale, 'narrow');
+
+    // JS days start from Sunday, but we present from Monday
+    const jsDays = this.DateService.getDayNamesForLocale(this.locale, 'short');
+    const jsShortDays = this.DateService.getDayNamesForLocale(this.locale, 'narrow');
+    jsDays.push(jsDays.shift());
+    jsShortDays.push(jsShortDays.shift());
+    this.daysOfWeek = jsDays;
+    this.shortDaysOfWeek = jsShortDays;
     this.updateSelectedDatePresentation();
   }
 
   updateSelectedDatePresentation() {
-    const monthsOfYear = this.shortDate ? this.shortMonthsOfYear : this.monthsOfYear;
-
     this.selectedDateFormatted = this.DateService.getYearMonthDatePresentation(
       this.selectedYear,
-      monthsOfYear[this.selectedMonth],
+      this.selectedMonth,
       this.selectedDate,
-      this.locale
+      this.locale,
+      this.shortDate ? 'short' : 'long'
     );
   }
 
   updateCalendarDatePresentation() {
     this.yearMonthFormatted = this.DateService.getYearAndMonthPresentation(
       this.year,
-      this.monthsOfYear[this.month],
-      this.locale
+      this.month,
+      this.locale,
+      this.shortDate ? 'short' : 'long'
     );
   }
 
@@ -410,7 +416,9 @@ class DateLookupController {
     // Perform after current digest
     this.$timeout(() => {
       const activeLink = this.element.getElementsByClassName('active')[0];
-      activeLink.focus();
+      if (activeLink) {
+        activeLink.focus();
+      }
     });
   }
 
