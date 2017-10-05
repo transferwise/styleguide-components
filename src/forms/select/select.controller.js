@@ -230,14 +230,12 @@ function addWatchers($ctrl, $scope, $ngModel, $element) {
     modelChange(newValue, oldValue, $ctrl);
   });
 
-  $scope.$watch('$ctrl.options', (newValue, oldValue) => {
-    if (newValue !== oldValue) {
-      // Reinitialise selected valus
-      preSelectModelValue($ngModel, $ctrl);
-      setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl);
+  $scope.$watch('$ctrl.options', () => {
+    // TODO only do this if newvalue change?  Started failing in 1.6
+    preSelectModelValue($ngModel, $ctrl);
+    setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl);
 
-      $ctrl.filteredOptions = $ctrl.getFilteredOptions();
-    }
+    $ctrl.filteredOptions = $ctrl.getFilteredOptions();
   });
 }
 
