@@ -8,6 +8,7 @@
     "test": "npm run lint; karma start karma-conf.js --single-run",
     "test:dev": "karma start karma-conf.dev.js --single-run",
     "prestart": "npm install",
+    "postinstall": "npm run copy:demo",
     "start": "npm run copy:demo && npm run less && webpack;",
     "dev": "live-server --port=1666 --open=demo/index.html",
     "build": "npm run less && webpack --watch;",

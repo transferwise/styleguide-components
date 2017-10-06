@@ -61,7 +61,7 @@ angular.module('tw.styleguide.docs', [])
   .directive('docsErrorMessages', () => ({
     replace: true,
     template: " \
-    <div class='error-messages'> \
+    <div class='alert alert-danger'> \
       <div class='error-required'>Required</div> \
       <div class='error-minlength'>Too short</div> \
       <div class='error-maxlength'>Too long</div> \
@@ -561,7 +561,6 @@ angular.module('tw.styleguide.docs', [])
                       <input class="form-control text-xs-right p-r-0" type="text"> \
                       <span class="input-group-addon p-l-1 ">USD</span> \
                   </div> \
-                  <div class="help-block m-b-0 ">Rate £1 = £1.2345</div> \
               </div> \
           </div> \
           <div class="col-sm-6 col-lg-4 m-b-0"> \
@@ -572,7 +571,6 @@ angular.module('tw.styleguide.docs', [])
                       <input class="form-control text-xs-right p-r-0" type="text"> \
                       <span class="input-group-addon p-l-1 ">USD</span> \
                   </div> \
-                  <div class="help-block m-b-0 ">Fee £1.00 USD</div> \
               </div> \
           </div> \
           <div class="col-sm-12 col-lg-4 p-t-3 m-b-0"> \
