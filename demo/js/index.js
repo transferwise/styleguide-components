@@ -121,7 +121,7 @@ angular.module('tw.styleguide.docs', [])
         lockTooltipContent: 'some content'
       };
 
-      this.log = console.log;
+      this.log = function (message) { console.log(message); };;
     },
     templateUrl: 'partials/forms/amount-currency-select.html'
   })
@@ -131,7 +131,7 @@ angular.module('tw.styleguide.docs', [])
     },
     controller: function() {
       this.checkbox = { required: true };
-      this.log = console.log;
+      this.log = function (message) { console.log(message); };;
     },
     templateUrl: 'partials/forms/checkbox.html'
   })
@@ -141,7 +141,7 @@ angular.module('tw.styleguide.docs', [])
     },
     controller: function() {
       this.radio = { required: true };
-      this.log = console.log;
+      this.log = function (message) { console.log(message); };;
     },
     templateUrl: 'partials/forms/radio.html'
   })
@@ -262,7 +262,7 @@ angular.module('tw.styleguide.docs', [])
         { value: 'md,lg,xl', label: 'md, lg and xl grid' }
       ];
 
-      this.log = console.log;
+      this.log = function (message) { console.log(message); };;
     }
   })
   .component('twUploadDocs', {
@@ -560,7 +560,7 @@ angular.module('tw.styleguide.docs', [])
   .component('twProcessDocs', {
     templateUrl: 'partials/tw-process.html',
     controller: function() {
-      this.log = console.log;
+      this.log = function (message) { console.log(message); };
     }
   })
   .component('twCardsDocs', { templateUrl: 'partials/tw-cards.html' })
