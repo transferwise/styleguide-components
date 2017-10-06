@@ -372,7 +372,8 @@ angular.module('tw.styleguide.docs', [])
         { value: 'account', label: 'Account' },
         { value: 'profile', label: 'Profile' },
         { value: 'verification', label: 'Verification' },
-        { value: 'pay-in', label: 'Pay in' }
+        { value: 'pay-in', label: 'Pay in' },
+        { value: 'transfer', label: 'Transfer' }
       ];
       $ctrl.type = 'profile';
       if (!$ctrl.model) {
@@ -380,6 +381,10 @@ angular.module('tw.styleguide.docs', [])
       }
 
       $ctrl.model.firstName = '01010101010';
+
+      $ctrl.onRefreshRequirements = function() {
+        console.log("on refresh requirements");
+      }
 
       $scope.$watch('$ctrl.type', (newVal) => {
         $http.get(`json/${newVal}-requirements.json`).then((response) => {

@@ -43,8 +43,9 @@
               text-format="field.displayFormat"
               tw-validation
             ></tw-dynamic-form-control>
-            <div class="alert alert-danger error-messages">
-              <div ng-repeat="(validationType, validationMessage) in $ctrl.validationMessages"
+            <div class="alert alert-danger error-messages"
+              ng-class="{'alert-detach': field.type === 'date' || field.type === 'upload'}">
+              <div ng-repeat="(validationType, validationMessage) in field.validationMessages"
                 class="error-{{validationType}}">
                 {{validationMessage}}
               </div>
@@ -53,7 +54,8 @@
               </div>
             </div>
             <div ng-if="field.tooltip"
-              class="alert alert-focus">
+              class="alert alert-focus"
+              ng-class="{'alert-detach': field.type === 'date' || field.type === 'upload'}">
               {{field.tooltip}}
             </div>
           </div>

@@ -12,6 +12,7 @@ describe('Fieldset', function() {
     $rootScope = $injector.get('$rootScope');
     $compile = $injector.get('$compile');
     $scope = $rootScope.$new();
+    $scope.onRefreshRequirements = function () {}
   }));
 
   describe('validation', function() {
@@ -47,6 +48,39 @@ describe('Fieldset', function() {
     });
   });
 
+  describe('onRefreshRequirements', function() {
+    beforeEach(function() {
+      $scope.fields = getRequirement()[0].fields;
+      directiveElement = getCompiledDirectiveElement();
+      spyOn($scope, 'onRefreshRequirements');
+    });
+
+    it('should be triggered onBlur', function() {
+      var dynamicForm = directiveElement.find('.form-control');
+      dynamicForm.triggerHandler('blur');
+
+      expect($scope.onRefreshRequirements).toHaveBeenCalled()
+    });
+  });
+
+  describe('validationMessages', function() {
+    beforeEach(function() {
+      $scope.fields = getRequirement()[0].fields;
+      $scope.validationMessages = {
+        required: 'default required'
+      };
+      directiveElement = getCompiledDirectiveElement();
+    });
+
+    it('should contain custom messages', function() {
+      var requiredErrorSortCode = directiveElement.find('.tw-form-group-sortCode .error-messages .error-required');
+      var requiredErrorIBAN = directiveElement.find('.tw-form-group-iban .error-messages .error-required');
+
+      expect(requiredErrorSortCode.text()).toContain('sortCode required');
+      expect(requiredErrorIBAN.text()).toContain('default required');
+    });
+  });
+
   function getCompiledDirectiveElement() {
     var template = " \
       <tw-fieldset \
@@ -54,6 +88,7 @@ describe('Fieldset', function() {
         fields='fields' \
         validation-messages='validationMessages' \
         error-messages='errorMessages' \
+        on-refresh-requirements='onRefreshRequirements()' \
         is-valid='isValid'> \
       </tw-fieldset>";
     var compiledElement = $compile(template)($scope);
@@ -75,7 +110,27 @@ describe('Fieldset', function() {
                 {
                   "key": "sortCode",
                   "type": "text",
-                  "refreshRequirementsOnChange": false,
+                  "refreshRequirementsOnChange": true,
+                  "required": true,
+                  "displayFormat": "**-**-**",
+                  "example": "40-30-20",
+                  "minLength": 6,
+                  "maxLength": 8,
+                  "validationRegexp": null,
+                  "valuesAllowed": null,
+                  "validationMessages": {
+                    "required": "sortCode required"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "IBAN",
+              "group": [
+                {
+                  "key": "iban",
+                  "type": "text",
+                  "refreshRequirementsOnChange": true,
                   "required": true,
                   "displayFormat": "**-**-**",
                   "example": "40-30-20",

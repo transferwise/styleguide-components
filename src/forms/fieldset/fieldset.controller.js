@@ -8,22 +8,6 @@ class FieldsetController {
       this.model = {};
     }
 
-    if (this.fields) {
-      prepFields(this.fields, this.model);
-    }
-
-    $scope.$watch('$ctrl.fields', (newValue, oldValue) => {
-      if (!angular.equals(newValue, oldValue)) {
-        prepFields(this.fields, this.model);
-      }
-    });
-
-    $scope.$watch('twFieldset.$valid', (validity) => {
-      this.isValid = validity;
-    });
-
-    // TODO can we add asyncvalidator here? - prob not
-
     if (!this.validationMessages) {
       this.validationMessages = {
         required: 'Required',
@@ -34,6 +18,22 @@ class FieldsetController {
         maxlength: 'The value is too long'
       };
     }
+
+    if (this.fields) {
+      prepFields(this.fields, this.model, this.validationMessages);
+    }
+
+    $scope.$watch('$ctrl.fields', (newValue, oldValue) => {
+      if (!angular.equals(newValue, oldValue)) {
+        prepFields(this.fields, this.model, this.validationMessages);
+      }
+    });
+
+    $scope.$watch('twFieldset.$valid', (validity) => {
+      this.isValid = validity;
+    });
+
+    // TODO can we add asyncvalidator here? - prob not
   }
 
   onBlur(field) {
@@ -44,14 +44,12 @@ class FieldsetController {
       return;
     }
     // TODO disabled the form while we refresh requirements?
-    /*
     if (this.onRefreshRequirements) {
       // Should post the current model back to the requirements end
       // point and update the requirements.
       // TODO Can we handle this internally?
       this.onRefreshRequirements();
     }
-    */
   }
 
   onChange(field) {
@@ -65,7 +63,7 @@ class FieldsetController {
   }
 }
 
-function prepFields(fields, model) {
+function prepFields(fields, model, validationMessages) {
   fields.forEach((fieldGroup) => {
     if (fieldGroup.group.length) {
       fieldGroup.key = fieldGroup.group[0].key;
@@ -77,6 +75,7 @@ function prepFields(fields, model) {
       prepRegExp(field);
       prepValuesAsync(field, model);
       prepValuesAllowed(field);
+      prepValidationMessages(field, validationMessages);
     });
   });
 }
@@ -133,6 +132,12 @@ function getParamValuesFromModel(model, params) {
     }
   });
   return data;
+}
+
+function prepValidationMessages(field, validationMessages) {
+  field.validationMessages = field.validationMessages ?
+    field.validationMessages :
+    validationMessages;
 }
 
 FieldsetController.$inject = ['$scope', '$http'];

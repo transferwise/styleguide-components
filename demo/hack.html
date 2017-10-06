@@ -28,7 +28,8 @@
       {'value': 'shareholder', 'label': 'Shareholders'},
       {'value': 'account', 'label': 'Account'},
       {'value': 'profile', 'label': 'Profile'},
-      {'value': 'verification', 'label': 'Verification'}
+      {'value': 'verification', 'label': 'Verification'},
+      {'value': 'transfer', 'label': 'Transfer'}
     ];
     $ctrl.type = 'shareholder';
 
@@ -175,7 +176,7 @@
           requirements="$ctrl.requirements"
           model="$ctrl.model"
           add-text="Add"
-          on-refresh-requirements=""
+          on-refresh-requirements="$ctrl.onRefreshRequirements()"
           upload-options="{
             buttonText: 'Choose file...',
             cancelText: 'Choose a different file?'

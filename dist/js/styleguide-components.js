@@ -3238,22 +3238,6 @@ var FieldsetController = function () {
       this.model = {};
     }
 
-    if (this.fields) {
-      prepFields(this.fields, this.model);
-    }
-
-    $scope.$watch('$ctrl.fields', function (newValue, oldValue) {
-      if (!_angular2.default.equals(newValue, oldValue)) {
-        prepFields(_this.fields, _this.model);
-      }
-    });
-
-    $scope.$watch('twFieldset.$valid', function (validity) {
-      _this.isValid = validity;
-    });
-
-    // TODO can we add asyncvalidator here? - prob not
-
     if (!this.validationMessages) {
       this.validationMessages = {
         required: 'Required',
@@ -3264,6 +3248,22 @@ var FieldsetController = function () {
         maxlength: 'The value is too long'
       };
     }
+
+    if (this.fields) {
+      prepFields(this.fields, this.model, this.validationMessages);
+    }
+
+    $scope.$watch('$ctrl.fields', function (newValue, oldValue) {
+      if (!_angular2.default.equals(newValue, oldValue)) {
+        prepFields(_this.fields, _this.model, _this.validationMessages);
+      }
+    });
+
+    $scope.$watch('twFieldset.$valid', function (validity) {
+      _this.isValid = validity;
+    });
+
+    // TODO can we add asyncvalidator here? - prob not
   }
 
   _createClass(FieldsetController, [{
@@ -3276,14 +3276,12 @@ var FieldsetController = function () {
         return;
       }
       // TODO disabled the form while we refresh requirements?
-      /*
       if (this.onRefreshRequirements) {
         // Should post the current model back to the requirements end
         // point and update the requirements.
         // TODO Can we handle this internally?
         this.onRefreshRequirements();
       }
-      */
     }
   }, {
     key: 'onChange',
@@ -3302,7 +3300,7 @@ var FieldsetController = function () {
   return FieldsetController;
 }();
 
-function prepFields(fields, model) {
+function prepFields(fields, model, validationMessages) {
   fields.forEach(function (fieldGroup) {
     if (fieldGroup.group.length) {
       fieldGroup.key = fieldGroup.group[0].key;
@@ -3314,6 +3312,7 @@ function prepFields(fields, model) {
       prepRegExp(field);
       prepValuesAsync(field, model);
       prepValuesAllowed(field);
+      prepValidationMessages(field, validationMessages);
     });
   });
 }
@@ -3369,6 +3368,10 @@ function getParamValuesFromModel(model, params) {
     }
   });
   return data;
+}
+
+function prepValidationMessages(field, validationMessages) {
+  field.validationMessages = field.validationMessages ? field.validationMessages : validationMessages;
 }
 
 FieldsetController.$inject = ['$scope', '$http'];
@@ -6569,7 +6572,7 @@ module.exports = "<div ng-switch=\"$ctrl.type\">\n  <input ng-switch-when=\"text
 /* 99 */
 /***/ (function(module, exports) {
 
-module.exports = "<fieldset ng-form=\"twFieldset\">\n  <legend ng-if=\"$ctrl.legend\">{{$ctrl.legend}}</legend>\n  <div class=\"row row-equal-height\">\n    <div ng-repeat=\"fieldGroup in $ctrl.fields\" class=\"col-xs-12\"\n      ng-class=\"{\n        'col-sm-4': fieldGroup.width === 'sm',\n        'col-sm-6': fieldGroup.width === 'md' || fieldGroup.maxlength && fieldGroup.maxlength <= 10,\n        'col-sm-12': fieldGroup.width === 'lg' || !fieldGroup.maxlength || fieldGroup.maxlength > 10\n      }\">\n      <div class=\"form-group tw-form-group-{{fieldGroup.key}}\"\n        ng-class=\"{\n          'has-error': $ctrl.errorMessages[fieldGroup.key]\n        }\">\n        <label class=\"control-label\"\n          ng-if=\"fieldGroup.type !== 'upload'\">\n          {{fieldGroup.name}}\n        </label>\n        <div class=\"row\">\n          <div class=\"col-xs-{{field.columns}}\"\n            ng-repeat=\"field in fieldGroup.group\">\n            <tw-dynamic-form-control\n              name=\"{{field.key}}\"\n              label=\"{{fieldGroup.name}}\"\n              type=\"{{field.type | lowercase}}\"\n              placeholder=\"{{field.placeholder || field.example}}\"\n              help-text=\"{{field.helpText}}\"\n              locale=\"{{$ctrl.locale}}\"\n              upload-accept=\"{{field.accept}}\"\n              upload-icon=\"{{field.icon}}\"\n              upload-too-large-message=\"{{field.tooLargeMessage}}\"\n              options=\"field.valuesAllowed\"\n              upload-options=\"$ctrl.uploadOptions\"\n              ng-model=\"$ctrl.model[field.key]\"\n              ng-blur=\"$ctrl.onBlur(field)\"\n              ng-change=\"$ctrl.onChange(field)\"\n              ng-required=\"field.required\"\n              ng-disabled=\"field.disabled\"\n              tw-minlength=\"field.minLength\"\n              tw-maxlength=\"field.maxLength\"\n              ng-min=\"field.min\"\n              ng-max=\"field.max\"\n              ng-pattern=\"field.validationRegexp\"\n              text-format=\"field.displayFormat\"\n              tw-validation\n            ></tw-dynamic-form-control>\n            <div class=\"alert alert-danger error-messages\">\n              <div ng-repeat=\"(validationType, validationMessage) in $ctrl.validationMessages\"\n                class=\"error-{{validationType}}\">\n                {{validationMessage}}\n              </div>\n              <div class=\"error-provided\" ng-if=\"$ctrl.errorMessages[field.key]\">\n                {{ $ctrl.errorMessages[field.key] }}\n              </div>\n            </div>\n            <div ng-if=\"field.tooltip\"\n              class=\"alert alert-focus\">\n              {{field.tooltip}}\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</fieldset>\n";
+module.exports = "<fieldset ng-form=\"twFieldset\">\n  <legend ng-if=\"$ctrl.legend\">{{$ctrl.legend}}</legend>\n  <div class=\"row row-equal-height\">\n    <div ng-repeat=\"fieldGroup in $ctrl.fields\" class=\"col-xs-12\"\n      ng-class=\"{\n        'col-sm-4': fieldGroup.width === 'sm',\n        'col-sm-6': fieldGroup.width === 'md' || fieldGroup.maxlength && fieldGroup.maxlength <= 10,\n        'col-sm-12': fieldGroup.width === 'lg' || !fieldGroup.maxlength || fieldGroup.maxlength > 10\n      }\">\n      <div class=\"form-group tw-form-group-{{fieldGroup.key}}\"\n        ng-class=\"{\n          'has-error': $ctrl.errorMessages[fieldGroup.key]\n        }\">\n        <label class=\"control-label\"\n          ng-if=\"fieldGroup.type !== 'upload'\">\n          {{fieldGroup.name}}\n        </label>\n        <div class=\"row\">\n          <div class=\"col-xs-{{field.columns}}\"\n            ng-repeat=\"field in fieldGroup.group\">\n            <tw-dynamic-form-control\n              name=\"{{field.key}}\"\n              label=\"{{fieldGroup.name}}\"\n              type=\"{{field.type | lowercase}}\"\n              placeholder=\"{{field.placeholder || field.example}}\"\n              help-text=\"{{field.helpText}}\"\n              locale=\"{{$ctrl.locale}}\"\n              upload-accept=\"{{field.accept}}\"\n              upload-icon=\"{{field.icon}}\"\n              upload-too-large-message=\"{{field.tooLargeMessage}}\"\n              options=\"field.valuesAllowed\"\n              upload-options=\"$ctrl.uploadOptions\"\n              ng-model=\"$ctrl.model[field.key]\"\n              ng-blur=\"$ctrl.onBlur(field)\"\n              ng-change=\"$ctrl.onChange(field)\"\n              ng-required=\"field.required\"\n              ng-disabled=\"field.disabled\"\n              tw-minlength=\"field.minLength\"\n              tw-maxlength=\"field.maxLength\"\n              ng-min=\"field.min\"\n              ng-max=\"field.max\"\n              ng-pattern=\"field.validationRegexp\"\n              text-format=\"field.displayFormat\"\n              tw-validation\n            ></tw-dynamic-form-control>\n            <div class=\"alert alert-danger error-messages\"\n              ng-class=\"{'alert-detach': field.type === 'date' || field.type === 'upload'}\">\n              <div ng-repeat=\"(validationType, validationMessage) in field.validationMessages\"\n                class=\"error-{{validationType}}\">\n                {{validationMessage}}\n              </div>\n              <div class=\"error-provided\" ng-if=\"$ctrl.errorMessages[field.key]\">\n                {{ $ctrl.errorMessages[field.key] }}\n              </div>\n            </div>\n            <div ng-if=\"field.tooltip\"\n              class=\"alert alert-focus\"\n              ng-class=\"{'alert-detach': field.type === 'date' || field.type === 'upload'}\">\n              {{field.tooltip}}\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</fieldset>\n";
 
 /***/ }),
 /* 100 */
@@ -6581,7 +6584,7 @@ module.exports = "<input type=\"radio\" class=\"sr-only\"\n  name=\"{{$ctrl.name
 /* 101 */
 /***/ (function(module, exports) {
 
-module.exports = "<tw-tabs\n  ng-if=\"$ctrl.requirements.length > 1\"\n  tabs=\"$ctrl.requirements\"\n  active=\"$ctrl.model.type\">\n</tw-tabs>\n<div class=\"tab-content\" ng-form=\"twForm\">\n  <div ng-repeat=\"requirementType in $ctrl.requirements\"\n    ng-if=\"$ctrl.model.type == requirementType.type\"\n    class=\"tab-pane active\"\n    id=\"{{requirementType.type}}\">\n    <p>{{requirementType.description}}</p>\n    <tw-fieldset\n      fields=\"requirementType.fields\"\n      model=\"$ctrl.model\"\n      upload-options=\"$ctrl.uploadOptions\"\n      locale=\"{{$ctrl.locale}}\"\n      onRefreshRequirements=\"$ctrl.onRefreshRequirements()\"\n      validation-messages=\"$ctrl.validationMessages\"\n      error-messages=\"$ctrl.errorMessages\">\n    </tw-fieldset>\n  </div>\n</div>\n";
+module.exports = "<tw-tabs\n  ng-if=\"$ctrl.requirements.length > 1\"\n  tabs=\"$ctrl.requirements\"\n  active=\"$ctrl.model.type\">\n</tw-tabs>\n<div class=\"tab-content\" ng-form=\"twForm\">\n  <div ng-repeat=\"requirementType in $ctrl.requirements\"\n    ng-if=\"$ctrl.model.type == requirementType.type\"\n    class=\"tab-pane active\"\n    id=\"{{requirementType.type}}\">\n    <p>{{requirementType.description}}</p>\n    <tw-fieldset\n      fields=\"requirementType.fields\"\n      model=\"$ctrl.model\"\n      upload-options=\"$ctrl.uploadOptions\"\n      locale=\"{{$ctrl.locale}}\"\n      on-refresh-requirements=\"$ctrl.onRefreshRequirements()\"\n      validation-messages=\"$ctrl.validationMessages\"\n      error-messages=\"$ctrl.errorMessages\">\n    </tw-fieldset>\n  </div>\n</div>\n";
 
 /***/ }),
 /* 102 */
