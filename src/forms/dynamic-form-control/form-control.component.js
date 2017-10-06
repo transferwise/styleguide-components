@@ -7,7 +7,6 @@ const FormControl = {
   require: {
     $ngModel: 'ngModel'
   },
-  transclude: true,
   bindings: {
     type: '@',
     name: '@',

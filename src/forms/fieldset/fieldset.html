@@ -41,10 +41,10 @@
               ng-max="field.max"
               ng-pattern="field.validationRegexp"
               text-format="field.displayFormat"
-              tw-validation>
-              <!-- tw-dynamic-async-validator="field.validationAsync" -->
-            </tw-dynamic-form-control>
-            <div class="error-messages">
+              tw-validation
+            ></tw-dynamic-form-control>
+            <div class="alert alert-danger error-messages"
+              ng-class="{'alert-detach': field.type === 'date' || field.type === 'upload'}">
               <div ng-repeat="(validationType, validationMessage) in field.validationMessages"
                 class="error-{{validationType}}">
                 {{validationMessage}}
@@ -54,7 +54,8 @@
               </div>
             </div>
             <div ng-if="field.tooltip"
-              class="help-block">
+              class="alert alert-focus"
+              ng-class="{'alert-detach': field.type === 'date' || field.type === 'upload'}">
               {{field.tooltip}}
             </div>
           </div>
