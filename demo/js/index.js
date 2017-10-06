@@ -45,47 +45,53 @@ angular.module('tw.styleguide.docs', [])
       { value: 'xx-XX', label: 'Unknown locale' }
     ];
   })
-  .directive('validateRegexp', $q => ({
-    require: 'ngModel',
-    link(scope, element, attrs, ngModel) {
-      ngModel.$asyncValidators.async = function (modelValue, viewValue) {
-        try {
-          const reg = new RegExp(viewValue);
-          return $q.when(true);
-        } catch (error) {
-          return $q.reject(false);
-        }
-      };
+  .directive('validateRegexp', ['$q', function($q) {
+    return {
+      require: 'ngModel',
+      link: function(scope, element, attrs, ngModel) {
+        ngModel.$asyncValidators.async = function (modelValue, viewValue) {
+          try {
+            const reg = new RegExp(viewValue);
+            return $q.when(true);
+          } catch (error) {
+            return $q.reject(false);
+          }
+        };
+      }
     }
-  }))
-  .directive('docsErrorMessages', () => ({
-    replace: true,
-    template: " \
-    <div class='alert alert-danger'> \
-      <div class='error-required'>Required</div> \
-      <div class='error-minlength'>Too short</div> \
-      <div class='error-maxlength'>Too long</div> \
-      <div class='error-pattern'>Invalid characters</div> \ \
-      <div class='error-async'>Invalid async</div> \
-    </div>"
-  }))
-  .directive('docsStatusMessages', () => ({
-    replace: true,
-    template: " \
-    <div class='status-messages'> \
-      <div class='touched'>Touched</div> \
-      <div class='untouched'>Untouched</div> \
-      <div class='pristine'>Pristine</div> \
-      <div class='dirty'>Dirty</div> \
-    </div>"
-  }))
+  }])
+  .directive('docsErrorMessages', function() {
+    return {
+      replace: true,
+      template: " \
+      <div class='alert alert-danger'> \
+        <div class='error-required'>Required</div> \
+        <div class='error-minlength'>Too short</div> \
+        <div class='error-maxlength'>Too long</div> \
+        <div class='error-pattern'>Invalid characters</div> \ \
+        <div class='error-async'>Invalid async</div> \
+      </div>"
+    }
+  })
+  .directive('docsStatusMessages', function() {
+    return {
+      replace: true,
+      template: " \
+      <div class='status-messages'> \
+        <div class='touched'>Touched</div> \
+        <div class='untouched'>Untouched</div> \
+        <div class='pristine'>Pristine</div> \
+        <div class='dirty'>Dirty</div> \
+      </div>"
+    }
+  })
   .component('twAmountCurrencySelectDocs', {
     bindings: {
       model: '=',
       currency: '<',
       sizes: '<'
     },
-    controller() {
+    controller: function() {
       this.currencySelect = [
         { header: 'Popular currencies' },
         {
@@ -115,7 +121,7 @@ angular.module('tw.styleguide.docs', [])
         lockTooltipContent: 'some content'
       };
 
-      this.log = function (message) { console.log(message); };
+      this.log = console.log;
     },
     templateUrl: 'partials/forms/amount-currency-select.html'
   })
@@ -123,9 +129,9 @@ angular.module('tw.styleguide.docs', [])
     bindings: {
       model: '='
     },
-    controller() {
+    controller: function() {
       this.checkbox = { required: true };
-      this.log = function (message) { console.log(message); };
+      this.log = console.log;
     },
     templateUrl: 'partials/forms/checkbox.html'
   })
@@ -133,9 +139,9 @@ angular.module('tw.styleguide.docs', [])
     bindings: {
       model: '='
     },
-    controller() {
+    controller: function() {
       this.radio = { required: true };
-      this.log = function (message) { console.log(message); };
+      this.log = console.log;
     },
     templateUrl: 'partials/forms/radio.html'
   })
@@ -144,7 +150,7 @@ angular.module('tw.styleguide.docs', [])
     bindings: {
       model: '='
     },
-    controller() {
+    controller: function() {
       this.select = {
         required: true,
         empty: 'Select an option...',
@@ -241,7 +247,7 @@ angular.module('tw.styleguide.docs', [])
           long: [{ header: 'example header' }]
         }
       };
-      for (let i = 0; i < 999; i++) {
+      for (var i = 0; i < 999; i++) {
         this.select.options.long.push({ value: String(i), label: String(i) });
       }
 
@@ -256,7 +262,7 @@ angular.module('tw.styleguide.docs', [])
         { value: 'md,lg,xl', label: 'md, lg and xl grid' }
       ];
 
-      this.log = function (message) { console.log(message); };
+      this.log = console.log;
     }
   })
   .component('twUploadDocs', {
@@ -309,7 +315,7 @@ angular.module('tw.styleguide.docs', [])
       locales: '<',
       sizes: '<'
     },
-    controller() {
+    controller: function() {
       this.date = { required: true };
       this.log = function (message) { console.log(message); };
     },
@@ -321,7 +327,7 @@ angular.module('tw.styleguide.docs', [])
       locales: '<',
       sizes: '<'
     },
-    controller() {
+    controller: function() {
       this.log = function (message) { console.log(message); };
     },
     templateUrl: 'partials/forms/date-lookup.html'
@@ -331,7 +337,7 @@ angular.module('tw.styleguide.docs', [])
       model: '=',
       sizes: '<'
     },
-    controller() {
+    controller: function() {
       this.log = function (message) { console.log(message); };
     },
     templateUrl: 'partials/forms/currency-input.html'
@@ -342,7 +348,7 @@ angular.module('tw.styleguide.docs', [])
       locales: '<',
       sizes: '<'
     },
-    controller() {
+    controller: function() {
       this.dynamic = {
         required: true,
         options: [
@@ -386,8 +392,8 @@ angular.module('tw.styleguide.docs', [])
         console.log("on refresh requirements");
       }
 
-      $scope.$watch('$ctrl.type', (newVal) => {
-        $http.get(`json/${newVal}-requirements.json`).then((response) => {
+      $scope.$watch('$ctrl.type', function(newVal) {
+        $http.get(`json/${newVal}-requirements.json`).then(function(response){
           $ctrl.requirements = response.data;
         });
       });
@@ -399,10 +405,10 @@ angular.module('tw.styleguide.docs', [])
       };
 
       function getFirstRequirementKey(requirements) {
-        let key;
-        $ctrl.requirements.forEach((requirementType) => {
-          requirementType.fields.forEach((fieldGroup) => {
-            fieldGroup.group.forEach((field) => {
+        var key;
+        $ctrl.requirements.forEach(function(requirementType) {
+          requirementType.fields.forEach(function(fieldGroup) {
+            fieldGroup.group.forEach(function(field) {
               if (!key) {
                 key = field.key;
               }
@@ -423,9 +429,7 @@ angular.module('tw.styleguide.docs', [])
     },
     templateUrl: 'partials/tw-validation.html'
   })
-  .directive('twFocusableDocs', function() {
-    return {templateUrl: 'partials/tw-focusable.html'};
-  })
+  .component('twFocusableDocs', { templateUrl: 'partials/tw-focusable.html' })
   .component('twTextFormatDocs', {
     controller: function() {
       var $ctrl = this;
@@ -507,7 +511,7 @@ angular.module('tw.styleguide.docs', [])
     bindings: {
       locales: '<'
     },
-    controller() {
+    controller: function() {
       this.formats = [
         { value: 'short', label: 'short' },
         { value: 'medium', label: 'medium' },
@@ -529,7 +533,7 @@ angular.module('tw.styleguide.docs', [])
         nextMonth: new Date(now.getTime() + (30 * 24 * 60 * 60 * 1000)),
         nextYear: new Date(now.getTime() + (365 * 24 * 60 * 60 * 1000))
       };
-      this.timeChange = () => {
+      this.timeChange = function() {
         if (!this.time) {
           return;
         }
@@ -541,7 +545,7 @@ angular.module('tw.styleguide.docs', [])
           this.model.setMinutes(this.minutes);
         }
       };
-      this.dateChange = () => {
+      this.dateChange = function() {
         this.model.setHours(this.hours);
         this.model.setMinutes(this.minutes);
       };
@@ -550,40 +554,45 @@ angular.module('tw.styleguide.docs', [])
     },
     templateUrl: 'partials/tw-date-format.html'
   })
-  .directive('twPopOverDocs', () => ({ templateUrl: 'partials/tw-pop-over.html' }))
-  .directive('twToolTipDocs', () => ({ templateUrl: 'partials/tw-tool-tip.html' }))
-  .directive('twAffixDocs', () => ({ templateUrl: 'partials/tw-affix.html' }))
-  .directive('twProcessDocs', () => ({ templateUrl: 'partials/tw-process.html' }))
-  .directive('twCardsDocs', () => ({ templateUrl: 'partials/tw-cards.html' }))
-  .directive('formExample', () => ({
+  .component('twPopOverDocs', { templateUrl: 'partials/tw-pop-over.html' })
+  .component('twToolTipDocs', { templateUrl: 'partials/tw-tool-tip.html' })
+  .component('twAffixDocs', { templateUrl: 'partials/tw-affix.html' })
+  .component('twProcessDocs', {
+    templateUrl: 'partials/tw-process.html',
+    controller: function() {
+      this.log = console.log;
+    }
+  })
+  .component('twCardsDocs', { templateUrl: 'partials/tw-cards.html' })
+  .component('formExample', {
     template: ' \
       <div class="row "> \
-          <div class="col-sm-6 col-lg-4"> \
-              <div class="form-group m-b-0"> \
-                  <label class="control-label">Send</label> \
-                  <div class="input-group"> \
-                      <span class="input-group-addon ">£</span> \
-                      <input class="form-control text-xs-right p-r-0" type="text"> \
-                      <span class="input-group-addon p-l-1 ">USD</span> \
-                  </div> \
-              </div> \
+        <div class="col-sm-6 col-lg-4"> \
+          <div class="form-group m-b-0"> \
+            <label class="control-label">Send</label> \
+            <div class="input-group"> \
+              <span class="input-group-addon ">£</span> \
+              <input class="form-control text-xs-right p-r-0" type="text"> \
+              <span class="input-group-addon p-l-1 ">USD</span> \
+            </div> \
           </div> \
-          <div class="col-sm-6 col-lg-4 m-b-0"> \
-              <div class="form-group m-b-0"> \
-                  <label class="control-label">Receive about </label> \
-                  <div class="input-group"> \
-                      <span class="input-group-addon ">£</span> \
-                      <input class="form-control text-xs-right p-r-0" type="text"> \
-                      <span class="input-group-addon p-l-1 ">USD</span> \
-                  </div> \
-              </div> \
+        </div> \
+        <div class="col-sm-6 col-lg-4 m-b-0"> \
+          <div class="form-group m-b-0"> \
+            <label class="control-label">Receive about </label> \
+            <div class="input-group"> \
+              <span class="input-group-addon ">£</span> \
+              <input class="form-control text-xs-right p-r-0" type="text"> \
+              <span class="input-group-addon p-l-1 ">USD</span> \
+            </div> \
           </div> \
-          <div class="col-sm-12 col-lg-4 p-t-3 m-b-0"> \
-              <button class="btn btn-success btn-block">Repeat transfer</button> \
-          </div> \
+        </div> \
+        <div class="col-sm-12 col-lg-4 p-t-3 m-b-0"> \
+          <button class="btn btn-success btn-block">Repeat transfer</button> \
+        </div> \
       </div>'
-  }))
-  .directive('expandExample', () => ({
+  })
+  .component('expandExample', {
     transclude: {
       expandedHead: 'heading',
       expandedBody: '?middle',
@@ -591,20 +600,20 @@ angular.module('tw.styleguide.docs', [])
     },
     template: ' \
       <div> \
-          <div class="m-t-1 m-b-3 visible-xs-block visible-sm-block" ng-transclude="expandedHead"></div> \
-          <div ng-transclude="expandedBody"></div> \
-          <hr class="hidden-xs hidden-sm hidden-md"> \
-          <div class="m-t-2 btn-toolbar" ng-transclude="expandedButtons"></div> \
+        <div class="m-t-1 m-b-3 visible-xs-block visible-sm-block" ng-transclude="expandedHead"></div> \
+        <div ng-transclude="expandedBody"></div> \
+        <hr class="hidden-xs hidden-sm hidden-md"> \
+        <div class="m-t-2 btn-toolbar" ng-transclude="expandedButtons"></div> \
       </div>'
-  }))
-  .directive('collapseExample', () => ({
+  })
+  .component('collapseExample', {
     transclude: {
       collapseBody: '?middle',
       collapseRight: 'right'
     },
     template: ' \
-            <div class="media"> \
-                <div class="media-body" ng-transclude="collapseBody"></div> \
-                <div class="media-right text-xs-right" ng-transclude="collapseRight"></div> \
-            </div>'
-  }));
+      <div class="media"> \
+        <div class="media-body" ng-transclude="collapseBody"></div> \
+        <div class="media-right text-xs-right" ng-transclude="collapseRight"></div> \
+      </div>'
+  });
