@@ -17,7 +17,7 @@
         tw-focusable
         tw-validation
         tw-text-format="{{$ctrl.pattern.format}}" />
-      <div class="help-block" ng-if="$ctrl.pattern.helpText">
+      <div class="alert alert-focus" ng-if="$ctrl.pattern.helpText">
         {{$ctrl.pattern.helpText}}
       </div>
       <docs-error-messages></docs-error-messages>
