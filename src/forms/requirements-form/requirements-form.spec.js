@@ -101,7 +101,7 @@ describe('RequirementsForm', function() {
             var fieldElement = formGroups.eq(i);
             expect(fieldElement.length).toBe(1);
 
-            var tooltipElement = fieldElement.find('.help-block');
+            var tooltipElement = fieldElement.find('.alert-focus');
             if (ibanField.group[0].tooltip) {
               expect(tooltipElement.length).toBe(1);
             } else {
