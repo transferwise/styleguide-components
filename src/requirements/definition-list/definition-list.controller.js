@@ -14,14 +14,12 @@ class DefinitionListController {
             );
           }
         });
-      } else {
-        if (field.displayFormat &&
-          field.displayFormat.indexOf('||') > 0) {
-          field.displayFormat = field.displayFormat.substring(
-            0,
-            field.displayFormat.indexOf('||')
-          );
-        }
+      } else if (field.displayFormat &&
+        field.displayFormat.indexOf('||') > 0) {
+        field.displayFormat = field.displayFormat.substring(
+          0,
+          field.displayFormat.indexOf('||')
+        );
       }
     });
   }
