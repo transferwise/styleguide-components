@@ -89,7 +89,6 @@ function getDirectiveCallbacks(options) {
     popoverContainer.setAttribute('role', 'popover');
 
     popoverContainer.innerHTML = `
-      <div class="arrow"></div>
       <h3 class="popover-title">${options.title}</h3>
       <div class="popover-content">
         ${options.content}
@@ -128,7 +127,7 @@ function getDirectiveCallbacks(options) {
      Otherwise display it
      */
     if (!isElementVisible(popover)) {
-      togglePopoverVisibility(true);
+      popover.style.display = 'block';
     }
   }
 
@@ -137,7 +136,7 @@ function getDirectiveCallbacks(options) {
       const clickedOutsidePopover = !popover.contains(event.target);
 
       if (clickedOutsidePopover) {
-        togglePopoverVisibility(false);
+        popover.style.display = 'none';
       }
     }
   }
@@ -146,12 +145,6 @@ function getDirectiveCallbacks(options) {
     if (popover && isElementVisible(popover)) {
       setPopoverPosition();
     }
-  }
-
-  function togglePopoverVisibility(isVisible) {
-    const popoverVisibility = (isVisible) ? 'block' : 'none';
-
-    popover.style.display = popoverVisibility;
   }
 
   function isElementVisible(element) {
@@ -192,8 +185,7 @@ function getPopoverPosition(options, popover) {
   const popoverTopBorder = parseInt(popoverStyles.getPropertyValue('border-top'), 10);
   const popoverBottomBorder = parseInt(popoverStyles.getPropertyValue('border-bottom'), 10);
 
-  const popoverArrow = popover.querySelector('.arrow');
-  const popoverArrowStyles = getComputedStyle(popoverArrow, null);
+  const popoverArrowStyles = getComputedStyle(popover, ':before');
 
   const popoverArrowTopOffset = parseInt(popoverArrowStyles.getPropertyValue('top'), 10);
   const popoverArrowHeight = parseInt(popoverArrowStyles.getPropertyValue('height'), 10);
@@ -214,10 +206,8 @@ function getPopoverPosition(options, popover) {
 
     popoverOffsets = {
       offsetX: popoverOffsetX,
-      //
-      /* offsetY: (offsetY - (popoverDimensions.offsetHeight / 2))
-      + (offsetHeight / 2), //Center to center
-      */
+      // offsetY: (offsetY - (popoverDimensions.offsetHeight / 2))
+      // + (offsetHeight / 2),
       offsetY: popoverOffsetY,
     };
   }
