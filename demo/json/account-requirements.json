@@ -4,90 +4,78 @@
     "label": "Iban",
     "description": "Description of this option.  Perhaps further information that explains when this option can be used.",
     "fields": [
-        {
-         "name": "Legal type",
-         "group": [
-           {
-             "key": "legalType",
-             "type": "select",
-             "required": true,
-             "displayFormat": null,
-             "example": null,
-             "minLength": null,
-             "maxLength": null,
-             "validationRegexp": null,
-             "validationAsync": null,
-             "valuesAllowed": [
-               {
-                 "key": "PRIVATE",
-                 "name": "Private"
-               },
-               {
-                 "key": "BUSINESS",
-                 "name": "Business"
-               }
-             ]
-           }
-         ]
-       },
       {
-        "name": "IBAN",
-        "group": [
+        "name": "Legal type",
+        "key": "legalType",
+        "type": "select",
+        "required": true,
+        "displayFormat": null,
+        "example": null,
+        "minLength": null,
+        "maxLength": null,
+        "validationRegexp": null,
+        "validationAsync": null,
+        "valuesAllowed": [
           {
-            "key": "IBAN",
-            "type": "text",
-            "required": true,
-            "displayFormat": "**** **** **** **** **** **** **** ****",
-            "placeholder": "16 or 20 digits",
-            "example": "SE89370400440532013000",
-            "minLength": 2,
-            "maxLength": null,
-            "validationRegexp": null,
-            "validationAsync": {
-              "url": "https://api.transferwise.com/v1/validators/iban",
-              "params": [
-                {
-                  "key": "iban",
-                  "parameterName": "iban",
-                  "required": true
-                }
-              ]
-            },
-            "valuesAllowed": null
+            "key": "PRIVATE",
+            "name": "Private"
+          },
+          {
+            "key": "BUSINESS",
+            "name": "Business"
           }
         ]
       },
       {
+        "name": "IBAN",
+        "key": "IBAN",
+        "type": "text",
+        "required": true,
+        "displayFormat": "**** **** **** **** **** **** **** ****",
+        "placeholder": "16 or 20 digits",
+        "example": "SE89370400440532013000",
+        "minLength": 2,
+        "maxLength": null,
+        "validationRegexp": null,
+        "validationAsync": {
+          "url": "https://api.transferwise.com/v1/validators/iban",
+          "params": [
+            {
+              "key": "iban",
+              "parameterName": "iban",
+              "required": true
+            }
+          ]
+        },
+        "valuesAllowed": null
+      },
+      {
         "name": "Bank code (BIC/SWIFT)",
         "width": "sm",
-        "group": [
-          {
-            "key": "BIC",
-            "type": "text",
-            "required": false,
-            "displayFormat": null,
-            "example": "ABCDDE22",
-            "minLength": null,
-            "maxLength": null,
-            "validationRegexp": "(?i)[A-Z]{6}[A-Z\\d]{2}([A-Z\\d]{3})?",
-            "validationAsync": {
-              "url": "https://api.transferwise.com/v1/validators/bic",
-              "params": [
-                {
-                  "key": "iban",
-                  "parameterName": "iban",
-                  "required": true
-                },
-                {
-                  "key": "bic",
-                  "parameterName": "bic",
-                  "required": true
-                }
-              ]
+        "key": "BIC",
+        "type": "text",
+        "required": false,
+        "displayFormat": null,
+        "example": "ABCDDE22",
+        "minLength": null,
+        "maxLength": null,
+        "validationRegexp": "(?i)[A-Z]{6}[A-Z\\d]{2}([A-Z\\d]{3})?",
+        "validationAsync": {
+          "url": "https://api.transferwise.com/v1/validators/bic",
+          "params": [
+            {
+              "key": "iban",
+              "parameterName": "iban",
+              "required": true
             },
-            "valuesAllowed": null
-          }
-        ]
+            {
+              "key": "bic",
+              "parameterName": "bic",
+              "required": true
+            }
+          ]
+        },
+        "valuesAllowed": null
       }
     ]
   },
@@ -96,29 +84,25 @@
     "fields": [
       {
         "name": "Bankgiro number",
-        "group": [
-          {
-            "key": "bankgiroNumber",
-            "type": "text",
-            "required": true,
-            "displayFormat": "***-****||****-****",
-            "example": "1234-5678",
-            "minLength": 7,
-            "maxLength": 9,
-            "validationRegexp": "^\\d{3,4}\\-?\\d{4}$",
-            "validationAsync": {
-              "url": "https://api.transferwise.com/v1/validators/bankgiro-number",
-              "params": [
-                {
-                  "key": "bankgiroNumber",
-                  "parameterName": "bankgiroNumber",
-                  "required": true
-                }
-              ]
-            },
-            "valuesAllowed": null
-          }
-        ]
+        "key": "bankgiroNumber",
+        "type": "text",
+        "required": true,
+        "displayFormat": "***-****||****-****",
+        "example": "1234-5678",
+        "minLength": 7,
+        "maxLength": 9,
+        "validationRegexp": "^\\d{3,4}\\-?\\d{4}$",
+        "validationAsync": {
+          "url": "https://api.transferwise.com/v1/validators/bankgiro-number",
+          "params": [
+            {
+              "key": "bankgiroNumber",
+              "parameterName": "bankgiroNumber",
+              "required": true
+            }
+          ]
+        },
+        "valuesAllowed": null
       }
     ]
   }

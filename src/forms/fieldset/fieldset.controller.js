@@ -64,19 +64,26 @@ class FieldsetController {
 }
 
 function prepFields(fields, model, validationMessages) {
-  fields.forEach((fieldGroup) => {
-    if (fieldGroup.group.length) {
-      fieldGroup.key = fieldGroup.group[0].key;
-    }
-    fieldGroup.group.forEach((field) => {
-      if (field.type === 'upload') {
-        fieldGroup.type = 'upload';
+  fields.forEach((field) => {
+    if (field.group) {
+      if (field.group.length) {
+        field.key = field.group[0].key;
       }
+      field.group.forEach((fieldSection) => {
+        if (fieldSection.type === 'upload') {
+          field.type = 'upload';
+        }
+        prepRegExp(fieldSection);
+        prepValuesAsync(fieldSection, model);
+        prepValuesAllowed(fieldSection);
+        prepValidationMessages(fieldSection, validationMessages);
+      });
+    } else {
       prepRegExp(field);
       prepValuesAsync(field, model);
       prepValuesAllowed(field);
       prepValidationMessages(field, validationMessages);
-    });
+    }
   });
 }
 

@@ -1,0 +1,57 @@
+<div class="row row-equal-height">
+  <div
+    ng-repeat="field in $ctrl.fields"
+    ng-if="$ctrl.model[field.key] || $ctrl.model[field.group[0].key]"
+    class="col-xs-12 col-sm-6">
+
+    <dl ng-if="!field.group">
+      <dt ng-bind="field.name"></dt>
+      <dd>
+        <!-- Start old 'nested group' style -->
+        <span ng-if="field.valuesAllowed">
+          {{ $ctrl.getValueLabel(field.valuesAllowed, $ctrl.model[field.key]) }}
+        </span>
+        <span ng-if="!field.valuesAllowed">
+          <span ng-if="field.type === 'date'">
+            {{ $ctrl.model[field.key] | twDateFormat: $ctrl.locale }}
+          </span>
+          <span ng-if="field.type !== 'date'">
+            <span ng-if="field.displayFormat">
+              {{ $ctrl.model[field.key] | twTextFormat: field.displayFormat }}
+            </span>
+            <span ng-if="!field.displayFormat">
+              {{ $ctrl.model[field.key] }}
+            </span>
+          </span>
+        </span>
+      </dd>
+    </dl>
+
+    <!-- Start old 'nested group' style -->
+    <dl ng-if="field.group">
+      <dt ng-bind="field.name"></dt>
+      <dd>
+        <span ng-repeat="fieldSection in field.group">
+          <span ng-if="fieldSection.valuesAllowed">
+            {{ $ctrl.getValueLabel(fieldSection.valuesAllowed, $ctrl.model[fieldSection.key]) }}
+          </span>
+          <span ng-if="!fieldSection.valuesAllowed">
+            <span ng-if="fieldSection.type === 'date'">
+              {{ $ctrl.model[fieldSection.key] | twDateFormat: $ctrl.locale }}
+            </span>
+            <span ng-if="fieldSection.type !== 'date'">
+              <span ng-if="fieldSection.displayFormat">
+                {{ $ctrl.model[fieldSection.key] | twTextFormat: fieldSection.displayFormat }}
+              </span>
+              <span ng-if="!fieldSection.displayFormat">
+                {{ $ctrl.model[fieldSection.key] }}
+              </span>
+            </span>
+          </span>
+        </span>
+      </dd>
+    </dl>
+    <!-- End old 'nested group' style -->
+
+  </div>
+</div>

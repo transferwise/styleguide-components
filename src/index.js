@@ -9,6 +9,7 @@ import Help from './help/';
 import Layout from './layout/';
 import Loading from './loading/';
 import Navigation from './navigation/';
+import Requirements from './requirements/';
 
 // DEPRECATED This is required to support old usages of the sub modules when
 // importing the full JS library.
@@ -24,6 +25,7 @@ export default angular.module('tw.styleguide-components', [
   Layout,
   Loading,
   Navigation,
+  Requirements,
   OldFormComponentModule,
   OldFormValidationModule
 ]).name;
