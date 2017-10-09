@@ -6,33 +6,6 @@ export default function () {
 }
 
 function PopOverLink($scope, $element) {
-  /*
-  if (!element.popover) {
-    // eslint-disable-next-line no-console
-    console.log('twPopOver requires tooltip from bootstrap.js');
-    return;
-  }
-  const options = {};
-  const tag = element[0];
-
-  if (!tag.getAttribute('data-trigger')) {
-    options.trigger = 'focus';
-  } else if (tag.getAttribute('data-trigger') === 'hover') {
-    options.trigger = 'hover focus';
-  }
-  if (!tag.getAttribute('data-placement')) {
-    options.placement = 'top';
-  }
-  if (tag.getAttribute('data-content-html')) {
-    options.html = true;
-  }
-
-  element.popover(options);
-
-  tag.setAttribute('tabindex', '0');
-  tag.setAttribute('role', 'button');
-  tag.setAttribute('data-toggle', 'popover');
-  */
   const element = $element[0];
   const options = {
     trigger: 'focus',
@@ -169,7 +142,7 @@ function getPopoverPosition(options, popover) {
   const {
     offsetWidth,
     offsetHeight,
-  } = getDimensionsOffset(options.element);
+  } = getOffsetDimensions(options.element);
 
   /**
    * Popover's default coordinates
@@ -179,17 +152,20 @@ function getPopoverPosition(options, popover) {
     offsetY: 0,
   };
 
-  const popoverDimensions = getDimensionsOffset(popover);
+  const popoverDimensions = getOffsetDimensions(popover);
   const popoverStyles = getComputedStyle(popover, null);
 
-  const popoverTopBorder = parseInt(popoverStyles.getPropertyValue('border-top'), 10);
-  const popoverBottomBorder = parseInt(popoverStyles.getPropertyValue('border-bottom'), 10);
+  const popoverTopBorder = getIntegerProperty('border-top')(popoverStyles);
+  const popoverBottomBorder = getIntegerProperty('border-bottom')(popoverStyles);
 
+  /*
+   * The visible arrow is a pseudo-element
+   */
   const popoverArrowStyles = getComputedStyle(popover, ':before');
 
-  const popoverArrowTopOffset = parseInt(popoverArrowStyles.getPropertyValue('top'), 10);
-  const popoverArrowHeight = parseInt(popoverArrowStyles.getPropertyValue('height'), 10);
-  const popoverArrowMarginTop = parseInt(popoverArrowStyles.getPropertyValue('margin-top'), 10);
+  const popoverArrowTopOffset = getIntegerProperty('top')(popoverArrowStyles);
+  const popoverArrowHeight = getIntegerProperty('height')(popoverArrowStyles);
+  const popoverArrowMarginTop = getIntegerProperty('margin-top')(popoverArrowStyles);
 
   if (options.placement === 'top') {
     popoverOffsets = {
@@ -249,9 +225,35 @@ function getBoundingOffset(element) {
   };
 }
 
-function getDimensionsOffset(element) {
+function getOffsetDimensions(element) {
   return {
     offsetWidth: element.offsetWidth,
     offsetHeight: element.offsetHeight,
   };
+}
+
+function getIntegerProperty(property) {
+  return compose(parseInt, curry(getPropertyValue)(property));
+}
+
+function getPropertyValue(prop, obj) {
+  return obj.getPropertyValue(prop);
+}
+
+function compose(...fns) {
+  return fns.reverse().reduce((fn1, fn2) =>
+    (...args) => fn2(fn1(...args)));
+}
+
+function curry(fn, arity = fn.length) {
+  return (function nextCurried(prevArgs) {
+    return (nextArg) => {
+      const args = prevArgs.concat([nextArg]);
+
+      if (args.length >= arity) {
+        return fn(...args);
+      }
+      return nextCurried(args);
+    };
+  }([]));
 }
