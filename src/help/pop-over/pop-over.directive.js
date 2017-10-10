@@ -62,7 +62,7 @@ function getDirectiveCallbacks(options) {
     popoverContainer.setAttribute('role', 'popover');
 
     popoverContainer.innerHTML = `
-      <button class='close popover-close'>X</button>
+      <button class='close popover-close'>&times;</button>
       <h3 class="popover-title">${options.title}</h3>
       <div class="popover-content">
         ${options.content}
