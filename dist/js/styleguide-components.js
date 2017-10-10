@@ -262,13 +262,17 @@ var _focusable = __webpack_require__(50);
 
 var _focusable2 = _interopRequireDefault(_focusable);
 
+var _definitionList = __webpack_require__(117);
+
+var _definitionList2 = _interopRequireDefault(_definitionList);
+
 var _uploadDroppable = __webpack_require__(60);
 
 var _uploadDroppable2 = _interopRequireDefault(_uploadDroppable);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.forms', [_checkbox2.default, _radio2.default, _select2.default, _upload2.default, _date2.default, _dateLookup2.default, _currencyInput2.default, _amountCurrencySelect2.default, _dynamicFormControl2.default, _fieldset2.default, _requirementsForm2.default, _focusable2.default, _uploadDroppable2.default]).name;
+exports.default = _angular2.default.module('tw.styleguide.forms', [_checkbox2.default, _radio2.default, _select2.default, _upload2.default, _date2.default, _dateLookup2.default, _currencyInput2.default, _amountCurrencySelect2.default, _dynamicFormControl2.default, _fieldset2.default, _requirementsForm2.default, _focusable2.default, _definitionList2.default, _uploadDroppable2.default]).name;
 
 // Deprecated
 
@@ -5225,10 +5229,6 @@ var _navigation = __webpack_require__(23);
 
 var _navigation2 = _interopRequireDefault(_navigation);
 
-var _requirements = __webpack_require__(110);
-
-var _requirements2 = _interopRequireDefault(_requirements);
-
 var _formComponents = __webpack_require__(18);
 
 var _formComponents2 = _interopRequireDefault(_formComponents);
@@ -5241,7 +5241,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // DEPRECATED This is required to support old usages of the sub modules when
 // importing the full JS library.
-exports.default = _angular2.default.module('tw.styleguide-components', [_forms2.default, _validation2.default, _formatting2.default, _services2.default, _help2.default, _layout2.default, _loading2.default, _navigation2.default, _requirements2.default, _formComponents2.default, _formValidation2.default]).name;
+exports.default = _angular2.default.module('tw.styleguide-components', [_forms2.default, _validation2.default, _formatting2.default, _services2.default, _help2.default, _layout2.default, _loading2.default, _navigation2.default, _formComponents2.default, _formValidation2.default]).name;
 
 /***/ }),
 /* 70 */
@@ -6599,7 +6599,7 @@ module.exports = "<input type=\"radio\" class=\"sr-only\"\n  name=\"{{$ctrl.name
 /* 101 */
 /***/ (function(module, exports) {
 
-module.exports = "<tw-tabs\n  ng-if=\"$ctrl.requirements.length > 1\"\n  tabs=\"$ctrl.requirements\"\n  active=\"$ctrl.model.type\">\n</tw-tabs>\n<div class=\"tab-content\" ng-form=\"twForm\">\n  <div ng-repeat=\"requirementType in $ctrl.requirements\"\n    ng-if=\"$ctrl.model.type == requirementType.type\"\n    class=\"tab-pane active\"\n    id=\"{{requirementType.type}}\">\n    <p>{{requirementType.description}}</p>\n    <tw-fieldset\n      fields=\"requirementType.fields\"\n      model=\"$ctrl.model\"\n      upload-options=\"$ctrl.uploadOptions\"\n      locale=\"{{$ctrl.locale}}\"\n      on-refresh-requirements=\"$ctrl.onRefreshRequirements()\"\n      validation-messages=\"$ctrl.validationMessages\"\n      error-messages=\"$ctrl.errorMessages\"\n      narrow=\"true\">\n    </tw-fieldset>\n\n    <tw-definition-list\n      fields=\"requirementType.fields\"\n      model=\"$ctrl.model\"\n      locale=\"{{$ctrl.locale}}\">\n    </tw-definition-list>\n  </div>\n</div>\n";
+module.exports = "<tw-tabs\n  ng-if=\"$ctrl.requirements.length > 1\"\n  tabs=\"$ctrl.requirements\"\n  active=\"$ctrl.model.type\">\n</tw-tabs>\n<div class=\"tab-content\" ng-form=\"twForm\">\n  <div ng-repeat=\"requirementType in $ctrl.requirements\"\n    ng-if=\"$ctrl.model.type == requirementType.type\"\n    class=\"tab-pane active\"\n    id=\"{{requirementType.type}}\">\n    <p>{{requirementType.description}}</p>\n    <tw-fieldset\n      fields=\"requirementType.fields\"\n      model=\"$ctrl.model\"\n      upload-options=\"$ctrl.uploadOptions\"\n      locale=\"{{$ctrl.locale}}\"\n      on-refresh-requirements=\"$ctrl.onRefreshRequirements()\"\n      validation-messages=\"$ctrl.validationMessages\"\n      error-messages=\"$ctrl.errorMessages\"\n      narrow=\"true\">\n    </tw-fieldset>\n  </div>\n</div>\n";
 
 /***/ }),
 /* 102 */
@@ -6650,7 +6650,12 @@ module.exports = "<span class=\"process\"\n  ng-class=\"{\n    'process-success'
 module.exports = "<ul ng-if=\"$ctrl.tabs.length > 0\"\n  class=\"nav nav-tabs m-b-3\">\n  <li\n    ng-repeat=\"tab in $ctrl.tabs track by $index\"\n    ng-class=\"{\n      'active': $ctrl.active === tab.type\n    }\">\n    <a href=\"\" ng-click=\"$ctrl.switchTab(tab.type)\">\n      {{tab.label}}\n    </a>\n  </li>\n</ul>\n";
 
 /***/ }),
-/* 110 */
+/* 110 */,
+/* 111 */,
+/* 112 */,
+/* 113 */,
+/* 114 */,
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6660,34 +6665,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _angular = __webpack_require__(0);
-
-var _angular2 = _interopRequireDefault(_angular);
-
-var _definitionList = __webpack_require__(113);
-
-var _definitionList2 = _interopRequireDefault(_definitionList);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _angular2.default.module('tw.styleguide.requirements', [_definitionList2.default]).name;
-
-/***/ }),
-/* 111 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _definitionListController = __webpack_require__(112);
+var _definitionListController = __webpack_require__(116);
 
 var _definitionListController2 = _interopRequireDefault(_definitionListController);
 
-var _definitionList = __webpack_require__(114);
+var _definitionList = __webpack_require__(118);
 
 var _definitionList2 = _interopRequireDefault(_definitionList);
 
@@ -6708,7 +6690,7 @@ var DefinitionList = {
 exports.default = DefinitionList;
 
 /***/ }),
-/* 112 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6745,6 +6727,7 @@ var DefinitionListController = function () {
         }
       });
     }
+
     // eslint-disable-next-line
 
   }, {
@@ -6757,6 +6740,9 @@ var DefinitionListController = function () {
       }
       return value;
     }
+
+    // eslint-disable-next-line
+
   }, {
     key: 'mask',
     value: function mask(value) {
@@ -6770,7 +6756,7 @@ var DefinitionListController = function () {
 exports.default = DefinitionListController;
 
 /***/ }),
-/* 113 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6784,7 +6770,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _definitionListComponent = __webpack_require__(111);
+var _definitionListComponent = __webpack_require__(115);
 
 var _definitionListComponent2 = _interopRequireDefault(_definitionListComponent);
 
@@ -6793,7 +6779,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.requirements.definition-list', []).component('twDefinitionList', _definitionListComponent2.default).name;
 
 /***/ }),
-/* 114 */
+/* 118 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"m-t-1\">\n  <h4\n    ng-if=\"$ctrl.legend\"\n    ng-bind=\"$ctrl.legend\"\n    class=\"page-header p-t-3\">\n  </h4>\n</div>\n<div class=\"row row-equal-height\">\n  <div class=\"col-xs-12\"\n    ng-class=\"{'col-sm-6': !$ctrl.narrow}\"\n    ng-repeat=\"field in $ctrl.fields\"\n    ng-if=\"$ctrl.model[field.key] || $ctrl.model[field.group[0].key]\">\n\n    <dl ng-if=\"!field.group\">\n      <dt ng-bind=\"field.name\"></dt>\n      <dd ng-switch=\"field.type\">\n        <span ng-switch-when=\"select|radio\" ng-switch-when-separator=\"|\">\n          {{ $ctrl.getValueLabel(field.valuesAllowed, $ctrl.model[field.key]) }}\n        </span>\n        <span ng-switch-when=\"date\">\n          {{ $ctrl.model[field.key] | twDateFormat: $ctrl.locale }}\n        </span>\n        <span ng-switch-when=\"password\">\n          {{ $ctrl.mask($ctrl.model[field.key]) }}\n        </span>\n        <div ng-switch-when=\"upload\" class=\"thumbnail\">\n          <img ng-src=\"{{ $ctrl.model[field.key] }}\" />\n        </div>\n        <span ng-switch-default>\n          {{ $ctrl.model[field.key] | twTextFormat: field.displayFormat }}\n        </span>\n      </dd>\n    </dl>\n\n    <!-- Start old 'nested group' style -->\n    <dl ng-if=\"field.group\">\n      <dt ng-bind=\"field.name\"></dt>\n      <dd>\n        <span ng-repeat=\"fieldSection in field.group\">\n          <span ng-switch=\"field.type\">\n            <span ng-switch-when=\"select|radio\" ng-switch-when-separator=\"|\">\n              {{ $ctrl.getValueLabel(fieldSection.valuesAllowed, $ctrl.model[fieldSection.key]) }}\n            </span>\n            <span ng-switch-when=\"date\">\n              {{ $ctrl.model[fieldSection.key] | twDateFormat: $ctrl.locale }}\n            </span>\n            <span ng-switch-when=\"password\">\n              {{ $ctrl.mask($ctrl.model[fieldSection.key]) }}\n            </span>\n            <div ng-switch-when=\"upload\" class=\"thumbnail\">\n              <img ng-src=\"{{ $ctrl.model[fieldSection.key] }}\" />\n            </div>\n            <span ng-switch-default>\n              {{ $ctrl.model[fieldSection.key] | twTextFormat: fieldSection.displayFormat }}\n            </span>\n          </span>\n        </span>\n      </dd>\n    </dl>\n    <!-- End old 'nested group' style -->\n\n  </div>\n</div>\n";

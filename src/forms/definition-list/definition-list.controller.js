@@ -23,6 +23,7 @@ class DefinitionListController {
       }
     });
   }
+  
   // eslint-disable-next-line
   getValueLabel(options, value) {
     for (let i = 0; i < options.length; i++) {
@@ -32,6 +33,8 @@ class DefinitionListController {
     }
     return value;
   }
+
+  // eslint-disable-next-line
   mask(value) {
     return new Array(value.length + 1).join('*');
   }
