@@ -62,6 +62,7 @@ function getDirectiveCallbacks(options) {
     popoverContainer.setAttribute('role', 'popover');
 
     popoverContainer.innerHTML = `
+      <button class='close popover-close'>X</button>
       <h3 class="popover-title">${options.title}</h3>
       <div class="popover-content">
         ${options.content}
@@ -73,12 +74,12 @@ function getDirectiveCallbacks(options) {
   function setPopoverPosition() {
     popover.setAttribute('style', 'display:block; visibility:hidden;');
 
-    const {
-      offsetX,
-      offsetY,
-    } = getPopoverPosition(options, popover);
+    const { offsetX, offsetY } = getPopoverPosition(options, popover);
 
-    popover.setAttribute('style', `display:block; visibility:visible; top:${offsetY}px; left:${offsetX}px`);
+    popover.setAttribute(
+      'style',
+      `display:block; visibility:visible; top:${offsetY}px; left:${offsetX}px`,
+    );
   }
 
   function elementCallback() {
@@ -90,16 +91,15 @@ function getDirectiveCallbacks(options) {
      */
     if (!popoverAppended) {
       popover = getPopover();
-
       body.appendChild(popover);
-
-      setPopoverPosition();
     }
 
     /**
      Otherwise display it
      */
     if (!isElementVisible(popover)) {
+      setPopoverPosition();
+
       popover.style.display = 'block';
     }
   }
@@ -107,8 +107,10 @@ function getDirectiveCallbacks(options) {
   function documentCallback(event) {
     if (popover) {
       const clickedOutsidePopover = !popover.contains(event.target);
+      const clickedInsidePopover = popover.contains(event.target);
+      const clickedPopoverClose = event.target.className.split(' ').includes('popover-close');
 
-      if (clickedOutsidePopover) {
+      if (clickedOutsidePopover || (clickedInsidePopover && clickedPopoverClose)) {
         popover.style.display = 'none';
       }
     }
@@ -131,18 +133,14 @@ function getPopoverPosition(options, popover) {
   /**
    * The element's coordinates, for which we want to display the popover
    */
-  const {
-    offsetX,
-    offsetY,
-  } = getBoundingOffset(options.element);
+  const elementOffset = getBoundingOffset(options.element);
 
   /**
    * The element's size, for which we want to display the popover
    */
-  const {
-    offsetWidth,
-    offsetHeight,
-  } = getOffsetDimensions(options.element);
+  const elementOffsetDimensions = getOffsetDimensions(options.element);
+
+  const POPOVER_SPACING = 5;
 
   /**
    * Popover's default coordinates
@@ -152,11 +150,11 @@ function getPopoverPosition(options, popover) {
     offsetY: 0,
   };
 
-  const popoverDimensions = getOffsetDimensions(popover);
-  const popoverStyles = getComputedStyle(popover, null);
+  const popoverOffsetDimensions = getOffsetDimensions(popover);
+  const popoverClientDimensions = getClientDimensions(popover);
 
-  const popoverTopBorder = getIntegerProperty('border-top')(popoverStyles);
-  const popoverBottomBorder = getIntegerProperty('border-bottom')(popoverStyles);
+  const popoverVerticalBorder = popoverOffsetDimensions.offsetHeight -
+    popoverClientDimensions.clientHeight;
 
   /*
    * The visible arrow is a pseudo-element
@@ -169,20 +167,24 @@ function getPopoverPosition(options, popover) {
 
   if (options.placement === 'top') {
     popoverOffsets = {
-      offsetX: (offsetX - (popoverDimensions.offsetWidth / 2)) + (offsetWidth / 2),
-      offsetY: (offsetY - popoverDimensions.offsetHeight - 5),
+      offsetX: (elementOffset.offsetX - (popoverOffsetDimensions.offsetWidth / 2)) +
+        (elementOffsetDimensions.offsetWidth / 2),
+      offsetY: elementOffset.offsetY -
+        popoverOffsetDimensions.offsetHeight - POPOVER_SPACING,
     };
   }
 
   if (options.placement === 'right') {
-    const popoverOffsetX = offsetX + offsetWidth + 5;
-    const popoverOffsetY = (offsetY - (popoverArrowTopOffset + popoverArrowMarginTop +
-      (popoverArrowHeight / 2))) + ((offsetHeight / 2) -
-      (popoverTopBorder + popoverBottomBorder));
+    const popoverOffsetX = elementOffset.offsetX +
+      elementOffsetDimensions.offsetWidth + POPOVER_SPACING;
+    const popoverOffsetY =
+      (elementOffset.offsetY -
+      (popoverArrowTopOffset + popoverArrowMarginTop + (popoverArrowHeight / 2))) +
+      ((elementOffsetDimensions.offsetHeight / 2) - popoverVerticalBorder);
 
     popoverOffsets = {
       offsetX: popoverOffsetX,
-      // offsetY: (offsetY - (popoverDimensions.offsetHeight / 2))
+      // offsetY: (offsetY - (popoverOffsetDimensions.offsetHeight / 2))
       // + (offsetHeight / 2),
       offsetY: popoverOffsetY,
     };
@@ -190,21 +192,25 @@ function getPopoverPosition(options, popover) {
 
   if (options.placement === 'bottom') {
     popoverOffsets = {
-      offsetX: (offsetX - (popoverDimensions.offsetWidth / 2)) + (offsetWidth / 2),
-      offsetY: (offsetY + offsetHeight + 5),
+      offsetX: (elementOffset.offsetX - (popoverOffsetDimensions.offsetWidth / 2)) +
+        (elementOffsetDimensions.offsetWidth / 2),
+      offsetY: elementOffset.offsetY +
+        elementOffsetDimensions.offsetHeight + POPOVER_SPACING,
     };
   }
 
   if (options.placement === 'left') {
-    const popoverOffsetX = (offsetX - (popoverDimensions.offsetWidth - 5));
-    const popoverOffsetY = (offsetY - (popoverArrowTopOffset + popoverArrowMarginTop +
-      (popoverArrowHeight / 2))) + ((offsetHeight / 2) -
-      (popoverTopBorder + popoverBottomBorder));
+    const popoverOffsetX = elementOffset.offsetX -
+      popoverOffsetDimensions.offsetWidth - POPOVER_SPACING;
+    const popoverOffsetY =
+      (elementOffset.offsetY -
+      (popoverArrowTopOffset + popoverArrowMarginTop + (popoverArrowHeight / 2))) +
+      ((elementOffsetDimensions.offsetHeight / 2) - popoverVerticalBorder);
 
     popoverOffsets = {
       offsetX: popoverOffsetX,
       //
-      /* offsetY: (offsetY - (popoverDimensions.offsetHeight / 2))
+      /* offsetY: (offsetY - (popoverOffsetDimensions.offsetHeight / 2))
       + (offsetHeight / 2), //Center to center
       */
       offsetY: popoverOffsetY,
@@ -232,6 +238,13 @@ function getOffsetDimensions(element) {
   };
 }
 
+function getClientDimensions(element) {
+  return {
+    clientWidth: element.clientWidth,
+    clientHeight: element.clientHeight,
+  };
+}
+
 function getIntegerProperty(property) {
   return compose(parseInt, curry(getPropertyValue)(property));
 }
@@ -241,8 +254,7 @@ function getPropertyValue(prop, obj) {
 }
 
 function compose(...fns) {
-  return fns.reverse().reduce((fn1, fn2) =>
-    (...args) => fn2(fn1(...args)));
+  return fns.reverse().reduce((fn1, fn2) => (...args) => fn2(fn1(...args)));
 }
 
 function curry(fn, arity = fn.length) {
