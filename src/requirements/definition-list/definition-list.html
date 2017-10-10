@@ -1,28 +1,33 @@
+<div class="m-t-1">
+  <h4
+    ng-if="$ctrl.legend"
+    ng-bind="$ctrl.legend"
+    class="page-header p-t-3">
+  </h4>
+</div>
 <div class="row row-equal-height">
-  <div
+  <div class="col-xs-12"
+    ng-class="{'col-sm-6': !$ctrl.narrow}"
     ng-repeat="field in $ctrl.fields"
-    ng-if="$ctrl.model[field.key] || $ctrl.model[field.group[0].key]"
-    class="col-xs-12 col-sm-6">
+    ng-if="$ctrl.model[field.key] || $ctrl.model[field.group[0].key]">
 
     <dl ng-if="!field.group">
       <dt ng-bind="field.name"></dt>
-      <dd>
-        <!-- Start old 'nested group' style -->
-        <span ng-if="field.valuesAllowed">
+      <dd ng-switch="field.type">
+        <span ng-switch-when="select|radio" ng-switch-when-separator="|">
           {{ $ctrl.getValueLabel(field.valuesAllowed, $ctrl.model[field.key]) }}
         </span>
-        <span ng-if="!field.valuesAllowed">
-          <span ng-if="field.type === 'date'">
-            {{ $ctrl.model[field.key] | twDateFormat: $ctrl.locale }}
-          </span>
-          <span ng-if="field.type !== 'date'">
-            <span ng-if="field.displayFormat">
-              {{ $ctrl.model[field.key] | twTextFormat: field.displayFormat }}
-            </span>
-            <span ng-if="!field.displayFormat">
-              {{ $ctrl.model[field.key] }}
-            </span>
-          </span>
+        <span ng-switch-when="date">
+          {{ $ctrl.model[field.key] | twDateFormat: $ctrl.locale }}
+        </span>
+        <span ng-switch-when="password">
+          {{ $ctrl.mask($ctrl.model[field.key]) }}
+        </span>
+        <div ng-switch-when="upload" class="thumbnail">
+          <img ng-src="{{ $ctrl.model[field.key] }}" />
+        </div>
+        <span ng-switch-default>
+          {{ $ctrl.model[field.key] | twTextFormat: field.displayFormat }}
         </span>
       </dd>
     </dl>
@@ -32,20 +37,21 @@
       <dt ng-bind="field.name"></dt>
       <dd>
         <span ng-repeat="fieldSection in field.group">
-          <span ng-if="fieldSection.valuesAllowed">
-            {{ $ctrl.getValueLabel(fieldSection.valuesAllowed, $ctrl.model[fieldSection.key]) }}
-          </span>
-          <span ng-if="!fieldSection.valuesAllowed">
-            <span ng-if="fieldSection.type === 'date'">
+          <span ng-switch="field.type">
+            <span ng-switch-when="select|radio" ng-switch-when-separator="|">
+              {{ $ctrl.getValueLabel(fieldSection.valuesAllowed, $ctrl.model[fieldSection.key]) }}
+            </span>
+            <span ng-switch-when="date">
               {{ $ctrl.model[fieldSection.key] | twDateFormat: $ctrl.locale }}
             </span>
-            <span ng-if="fieldSection.type !== 'date'">
-              <span ng-if="fieldSection.displayFormat">
-                {{ $ctrl.model[fieldSection.key] | twTextFormat: fieldSection.displayFormat }}
-              </span>
-              <span ng-if="!fieldSection.displayFormat">
-                {{ $ctrl.model[fieldSection.key] }}
-              </span>
+            <span ng-switch-when="password">
+              {{ $ctrl.mask($ctrl.model[fieldSection.key]) }}
+            </span>
+            <div ng-switch-when="upload" class="thumbnail">
+              <img ng-src="{{ $ctrl.model[fieldSection.key] }}" />
+            </div>
+            <span ng-switch-default>
+              {{ $ctrl.model[fieldSection.key] | twTextFormat: fieldSection.displayFormat }}
             </span>
           </span>
         </span>

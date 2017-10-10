@@ -5,15 +5,16 @@ const Fieldset = {
   controller,
   template,
   bindings: {
-    legend: '@',
     model: '=',
     fields: '<',
     uploadOptions: '<',
     locale: '@',
+    legend: '@',
     onRefreshRequirements: '&',
     validationMessages: '<',
     errorMessages: '<',
-    isValid: '=?'
+    isValid: '=?',
+    narrow: '<'
   }
 };
 

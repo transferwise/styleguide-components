@@ -3,9 +3,9 @@
   <div class="row row-equal-height">
     <div ng-repeat="field in $ctrl.fields" class="col-xs-12"
       ng-class="{
-        'col-sm-4': field.width === 'sm',
-        'col-sm-6': field.width === 'md' || field.maxlength && field.maxlength <= 10,
-        'col-sm-12': field.width === 'lg' || !field.maxlength || field.maxlength > 10
+        'col-sm-4': !$ctrl.narrow  && field.width === 'sm',
+        'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),
+        'col-sm-12': $ctrl.narrow || field.width === 'lg' || !field.maxlength || field.maxlength > 10
       }">
       <div class="form-group tw-form-group-{{field.key}}"
         ng-class="{

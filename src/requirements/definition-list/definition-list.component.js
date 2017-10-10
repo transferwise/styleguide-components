@@ -7,7 +7,9 @@ const DefinitionList = {
   bindings: {
     model: '<',
     fields: '<',
-    locale: '@'
+    locale: '@',
+    legend: '@',
+    narrow: '<'
   }
 };
 

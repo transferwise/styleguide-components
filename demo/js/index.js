@@ -563,6 +563,104 @@ angular.module('tw.styleguide.docs', [])
       this.log = function (message) { console.log(message); };
     }
   })
+  .component('twFieldsetDocs', {
+    bindings: {
+      model: '=',
+      fields: '='
+    },
+    templateUrl: 'partials/forms/fieldset.html' ,
+    controller: function() {
+      this.model = {
+        'text': 'helloworld',
+        'number': 123456,
+        'select': '1',
+        'date': '2000-01-01T00:00:00.000Z',
+        'checkbox': true,
+        'radio': '2',
+        'password': 'qwerty'
+      };
+
+      this.fields = [
+        {
+          'name': 'Text',
+          'key': 'text',
+          'type': 'text',
+          'displayFormat': '***** - *****',
+          'width': 'md'
+        },
+        {
+          'name': 'Number',
+          'key': 'number',
+          'type': 'number',
+          'width': 'md'
+        },
+        {
+          'name': 'Select',
+          'key': 'select',
+          'type': 'select',
+          'width': 'md',
+          'valuesAllowed': [
+            {
+              'key': '1',
+              'name': 'One'
+            },
+            {
+              'key': '2',
+              'name': 'Two'
+            }
+          ]
+        },
+        {
+          'name': 'Date',
+          'key': 'date',
+          'type': 'date',
+          'width': 'md'
+        },
+        {
+          'name': 'Password',
+          'key': 'password',
+          'type': 'password',
+          'width': 'md'
+        },
+        {
+          'name': 'Checkbox',
+          'key': 'checkbox',
+          'type': 'checkbox',
+          'placeholder': 'Label',
+          'width': 'md'
+        },
+        {
+          'name': 'Radio',
+          'key': 'radio',
+          'type': 'radio',
+          'width': 'md',
+          'valuesAllowed': [
+            {
+              'key': '1',
+              'name': 'One'
+            },
+            {
+              'key': '2',
+              'name': 'Two'
+            }
+          ]
+        },
+        {
+          'name': 'File',
+          'key': 'file',
+          'type': 'upload',
+          'width': 'md'
+        },
+      ];
+    }
+  })
+  .component('twDefinitionListDocs', {
+    bindings: {
+      model: '=',
+      fields: '='
+    },
+    templateUrl: 'partials/forms/definition-list.html'
+  })
   .component('twCardsDocs', { templateUrl: 'partials/tw-cards.html' })
   .component('formExample', {
     template: ' \

@@ -32,6 +32,9 @@ class DefinitionListController {
     }
     return value;
   }
+  mask(value) {
+    return new Array(value.length + 1).join('*');
+  }
 }
 
 export default DefinitionListController;
