@@ -11,7 +11,8 @@
   legend="Fieldset"
   fields="$ctrl.fields"
   model="$ctrl.model"
-  upload-options="{buttonText: 'Choose file'}">
+  upload-options="{buttonText: 'Choose file'}"
+  on-refresh-requirements="$ctrl.refresh()">
 </tw-fieldset>
 
 <div class="row">
@@ -21,7 +22,8 @@
 &lt;tw-fieldset
   legend="Fieldset"
   fields="$ctrl.fields"
-  model="$ctrl.model"&gt;
+  model="$ctrl.model"
+  on-refresh-requirements="$ctrl.myFunction()"&gt;
 &lt;/tw-fieldset&gt;
 </pre>
   </div>

@@ -62,9 +62,13 @@ class FormControlController {
     };
   }
 
-  change() {
+  change(value) {
     this.$ngModel.$setDirty();
     if (this.ngChange) {
+      // don't fire change for the radio button becoming false
+      if (this.type === 'radio' && this.ngModel !== value) {
+        return;
+      }
       this.ngChange();
     }
   }

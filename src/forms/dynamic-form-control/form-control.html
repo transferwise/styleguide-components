@@ -1,5 +1,5 @@
 <div ng-switch="$ctrl.type">
-  <input ng-switch-when="text"
+  <input ng-switch-default="text"
     name="{{$ctrl.name}}"
     type="text"
     class="form-control"
@@ -55,8 +55,8 @@
         ng-model="$ctrl.ngModel"
         ng-required="$ctrl.ngRequired"
         ng-disabled="$ctrl.ngDisabled"
-        ng-change="$ctrl.change()"
-        ng-click="$ctrl.change()"
+        ng-change="$ctrl.change(option.value)"
+        ng-click="$ctrl.change(option.value)"
         ng-focus="$ctrl.focus()"
         ng-blur="$ctrl.blur()"></tw-radio>
       {{option.label}}

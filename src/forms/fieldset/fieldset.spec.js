@@ -56,8 +56,8 @@ describe('Fieldset', function() {
     });
 
     it('should be triggered onBlur', function() {
-      var dynamicForm = directiveElement.find('.form-control');
-      dynamicForm.triggerHandler('blur');
+      var formElement = directiveElement.find('.form-control');
+      formElement.trigger('blur');
 
       expect($scope.onRefreshRequirements).toHaveBeenCalled()
     });
@@ -99,50 +99,50 @@ describe('Fieldset', function() {
 
 
   function getRequirement() {
-      return [
-        {
-          "type": "sort_code",
-          "label": "Use sort code",
-          "fields": [
-            {
-              "name": "UK Sort code",
-              "group": [
-                {
-                  "key": "sortCode",
-                  "type": "text",
-                  "refreshRequirementsOnChange": true,
-                  "required": true,
-                  "displayFormat": "**-**-**",
-                  "example": "40-30-20",
-                  "minLength": 6,
-                  "maxLength": 8,
-                  "validationRegexp": null,
-                  "valuesAllowed": null,
-                  "validationMessages": {
-                    "required": "sortCode required"
-                  }
+    return [
+      {
+        "type": "sort_code",
+        "label": "Use sort code",
+        "fields": [
+          {
+            "name": "UK Sort code",
+            "group": [
+              {
+                "key": "sortCode",
+                "type": "text",
+                "refreshRequirementsOnChange": true,
+                "required": true,
+                "displayFormat": "**-**-**",
+                "example": "40-30-20",
+                "minLength": 6,
+                "maxLength": 8,
+                "validationRegexp": null,
+                "valuesAllowed": null,
+                "validationMessages": {
+                  "required": "sortCode required"
                 }
-              ]
-            },
-            {
-              "name": "IBAN",
-              "group": [
-                {
-                  "key": "iban",
-                  "type": "text",
-                  "refreshRequirementsOnChange": true,
-                  "required": true,
-                  "displayFormat": "**-**-**",
-                  "example": "40-30-20",
-                  "minLength": 6,
-                  "maxLength": 8,
-                  "validationRegexp": null,
-                  "valuesAllowed": null
-                }
-              ]
-            }
-          ]
-        }
-     ];
+              }
+            ]
+          },
+          {
+            "name": "IBAN",
+            "group": [
+              {
+                "key": "iban",
+                "type": "text",
+                "refreshRequirementsOnChange": true,
+                "required": true,
+                "displayFormat": "**-**-**",
+                "example": "40-30-20",
+                "minLength": 6,
+                "maxLength": 8,
+                "validationRegexp": null,
+                "valuesAllowed": null
+              }
+            ]
+          }
+        ]
+      }
+    ];
   }
 });

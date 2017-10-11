@@ -47,13 +47,17 @@ class FieldsetController {
     if (this.onRefreshRequirements) {
       // Should post the current model back to the requirements end
       // point and update the requirements.
-      // TODO Can we handle this internally?
-      this.onRefreshRequirements();
+      if (!fieldTypeRefreshesOnChange(field.type)) {
+        this.onRefreshRequirements();
+      }
     }
   }
 
   onChange(field) {
     this.removeFieldError(field.key);
+    if (fieldTypeRefreshesOnChange(field.type)) {
+      this.onRefreshRequirements();
+    }
   }
 
   removeFieldError(fieldKey) {
@@ -61,6 +65,14 @@ class FieldsetController {
       delete this.errorMessages[fieldKey];
     }
   }
+}
+
+function fieldTypeRefreshesOnChange(fieldType) {
+  return fieldType === 'select' ||
+    fieldType === 'checkbox' ||
+    fieldType === 'radio' ||
+    fieldType === 'date' ||
+    fieldType === 'upload';
 }
 
 function prepFields(fields, model, validationMessages) {

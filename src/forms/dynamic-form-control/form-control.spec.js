@@ -23,9 +23,9 @@ describe('FormControl', function() {
     beforeEach(function() {
       $scope.model = null;
       directiveElem = compileTemplate(
-        "<tw-dynamic-form-control type='text' \
+        "<tw-form-control type='text' \
           ng-model='model'> \
-        </tw-dynamic-form-control>"
+        </tw-form-control>"
       );
       input = directiveElem.find('input');
       ngModelController = directiveElem.controller('ngModel');
@@ -57,17 +57,17 @@ describe('FormControl', function() {
       formGroup = compileTemplate(
         "<div class='form-group'> \
           <label class='control-label'></label> \
-          <tw-dynamic-form-control type='text' \
+          <tw-form-control type='text' \
             ng-model='model' \
             ng-minlength='4' \
             ng-maxlength='6' \
             ng-pattern='pattern' \
             ng-required='true'> \
-          </tw-dynamic-form-control> \
+          </tw-form-control> \
         </div>"
       );
       input = formGroup.find('input');
-      directiveElem = formGroup.find('tw-dynamic-form-control');
+      directiveElem = formGroup.find('tw-form-control');
       ngModelController = directiveElem.controller('ngModel');
     });
 
@@ -119,9 +119,9 @@ describe('FormControl', function() {
     beforeEach(function() {
       $scope.model = null;
       directiveElem = compileTemplate(
-        "<tw-dynamic-form-control type='password' \
+        "<tw-form-control type='password' \
           ng-model='model'> \
-        </tw-dynamic-form-control>"
+        </tw-form-control>"
       );
       input = directiveElem.find('input');
       ngModelController = directiveElem.controller('ngModel');
@@ -153,17 +153,17 @@ describe('FormControl', function() {
       formGroup = compileTemplate(
         "<div class='form-group'> \
           <label class='control-label'></label> \
-          <tw-dynamic-form-control type='password' \
+          <tw-form-control type='password' \
             ng-model='model' \
             ng-minlength='4' \
             ng-maxlength='6' \
             ng-pattern='pattern' \
             ng-required='true'> \
-          </tw-dynamic-form-control> \
+          </tw-form-control> \
         </div>"
       );
       input = formGroup.find('input');
-      directiveElem = formGroup.find('tw-dynamic-form-control');
+      directiveElem = formGroup.find('tw-form-control');
       ngModelController = directiveElem.controller('ngModel');
     });
 
@@ -216,9 +216,9 @@ describe('FormControl', function() {
     beforeEach(function() {
       $scope.model = null;
       directiveElem = compileTemplate(
-        "<tw-dynamic-form-control type='number' \
+        "<tw-form-control type='number' \
           ng-model='model'> \
-        </tw-dynamic-form-control>"
+        </tw-form-control>"
       );
       input = directiveElem.find('input');
       ngModelController = directiveElem.controller('ngModel');
@@ -249,16 +249,16 @@ describe('FormControl', function() {
       formGroup = compileTemplate(
         "<div class='form-group'> \
           <label class='control-label'></label> \
-          <tw-dynamic-form-control type='number' \
+          <tw-form-control type='number' \
             ng-model='model' \
             ng-min='2' \
             ng-max='5' \
             required> \
-          </tw-dynamic-form-control> \
+          </tw-form-control> \
         </div>"
       );
       input = formGroup.find('input');
-      directiveElem = formGroup.find('tw-dynamic-form-control');
+      directiveElem = formGroup.find('tw-form-control');
       ngModelController = directiveElem.controller('ngModel');
     });
 
@@ -295,11 +295,11 @@ describe('FormControl', function() {
       }];
 
       directiveElem = compileTemplate(
-        "<tw-dynamic-form-control type='select' \
+        "<tw-form-control type='select' \
           ng-model='model' \
           options='options' \
           ng-required='true'> \
-        </tw-dynamic-form-control>"
+        </tw-form-control>"
       );
       selectElem = directiveElem.find('tw-select');
       ngModelController = directiveElem.controller('ngModel');
@@ -335,10 +335,10 @@ describe('FormControl', function() {
     beforeEach(function() {
       $scope.model = null;
       directiveElem = compileTemplate(
-        "<tw-dynamic-form-control type='checkbox' \
+        "<tw-form-control type='checkbox' \
           ng-model='model' \
           ng-required='true'> \
-        </tw-dynamic-form-control>"
+        </tw-form-control>"
       );
       checkbox = directiveElem.find('tw-checkbox');
       ngModelController = directiveElem.controller('ngModel');
@@ -375,11 +375,11 @@ describe('FormControl', function() {
   describe('type: radio', function() {
     var radio, directiveElem, ngModelController, template;
     beforeEach(function() {
-      template = "<tw-dynamic-form-control type='radio' \
+      template = "<tw-form-control type='radio' \
         options='options' \
         ng-model='model' \
         ng-required='required'> \
-      </tw-dynamic-form-control>";
+      </tw-form-control>";
 
       $scope.model = null;
       $scope.options = [
@@ -445,13 +445,13 @@ describe('FormControl', function() {
       formGroup = compileTemplate(
         "<div class='form-group'> \
           <label class='control-label'></label> \
-          <tw-dynamic-form-control type='upload' \
+          <tw-form-control type='upload' \
             ng-model='model' \
             required> \
-          </tw-dynamic-form-control> \
+          </tw-form-control> \
         </div>"
       );
-      directiveElem = formGroup.find('tw-dynamic-form-control');
+      directiveElem = formGroup.find('tw-form-control');
       ngModelController = directiveElem.controller('ngModel');
     });
     it('should render twUpload', function() {
@@ -468,17 +468,17 @@ describe('FormControl', function() {
       formGroup = compileTemplate(
         "<div class='form-group'> \
           <label class='control-label'></label> \
-          <tw-dynamic-form-control type='date' \
+          <tw-form-control type='date' \
             ng-model='model' \
             locale='en-GB' \
             ng-min='ngMin' \
             ng-max='ngMax' \
             tw-minlength='' \
             ng-required='true'> \
-          </tw-dynamic-form-control> \
+          </tw-form-control> \
         </div>"
       );
-      directiveElem = formGroup.find('tw-dynamic-form-control');
+      directiveElem = formGroup.find('tw-form-control');
       ngModelController = directiveElem.controller('ngModel');
     });
 

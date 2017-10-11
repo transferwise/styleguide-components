@@ -23,7 +23,7 @@ class DefinitionListController {
       }
     });
   }
-  
+
   // eslint-disable-next-line
   getValueLabel(options, value) {
     for (let i = 0; i < options.length; i++) {

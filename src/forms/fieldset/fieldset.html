@@ -17,7 +17,7 @@
         </label>
 
         <div ng-if="!field.group">
-          <tw-dynamic-form-control
+          <tw-form-control
             name="{{field.key}}"
             label="{{field.name}}"
             type="{{field.type | lowercase}}"
@@ -41,7 +41,7 @@
             ng-pattern="field.validationRegexp"
             text-format="field.displayFormat"
             tw-validation
-          ></tw-dynamic-form-control>
+          ></tw-form-control>
           <div class="alert alert-danger error-messages"
             ng-class="{'alert-detach': field.type === 'date' || field.type === 'upload'}">
             <div ng-repeat="(validationType, validationMessage) in field.validationMessages"
@@ -63,7 +63,7 @@
         <div class="row" ng-if="field.group">
           <div class="col-xs-{{field.columns}}"
             ng-repeat="fieldSection in field.group">
-            <tw-dynamic-form-control
+            <tw-form-control
               name="{{fieldSection.key}}"
               label="{{field.name}}"
               type="{{fieldSection.type | lowercase}}"
@@ -87,7 +87,7 @@
               ng-pattern="fieldSection.validationRegexp"
               text-format="fieldSection.displayFormat"
               tw-validation
-            ></tw-dynamic-form-control>
+            ></tw-form-control>
             <div class="alert alert-danger error-messages"
               ng-class="{'alert-detach': fieldSection.type === 'date' || fieldSection.type === 'upload'}">
               <div ng-repeat="(validationType, validationMessage) in fieldSection.validationMessages"

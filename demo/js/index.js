@@ -272,6 +272,7 @@ angular.module('tw.styleguide.docs', [])
     },
     controller: ['$timeout', '$q', '$http', function ($timeout, $q, $http) {
       const $ctrl = this;
+
       this.onStart = function (file) {
         console.log('File upload starting');
       };
@@ -342,7 +343,7 @@ angular.module('tw.styleguide.docs', [])
     },
     templateUrl: 'partials/forms/currency-input.html'
   })
-  .component('twDynamicControlDocs', {
+  .component('twFormControlDocs', {
     bindings: {
       model: '=',
       locales: '<',
@@ -369,7 +370,7 @@ angular.module('tw.styleguide.docs', [])
       };
       this.log = function (message) { console.log(message); };
     },
-    templateUrl: 'partials/forms/dynamic-control.html'
+    templateUrl: 'partials/forms/form-control.html'
   })
   .component('twRequirementsFormDocs', {
     controller: ['$scope', '$http', function ($scope, $http) {
@@ -580,25 +581,32 @@ angular.module('tw.styleguide.docs', [])
         'password': 'qwerty'
       };
 
+      this.refresh = function() {
+        console.log('onRefreshRequirements');
+      };
+
       this.fields = [
         {
           'name': 'Text',
           'key': 'text',
           'type': 'text',
           'displayFormat': '***** - *****',
-          'width': 'md'
+          'width': 'md',
+          'refreshRequirementsOnChange': true
         },
         {
           'name': 'Number',
           'key': 'number',
           'type': 'number',
-          'width': 'md'
+          'width': 'md',
+          'refreshRequirementsOnChange': true
         },
         {
           'name': 'Select',
           'key': 'select',
           'type': 'select',
           'width': 'md',
+          'refreshRequirementsOnChange': true,
           'valuesAllowed': [
             {
               'key': '1',
@@ -614,26 +622,30 @@ angular.module('tw.styleguide.docs', [])
           'name': 'Date',
           'key': 'date',
           'type': 'date',
-          'width': 'md'
+          'width': 'md',
+          'refreshRequirementsOnChange': true
         },
         {
           'name': 'Password',
           'key': 'password',
           'type': 'password',
-          'width': 'md'
+          'width': 'md',
+          'refreshRequirementsOnChange': true
         },
         {
           'name': 'Checkbox',
           'key': 'checkbox',
           'type': 'checkbox',
           'placeholder': 'Label',
-          'width': 'md'
+          'width': 'md',
+          'refreshRequirementsOnChange': true
         },
         {
           'name': 'Radio',
           'key': 'radio',
           'type': 'radio',
           'width': 'md',
+          'refreshRequirementsOnChange': true,
           'valuesAllowed': [
             {
               'key': '1',
@@ -649,7 +661,8 @@ angular.module('tw.styleguide.docs', [])
           'name': 'File',
           'key': 'file',
           'type': 'upload',
-          'width': 'md'
+          'width': 'md',
+          'refreshRequirementsOnChange': true
         },
       ];
     }
