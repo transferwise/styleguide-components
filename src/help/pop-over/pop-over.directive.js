@@ -6,218 +6,205 @@ export default function () {
 }
 
 function PopOverLink($scope, $element) {
-  const element = $element[0];
-  const options = {
-    trigger: 'focus',
-    placement: 'right',
-    element,
-  };
+  let POPOVER = null;
 
-  if (element.getAttribute('data-trigger') === 'hover') {
-    options.trigger = 'hover focus'; // TODO we don't support this, remove??
-  }
-  if (element.getAttribute('data-placement')) {
-    options.placement = element.getAttribute('data-placement');
-  }
-  if (element.getAttribute('data-title')) {
-    options.title = element.getAttribute('data-title');
-  }
-  if (element.getAttribute('data-original-title')) {
-    options.title = element.getAttribute('data-original-title');
-  }
-  if (element.getAttribute('data-content')) {
-    options.content = element.getAttribute('data-content');
-  }
-  if (element.getAttribute('data-content-html')) {
-    options.html = true; // TODO add support for this
-  }
+  const element = $element[0];
+  const body = document.getElementsByTagName('body')[0];
 
   element.setAttribute('tabindex', '0');
   element.setAttribute('role', 'button');
   element.setAttribute('data-toggle', 'popover');
 
-  const [elementCallback, documentCallback, windowResizeCallback] = getDirectiveCallbacks(options);
+  /**
+    * Register event listeners
+    */
+  element.addEventListener('click', ELEMENT_CALLBACK);
+  document.documentElement.addEventListener('click', DOCUMENT_CALLBACK, true);
+  window.addEventListener('resize', WINDOW_RESIZE_CALLBACK);
 
-  element.addEventListener('click', elementCallback);
-  document.documentElement.addEventListener('click', documentCallback, true);
-  window.addEventListener('resize', windowResizeCallback);
-
+  /**
+    * Unregister event listeners when component gets unmounted / destroyed
+    */
   $scope.$on('destroy', () => {
-    element.removeEventListener('click', elementCallback);
-    document.documentElement.removeEventListener('click', documentCallback);
-    window.removeEventListener('resize', windowResizeCallback);
+    element.removeEventListener('click', ELEMENT_CALLBACK);
+    document.documentElement.removeEventListener('click', DOCUMENT_CALLBACK);
+    window.removeEventListener('resize', WINDOW_RESIZE_CALLBACK);
   });
-}
 
-function getDirectiveCallbacks(options) {
-  let popover;
+  function ELEMENT_CALLBACK() {
+    const popoverAppendedToBody = Array.from(body.children).includes(POPOVER);
+    const popoverOptions = getPopoverOptions();
 
-  function getPopover() {
+    if (!popoverAppendedToBody) {
+      POPOVER = compose(getPopover, curry(getObjectProperty)('placement'))(popoverOptions);
+      body.appendChild(POPOVER);
+    }
+
+    if (elementNotVisible(POPOVER)) {
+      POPOVER.innerHTML = getPopoverContent(popoverOptions);
+
+      compose(setPopoverPosition, curry(getObjectProperty)('placement'))(popoverOptions);
+    }
+  }
+
+  function DOCUMENT_CALLBACK(event) {
+    if (POPOVER) {
+      const clickedOutsidePopover = !POPOVER.contains(event.target);
+      const clickedInsidePopover = POPOVER.contains(event.target);
+      const clickedPopoverClose = event.target.className
+        .split(' ').includes('popover-close');
+
+      if (clickedOutsidePopover || (clickedInsidePopover && clickedPopoverClose)) {
+        POPOVER.style.display = 'none';
+      }
+    }
+  }
+
+  function WINDOW_RESIZE_CALLBACK() {
+    if (POPOVER && isElementVisible(POPOVER)) {
+      const popoverOptions = getPopoverOptions();
+
+      compose(setPopoverPosition, curry(getObjectProperty)('placement'))(popoverOptions);
+    }
+  }
+
+  function getPopover(popoverPlacement) {
     const popoverContainer = document.createElement('div');
 
     popoverContainer.classList.add('popover');
     popoverContainer.classList.add('in');
-    popoverContainer.classList.add(options.placement);
+    popoverContainer.classList.add(popoverPlacement);
 
     popoverContainer.setAttribute('role', 'popover');
-
-    popoverContainer.innerHTML = `
-      <button class='close popover-close'>&times;</button>
-      <h3 class="popover-title">${options.title}</h3>
-      <div class="popover-content">
-        ${options.content}
-      </div>`;
 
     return popoverContainer;
   }
 
-  function setPopoverPosition() {
-    popover.setAttribute('style', 'display:block; visibility:hidden;');
+  function setPopoverPosition(popoverPlacement) {
+    POPOVER.setAttribute('style', 'display:block; visibility:hidden;');
 
-    const { offsetX, offsetY } = getPopoverPosition(options, popover);
+    const { offsetX, offsetY } = getPopoverPosition(popoverPlacement);
 
-    popover.setAttribute(
+    POPOVER.setAttribute(
       'style',
       `display:block; visibility:visible; top:${offsetY}px; left:${offsetX}px`,
     );
   }
 
-  function elementCallback() {
-    const body = document.getElementsByTagName('body')[0];
-    const popoverAppended = Array.from(body.children).includes(popover);
+  function getPopoverPosition(popoverPlacement) {
+    /**
+     * The element's coordinates, for which we want to display the popover
+     */
+    const elementOffset = getBoundingOffset(element);
 
     /**
-     If the popover doesn't exist, create, append it and display it
+     * The element's size, for which we want to display the popover
      */
-    if (!popoverAppended) {
-      popover = getPopover();
-      body.appendChild(popover);
-    }
+    const elementOffsetDimensions = getOffsetDimensions(element);
+
+    const POPOVER_SPACING = 5;
 
     /**
-     Otherwise display it
+     * Popover's default coordinates
      */
-    if (!isElementVisible(popover)) {
-      setPopoverPosition();
+    let popoverOffsets = {
+      offsetX: 0,
+      offsetY: 0,
+    };
 
-      popover.style.display = 'block';
+    const popoverOffsetDimensions = getOffsetDimensions(POPOVER);
+    const popoverClientDimensions = getClientDimensions(POPOVER);
+
+    const popoverVerticalBorder = popoverOffsetDimensions.offsetHeight -
+      popoverClientDimensions.clientHeight;
+
+    /*
+     * The visible arrow is a pseudo-element
+     */
+    const popoverArrowStyles = getComputedStyle(POPOVER, ':before');
+
+    const popoverArrowTopOffset = getNumericValue('top')(popoverArrowStyles);
+    const popoverArrowHeight = getNumericValue('height')(popoverArrowStyles);
+    const popoverArrowMarginTop = getNumericValue('margin-top')(popoverArrowStyles);
+
+    if (popoverPlacement === 'top') {
+      popoverOffsets = {
+        offsetX: (elementOffset.offsetX - (popoverOffsetDimensions.offsetWidth / 2)) +
+          (elementOffsetDimensions.offsetWidth / 2),
+        offsetY: elementOffset.offsetY -
+          popoverOffsetDimensions.offsetHeight - POPOVER_SPACING,
+      };
     }
-  }
 
-  function documentCallback(event) {
-    if (popover) {
-      const clickedOutsidePopover = !popover.contains(event.target);
-      const clickedInsidePopover = popover.contains(event.target);
-      const clickedPopoverClose = event.target.className.split(' ').includes('popover-close');
+    if (popoverPlacement === 'right') {
+      const popoverOffsetX = elementOffset.offsetX +
+        elementOffsetDimensions.offsetWidth + POPOVER_SPACING;
+      const popoverOffsetY =
+        (elementOffset.offsetY -
+        (popoverArrowTopOffset + popoverArrowMarginTop + (popoverArrowHeight / 2))) +
+        ((elementOffsetDimensions.offsetHeight / 2) - popoverVerticalBorder);
 
-      if (clickedOutsidePopover || (clickedInsidePopover && clickedPopoverClose)) {
-        popover.style.display = 'none';
-      }
+      popoverOffsets = {
+        offsetX: popoverOffsetX,
+        // offsetY: (offsetY - (popoverOffsetDimensions.offsetHeight / 2))
+        // + (offsetHeight / 2),
+        offsetY: popoverOffsetY,
+      };
     }
-  }
 
-  function windowResizeCallback() {
-    if (popover && isElementVisible(popover)) {
-      setPopoverPosition();
+    if (popoverPlacement === 'bottom') {
+      popoverOffsets = {
+        offsetX: (elementOffset.offsetX - (popoverOffsetDimensions.offsetWidth / 2)) +
+          (elementOffsetDimensions.offsetWidth / 2),
+        offsetY: elementOffset.offsetY +
+          elementOffsetDimensions.offsetHeight + POPOVER_SPACING,
+      };
     }
+
+    if (popoverPlacement === 'left') {
+      const popoverOffsetX = elementOffset.offsetX -
+        popoverOffsetDimensions.offsetWidth - POPOVER_SPACING;
+      const popoverOffsetY =
+        (elementOffset.offsetY -
+        (popoverArrowTopOffset + popoverArrowMarginTop + (popoverArrowHeight / 2))) +
+        ((elementOffsetDimensions.offsetHeight / 2) - popoverVerticalBorder);
+
+      popoverOffsets = {
+        offsetX: popoverOffsetX,
+        //
+        /* offsetY: (offsetY - (popoverOffsetDimensions.offsetHeight / 2))
+        + (offsetHeight / 2), //Center to center
+        */
+        offsetY: popoverOffsetY,
+      };
+    }
+
+    return popoverOffsets;
   }
 
-  function isElementVisible(element) {
-    return element.offsetWidth > 0 || element.offsetHeight > 0;
-  }
-
-  return [elementCallback, documentCallback, windowResizeCallback];
-}
-
-function getPopoverPosition(options, popover) {
-  /**
-   * The element's coordinates, for which we want to display the popover
-   */
-  const elementOffset = getBoundingOffset(options.element);
-
-  /**
-   * The element's size, for which we want to display the popover
-   */
-  const elementOffsetDimensions = getOffsetDimensions(options.element);
-
-  const POPOVER_SPACING = 5;
-
-  /**
-   * Popover's default coordinates
-   */
-  let popoverOffsets = {
-    offsetX: 0,
-    offsetY: 0,
-  };
-
-  const popoverOffsetDimensions = getOffsetDimensions(popover);
-  const popoverClientDimensions = getClientDimensions(popover);
-
-  const popoverVerticalBorder = popoverOffsetDimensions.offsetHeight -
-    popoverClientDimensions.clientHeight;
-
-  /*
-   * The visible arrow is a pseudo-element
-   */
-  const popoverArrowStyles = getComputedStyle(popover, ':before');
-
-  const popoverArrowTopOffset = getIntegerProperty('top')(popoverArrowStyles);
-  const popoverArrowHeight = getIntegerProperty('height')(popoverArrowStyles);
-  const popoverArrowMarginTop = getIntegerProperty('margin-top')(popoverArrowStyles);
-
-  if (options.placement === 'top') {
-    popoverOffsets = {
-      offsetX: (elementOffset.offsetX - (popoverOffsetDimensions.offsetWidth / 2)) +
-        (elementOffsetDimensions.offsetWidth / 2),
-      offsetY: elementOffset.offsetY -
-        popoverOffsetDimensions.offsetHeight - POPOVER_SPACING,
+  function getPopoverOptions() {
+    const options = {
+      placement: 'right',
     };
+
+    if (element.dataset.placement) {
+      options.placement = element.dataset.placement;
+    }
+    if (element.dataset.title) {
+      options.title = element.dataset.title;
+    }
+    if (element.dataset.originalTitle) {
+      options.title = element.dataset.originalTitle;
+    }
+    if (element.dataset.content) {
+      options.content = element.dataset.content;
+    }
+    if (element.dataset.contentHtml) {
+      options.html = true; // TODO add support for this
+    }
+
+    return options;
   }
-
-  if (options.placement === 'right') {
-    const popoverOffsetX = elementOffset.offsetX +
-      elementOffsetDimensions.offsetWidth + POPOVER_SPACING;
-    const popoverOffsetY =
-      (elementOffset.offsetY -
-      (popoverArrowTopOffset + popoverArrowMarginTop + (popoverArrowHeight / 2))) +
-      ((elementOffsetDimensions.offsetHeight / 2) - popoverVerticalBorder);
-
-    popoverOffsets = {
-      offsetX: popoverOffsetX,
-      // offsetY: (offsetY - (popoverOffsetDimensions.offsetHeight / 2))
-      // + (offsetHeight / 2),
-      offsetY: popoverOffsetY,
-    };
-  }
-
-  if (options.placement === 'bottom') {
-    popoverOffsets = {
-      offsetX: (elementOffset.offsetX - (popoverOffsetDimensions.offsetWidth / 2)) +
-        (elementOffsetDimensions.offsetWidth / 2),
-      offsetY: elementOffset.offsetY +
-        elementOffsetDimensions.offsetHeight + POPOVER_SPACING,
-    };
-  }
-
-  if (options.placement === 'left') {
-    const popoverOffsetX = elementOffset.offsetX -
-      popoverOffsetDimensions.offsetWidth - POPOVER_SPACING;
-    const popoverOffsetY =
-      (elementOffset.offsetY -
-      (popoverArrowTopOffset + popoverArrowMarginTop + (popoverArrowHeight / 2))) +
-      ((elementOffsetDimensions.offsetHeight / 2) - popoverVerticalBorder);
-
-    popoverOffsets = {
-      offsetX: popoverOffsetX,
-      //
-      /* offsetY: (offsetY - (popoverOffsetDimensions.offsetHeight / 2))
-      + (offsetHeight / 2), //Center to center
-      */
-      offsetY: popoverOffsetY,
-    };
-  }
-
-  return popoverOffsets;
 }
 
 function getBoundingOffset(element) {
@@ -245,7 +232,15 @@ function getClientDimensions(element) {
   };
 }
 
-function getIntegerProperty(property) {
+function isElementVisible(element) {
+  return element.offsetWidth > 0 || element.offsetHeight > 0;
+}
+
+function elementNotVisible(element) {
+  return negate(isElementVisible)(element);
+}
+
+function getNumericValue(property) {
   return compose(parseInt, curry(getPropertyValue)(property));
 }
 
@@ -253,6 +248,32 @@ function getPropertyValue(prop, obj) {
   return obj.getPropertyValue(prop);
 }
 
+function bindDataToTemplate(template, data) {
+  return template.replace(
+    /__(\w*)__/g,
+    (matchedSubstring, parenthesizedSubmatch) =>
+      (Object.prototype.hasOwnProperty.call(data, parenthesizedSubmatch)
+        ? data[parenthesizedSubmatch]
+        : ''),
+  );
+}
+
+function getPopoverTemplate() {
+  return `
+    <button class='close popover-close'>&times;</button>
+    <h3 class='popover-title'>__title__</h3>
+    <div class='popover-content'>
+      __content__
+    </div>`;
+}
+
+function getPopoverContent(options) {
+  return bindDataToTemplate(getPopoverTemplate(), options);
+}
+
+/**
+ * FP helper functions
+ */
 function compose(...fns) {
   return fns.reverse().reduce((fn1, fn2) => (...args) => fn2(fn1(...args)));
 }
@@ -268,4 +289,12 @@ function curry(fn, arity = fn.length) {
       return nextCurried(args);
     };
   }([]));
+}
+
+function negate(fn) {
+  return args => !fn(args);
+}
+
+function getObjectProperty(property, object) {
+  return object[property];
 }
