@@ -40,8 +40,8 @@ describe('Fieldset', function() {
       expect(errorBlock.text().trim()).not.toBeTruthy();
     });
     it('should remove supplied error message from the correct field onBlur event', function() {
-      var dynamicForm = directiveElement.find('.form-control');
-      dynamicForm.triggerHandler('blur');
+      var formControl = directiveElement.find('.form-control');
+      formControl.trigger('blur');
 
       var errorBlock = directiveElement.find('.tw-form-group-sortCode .error-provided');
       expect(errorBlock.text().trim()).toBe('');
@@ -56,8 +56,8 @@ describe('Fieldset', function() {
     });
 
     it('should be triggered onBlur', function() {
-      var formElement = directiveElement.find('.form-control');
-      formElement.trigger('blur');
+      var formControl = directiveElement.find('.form-control');
+      formControl.trigger('blur');
 
       expect($scope.onRefreshRequirements).toHaveBeenCalled()
     });

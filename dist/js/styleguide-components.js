@@ -3452,6 +3452,9 @@ function prepFields(fields, model, validationMessages) {
         if (fieldSection.type === 'upload') {
           field.type = 'upload';
         }
+        if (fieldSection.refreshRequirementsOnChange) {
+          field.refreshRequirementsOnChange = true;
+        }
         prepRegExp(fieldSection);
         prepValuesAsync(fieldSection, model);
         prepValuesAllowed(fieldSection);
