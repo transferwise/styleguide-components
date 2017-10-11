@@ -373,6 +373,23 @@ angular.module('tw.styleguide.docs', [])
     },
     templateUrl: 'partials/forms/form-control.html'
   })
+  .component('twPhoneNumberDocs', {
+    bindings: {
+      model: '='
+    },
+    controller: function() {
+      this.phoneNumber = {
+        countries: [
+          { callingCode: '44', iso2Code: 'GG', iso3Code: 'ggy', name: 'Guernsey' },
+          { callingCode: '44', iso2Code: 'GB', iso3Code: 'gbr', name: 'United Kingdom' },
+          { callingCode: '33', iso2Code: 'FR', iso3Code: 'fra', name: 'France' }
+        ],
+        required: true
+      };
+      this.log = function (message) { console.log(message); };
+    },
+    templateUrl: 'partials/forms/phone-number.html'
+  })
   .component('twRequirementsFormDocs', {
     controller: ['$scope', '$http', function ($scope, $http) {
       const $ctrl = this;

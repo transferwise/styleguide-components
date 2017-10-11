@@ -1,0 +1,72 @@
+<h4 id="phone-number">TW Phone Number</h4>
+<p>Two way data binding via ng-model, with TODO</p>
+<hr/>
+<form>
+<div class="row m-b-3">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label class="control-label" for="date">
+        Example phone number control
+      </label>
+      <tw-phone-number name="phone-number"
+        ng-model="$ctrl.model"
+        ng-required="$ctrl.phoneNumber.required"
+        ng-disabled="$ctrl.phoneNumber.disabled"
+        ng-change="$ctrl.log('phone number change')"
+        countries="$ctrl.phoneNumber.countries"
+        search-placeholder="Prefix"
+        tw-validation
+      ></tw-phone-number>
+      <div class="error-messages">
+        <div class="error-required">Required</div>
+        <div class="error-pattern">Invalid characters</div>
+        <div class="error-minlength">Too short</div>
+      </div>
+      <docs-status-messages></docs-status-messages>
+    </div>
+    <h5>Configuration</h5>
+<pre>&lt;tw-phone-number
+  ng-model="{{$ctrl.model}}"
+  ng-required="{{$ctrl.phoneNumber.required}}"
+  ng-disabled="{{$ctrl.phoneNumber.disabled}}"
+  ng-change="..."
+  countries="[
+    { callingCode: '44', iso2Code: 'GG', iso3Code: 'ggy', name: 'Guernsey' },
+    { callingCode: '44', iso2Code: 'GB', iso3Code: 'gbr', name: 'United Kingdom' },
+    { callingCode: '33', iso2Code: 'FR', iso3Code: 'fra', name: 'France' }
+  ],"
+  search-placeholder="Prefix"
+  tw-validation /&gt;</pre>
+  </div>
+  <div class="col-md-6">
+    <div class="well">
+      <h5 class="page-header">
+        Edit configuration
+      </h5>
+      <div class="form-group">
+        <label class="control-label">
+          Required?
+        </label>
+        <div class="checkbox">
+          <label>
+            <tw-checkbox ng-model="$ctrl.phoneNumber.required" />
+            Is the control required?
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          Disabled?
+        </label>
+        <div class="checkbox">
+          <label>
+            <tw-checkbox ng-model="$ctrl.phoneNumber.disabled" />
+            Is the control disabled?
+          </label>
+        </div>
+      </div>
+      <input type="submit" class="btn btn-primary btn-block" value="Submit form" />
+    </div>
+  </div>
+</div>
+</form>
