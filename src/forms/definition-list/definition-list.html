@@ -24,7 +24,9 @@
           {{ $ctrl.mask($ctrl.model[field.key]) }}
         </span>
         <div ng-switch-when="upload" class="thumbnail">
-          <img ng-src="{{ $ctrl.model[field.key] }}" ng-attr-alt="{{field.name}}" />
+          <img alt="{{ field.name }}"
+            ng-src="{{ $ctrl.model[field.key] }}"
+            ng-attr-alt="{{ field.name }}" />
         </div>
         <span ng-switch-default>
           {{ $ctrl.model[field.key] | twTextFormat: field.displayFormat }}
@@ -48,7 +50,9 @@
               {{ $ctrl.mask($ctrl.model[fieldSection.key]) }}
             </span>
             <div ng-switch-when="upload" class="thumbnail">
-              <img ng-src="{{ $ctrl.model[fieldSection.key] }}" ng-attr-alt="{{field.name}}" />
+              <img alt="{{ field.name }}"
+                ng-src="{{ $ctrl.model[fieldSection.key] }}"
+                ng-attr-alt="{{ field.name }}" />
             </div>
             <span ng-switch-default>
               {{ $ctrl.model[fieldSection.key] | twTextFormat: fieldSection.displayFormat }}
