@@ -7,6 +7,9 @@ function TextFormatFilter(TwTextFormatService) {
     if (!pattern) {
       return input;
     }
+    if (pattern.indexOf('||') > 0) {
+      pattern = pattern.substring(0, pattern.indexOf('||'));
+    }
     return TwTextFormatService.formatUsingPattern(input, pattern);
   };
 }

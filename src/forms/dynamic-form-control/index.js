@@ -15,4 +15,6 @@ export default angular
     DateControl,
     Upload
   ])
-  .component('twDynamicFormControl', FormControl).name;
+  .component('twFormControl', FormControl)
+  .component('twDynamicFormControl', FormControl) // Deprecated
+  .name;

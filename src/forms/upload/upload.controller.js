@@ -258,6 +258,10 @@ function asyncSuccess(response, $ctrl) {
   // Start changing process indicator immediately
   $ctrl.processingState = 1;
 
+  if ($ctrl.ngChange) {
+    $ctrl.ngChange();
+  }
+
   // Wait before updating text
   $ctrl.$timeout(() => {
     $ctrl.isProcessing = false;

@@ -12,6 +12,7 @@ import FormControl from './dynamic-form-control/';
 import Fieldset from './fieldset/';
 import RequirementsForm from './requirements-form/';
 import Focusable from './focusable/';
+import DefinitionList from './definition-list/';
 
 // Deprecated
 import UploadDroppable from './upload-droppable/';
@@ -29,6 +30,7 @@ export default angular.module('tw.styleguide.forms', [
   Fieldset,
   RequirementsForm,
   Focusable,
+  DefinitionList,
 
   UploadDroppable
 ]).name;

@@ -1,20 +1,20 @@
 import angular from 'angular';
 
 class RequirementsFormController {
-  constructor($scope, TwRequirementsService) {
-    this.RequirementsService = TwRequirementsService;
+  constructor($scope, TwRequirementsFormService) {
+    this.RequirementsFormService = TwRequirementsFormService;
 
     if (!this.model) {
       this.model = {};
     }
 
     if (this.requirements) {
-      this.RequirementsService.prepRequirements(this.requirements);
+      this.RequirementsFormService.prepRequirements(this.requirements);
     }
 
     $scope.$watch('$ctrl.requirements', (newRequirements, oldRequirements) => {
       if (!angular.equals(newRequirements, oldRequirements)) {
-        this.RequirementsService.prepRequirements(this.requirements);
+        this.RequirementsFormService.prepRequirements(this.requirements);
 
         const oldType = this.model.type;
         const newType =
@@ -23,7 +23,7 @@ class RequirementsFormController {
         this.model.type = newType;
 
         if (oldRequirements && newRequirements) {
-          this.RequirementsService.cleanModel(
+          this.RequirementsFormService.cleanModel(
             this.model,
             oldRequirements, oldType,
             newRequirements, newType
@@ -65,11 +65,11 @@ class RequirementsFormController {
   }
 
   switchTab(newType, oldType) {
-    const oldRequirementType = this.RequirementsService.findRequirementByType(
+    const oldRequirementType = this.RequirementsFormService.findRequirementByType(
       oldType,
       this.requirements
     );
-    const newRequirementType = this.RequirementsService.findRequirementByType(
+    const newRequirementType = this.RequirementsFormService.findRequirementByType(
       newType,
       this.requirements
     );
@@ -81,7 +81,7 @@ class RequirementsFormController {
       this.model.type = newType;
     }
 
-    this.RequirementsService.cleanRequirementsModel(
+    this.RequirementsFormService.cleanRequirementsModel(
       this.model,
       oldRequirementType,
       newRequirementType
@@ -91,7 +91,7 @@ class RequirementsFormController {
 
 RequirementsFormController.$inject = [
   '$scope',
-  'TwRequirementsService'
+  'TwRequirementsFormService'
 ];
 
 export default RequirementsFormController;

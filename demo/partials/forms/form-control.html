@@ -1,4 +1,4 @@
-<h4 id="dynamic">Dynamic form control</h4>
+<h4 id="form-control">Form control</h4>
 <p>The dynamic form control is a form control that can
   be fully configured based on a set of parameters.</p>
 <p>This control can be used as the basis for a fully
@@ -9,9 +9,9 @@
   <div class="col-md-6">
     <div class="form-group">
       <label class="control-label" for="dynamic">
-        Example dynamic form control
+        Example form control
       </label>
-      <tw-dynamic-form-control
+      <tw-form-control
         name="dynamic"
         type="{{$ctrl.dynamic.type}}"
         placeholder="{{$ctrl.dynamic.placeholder}}"
@@ -25,11 +25,11 @@
         ng-pattern="$ctrl.dynamic.pattern"
         ng-min="$ctrl.dynamic.min"
         ng-max="$ctrl.dynamic.max"
-        ng-change="$ctrl.log('dynamic change')"
-        ng-focus="$ctrl.log('dynamic focus')"
-        ng-blur="$ctrl.log('dynamic blur')"
+        ng-change="$ctrl.log('form control change')"
+        ng-focus="$ctrl.log('form control focus')"
+        ng-blur="$ctrl.log('form control blur')"
         upload-options="$ctrl.dynamic.uploadOptions"
-        tw-validation />
+        tw-validation></tw-form-control>
       <div class="error-messages">
         <div class="error-required">
           Required
@@ -57,7 +57,7 @@
     </div>
 
     <h5>Configuration</h5>
-<pre>&lt;tw-dynamic-form-control
+<pre>&lt;tw-form-control
   type="{{$ctrl.dynamic.type}}"<span ng-if="$ctrl.dynamic.type !== 'radio' && $ctrl.dynamic.type !== 'date'">
   placeholder="{{$ctrl.dynamic.placeholder}}"</span><span ng-if="$ctrl.dynamic.type === 'radio' || $ctrl.dynamic.type === 'select'">
   options="{{$ctrl.dynamic.options}}"</span><span ng-if="$ctrl.dynamic.type === 'date'">
@@ -74,7 +74,8 @@
   ng-focus='...'
   ng-blur='...'<span ng-if="$ctrl.dynamic.type === 'upload'">
   upload-options="{{$ctrl.dynamic.uploadOptions}}"</span>
-  tw-validation /&gt;</pre>
+  tw-validation&gt;
+&lt;/tw-form-control&gt;</pre>
   </div>
   <div class="col-md-6">
     <div class="well">

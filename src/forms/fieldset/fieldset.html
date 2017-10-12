@@ -1,64 +1,110 @@
 <fieldset ng-form="twFieldset">
   <legend ng-if="$ctrl.legend">{{$ctrl.legend}}</legend>
   <div class="row row-equal-height">
-    <div ng-repeat="fieldGroup in $ctrl.fields" class="col-xs-12"
+    <div ng-repeat="field in $ctrl.fields track by $index" class="col-xs-12"
       ng-class="{
-        'col-sm-4': fieldGroup.width === 'sm',
-        'col-sm-6': fieldGroup.width === 'md' || fieldGroup.maxlength && fieldGroup.maxlength <= 10,
-        'col-sm-12': fieldGroup.width === 'lg' || !fieldGroup.maxlength || fieldGroup.maxlength > 10
+        'col-sm-4': !$ctrl.narrow  && field.width === 'sm',
+        'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),
+        'col-sm-12': $ctrl.narrow || field.width === 'lg' || !field.maxlength || field.maxlength > 10
       }">
-      <div class="form-group tw-form-group-{{fieldGroup.key}}"
+      <div class="form-group tw-form-group-{{field.key}}"
         ng-class="{
-          'has-error': $ctrl.errorMessages[fieldGroup.key]
+          'has-error': $ctrl.errorMessages[field.key]
         }">
         <label class="control-label"
-          ng-if="fieldGroup.type !== 'upload'">
-          {{fieldGroup.name}}
+          ng-if="field.type !== 'upload'">
+          {{field.name}}
         </label>
-        <div class="row">
+
+        <div ng-if="!field.group">
+          <tw-form-control
+            name="{{field.key}}"
+            label="{{field.name}}"
+            type="{{field.type | lowercase}}"
+            placeholder="{{field.placeholder || field.example}}"
+            help-text="{{field.helpText}}"
+            locale="{{$ctrl.locale}}"
+            upload-accept="{{field.accept}}"
+            upload-icon="{{field.icon}}"
+            upload-too-large-message="{{field.tooLargeMessage}}"
+            options="field.valuesAllowed"
+            upload-options="$ctrl.uploadOptions"
+            ng-model="$ctrl.model[field.key]"
+            ng-blur="$ctrl.onBlur(field)"
+            ng-change="$ctrl.onChange(field)"
+            ng-required="field.required"
+            ng-disabled="field.disabled"
+            tw-minlength="field.minLength"
+            tw-maxlength="field.maxLength"
+            ng-min="field.min"
+            ng-max="field.max"
+            ng-pattern="field.validationRegexp"
+            text-format="field.displayFormat"
+            tw-validation
+          ></tw-form-control>
+          <div class="alert alert-danger error-messages"
+            ng-class="{'alert-detach': field.type === 'date' || field.type === 'upload'}">
+            <div ng-repeat="(validationType, validationMessage) in field.validationMessages track by $index"
+              class="error-{{validationType}}">
+              {{validationMessage}}
+            </div>
+            <div class="error-provided" ng-if="$ctrl.errorMessages[field.key]">
+              {{ $ctrl.errorMessages[field.key] }}
+            </div>
+          </div>
+          <div ng-if="field.tooltip"
+            class="alert alert-focus"
+            ng-class="{'alert-detach': field.type === 'date' || field.type === 'upload'}">
+            {{field.tooltip}}
+          </div>
+        </div>
+
+        <!-- Start old format -->
+        <div class="row" ng-if="field.group">
           <div class="col-xs-{{field.columns}}"
-            ng-repeat="field in fieldGroup.group">
-            <tw-dynamic-form-control
-              name="{{field.key}}"
-              label="{{fieldGroup.name}}"
-              type="{{field.type | lowercase}}"
-              placeholder="{{field.placeholder || field.example}}"
-              help-text="{{field.helpText}}"
+            ng-repeat="fieldSection in field.group track by $index">
+            <tw-form-control
+              name="{{fieldSection.key}}"
+              label="{{field.name}}"
+              type="{{fieldSection.type | lowercase}}"
+              placeholder="{{fieldSection.placeholder || fieldSection.example}}"
+              help-text="{{fieldSection.helpText}}"
               locale="{{$ctrl.locale}}"
-              upload-accept="{{field.accept}}"
-              upload-icon="{{field.icon}}"
-              upload-too-large-message="{{field.tooLargeMessage}}"
-              options="field.valuesAllowed"
+              upload-accept="{{fieldSection.accept}}"
+              upload-icon="{{fieldSection.icon}}"
+              upload-too-large-message="{{fieldSection.tooLargeMessage}}"
+              options="fieldSection.valuesAllowed"
               upload-options="$ctrl.uploadOptions"
-              ng-model="$ctrl.model[field.key]"
+              ng-model="$ctrl.model[fieldSection.key]"
               ng-blur="$ctrl.onBlur(field)"
               ng-change="$ctrl.onChange(field)"
-              ng-required="field.required"
-              ng-disabled="field.disabled"
-              tw-minlength="field.minLength"
-              tw-maxlength="field.maxLength"
-              ng-min="field.min"
-              ng-max="field.max"
-              ng-pattern="field.validationRegexp"
-              text-format="field.displayFormat"
+              ng-required="fieldSection.required"
+              ng-disabled="fieldSection.disabled"
+              tw-minlength="fieldSection.minLength"
+              tw-maxlength="fieldSection.maxLength"
+              ng-min="fieldSection.min"
+              ng-max="fieldSection.max"
+              ng-pattern="fieldSection.validationRegexp"
+              text-format="fieldSection.displayFormat"
               tw-validation
-            ></tw-dynamic-form-control>
+            ></tw-form-control>
             <div class="alert alert-danger error-messages"
-              ng-class="{'alert-detach': field.type === 'date' || field.type === 'upload'}">
-              <div ng-repeat="(validationType, validationMessage) in field.validationMessages"
+              ng-class="{'alert-detach': fieldSection.type === 'date' || fieldSection.type === 'upload'}">
+              <div ng-repeat="(validationType, validationMessage) in fieldSection.validationMessages"
                 class="error-{{validationType}}">
                 {{validationMessage}}
               </div>
-              <div class="error-provided" ng-if="$ctrl.errorMessages[field.key]">
-                {{ $ctrl.errorMessages[field.key] }}
+              <div class="error-provided" ng-if="$ctrl.errorMessages[fieldSection.key]">
+                {{ $ctrl.errorMessages[fieldSection.key] }}
               </div>
             </div>
-            <div ng-if="field.tooltip"
+            <div ng-if="fieldSection.tooltip"
               class="alert alert-focus"
-              ng-class="{'alert-detach': field.type === 'date' || field.type === 'upload'}">
-              {{field.tooltip}}
+              ng-class="{'alert-detach': fieldSection.type === 'date' || fieldSection.type === 'upload'}">
+              {{fieldSection.tooltip}}
             </div>
           </div>
+          <!-- End old format -->
         </div>
       </div>
     </div>

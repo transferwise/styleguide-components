@@ -1,5 +1,5 @@
 
-function RequirementsService() {
+function RequirementsFormService() {
   this.cleanRequirementsModel = (model, oldRequirements, newRequirements) => {
     const oldFieldNames = getFieldNamesFromRequirement(oldRequirements);
     const newFieldNames = getFieldNamesFromRequirement(newRequirements);
@@ -47,8 +47,12 @@ function RequirementsService() {
     if (!modelRequirement.fields) {
       return [];
     }
-    const names = modelRequirement.fields.map(fieldGroup =>
-      fieldGroup.group.map(field => field.key));
+    const names = modelRequirement.fields.map((field) => {
+      if (field.group) {
+        return field.group.map(fieldSection => fieldSection.key);
+      }
+      return field.key;
+    });
 
     return Array.prototype.concat.apply([], names);
   }
@@ -68,4 +72,4 @@ function RequirementsService() {
   }
 }
 
-export default RequirementsService;
+export default RequirementsFormService;
