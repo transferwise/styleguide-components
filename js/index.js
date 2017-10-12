@@ -272,6 +272,7 @@ angular.module('tw.styleguide.docs', [])
     },
     controller: ['$timeout', '$q', '$http', function ($timeout, $q, $http) {
       const $ctrl = this;
+
       this.onStart = function (file) {
         console.log('File upload starting');
       };
@@ -342,7 +343,7 @@ angular.module('tw.styleguide.docs', [])
     },
     templateUrl: 'partials/forms/currency-input.html'
   })
-  .component('twDynamicControlDocs', {
+  .component('twFormControlDocs', {
     bindings: {
       model: '=',
       locales: '<',
@@ -369,7 +370,7 @@ angular.module('tw.styleguide.docs', [])
       };
       this.log = function (message) { console.log(message); };
     },
-    templateUrl: 'partials/forms/dynamic-control.html'
+    templateUrl: 'partials/forms/form-control.html'
   })
   .component('twRequirementsFormDocs', {
     controller: ['$scope', '$http', function ($scope, $http) {
@@ -562,6 +563,116 @@ angular.module('tw.styleguide.docs', [])
     controller: function() {
       this.log = function (message) { console.log(message); };
     }
+  })
+  .component('twFieldsetDocs', {
+    bindings: {
+      model: '=',
+      fields: '='
+    },
+    templateUrl: 'partials/forms/fieldset.html' ,
+    controller: function() {
+      this.model = {
+        'text': 'helloworld',
+        'number': 123456,
+        'select': '1',
+        'date': '2000-01-01T00:00:00.000Z',
+        'checkbox': true,
+        'radio': '2',
+        'password': 'qwerty'
+      };
+
+      this.refresh = function() {
+        console.log('onRefreshRequirements');
+      };
+
+      this.fields = [
+        {
+          'name': 'Text',
+          'key': 'text',
+          'type': 'text',
+          'displayFormat': '***** - *****||*-*-*',
+          'width': 'md',
+          'refreshRequirementsOnChange': true
+        },
+        {
+          'name': 'Number',
+          'key': 'number',
+          'type': 'number',
+          'width': 'md',
+          'refreshRequirementsOnChange': true
+        },
+        {
+          'name': 'Select',
+          'key': 'select',
+          'type': 'select',
+          'width': 'md',
+          'refreshRequirementsOnChange': true,
+          'valuesAllowed': [
+            {
+              'key': '1',
+              'name': 'One'
+            },
+            {
+              'key': '2',
+              'name': 'Two'
+            }
+          ]
+        },
+        {
+          'name': 'Date',
+          'key': 'date',
+          'type': 'date',
+          'width': 'md',
+          'refreshRequirementsOnChange': true
+        },
+        {
+          'name': 'Password',
+          'key': 'password',
+          'type': 'password',
+          'width': 'md',
+          'refreshRequirementsOnChange': true
+        },
+        {
+          'name': 'Checkbox',
+          'key': 'checkbox',
+          'type': 'checkbox',
+          'placeholder': 'Label',
+          'width': 'md',
+          'refreshRequirementsOnChange': true
+        },
+        {
+          'name': 'Radio',
+          'key': 'radio',
+          'type': 'radio',
+          'width': 'md',
+          'refreshRequirementsOnChange': true,
+          'valuesAllowed': [
+            {
+              'key': '1',
+              'name': 'One'
+            },
+            {
+              'key': '2',
+              'name': 'Two'
+            }
+          ]
+        },
+        {
+          'name': 'File',
+          'key': 'file',
+          'type': 'upload',
+          'width': 'md',
+          'refreshRequirementsOnChange': true
+        },
+      ];
+    }
+  })
+  .component('twDefinitionListDocs', {
+    bindings: {
+      model: '=',
+      fields: '='
+    },
+    templateUrl: 'partials/forms/definition-list.html'
   })
   .component('twCardsDocs', { templateUrl: 'partials/tw-cards.html' })
   .component('formExample', {
