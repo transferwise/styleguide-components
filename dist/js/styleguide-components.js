@@ -6927,7 +6927,7 @@ function NumberFormatFilter() {
       return number;
     }
 
-    if (typeof number === 'number' && Number(number)) {
+    if (typeof number === 'string' && Number(number)) {
       number = Number(number);
     }
 
