@@ -39,7 +39,7 @@
       <dt ng-bind="field.name"></dt>
       <dd>
         <span ng-repeat="fieldSection in field.group">
-          <span ng-switch="field.type">
+          <span ng-switch="fieldSection.type">
             <span ng-switch-when="select|radio" ng-switch-when-separator="|">
               {{ $ctrl.getValueLabel(fieldSection.valuesAllowed, $ctrl.model[fieldSection.key]) }}
             </span>

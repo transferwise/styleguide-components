@@ -13,13 +13,7 @@ function RequirementsService() {
     }
     fields.forEach((field) => {
       if (field.group) {
-        if (field.group.length) {
-          field.key = field.group[0].key;
-        }
         field.group.forEach((fieldSection) => {
-          if (fieldSection.type === 'upload') {
-            field.type = 'upload';
-          }
           if (fieldSection.refreshRequirementsOnChange) {
             field.refreshRequirementsOnChange = true;
           }
@@ -28,6 +22,11 @@ function RequirementsService() {
           this.prepValuesAllowed(fieldSection);
           this.prepValidationMessages(fieldSection, validationMessages);
         });
+
+        if (field.group.length) {
+          field.key = field.key || field.group[0].key;
+          field.type = field.type || field.group[0].type;
+        }
       } else {
         this.prepRegExp(field);
         this.prepValuesAsync(field, model);

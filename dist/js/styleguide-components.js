@@ -6573,7 +6573,7 @@ module.exports = "<div class=\"row\">\n\n  <div class=\"col-sm-5 tw-date-month-c
 /* 101 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"m-t-1\">\n  <h4\n    ng-if=\"$ctrl.legend\"\n    ng-bind=\"$ctrl.legend\"\n    class=\"page-header p-t-3\">\n  </h4>\n</div>\n<div class=\"row row-equal-height\">\n  <div class=\"col-xs-12\"\n    ng-class=\"{'col-sm-6': !$ctrl.narrow}\"\n    ng-repeat=\"field in $ctrl.fields track by $index\"\n    ng-if=\"$ctrl.model[field.key] || $ctrl.model[field.group[0].key]\">\n\n    <dl ng-if=\"!field.group\">\n      <dt ng-bind=\"field.name\"></dt>\n      <dd ng-switch=\"field.type\">\n        <span ng-switch-when=\"select|radio\" ng-switch-when-separator=\"|\">\n          {{ $ctrl.getValueLabel(field.valuesAllowed, $ctrl.model[field.key]) }}\n        </span>\n        <span ng-switch-when=\"date\">\n          {{ $ctrl.model[field.key] | twDateFormat: $ctrl.locale }}\n        </span>\n        <span ng-switch-when=\"password\">\n          {{ $ctrl.mask($ctrl.model[field.key]) }}\n        </span>\n        <div ng-switch-when=\"upload\" class=\"thumbnail\">\n          <img alt=\"{{ field.name }}\"\n            ng-src=\"{{ $ctrl.model[field.key] }}\"\n            ng-attr-alt=\"{{ field.name }}\" />\n        </div>\n        <span ng-switch-default>\n          {{ $ctrl.model[field.key] | twTextFormat: field.displayFormat }}\n        </span>\n      </dd>\n    </dl>\n\n    <!-- Start old 'nested group' style -->\n    <dl ng-if=\"field.group\">\n      <dt ng-bind=\"field.name\"></dt>\n      <dd>\n        <span ng-repeat=\"fieldSection in field.group\">\n          <span ng-switch=\"field.type\">\n            <span ng-switch-when=\"select|radio\" ng-switch-when-separator=\"|\">\n              {{ $ctrl.getValueLabel(fieldSection.valuesAllowed, $ctrl.model[fieldSection.key]) }}\n            </span>\n            <span ng-switch-when=\"date\">\n              {{ $ctrl.model[fieldSection.key] | twDateFormat: $ctrl.locale }}\n            </span>\n            <span ng-switch-when=\"password\">\n              {{ $ctrl.mask($ctrl.model[fieldSection.key]) }}\n            </span>\n            <div ng-switch-when=\"upload\" class=\"thumbnail\">\n              <img alt=\"{{ field.name }}\"\n                ng-src=\"{{ $ctrl.model[fieldSection.key] }}\"\n                ng-attr-alt=\"{{ field.name }}\" />\n            </div>\n            <span ng-switch-default>\n              {{ $ctrl.model[fieldSection.key] | twTextFormat: fieldSection.displayFormat }}\n            </span>\n          </span>\n        </span>\n      </dd>\n    </dl>\n    <!-- End old 'nested group' style -->\n\n  </div>\n</div>\n";
+module.exports = "<div class=\"m-t-1\">\n  <h4\n    ng-if=\"$ctrl.legend\"\n    ng-bind=\"$ctrl.legend\"\n    class=\"page-header p-t-3\">\n  </h4>\n</div>\n<div class=\"row row-equal-height\">\n  <div class=\"col-xs-12\"\n    ng-class=\"{'col-sm-6': !$ctrl.narrow}\"\n    ng-repeat=\"field in $ctrl.fields track by $index\"\n    ng-if=\"$ctrl.model[field.key] || $ctrl.model[field.group[0].key]\">\n\n    <dl ng-if=\"!field.group\">\n      <dt ng-bind=\"field.name\"></dt>\n      <dd ng-switch=\"field.type\">\n        <span ng-switch-when=\"select|radio\" ng-switch-when-separator=\"|\">\n          {{ $ctrl.getValueLabel(field.valuesAllowed, $ctrl.model[field.key]) }}\n        </span>\n        <span ng-switch-when=\"date\">\n          {{ $ctrl.model[field.key] | twDateFormat: $ctrl.locale }}\n        </span>\n        <span ng-switch-when=\"password\">\n          {{ $ctrl.mask($ctrl.model[field.key]) }}\n        </span>\n        <div ng-switch-when=\"upload\" class=\"thumbnail\">\n          <img alt=\"{{ field.name }}\"\n            ng-src=\"{{ $ctrl.model[field.key] }}\"\n            ng-attr-alt=\"{{ field.name }}\" />\n        </div>\n        <span ng-switch-default>\n          {{ $ctrl.model[field.key] | twTextFormat: field.displayFormat }}\n        </span>\n      </dd>\n    </dl>\n\n    <!-- Start old 'nested group' style -->\n    <dl ng-if=\"field.group\">\n      <dt ng-bind=\"field.name\"></dt>\n      <dd>\n        <span ng-repeat=\"fieldSection in field.group\">\n          <span ng-switch=\"fieldSection.type\">\n            <span ng-switch-when=\"select|radio\" ng-switch-when-separator=\"|\">\n              {{ $ctrl.getValueLabel(fieldSection.valuesAllowed, $ctrl.model[fieldSection.key]) }}\n            </span>\n            <span ng-switch-when=\"date\">\n              {{ $ctrl.model[fieldSection.key] | twDateFormat: $ctrl.locale }}\n            </span>\n            <span ng-switch-when=\"password\">\n              {{ $ctrl.mask($ctrl.model[fieldSection.key]) }}\n            </span>\n            <div ng-switch-when=\"upload\" class=\"thumbnail\">\n              <img alt=\"{{ field.name }}\"\n                ng-src=\"{{ $ctrl.model[fieldSection.key] }}\"\n                ng-attr-alt=\"{{ field.name }}\" />\n            </div>\n            <span ng-switch-default>\n              {{ $ctrl.model[fieldSection.key] | twTextFormat: fieldSection.displayFormat }}\n            </span>\n          </span>\n        </span>\n      </dd>\n    </dl>\n    <!-- End old 'nested group' style -->\n\n  </div>\n</div>\n";
 
 /***/ }),
 /* 102 */
@@ -6702,13 +6702,7 @@ function RequirementsService() {
     }
     fields.forEach(function (field) {
       if (field.group) {
-        if (field.group.length) {
-          field.key = field.group[0].key;
-        }
         field.group.forEach(function (fieldSection) {
-          if (fieldSection.type === 'upload') {
-            field.type = 'upload';
-          }
           if (fieldSection.refreshRequirementsOnChange) {
             field.refreshRequirementsOnChange = true;
           }
@@ -6717,6 +6711,11 @@ function RequirementsService() {
           _this.prepValuesAllowed(fieldSection);
           _this.prepValidationMessages(fieldSection, validationMessages);
         });
+
+        if (field.group.length) {
+          field.key = field.key || field.group[0].key;
+          field.type = field.type || field.group[0].type;
+        }
       } else {
         _this.prepRegExp(field);
         _this.prepValuesAsync(field, model);

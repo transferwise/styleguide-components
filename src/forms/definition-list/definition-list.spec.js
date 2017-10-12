@@ -166,6 +166,163 @@ describe('Definition list', function() {
     });
   });
 
+  describe('when given requirements with nested field groups', function () {
+
+    describe('when given a text field', function() {
+      beforeEach(function() {
+        $scope.model = {
+          key: 'ABCD'
+        };
+        $scope.fields = [{
+          name: 'Text label',
+          group: [{
+            key: 'key',
+            type: 'text',
+            displayFormat: '** - **'
+          }]
+        }];
+        setupVars();
+      });
+      it('should display the formatted text value', function() {
+        expect(definition.textContent.trim()).toBe('AB - CD');
+      });
+    });
+
+    describe('when given a number field', function() {
+      beforeEach(function() {
+        $scope.model = {
+          key: 1234
+        };
+        $scope.fields = [{
+          name: 'Number label',
+          group: [{
+            key: 'key',
+            type: 'number'
+          }]
+        }];
+        setupVars();
+      });
+      it('should display the formatted number value', function() {
+        expect(definition.textContent.trim()).toBe('1234');
+      });
+    });
+
+    describe('when given a date field', function() {
+      beforeEach(function() {
+        $scope.model = {
+          key: '2000-01-01T00:00:00Z'
+        };
+        $scope.fields = [{
+          name: 'Date label',
+          group: [{
+            key: 'key',
+            type: 'date'
+          }]
+        }];
+        setupVars();
+      });
+      it('should display the formatted date value', function() {
+        expect(definition.textContent.trim()).toBe('1 January 2000');
+      });
+    });
+
+    describe('when given a select field', function() {
+      beforeEach(function() {
+        $scope.model = {
+          key: '2'
+        };
+        $scope.fields = [{
+          name: 'Select label',
+          group: [{
+            key: 'key',
+            type: 'select',
+            valuesAllowed: [
+              {
+                'key': '1',
+                'name': 'One'
+              },
+              {
+                'key': '2',
+                'name': 'Two'
+              }
+            ]
+          }]
+        }];
+        setupVars();
+      });
+      it('should display the selected option value', function() {
+        expect(definition.textContent.trim()).toBe('Two');
+      });
+    });
+
+    describe('when given a radio field', function() {
+      beforeEach(function() {
+        $scope.model = {
+          key: '2'
+        };
+        $scope.fields = [{
+          name: 'Radio label',
+          group: [{
+            key: 'key',
+            type: 'radio',
+            valuesAllowed: [
+              {
+                'key': '1',
+                'name': 'One'
+              },
+              {
+                'key': '2',
+                'name': 'Two'
+              }
+            ]
+          }]
+        }];
+        setupVars();
+      });
+      it('should display the selected radio value', function() {
+        expect(definition.textContent.trim()).toBe('Two');
+      });
+    });
+
+    describe('when given a checkbox field', function() {
+      beforeEach(function() {
+        $scope.model = {
+          key: true
+        };
+        $scope.fields = [{
+          name: 'Checkbox label',
+          group: [{
+            key: 'key',
+            type: 'checkbox'
+          }]
+        }];
+        setupVars();
+      });
+      it('should display the boolean', function() {
+        expect(definition.textContent.trim()).toBe('true');
+      });
+    });
+
+    describe('when given a password field', function() {
+      beforeEach(function() {
+        $scope.model = {
+          key: '1234'
+        };
+        $scope.fields = [{
+          name: 'Password label',
+          group: [{
+            key: 'key',
+            type: 'password'
+          }]
+        }];
+        setupVars();
+      });
+      it('should display the password masked', function() {
+        expect(definition.textContent.trim()).toBe('****');
+      });
+    });
+  });
+
   function setupVars() {
     $element = getCompiledDirectiveElement();
     element = $element[0];
