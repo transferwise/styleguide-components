@@ -1,0 +1,49 @@
+<h4 id="number-format">Tw Number Format</h4>
+<p>
+  <code>twNumberFormat</code> is a filter for formatting numbers based on a
+  given locale. You can also supply a precision if you want a precise number of
+  decimals.  If precision is not supplied it will simply display any decimals
+  the number value already has.
+</p>
+<p class="text-danger">
+  Internally this use Number.prototype.getLocaleString, which is not yet
+  supported in Safari.
+</p>
+<div class="row m-b-3">
+  <div class="col-md-6">
+    <dl>
+      <dt>Formatted number</dt>
+      <dd>{{ $ctrl.number | twNumberFormat : $ctrl.locale : $ctrl.precision }}</dd>
+    </dl>
+<pre>
+<code ng-non-bindable>{{</code>{{ $ctrl.number }} | twNumberFormat : "{{ $ctrl.locale }}" <span ng-if="$ctrl.precision">: {{ $ctrl.precision }} </span><code ng-non-bindable>}}</code>
+</pre>
+  </div>
+  <div class="col-md-6">
+    <div class="well">
+      <h5 class="page-header">Edit configuration</h5>
+
+      <div class="form-group">
+        <label class="control-label">
+          Number
+        </label>
+        <input type="number" class="form-control" ng-model="$ctrl.number" />
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          Locale
+        </label>
+        <tw-select
+          options="$ctrl.locales"
+          ng-model="$ctrl.locale">
+        </tw-select>
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          Precision
+        </label>
+        <input type="number" class="form-control" ng-model="$ctrl.precision"  />
+      </div>
+    </div>
+  </div>
+</div>

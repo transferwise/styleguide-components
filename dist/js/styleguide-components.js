@@ -785,9 +785,13 @@ var _dateFormat = __webpack_require__(26);
 
 var _dateFormat2 = _interopRequireDefault(_dateFormat);
 
+var _numberFormat = __webpack_require__(117);
+
+var _numberFormat2 = _interopRequireDefault(_numberFormat);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.formatting', [_textFormatDirective2.default, _textFormatFilter2.default, _dateFormat2.default]).name;
+exports.default = _angular2.default.module('tw.styleguide.formatting', [_textFormatDirective2.default, _textFormatFilter2.default, _dateFormat2.default, _numberFormat2.default]).name;
 
 /***/ }),
 /* 21 */
@@ -6878,6 +6882,64 @@ function RequirementsFormService() {
 }
 
 exports.default = RequirementsFormService;
+
+/***/ }),
+/* 117 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _numberFormat = __webpack_require__(118);
+
+var _numberFormat2 = _interopRequireDefault(_numberFormat);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.styleguide.formatting.number', []).filter('twNumberFormat', _numberFormat2.default).name;
+
+/***/ }),
+/* 118 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function NumberFormatFilter() {
+  return function (number, locale, precision) {
+    if (!number) {
+      return number;
+    }
+
+    if (typeof number === 'number' && Number(number)) {
+      number = Number(number);
+    }
+
+    var options = {};
+    if (precision) {
+      options.minimumFractionDigits = precision;
+      options.maximumFractionDigits = precision;
+    }
+    if (locale) {
+      return number.toLocaleString(locale, options);
+    }
+    return number.toLocaleString('en-GB', options);
+  };
+}
+
+exports.default = NumberFormatFilter;
 
 /***/ })
 /******/ ]);

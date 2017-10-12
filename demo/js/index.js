@@ -42,6 +42,8 @@ angular.module('tw.styleguide.docs', [])
       { value: 'es-US', label: 'Spanish US' },
       { value: 'pt-BR', label: 'Brazillian Portuguese' },
       { value: 'ja-JP', label: 'Japanese' },
+      { value: 'ar-EG', label: 'Eastern Arabic'},
+      { value: 'en-IN', label: 'English Indian'},
       { value: 'xx-XX', label: 'Unknown locale' }
     ];
   })
@@ -507,6 +509,17 @@ angular.module('tw.styleguide.docs', [])
       model: '='
     },
     templateUrl: 'partials/tw-text-format.html'
+  })
+  .component('twNumberFormatDocs', {
+    bindings: {
+      locales: '<'
+    },
+    controller: function() {
+      this.number = 123456.78;
+      this.locale = 'en-GB';
+      this.precision = null;
+    },
+    templateUrl: 'partials/tw-number-format.html'
   })
   .component('twDateFormatDocs', {
     bindings: {
