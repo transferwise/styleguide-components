@@ -28,7 +28,7 @@
       },
       {
         "name": "IBAN",
-        "key": "IBAN",
+        "key": "iban",
         "type": "text",
         "required": true,
         "displayFormat": "**** **** **** **** **** **** **** ****",
@@ -52,7 +52,7 @@
       {
         "name": "Bank code (BIC/SWIFT)",
         "width": "sm",
-        "key": "BIC",
+        "key": "bic",
         "type": "text",
         "required": false,
         "displayFormat": null,

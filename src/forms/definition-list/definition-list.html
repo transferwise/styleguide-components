@@ -8,7 +8,7 @@
 <div class="row row-equal-height">
   <div class="col-xs-12"
     ng-class="{'col-sm-6': !$ctrl.narrow}"
-    ng-repeat="field in $ctrl.fields"
+    ng-repeat="field in $ctrl.fields track by $index"
     ng-if="$ctrl.model[field.key] || $ctrl.model[field.group[0].key]">
 
     <dl ng-if="!field.group">

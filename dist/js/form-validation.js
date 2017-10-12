@@ -1068,7 +1068,7 @@ function RequirementsService() {
         field.validationRegexp = new RegExp(field.validationRegexp);
       } catch (ex) {
         // eslint-disable-next-line no-console
-        console.log('API regexp is invalid');
+        console.warn('API regexp is invalid');
         field.validationRegexp = false;
       }
     } else {
@@ -1085,11 +1085,18 @@ function RequirementsService() {
       postData = _this.getParamValuesFromModel(model, field.valuesAsync.params);
     }
 
-    _this.$http.post(field.valuesAsync.url, postData).then(function (response) {
+    _this.fetchValuesAsync(field, postData).catch(function () {
+      return (
+        // Retry once on failure
+        _this.fetchValuesAsync(field, postData)
+      );
+    });
+  };
+
+  this.fetchValuesAsync = function (field, postData) {
+    return _this.$http.post(field.valuesAsync.url, postData).then(function (response) {
       field.valuesAllowed = response.data;
       _this.prepValuesAllowed(field);
-    }).catch(function () {
-      // TODO - RETRY?
     });
   };
 

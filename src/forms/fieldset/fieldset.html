@@ -1,7 +1,7 @@
 <fieldset ng-form="twFieldset">
   <legend ng-if="$ctrl.legend">{{$ctrl.legend}}</legend>
   <div class="row row-equal-height">
-    <div ng-repeat="field in $ctrl.fields" class="col-xs-12"
+    <div ng-repeat="field in $ctrl.fields track by $index" class="col-xs-12"
       ng-class="{
         'col-sm-4': !$ctrl.narrow  && field.width === 'sm',
         'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),
@@ -44,7 +44,7 @@
           ></tw-form-control>
           <div class="alert alert-danger error-messages"
             ng-class="{'alert-detach': field.type === 'date' || field.type === 'upload'}">
-            <div ng-repeat="(validationType, validationMessage) in field.validationMessages"
+            <div ng-repeat="(validationType, validationMessage) in field.validationMessages track by $index"
               class="error-{{validationType}}">
               {{validationMessage}}
             </div>
@@ -62,7 +62,7 @@
         <!-- Start old format -->
         <div class="row" ng-if="field.group">
           <div class="col-xs-{{field.columns}}"
-            ng-repeat="fieldSection in field.group">
+            ng-repeat="fieldSection in field.group track by $index">
             <tw-form-control
               name="{{fieldSection.key}}"
               label="{{field.name}}"

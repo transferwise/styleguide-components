@@ -43,7 +43,7 @@ function RequirementsService() {
         field.validationRegexp = new RegExp(field.validationRegexp);
       } catch (ex) {
         // eslint-disable-next-line no-console
-        console.log('API regexp is invalid');
+        console.warn('API regexp is invalid');
         field.validationRegexp = false;
       }
     } else {
@@ -61,13 +61,17 @@ function RequirementsService() {
       postData = this.getParamValuesFromModel(model, field.valuesAsync.params);
     }
 
-    this.$http.post(field.valuesAsync.url, postData).then((response) => {
-      field.valuesAllowed = response.data;
-      this.prepValuesAllowed(field);
-    }).catch(() => {
-      // TODO - RETRY?
-    });
+    this.fetchValuesAsync(field, postData).catch(() =>
+      // Retry once on failure
+      this.fetchValuesAsync(field, postData));
   };
+
+  this.fetchValuesAsync = (field, postData) =>
+    this.$http.post(field.valuesAsync.url, postData)
+      .then((response) => {
+        field.valuesAllowed = response.data;
+        this.prepValuesAllowed(field);
+      });
 
   this.prepValuesAllowed = (field) => {
     if (!angular.isArray(field.valuesAllowed)) {
