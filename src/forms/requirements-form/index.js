@@ -1,5 +1,5 @@
 import angular from 'angular';
-import RequirementsService from './requirements.service.js';
+import RequirementsFormService from './requirements-form.service.js';
 import RequirementsForm from './requirements-form.component.js';
 import Tabs from '../../navigation/tabs/';
 import Fieldset from '../../forms/fieldset/';
@@ -9,5 +9,5 @@ export default angular
     Tabs,
     Fieldset
   ])
-  .service('TwRequirementsService', RequirementsService)
+  .service('TwRequirementsFormService', RequirementsFormService)
   .component('twRequirementsForm', RequirementsForm).name;

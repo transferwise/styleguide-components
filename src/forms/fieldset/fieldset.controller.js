@@ -1,9 +1,13 @@
 import angular from 'angular';
 
 class FieldsetController {
-  constructor($scope, $http) {
+  constructor($scope, $http, TwRequirementsService) {
+    this.$scope = $scope;
     this.$http = $http;
+    this.RequirementsService = TwRequirementsService;
+  }
 
+  $onInit() {
     if (!this.model) {
       this.model = {};
     }
@@ -20,16 +24,24 @@ class FieldsetController {
     }
 
     if (this.fields) {
-      prepFields(this.fields, this.model, this.validationMessages);
+      this.RequirementsService.prepFields(
+        this.fields,
+        this.model,
+        this.validationMessages
+      );
     }
 
-    $scope.$watch('$ctrl.fields', (newValue, oldValue) => {
+    this.$scope.$watch('$ctrl.fields', (newValue, oldValue) => {
       if (!angular.equals(newValue, oldValue)) {
-        prepFields(this.fields, this.model, this.validationMessages);
+        this.RequirementsService.prepFields(
+          this.fields,
+          this.model,
+          this.validationMessages
+        );
       }
     });
 
-    $scope.$watch('twFieldset.$valid', (validity) => {
+    this.$scope.$watch('twFieldset.$valid', (validity) => {
       this.isValid = validity;
     });
 
@@ -75,93 +87,10 @@ function fieldTypeRefreshesOnChange(fieldType) {
     fieldType === 'upload';
 }
 
-function prepFields(fields, model, validationMessages) {
-  fields.forEach((field) => {
-    if (field.group) {
-      if (field.group.length) {
-        field.key = field.group[0].key;
-      }
-      field.group.forEach((fieldSection) => {
-        if (fieldSection.type === 'upload') {
-          field.type = 'upload';
-        }
-        if (fieldSection.refreshRequirementsOnChange) {
-          field.refreshRequirementsOnChange = true;
-        }
-        prepRegExp(fieldSection);
-        prepValuesAsync(fieldSection, model);
-        prepValuesAllowed(fieldSection);
-        prepValidationMessages(fieldSection, validationMessages);
-      });
-    } else {
-      prepRegExp(field);
-      prepValuesAsync(field, model);
-      prepValuesAllowed(field);
-      prepValidationMessages(field, validationMessages);
-    }
-  });
-}
-
-function prepRegExp(field) {
-  if (field.validationRegexp) {
-    try {
-      field.validationRegexp = new RegExp(field.validationRegexp);
-    } catch (ex) {
-      // eslint-disable-next-line no-console
-      console.log('API regexp is invalid');
-      field.validationRegexp = false;
-    }
-  } else {
-    field.validationRegexp = false;
-  }
-}
-
-function prepValuesAsync(field, model) {
-  if (!field.valuesAsync) {
-    return;
-  }
-  let postData = {};
-  if (field.valuesAsync.params &&
-    field.valuesAsync.params.length) {
-    postData = getParamValuesFromModel(model, field.valuesAsync.params);
-  }
-
-  this.$http.post(field.valuesAsync.url, postData).then((response) => {
-    field.valuesAllowed = response.data;
-    prepValuesAllowed(field);
-  }).catch(() => {
-    // TODO - RETRY?
-  });
-}
-
-function prepValuesAllowed(field) {
-  if (!angular.isArray(field.valuesAllowed)) {
-    return;
-  }
-  field.valuesAllowed.forEach((valueAllowed) => {
-    valueAllowed.value = valueAllowed.key;
-    valueAllowed.label = valueAllowed.name;
-  });
-}
-
-function getParamValuesFromModel(model, params) {
-  const data = {};
-  params.forEach((param) => {
-    if (model[param.key]) {
-      data[param.parameterName] = model[param.key];
-    } else if (param.required) {
-      // TODO Problem, parameter is required, but data is missing.
-    }
-  });
-  return data;
-}
-
-function prepValidationMessages(field, validationMessages) {
-  field.validationMessages = field.validationMessages ?
-    field.validationMessages :
-    validationMessages;
-}
-
-FieldsetController.$inject = ['$scope', '$http'];
+FieldsetController.$inject = [
+  '$scope',
+  '$http',
+  'TwRequirementsService'
+];
 
 export default FieldsetController;

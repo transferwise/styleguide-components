@@ -122,9 +122,13 @@ var _dom = __webpack_require__(1);
 
 var _dom2 = _interopRequireDefault(_dom);
 
+var _requirements = __webpack_require__(114);
+
+var _requirements2 = _interopRequireDefault(_requirements);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.services', [_date2.default, _currency2.default, _dom2.default]).name;
+exports.default = _angular2.default.module('tw.styleguide.services', [_date2.default, _currency2.default, _dom2.default, _requirements2.default]).name;
 
 /***/ }),
 /* 3 */
@@ -1425,6 +1429,9 @@ function TextFormatFilter(TwTextFormatService) {
     input = input || '';
     if (!pattern) {
       return input;
+    }
+    if (pattern.indexOf('||') > 0) {
+      pattern = pattern.substring(0, pattern.indexOf('||'));
     }
     return TwTextFormatService.formatUsingPattern(input, pattern);
   };
@@ -3062,28 +3069,32 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var DefinitionListController = function () {
-  function DefinitionListController() {
+  function DefinitionListController($scope, TwRequirementsService) {
     _classCallCheck(this, DefinitionListController);
+
+    this.$scope = $scope;
+    this.RequirementsService = TwRequirementsService;
   }
 
   _createClass(DefinitionListController, [{
     key: '$onInit',
     value: function $onInit() {
-      if (!this.fields.forEach) {
-        return;
-      }
-      this.fields.forEach(function (field) {
-        if (field.group) {
-          field.group.forEach(function (fieldSection) {
-            if (fieldSection.displayFormat && fieldSection.displayFormat.indexOf('||') > 0) {
-              fieldSection.displayFormat = fieldSection.displayFormat.substring(0, fieldSection.displayFormat.indexOf('||'));
-            }
-          });
-        } else if (field.displayFormat && field.displayFormat.indexOf('||') > 0) {
-          field.displayFormat = field.displayFormat.substring(0, field.displayFormat.indexOf('||'));
+      var _this = this;
+
+      this.RequirementsService.prepFields(this.fields, this.model);
+
+      this.$scope.$watch('$ctrl.fields', function (newValue, oldValue) {
+        if (!_angular2.default.equals(newValue, oldValue)) {
+          _this.RequirementsService.prepFields(_this.fields, _this.model);
         }
       });
     }
@@ -3112,6 +3123,8 @@ var DefinitionListController = function () {
 
   return DefinitionListController;
 }();
+
+DefinitionListController.$inject = ['$scope', 'TwRequirementsService'];
 
 exports.default = DefinitionListController;
 
@@ -3361,46 +3374,51 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var FieldsetController = function () {
-  function FieldsetController($scope, $http) {
-    var _this = this;
-
+  function FieldsetController($scope, $http, TwRequirementsService) {
     _classCallCheck(this, FieldsetController);
 
+    this.$scope = $scope;
     this.$http = $http;
-
-    if (!this.model) {
-      this.model = {};
-    }
-
-    if (!this.validationMessages) {
-      this.validationMessages = {
-        required: 'Required',
-        pattern: 'Incorrect format',
-        min: 'The value is too low',
-        max: 'The value is too high',
-        minlength: 'The value is too short',
-        maxlength: 'The value is too long'
-      };
-    }
-
-    if (this.fields) {
-      prepFields(this.fields, this.model, this.validationMessages);
-    }
-
-    $scope.$watch('$ctrl.fields', function (newValue, oldValue) {
-      if (!_angular2.default.equals(newValue, oldValue)) {
-        prepFields(_this.fields, _this.model, _this.validationMessages);
-      }
-    });
-
-    $scope.$watch('twFieldset.$valid', function (validity) {
-      _this.isValid = validity;
-    });
-
-    // TODO can we add asyncvalidator here? - prob not
+    this.RequirementsService = TwRequirementsService;
   }
 
   _createClass(FieldsetController, [{
+    key: '$onInit',
+    value: function $onInit() {
+      var _this = this;
+
+      if (!this.model) {
+        this.model = {};
+      }
+
+      if (!this.validationMessages) {
+        this.validationMessages = {
+          required: 'Required',
+          pattern: 'Incorrect format',
+          min: 'The value is too low',
+          max: 'The value is too high',
+          minlength: 'The value is too short',
+          maxlength: 'The value is too long'
+        };
+      }
+
+      if (this.fields) {
+        this.RequirementsService.prepFields(this.fields, this.model, this.validationMessages);
+      }
+
+      this.$scope.$watch('$ctrl.fields', function (newValue, oldValue) {
+        if (!_angular2.default.equals(newValue, oldValue)) {
+          _this.RequirementsService.prepFields(_this.fields, _this.model, _this.validationMessages);
+        }
+      });
+
+      this.$scope.$watch('twFieldset.$valid', function (validity) {
+        _this.isValid = validity;
+      });
+
+      // TODO can we add asyncvalidator here? - prob not
+    }
+  }, {
     key: 'onBlur',
     value: function onBlur(field) {
       this.removeFieldError(field.key);
@@ -3442,91 +3460,7 @@ function fieldTypeRefreshesOnChange(fieldType) {
   return fieldType === 'select' || fieldType === 'checkbox' || fieldType === 'radio' || fieldType === 'date' || fieldType === 'upload';
 }
 
-function prepFields(fields, model, validationMessages) {
-  fields.forEach(function (field) {
-    if (field.group) {
-      if (field.group.length) {
-        field.key = field.group[0].key;
-      }
-      field.group.forEach(function (fieldSection) {
-        if (fieldSection.type === 'upload') {
-          field.type = 'upload';
-        }
-        if (fieldSection.refreshRequirementsOnChange) {
-          field.refreshRequirementsOnChange = true;
-        }
-        prepRegExp(fieldSection);
-        prepValuesAsync(fieldSection, model);
-        prepValuesAllowed(fieldSection);
-        prepValidationMessages(fieldSection, validationMessages);
-      });
-    } else {
-      prepRegExp(field);
-      prepValuesAsync(field, model);
-      prepValuesAllowed(field);
-      prepValidationMessages(field, validationMessages);
-    }
-  });
-}
-
-function prepRegExp(field) {
-  if (field.validationRegexp) {
-    try {
-      field.validationRegexp = new RegExp(field.validationRegexp);
-    } catch (ex) {
-      // eslint-disable-next-line no-console
-      console.log('API regexp is invalid');
-      field.validationRegexp = false;
-    }
-  } else {
-    field.validationRegexp = false;
-  }
-}
-
-function prepValuesAsync(field, model) {
-  if (!field.valuesAsync) {
-    return;
-  }
-  var postData = {};
-  if (field.valuesAsync.params && field.valuesAsync.params.length) {
-    postData = getParamValuesFromModel(model, field.valuesAsync.params);
-  }
-
-  this.$http.post(field.valuesAsync.url, postData).then(function (response) {
-    field.valuesAllowed = response.data;
-    prepValuesAllowed(field);
-  }).catch(function () {
-    // TODO - RETRY?
-  });
-}
-
-function prepValuesAllowed(field) {
-  if (!_angular2.default.isArray(field.valuesAllowed)) {
-    return;
-  }
-  field.valuesAllowed.forEach(function (valueAllowed) {
-    valueAllowed.value = valueAllowed.key;
-    valueAllowed.label = valueAllowed.name;
-  });
-}
-
-function getParamValuesFromModel(model, params) {
-  var data = {};
-  params.forEach(function (param) {
-    if (model[param.key]) {
-      data[param.parameterName] = model[param.key];
-    } else if (param.required) {
-      // TODO Problem, parameter is required, but data is missing.
-    }
-  });
-  return data;
-}
-
-function prepValidationMessages(field, validationMessages) {
-  field.validationMessages = field.validationMessages ? field.validationMessages : validationMessages;
-}
-
-FieldsetController.$inject = ['$scope', '$http'];
+FieldsetController.$inject = ['$scope', '$http', 'TwRequirementsService'];
 
 exports.default = FieldsetController;
 
@@ -3778,9 +3712,9 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _requirementsService = __webpack_require__(59);
+var _requirementsFormService = __webpack_require__(116);
 
-var _requirementsService2 = _interopRequireDefault(_requirementsService);
+var _requirementsFormService2 = _interopRequireDefault(_requirementsFormService);
 
 var _requirementsFormComponent = __webpack_require__(57);
 
@@ -3796,7 +3730,7 @@ var _fieldset2 = _interopRequireDefault(_fieldset);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.forms.requirements-form', [_tabs2.default, _fieldset2.default]).service('TwRequirementsService', _requirementsService2.default).component('twRequirementsForm', _requirementsFormComponent2.default).name;
+exports.default = _angular2.default.module('tw.styleguide.forms.requirements-form', [_tabs2.default, _fieldset2.default]).service('TwRequirementsFormService', _requirementsFormService2.default).component('twRequirementsForm', _requirementsFormComponent2.default).name;
 
 /***/ }),
 /* 57 */
@@ -3858,24 +3792,24 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var RequirementsFormController = function () {
-  function RequirementsFormController($scope, TwRequirementsService) {
+  function RequirementsFormController($scope, TwRequirementsFormService) {
     var _this = this;
 
     _classCallCheck(this, RequirementsFormController);
 
-    this.RequirementsService = TwRequirementsService;
+    this.RequirementsFormService = TwRequirementsFormService;
 
     if (!this.model) {
       this.model = {};
     }
 
     if (this.requirements) {
-      this.RequirementsService.prepRequirements(this.requirements);
+      this.RequirementsFormService.prepRequirements(this.requirements);
     }
 
     $scope.$watch('$ctrl.requirements', function (newRequirements, oldRequirements) {
       if (!_angular2.default.equals(newRequirements, oldRequirements)) {
-        _this.RequirementsService.prepRequirements(_this.requirements);
+        _this.RequirementsFormService.prepRequirements(_this.requirements);
 
         var oldType = _this.model.type;
         var newType = _this.requirements.length ? _this.requirements[0].type : null;
@@ -3883,7 +3817,7 @@ var RequirementsFormController = function () {
         _this.model.type = newType;
 
         if (oldRequirements && newRequirements) {
-          _this.RequirementsService.cleanModel(_this.model, oldRequirements, oldType, newRequirements, newType);
+          _this.RequirementsFormService.cleanModel(_this.model, oldRequirements, oldType, newRequirements, newType);
         }
       }
     });
@@ -3926,8 +3860,8 @@ var RequirementsFormController = function () {
   }, {
     key: 'switchTab',
     value: function switchTab(newType, oldType) {
-      var oldRequirementType = this.RequirementsService.findRequirementByType(oldType, this.requirements);
-      var newRequirementType = this.RequirementsService.findRequirementByType(newType, this.requirements);
+      var oldRequirementType = this.RequirementsFormService.findRequirementByType(oldType, this.requirements);
+      var newRequirementType = this.RequirementsFormService.findRequirementByType(newType, this.requirements);
 
       if (!oldRequirementType || !newRequirementType) {
         if (!this.model) {
@@ -3936,105 +3870,19 @@ var RequirementsFormController = function () {
         this.model.type = newType;
       }
 
-      this.RequirementsService.cleanRequirementsModel(this.model, oldRequirementType, newRequirementType);
+      this.RequirementsFormService.cleanRequirementsModel(this.model, oldRequirementType, newRequirementType);
     }
   }]);
 
   return RequirementsFormController;
 }();
 
-RequirementsFormController.$inject = ['$scope', 'TwRequirementsService'];
+RequirementsFormController.$inject = ['$scope', 'TwRequirementsFormService'];
 
 exports.default = RequirementsFormController;
 
 /***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function RequirementsService() {
-  var _this = this;
-
-  this.cleanRequirementsModel = function (model, oldRequirements, newRequirements) {
-    var oldFieldNames = getFieldNamesFromRequirement(oldRequirements);
-    var newFieldNames = getFieldNamesFromRequirement(newRequirements);
-    var obsoleteFieldNames = oldFieldNames.filter(function (fieldName) {
-      return newFieldNames.indexOf(fieldName) < 0;
-    });
-
-    obsoleteFieldNames.forEach(function (fieldName) {
-      delete model[fieldName];
-    });
-  };
-
-  this.cleanModel = function (model, oldRequirements, oldType, newRequirements, newType) {
-    var oldRequirementType = _this.findRequirementByType(oldType, oldRequirements);
-    var newRequirementType = _this.findRequirementByType(newType, newRequirements);
-
-    _this.cleanRequirementsModel(model, oldRequirementType, newRequirementType);
-  };
-
-  this.findRequirementByType = function (type, requirements) {
-    if (!requirements) {
-      return false;
-    }
-
-    for (var i = 0; i < requirements.length; i++) {
-      var modelType = requirements[i];
-      if (modelType.type === type) {
-        return modelType;
-      }
-    }
-
-    return false;
-  };
-
-  this.prepRequirements = function (types) {
-    types.forEach(function (type) {
-      prepType(type);
-    });
-  };
-
-  function getFieldNamesFromRequirement(modelRequirement) {
-    if (!modelRequirement.fields) {
-      return [];
-    }
-    var names = modelRequirement.fields.map(function (field) {
-      if (field.group) {
-        return field.group.map(function (fieldSection) {
-          return fieldSection.key;
-        });
-      }
-      return field.key;
-    });
-
-    return Array.prototype.concat.apply([], names);
-  }
-
-  function prepType(type) {
-    if (!type.label) {
-      type.label = getTabName(type.type);
-    }
-  }
-
-  function getTabName(tabType) {
-    if (tabType && tabType.length > 0) {
-      var tabNameWithSpaces = tabType.toLowerCase().split('_').join(' '); // String.replace method only replaces first instance
-      return tabNameWithSpaces.charAt(0).toUpperCase() + tabNameWithSpaces.slice(1);
-    }
-    return '';
-  }
-}
-
-exports.default = RequirementsService;
-
-/***/ }),
+/* 59 */,
 /* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6798,6 +6646,232 @@ module.exports = "<span class=\"process\"\n  ng-class=\"{\n    'process-success'
 /***/ (function(module, exports) {
 
 module.exports = "<ul ng-if=\"$ctrl.tabs.length > 0\"\n  class=\"nav nav-tabs m-b-3\">\n  <li\n    ng-repeat=\"tab in $ctrl.tabs track by $index\"\n    ng-class=\"{\n      'active': $ctrl.active === tab.type\n    }\">\n    <a href=\"\" ng-click=\"$ctrl.switchTab(tab.type)\">\n      {{tab.label}}\n    </a>\n  </li>\n</ul>\n";
+
+/***/ }),
+/* 114 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _requirementsService = __webpack_require__(115);
+
+var _requirementsService2 = _interopRequireDefault(_requirementsService);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.styleguide.services.requirements', []).service('TwRequirementsService', _requirementsService2.default).name;
+
+/***/ }),
+/* 115 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function RequirementsService() {
+  var _this = this;
+
+  this.prepRequirements = function (types) {
+    types.forEach(function (type) {
+      _this.prepFields(type.fields);
+    });
+  };
+
+  this.prepFields = function (fields, model, validationMessages) {
+    if (!fields) {
+      return;
+    }
+    fields.forEach(function (field) {
+      if (field.group) {
+        if (field.group.length) {
+          field.key = field.group[0].key;
+        }
+        field.group.forEach(function (fieldSection) {
+          if (fieldSection.type === 'upload') {
+            field.type = 'upload';
+          }
+          if (fieldSection.refreshRequirementsOnChange) {
+            field.refreshRequirementsOnChange = true;
+          }
+          _this.prepRegExp(fieldSection);
+          _this.prepValuesAsync(fieldSection, model);
+          _this.prepValuesAllowed(fieldSection);
+          _this.prepValidationMessages(fieldSection, validationMessages);
+        });
+      } else {
+        _this.prepRegExp(field);
+        _this.prepValuesAsync(field, model);
+        _this.prepValuesAllowed(field);
+        _this.prepValidationMessages(field, validationMessages);
+      }
+    });
+  };
+
+  this.prepRegExp = function (field) {
+    if (field.validationRegexp) {
+      try {
+        field.validationRegexp = new RegExp(field.validationRegexp);
+      } catch (ex) {
+        // eslint-disable-next-line no-console
+        console.log('API regexp is invalid');
+        field.validationRegexp = false;
+      }
+    } else {
+      field.validationRegexp = false;
+    }
+  };
+
+  this.prepValuesAsync = function (field, model) {
+    if (!field.valuesAsync) {
+      return;
+    }
+    var postData = {};
+    if (field.valuesAsync.params && field.valuesAsync.params.length) {
+      postData = _this.getParamValuesFromModel(model, field.valuesAsync.params);
+    }
+
+    _this.$http.post(field.valuesAsync.url, postData).then(function (response) {
+      field.valuesAllowed = response.data;
+      _this.prepValuesAllowed(field);
+    }).catch(function () {
+      // TODO - RETRY?
+    });
+  };
+
+  this.prepValuesAllowed = function (field) {
+    if (!_angular2.default.isArray(field.valuesAllowed)) {
+      return;
+    }
+    field.valuesAllowed.forEach(function (valueAllowed) {
+      valueAllowed.value = valueAllowed.value || valueAllowed.key;
+      valueAllowed.label = valueAllowed.label || valueAllowed.name;
+    });
+  };
+
+  this.getParamValuesFromModel = function (model, params) {
+    var data = {};
+    params.forEach(function (param) {
+      if (model[param.key]) {
+        data[param.parameterName] = model[param.key];
+      } else if (param.required) {
+        // TODO Problem, parameter is required, but data is missing.
+      }
+    });
+    return data;
+  };
+
+  this.prepValidationMessages = function (field, validationMessages) {
+    field.validationMessages = field.validationMessages ? field.validationMessages : validationMessages;
+  };
+}
+
+exports.default = RequirementsService;
+
+/***/ }),
+/* 116 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function RequirementsFormService() {
+  var _this = this;
+
+  this.cleanRequirementsModel = function (model, oldRequirements, newRequirements) {
+    var oldFieldNames = getFieldNamesFromRequirement(oldRequirements);
+    var newFieldNames = getFieldNamesFromRequirement(newRequirements);
+    var obsoleteFieldNames = oldFieldNames.filter(function (fieldName) {
+      return newFieldNames.indexOf(fieldName) < 0;
+    });
+
+    obsoleteFieldNames.forEach(function (fieldName) {
+      delete model[fieldName];
+    });
+  };
+
+  this.cleanModel = function (model, oldRequirements, oldType, newRequirements, newType) {
+    var oldRequirementType = _this.findRequirementByType(oldType, oldRequirements);
+    var newRequirementType = _this.findRequirementByType(newType, newRequirements);
+
+    _this.cleanRequirementsModel(model, oldRequirementType, newRequirementType);
+  };
+
+  this.findRequirementByType = function (type, requirements) {
+    if (!requirements) {
+      return false;
+    }
+
+    for (var i = 0; i < requirements.length; i++) {
+      var modelType = requirements[i];
+      if (modelType.type === type) {
+        return modelType;
+      }
+    }
+
+    return false;
+  };
+
+  this.prepRequirements = function (types) {
+    types.forEach(function (type) {
+      prepType(type);
+    });
+  };
+
+  function getFieldNamesFromRequirement(modelRequirement) {
+    if (!modelRequirement.fields) {
+      return [];
+    }
+    var names = modelRequirement.fields.map(function (field) {
+      if (field.group) {
+        return field.group.map(function (fieldSection) {
+          return fieldSection.key;
+        });
+      }
+      return field.key;
+    });
+
+    return Array.prototype.concat.apply([], names);
+  }
+
+  function prepType(type) {
+    if (!type.label) {
+      type.label = getTabName(type.type);
+    }
+  }
+
+  function getTabName(tabType) {
+    if (tabType && tabType.length > 0) {
+      var tabNameWithSpaces = tabType.toLowerCase().split('_').join(' '); // String.replace method only replaces first instance
+      return tabNameWithSpaces.charAt(0).toUpperCase() + tabNameWithSpaces.slice(1);
+    }
+    return '';
+  }
+}
+
+exports.default = RequirementsFormService;
 
 /***/ })
 /******/ ]);

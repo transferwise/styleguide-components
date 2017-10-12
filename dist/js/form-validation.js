@@ -122,9 +122,13 @@ var _dom = __webpack_require__(1);
 
 var _dom2 = _interopRequireDefault(_dom);
 
+var _requirements = __webpack_require__(15);
+
+var _requirements2 = _interopRequireDefault(_requirements);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.services', [_date2.default, _currency2.default, _dom2.default]).name;
+exports.default = _angular2.default.module('tw.styleguide.services', [_date2.default, _currency2.default, _dom2.default, _requirements2.default]).name;
 
 /***/ }),
 /* 3 */
@@ -978,6 +982,145 @@ var _dom2 = _interopRequireDefault(_dom);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _angular2.default.module('tw.styleguide.validation.form', [_dom2.default]).directive('form', _formValidationDirective2.default).name;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _requirementsService = __webpack_require__(16);
+
+var _requirementsService2 = _interopRequireDefault(_requirementsService);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.styleguide.services.requirements', []).service('TwRequirementsService', _requirementsService2.default).name;
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function RequirementsService() {
+  var _this = this;
+
+  this.prepRequirements = function (types) {
+    types.forEach(function (type) {
+      _this.prepFields(type.fields);
+    });
+  };
+
+  this.prepFields = function (fields, model, validationMessages) {
+    if (!fields) {
+      return;
+    }
+    fields.forEach(function (field) {
+      if (field.group) {
+        if (field.group.length) {
+          field.key = field.group[0].key;
+        }
+        field.group.forEach(function (fieldSection) {
+          if (fieldSection.type === 'upload') {
+            field.type = 'upload';
+          }
+          if (fieldSection.refreshRequirementsOnChange) {
+            field.refreshRequirementsOnChange = true;
+          }
+          _this.prepRegExp(fieldSection);
+          _this.prepValuesAsync(fieldSection, model);
+          _this.prepValuesAllowed(fieldSection);
+          _this.prepValidationMessages(fieldSection, validationMessages);
+        });
+      } else {
+        _this.prepRegExp(field);
+        _this.prepValuesAsync(field, model);
+        _this.prepValuesAllowed(field);
+        _this.prepValidationMessages(field, validationMessages);
+      }
+    });
+  };
+
+  this.prepRegExp = function (field) {
+    if (field.validationRegexp) {
+      try {
+        field.validationRegexp = new RegExp(field.validationRegexp);
+      } catch (ex) {
+        // eslint-disable-next-line no-console
+        console.log('API regexp is invalid');
+        field.validationRegexp = false;
+      }
+    } else {
+      field.validationRegexp = false;
+    }
+  };
+
+  this.prepValuesAsync = function (field, model) {
+    if (!field.valuesAsync) {
+      return;
+    }
+    var postData = {};
+    if (field.valuesAsync.params && field.valuesAsync.params.length) {
+      postData = _this.getParamValuesFromModel(model, field.valuesAsync.params);
+    }
+
+    _this.$http.post(field.valuesAsync.url, postData).then(function (response) {
+      field.valuesAllowed = response.data;
+      _this.prepValuesAllowed(field);
+    }).catch(function () {
+      // TODO - RETRY?
+    });
+  };
+
+  this.prepValuesAllowed = function (field) {
+    if (!_angular2.default.isArray(field.valuesAllowed)) {
+      return;
+    }
+    field.valuesAllowed.forEach(function (valueAllowed) {
+      valueAllowed.value = valueAllowed.value || valueAllowed.key;
+      valueAllowed.label = valueAllowed.label || valueAllowed.name;
+    });
+  };
+
+  this.getParamValuesFromModel = function (model, params) {
+    var data = {};
+    params.forEach(function (param) {
+      if (model[param.key]) {
+        data[param.parameterName] = model[param.key];
+      } else if (param.required) {
+        // TODO Problem, parameter is required, but data is missing.
+      }
+    });
+    return data;
+  };
+
+  this.prepValidationMessages = function (field, validationMessages) {
+    field.validationMessages = field.validationMessages ? field.validationMessages : validationMessages;
+  };
+}
+
+exports.default = RequirementsService;
 
 /***/ })
 /******/ ]);

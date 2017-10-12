@@ -1,25 +1,17 @@
+import angular from 'angular';
+
 class DefinitionListController {
+  constructor($scope, TwRequirementsService) {
+    this.$scope = $scope;
+    this.RequirementsService = TwRequirementsService;
+  }
+
   $onInit() {
-    if (!this.fields.forEach) {
-      return;
-    }
-    this.fields.forEach((field) => {
-      if (field.group) {
-        field.group.forEach((fieldSection) => {
-          if (fieldSection.displayFormat &&
-            fieldSection.displayFormat.indexOf('||') > 0) {
-            fieldSection.displayFormat = fieldSection.displayFormat.substring(
-              0,
-              fieldSection.displayFormat.indexOf('||')
-            );
-          }
-        });
-      } else if (field.displayFormat &&
-        field.displayFormat.indexOf('||') > 0) {
-        field.displayFormat = field.displayFormat.substring(
-          0,
-          field.displayFormat.indexOf('||')
-        );
+    this.RequirementsService.prepFields(this.fields, this.model);
+
+    this.$scope.$watch('$ctrl.fields', (newValue, oldValue) => {
+      if (!angular.equals(newValue, oldValue)) {
+        this.RequirementsService.prepFields(this.fields, this.model);
       }
     });
   }
@@ -39,5 +31,10 @@ class DefinitionListController {
     return new Array(value.length + 1).join('*');
   }
 }
+
+DefinitionListController.$inject = [
+  '$scope',
+  'TwRequirementsService'
+];
 
 export default DefinitionListController;

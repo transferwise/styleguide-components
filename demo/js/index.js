@@ -590,7 +590,7 @@ angular.module('tw.styleguide.docs', [])
           'name': 'Text',
           'key': 'text',
           'type': 'text',
-          'displayFormat': '***** - *****',
+          'displayFormat': '***** - *****||*-*-*',
           'width': 'md',
           'refreshRequirementsOnChange': true
         },

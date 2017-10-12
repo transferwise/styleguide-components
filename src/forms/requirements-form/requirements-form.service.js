@@ -1,5 +1,5 @@
 
-function RequirementsService() {
+function RequirementsFormService() {
   this.cleanRequirementsModel = (model, oldRequirements, newRequirements) => {
     const oldFieldNames = getFieldNamesFromRequirement(oldRequirements);
     const newFieldNames = getFieldNamesFromRequirement(newRequirements);
@@ -72,4 +72,4 @@ function RequirementsService() {
   }
 }
 
-export default RequirementsService;
+export default RequirementsFormService;
