@@ -13,6 +13,13 @@ angular.module('tw.styleguide.docs', [])
     },
     templateUrl: 'partials/forms/index.html'
   })
+  .component('formattingComponents', {
+    bindings: {
+      model: '=',
+      locales: '<'
+    },
+    templateUrl: 'partials/formatting/index.html'
+  })
   .controller('PageController', function () {
     this.log = function (message) { console.log(message); };
 
@@ -508,7 +515,7 @@ angular.module('tw.styleguide.docs', [])
     bindings: {
       model: '='
     },
-    templateUrl: 'partials/tw-text-format.html'
+    templateUrl: 'partials/formatting/text-format.html'
   })
   .component('twNumberFormatDocs', {
     bindings: {
@@ -519,7 +526,7 @@ angular.module('tw.styleguide.docs', [])
       this.locale = 'en-GB';
       this.precision = null;
     },
-    templateUrl: 'partials/tw-number-format.html'
+    templateUrl: 'partials/formatting/number-format.html'
   })
   .component('twDateFormatDocs', {
     bindings: {
@@ -566,7 +573,7 @@ angular.module('tw.styleguide.docs', [])
       this.hours = 12;
       this.minutes = 0;
     },
-    templateUrl: 'partials/tw-date-format.html'
+    templateUrl: 'partials/formatting/date-format.html'
   })
   .component('twPopOverDocs', { templateUrl: 'partials/tw-pop-over.html' })
   .component('twToolTipDocs', { templateUrl: 'partials/tw-tool-tip.html' })
