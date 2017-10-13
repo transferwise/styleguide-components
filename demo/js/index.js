@@ -33,14 +33,6 @@ angular.module('tw.styleguide.docs', [])
       { value: 'lg', label: 'Large' }
     ];
 
-    // Used by twValidation docs
-    this.basicSelect = [
-      { value: 0, label: 'Zero' },
-      { value: 1, label: 'One' },
-      { value: 2, label: 'Two' },
-      { value: 3, label: 'Three' }
-    ];
-
     this.locales = [
       { value: 'en-GB', label: 'English UK' },
       { value: 'en-US', label: 'English US' },
@@ -436,6 +428,15 @@ angular.module('tw.styleguide.docs', [])
   .component('twValidationDocs', {
     bindings: {
       model: '='
+    },
+    controller: function() {
+      // Used by twValidation docs
+      this.basicSelect = [
+        { value: 0, label: 'Zero' },
+        { value: 1, label: 'One' },
+        { value: 2, label: 'Two' },
+        { value: 3, label: 'Three' }
+      ];
     },
     templateUrl: 'partials/tw-validation.html'
   })
