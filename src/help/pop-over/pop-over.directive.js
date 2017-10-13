@@ -8,17 +8,17 @@ export default function () {
 function PopOverLink($scope, $element) {
   let POPOVER = null;
 
-  const element = $element[0];
-  const body = document.getElementsByTagName('body')[0];
+  const ELEMENT = $element[0];
+  const BODY = document.getElementsByTagName('body')[0];
 
-  element.setAttribute('tabindex', '0');
-  element.setAttribute('role', 'button');
-  element.setAttribute('data-toggle', 'popover');
+  ELEMENT.setAttribute('tabindex', '0');
+  ELEMENT.setAttribute('role', 'button');
+  ELEMENT.setAttribute('data-toggle', 'popover');
 
   /**
     * Register event listeners
     */
-  element.addEventListener('click', ELEMENT_CALLBACK);
+  ELEMENT.addEventListener('click', ELEMENT_CALLBACK);
   document.documentElement.addEventListener('click', DOCUMENT_CALLBACK, true);
   window.addEventListener('resize', WINDOW_RESIZE_CALLBACK);
 
@@ -26,18 +26,18 @@ function PopOverLink($scope, $element) {
     * Unregister event listeners when component gets unmounted / destroyed
     */
   $scope.$on('destroy', () => {
-    element.removeEventListener('click', ELEMENT_CALLBACK);
+    ELEMENT.removeEventListener('click', ELEMENT_CALLBACK);
     document.documentElement.removeEventListener('click', DOCUMENT_CALLBACK);
     window.removeEventListener('resize', WINDOW_RESIZE_CALLBACK);
   });
 
   function ELEMENT_CALLBACK() {
-    const popoverAppendedToBody = Array.from(body.children).includes(POPOVER);
+    const popoverAppendedToBody = Array.from(BODY.children).includes(POPOVER);
     const popoverOptions = getPopoverOptions();
 
     if (!popoverAppendedToBody) {
       POPOVER = compose(getPopover, curry(getObjectProperty)('placement'))(popoverOptions);
-      body.appendChild(POPOVER);
+      BODY.appendChild(POPOVER);
     }
 
     if (elementNotVisible(POPOVER)) {
@@ -51,8 +51,7 @@ function PopOverLink($scope, $element) {
     if (POPOVER) {
       const clickedOutsidePopover = !POPOVER.contains(event.target);
       const clickedInsidePopover = POPOVER.contains(event.target);
-      const clickedPopoverClose = event.target.className
-        .split(' ').includes('popover-close');
+      const clickedPopoverClose = event.target.className.includes('popover-close');
 
       if (clickedOutsidePopover || (clickedInsidePopover && clickedPopoverClose)) {
         POPOVER.style.display = 'none';
@@ -71,9 +70,7 @@ function PopOverLink($scope, $element) {
   function getPopover(popoverPlacement) {
     const popoverContainer = document.createElement('div');
 
-    popoverContainer.classList.add('popover');
-    popoverContainer.classList.add('in');
-    popoverContainer.classList.add(popoverPlacement);
+    popoverContainer.classList.add('popover', 'in', popoverPlacement);
 
     popoverContainer.setAttribute('role', 'popover');
 
@@ -92,17 +89,64 @@ function PopOverLink($scope, $element) {
   }
 
   function getPopoverPosition(popoverPlacement) {
+    const verifyPopoverPlacement = compose(updatePopoverClass, checkPopoverPlacement);
+
+    return compose(getPopoverCoordinates, verifyPopoverPlacement)(popoverPlacement);
+  }
+
+  function updatePopoverClass(popoverPlacement) {
+    POPOVER.classList.remove('left', 'right', 'bottom', 'top');
+    POPOVER.classList.add(popoverPlacement);
+
+    return popoverPlacement;
+  }
+
+  function checkPopoverPlacement(popoverPlacement) {
+    const POPOVER_SPACING = 5;
+
+    const viewportOffsetDimensions = getOffsetDimensions(document.documentElement);
+
+    const elementOffsetDimensions = getOffsetDimensions(ELEMENT);
+    const elementOffset = getBoundingOffset(ELEMENT);
+
+    const popoverOffsetDimensions = getOffsetDimensions(POPOVER);
+
+    const popoverOffsetWidth = elementOffset.offsetX +
+      elementOffsetDimensions.offsetWidth + POPOVER_SPACING +
+      popoverOffsetDimensions.offsetWidth;
+    const popoverLefOffsetX = elementOffset.offsetX -
+      (popoverOffsetDimensions.offsetWidth + POPOVER_SPACING);
+
+    /**
+     * If it sticks outside on both sides, put it on the bottom
+     */
+    if ((popoverOffsetWidth > viewportOffsetDimensions.offsetWidth) && popoverLefOffsetX < 0) {
+      return 'bottom';
+    }
+
+    if (popoverPlacement === 'right' && (popoverOffsetWidth > viewportOffsetDimensions.offsetWidth)) {
+      return 'left';
+    }
+
+    if (popoverPlacement === 'left' && popoverLefOffsetX < 0) {
+      return 'right';
+    }
+
+    return popoverPlacement;
+  }
+
+  function getPopoverCoordinates(popoverPlacement) {
+    const POPOVER_SPACING = 5;
+
     /**
      * The element's coordinates, for which we want to display the popover
      */
-    const elementOffset = getBoundingOffset(element);
+    const elementOffset = getBoundingOffset(ELEMENT);
 
     /**
      * The element's size, for which we want to display the popover
      */
-    const elementOffsetDimensions = getOffsetDimensions(element);
-
-    const POPOVER_SPACING = 5;
+    const elementOffsetDimensions = getOffsetDimensions(ELEMENT);
 
     /**
      * Popover's default coordinates
@@ -183,27 +227,27 @@ function PopOverLink($scope, $element) {
   }
 
   function getPopoverOptions() {
-    const options = {
+    const OPTIONS = {
       placement: 'right',
     };
 
-    if (element.dataset.placement) {
-      options.placement = element.dataset.placement;
+    if (ELEMENT.dataset.placement) {
+      OPTIONS.placement = ELEMENT.dataset.placement;
     }
-    if (element.dataset.title) {
-      options.title = element.dataset.title;
+    if (ELEMENT.dataset.title) {
+      OPTIONS.title = ELEMENT.dataset.title;
     }
-    if (element.dataset.originalTitle) {
-      options.title = element.dataset.originalTitle;
+    if (ELEMENT.dataset.originalTitle) {
+      OPTIONS.title = ELEMENT.dataset.originalTitle;
     }
-    if (element.dataset.content) {
-      options.content = element.dataset.content;
+    if (ELEMENT.dataset.content) {
+      OPTIONS.content = ELEMENT.dataset.content;
     }
-    if (element.dataset.contentHtml) {
-      options.html = true; // TODO add support for this
+    if (ELEMENT.dataset.contentHtml) {
+      OPTIONS.html = true; // TODO add support for this
     }
 
-    return options;
+    return OPTIONS;
   }
 }
 
