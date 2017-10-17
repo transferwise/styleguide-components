@@ -1,6 +1,5 @@
 // Polyfill for IE 9, 10, 11 CustomEvents, see https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent
 const customEventsPolyfill = () => {
-  console.log('Heiaa pleiaaa sleiaaa');
   if (typeof window.CustomEvent === 'function') {
     return false;
   }
