@@ -5307,6 +5307,10 @@ var _navigation = __webpack_require__(23);
 
 var _navigation2 = _interopRequireDefault(_navigation);
 
+var _polyfill = __webpack_require__(116);
+
+var _polyfill2 = _interopRequireDefault(_polyfill);
+
 var _formComponents = __webpack_require__(18);
 
 var _formComponents2 = _interopRequireDefault(_formComponents);
@@ -5319,6 +5323,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // DEPRECATED This is required to support old usages of the sub modules when
 // importing the full JS library.
+(0, _polyfill2.default)();
 exports.default = _angular2.default.module('tw.styleguide-components', [_forms2.default, _validation2.default, _formatting2.default, _services2.default, _help2.default, _layout2.default, _loading2.default, _navigation2.default, _formComponents2.default, _formValidation2.default]).name;
 
 /***/ }),
@@ -6877,6 +6882,36 @@ module.exports = "<span class=\"process\"\n  ng-class=\"{\n    'process-success'
 /***/ (function(module, exports) {
 
 module.exports = "<ul ng-if=\"$ctrl.tabs.length > 0\"\n  class=\"nav nav-tabs m-b-3\">\n  <li\n    ng-repeat=\"tab in $ctrl.tabs track by $index\"\n    ng-class=\"{\n      'active': $ctrl.active === tab.type\n    }\">\n    <a href=\"\" ng-click=\"$ctrl.switchTab(tab.type)\">\n      {{tab.label}}\n    </a>\n  </li>\n</ul>\n";
+
+/***/ }),
+/* 116 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// Polyfill for IE 9, 10, 11 CustomEvents, see https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent
+var customEventsPolyfill = function customEventsPolyfill() {
+  if (typeof window.CustomEvent === 'function') {
+    return false;
+  }
+
+  function CustomEvent(event, params) {
+    var evt = document.createEvent('CustomEvent');
+    params = params || { bubbles: false, cancelable: false, detail: undefined };
+    evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+    return evt;
+  }
+
+  CustomEvent.prototype = window.Event.prototype;
+  window.CustomEvent = CustomEvent;
+  return true;
+};
+
+exports.default = customEventsPolyfill;
 
 /***/ })
 /******/ ]);
