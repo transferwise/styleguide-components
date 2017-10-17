@@ -78,7 +78,7 @@ describe('Checkbox', function() {
     // I suspect default label behaviour not prevented
     xit('should toggle state when containing label is clicked', function() {
       var label = templateElement.find(LABEL_SELECTOR)[0];
-      label.dispatchEvent(new Event('click'));
+      label.dispatchEvent(new CustomEvent('click'));
       expect($scope.ngModel).toBe(true);
     });
 
@@ -98,7 +98,7 @@ describe('Checkbox', function() {
     });
 
     it('should style nearest parent form-group when focussed', function() {
-      button[0].dispatchEvent(new Event('focus'));
+      button[0].dispatchEvent(new CustomEvent('focus'));
       expect(directiveElement.closest('.form-group').hasClass('focus')).toBe(true);
     });
 

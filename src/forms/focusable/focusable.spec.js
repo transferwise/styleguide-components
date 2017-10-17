@@ -23,7 +23,7 @@ describe('Focusable', function() {
 
   describe('when focusing on an element with focus states', function() {
     beforeEach(function() {
-      var focusEvent = new Event('focus');
+      var focusEvent = new CustomEvent('focus');
       var element = focusableElement[0];
       element.dispatchEvent(focusEvent);
     });
@@ -33,7 +33,7 @@ describe('Focusable', function() {
 
     describe('and then blurring the element', function() {
       beforeEach(function() {
-        var blurEvent = new Event('blur');
+        var blurEvent = new CustomEvent('blur');
         var element = focusableElement[0];
         element.dispatchEvent(blurEvent);
       });

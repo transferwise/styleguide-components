@@ -57,7 +57,7 @@ class CheckboxController {
       this.label.classList.add('focus');
     }
 
-    this.element.dispatchEvent(new Event('focus'));
+    this.element.dispatchEvent(new CustomEvent('focus'));
   }
 
   buttonBlur() {
@@ -65,7 +65,7 @@ class CheckboxController {
       this.label.classList.remove('focus');
     }
 
-    this.element.dispatchEvent(new Event('blur'));
+    this.element.dispatchEvent(new CustomEvent('blur'));
     this.$ngModel.$setTouched();
 
     validateCheckbox(
@@ -93,7 +93,7 @@ class CheckboxController {
       if (!isDisabled) {
         const button = this.element.getElementsByTagName('button')[0];
         // Trigger our button, prevent default label behaviour
-        button.dispatchEvent(new Event('click'));
+        button.dispatchEvent(new CustomEvent('click'));
       }
       event.preventDefault();
       event.stopPropagation();

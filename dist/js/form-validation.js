@@ -122,7 +122,7 @@ var _dom = __webpack_require__(1);
 
 var _dom2 = _interopRequireDefault(_dom);
 
-var _requirements = __webpack_require__(15);
+var _requirements = __webpack_require__(10);
 
 var _requirements2 = _interopRequireDefault(_requirements);
 
@@ -145,11 +145,11 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _formValidation = __webpack_require__(14);
+var _formValidation = __webpack_require__(16);
 
 var _formValidation2 = _interopRequireDefault(_formValidation);
 
-var _controlValidation = __webpack_require__(12);
+var _controlValidation = __webpack_require__(14);
 
 var _controlValidation2 = _interopRequireDefault(_controlValidation);
 
@@ -789,216 +789,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ValidationController = function ValidationController($scope, $element, TwDomService) {
-  _classCallCheck(this, ValidationController);
-
-  var element = $element[0];
-  var formGroup = TwDomService.getClosestParentByClassName(element, 'form-group');
-  var $ngModel = $element.controller('ngModel');
-
-  element.addEventListener('invalid', function (event) {
-    // Prevent default validation tooltips
-    event.preventDefault();
-  });
-
-  $ngModel.$validators.validation = function () {
-    // Evaluate after ngModel updates, we are still in validation chain
-    $scope.$evalAsync(function () {
-      checkModelAndUpdate($ngModel, formGroup, element);
-    });
-    return true;
-  };
-
-  // The first time we blur, model is still pristine when validation occurs, so perform again.
-  var onBlur = function onBlur() {
-    // Custom elements must trigger blur manually for correct behaviour
-    $scope.$evalAsync(function () {
-      checkModelAndUpdate($ngModel, formGroup, element);
-    });
-  };
-
-  element.addEventListener('blur', onBlur);
-};
-
-function checkModelAndUpdate(ngModel, formGroup, element) {
-  if (ngModel.$valid) {
-    if (formGroup) {
-      formGroup.classList.remove('has-error');
-    }
-    element.removeAttribute('aria-invalid');
-    return;
-  }
-
-  if (ngModel.$touched && ngModel.$dirty) {
-    if (formGroup) {
-      formGroup.classList.add('has-error');
-    }
-    // Set aria invalid for screen readers
-    element.setAttribute('aria-invalid', 'true');
-  }
-}
-
-ValidationController.$inject = ['$scope', '$element', 'TwDomService'];
-
-exports.default = ValidationController;
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _controlValidationController = __webpack_require__(10);
-
-var _controlValidationController2 = _interopRequireDefault(_controlValidationController);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function TwValidation() {
-  return {
-    restrict: 'A',
-    require: {
-      $ngModel: 'ngModel'
-    },
-    controller: _controlValidationController2.default
-  };
-}
-
-exports.default = TwValidation;
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _controlValidationDirective = __webpack_require__(11);
-
-var _controlValidationDirective2 = _interopRequireDefault(_controlValidationDirective);
-
-var _dom = __webpack_require__(1);
-
-var _dom2 = _interopRequireDefault(_dom);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _angular2.default.module('tw.stylguide.validation.control', [_dom2.default]).directive('twValidation', _controlValidationDirective2.default).name;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function FormValidation(TwDomService) {
-  return {
-    restrict: 'E',
-    link: function link(scope, $element) {
-      var form = $element[0];
-
-      // Submitting the form won't trigger form controls own validation, so check them
-      form.addEventListener('submit', function () {
-        var formGroup = void 0;
-        var checkboxContainer = void 0;
-        var radioContainer = void 0;
-
-        var controls = form.querySelectorAll('[tw-validation].ng-invalid');
-
-        // Shouldn't be necessary, but PhantomJS was complaining
-        if (!controls.forEach) {
-          return true;
-        }
-
-        controls.forEach(function (control) {
-          formGroup = TwDomService.getClosestParentByClassName(control, 'form-group');
-          radioContainer = TwDomService.getClosestParentByClassName(control, 'radio');
-          checkboxContainer = TwDomService.getClosestParentByClassName(control, 'checkbox');
-
-          if (formGroup) {
-            formGroup.classList.add('has-error');
-          }
-          if (radioContainer) {
-            radioContainer.classList.add('has-error');
-          }
-          if (checkboxContainer) {
-            checkboxContainer.classList.add('has-error');
-          }
-        });
-
-        return true;
-      });
-    }
-  };
-}
-
-FormValidation.$inject = ['TwDomService'];
-
-exports.default = FormValidation;
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _angular = __webpack_require__(0);
-
-var _angular2 = _interopRequireDefault(_angular);
-
-var _formValidationDirective = __webpack_require__(13);
-
-var _formValidationDirective2 = _interopRequireDefault(_formValidationDirective);
-
-var _dom = __webpack_require__(1);
-
-var _dom2 = _interopRequireDefault(_dom);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _angular2.default.module('tw.styleguide.validation.form', [_dom2.default]).directive('form', _formValidationDirective2.default).name;
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _angular = __webpack_require__(0);
-
-var _angular2 = _interopRequireDefault(_angular);
-
-var _requirementsService = __webpack_require__(16);
+var _requirementsService = __webpack_require__(11);
 
 var _requirementsService2 = _interopRequireDefault(_requirementsService);
 
@@ -1007,7 +802,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.services.requirements', []).service('TwRequirementsService', _requirementsService2.default).name;
 
 /***/ }),
-/* 16 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1127,6 +922,211 @@ function RequirementsService() {
 }
 
 exports.default = RequirementsService;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ValidationController = function ValidationController($scope, $element, TwDomService) {
+  _classCallCheck(this, ValidationController);
+
+  var element = $element[0];
+  var formGroup = TwDomService.getClosestParentByClassName(element, 'form-group');
+  var $ngModel = $element.controller('ngModel');
+
+  element.addEventListener('invalid', function (event) {
+    // Prevent default validation tooltips
+    event.preventDefault();
+  });
+
+  $ngModel.$validators.validation = function () {
+    // Evaluate after ngModel updates, we are still in validation chain
+    $scope.$evalAsync(function () {
+      checkModelAndUpdate($ngModel, formGroup, element);
+    });
+    return true;
+  };
+
+  // The first time we blur, model is still pristine when validation occurs, so perform again.
+  var onBlur = function onBlur() {
+    // Custom elements must trigger blur manually for correct behaviour
+    $scope.$evalAsync(function () {
+      checkModelAndUpdate($ngModel, formGroup, element);
+    });
+  };
+
+  element.addEventListener('blur', onBlur);
+};
+
+function checkModelAndUpdate(ngModel, formGroup, element) {
+  if (ngModel.$valid) {
+    if (formGroup) {
+      formGroup.classList.remove('has-error');
+    }
+    element.removeAttribute('aria-invalid');
+    return;
+  }
+
+  if (ngModel.$touched && ngModel.$dirty) {
+    if (formGroup) {
+      formGroup.classList.add('has-error');
+    }
+    // Set aria invalid for screen readers
+    element.setAttribute('aria-invalid', 'true');
+  }
+}
+
+ValidationController.$inject = ['$scope', '$element', 'TwDomService'];
+
+exports.default = ValidationController;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _controlValidationController = __webpack_require__(12);
+
+var _controlValidationController2 = _interopRequireDefault(_controlValidationController);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function TwValidation() {
+  return {
+    restrict: 'A',
+    require: {
+      $ngModel: 'ngModel'
+    },
+    controller: _controlValidationController2.default
+  };
+}
+
+exports.default = TwValidation;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _controlValidationDirective = __webpack_require__(13);
+
+var _controlValidationDirective2 = _interopRequireDefault(_controlValidationDirective);
+
+var _dom = __webpack_require__(1);
+
+var _dom2 = _interopRequireDefault(_dom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.stylguide.validation.control', [_dom2.default]).directive('twValidation', _controlValidationDirective2.default).name;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function FormValidation(TwDomService) {
+  return {
+    restrict: 'E',
+    link: function link(scope, $element) {
+      var form = $element[0];
+
+      // Submitting the form won't trigger form controls own validation, so check them
+      form.addEventListener('submit', function () {
+        var formGroup = void 0;
+        var checkboxContainer = void 0;
+        var radioContainer = void 0;
+
+        var controls = form.querySelectorAll('[tw-validation].ng-invalid');
+
+        // Shouldn't be necessary, but PhantomJS was complaining
+        if (!controls.forEach) {
+          return true;
+        }
+
+        controls.forEach(function (control) {
+          formGroup = TwDomService.getClosestParentByClassName(control, 'form-group');
+          radioContainer = TwDomService.getClosestParentByClassName(control, 'radio');
+          checkboxContainer = TwDomService.getClosestParentByClassName(control, 'checkbox');
+
+          if (formGroup) {
+            formGroup.classList.add('has-error');
+          }
+          if (radioContainer) {
+            radioContainer.classList.add('has-error');
+          }
+          if (checkboxContainer) {
+            checkboxContainer.classList.add('has-error');
+          }
+        });
+
+        return true;
+      });
+    }
+  };
+}
+
+FormValidation.$inject = ['TwDomService'];
+
+exports.default = FormValidation;
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _formValidationDirective = __webpack_require__(15);
+
+var _formValidationDirective2 = _interopRequireDefault(_formValidationDirective);
+
+var _dom = __webpack_require__(1);
+
+var _dom2 = _interopRequireDefault(_dom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.styleguide.validation.form', [_dom2.default]).directive('form', _formValidationDirective2.default).name;
 
 /***/ })
 /******/ ]);
