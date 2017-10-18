@@ -76,12 +76,12 @@ describe('AmountCurrencySelect', function() {
     });
 
     it('should set ngModel.$touched when blured', function() {
-      input.dispatchEvent(new Event('blur'));
+      input.dispatchEvent(new CustomEvent('blur'));
       expect($ngModel.$touched).toBe(true);
     });
 
     it('should style nearest parent form-group when focussed', function() {
-      input.dispatchEvent(new Event('focus'));
+      input.dispatchEvent(new CustomEvent('focus'));
       expect($input.closest('.form-group').hasClass('focus')).toBe(true);
     });
 

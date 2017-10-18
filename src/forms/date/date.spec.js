@@ -703,8 +703,8 @@ describe('Date', function() {
         expect(ngModelController.$touched).toBe(false);
       });
       it('should update touched status on blur if year input already blurred', function () {
-        $yearInput[0].dispatchEvent(new Event('blur'));
-        $dayInput[0].dispatchEvent(new Event('blur'));
+        $yearInput[0].dispatchEvent(new CustomEvent('blur'));
+        $dayInput[0].dispatchEvent(new CustomEvent('blur'));
         expect(ngModelController.$touched).toBe(true);
       });
       it('should update pristine status on change', function () {
@@ -791,7 +791,7 @@ describe('Date', function() {
       });
       it('should update touched status on blur', function () {
         $yearInput[0].focus();
-        $yearInput[0].dispatchEvent(new Event ('blur'));
+        $yearInput[0].dispatchEvent(new CustomEvent('blur'));
         expect(ngModelController.$touched).toBe(true);
       });
       it('should update pristine status on change', function () {

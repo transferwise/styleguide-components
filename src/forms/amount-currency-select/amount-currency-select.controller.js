@@ -23,7 +23,7 @@ class AmountCurrencySelectController {
     const input = $element[0].getElementsByTagName('input')[0];
     input.addEventListener('blur', () => {
       $ngModel.$setTouched();
-      this.element.dispatchEvent(new Event('blur'));
+      this.element.dispatchEvent(new CustomEvent('blur'));
     });
 
     $ngModel.$validators.min = (modelValue, viewValue) => {

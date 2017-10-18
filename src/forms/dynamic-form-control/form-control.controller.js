@@ -74,12 +74,12 @@ class FormControlController {
   }
 
   focus() {
-    this.element.dispatchEvent(new Event('focus'));
+    this.element.dispatchEvent(new CustomEvent('focus'));
   }
 
   blur() {
     this.$ngModel.$setTouched();
-    this.element.dispatchEvent(new Event('blur'));
+    this.element.dispatchEvent(new CustomEvent('blur'));
   }
 }
 
