@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -87,7 +87,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _domService = __webpack_require__(9);
+var _domService = __webpack_require__(10);
 
 var _domService2 = _interopRequireDefault(_domService);
 
@@ -102,33 +102,23 @@ exports.default = _angular2.default.module('tw.styleguide.services.dom', []).ser
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+// Polyfill for IE 9, 10, 11 CustomEvents, see https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent
+(function initCustomEventPolyfill() {
+  if (typeof window.CustomEvent === 'function') {
+    return false;
+  }
 
-var _angular = __webpack_require__(0);
+  function CustomEvent(event, params) {
+    var evt = document.createEvent('CustomEvent');
+    params = params || { bubbles: false, cancelable: false, detail: undefined };
+    evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+    return evt;
+  }
 
-var _angular2 = _interopRequireDefault(_angular);
-
-var _date = __webpack_require__(8);
-
-var _date2 = _interopRequireDefault(_date);
-
-var _currency = __webpack_require__(6);
-
-var _currency2 = _interopRequireDefault(_currency);
-
-var _dom = __webpack_require__(1);
-
-var _dom2 = _interopRequireDefault(_dom);
-
-var _requirements = __webpack_require__(10);
-
-var _requirements2 = _interopRequireDefault(_requirements);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _angular2.default.module('tw.styleguide.services', [_date2.default, _currency2.default, _dom2.default, _requirements2.default]).name;
+  CustomEvent.prototype = window.Event.prototype;
+  window.CustomEvent = CustomEvent;
+  return true;
+})();
 
 /***/ }),
 /* 3 */
@@ -145,21 +135,25 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _formValidation = __webpack_require__(16);
+var _date = __webpack_require__(9);
 
-var _formValidation2 = _interopRequireDefault(_formValidation);
+var _date2 = _interopRequireDefault(_date);
 
-var _controlValidation = __webpack_require__(14);
+var _currency = __webpack_require__(7);
 
-var _controlValidation2 = _interopRequireDefault(_controlValidation);
+var _currency2 = _interopRequireDefault(_currency);
+
+var _dom = __webpack_require__(1);
+
+var _dom2 = _interopRequireDefault(_dom);
+
+var _requirements = __webpack_require__(11);
+
+var _requirements2 = _interopRequireDefault(_requirements);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import AsyncValidation from './async-validation/';
-
-exports.default = _angular2.default.module('tw.styleguide.validation', [_formValidation2.default, _controlValidation2.default
-// ,AsyncValidation
-]).name;
+exports.default = _angular2.default.module('tw.styleguide.services', [_date2.default, _currency2.default, _dom2.default, _requirements2.default]).name;
 
 /***/ }),
 /* 4 */
@@ -176,20 +170,55 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _validation = __webpack_require__(3);
+var _formValidation = __webpack_require__(17);
+
+var _formValidation2 = _interopRequireDefault(_formValidation);
+
+var _controlValidation = __webpack_require__(15);
+
+var _controlValidation2 = _interopRequireDefault(_controlValidation);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import AsyncValidation from './async-validation/';
+
+exports.default = _angular2.default.module('tw.styleguide.validation', [_formValidation2.default, _controlValidation2.default
+// ,AsyncValidation
+]).name;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+__webpack_require__(2);
+
+var _validation = __webpack_require__(4);
 
 var _validation2 = _interopRequireDefault(_validation);
 
-var _services = __webpack_require__(2);
+var _services = __webpack_require__(3);
 
 var _services2 = _interopRequireDefault(_services);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.form-validation', [_validation2.default, _services2.default]).name; /* This module is deprecated, but in use in several places */
+/* This module is deprecated, but in use in several places */
+
+exports.default = _angular2.default.module('tw.form-validation', [_validation2.default, _services2.default]).name;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -239,7 +268,7 @@ function CurrencyService() {
 exports.default = CurrencyService;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -253,7 +282,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _currencyService = __webpack_require__(5);
+var _currencyService = __webpack_require__(6);
 
 var _currencyService2 = _interopRequireDefault(_currencyService);
 
@@ -262,7 +291,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.services.currency', []).service('TwCurrencyService', _currencyService2.default).name;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -692,7 +721,7 @@ function DateService() {
 exports.default = DateService;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -706,7 +735,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _dateService = __webpack_require__(7);
+var _dateService = __webpack_require__(8);
 
 var _dateService2 = _interopRequireDefault(_dateService);
 
@@ -715,7 +744,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.services.date', []).service('TwDateService', _dateService2.default).name;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -779,7 +808,7 @@ function DomService() {
 exports.default = DomService;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -793,7 +822,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _requirementsService = __webpack_require__(11);
+var _requirementsService = __webpack_require__(12);
 
 var _requirementsService2 = _interopRequireDefault(_requirementsService);
 
@@ -802,7 +831,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.services.requirements', []).service('TwRequirementsService', _requirementsService2.default).name;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -924,7 +953,7 @@ function RequirementsService() {
 exports.default = RequirementsService;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -990,7 +1019,7 @@ ValidationController.$inject = ['$scope', '$element', 'TwDomService'];
 exports.default = ValidationController;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1000,7 +1029,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _controlValidationController = __webpack_require__(12);
+var _controlValidationController = __webpack_require__(13);
 
 var _controlValidationController2 = _interopRequireDefault(_controlValidationController);
 
@@ -1019,7 +1048,7 @@ function TwValidation() {
 exports.default = TwValidation;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1033,7 +1062,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _controlValidationDirective = __webpack_require__(13);
+var _controlValidationDirective = __webpack_require__(14);
 
 var _controlValidationDirective2 = _interopRequireDefault(_controlValidationDirective);
 
@@ -1046,7 +1075,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.stylguide.validation.control', [_dom2.default]).directive('twValidation', _controlValidationDirective2.default).name;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1102,7 +1131,7 @@ FormValidation.$inject = ['TwDomService'];
 exports.default = FormValidation;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1116,7 +1145,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _formValidationDirective = __webpack_require__(15);
+var _formValidationDirective = __webpack_require__(16);
 
 var _formValidationDirective2 = _interopRequireDefault(_formValidationDirective);
 

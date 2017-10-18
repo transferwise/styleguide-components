@@ -1,5 +1,5 @@
 // Polyfill for IE 9, 10, 11 CustomEvents, see https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent
-function initCustomEventsPolyfill() {
+(function initCustomEventPolyfill() {
   if (typeof window.CustomEvent === 'function') {
     return false;
   }
@@ -14,10 +14,4 @@ function initCustomEventsPolyfill() {
   CustomEvent.prototype = window.Event.prototype;
   window.CustomEvent = CustomEvent;
   return true;
-}
-
-const initPolyfills = () => {
-  initCustomEventsPolyfill();
-};
-
-export default initPolyfills;
+}());

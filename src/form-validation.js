@@ -2,6 +2,8 @@
 
 import angular from 'angular';
 
+import './polyfill';
+
 import Validation from './validation/';
 import Services from './services/';
 

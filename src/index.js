@@ -1,5 +1,7 @@
 import angular from 'angular';
 
+import './polyfill';
+
 import Forms from './forms/';
 import Validation from './validation/';
 import Formatting from './formatting/';
@@ -10,14 +12,11 @@ import Layout from './layout/';
 import Loading from './loading/';
 import Navigation from './navigation/';
 
-import initPolyfills from './polyfill';
-
 // DEPRECATED This is required to support old usages of the sub modules when
 // importing the full JS library.
 import OldFormComponentModule from './form-components.js';
 import OldFormValidationModule from './form-validation.js';
 
-initPolyfills();
 export default angular.module('tw.styleguide-components', [
   Forms,
   Validation,
