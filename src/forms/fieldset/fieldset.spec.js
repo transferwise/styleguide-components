@@ -88,7 +88,7 @@ describe('Fieldset', function() {
     });
 
     it('should have a hidden fieldset', function() {
-      var requiredErrorSortCode = directiveElement.find('.row.row-equal-height .col-xs-12.hidden');
+      var requiredErrorSortCode = directiveElement.find('.row.row-equal-height .col-xs-12.ng-hide');
       expect(requiredErrorSortCode.length).toBe(1);
     });
 
