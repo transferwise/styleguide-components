@@ -5,7 +5,8 @@
       ng-class="{
         'col-sm-4': !$ctrl.narrow  && field.width === 'sm',
         'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),
-        'col-sm-12': $ctrl.narrow || field.width === 'lg' || !field.maxlength || field.maxlength > 10
+        'col-sm-12': $ctrl.narrow || field.width === 'lg' || !field.maxlength || field.maxlength > 10,
+        'hidden': field.hidden
       }">
       <div class="form-group tw-form-group-{{field.key}}"
         ng-class="{

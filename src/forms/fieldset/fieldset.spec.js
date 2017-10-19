@@ -81,6 +81,31 @@ describe('Fieldset', function() {
     });
   });
 
+  describe('columns & hidden fields', function() {
+    beforeEach(function() {
+      $scope.fields = getRequirementWithHiddenAndMdSmFields()[0].fields;
+      $scope.validationMessages = {
+        required: 'default required'
+      };
+      directiveElement = getCompiledDirectiveElement();
+    });
+
+    it('should have a hidden fieldset', function() {
+      var requiredErrorSortCode = directiveElement.find('.row.row-equal-height .col-xs-12.hidden');
+      expect(requiredErrorSortCode.length).toBe(1);
+    });
+
+    it('should have one col-sm-4 fieldset', function() {
+      var requiredErrorSortCode = directiveElement.find('.row.row-equal-height .col-xs-12.col-sm-4');
+      expect(requiredErrorSortCode.length).toBe(1);
+    });
+
+    it('should have one col-sm-6 fieldset', function() {
+      var requiredErrorSortCode = directiveElement.find('.row.row-equal-height .col-xs-12.col-sm-6');
+      expect(requiredErrorSortCode.length).toBe(1);
+    });
+  });
+
   function getCompiledDirectiveElement() {
     var template = " \
       <tw-fieldset \
@@ -96,7 +121,6 @@ describe('Fieldset', function() {
     $scope.$digest();
     return compiledElement;
   }
-
 
   function getRequirement() {
     return [
@@ -145,4 +169,58 @@ describe('Fieldset', function() {
       }
     ];
   }
+
+  function getRequirementWithHiddenAndMdSmFields() {
+    return [
+      {
+        "type": "hidden_and_sm_md_fields",
+        "label": "Hidden & sm/md field test",
+        "fields": [
+          {
+            "name": "HIDDEN",
+            "hidden": true,
+            "group": [
+              {
+                "key": "iban",
+                "type": "hidden",
+                "refreshRequirementsOnChange": false,
+                "required": true,
+                "displayFormat": null,
+                "example": "hidden",
+                "minLength": 6,
+                "maxLength": 8,
+                "validationRegexp": null,
+                "valuesAllowed": null
+              }
+            ]
+          },
+          {
+            "name": "COL-SM-4",
+            "width": "sm",
+            "group": [
+              {
+                "key": "colsm4",
+                "type": "text",
+                "refreshRequirementsOnChange": true,
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "COL-SM-6",
+            "width": "md",
+            "group": [
+              {
+                "key": "colsm4",
+                "type": "text",
+                "refreshRequirementsOnChange": true,
+                "required": true
+              }
+            ]
+          }
+        ]
+      }
+    ];
+  }
+
 });

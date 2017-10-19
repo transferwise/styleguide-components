@@ -506,6 +506,26 @@ describe('FormControl', function() {
     });
   });
 
+  describe('type: hidden', function() {
+    var input, ngModelController;
+    beforeEach(function() {
+      $scope.model = null;
+      directiveElem = compileTemplate(
+        "<tw-form-control type='hidden' \
+          ng-model='model'> \
+        </tw-form-control>"
+      );
+      input = directiveElem.find('input');
+      ngModelController = directiveElem.controller('ngModel');
+    });
+
+    it('should render a hidden input', function() {
+      expect(input.length).toBe(1);
+      expect(input.attr("type")).toBe("hidden");
+    });
+  });
+
+
   function compileTemplate(template) {
     return compileElement(angular.element(template));
   }
