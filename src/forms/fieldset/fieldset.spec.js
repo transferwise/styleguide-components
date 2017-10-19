@@ -208,7 +208,7 @@ describe('Fieldset', function() {
             "width": "md",
             "group": [
               {
-                "key": "colsm4",
+                "key": "colsm6",
                 "type": "text",
                 "refreshRequirementsOnChange": true,
                 "required": true
