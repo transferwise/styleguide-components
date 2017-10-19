@@ -1,7 +1,7 @@
 <fieldset ng-form="twFieldset">
   <legend ng-if="$ctrl.legend">{{$ctrl.legend}}</legend>
   <div class="row row-equal-height">
-    <div ng-repeat="field in $ctrl.fields track by $index" class="col-xs-12"
+    <div ng-repeat="field in $ctrl.fields track by $index" class="col-xs-12" ng-hide="field.hidden"
       ng-class="{
         'col-sm-4': !$ctrl.narrow  && field.width === 'sm',
         'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),

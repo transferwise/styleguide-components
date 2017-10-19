@@ -122,4 +122,8 @@
       ng-focus="$ctrl.focus()"
       ng-blur="$ctrl.blur()"></tw-date>
   </div>
+  <input ng-switch-when="hidden"
+      name="{{$ctrl.name}}"
+      type="hidden"
+      ng-model="$ctrl.ngModel"/>
 </div>
