@@ -179,15 +179,7 @@ describe('Fieldset', function() {
             "group": [
               {
                 "key": "iban",
-                "type": "hidden",
-                "refreshRequirementsOnChange": false,
-                "required": true,
-                "displayFormat": null,
-                "example": "hidden",
-                "minLength": 6,
-                "maxLength": 8,
-                "validationRegexp": null,
-                "valuesAllowed": null
+                "type": "hidden"
               }
             ]
           },
@@ -197,9 +189,7 @@ describe('Fieldset', function() {
             "group": [
               {
                 "key": "colsm4",
-                "type": "text",
-                "refreshRequirementsOnChange": true,
-                "required": true
+                "type": "text"
               }
             ]
           },
@@ -209,9 +199,7 @@ describe('Fieldset', function() {
             "group": [
               {
                 "key": "colsm6",
-                "type": "text",
-                "refreshRequirementsOnChange": true,
-                "required": true
+                "type": "text"
               }
             ]
           }
