@@ -84,9 +84,6 @@ describe('Fieldset', function() {
   describe('columns & hidden fields', function() {
     beforeEach(function() {
       $scope.fields = getRequirementWithHiddenAndMdSmFields()[0].fields;
-      $scope.validationMessages = {
-        required: 'default required'
-      };
       directiveElement = getCompiledDirectiveElement();
     });
 
