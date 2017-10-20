@@ -2,6 +2,8 @@
 
 import angular from 'angular';
 
+import './polyfill';
+
 import Forms from './forms/';
 import Loading from './loading/';
 import Services from './services/';

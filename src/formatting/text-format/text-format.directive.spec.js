@@ -1148,7 +1148,7 @@ describe('TextFormat directive, ', function() {
   }
 
   function pasteString(input, pasteValue) {
-    var pasteEvent = new Event('paste');
+    var pasteEvent = new CustomEvent('paste');
     window.clipboardData = {
       getData: function() {
         return pasteValue;

@@ -266,14 +266,14 @@ function addBlurHandlers($element, $ngModel) {
     dayTouched = true;
     if (dayTouched && yearTouched) {
       $ngModel.$setTouched();
-      element.dispatchEvent(new Event('blur'));
+      element.dispatchEvent(new CustomEvent('blur'));
     }
   });
 
   yearInput.addEventListener('blur', () => {
     yearTouched = true;
     $ngModel.$setTouched();
-    element.dispatchEvent(new Event('blur'));
+    element.dispatchEvent(new CustomEvent('blur'));
   });
 }
 

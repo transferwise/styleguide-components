@@ -34,14 +34,14 @@ class RadioController {
     if (this.label) {
       this.label.classList.add('focus');
     }
-    this.element.dispatchEvent(new Event('focus'));
+    this.element.dispatchEvent(new CustomEvent('focus'));
   }
 
   buttonBlur() {
     if (this.label) {
       this.label.classList.remove('focus');
     }
-    this.element.dispatchEvent(new Event('blur'));
+    this.element.dispatchEvent(new CustomEvent('blur'));
   }
 
   hiddenInputChange() {

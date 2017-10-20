@@ -1,5 +1,7 @@
 import angular from 'angular';
 
+import './polyfill';
+
 import Forms from './forms/';
 import Validation from './validation/';
 import Formatting from './formatting/';

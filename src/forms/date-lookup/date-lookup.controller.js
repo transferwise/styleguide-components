@@ -31,7 +31,7 @@ class DateLookupController {
           if (this.formGroup) {
             this.formGroup.classList.remove('focus');
           }
-          this.element.dispatchEvent(new Event('blur'));
+          this.element.dispatchEvent(new CustomEvent('blur'));
         }
       }, 150); // need timeout because using dropdown.js,
     };
@@ -186,7 +186,7 @@ class DateLookupController {
     if (this.formGroup) {
       this.formGroup.classList.add('focus');
     }
-    this.element.dispatchEvent(new Event('focus'));
+    this.element.dispatchEvent(new CustomEvent('focus'));
   }
 
   addValidators($ngModel) {

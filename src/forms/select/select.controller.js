@@ -44,7 +44,7 @@ class SelectController {
   }
 
   buttonFocus() {
-    this.element.dispatchEvent(new Event('focus'));
+    this.element.dispatchEvent(new CustomEvent('focus'));
   }
 
   optionClick(option, $event) {
@@ -259,7 +259,7 @@ function addEventHandlers($ctrl, $element, $ngModel, options, $timeout) {
       // If button isn't focused and dropdown not open, blur
       if (button !== document.activeElement &&
         !buttonGroup.classList.contains('open')) {
-        element.dispatchEvent(new Event('blur'));
+        element.dispatchEvent(new CustomEvent('blur'));
       }
     }, 150); // need timeout because using dropdown.js,
   };

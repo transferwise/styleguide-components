@@ -37,6 +37,7 @@ describe('NumberFormat filter, ', function() {
     beforeEach(function() {
       $scope.locale = 'en-GB';
     });
+    
     describe('and given an integer number', function() {
       beforeEach(function() {
         $scope.value = 123456;
