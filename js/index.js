@@ -13,6 +13,13 @@ angular.module('tw.styleguide.docs', [])
     },
     templateUrl: 'partials/forms/index.html'
   })
+  .component('formattingComponents', {
+    bindings: {
+      model: '=',
+      locales: '<'
+    },
+    templateUrl: 'partials/formatting/index.html'
+  })
   .controller('PageController', function () {
     this.log = function (message) { console.log(message); };
 
@@ -26,14 +33,6 @@ angular.module('tw.styleguide.docs', [])
       { value: 'lg', label: 'Large' }
     ];
 
-    // Used by twValidation docs
-    this.basicSelect = [
-      { value: 0, label: 'Zero' },
-      { value: 1, label: 'One' },
-      { value: 2, label: 'Two' },
-      { value: 3, label: 'Three' }
-    ];
-
     this.locales = [
       { value: 'en-GB', label: 'English UK' },
       { value: 'en-US', label: 'English US' },
@@ -42,6 +41,8 @@ angular.module('tw.styleguide.docs', [])
       { value: 'es-US', label: 'Spanish US' },
       { value: 'pt-BR', label: 'Brazillian Portuguese' },
       { value: 'ja-JP', label: 'Japanese' },
+      { value: 'ar-EG', label: 'Eastern Arabic'},
+      { value: 'en-IN', label: 'English Indian'},
       { value: 'xx-XX', label: 'Unknown locale' }
     ];
   })
@@ -428,6 +429,15 @@ angular.module('tw.styleguide.docs', [])
     bindings: {
       model: '='
     },
+    controller: function() {
+      // Used by twValidation docs
+      this.basicSelect = [
+        { value: 0, label: 'Zero' },
+        { value: 1, label: 'One' },
+        { value: 2, label: 'Two' },
+        { value: 3, label: 'Three' }
+      ];
+    },
     templateUrl: 'partials/tw-validation.html'
   })
   .component('twFocusableDocs', { templateUrl: 'partials/tw-focusable.html' })
@@ -506,7 +516,18 @@ angular.module('tw.styleguide.docs', [])
     bindings: {
       model: '='
     },
-    templateUrl: 'partials/tw-text-format.html'
+    templateUrl: 'partials/formatting/text-format.html'
+  })
+  .component('twNumberFormatDocs', {
+    bindings: {
+      locales: '<'
+    },
+    controller: function() {
+      this.number = 123456.78;
+      this.locale = 'en-GB';
+      this.precision = null;
+    },
+    templateUrl: 'partials/formatting/number-format.html'
   })
   .component('twDateFormatDocs', {
     bindings: {
@@ -553,7 +574,7 @@ angular.module('tw.styleguide.docs', [])
       this.hours = 12;
       this.minutes = 0;
     },
-    templateUrl: 'partials/tw-date-format.html'
+    templateUrl: 'partials/formatting/date-format.html'
   })
   .component('twPopOverDocs', { templateUrl: 'partials/tw-pop-over.html' })
   .component('twToolTipDocs', { templateUrl: 'partials/tw-tool-tip.html' })
