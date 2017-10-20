@@ -57,7 +57,11 @@ describe('Definition list', function() {
       setupVars();
     });
     it('should display the formatted number value', function() {
-      expect(definition.textContent.trim()).toBe('1234');
+      if (isNumberLocaleSupported()) {
+        expect(definition.textContent.trim()).toBe('1,234');
+      } else {
+        expect(definition.textContent.trim()).toBe('1234');
+      }
     });
   });
 
@@ -203,7 +207,11 @@ describe('Definition list', function() {
         setupVars();
       });
       it('should display the formatted number value', function() {
-        expect(definition.textContent.trim()).toBe('1234');
+        if (isNumberLocaleSupported()) {
+          expect(definition.textContent.trim()).toBe('1,234');
+        } else {
+          expect(definition.textContent.trim()).toBe('1234');
+        }
       });
     });
 
@@ -341,5 +349,11 @@ describe('Definition list', function() {
 
     $scope.$digest();
     return compiledElement;
+  }
+
+  function isNumberLocaleSupported() {
+    var num = 1234;
+    var numString = num.toLocaleString('en-GB');
+    return numString === '1,234';
   }
 });

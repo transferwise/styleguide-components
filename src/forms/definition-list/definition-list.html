@@ -20,6 +20,9 @@
         <span ng-switch-when="date">
           {{ $ctrl.model[field.key] | twDateFormat: $ctrl.locale }}
         </span>
+        <span ng-switch-when="number">
+          {{ $ctrl.model[field.key] | twNumberFormat: $ctrl.locale }}
+        </span>
         <span ng-switch-when="password">
           {{ $ctrl.mask($ctrl.model[field.key]) }}
         </span>
@@ -45,6 +48,9 @@
             </span>
             <span ng-switch-when="date">
               {{ $ctrl.model[fieldSection.key] | twDateFormat: $ctrl.locale }}
+            </span>
+            <span ng-switch-when="number">
+              {{ $ctrl.model[fieldSection.key] | twNumberFormat: $ctrl.locale }}
             </span>
             <span ng-switch-when="password">
               {{ $ctrl.mask($ctrl.model[fieldSection.key]) }}
