@@ -573,8 +573,6 @@ angular.module('tw.styleguide.docs', [])
       };
       this.hours = 12;
       this.minutes = 0;
-
-      this.model = new Date('2000-01-01');
     },
     templateUrl: 'partials/formatting/date-format.html'
   })

@@ -76,6 +76,93 @@ describe('TwDateService test', function() {
     });
   });
 
+  describe('when parsing iso dates', function() {
+    describe('with just a date component', function() {
+      it('should correctly extract the date parts', function() {
+        var dateParts = service.getDatePartsFromIso('2001-05-01');
+        expect(dateParts).toEqual([2001, 4, 1, 0, 0, 0, 0, 0]);
+      });
+    });
+    describe('with date and time component', function() {
+      it('should correctly extract the date parts', function() {
+        var dateParts = service.getDatePartsFromIso('2001-05-01T23:45:43Z');
+        expect(dateParts).toEqual([2001, 4, 1, 23 , 45, 43, 0, 0]);
+      });
+    });
+    describe('with date, time and timezone information', function() {
+      describe('where timezone is ahead', function() {
+        it('should correctly extract the date parts', function() {
+          var dateParts = service.getDatePartsFromIso('2001-05-01T23:45:43+10:30');
+          expect(dateParts).toEqual([2001, 4, 1, 23, 45, 43, 10, 30]);
+        });
+      });
+      describe('where timezone is behind', function() {
+        it('should correctly extract the date parts', function() {
+          var dateParts = service.getDatePartsFromIso('2001-05-01T23:45:43-10:30');
+          expect(dateParts).toEqual([2001, 4, 1, 23, 45, 43, -10, -30]);
+        });
+      });
+    });
+  });
+
+  describe('when converting iso dates to UTC', function() {
+    describe('with just a date component', function() {
+      it('should provide the right date', function() {
+        var date = service.getUTCDateFromIso('2001-12-31');
+        expect(date.getUTCFullYear()).toEqual(2001);
+        expect(date.getUTCMonth()).toEqual(11);
+        expect(date.getUTCDate()).toEqual(31);
+        expect(date.getUTCHours()).toEqual(0);
+        expect(date.getUTCMinutes()).toEqual(0);
+        expect(date.getUTCSeconds()).toEqual(0);
+      });
+    });
+    describe('with date and time component', function() {
+      it('should correctly extract the date parts', function() {
+        var date = service.getUTCDateFromIso('2001-12-31T23:45:43Z');
+        expect(date.getUTCFullYear()).toEqual(2001);
+        expect(date.getUTCMonth()).toEqual(11);
+        expect(date.getUTCDate()).toEqual(31);
+        expect(date.getUTCHours()).toEqual(23);
+        expect(date.getUTCMinutes()).toEqual(45);
+        expect(date.getUTCSeconds()).toEqual(43);
+      });
+    });
+    describe('with date, time and timezone information', function() {
+      it('should correctly extract the date parts', function() {
+        var date = service.getUTCDateFromIso('2001-12-31T23:45:43+02:30');
+        expect(date.getUTCFullYear()).toEqual(2002);
+        expect(date.getUTCMonth()).toEqual(0);
+        expect(date.getUTCDate()).toEqual(1);
+        expect(date.getUTCHours()).toEqual(2);
+        expect(date.getUTCMinutes()).toEqual(15);
+        expect(date.getUTCSeconds()).toEqual(43);
+      });
+    });
+  });
+
+  describe('when validating an iso date', function() {
+    it('should correctly validate an ISO date ', function() {
+      expect(service.isIsoStringValid('2001-12-31')).toBe(true);
+    });
+    it('should correctly validate an ISO date and time', function() {
+      expect(service.isIsoStringValid('2001-12-31T12:34:56Z')).toBe(true);
+    });
+    it('should correctly validate an ISO date, time and timezone', function() {
+      expect(service.isIsoStringValid('2001-12-31T12:34:56+10:00')).toBe(true);
+      expect(service.isIsoStringValid('2001-12-31T12:34:56-02')).toBe(true);
+    });
+
+    it('should return false for invalid strings', function() {
+      expect(service.isIsoStringValid('2001-12-3')).toBe(false);
+      expect(service.isIsoStringValid('2001-12-31T')).toBe(false);
+      expect(service.isIsoStringValid('2001-12-31T12')).toBe(false);
+      expect(service.isIsoStringValid('2001-12-31T12:34:56')).toBe(false);
+      expect(service.isIsoStringValid('2001-12-31T12:34:56+')).toBe(false);
+      expect(service.isIsoStringValid('2001-12-31T12:34:56+10:')).toBe(false);
+    });
+  });
+
   function isPhantomJsBrowser() {
     //PhantomJS can't do translation to Japanese
     return $window.navigator.userAgent.indexOf("PhantomJS") !== -1

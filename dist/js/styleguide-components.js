@@ -943,24 +943,28 @@ function DateFormatFilter(TwDateService) {
     if (!date) {
       return date;
     }
+    var utcDate = date;
 
-    if (typeof date === 'string' && new Date(date)) {
-      var kebabCase = new RegExp('^[0-9]{4}-[0-9]{2}-[0-9]{2}$'); // yyyy-mm-dd
-      var yyyymmdd = new RegExp('^[0-9]{8}$');
-      var noTimeInfo = kebabCase.test(date) || yyyymmdd.test(date);
+    if (typeof date === 'string') {
+      // utcDate = TwDateService.getUTCDateFromIso(date);
+      utcDate = new Date(date);
 
-      try {
-        date = new Date(date);
-      } catch (error) {
-        return date;
-      }
-      if (noTimeInfo) {
-        // Treat as UTC
-        return TwDateService.getUTCDateString(date, locale, format);
+      var dateOnly = new RegExp('^[0-9]{4}-[0-9]{2}-[0-9]{2}$'); // yyyy-mm-dd
+      if (dateOnly.test(date)) {
+        if (!utcDate) {
+          return date;
+        }
+
+        return TwDateService.getUTCDateString(utcDate, locale, format);
       }
     }
 
-    return TwDateService.getLocaleDateString(date, locale, format);
+    if (!utcDate) {
+      return date;
+    }
+    // Use locale timezone
+    var ret = TwDateService.getLocaleDateString(utcDate, locale, format);
+    return ret;
   };
 }
 
@@ -6036,6 +6040,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 function DateService() {
   var _this = this;
 
@@ -6115,6 +6121,52 @@ function DateService() {
     date.setSeconds(seconds || 0);
     date.setMilliseconds(0);
     return date;
+  };
+
+  this.getDatePartsFromIso = function (isoDate) {
+    var year = parseInt(isoDate.substr(0, 4), 10);
+    var month = parseInt(isoDate.substr(5, 2), 10) - 1;
+    var day = parseInt(isoDate.substr(8, 2), 10);
+    var hours = parseInt(isoDate.substr(11, 2), 10) || 0;
+    var minutes = parseInt(isoDate.substr(14, 2), 10) || 0;
+    var seconds = parseInt(isoDate.substr(17, 2), 10) || 0;
+    var hoursOffset = parseInt(isoDate.substr(20, 2), 10) || 0;
+    var minutesOffset = parseInt(isoDate.substr(23, 2), 10) || 0;
+
+    var isOffsetNegative = isoDate.substr(19, 1) === '-';
+    if (isOffsetNegative) {
+      hoursOffset *= -1;
+      minutesOffset *= -1;
+    }
+
+    return [year, month, day, hours, minutes, seconds, hoursOffset, minutesOffset];
+  };
+
+  this.isIsoStringValid = function (isoDate) {
+    var dateSection = '[0-9]{4}-[0-9]{2}-[0-9]{2}';
+    var timeSection = 'T[0-9]{2}:[0-9]{2}:[0-9]{2}';
+    var zoneSection = '(Z|[+,-][0-9]{2}(:[0-9]{2})?)';
+    var regex = new RegExp('^' + dateSection + '(' + timeSection + zoneSection + ')?$');
+    return regex.test(isoDate);
+  };
+
+  this.getUTCDateFromIso = function (isoDate) {
+    if (!_this.isIsoStringValid(isoDate)) {
+      return null;
+    }
+
+    var _getDatePartsFromIso = _this.getDatePartsFromIso(isoDate),
+        _getDatePartsFromIso2 = _slicedToArray(_getDatePartsFromIso, 8),
+        year = _getDatePartsFromIso2[0],
+        month = _getDatePartsFromIso2[1],
+        day = _getDatePartsFromIso2[2],
+        hours = _getDatePartsFromIso2[3],
+        minutes = _getDatePartsFromIso2[4],
+        seconds = _getDatePartsFromIso2[5],
+        hoursOffset = _getDatePartsFromIso2[6],
+        minutesOffset = _getDatePartsFromIso2[7];
+
+    return _this.getUTCDateFromParts(year, month, day, hours + hoursOffset, minutes + minutesOffset, seconds);
   };
 
   // Sunday is first day of the week in JS
@@ -6265,7 +6317,7 @@ function DateService() {
 
   this.getLocaleDateString = function (date, locale, format) {
     // Check that the date exists
-    if (!date) {
+    if (!date.getFullYear) {
       return date;
     }
 

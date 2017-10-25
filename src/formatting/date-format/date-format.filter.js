@@ -4,24 +4,24 @@ function DateFormatFilter(TwDateService) {
     if (!date) {
       return date;
     }
+    let utcDate = date;
 
-    if (typeof date === 'string' && new Date(date)) {
-      const kebabCase = new RegExp('^[0-9]{4}-[0-9]{2}-[0-9]{2}$'); // yyyy-mm-dd
-      const yyyymmdd = new RegExp('^[0-9]{8}$');
-      const noTimeInfo = kebabCase.test(date) || yyyymmdd.test(date);
+    if (typeof date === 'string') {
+      // utcDate = TwDateService.getUTCDateFromIso(date);
+      utcDate = new Date(date);
 
-      try {
-        date = new Date(date);
-      } catch (error) {
-        return date;
-      }
-      if (noTimeInfo) {
-        // Treat as UTC
-        return TwDateService.getUTCDateString(date, locale, format);
+      const dateOnly = new RegExp('^[0-9]{4}-[0-9]{2}-[0-9]{2}$'); // yyyy-mm-dd
+      if (dateOnly.test(date)) {
+        if (!utcDate) { return date; }
+
+        return TwDateService.getUTCDateString(utcDate, locale, format);
       }
     }
 
-    return TwDateService.getLocaleDateString(date, locale, format);
+    if (!utcDate) { return date; }
+    // Use locale timezone
+    const ret = TwDateService.getLocaleDateString(utcDate, locale, format);
+    return ret;
   };
 }
 

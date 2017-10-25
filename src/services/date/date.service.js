@@ -74,6 +74,46 @@ function DateService() {
     return date;
   };
 
+  this.getDatePartsFromIso = (isoDate) => {
+    const year = parseInt(isoDate.substr(0, 4), 10);
+    const month = parseInt(isoDate.substr(5, 2), 10) - 1;
+    const day = parseInt(isoDate.substr(8, 2), 10);
+    const hours = parseInt(isoDate.substr(11, 2), 10) || 0;
+    const minutes = parseInt(isoDate.substr(14, 2), 10) || 0;
+    const seconds = parseInt(isoDate.substr(17, 2), 10) || 0;
+    let hoursOffset = parseInt(isoDate.substr(20, 2), 10) || 0;
+    let minutesOffset = parseInt(isoDate.substr(23, 2), 10) || 0;
+
+    const isOffsetNegative = isoDate.substr(19, 1) === '-';
+    if (isOffsetNegative) {
+      hoursOffset *= -1;
+      minutesOffset *= -1;
+    }
+
+    return [year, month, day, hours, minutes, seconds, hoursOffset, minutesOffset];
+  };
+
+  this.isIsoStringValid = (isoDate) => {
+    const dateSection = '[0-9]{4}-[0-9]{2}-[0-9]{2}';
+    const timeSection = 'T[0-9]{2}:[0-9]{2}:[0-9]{2}';
+    const zoneSection = '(Z|[+,-][0-9]{2}(:[0-9]{2})?)';
+    const regex = new RegExp(`^${dateSection}(${timeSection}${zoneSection})?$`);
+    return regex.test(isoDate);
+  };
+
+  this.getUTCDateFromIso = (isoDate) => {
+    if (!this.isIsoStringValid(isoDate)) {
+      return null;
+    }
+    const [year, month, day, hours, minutes, seconds, hoursOffset, minutesOffset] =
+      this.getDatePartsFromIso(isoDate);
+    return this.getUTCDateFromParts(
+      year, month, day,
+      hours + hoursOffset, minutes + minutesOffset, seconds
+    );
+  };
+
+
   // Sunday is first day of the week in JS
   this.getDayNamesForLocale = (locale, format) => {
     const days = [];
@@ -229,7 +269,7 @@ function DateService() {
 
   this.getLocaleDateString = (date, locale, format) => {
     // Check that the date exists
-    if (!date) {
+    if (!date.getFullYear) {
       return date;
     }
 
