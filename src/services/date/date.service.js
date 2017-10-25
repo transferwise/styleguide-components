@@ -125,16 +125,21 @@ function DateService() {
   };
 
   this.getDayNameForLocale = (dayOfWeek, locale, format) => {
+    let defaultDayName;
     const language = getLanguageFromLocale(locale);
-    if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language] &&
-      (format !== 'short' || language === 'ja')) {
-      return DEFAULT_DAY_NAMES_BY_LANGUAGE[language][dayOfWeek];
+    if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language]) {
+      defaultDayName = DEFAULT_DAY_NAMES_BY_LANGUAGE[language][dayOfWeek];
     }
 
     const validLocale = getValidLocale(locale);
     const date = this.getUTCDateFromParts(2006, 0, dayOfWeek + 1); // 2006 started with a Sunday
 
-    return getLocalisedDateName(date, validLocale, { weekday: format });
+    const autoDayName = getLocalisedDateName(date, validLocale, { weekday: format });
+
+    if (defaultDayName && autoDayName.length > 5) {
+      return format === 'short' ? defaultDayName.substr(0, 3) : defaultDayName;
+    }
+    return autoDayName;
   };
 
   this.getMonthNamesForLocale = (locale, format) => {
@@ -449,7 +454,7 @@ function DateService() {
 
   function getLanguageFromLocale(locale) {
     if (!locale) {
-      return null;
+      return 'en';
     }
     return locale.substring(0, 2);
   }
