@@ -6,14 +6,22 @@ function DateFormatFilter(TwDateService) {
     }
 
     if (typeof date === 'string' && new Date(date)) {
-      date = new Date(date);
+      const kebabCase = new RegExp('^[0-9]{4}-[0-9]{2}-[0-9]{2}$'); // yyyy-mm-dd
+      const yyyymmdd = new RegExp('^[0-9]{8}$');
+      const noTimeInfo = kebabCase.test(date) || yyyymmdd.test(date);
+
+      try {
+        date = new Date(date);
+      } catch (error) {
+        return date;
+      }
+      if (noTimeInfo) {
+        // Treat as UTC
+        return TwDateService.getUTCDateString(date, locale, format);
+      }
     }
 
-    if (format === 'long') {
-      return TwDateService.getLocaleFullDate(date, locale);
-    }
-
-    return TwDateService.getLocaleDateString(date, locale, format === 'short');
+    return TwDateService.getLocaleDateString(date, locale, format);
   };
 }
 

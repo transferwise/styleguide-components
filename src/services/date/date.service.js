@@ -151,10 +151,15 @@ function DateService() {
     date.getUTCDate() + days
   );
 
-  this.getLocaleTimeString = (date, locale) => {
+  this.getLocaleTimeString = (date, locale) => this.getTimeString(
+    date.getHours(),
+    date.getMinutes(),
+    date.getSeconds(),
+    locale
+  );
+
+  this.getTimeString = (hours, minutes, seconds, locale) => {
     const lang = getLanguageFromLocale(locale);
-    let hours = date.getHours();
-    let minutes = date.getMinutes();
 
     if (hours < 10) {
       hours = `0${hours}`;
@@ -208,15 +213,25 @@ function DateService() {
     return [dateName, monthName, yearName].join(delimiter);
   };
 
-  this.getLocaleFullDate = (date, locale) => {
-    const dateString = this.getYearMonthDatePresentation(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      locale
-    );
+  this.getLocaleFullDate = (date, locale) => this.getFullDate(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    date.getDay(),
+    locale
+  );
 
-    const weekdayName = this.getDayNameForLocale(date.getDay(), locale, 'long').trim();
+  this.getUTCFullDate = (date, locale) => this.getFullDate(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate(),
+    date.getUTCDay(),
+    locale
+  );
+
+  this.getFullDate = (year, month, day, dayOfWeek, locale) => {
+    const dateString = this.getYearMonthDatePresentation(year, month, day, locale);
+    const weekdayName = this.getDayNameForLocale(dayOfWeek, locale, 'long').trim();
     const lang = getLanguageFromLocale(locale);
 
     if (lang === 'ja') {
@@ -227,54 +242,140 @@ function DateService() {
 
   this.getLocaleNow = () => new Date();
 
-  this.getLocaleDateString = (date, locale, short) => {
+  this.getUTCNow = () => {
+    const now = new Date();
+    return this.getUTCDateFromParts(
+      this.getUTCFullYear(now),
+      this.getUTCMonth(now),
+      this.getUTCDate(now),
+      now.getUTCHours(),
+      now.getUTCMinutes(),
+      now.getUTCSeconds()
+    );
+  };
+
+  this.getLocaleDateString = (date, locale, format) => {
     // Check that the date exists
     if (!date) {
       return date;
     }
 
     // Initialize variables
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const dayOfMonth = date.getDate();
-    const dayOfWeek = date.getDay();
-
     const now = this.getLocaleNow();
+
+    return this.getDateString(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds(),
+      date.getDay(),
+      locale,
+      date - now,
+      now.getFullYear(),
+      format
+    );
+  };
+
+  this.getUTCDateString = (date, locale, format) => {
+    // Check that the date exists
+    if (!date) {
+      return date;
+    }
+
+    const now = this.getUTCNow();
+
+    return this.getDateString(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      date.getUTCHours(),
+      date.getUTCMinutes(),
+      date.getUTCSeconds(),
+      date.getUTCDay(),
+      locale,
+      date - now,
+      now.getUTCFullYear(),
+      format
+    );
+  };
+
+  this.getDateString = (
+    year,
+    month,
+    day,
+    hours,
+    minutes,
+    seconds,
+    dayOfWeek,
+    locale,
+    offset,
+    currentYear,
+    format
+  ) => {
+    // TODO this shouldn't be necessary
+    if (format === 'long') {
+      return this.getFullDate(
+        year,
+        month,
+        day,
+        dayOfWeek,
+        locale
+      );
+    }
+
+    // TODO this is a bit of a hack
+    const short = format === 'short';
+
     const fourtyEightHours = 48 * 60 * 60 * 1000;
     const eightDays = 8 * 24 * 60 * 60 * 1000;
 
-    const hasTime = Math.abs(now - date) < fourtyEightHours;
+    const hasTime = Math.abs(offset) < fourtyEightHours;
     const hasDate = !hasTime;
-    const hasWeekday = Math.abs(now - date) < eightDays;
+    const hasWeekday = Math.abs(offset) < eightDays;
     const hasMonth = !hasWeekday;
-    const hasYear = !hasWeekday && now.getFullYear() !== year;
+    const hasYear = !hasWeekday && currentYear !== year;
 
     const yearName = hasYear ? getYearName(year, locale) : '';
-    const monthName = hasMonth ? this.getMonthNameForLocale(month, locale, short ? 'short' : 'long') : '';
-    const dateName = hasDate ? getDateName(dayOfMonth, locale) : '';
-    const weekdayName = hasWeekday ? this.getDayNameForLocale(dayOfWeek, locale, short ? 'short' : 'long') : '';
-    const timeName = hasTime ? this.getLocaleTimeString(date, locale) : '';
+    const monthName = hasMonth ? this.getMonthNameForLocale(
+      month,
+      locale,
+      short ? 'short' : 'long'
+    ) : '';
+    const dateName = hasDate ? getDateName(day, locale) : '';
+    const weekdayName = hasWeekday ? this.getDayNameForLocale(
+      dayOfWeek,
+      locale,
+      short ? 'short' : 'long'
+    ) : '';
+    const timeName = hasTime ? this.getTimeString(hours, minutes, seconds, locale) : '';
 
+    return this.combineDateParts(yearName, monthName, dateName, timeName, weekdayName, locale);
+  };
+
+  this.combineDateParts = (yearName, monthName, dateName, timeName, dayName, locale) => {
     const lang = getLanguageFromLocale(locale);
     const delimiter = getDelimiter(lang);
 
     let dateString;
+
     if (this.isYearBeforeMonth(locale)) {
       dateString = [yearName, monthName, dateName].join(delimiter).trim();
     } else if (this.isMonthBeforeDay(locale)) {
       dateString = [monthName, dateName].join(delimiter).trim();
-      if (hasYear) {
+      if (yearName.trim() !== '') {
         dateString += `, ${yearName}`;
       }
     } else {
       dateString = [dateName, monthName, yearName].join(delimiter).trim();
     }
 
-    if (hasWeekday) {
+    if (dayName.trim() !== '') {
       if (lang === 'ja') {
-        return `${dateString} ${timeName} (${weekdayName})`.trim();
+        return `${dateString} ${timeName} (${dayName})`.trim();
       }
-      dateString = `${weekdayName} ${dateString}`.trim();
+      dateString = `${dayName} ${dateString}`.trim();
     }
     dateString = `${dateString} ${timeName}`;
 

@@ -945,14 +945,22 @@ function DateFormatFilter(TwDateService) {
     }
 
     if (typeof date === 'string' && new Date(date)) {
-      date = new Date(date);
+      var kebabCase = new RegExp('^[0-9]{4}-[0-9]{2}-[0-9]{2}$'); // yyyy-mm-dd
+      var yyyymmdd = new RegExp('^[0-9]{8}$');
+      var noTimeInfo = kebabCase.test(date) || yyyymmdd.test(date);
+
+      try {
+        date = new Date(date);
+      } catch (error) {
+        return date;
+      }
+      if (noTimeInfo) {
+        // Treat as UTC
+        return TwDateService.getUTCDateString(date, locale, format);
+      }
     }
 
-    if (format === 'long') {
-      return TwDateService.getLocaleFullDate(date, locale);
-    }
-
-    return TwDateService.getLocaleDateString(date, locale, format === 'short');
+    return TwDateService.getLocaleDateString(date, locale, format);
   };
 }
 
@@ -6188,9 +6196,11 @@ function DateService() {
   };
 
   this.getLocaleTimeString = function (date, locale) {
+    return _this.getTimeString(date.getHours(), date.getMinutes(), date.getSeconds(), locale);
+  };
+
+  this.getTimeString = function (hours, minutes, seconds, locale) {
     var lang = getLanguageFromLocale(locale);
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
 
     if (hours < 10) {
       hours = '0' + hours;
@@ -6245,9 +6255,16 @@ function DateService() {
   };
 
   this.getLocaleFullDate = function (date, locale) {
-    var dateString = _this.getYearMonthDatePresentation(date.getFullYear(), date.getMonth(), date.getDate(), locale);
+    return _this.getFullDate(date.getFullYear(), date.getMonth(), date.getDate(), date.getDay(), locale);
+  };
 
-    var weekdayName = _this.getDayNameForLocale(date.getDay(), locale, 'long').trim();
+  this.getUTCFullDate = function (date, locale) {
+    return _this.getFullDate(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCDay(), locale);
+  };
+
+  this.getFullDate = function (year, month, day, dayOfWeek, locale) {
+    var dateString = _this.getYearMonthDatePresentation(year, month, day, locale);
+    var weekdayName = _this.getDayNameForLocale(dayOfWeek, locale, 'long').trim();
     var lang = getLanguageFromLocale(locale);
 
     if (lang === 'ja') {
@@ -6260,54 +6277,83 @@ function DateService() {
     return new Date();
   };
 
-  this.getLocaleDateString = function (date, locale, short) {
+  this.getUTCNow = function () {
+    var now = new Date();
+    return _this.getUTCDateFromParts(_this.getUTCFullYear(now), _this.getUTCMonth(now), _this.getUTCDate(now), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+  };
+
+  this.getLocaleDateString = function (date, locale, format) {
     // Check that the date exists
     if (!date) {
       return date;
     }
 
     // Initialize variables
-    var year = date.getFullYear();
-    var month = date.getMonth();
-    var dayOfMonth = date.getDate();
-    var dayOfWeek = date.getDay();
-
     var now = _this.getLocaleNow();
+
+    return _this.getDateString(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getDay(), locale, date - now, now.getFullYear(), format);
+  };
+
+  this.getUTCDateString = function (date, locale, format) {
+    // Check that the date exists
+    if (!date) {
+      return date;
+    }
+
+    var now = _this.getUTCNow();
+
+    return _this.getDateString(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCDay(), locale, date - now, now.getUTCFullYear(), format);
+  };
+
+  this.getDateString = function (year, month, day, hours, minutes, seconds, dayOfWeek, locale, offset, currentYear, format) {
+    // TODO this shouldn't be necessary
+    if (format === 'long') {
+      return _this.getFullDate(year, month, day, dayOfWeek, locale);
+    }
+
+    // TODO this is a bit of a hack
+    var short = format === 'short';
+
     var fourtyEightHours = 48 * 60 * 60 * 1000;
     var eightDays = 8 * 24 * 60 * 60 * 1000;
 
-    var hasTime = Math.abs(now - date) < fourtyEightHours;
+    var hasTime = Math.abs(offset) < fourtyEightHours;
     var hasDate = !hasTime;
-    var hasWeekday = Math.abs(now - date) < eightDays;
+    var hasWeekday = Math.abs(offset) < eightDays;
     var hasMonth = !hasWeekday;
-    var hasYear = !hasWeekday && now.getFullYear() !== year;
+    var hasYear = !hasWeekday && currentYear !== year;
 
     var yearName = hasYear ? getYearName(year, locale) : '';
     var monthName = hasMonth ? _this.getMonthNameForLocale(month, locale, short ? 'short' : 'long') : '';
-    var dateName = hasDate ? getDateName(dayOfMonth, locale) : '';
+    var dateName = hasDate ? getDateName(day, locale) : '';
     var weekdayName = hasWeekday ? _this.getDayNameForLocale(dayOfWeek, locale, short ? 'short' : 'long') : '';
-    var timeName = hasTime ? _this.getLocaleTimeString(date, locale) : '';
+    var timeName = hasTime ? _this.getTimeString(hours, minutes, seconds, locale) : '';
 
+    return _this.combineDateParts(yearName, monthName, dateName, timeName, weekdayName, locale);
+  };
+
+  this.combineDateParts = function (yearName, monthName, dateName, timeName, dayName, locale) {
     var lang = getLanguageFromLocale(locale);
     var delimiter = getDelimiter(lang);
 
     var dateString = void 0;
+
     if (_this.isYearBeforeMonth(locale)) {
       dateString = [yearName, monthName, dateName].join(delimiter).trim();
     } else if (_this.isMonthBeforeDay(locale)) {
       dateString = [monthName, dateName].join(delimiter).trim();
-      if (hasYear) {
+      if (yearName.trim() !== '') {
         dateString += ', ' + yearName;
       }
     } else {
       dateString = [dateName, monthName, yearName].join(delimiter).trim();
     }
 
-    if (hasWeekday) {
+    if (dayName.trim() !== '') {
       if (lang === 'ja') {
-        return (dateString + ' ' + timeName + ' (' + weekdayName + ')').trim();
+        return (dateString + ' ' + timeName + ' (' + dayName + ')').trim();
       }
-      dateString = (weekdayName + ' ' + dateString).trim();
+      dateString = (dayName + ' ' + dateString).trim();
     }
     dateString = dateString + ' ' + timeName;
 
