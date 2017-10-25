@@ -213,33 +213,6 @@ function DateService() {
     return [dateName, monthName, yearName].join(delimiter);
   };
 
-  this.getLocaleFullDate = (date, locale) => this.getFullDate(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate(),
-    date.getDay(),
-    locale
-  );
-
-  this.getUTCFullDate = (date, locale) => this.getFullDate(
-    date.getUTCFullYear(),
-    date.getUTCMonth(),
-    date.getUTCDate(),
-    date.getUTCDay(),
-    locale
-  );
-
-  this.getFullDate = (year, month, day, dayOfWeek, locale) => {
-    const dateString = this.getYearMonthDatePresentation(year, month, day, locale);
-    const weekdayName = this.getDayNameForLocale(dayOfWeek, locale, 'long').trim();
-    const lang = getLanguageFromLocale(locale);
-
-    if (lang === 'ja') {
-      return `${dateString} (${weekdayName})`;
-    }
-    return `${weekdayName}, ${dateString}`;
-  };
-
   this.getLocaleNow = () => new Date();
 
   this.getUTCNow = () => {
@@ -314,40 +287,26 @@ function DateService() {
     currentYear,
     format
   ) => {
-    // TODO this shouldn't be necessary
-    if (format === 'long') {
-      return this.getFullDate(
-        year,
-        month,
-        day,
-        dayOfWeek,
-        locale
-      );
-    }
-
-    // TODO this is a bit of a hack
-    const short = format === 'short';
-
     const fourtyEightHours = 48 * 60 * 60 * 1000;
     const eightDays = 8 * 24 * 60 * 60 * 1000;
 
-    const hasTime = Math.abs(offset) < fourtyEightHours;
+    const hasTime = Math.abs(offset) < fourtyEightHours && format !== 'long';
     const hasDate = !hasTime;
-    const hasWeekday = Math.abs(offset) < eightDays;
-    const hasMonth = !hasWeekday;
-    const hasYear = !hasWeekday && currentYear !== year;
+    const hasWeekday = Math.abs(offset) < eightDays || format === 'long';
+    const hasMonth = !hasWeekday || format === 'long';
+    const hasYear = (!hasWeekday && currentYear !== year) || format === 'long';
 
     const yearName = hasYear ? getYearName(year, locale) : '';
     const monthName = hasMonth ? this.getMonthNameForLocale(
       month,
       locale,
-      short ? 'short' : 'long'
+      format === 'short' ? 'short' : 'long'
     ) : '';
     const dateName = hasDate ? getDateName(day, locale) : '';
     const weekdayName = hasWeekday ? this.getDayNameForLocale(
       dayOfWeek,
       locale,
-      short ? 'short' : 'long'
+      format === 'short' ? 'short' : 'long'
     ) : '';
     const timeName = hasTime ? this.getTimeString(hours, minutes, seconds, locale) : '';
 
@@ -364,18 +323,23 @@ function DateService() {
       dateString = [yearName, monthName, dateName].join(delimiter).trim();
     } else if (this.isMonthBeforeDay(locale)) {
       dateString = [monthName, dateName].join(delimiter).trim();
-      if (yearName.trim() !== '') {
+      if (yearName) {
         dateString += `, ${yearName}`;
       }
     } else {
       dateString = [dateName, monthName, yearName].join(delimiter).trim();
     }
 
-    if (dayName.trim() !== '') {
+    if (dayName) {
       if (lang === 'ja') {
         return `${dateString} ${timeName} (${dayName})`.trim();
       }
-      dateString = `${dayName} ${dateString}`.trim();
+      // For longer dates use a comma
+      if (monthName || yearName) {
+        dateString = `${dayName}, ${dateString}`.trim();
+      } else {
+        dateString = `${dayName} ${dateString}`.trim();
+      }
     }
     dateString = `${dateString} ${timeName}`;
 
