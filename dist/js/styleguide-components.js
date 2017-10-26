@@ -939,20 +939,26 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 function DateFormatFilter(TwDateService) {
-  return function (date, locale, format) {
+  return function (dateSupplied, locale, format) {
+    if (!dateSupplied) {
+      return dateSupplied;
+    }
+    var date = dateSupplied;
+
+    if (typeof date === 'string') {
+      date = TwDateService.getUTCDateFromIso(date);
+
+      var dateOnly = new RegExp('^[0-9]{4}-[0-9]{2}-[0-9]{2}$'); // yyyy-mm-dd
+      if (dateOnly.test(dateSupplied)) {
+        return TwDateService.getUTCDateString(date, locale, format);
+      }
+    }
+
     if (!date) {
-      return date;
+      return dateSupplied;
     }
-
-    if (typeof date === 'string' && new Date(date)) {
-      date = new Date(date);
-    }
-
-    if (format === 'long') {
-      return TwDateService.getLocaleFullDate(date, locale);
-    }
-
-    return TwDateService.getLocaleDateString(date, locale, format === 'short');
+    // Use locale timezone
+    return TwDateService.getLocaleDateString(date, locale, format);
   };
 }
 
@@ -6028,6 +6034,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 function DateService() {
   var _this = this;
 
@@ -6109,6 +6117,52 @@ function DateService() {
     return date;
   };
 
+  this.getDatePartsFromIso = function (isoDate) {
+    var year = parseInt(isoDate.substr(0, 4), 10);
+    var month = parseInt(isoDate.substr(5, 2), 10) - 1;
+    var day = parseInt(isoDate.substr(8, 2), 10);
+    var hours = parseInt(isoDate.substr(11, 2), 10) || 0;
+    var minutes = parseInt(isoDate.substr(14, 2), 10) || 0;
+    var seconds = parseInt(isoDate.substr(17, 2), 10) || 0;
+    var hoursOffset = parseInt(isoDate.substr(20, 2), 10) || 0;
+    var minutesOffset = parseInt(isoDate.substr(23, 2), 10) || 0;
+
+    var isOffsetNegative = isoDate.substr(19, 1) === '-';
+    if (isOffsetNegative) {
+      hoursOffset *= -1;
+      minutesOffset *= -1;
+    }
+
+    return [year, month, day, hours, minutes, seconds, hoursOffset, minutesOffset];
+  };
+
+  this.isIsoStringValid = function (isoDate) {
+    var dateSection = '[0-9]{4}-[0-9]{2}-[0-9]{2}';
+    var timeSection = 'T[0-9]{2}:[0-9]{2}:[0-9]{2}';
+    var zoneSection = '(Z|[+,-][0-9]{2}(:[0-9]{2})?)';
+    var regex = new RegExp('^' + dateSection + '(' + timeSection + zoneSection + ')?$');
+    return regex.test(isoDate);
+  };
+
+  this.getUTCDateFromIso = function (isoDate) {
+    if (!_this.isIsoStringValid(isoDate)) {
+      return null;
+    }
+
+    var _getDatePartsFromIso = _this.getDatePartsFromIso(isoDate),
+        _getDatePartsFromIso2 = _slicedToArray(_getDatePartsFromIso, 8),
+        year = _getDatePartsFromIso2[0],
+        month = _getDatePartsFromIso2[1],
+        day = _getDatePartsFromIso2[2],
+        hours = _getDatePartsFromIso2[3],
+        minutes = _getDatePartsFromIso2[4],
+        seconds = _getDatePartsFromIso2[5],
+        hoursOffset = _getDatePartsFromIso2[6],
+        minutesOffset = _getDatePartsFromIso2[7];
+
+    return _this.getUTCDateFromParts(year, month, day, hours + hoursOffset, minutes + minutesOffset, seconds);
+  };
+
   // Sunday is first day of the week in JS
   this.getDayNamesForLocale = function (locale, format) {
     var days = [];
@@ -6120,9 +6174,19 @@ function DateService() {
   };
 
   this.getDayNameForLocale = function (dayOfWeek, locale, format) {
+    var defaultDayName = void 0;
     var language = getLanguageFromLocale(locale);
-    if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language] && (format !== 'short' || language === 'ja')) {
-      return DEFAULT_DAY_NAMES_BY_LANGUAGE[language][dayOfWeek];
+    if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language]) {
+      defaultDayName = DEFAULT_DAY_NAMES_BY_LANGUAGE[language][dayOfWeek];
+    }
+
+    if (defaultDayName) {
+      if (format === 'short') {
+        return defaultDayName.substr(0, 3);
+      } else if (format === 'narrow') {
+        return defaultDayName.substr(0, 1);
+      }
+      return defaultDayName;
     }
 
     var validLocale = getValidLocale(locale);
@@ -6188,9 +6252,11 @@ function DateService() {
   };
 
   this.getLocaleTimeString = function (date, locale) {
+    return _this.getTimeString(date.getHours(), date.getMinutes(), date.getSeconds(), locale);
+  };
+
+  this.getTimeString = function (hours, minutes, seconds, locale) {
     var lang = getLanguageFromLocale(locale);
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
 
     if (hours < 10) {
       hours = '0' + hours;
@@ -6244,70 +6310,84 @@ function DateService() {
     return [dateName, monthName, yearName].join(delimiter);
   };
 
-  this.getLocaleFullDate = function (date, locale) {
-    var dateString = _this.getYearMonthDatePresentation(date.getFullYear(), date.getMonth(), date.getDate(), locale);
-
-    var weekdayName = _this.getDayNameForLocale(date.getDay(), locale, 'long').trim();
-    var lang = getLanguageFromLocale(locale);
-
-    if (lang === 'ja') {
-      return dateString + ' (' + weekdayName + ')';
-    }
-    return weekdayName + ', ' + dateString;
-  };
-
   this.getLocaleNow = function () {
     return new Date();
   };
 
-  this.getLocaleDateString = function (date, locale, short) {
+  this.getUTCNow = function () {
+    var now = new Date();
+    return _this.getUTCDateFromParts(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+  };
+
+  this.getLocaleDateString = function (date, locale, format) {
+    // Check that the date exists
+    if (!date.getFullYear) {
+      return date;
+    }
+
+    // Initialize variables
+    var now = _this.getLocaleNow();
+
+    return _this.getDateString(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getDay(), locale, date - now, now.getFullYear(), format);
+  };
+
+  this.getUTCDateString = function (date, locale, format) {
     // Check that the date exists
     if (!date) {
       return date;
     }
 
-    // Initialize variables
-    var year = date.getFullYear();
-    var month = date.getMonth();
-    var dayOfMonth = date.getDate();
-    var dayOfWeek = date.getDay();
+    var now = _this.getUTCNow();
 
-    var now = _this.getLocaleNow();
+    return _this.getDateString(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCDay(), locale, date - now, now.getUTCFullYear(), format);
+  };
+
+  this.getDateString = function (year, month, day, hours, minutes, seconds, dayOfWeek, locale, offset, currentYear, format) {
     var fourtyEightHours = 48 * 60 * 60 * 1000;
     var eightDays = 8 * 24 * 60 * 60 * 1000;
 
-    var hasTime = Math.abs(now - date) < fourtyEightHours;
+    var hasTime = Math.abs(offset) < fourtyEightHours && format !== 'long';
     var hasDate = !hasTime;
-    var hasWeekday = Math.abs(now - date) < eightDays;
-    var hasMonth = !hasWeekday;
-    var hasYear = !hasWeekday && now.getFullYear() !== year;
+    var hasWeekday = Math.abs(offset) < eightDays || format === 'long';
+    var hasMonth = !hasWeekday || format === 'long';
+    var hasYear = !hasWeekday && currentYear !== year || format === 'long';
 
     var yearName = hasYear ? getYearName(year, locale) : '';
-    var monthName = hasMonth ? _this.getMonthNameForLocale(month, locale, short ? 'short' : 'long') : '';
-    var dateName = hasDate ? getDateName(dayOfMonth, locale) : '';
-    var weekdayName = hasWeekday ? _this.getDayNameForLocale(dayOfWeek, locale, short ? 'short' : 'long') : '';
-    var timeName = hasTime ? _this.getLocaleTimeString(date, locale) : '';
+    var monthName = hasMonth ? _this.getMonthNameForLocale(month, locale, format === 'short' ? 'short' : 'long') : '';
+    var dateName = hasDate ? getDateName(day, locale) : '';
+    var weekdayName = hasWeekday ? _this.getDayNameForLocale(dayOfWeek, locale, format === 'short' ? 'short' : 'long') : '';
+    var timeName = hasTime ? _this.getTimeString(hours, minutes, seconds, locale) : '';
 
+    return _this.combineDateParts(yearName, monthName, dateName, timeName, weekdayName, locale);
+  };
+
+  this.combineDateParts = function (yearName, monthName, dateName, timeName, dayName, locale) {
     var lang = getLanguageFromLocale(locale);
     var delimiter = getDelimiter(lang);
 
     var dateString = void 0;
+
     if (_this.isYearBeforeMonth(locale)) {
       dateString = [yearName, monthName, dateName].join(delimiter).trim();
     } else if (_this.isMonthBeforeDay(locale)) {
       dateString = [monthName, dateName].join(delimiter).trim();
-      if (hasYear) {
+      if (yearName) {
         dateString += ', ' + yearName;
       }
     } else {
       dateString = [dateName, monthName, yearName].join(delimiter).trim();
     }
 
-    if (hasWeekday) {
+    if (dayName) {
       if (lang === 'ja') {
-        return (dateString + ' ' + timeName + ' (' + weekdayName + ')').trim();
+        return (dateString + ' ' + timeName + ' (' + dayName + ')').trim();
       }
-      dateString = (weekdayName + ' ' + dateString).trim();
+      // For longer dates use a comma
+      if (monthName || yearName) {
+        dateString = (dayName + ', ' + dateString).trim();
+      } else {
+        dateString = (dayName + ' ' + dateString).trim();
+      }
     }
     dateString = dateString + ' ' + timeName;
 
@@ -6377,7 +6457,7 @@ function DateService() {
 
   function getLanguageFromLocale(locale) {
     if (!locale) {
-      return null;
+      return 'en';
     }
     return locale.substring(0, 2);
   }
