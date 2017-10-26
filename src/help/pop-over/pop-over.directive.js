@@ -50,7 +50,12 @@ function getElementOptions(element) {
     OPTIONS.title = element.dataset.originalTitle;
   }
   if (element.dataset.content) {
-    OPTIONS.content = element.dataset.content;
+    OPTIONS.content = `, do not use with user entered data
+    , do not use with user entered data
+    , do not use with user entered data
+    , do not use with user entered data
+    , do not use with user entered data
+      `;
   }
   if (element.dataset.contentHtml) {
     OPTIONS.html = true; // TODO add support for this

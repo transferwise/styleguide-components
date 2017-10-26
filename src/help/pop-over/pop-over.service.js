@@ -7,7 +7,7 @@ export default function () {
   let ELEMENT_PLACEMENT = 'right';
 
   function show(element, elementOptions) {
-    if (element) {
+    if (element instanceof HTMLElement && isOptionsObject(elementOptions)) {
       ELEMENT = element;
       ELEMENT_PLACEMENT = getPopoverPlacement(elementOptions);
 
@@ -19,9 +19,7 @@ export default function () {
       }
 
       POPOVER.innerHTML = getPopoverContent(elementOptions);
-      setPopoverPosition(ELEMENT_PLACEMENT);
-
-      POPOVER.classList.remove('scale-down');
+      compose(showPopover, setPopoverPosition)(ELEMENT_PLACEMENT);
     }
   }
 
@@ -29,10 +27,10 @@ export default function () {
     if (POPOVER) {
       const clickedOutsidePopover = !POPOVER.contains(event.target);
       const clickedInsidePopover = POPOVER.contains(event.target);
-      const clickedPopoverClose = event.target.className.includes('popover-close');
+      const clickedPopoverClose = event.target.classList.contains('popover-close');
 
       if (clickedOutsidePopover || (clickedInsidePopover && clickedPopoverClose)) {
-        POPOVER.classList.add('scale-down');
+        hidePopover();
       }
     }
   }
@@ -61,6 +59,8 @@ export default function () {
       'style',
       `display:block; visibility:visible; top:${offsetY}px; left:${offsetX}px`,
     );
+
+    return { offsetX, offsetY };
   }
 
   function getPopoverPosition(popoverPlacement) {
@@ -70,7 +70,9 @@ export default function () {
   }
 
   function updatePopoverClass(popoverPlacement) {
-    POPOVER.classList.remove('left', 'right', 'bottom', 'top');
+    const popoverPlacements = ['left', 'right', 'bottom', 'top'];
+
+    POPOVER.classList.remove(...popoverPlacements);
     POPOVER.classList.add(popoverPlacement);
 
     return popoverPlacement;
@@ -87,22 +89,22 @@ export default function () {
     const popoverOffsetWidth = elementOffset.offsetX +
       elementOffsetDimensions.offsetWidth + POPOVER_SPACING +
       popoverOffsetDimensions.offsetWidth;
-    const popoverLefOffsetX = elementOffset.offsetX -
+    const popoverLeftOffset = elementOffset.offsetX -
       (popoverOffsetDimensions.offsetWidth + POPOVER_SPACING);
 
     /**
      * If it sticks outside on both sides, put it on the bottom
      */
-    if ((popoverOffsetWidth > viewportOffsetDimensions.offsetWidth) && popoverLefOffsetX < 0) {
-      return 'bottom';
+    if ((popoverOffsetWidth > viewportOffsetDimensions.offsetWidth) && popoverLeftOffset < 0) {
+      popoverPlacement = 'bottom';
     }
 
     if (popoverPlacement === 'right' && (popoverOffsetWidth > viewportOffsetDimensions.offsetWidth)) {
-      return 'left';
+      popoverPlacement = 'left';
     }
 
-    if (popoverPlacement === 'left' && popoverLefOffsetX < 0) {
-      return 'right';
+    if (popoverPlacement === 'left' && popoverLeftOffset < 0) {
+      popoverPlacement = 'right';
     }
 
     return popoverPlacement;
@@ -234,6 +236,34 @@ export default function () {
     return obj.getPropertyValue(prop);
   }
 
+  function showPopover() {
+    return removePopoverClass('scale-down');
+  }
+
+  function hidePopover() {
+    return addPopoverClass('scale-down');
+  }
+
+  function removePopoverClass(cssClass) {
+    return curry(removeClass)(POPOVER)(cssClass);
+  }
+
+  function addPopoverClass(cssClass) {
+    return curry(addClass)(POPOVER)(cssClass);
+  }
+
+  function removeClass(element, cssClass) {
+    element.classList.remove(cssClass);
+
+    return cssClass;
+  }
+
+  function addClass(element, cssClass) {
+    element.classList.add(cssClass);
+
+    return cssClass;
+  }
+
   /**
    * [getPopoverTemplate Each value in the template, which is equivalent to the
    *                     keys of the binded object, is prefixed and suffixed with
@@ -264,6 +294,17 @@ export default function () {
     return bindDataToTemplate(getPopoverTemplate(), options);
   }
 
+  function isOptionsObject(object) {
+    return curry(looksLike)({
+      title: 'Popover title',
+      content: 'Popover content',
+    })(object);
+  }
+
+  function looksLike(a, b) {
+    return a && b && Object.keys(a).every(aKey => Object.prototype.hasOwnProperty.call(b, aKey));
+  }
+
   /**
    * FP helper functions
    */
@@ -291,6 +332,6 @@ export default function () {
   return {
     show,
     hide,
-    reposition
+    reposition,
   };
 }
