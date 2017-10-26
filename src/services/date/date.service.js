@@ -131,15 +131,19 @@ function DateService() {
       defaultDayName = DEFAULT_DAY_NAMES_BY_LANGUAGE[language][dayOfWeek];
     }
 
+    if (defaultDayName) {
+      if (format === 'short') {
+        return defaultDayName.substr(0, 3);
+      } else if (format === 'narrow') {
+        return defaultDayName.substr(0, 1);
+      }
+      return defaultDayName;
+    }
+
     const validLocale = getValidLocale(locale);
     const date = this.getUTCDateFromParts(2006, 0, dayOfWeek + 1); // 2006 started with a Sunday
 
-    const autoDayName = getLocalisedDateName(date, validLocale, { weekday: format });
-
-    if (defaultDayName && autoDayName.length > 5) {
-      return format === 'short' ? defaultDayName.substr(0, 3) : defaultDayName;
-    }
-    return autoDayName;
+    return getLocalisedDateName(date, validLocale, { weekday: format });
   };
 
   this.getMonthNamesForLocale = (locale, format) => {
@@ -263,9 +267,9 @@ function DateService() {
   this.getUTCNow = () => {
     const now = new Date();
     return this.getUTCDateFromParts(
-      this.getUTCFullYear(now),
-      this.getUTCMonth(now),
-      this.getUTCDate(now),
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate(),
       now.getUTCHours(),
       now.getUTCMinutes(),
       now.getUTCSeconds()

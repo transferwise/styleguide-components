@@ -236,7 +236,7 @@ describe('DateLookup, ', function() {
 
       });
       it('should show short month name', function () {
-          expect(element.find(MODEL_DATE_SELECTOR).text().trim()).toBe('10 Jan 2000');
+          expect(element.find(MODEL_DATE_SELECTOR).text().trim()).toBe('10th Jan 2000');
       });
     });
 
@@ -378,7 +378,7 @@ describe('DateLookup, ', function() {
         $scope.$digest();
       });
       it('should update selected date if valid', function() {
-        expect(element.find(MODEL_DATE_SELECTOR).text().trim().replace(/\s\s+/g, ' ')).toBe('1 February 2001');
+        expect(element.find(MODEL_DATE_SELECTOR).text().trim().replace(/\s\s+/g, ' ')).toBe('1st February 2001');
       });
     });
 
@@ -670,7 +670,7 @@ describe('DateLookup, ', function() {
       });
       it('should update the displayed value', function() {
         var selectedDate = element.find(MODEL_DATE_SELECTOR).text().trim().replace(/\s\s+/g, ' ');
-        expect(selectedDate).toEqual('2 January 2000');
+        expect(selectedDate).toEqual('2nd January 2000');
       });
       it('should set the model to the clicked date', function() {
         expect($scope.ngModel).toEqual(getUTCDate(2000, 0, 2));

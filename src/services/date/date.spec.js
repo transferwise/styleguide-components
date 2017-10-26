@@ -3,6 +3,8 @@ describe('TwDateService test', function() {
 
   var service, $scope, $rootScope, $window;
 
+  var dateFormats = ['narrow', 'short', 'long', null];
+
   beforeEach(module('tw.styleguide-components'));
 
   beforeEach(inject(function($injector) {
@@ -13,31 +15,39 @@ describe('TwDateService test', function() {
   }));
 
   describe('when English locale', function() {
-    it('should provide the correct month names', function () {
-      dateFormats.forEach(function(format) {
-        var result = service.getMonthNamesForLocale('en-GB', {month: format});
-        expect(result).toEqual(expectedEnglishMonths);
+    dateFormats.forEach(function(format) {
+      describe(' and ' + format + ' format', function() {
+        it('should provide the correct month names', function () {
+          var result = service.getMonthNamesForLocale('en-GB', format);
+          if (format) {
+            expect(result).toEqual(englishMonths[format]);
+          } else {
+            expect(result).toEqual(englishMonths['long']);
+          }
+        });
+        it('should provide the correct day names', function () {
+          var result = service.getDayNamesForLocale('en-GB', format);
+          if (format) {
+            expect(result).toEqual(englishDays[format]);
+          } else {
+            expect(result).toEqual(englishDays['long']);
+          }
+        });
       });
-
-    });
-    it('should provide the correct day names', function () {
-      var result = service.getDayNamesForLocale('en-GB');
-      expect(result).toEqual(expectedEnglishDays);
     });
   });
 
   describe('when Japanese locale', function() {
-    it('should provide the correct month names', function () {
-      dateFormats.forEach(function(format) {
-        var result = service.getMonthNamesForLocale('ja-JP', {month: format});
-        expect(result).toEqual(expectedJapaneseMonths);
-      });
-
-    });
-    it('should provide the correct day names', function () {
-      dateFormats.forEach(function(format) {
-        var result = service.getDayNamesForLocale('ja-JP', {weekDay: format});
-        expect(result).toEqual(expectedJapaneseDays);
+    dateFormats.forEach(function(format) {
+      describe(' and ' + format + ' format', function() {
+        it('should provide the correct month names', function () {
+          var result = service.getMonthNamesForLocale('ja-JP', format);
+          expect(result).toEqual(expectedJapaneseMonths);
+        });
+        it('should provide the correct day names', function () {
+          var result = service.getDayNamesForLocale('ja-JP', format);
+          expect(result).toEqual(expectedJapaneseDays);
+        });
       });
     });
   });
@@ -168,34 +178,45 @@ describe('TwDateService test', function() {
     return $window.navigator.userAgent.indexOf("PhantomJS") !== -1
   }
 
-  var expectedEnglishMonths = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ];
-  var expectedEnglishDays = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday'
-  ];
+  var englishMonths = {
+    short: ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sep','Oct','Nov','Dec'],
+    long: [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ]
+  };
+
+  // Narrow is unsupported for months, so fall back to long names.
+  englishMonths.narrow = englishMonths.long;
+
+  var englishDays = {
+    narrow: ['S','M','T','W','T','F','S'],
+    short: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    long: [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday'
+    ]
+  };
+
   var expectedJapaneseMonths = [
     '1月', '2月', '3月', '4月', '5月', '6月',
     '7月', '8月', '9月', '10月', '11月', '12月'
   ];
   var expectedJapaneseDays = ['日', '月', '火', '水', '木', '金', '土'];
-  var dateFormats = ['narrow', 'short', 'long', null];
 
 });

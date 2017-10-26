@@ -19,7 +19,7 @@ describe('DateFormat filter, ', function() {
 
   describe('Given the locale is en-GB', function() {
     beforeEach(function() {
-      $scope.locale = "en-GB";
+      $scope.locale = 'en-GB';
       spyOn(DateService, 'getUTCDateString').and.callThrough();
       spyOn(DateService, 'getLocaleDateString').and.callThrough();
       $element = getCompiledDirectiveElement($scope);
@@ -27,7 +27,7 @@ describe('DateFormat filter, ', function() {
 
     describe('and an iso string is supplied without time data', function() {
       beforeEach(function() {
-        $scope.value = "2016-11-05";
+        $scope.value = '2016-11-05';
         $scope.$apply();
       });
 
@@ -43,7 +43,7 @@ describe('DateFormat filter, ', function() {
 
     describe('and an iso string is supplied with time data', function() {
       beforeEach(function() {
-        $scope.value = "2016-11-05T00:00:00Z";
+        $scope.value = '2016-11-05T12:34:56Z';
         $scope.$apply();
       });
 
@@ -59,7 +59,7 @@ describe('DateFormat filter, ', function() {
 
     describe('and a date object is supplied', function() {
       beforeEach(function() {
-        $scope.value = new Date("2016-11-05T00:00:00Z");
+        $scope.value = new Date('2016-11-05T12:34:56Z');
         $scope.$apply();
       });
 
@@ -75,7 +75,7 @@ describe('DateFormat filter, ', function() {
 
     describe('and a short format is requested', function() {
       beforeEach(function() {
-        $scope.value = new Date("2016-11-05T00:00:00Z");
+        $scope.value = new Date('2016-11-05T12:34:56Z');
         $scope.format = 'short';
         $scope.$apply();
       });
@@ -88,7 +88,7 @@ describe('DateFormat filter, ', function() {
 
     describe('and a long format is requested', function() {
       beforeEach(function() {
-        $scope.value = new Date("2016-11-05T00:00:00Z");
+        $scope.value = new Date('2016-11-05T12:34:56Z');
         $scope.format = 'long';
         $scope.$apply();
       });
@@ -102,7 +102,7 @@ describe('DateFormat filter, ', function() {
 
   describe('Given the locale is ja-JP', function() {
     beforeEach(function() {
-      $scope.locale = "ja-JP";
+      $scope.locale = 'ja-JP';
       $scope.value = new Date(2016,10,5);
       $element = getCompiledDirectiveElement($scope);
       $scope.$apply();
@@ -116,8 +116,7 @@ describe('DateFormat filter, ', function() {
 
   function getCompiledDirectiveElement(scope, template) {
     if (!template) {
-      template = " \
-        <span>{{value | twDateFormat : locale : format }}</span>";
+      template = "<span>{{value | twDateFormat : locale : format }}</span>";
     }
 
     var element = angular.element(template);

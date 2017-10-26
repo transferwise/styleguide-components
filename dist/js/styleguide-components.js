@@ -939,32 +939,26 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 function DateFormatFilter(TwDateService) {
-  return function (date, locale, format) {
-    if (!date) {
-      return date;
+  return function (dateSupplied, locale, format) {
+    if (!dateSupplied) {
+      return dateSupplied;
     }
-    var utcDate = date;
+    var date = dateSupplied;
 
     if (typeof date === 'string') {
-      // utcDate = TwDateService.getUTCDateFromIso(date);
-      utcDate = new Date(date);
+      date = TwDateService.getUTCDateFromIso(date);
 
       var dateOnly = new RegExp('^[0-9]{4}-[0-9]{2}-[0-9]{2}$'); // yyyy-mm-dd
-      if (dateOnly.test(date)) {
-        if (!utcDate) {
-          return date;
-        }
-
-        return TwDateService.getUTCDateString(utcDate, locale, format);
+      if (dateOnly.test(dateSupplied)) {
+        return TwDateService.getUTCDateString(date, locale, format);
       }
     }
 
-    if (!utcDate) {
-      return date;
+    if (!date) {
+      return dateSupplied;
     }
     // Use locale timezone
-    var ret = TwDateService.getLocaleDateString(utcDate, locale, format);
-    return ret;
+    return TwDateService.getLocaleDateString(date, locale, format);
   };
 }
 
@@ -6186,15 +6180,19 @@ function DateService() {
       defaultDayName = DEFAULT_DAY_NAMES_BY_LANGUAGE[language][dayOfWeek];
     }
 
+    if (defaultDayName) {
+      if (format === 'short') {
+        return defaultDayName.substr(0, 3);
+      } else if (format === 'narrow') {
+        return defaultDayName.substr(0, 1);
+      }
+      return defaultDayName;
+    }
+
     var validLocale = getValidLocale(locale);
     var date = _this.getUTCDateFromParts(2006, 0, dayOfWeek + 1); // 2006 started with a Sunday
 
-    var autoDayName = getLocalisedDateName(date, validLocale, { weekday: format });
-
-    if (defaultDayName && autoDayName.length > 5) {
-      return format === 'short' ? defaultDayName.substr(0, 3) : defaultDayName;
-    }
-    return autoDayName;
+    return getLocalisedDateName(date, validLocale, { weekday: format });
   };
 
   this.getMonthNamesForLocale = function (locale, format) {
@@ -6318,7 +6316,7 @@ function DateService() {
 
   this.getUTCNow = function () {
     var now = new Date();
-    return _this.getUTCDateFromParts(_this.getUTCFullYear(now), _this.getUTCMonth(now), _this.getUTCDate(now), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+    return _this.getUTCDateFromParts(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
   };
 
   this.getLocaleDateString = function (date, locale, format) {

@@ -1,27 +1,23 @@
 
 function DateFormatFilter(TwDateService) {
-  return (date, locale, format) => {
-    if (!date) {
-      return date;
+  return (dateSupplied, locale, format) => {
+    if (!dateSupplied) {
+      return dateSupplied;
     }
-    let utcDate = date;
+    let date = dateSupplied;
 
     if (typeof date === 'string') {
-      // utcDate = TwDateService.getUTCDateFromIso(date);
-      utcDate = new Date(date);
+      date = TwDateService.getUTCDateFromIso(date);
 
       const dateOnly = new RegExp('^[0-9]{4}-[0-9]{2}-[0-9]{2}$'); // yyyy-mm-dd
-      if (dateOnly.test(date)) {
-        if (!utcDate) { return date; }
-
-        return TwDateService.getUTCDateString(utcDate, locale, format);
+      if (dateOnly.test(dateSupplied)) {
+        return TwDateService.getUTCDateString(date, locale, format);
       }
     }
 
-    if (!utcDate) { return date; }
+    if (!date) { return dateSupplied; }
     // Use locale timezone
-    const ret = TwDateService.getLocaleDateString(utcDate, locale, format);
-    return ret;
+    return TwDateService.getLocaleDateString(date, locale, format);
   };
 }
 
