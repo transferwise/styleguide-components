@@ -53,7 +53,7 @@ function getElementOptions(element) {
     OPTIONS.content = element.dataset.content;
   }
   if (element.dataset.contentHtml) {
-    OPTIONS.html = true; // TODO add support for this
+    OPTIONS.html = element.dataset.contentHtml;
   }
 
   return OPTIONS;

@@ -2,31 +2,31 @@ export default function () {
   const BODY = document.getElementsByTagName('body')[0];
   const POPOVER_SPACING = 8;
 
-  let POPOVER = null;
-  let ELEMENT = null;
-  let ELEMENT_PLACEMENT = 'right';
+  let popover = null;
+  let enhancedElement = null;
+  let elementPlacement = 'right';
 
   function show(element, elementOptions) {
     if (element instanceof HTMLElement && isOptionsObject(elementOptions)) {
-      ELEMENT = element;
-      ELEMENT_PLACEMENT = getPopoverPlacement(elementOptions);
+      enhancedElement = element;
+      elementPlacement = getPopoverPlacement(elementOptions);
 
-      const popoverAppendedToBody = Array.from(BODY.children).includes(POPOVER);
+      const popoverAppendedToBody = Array.from(BODY.children).includes(popover);
 
       if (!popoverAppendedToBody) {
-        POPOVER = getPopover(ELEMENT_PLACEMENT);
-        BODY.appendChild(POPOVER);
+        popover = getPopover(elementPlacement);
+        BODY.appendChild(popover);
       }
 
-      POPOVER.innerHTML = getPopoverContent(elementOptions);
-      compose(showPopover, setPopoverPosition)(ELEMENT_PLACEMENT);
+      popover.innerHTML = getPopoverContent(elementOptions);
+      compose(showPopover, setPopoverPosition)(elementPlacement);
     }
   }
 
   function hide(event) {
-    if (POPOVER) {
-      const clickedOutsidePopover = !POPOVER.contains(event.target);
-      const clickedInsidePopover = POPOVER.contains(event.target);
+    if (popover) {
+      const clickedOutsidePopover = !popover.contains(event.target);
+      const clickedInsidePopover = popover.contains(event.target);
       const clickedPopoverClose = event.target.classList.contains('popover-close');
 
       if (clickedOutsidePopover || (clickedInsidePopover && clickedPopoverClose)) {
@@ -36,8 +36,8 @@ export default function () {
   }
 
   function reposition() {
-    if (POPOVER) {
-      setPopoverPosition(ELEMENT_PLACEMENT);
+    if (popover) {
+      setPopoverPosition(elementPlacement);
     }
   }
 
@@ -51,11 +51,11 @@ export default function () {
   }
 
   function setPopoverPosition(popoverPlacement) {
-    POPOVER.setAttribute('style', 'display:block; visibility:hidden;');
+    popover.setAttribute('style', 'display:block; visibility:hidden;');
 
     const { offsetX, offsetY } = getPopoverPosition(popoverPlacement);
 
-    POPOVER.setAttribute(
+    popover.setAttribute(
       'style',
       `display:block; visibility:visible; top:${offsetY}px; left:${offsetX}px`,
     );
@@ -72,8 +72,8 @@ export default function () {
   function updatePopoverClass(popoverPlacement) {
     const popoverPlacements = ['left', 'right', 'bottom', 'top'];
 
-    POPOVER.classList.remove(...popoverPlacements);
-    POPOVER.classList.add(popoverPlacement);
+    popover.classList.remove(...popoverPlacements);
+    popover.classList.add(popoverPlacement);
 
     return popoverPlacement;
   }
@@ -81,10 +81,10 @@ export default function () {
   function checkPopoverPlacement(popoverPlacement) {
     const viewportOffsetDimensions = getOffsetDimensions(document.documentElement);
 
-    const elementOffsetDimensions = getOffsetDimensions(ELEMENT);
-    const elementOffset = getBoundingOffset(ELEMENT);
+    const elementOffsetDimensions = getOffsetDimensions(enhancedElement);
+    const elementOffset = getBoundingOffset(enhancedElement);
 
-    const popoverOffsetDimensions = getOffsetDimensions(POPOVER);
+    const popoverOffsetDimensions = getOffsetDimensions(popover);
 
     const popoverOffsetWidth = elementOffset.offsetX +
       elementOffsetDimensions.offsetWidth + POPOVER_SPACING +
@@ -114,12 +114,12 @@ export default function () {
     /**
      * The element's coordinates, for which we want to display the popover
      */
-    const elementOffset = getBoundingOffset(ELEMENT);
+    const elementOffset = getBoundingOffset(enhancedElement);
 
     /**
      * The element's size, for which we want to display the popover
      */
-    const elementOffsetDimensions = getOffsetDimensions(ELEMENT);
+    const elementOffsetDimensions = getOffsetDimensions(enhancedElement);
 
     /**
      * Popover's default coordinates
@@ -129,8 +129,8 @@ export default function () {
       offsetY: 0,
     };
 
-    const popoverOffsetDimensions = getOffsetDimensions(POPOVER);
-    const popoverClientDimensions = getClientDimensions(POPOVER);
+    const popoverOffsetDimensions = getOffsetDimensions(popover);
+    const popoverClientDimensions = getClientDimensions(popover);
 
     const popoverVerticalBorder = popoverOffsetDimensions.offsetHeight -
       popoverClientDimensions.clientHeight;
@@ -138,7 +138,7 @@ export default function () {
     /*
      * The visible arrow is a pseudo-element
      */
-    const popoverArrowStyles = getComputedStyle(POPOVER, ':before');
+    const popoverArrowStyles = getComputedStyle(popover, ':before');
 
     const popoverArrowTopOffset = getNumericValue('top')(popoverArrowStyles);
     const popoverArrowHeight = getNumericValue('height')(popoverArrowStyles);
@@ -163,8 +163,6 @@ export default function () {
 
       popoverOffsets = {
         offsetX: popoverOffsetX,
-        // offsetY: (offsetY - (popoverOffsetDimensions.offsetHeight / 2))
-        // + (offsetHeight / 2),
         offsetY: popoverOffsetY,
       };
     }
@@ -188,10 +186,6 @@ export default function () {
 
       popoverOffsets = {
         offsetX: popoverOffsetX,
-        //
-        /* offsetY: (offsetY - (popoverOffsetDimensions.offsetHeight / 2))
-        + (offsetHeight / 2), //Center to center
-        */
         offsetY: popoverOffsetY,
       };
     }
@@ -228,6 +222,10 @@ export default function () {
     return curry(getObjectProperty)('placement')(elementOptions);
   }
 
+  function getGivenPopoverTemplate(elementOptions) {
+    return curry(getObjectProperty)('html')(elementOptions);
+  }
+
   function getNumericValue(property) {
     return compose(parseInt, curry(getPropertyValue)(property));
   }
@@ -245,11 +243,11 @@ export default function () {
   }
 
   function removePopoverClass(cssClass) {
-    return curry(removeClass)(POPOVER)(cssClass);
+    return curry(removeClass)(popover)(cssClass);
   }
 
   function addPopoverClass(cssClass) {
-    return curry(addClass)(POPOVER)(cssClass);
+    return curry(addClass)(popover)(cssClass);
   }
 
   function removeClass(element, cssClass) {
@@ -291,7 +289,9 @@ export default function () {
   }
 
   function getPopoverContent(options) {
-    return bindDataToTemplate(getPopoverTemplate(), options);
+    const optionsTemplate = getGivenPopoverTemplate(options);
+
+    return bindDataToTemplate((optionsTemplate || getPopoverTemplate()), options);
   }
 
   function isOptionsObject(object) {
