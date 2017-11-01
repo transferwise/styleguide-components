@@ -6,7 +6,7 @@ export default function () {
   let enhancedElement = null;
   let elementPlacement = 'right';
 
-  function show(elementWithPopover, popoverOptions) {
+  function showPopover(elementWithPopover, popoverOptions) {
     if (elementWithPopover instanceof HTMLElement && isOptionsObject(popoverOptions)) {
       enhancedElement = elementWithPopover;
       elementPlacement = getPopoverPlacement(popoverOptions);
@@ -20,25 +20,7 @@ export default function () {
 
       popover.innerHTML = getPopoverContent(popoverOptions);
       compose(displayPopover, setPopoverPosition)(elementPlacement);
-    }
-  }
-
-  function hideCallback(event) {
-    if (popover) {
-      const clickedOutsidePopover = !popover.contains(event.target);
-      const clickedInsidePopover = popover.contains(event.target);
-      const clickedPopoverClose = event.target.classList.contains('popover-close');
-
-      if (clickedOutsidePopover || (clickedInsidePopover && clickedPopoverClose)) {
-        hidePopover();
-      }
-    }
-  }
-
-  function repositionCallback() {
-    if (popover) {
-      setPopoverPosition(elementPlacement);
-    }
+    } else throw Error('Invalid element type or options object passed as arguments');
   }
 
   function getPopover(popoverPlacement) {
@@ -59,8 +41,6 @@ export default function () {
       'style',
       `display:block; visibility:visible; top:${offsetY}px; left:${offsetX}px`,
     );
-
-    return { offsetX, offsetY };
   }
 
   function getPopoverPosition(popoverPlacement) {
@@ -192,6 +172,29 @@ export default function () {
     return popoverOffsets;
   }
 
+  function hideCallback(event) {
+    if (popover) {
+      const clickedOutsidePopover = !popover.contains(event.target);
+      const clickedInsidePopover = popover.contains(event.target);
+      const clickedPopoverClose = event.target.classList.contains('popover-close');
+
+      if (clickedOutsidePopover || (clickedInsidePopover && clickedPopoverClose)) {
+        hidePopover();
+      }
+    }
+  }
+
+  function repositionCallback() {
+    if (enhancedElement instanceof HTMLElement && popover) {
+      setPopoverPosition(elementPlacement);
+    }
+  }
+
+  function registerGlobalEventListeners() {
+    document.documentElement.addEventListener('click', hideCallback, true);
+    window.addEventListener('resize', repositionCallback);
+  }
+
   function getBoundingOffset(element) {
     const elementRect = element.getBoundingClientRect();
     const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
@@ -321,10 +324,20 @@ export default function () {
     return object[property];
   }
 
+  /**
+   * Instead of exposing the methods and handling the responsability of things
+   * such as closing the popover when clicking outside of it or keeping the
+   * position relative to its pointing element consistent when the viewport
+   * is resizing, we register the event listeners once, benefiting from the
+   * singleton nature of Services
+   */
+  registerGlobalEventListeners();
+
+  /**
+   * Expose the public API of the popover service
+   */
   return {
-    show,
-    hideCallback,
-    repositionCallback,
+    showPopover,
     hidePopover,
   };
 }

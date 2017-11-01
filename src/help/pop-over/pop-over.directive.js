@@ -1,12 +1,3 @@
-export default function () {
-  return {
-    restrict: 'A',
-    controller: PopOverController,
-  };
-}
-
-PopOverController.$inject = ['$scope', '$element', 'twPopOverService'];
-
 function PopOverController($scope, $element, PopoverService) {
   const ELEMENT = $element[0];
 
@@ -15,13 +6,9 @@ function PopOverController($scope, $element, PopoverService) {
   ELEMENT.setAttribute('data-toggle', 'popover');
 
   ELEMENT.addEventListener('click', ELEMENT_CALLBACK);
-  document.documentElement.addEventListener('click', PopoverService.hideCallback, true);
-  window.addEventListener('resize', PopoverService.repositionCallback);
 
-  $scope.$on('destroy', () => {
+  $scope.$on('$destroy', () => {
     ELEMENT.removeEventListener('click', ELEMENT_CALLBACK);
-    document.documentElement.removeEventListener('click', PopoverService.hideCallback, true);
-    window.removeEventListener('resize', PopoverService.repositionCallback);
   });
 
   /**
@@ -31,7 +18,7 @@ function PopOverController($scope, $element, PopoverService) {
   function ELEMENT_CALLBACK() {
     const popoverOptions = getElementOptions(ELEMENT);
 
-    PopoverService.show(ELEMENT, popoverOptions);
+    PopoverService.showPopover(ELEMENT, popoverOptions);
   }
 }
 
@@ -57,4 +44,13 @@ function getElementOptions(element) {
   }
 
   return options;
+}
+
+PopOverController.$inject = ['$scope', '$element', 'twPopOverService'];
+
+export default function () {
+  return {
+    restrict: 'A',
+    controller: PopOverController,
+  };
 }
