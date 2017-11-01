@@ -6,10 +6,10 @@ export default function () {
   let enhancedElement = null;
   let elementPlacement = 'right';
 
-  function show(element, elementOptions) {
-    if (element instanceof HTMLElement && isOptionsObject(elementOptions)) {
-      enhancedElement = element;
-      elementPlacement = getPopoverPlacement(elementOptions);
+  function show(elementWithPopover, popoverOptions) {
+    if (elementWithPopover instanceof HTMLElement && isOptionsObject(popoverOptions)) {
+      enhancedElement = elementWithPopover;
+      elementPlacement = getPopoverPlacement(popoverOptions);
 
       const popoverAppendedToBody = Array.from(BODY.children).includes(popover);
 
@@ -18,12 +18,12 @@ export default function () {
         BODY.appendChild(popover);
       }
 
-      popover.innerHTML = getPopoverContent(elementOptions);
-      compose(showPopover, setPopoverPosition)(elementPlacement);
+      popover.innerHTML = getPopoverContent(popoverOptions);
+      compose(displayPopover, setPopoverPosition)(elementPlacement);
     }
   }
 
-  function hide(event) {
+  function hideCallback(event) {
     if (popover) {
       const clickedOutsidePopover = !popover.contains(event.target);
       const clickedInsidePopover = popover.contains(event.target);
@@ -35,7 +35,7 @@ export default function () {
     }
   }
 
-  function reposition() {
+  function repositionCallback() {
     if (popover) {
       setPopoverPosition(elementPlacement);
     }
@@ -130,10 +130,7 @@ export default function () {
     };
 
     const popoverOffsetDimensions = getOffsetDimensions(popover);
-    const popoverClientDimensions = getClientDimensions(popover);
-
-    const popoverVerticalBorder = popoverOffsetDimensions.offsetHeight -
-      popoverClientDimensions.clientHeight;
+    const popoverBorderTop = compose(getNumericValue('border-top'), getComputedStyle)(popover);
 
     /*
      * The visible arrow is a pseudo-element
@@ -158,8 +155,9 @@ export default function () {
         elementOffsetDimensions.offsetWidth + POPOVER_SPACING;
       const popoverOffsetY =
         (elementOffset.offsetY -
-        (popoverArrowTopOffset + popoverArrowMarginTop + (popoverArrowHeight / 2))) +
-        ((elementOffsetDimensions.offsetHeight / 2) - popoverVerticalBorder);
+        (popoverBorderTop + popoverArrowTopOffset + popoverArrowMarginTop +
+          (popoverArrowHeight / 2))) +
+        (elementOffsetDimensions.offsetHeight / 2);
 
       popoverOffsets = {
         offsetX: popoverOffsetX,
@@ -181,8 +179,9 @@ export default function () {
         popoverOffsetDimensions.offsetWidth - POPOVER_SPACING;
       const popoverOffsetY =
         (elementOffset.offsetY -
-        (popoverArrowTopOffset + popoverArrowMarginTop + (popoverArrowHeight / 2))) +
-        ((elementOffsetDimensions.offsetHeight / 2) - popoverVerticalBorder);
+        (popoverBorderTop + popoverArrowTopOffset + popoverArrowMarginTop +
+          (popoverArrowHeight / 2))) +
+        (elementOffsetDimensions.offsetHeight / 2);
 
       popoverOffsets = {
         offsetX: popoverOffsetX,
@@ -211,19 +210,12 @@ export default function () {
     };
   }
 
-  function getClientDimensions(element) {
-    return {
-      clientWidth: element.clientWidth,
-      clientHeight: element.clientHeight,
-    };
+  function getPopoverPlacement(popoverOptions) {
+    return curry(getObjectProperty)('placement')(popoverOptions);
   }
 
-  function getPopoverPlacement(elementOptions) {
-    return curry(getObjectProperty)('placement')(elementOptions);
-  }
-
-  function getGivenPopoverTemplate(elementOptions) {
-    return curry(getObjectProperty)('html')(elementOptions);
+  function getGivenPopoverTemplate(popoverOptions) {
+    return curry(getObjectProperty)('html')(popoverOptions);
   }
 
   function getNumericValue(property) {
@@ -234,7 +226,7 @@ export default function () {
     return obj.getPropertyValue(prop);
   }
 
-  function showPopover() {
+  function displayPopover() {
     return removePopoverClass('scale-down');
   }
 
@@ -331,7 +323,8 @@ export default function () {
 
   return {
     show,
-    hide,
-    reposition,
+    hideCallback,
+    repositionCallback,
+    hidePopover,
   };
 }

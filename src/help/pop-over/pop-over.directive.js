@@ -15,13 +15,13 @@ function PopOverController($scope, $element, PopoverService) {
   ELEMENT.setAttribute('data-toggle', 'popover');
 
   ELEMENT.addEventListener('click', ELEMENT_CALLBACK);
-  document.documentElement.addEventListener('click', PopoverService.hide, true);
-  window.addEventListener('resize', PopoverService.reposition);
+  document.documentElement.addEventListener('click', PopoverService.hideCallback, true);
+  window.addEventListener('resize', PopoverService.repositionCallback);
 
   $scope.$on('destroy', () => {
     ELEMENT.removeEventListener('click', ELEMENT_CALLBACK);
-    document.documentElement.removeEventListener('click', PopoverService.hide, true);
-    window.removeEventListener('resize', PopoverService.reposition);
+    document.documentElement.removeEventListener('click', PopoverService.hideCallback, true);
+    window.removeEventListener('resize', PopoverService.repositionCallback);
   });
 
   /**
@@ -29,32 +29,32 @@ function PopOverController($scope, $element, PopoverService) {
    *                    to unregister it when the scope is unmounted / destroyed]
    */
   function ELEMENT_CALLBACK() {
-    const ELEMENT_OPTIONS = getElementOptions(ELEMENT);
+    const popoverOptions = getElementOptions(ELEMENT);
 
-    PopoverService.show(ELEMENT, ELEMENT_OPTIONS);
+    PopoverService.show(ELEMENT, popoverOptions);
   }
 }
 
 function getElementOptions(element) {
-  const OPTIONS = {
+  const options = {
     placement: 'right',
   };
 
   if (element.dataset.placement) {
-    OPTIONS.placement = element.dataset.placement;
+    options.placement = element.dataset.placement;
   }
   if (element.dataset.title) {
-    OPTIONS.title = element.dataset.title;
+    options.title = element.dataset.title;
   }
   if (element.dataset.originalTitle) {
-    OPTIONS.title = element.dataset.originalTitle;
+    options.title = element.dataset.originalTitle;
   }
   if (element.dataset.content) {
-    OPTIONS.content = element.dataset.content;
+    options.content = element.dataset.content;
   }
   if (element.dataset.contentHtml) {
-    OPTIONS.html = element.dataset.contentHtml;
+    options.html = element.dataset.contentHtml;
   }
 
-  return OPTIONS;
+  return options;
 }
