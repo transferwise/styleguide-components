@@ -7,9 +7,6 @@ function PopOverController($scope, $element, PopoverService) {
 
   ELEMENT.addEventListener('click', ELEMENT_CALLBACK);
 
-  // ELEMENT.addEventListener('mouseover', ELEMENT_CALLBACK);
-  // ELEMENT.addEventListener('mouseout', PopoverService.hidePopover);
-
   $scope.$on('$destroy', () => {
     ELEMENT.removeEventListener('click', ELEMENT_CALLBACK);
   });

@@ -11,9 +11,7 @@ export default function () {
       elementWithPopover = highlightedElement;
       popoverPosition = getPopoverPlacement(popoverOptions);
 
-      const popoverAppendedToBody = Array.from(BODY.children).includes(popover);
-
-      if (!popoverAppendedToBody) {
+      if (!popover) {
         popover = getPopover(popoverPosition);
         BODY.appendChild(popover);
       }
@@ -114,8 +112,6 @@ export default function () {
     };
 
     const popoverOffsetDimensions = getOffsetDimensions(popover);
-    const popoverStyles = getComputedStyle(popover);
-    const popoverBorderTop = getNumericValue('border-top')(popoverStyles);
 
     /*
      * The visible arrow is a pseudo-element
@@ -144,7 +140,7 @@ export default function () {
         elementOffsetDimensions.offsetWidth + POPOVER_SPACING;
       const popoverOffsetY =
         (elementOffset.offsetY -
-        (popoverBorderTop + popoverArrowTopOffset + popoverArrowMarginTop +
+        (popoverArrowTopOffset + popoverArrowMarginTop +
           (popoverArrowHeight / 2))) +
         (elementOffsetDimensions.offsetHeight / 2);
 
@@ -172,7 +168,7 @@ export default function () {
         popoverOffsetDimensions.offsetWidth - POPOVER_SPACING;
       const popoverOffsetY =
         (elementOffset.offsetY -
-        (popoverBorderTop + popoverArrowTopOffset + popoverArrowMarginTop +
+        (popoverArrowTopOffset + popoverArrowMarginTop +
           (popoverArrowHeight / 2))) +
         (elementOffsetDimensions.offsetHeight / 2);
 
@@ -296,6 +292,17 @@ export default function () {
   }
 
   function bindDataToTemplate(template, data) {
+    /**
+     * \w stands for "word character", usually [A-Za-z0-9_]
+     * * stands for Zero or more times
+     *
+     * For example, if the RegEX /(\a+)(\b+)/ was given,
+     * parenthesizedSubmatch is the match for \a+
+     *
+     * Thus, match all the word characters prefixed and suffixed by two __
+     * get their parenthesized submatch value and replace them in the @template with
+     * data found under the parenthesized submatch property on the @data object
+     */
     return template.replace(
       /__(\w*)__/g,
       (matchedSubstring, parenthesizedSubmatch) =>
@@ -325,8 +332,13 @@ export default function () {
     })(object);
   }
 
-  function looksLike(a, b) {
-    return a && b && Object.keys(a).every(aKey => Object.prototype.hasOwnProperty.call(b, aKey));
+  function looksLike(firstObject, secondObject) {
+    return (
+      firstObject &&
+      secondObject &&
+      Object.keys(firstObject).every(firstObjectKey =>
+        Object.prototype.hasOwnProperty.call(secondObject, firstObjectKey))
+    );
   }
 
   /**
