@@ -3,30 +3,31 @@ export default function () {
   const POPOVER_SPACING = 8;
 
   let popover = null;
-  let enhancedElement = null;
-  let elementPlacement = 'right';
+  let elementWithPopover = null;
+  let popoverPosition = 'right';
 
-  function showPopover(elementWithPopover, popoverOptions) {
-    if (elementWithPopover instanceof HTMLElement && isOptionsObject(popoverOptions)) {
-      enhancedElement = elementWithPopover;
-      elementPlacement = getPopoverPlacement(popoverOptions);
+  function showPopover(highlightedElement, popoverOptions) {
+    if (highlightedElement instanceof HTMLElement && isOptionsObject(popoverOptions)) {
+      elementWithPopover = highlightedElement;
+      popoverPosition = getPopoverPlacement(popoverOptions);
 
       const popoverAppendedToBody = Array.from(BODY.children).includes(popover);
 
       if (!popoverAppendedToBody) {
-        popover = getPopover(elementPlacement);
+        popover = getPopover(popoverPosition);
         BODY.appendChild(popover);
       }
 
       popover.innerHTML = getPopoverContent(popoverOptions);
-      compose(displayPopover, setPopoverPosition)(elementPlacement);
+      compose(displayPopover, setPopoverPosition)(popoverPosition);
     } else throw Error('Invalid element type or options object passed as arguments');
   }
 
   function getPopover(popoverPlacement) {
     const popoverContainer = document.createElement('div');
+    const popoverClasses = ['popover', 'in', popoverPlacement, 'animate', 'scale-down'];
 
-    popoverContainer.classList.add('popover', 'in', popoverPlacement, 'animate', 'scale-down');
+    popoverContainer.classList.add(...popoverClasses);
     popoverContainer.setAttribute('role', 'popover');
 
     return popoverContainer;
@@ -61,8 +62,8 @@ export default function () {
   function checkPopoverPlacement(popoverPlacement) {
     const viewportOffsetDimensions = getOffsetDimensions(document.documentElement);
 
-    const elementOffsetDimensions = getOffsetDimensions(enhancedElement);
-    const elementOffset = getBoundingOffset(enhancedElement);
+    const elementOffsetDimensions = getOffsetDimensions(elementWithPopover);
+    const elementOffset = getBoundingOffset(elementWithPopover);
 
     const popoverOffsetDimensions = getOffsetDimensions(popover);
 
@@ -72,18 +73,21 @@ export default function () {
     const popoverLeftOffset = elementOffset.offsetX -
       (popoverOffsetDimensions.offsetWidth + POPOVER_SPACING);
 
+    const overflowsRight = popoverOffsetWidth > viewportOffsetDimensions.offsetWidth;
+    const overflowsLeft = popoverLeftOffset < 0;
+
     /**
      * If it sticks outside on both sides, put it on the bottom
      */
-    if ((popoverOffsetWidth > viewportOffsetDimensions.offsetWidth) && popoverLeftOffset < 0) {
+    if (overflowsRight && overflowsLeft) {
       popoverPlacement = 'bottom';
     }
 
-    if (popoverPlacement === 'right' && (popoverOffsetWidth > viewportOffsetDimensions.offsetWidth)) {
+    if (popoverPlacement === 'right' && overflowsRight) {
       popoverPlacement = 'left';
     }
 
-    if (popoverPlacement === 'left' && popoverLeftOffset < 0) {
+    if (popoverPlacement === 'left' && overflowsLeft) {
       popoverPlacement = 'right';
     }
 
@@ -94,12 +98,12 @@ export default function () {
     /**
      * The element's coordinates, for which we want to display the popover
      */
-    const elementOffset = getBoundingOffset(enhancedElement);
+    const elementOffset = getBoundingOffset(elementWithPopover);
 
     /**
      * The element's size, for which we want to display the popover
      */
-    const elementOffsetDimensions = getOffsetDimensions(enhancedElement);
+    const elementOffsetDimensions = getOffsetDimensions(elementWithPopover);
 
     /**
      * Popover's default coordinates
@@ -110,7 +114,8 @@ export default function () {
     };
 
     const popoverOffsetDimensions = getOffsetDimensions(popover);
-    const popoverBorderTop = compose(getNumericValue('border-top'), getComputedStyle)(popover);
+    const popoverStyles = getComputedStyle(popover);
+    const popoverBorderTop = getNumericValue('border-top')(popoverStyles);
 
     /*
      * The visible arrow is a pseudo-element
@@ -122,11 +127,15 @@ export default function () {
     const popoverArrowMarginTop = getNumericValue('margin-top')(popoverArrowStyles);
 
     if (popoverPlacement === 'top') {
+      const popoverOffsetX = (elementOffset.offsetX -
+        (popoverOffsetDimensions.offsetWidth / 2)) +
+        (elementOffsetDimensions.offsetWidth / 2);
+      const popoverOffsetY = elementOffset.offsetY -
+        popoverOffsetDimensions.offsetHeight - POPOVER_SPACING;
+
       popoverOffsets = {
-        offsetX: (elementOffset.offsetX - (popoverOffsetDimensions.offsetWidth / 2)) +
-          (elementOffsetDimensions.offsetWidth / 2),
-        offsetY: elementOffset.offsetY -
-          popoverOffsetDimensions.offsetHeight - POPOVER_SPACING,
+        offsetX: popoverOffsetX,
+        offsetY: popoverOffsetY,
       };
     }
 
@@ -146,11 +155,15 @@ export default function () {
     }
 
     if (popoverPlacement === 'bottom') {
+      const popoverOffsetX = (elementOffset.offsetX -
+        (popoverOffsetDimensions.offsetWidth / 2)) +
+        (elementOffsetDimensions.offsetWidth / 2);
+      const popoverOffsetY = elementOffset.offsetY +
+        elementOffsetDimensions.offsetHeight + POPOVER_SPACING;
+
       popoverOffsets = {
-        offsetX: (elementOffset.offsetX - (popoverOffsetDimensions.offsetWidth / 2)) +
-          (elementOffsetDimensions.offsetWidth / 2),
-        offsetY: elementOffset.offsetY +
-          elementOffsetDimensions.offsetHeight + POPOVER_SPACING,
+        offsetX: popoverOffsetX,
+        offsetY: popoverOffsetY,
       };
     }
 
@@ -185,14 +198,31 @@ export default function () {
   }
 
   function repositionCallback() {
-    if (enhancedElement instanceof HTMLElement && popover) {
-      setPopoverPosition(elementPlacement);
+    if (elementWithPopover instanceof HTMLElement && popover) {
+      setPopoverPosition(popoverPosition);
     }
   }
 
+  /**
+   * Instead of exposing the methods and handling the responsability of things
+   * such as closing the popover when clicking outside of it or keeping the
+   * position relative to its pointing element consistent when the viewport
+   * is resizing, we register the event listeners once, taking advantage of the
+   * singleton nature of Services
+   */
   function registerGlobalEventListeners() {
     document.documentElement.addEventListener('click', hideCallback, true);
     window.addEventListener('resize', repositionCallback);
+  }
+
+  /**
+   * [unregisterGlobalEventListeners This should be called when the scope that
+   *                                 uses this service gets destroyed to prevent
+   *                                 memory leeks]
+   */
+  function unregisterGlobalEventListeners() {
+    document.documentElement.removeEventListener('click', hideCallback, true);
+    window.removeEventListener('resize', repositionCallback);
   }
 
   function getBoundingOffset(element) {
@@ -213,14 +243,6 @@ export default function () {
     };
   }
 
-  function getPopoverPlacement(popoverOptions) {
-    return curry(getObjectProperty)('placement')(popoverOptions);
-  }
-
-  function getGivenPopoverTemplate(popoverOptions) {
-    return curry(getObjectProperty)('html')(popoverOptions);
-  }
-
   function getNumericValue(property) {
     return compose(parseInt, curry(getPropertyValue)(property));
   }
@@ -230,19 +252,11 @@ export default function () {
   }
 
   function displayPopover() {
-    return removePopoverClass('scale-down');
+    return removeClass(popover, 'scale-down');
   }
 
   function hidePopover() {
-    return addPopoverClass('scale-down');
-  }
-
-  function removePopoverClass(cssClass) {
-    return curry(removeClass)(popover)(cssClass);
-  }
-
-  function addPopoverClass(cssClass) {
-    return curry(addClass)(popover)(cssClass);
+    return addClass(popover, 'scale-down');
   }
 
   function removeClass(element, cssClass) {
@@ -255,6 +269,14 @@ export default function () {
     element.classList.add(cssClass);
 
     return cssClass;
+  }
+
+  function getPopoverPlacement(popoverOptions) {
+    return curry(getObjectProperty)('placement')(popoverOptions);
+  }
+
+  function getGivenPopoverTemplate(popoverOptions) {
+    return curry(getObjectProperty)('html')(popoverOptions);
   }
 
   /**
@@ -289,6 +311,13 @@ export default function () {
     return bindDataToTemplate((optionsTemplate || getPopoverTemplate()), options);
   }
 
+  /**
+   * [isOptionsObject          Define which properties should be mandatory when
+   *                           passing the popover options object to the
+   *                           @showPopover method]
+   * @param  {Object}  object [Popover options object]
+   * @return {Boolean}        [Valid popover options]
+   */
   function isOptionsObject(object) {
     return curry(looksLike)({
       title: 'Popover title',
@@ -324,13 +353,6 @@ export default function () {
     return object[property];
   }
 
-  /**
-   * Instead of exposing the methods and handling the responsability of things
-   * such as closing the popover when clicking outside of it or keeping the
-   * position relative to its pointing element consistent when the viewport
-   * is resizing, we register the event listeners once, benefiting from the
-   * singleton nature of Services
-   */
   registerGlobalEventListeners();
 
   /**
@@ -339,5 +361,6 @@ export default function () {
   return {
     showPopover,
     hidePopover,
+    unregisterGlobalEventListeners,
   };
 }
