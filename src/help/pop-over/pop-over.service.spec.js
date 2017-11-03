@@ -1,6 +1,6 @@
 'use strict';
 
-describe('TwPopoverService test', function() {
+fdescribe('TwPopoverService test', function() {
   var service = null;
   var $window = null;
 
@@ -11,7 +11,13 @@ describe('TwPopoverService test', function() {
   var popoverOptions = {
     'placement': 'right',
     'title': 'Transferwise',
-    'content': 'Rules'
+    'content': 'Rules',
+    'info': 'More info',
+    'html': " \
+      <div class='popover-title'>__title__</div> \
+      <div class='popover-content'>__content__</div> \
+      <div class='popover-info'>__info__</div> \
+    "
   };
 
   beforeEach(module('tw.styleguide-components'));
@@ -54,6 +60,13 @@ describe('TwPopoverService test', function() {
       var popoverTitle = popover.querySelector('.popover-content');
 
       expect(popoverTitle.innerHTML.trim()).toBe(popoverOptions.content);
+    });
+
+    it('should work with a custom template', function() {
+      var popover = document.querySelector('.popover');
+      var popoverInfo = popover.querySelector('.popover-info');
+
+      expect(popoverInfo.innerHTML.trim()).toBe(popoverOptions.info);
     });
 
     describe('when we hide a popover', function() {

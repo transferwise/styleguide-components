@@ -31,9 +31,20 @@ describe('Popover directive', function() {
       expect(popoverAppended && popoverVisible).toBe(true);
     });
 
+    it('should have a working custom template', function() {
+      var popover = document.querySelector('.popover');
+      var popoverContent = popover.querySelector('.popover-content');
+      var popoverInfo = popover.querySelector('.popover-info');
+
+      popoverContent = popoverContent.innerHTML.trim();
+      popoverInfo = popoverInfo.innerHTML.trim();
+
+      expect(popoverContent === popoverInfo).toBe(true);
+    })
+
     describe('when we click outside the popover', function () {
       beforeEach(function () {
-        document.body.click();
+        $window.document.body.click();
       });
 
       it('should hide the popover', function () {
@@ -52,8 +63,9 @@ describe('Popover directive', function() {
       template = " \
         <a tw-pop-over \
           data-original-title='Popover title' \
-          data-content='Full description copy, explaining in more detail'>\
-            Simple click based \
+          data-content='Full description copy, explaining in more detail'\
+          data-content-html='<div class=\"popover-content\">__content__</div><div class=\"popover-info\">__content__</div>'> \
+            Clicky \
         </a>";
     }
 
