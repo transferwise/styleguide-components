@@ -11,14 +11,16 @@ export default function () {
       elementWithPopover = highlightedElement;
       popoverPosition = getPopoverPlacement(popoverOptions);
 
-      if (!popover) {
+      if (!document.body.contains(popover)) {
         popover = getPopover(popoverPosition);
         BODY.appendChild(popover);
       }
 
       popover.innerHTML = getPopoverContent(popoverOptions);
       compose(displayPopover, setPopoverPosition)(popoverPosition);
-    } else throw Error('Invalid element type or options object passed as arguments');
+    } else {
+      throw Error('Invalid element type or options object passed as arguments');
+    }
   }
 
   function getPopover(popoverPlacement) {
@@ -38,7 +40,7 @@ export default function () {
 
     popover.setAttribute(
       'style',
-      `display:block; visibility:visible; top:${offsetY}px; left:${offsetX}px`,
+      `display:block; visibility:visible; top:${offsetY}px; left:${offsetX}px`
     );
   }
 
@@ -294,21 +296,21 @@ export default function () {
   function bindDataToTemplate(template, data) {
     /**
      * \w stands for "word character", usually [A-Za-z0-9_]
-     * * stands for Zero or more times
+     * '*' stands for Zero or more times
      *
      * For example, if the RegEX /(\a+)(\b+)/ was given,
      * parenthesizedSubmatch is the match for \a+
      *
      * Thus, match all the word characters prefixed and suffixed by two __
      * get their parenthesized submatch value and replace them in the @template with
-     * data found under the parenthesized submatch property on the @data object
+     * data found at the parenthesized submatch property on the @data object
      */
     return template.replace(
       /__(\w*)__/g,
       (matchedSubstring, parenthesizedSubmatch) =>
         (Object.prototype.hasOwnProperty.call(data, parenthesizedSubmatch)
           ? data[parenthesizedSubmatch]
-          : ''),
+          : '')
     );
   }
 
