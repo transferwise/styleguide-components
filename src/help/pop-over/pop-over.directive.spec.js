@@ -5,7 +5,8 @@ describe('Popover directive', function() {
       $rootScope,
       $scope,
       $window,
-      element;
+      element,
+      popover;
 
   beforeEach(module('tw.styleguide-components'));
 
@@ -20,19 +21,23 @@ describe('Popover directive', function() {
     beforeEach(function () {
       element = getCompiledDirectiveElement($scope)[0];
       element.click();
+
+      popover = document.querySelector('.popover');
+    });
+
+    afterEach(function() {
+      $window.document.body.removeChild(document.querySelector('.popover'));
     });
 
     it('should append a popover on the body', function () {
-      var popover = document.querySelector('.popover');
-      var bodyChildren = [].slice.call($window.document.body.children);
-      var popoverAppended = bodyChildren.indexOf(popover) >= 0;
+      var popoverAppended = $window.document.body.contains(popover);
       var popoverVisible = !popover.classList.contains('scale-down');
+      var popoverVisibility = popoverAppended && popoverVisible;
 
-      expect(popoverAppended && popoverVisible).toBe(true);
+      expect(popoverVisibility).toBe(true);
     });
 
     it('should have a working custom template', function() {
-      var popover = document.querySelector('.popover');
       var popoverContent = popover.querySelector('.popover-content');
       var popoverInfo = popover.querySelector('.popover-info');
 
@@ -48,12 +53,11 @@ describe('Popover directive', function() {
       });
 
       it('should hide the popover', function () {
-        var popover = document.querySelector('.popover');
-        var bodyChildren = [].slice.call($window.document.body.children);
-        var popoverAppended = bodyChildren.indexOf(popover) >= 0;
-        var popoverInvisible = popover.classList.contains('scale-down');
+        var popoverAppended = $window.document.body.contains(popover);
+        var popoverHidden = popover.classList.contains('scale-down');
+        var popoverNotVisible = popoverAppended && popoverHidden;
 
-        expect(popoverAppended && popoverInvisible).toBe(true);
+        expect(popoverNotVisible).toBe(true);
       });
     });
   });
@@ -64,7 +68,8 @@ describe('Popover directive', function() {
         <a tw-pop-over \
           data-original-title='Popover title' \
           data-content='Full description copy, explaining in more detail'\
-          data-content-html='<div class=\"popover-content\">__content__</div><div class=\"popover-info\">__content__</div>'> \
+          data-content-html='<div class=\"popover-content\">__content__</div> \
+                             <div class=\"popover-info\">__content__</div>'> \
             Clicky \
         </a>";
     }
