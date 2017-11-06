@@ -1,11 +1,11 @@
 'use strict';
 
-fdescribe('TwPopoverService test', function() {
+describe('TwPopoverService test', function() {
   var service = null;
   var $window = null;
 
   var elementWithPopover = " \
-    <a class='popover-element'> \
+    <a class='has-popover'> \
       Show a popover next to this element \
     </a>";
   var popoverOptions = {
@@ -25,18 +25,20 @@ fdescribe('TwPopoverService test', function() {
   beforeEach(inject(function($injector) {
     service = $injector.get('twPopOverService');
     $window = $injector.get('$window');
-  }));
 
-  beforeEach(function() {
-    $window.document.body.innerHTML = '';
-    $window.document.body.insertAdjacentHTML('afterend', elementWithPopover);
-  });
+    $window.document.body.insertAdjacentHTML('beforeend', elementWithPopover);
+  }));
 
   describe('when we show a popover', function() {
     beforeEach(function() {
-      var elementWithPopover = document.querySelector('.popover-element');
+      var elementWithPopover = document.querySelector('.has-popover');
 
       service.showPopover(elementWithPopover, popoverOptions);
+    });
+
+    afterEach(function() {
+      $window.document.body.removeChild(document.querySelector('.has-popover'));
+      $window.document.body.removeChild(document.querySelector('.popover'));
     });
 
     it('should append the popover to the body element', function () {

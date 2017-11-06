@@ -19,7 +19,7 @@ export default function () {
       popover.innerHTML = getPopoverContent(popoverOptions);
       compose(displayPopover, setPopoverPosition)(popoverPosition);
     } else {
-      throw Error('Invalid element type or options object passed as arguments');
+      throw Error('Invalid element type or options object passed as arguments to the @showPopover function');
     }
   }
 

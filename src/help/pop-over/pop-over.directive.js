@@ -1,24 +1,47 @@
 function PopOverController($scope, $element, PopoverService) {
   const ELEMENT = $element[0];
+  const unregisterEventListeners = registerEventListeners();
 
   ELEMENT.setAttribute('tabindex', '0');
   ELEMENT.setAttribute('role', 'button');
   ELEMENT.setAttribute('data-toggle', 'popover');
 
-  ELEMENT.addEventListener('click', ELEMENT_CALLBACK);
+  $scope.$on('$destroy', unregisterEventListeners);
 
-  $scope.$on('$destroy', () => {
-    ELEMENT.removeEventListener('click', ELEMENT_CALLBACK);
-  });
+  function registerEventListeners() {
+    const triggeringEvent = getTriggeringEvent();
+
+    if (triggeringEvent === 'hover') {
+      ELEMENT.addEventListener('mouseover', showPopover);
+      ELEMENT.addEventListener('mouseout', PopoverService.hidePopover);
+    } else {
+      ELEMENT.addEventListener('click', showPopover);
+    }
+
+    return function unregisterListeners() {
+      if (triggeringEvent === 'hover') {
+        ELEMENT.removeEventListener('mouseover', showPopover);
+        ELEMENT.removeEventListener('mouseout', PopoverService.hidePopover);
+      } else {
+        ELEMENT.removeEventListener('click', showPopover);
+      }
+    };
+  }
 
   /**
-   * [ELEMENT_CALLBACK  We need to bake the element callback in order to be able
+   * [showPopover  We need to bake the element callback in order to be able
    *                    to unregister it when the scope is unmounted / destroyed]
    */
-  function ELEMENT_CALLBACK() {
+  function showPopover() {
     const popoverOptions = getElementOptions(ELEMENT);
 
     PopoverService.showPopover(ELEMENT, popoverOptions);
+  }
+
+  function getTriggeringEvent() {
+    const popoverOptions = getElementOptions(ELEMENT);
+
+    return popoverOptions && popoverOptions.trigger;
   }
 }
 
@@ -38,6 +61,9 @@ function getElementOptions(element) {
   }
   if (element.dataset.content) {
     options.content = element.dataset.content;
+  }
+  if (element.dataset.trigger) {
+    options.trigger = element.dataset.trigger;
   }
   if (element.dataset.contentHtml) {
     options.html = element.dataset.contentHtml;
