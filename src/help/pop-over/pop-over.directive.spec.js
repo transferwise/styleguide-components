@@ -1,5 +1,3 @@
-'use strict';
-
 describe('Popover directive', function() {
   var $compile,
       $rootScope,

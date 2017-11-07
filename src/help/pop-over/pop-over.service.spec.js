@@ -1,5 +1,3 @@
-'use strict';
-
 describe('TwPopoverService', function() {
   var service = null,
     $window = null,
