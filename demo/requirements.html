@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Styleguide Components - TransferWise</title>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <script src="lib/jquery.min.js"></script>
+  <script src="lib/angular.min.js"></script>
+  <script src="lib/bootstrap.min.js"></script>
+  <script src="lib/styleguide-components.js"></script>
+
+  <script src="js/requirements.js"></script>
+  <script>
+  angular.module('my-app', ['tw.styleguide-components', 'tw.styleguide.docs']);
+  </script>
+
+  <link type="text/css" rel="stylesheet" href="lib/bootstrap.css" />
+  <!--<link type="text/css" rel="stylesheet"
+    href="http://localhost:9001/dist/css/bootstrap.min.css" />-->
+  <link type="text/css" rel="stylesheet" href="lib/currency-flags.css" />
+  <link type="text/css" rel="stylesheet" href="css/examples.css" />
+
+</head>
+<body ng-app="my-app" class="bg-default">
+  <div class="container" ng-controller="PageController as $ctrl">
+    <div class="panel">
+      <div class="panel-heading">
+        <h2 class="panel-title">Requirements</h2>
+      </div>
+      <div class="panel-body">
+        <p>Fieldsets</p>
+<pre>
+&lt;tw-fieldset
+  legend="<span ng-non-bindable>{{ fieldset.legend }}</span>"
+  fields="fieldset.fields"&gt;
+&lt;/tw-fieldset&gt;
+</pre>
+        <div class="row">
+          <div class="col-sm-6">
+            <tw-fieldset
+              legend="{{ $ctrl.fieldsetBasic.legend }}"
+              fields="$ctrl.fieldsetBasic.fields"
+              model="$ctrl.fieldsetBasicModel">
+            </tw-fieldset>
+          </div>
+          <div class="col-sm-6">
+            <pre>fieldset: {{ $ctrl.fieldsetBasic | json }}</pre>
+            <pre>{{ $ctrl.fieldsetBasicModel | json }}</pre>
+          </div>
+        </div>
+
+        Fieldsets
+        <div class="row">
+          <div class="col-sm-6">
+            <tw-fieldset
+              model="$ctrl.fieldsetBasicModel"
+              requirements="$ctrl.fieldsetBasic">
+            </tw-fieldset>
+          </div>
+          <div class="col-sm-6">
+            {{ $ctrl.fieldsetBasic | json }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
