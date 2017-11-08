@@ -21,7 +21,7 @@
     "copy:bootstrap": "cp node_modules/bootstrap/dist/js/bootstrap.min.js demo/lib/; cp node_modules/bootstrap/dist/css/bootstrap.css demo/lib/",
     "copy:flags": "cp node_modules/currency-flags/dist/currency-flags.css demo/lib/",
     "copy:fonts": "mkdir demo/fonts; cp node_modules/bootstrap/fonts/*.* demo/fonts; cp node_modules/transferwise-iconfont/fonts/*.* demo/fonts",
-    "copy:demo": "mkdir demo/lib; npm run copy:jquery; npm run copy:angular; npm run copy:bootstrap; npm run copy:bootstrap; npm run copy:flags;",
+    "copy:demo": "mkdir demo/lib; npm run copy:jquery; npm run copy:angular; npm run copy:bootstrap; npm run copy:bootstrap; npm run copy:flags; npm run copy:fonts;",
     "copy:ghpages": "cp -R demo/ gh-pages",
     "webpack": "webpack --watch",
     "deploy": "git-directory-deploy --directory demo --branch gh-pages --message 'Update docs'"

@@ -3,7 +3,6 @@ describe('Popover directive', function() {
       $rootScope,
       $scope,
       $window,
-      element,
       popover;
 
   beforeEach(module('tw.styleguide-components'));
@@ -17,8 +16,8 @@ describe('Popover directive', function() {
 
   describe('when we click on a popover trigger', function () {
     beforeEach(function () {
-      element = getCompiledDirectiveElement($scope)[0];
-      element.click();
+      var promotedElement = getCompiledDirectiveElement($scope)[0];
+      promotedElement.click();
 
       popover = document.querySelector('.popover');
     });
@@ -39,8 +38,8 @@ describe('Popover directive', function() {
       var popoverContent = popover.querySelector('.popover-content');
       var popoverInfo = popover.querySelector('.popover-info');
 
-      popoverContent = popoverContent.innerHTML.trim();
-      popoverInfo = popoverInfo.innerHTML.trim();
+      popoverContent = popoverContent && popoverContent.innerHTML.trim();
+      popoverInfo = popoverInfo && popoverInfo.innerHTML.trim();
 
       expect(popoverContent === popoverInfo).toBe(true);
     })

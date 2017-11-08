@@ -1,6 +1,6 @@
 function PopOverController($scope, $element, PopoverService) {
   const ELEMENT = $element[0];
-  const unregisterEventListeners = registerEventListeners();
+  const unregisterEventListeners = registerEventListeners(getTriggeringEvent());
 
   ELEMENT.setAttribute('tabindex', '0');
   ELEMENT.setAttribute('role', 'button');
@@ -8,9 +8,7 @@ function PopOverController($scope, $element, PopoverService) {
 
   $scope.$on('$destroy', unregisterEventListeners);
 
-  function registerEventListeners() {
-    const triggeringEvent = getTriggeringEvent();
-
+  function registerEventListeners(triggeringEvent) {
     if (triggeringEvent === 'hover') {
       ELEMENT.addEventListener('mouseover', showPopover);
       ELEMENT.addEventListener('mouseout', PopoverService.hidePopover);
@@ -30,14 +28,18 @@ function PopOverController($scope, $element, PopoverService) {
 
   /**
    * [showPopover  We need to bake the element callback in order to be able
-   *                    to unregister it when the scope is unmounted / destroyed]
+   *               to unregister it when the scope is unmounted / destroyed]
    */
   function showPopover() {
-    const popoverOptions = getElementOptions(ELEMENT);
-
-    PopoverService.showPopover(ELEMENT, popoverOptions);
+    return PopoverService.showPopover(ELEMENT, getElementOptions(ELEMENT));
   }
 
+  /**
+   * [getTriggeringEvent Get the triggering event that was passed to this
+   *                     directive via data attributes, i.e. as a value
+   *                     ['click' | 'hover'] in the data-trigger attribute]
+   * @return {String}   [Triggering event]
+   */
   function getTriggeringEvent() {
     const popoverOptions = getElementOptions(ELEMENT);
 
@@ -45,6 +47,13 @@ function PopOverController($scope, $element, PopoverService) {
   }
 }
 
+/**
+ * [getElementOptions             Extract all the values passed through data
+ *                                attributes to the popover directive]
+ * @param  {HTMLElement} element [Element for which we want to extract the values
+ *                                from predefined data attributes]
+ * @return {Object}              [Map of data attributes and their values]
+ */
 function getElementOptions(element) {
   const options = {
     placement: 'right',

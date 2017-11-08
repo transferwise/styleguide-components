@@ -3,8 +3,8 @@ describe('TwPopoverService', function() {
     $window = null,
     popover = null,
 
-    elementWithPopover = " \
-      <a class='has-popover'> \
+    promotedElementTemplate = " \
+      <a class='promoted-element'> \
         Show a popover next to this element \
       </a>",
     popoverOptions = {
@@ -28,14 +28,22 @@ describe('TwPopoverService', function() {
 
   describe('when we show a popover', function() {
     beforeEach(function() {
-      $window.document.body.insertAdjacentHTML('beforeend', elementWithPopover);
+      /**
+       * Insert the element, for which we want to display the popover, as the
+       * last child of the body tag
+       */
+      $window.document.body.insertAdjacentHTML('beforeend', promotedElementTemplate);
 
-      service.showPopover(document.querySelector('.has-popover'), popoverOptions);
+      /**
+       * Display the popover for the .promoted-element with the @popoverOptions
+       */
+      service.showPopover(document.querySelector('.promoted-element'), popoverOptions);
+
       popover = document.querySelector('.popover');
     });
 
     afterEach(function() {
-      $window.document.body.removeChild(document.querySelector('.has-popover'));
+      $window.document.body.removeChild(document.querySelector('.promoted-element'));
       $window.document.body.removeChild(document.querySelector('.popover'));
     });
 
@@ -48,21 +56,24 @@ describe('TwPopoverService', function() {
     });
 
     it('should have the correct title', function() {
-      var popoverTitle = popover.querySelector('.popover-title');
+      var popoverTitleElement = popover.querySelector('.popover-title');
+      var popoverTitle = popoverTitleElement && popoverTitleElement.innerHTML.trim();
 
-      expect(popoverTitle.innerHTML).toBe(popoverOptions.title);
+      expect(popoverTitle).toBe(popoverOptions.title);
     });
 
     it('should have the correct content', function() {
-      var popoverTitle = popover.querySelector('.popover-content');
+      var popoverContentElement = popover.querySelector('.popover-content');
+      var popoverContent = popoverContentElement && popoverContentElement.innerHTML.trim();
 
-      expect(popoverTitle.innerHTML.trim()).toBe(popoverOptions.content);
+      expect(popoverContent).toBe(popoverOptions.content);
     });
 
     it('should work with a custom template', function() {
-      var popoverInfo = popover.querySelector('.popover-info');
+      var popoverInfoElement = popover.querySelector('.popover-info');
+      var popoverInfo = popoverInfoElement && popoverInfoElement.innerHTML.trim();
 
-      expect(popoverInfo.innerHTML.trim()).toBe(popoverOptions.info);
+      expect(popoverInfo).toBe(popoverOptions.info);
     });
 
     describe('when we hide a popover', function() {
