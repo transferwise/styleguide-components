@@ -1,48 +1,60 @@
 [
-    {
-      "type": "Ach login",
-      "label": "Log in to a US bank",
-      "description": "Description of this option. Perhaps further information that explains when this option can be used.",
-      "fields": [
-        {
-          "name": "User ID",
-          "key": "userId",
-          "type": "text",
-          "required": true,
-          "displayFormat": null,
-          "example": null,
-          "minLength": null,
-          "maxLength": null,
-          "validationRegexp": null,
-          "validationAsync": null,
-          "valuesAllowed": []
-        },
-        {
-            "name": "Password",
-            "key": "password",
-            "type": "password",
-            "required": true,
-            "displayFormat": null,
-            "example": null,
-            "minLength": null,
-            "maxLength": null,
-            "validationRegexp": null,
-            "validationAsync": null,
-            "valuesAllowed": []
-        },
-        {
-          "name": "Captcha",
-          "key": "captcha",
-          "type": "text",
-          "required": true,
-          "displayFormat": null,
-          "example": null,
-          "minLength": null,
-          "maxLength": null,
-          "valuesAllowed": [],
-          "helpImage": "/demo/images/captcha.png"
-        }
-      ]
-    }
-  ]
+  {
+    "type": "Ach login",
+    "label": "Log in to a US bank",
+    "description": "Description of this option. Perhaps further information that explains when this option can be used.",
+    "fields": [
+      {
+        "name": "User ID",
+        "key": "userId",
+        "type": "text",
+        "required": true,
+        "displayFormat": null,
+        "example": null,
+        "minLength": null,
+        "maxLength": null,
+        "validationRegexp": null,
+        "validationAsync": null,
+        "valuesAllowed": []
+      },
+      {
+        "name": "Password",
+        "key": "password",
+        "type": "password",
+        "required": true,
+        "displayFormat": null,
+        "example": null,
+        "minLength": null,
+        "maxLength": null,
+        "validationRegexp": null,
+        "validationAsync": null,
+        "valuesAllowed": []
+      },
+      {
+        "name": "Captcha",
+        "key": "captcha",
+        "type": "text",
+        "required": true,
+        "displayFormat": null,
+        "example": null,
+        "minLength": null,
+        "maxLength": null,
+        "valuesAllowed": [],
+        "helpImage": "/demo/images/captcha.png"
+      },
+      {
+        "name": "2 factor or something",
+        "key": "twoFactor",
+        "type": "text",
+        "required": true,
+        "displayFormat": null,
+        "example": null,
+        "minLength": null,
+        "maxLength": null,
+        "valuesAllowed": [],
+        "helpImage": null
+      }
+    ]
+  }
+]
   

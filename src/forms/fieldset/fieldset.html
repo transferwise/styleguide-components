@@ -11,11 +11,6 @@
         ng-class="{
           'has-error': $ctrl.errorMessages[field.key]
         }">
-        <img
-          ng-if="field.helpImage && field.type !== 'upload'"
-          ng-src="{{field.helpImage}}"
-          alt="{{field.name}}"
-          class="thumbnail m-b-1" />
         <label class="control-label"
           ng-if="field.type !== 'upload'">
           {{field.name}}
@@ -65,15 +60,16 @@
           </div>
         </div>
 
+        <img
+          ng-if="field.helpImage && field.type !== 'upload'"
+          ng-src="{{field.helpImage}}"
+          alt="{{field.name}}"
+          class="thumbnail m-t-1 m-b-0" />
+
         <!-- Start old format -->
         <div class="row" ng-if="field.group">
           <div class="col-xs-{{field.columns}}"
             ng-repeat="fieldSection in field.group track by $index">
-            <img
-              ng-if="fieldSection.helpImage && fieldSection.type !== 'upload'"
-              ng-src="fieldSection.helpImage"
-              alt="{{field.name}}"
-              class="thumbnail m-b-1" />
             <tw-form-control
               name="{{fieldSection.key}}"
               label="{{field.name}}"
@@ -115,6 +111,11 @@
               ng-class="{'alert-detach': fieldSection.type === 'date' || fieldSection.type === 'upload'}">
               {{fieldSection.tooltip}}
             </div>
+            <img
+              ng-if="fieldSection.helpImage && fieldSection.type !== 'upload'"
+              ng-src="fieldSection.helpImage"
+              alt="{{field.name}}"
+              class="thumbnail m-t-1 m-b-0" />
           </div>
           <!-- End old format -->
         </div>
