@@ -46,7 +46,7 @@ export default function () {
    *                                    will append the binded content to the
    *                                    template]
    * @param  {String} placement        [Can be either 'top', 'right', 'bottom',
-   *                                    'left']
+   *                                    'left', 'left-top', 'right-top']
    * @return {HTMLElement}             [Popover container]
    */
   function getPopover(placement) {
@@ -65,7 +65,8 @@ export default function () {
    * [setPopoverPosition        Based on the @placement, we compute and set the
    *                            popover's coordinates relative to its pointing
    *                            element]
-   * @param {String} placement [Can be either 'top', 'right', 'bottom', 'left']
+   * @param {String} placement [Can be either 'top', 'right', 'bottom', 'left',
+   *                            'left-top', 'right-top']
    */
   function setPopoverPosition(placement) {
     popover.setAttribute('style', 'display:block; visibility:hidden;');
@@ -83,7 +84,8 @@ export default function () {
    *                             it checks if the @placement is not causing the
    *                             popover to overflow. If it's causing it to
    *                             overflow, we switch the placement]
-   * @param  {String} placement [Can be either 'top', 'right', 'bottom', 'left']
+   * @param  {String} placement [Can be either 'top', 'right', 'bottom', 'left',
+   *                             'left-top', 'right-top']
    * @return {Object}           [Popover coordinates]
    */
   function getPopoverPosition(placement) {
@@ -95,11 +97,12 @@ export default function () {
   /**
    * [updatePopoverClass         Update the CSS class that denotes the
    *                             @placement of the @popover]
-   * @param  {String} placement [Can be either 'top', 'right', 'bottom', 'left']
+   * @param  {String} placement [Can be either 'top', 'right', 'bottom', 'left',
+   *                             'left-top', 'right-top']
    * @return {String}           [Popover's new placement]
    */
   function updatePopoverClass(placement) {
-    const popoverPlacements = ['left', 'right', 'bottom', 'top'];
+    const popoverPlacements = ['top', 'right', 'bottom', 'left', 'left-top', 'right-top'];
 
     popover.classList.remove(...popoverPlacements);
     popover.classList.add(placement);
@@ -110,7 +113,8 @@ export default function () {
   /**
    * [checkPopoverPlacement      Check if the @placement is not making the
    *                             @popover overflow the viewport]
-   * @param  {String} placement [Can be either 'top', 'right', 'bottom', 'left']
+   * @param  {String} placement [Can be either 'top', 'right', 'bottom', 'left',
+   *                             'left-top', 'right-top']
    * @return {String}           [Popover's new placement]
    */
   function checkPopoverPlacement(placement) {
@@ -138,8 +142,16 @@ export default function () {
       placement = 'left';
     }
 
+    if (placement === 'right-top' && overflowsRight) {
+      placement = 'left-top';
+    }
+
     if (placement === 'left' && overflowsLeft) {
       placement = 'right';
+    }
+
+    if (placement === 'left-top' && overflowsLeft) {
+      placement = 'right-top';
     }
 
     return placement;
@@ -148,7 +160,8 @@ export default function () {
   /**
    * [getPopoverCoordinates      Computes and returns the popover coordinates
    *                             relative to the pointing element]
-   * @param  {String} placement [Can be either 'top', 'right', 'bottom', 'left']
+   * @param  {String} placement [Can be either 'top', 'right', 'bottom', 'left',
+   *                             'left-top', 'right-top']
    * @return {Object}           [Popover's coordinates]
    */
   function getPopoverCoordinates(placement) {
@@ -191,7 +204,7 @@ export default function () {
       };
     }
 
-    if (placement === 'right') {
+    if (placement === 'right' || placement === 'right-top') {
       const popoverOffsetX = elementOffset.offsetX +
         elementOffsetDimensions.offsetWidth + POPOVER_SPACING;
       const popoverOffsetY =
@@ -219,7 +232,7 @@ export default function () {
       };
     }
 
-    if (placement === 'left') {
+    if (placement === 'left' || placement === 'left-top') {
       const popoverOffsetX = elementOffset.offsetX -
         popoverOffsetDimensions.offsetWidth - POPOVER_SPACING;
       const popoverOffsetY =
