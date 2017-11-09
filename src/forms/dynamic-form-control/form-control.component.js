@@ -19,6 +19,7 @@ const FormControl = {
     uploadAccept: '@',
     uploadIcon: '@',
     uploadTooLargeMessage: '@',
+    uploadHelpImage: '@',
     options: '<',
     ngModel: '=',
     ngChange: '&',

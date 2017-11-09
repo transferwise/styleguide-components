@@ -11,6 +11,11 @@
         ng-class="{
           'has-error': $ctrl.errorMessages[field.key]
         }">
+        <img
+          ng-if="field.helpImage && field.type !== 'upload'"
+          ng-src="{{field.helpImage}}"
+          alt="{{field.name}}"
+          class="thumbnail m-b-0" />
         <label class="control-label"
           ng-if="field.type !== 'upload'">
           {{field.name}}
@@ -27,6 +32,7 @@
             upload-accept="{{field.accept}}"
             upload-icon="{{field.icon}}"
             upload-too-large-message="{{field.tooLargeMessage}}"
+            upload-help-image="{{field.helpImage}}"
             options="field.valuesAllowed"
             upload-options="$ctrl.uploadOptions"
             ng-model="$ctrl.model[field.key]"
@@ -63,6 +69,11 @@
         <div class="row" ng-if="field.group">
           <div class="col-xs-{{field.columns}}"
             ng-repeat="fieldSection in field.group track by $index">
+            <img
+              ng-if="fieldSection.helpImage && fieldSection.type !== 'upload'"
+              ng-src="fieldSection.helpImage"
+              alt="{{field.name}}"
+              class="thumbnail m-b-0" />
             <tw-form-control
               name="{{fieldSection.key}}"
               label="{{field.name}}"
@@ -73,6 +84,7 @@
               upload-accept="{{fieldSection.accept}}"
               upload-icon="{{fieldSection.icon}}"
               upload-too-large-message="{{fieldSection.tooLargeMessage}}"
+              upload-help-image="{{fieldSection.helpImage}}"
               options="fieldSection.valuesAllowed"
               upload-options="$ctrl.uploadOptions"
               ng-model="$ctrl.model[fieldSection.key]"

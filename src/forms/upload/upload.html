@@ -9,7 +9,12 @@
   <div class="droppable-default-card" aria-hidden="{{$ctrl.isDone}}">
     <div class="droppable-card-content">
       <div class="m-b-2">
-        <span class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></span>
+        <img
+          ng-show="$ctrl.helpImage"
+          ng-src="{{$ctrl.helpImage}}"
+          alt="{{$ctrl.label}}"
+          class="img-responsive text-xs-center" />
+        <span ng-show="!$ctrl.helpImage" class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></span>
       </div>
       <h4 class="m-b-1" ng-if="$ctrl.label || $ctrl.description">
         {{$ctrl.label || $ctrl.description}}

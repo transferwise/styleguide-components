@@ -9,6 +9,7 @@ const Upload = {
     ngModel: '=',
     name: '@',
     icon: '@',
+    helpImage: '@',
     label: '@',
     placeholder: '@',
     description: '@', // DEPRECATED for label

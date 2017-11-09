@@ -10,7 +10,8 @@
             "key": "frontId",
             "type": "upload",
             "required": true,
-            "placeholder": "Make sure the image is well lit and in focus. Max 1MB."
+            "placeholder": "Make sure the image is well lit and in focus. Max 1MB.",
+            "helpImage": "/demo/images/mike.jpg"
           }
         ]
       },
