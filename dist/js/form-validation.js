@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -87,7 +87,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _domService = __webpack_require__(9);
+var _domService = __webpack_require__(10);
 
 var _domService2 = _interopRequireDefault(_domService);
 
@@ -102,29 +102,23 @@ exports.default = _angular2.default.module('tw.styleguide.services.dom', []).ser
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+// Polyfill for IE 9, 10, 11 CustomEvents, see https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent
+(function initCustomEventPolyfill() {
+  if (typeof window.CustomEvent === 'function') {
+    return false;
+  }
 
-var _angular = __webpack_require__(0);
+  function CustomEvent(event, params) {
+    var evt = document.createEvent('CustomEvent');
+    params = params || { bubbles: false, cancelable: false, detail: undefined };
+    evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+    return evt;
+  }
 
-var _angular2 = _interopRequireDefault(_angular);
-
-var _date = __webpack_require__(8);
-
-var _date2 = _interopRequireDefault(_date);
-
-var _currency = __webpack_require__(6);
-
-var _currency2 = _interopRequireDefault(_currency);
-
-var _dom = __webpack_require__(1);
-
-var _dom2 = _interopRequireDefault(_dom);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _angular2.default.module('tw.styleguide.services', [_date2.default, _currency2.default, _dom2.default]).name;
+  CustomEvent.prototype = window.Event.prototype;
+  window.CustomEvent = CustomEvent;
+  return true;
+})();
 
 /***/ }),
 /* 3 */
@@ -141,21 +135,25 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _formValidation = __webpack_require__(14);
+var _date = __webpack_require__(9);
 
-var _formValidation2 = _interopRequireDefault(_formValidation);
+var _date2 = _interopRequireDefault(_date);
 
-var _controlValidation = __webpack_require__(12);
+var _currency = __webpack_require__(7);
 
-var _controlValidation2 = _interopRequireDefault(_controlValidation);
+var _currency2 = _interopRequireDefault(_currency);
+
+var _dom = __webpack_require__(1);
+
+var _dom2 = _interopRequireDefault(_dom);
+
+var _requirements = __webpack_require__(11);
+
+var _requirements2 = _interopRequireDefault(_requirements);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import AsyncValidation from './async-validation/';
-
-exports.default = _angular2.default.module('tw.styleguide.validation', [_formValidation2.default, _controlValidation2.default
-// ,AsyncValidation
-]).name;
+exports.default = _angular2.default.module('tw.styleguide.services', [_date2.default, _currency2.default, _dom2.default, _requirements2.default]).name;
 
 /***/ }),
 /* 4 */
@@ -172,20 +170,55 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _validation = __webpack_require__(3);
+var _formValidation = __webpack_require__(17);
+
+var _formValidation2 = _interopRequireDefault(_formValidation);
+
+var _controlValidation = __webpack_require__(15);
+
+var _controlValidation2 = _interopRequireDefault(_controlValidation);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import AsyncValidation from './async-validation/';
+
+exports.default = _angular2.default.module('tw.styleguide.validation', [_formValidation2.default, _controlValidation2.default
+// ,AsyncValidation
+]).name;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+__webpack_require__(2);
+
+var _validation = __webpack_require__(4);
 
 var _validation2 = _interopRequireDefault(_validation);
 
-var _services = __webpack_require__(2);
+var _services = __webpack_require__(3);
 
 var _services2 = _interopRequireDefault(_services);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.form-validation', [_validation2.default, _services2.default]).name; /* This module is deprecated, but in use in several places */
+/* This module is deprecated, but in use in several places */
+
+exports.default = _angular2.default.module('tw.form-validation', [_validation2.default, _services2.default]).name;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -235,7 +268,7 @@ function CurrencyService() {
 exports.default = CurrencyService;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -249,7 +282,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _currencyService = __webpack_require__(5);
+var _currencyService = __webpack_require__(6);
 
 var _currencyService2 = _interopRequireDefault(_currencyService);
 
@@ -258,7 +291,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.services.currency', []).service('TwCurrencyService', _currencyService2.default).name;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -267,6 +300,8 @@ exports.default = _angular2.default.module('tw.styleguide.services.currency', []
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 function DateService() {
   var _this = this;
@@ -349,6 +384,52 @@ function DateService() {
     return date;
   };
 
+  this.getDatePartsFromIso = function (isoDate) {
+    var year = parseInt(isoDate.substr(0, 4), 10);
+    var month = parseInt(isoDate.substr(5, 2), 10) - 1;
+    var day = parseInt(isoDate.substr(8, 2), 10);
+    var hours = parseInt(isoDate.substr(11, 2), 10) || 0;
+    var minutes = parseInt(isoDate.substr(14, 2), 10) || 0;
+    var seconds = parseInt(isoDate.substr(17, 2), 10) || 0;
+    var hoursOffset = parseInt(isoDate.substr(20, 2), 10) || 0;
+    var minutesOffset = parseInt(isoDate.substr(23, 2), 10) || 0;
+
+    var isOffsetNegative = isoDate.substr(19, 1) === '-';
+    if (isOffsetNegative) {
+      hoursOffset *= -1;
+      minutesOffset *= -1;
+    }
+
+    return [year, month, day, hours, minutes, seconds, hoursOffset, minutesOffset];
+  };
+
+  this.isIsoStringValid = function (isoDate) {
+    var dateSection = '[0-9]{4}-[0-9]{2}-[0-9]{2}';
+    var timeSection = 'T[0-9]{2}:[0-9]{2}:[0-9]{2}';
+    var zoneSection = '(Z|[+,-][0-9]{2}(:[0-9]{2})?)';
+    var regex = new RegExp('^' + dateSection + '(' + timeSection + zoneSection + ')?$');
+    return regex.test(isoDate);
+  };
+
+  this.getUTCDateFromIso = function (isoDate) {
+    if (!_this.isIsoStringValid(isoDate)) {
+      return null;
+    }
+
+    var _getDatePartsFromIso = _this.getDatePartsFromIso(isoDate),
+        _getDatePartsFromIso2 = _slicedToArray(_getDatePartsFromIso, 8),
+        year = _getDatePartsFromIso2[0],
+        month = _getDatePartsFromIso2[1],
+        day = _getDatePartsFromIso2[2],
+        hours = _getDatePartsFromIso2[3],
+        minutes = _getDatePartsFromIso2[4],
+        seconds = _getDatePartsFromIso2[5],
+        hoursOffset = _getDatePartsFromIso2[6],
+        minutesOffset = _getDatePartsFromIso2[7];
+
+    return _this.getUTCDateFromParts(year, month, day, hours + hoursOffset, minutes + minutesOffset, seconds);
+  };
+
   // Sunday is first day of the week in JS
   this.getDayNamesForLocale = function (locale, format) {
     var days = [];
@@ -360,9 +441,19 @@ function DateService() {
   };
 
   this.getDayNameForLocale = function (dayOfWeek, locale, format) {
+    var defaultDayName = void 0;
     var language = getLanguageFromLocale(locale);
-    if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language] && (format !== 'short' || language === 'ja')) {
-      return DEFAULT_DAY_NAMES_BY_LANGUAGE[language][dayOfWeek];
+    if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language]) {
+      defaultDayName = DEFAULT_DAY_NAMES_BY_LANGUAGE[language][dayOfWeek];
+    }
+
+    if (defaultDayName) {
+      if (format === 'short') {
+        return defaultDayName.substr(0, 3);
+      } else if (format === 'narrow') {
+        return defaultDayName.substr(0, 1);
+      }
+      return defaultDayName;
     }
 
     var validLocale = getValidLocale(locale);
@@ -428,9 +519,11 @@ function DateService() {
   };
 
   this.getLocaleTimeString = function (date, locale) {
+    return _this.getTimeString(date.getHours(), date.getMinutes(), date.getSeconds(), locale);
+  };
+
+  this.getTimeString = function (hours, minutes, seconds, locale) {
     var lang = getLanguageFromLocale(locale);
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
 
     if (hours < 10) {
       hours = '0' + hours;
@@ -484,70 +577,84 @@ function DateService() {
     return [dateName, monthName, yearName].join(delimiter);
   };
 
-  this.getLocaleFullDate = function (date, locale) {
-    var dateString = _this.getYearMonthDatePresentation(date.getFullYear(), date.getMonth(), date.getDate(), locale);
-
-    var weekdayName = _this.getDayNameForLocale(date.getDay(), locale, 'long').trim();
-    var lang = getLanguageFromLocale(locale);
-
-    if (lang === 'ja') {
-      return dateString + ' (' + weekdayName + ')';
-    }
-    return weekdayName + ', ' + dateString;
-  };
-
   this.getLocaleNow = function () {
     return new Date();
   };
 
-  this.getLocaleDateString = function (date, locale, short) {
+  this.getUTCNow = function () {
+    var now = new Date();
+    return _this.getUTCDateFromParts(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+  };
+
+  this.getLocaleDateString = function (date, locale, format) {
+    // Check that the date exists
+    if (!date.getFullYear) {
+      return date;
+    }
+
+    // Initialize variables
+    var now = _this.getLocaleNow();
+
+    return _this.getDateString(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getDay(), locale, date - now, now.getFullYear(), format);
+  };
+
+  this.getUTCDateString = function (date, locale, format) {
     // Check that the date exists
     if (!date) {
       return date;
     }
 
-    // Initialize variables
-    var year = date.getFullYear();
-    var month = date.getMonth();
-    var dayOfMonth = date.getDate();
-    var dayOfWeek = date.getDay();
+    var now = _this.getUTCNow();
 
-    var now = _this.getLocaleNow();
+    return _this.getDateString(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCDay(), locale, date - now, now.getUTCFullYear(), format);
+  };
+
+  this.getDateString = function (year, month, day, hours, minutes, seconds, dayOfWeek, locale, offset, currentYear, format) {
     var fourtyEightHours = 48 * 60 * 60 * 1000;
     var eightDays = 8 * 24 * 60 * 60 * 1000;
 
-    var hasTime = Math.abs(now - date) < fourtyEightHours;
+    var hasTime = Math.abs(offset) < fourtyEightHours && format !== 'long';
     var hasDate = !hasTime;
-    var hasWeekday = Math.abs(now - date) < eightDays;
-    var hasMonth = !hasWeekday;
-    var hasYear = !hasWeekday && now.getFullYear() !== year;
+    var hasWeekday = Math.abs(offset) < eightDays || format === 'long';
+    var hasMonth = !hasWeekday || format === 'long';
+    var hasYear = !hasWeekday && currentYear !== year || format === 'long';
 
     var yearName = hasYear ? getYearName(year, locale) : '';
-    var monthName = hasMonth ? _this.getMonthNameForLocale(month, locale, short ? 'short' : 'long') : '';
-    var dateName = hasDate ? getDateName(dayOfMonth, locale) : '';
-    var weekdayName = hasWeekday ? _this.getDayNameForLocale(dayOfWeek, locale, short ? 'short' : 'long') : '';
-    var timeName = hasTime ? _this.getLocaleTimeString(date, locale) : '';
+    var monthName = hasMonth ? _this.getMonthNameForLocale(month, locale, format === 'short' ? 'short' : 'long') : '';
+    var dateName = hasDate ? getDateName(day, locale) : '';
+    var weekdayName = hasWeekday ? _this.getDayNameForLocale(dayOfWeek, locale, format === 'short' ? 'short' : 'long') : '';
+    var timeName = hasTime ? _this.getTimeString(hours, minutes, seconds, locale) : '';
 
+    return _this.combineDateParts(yearName, monthName, dateName, timeName, weekdayName, locale);
+  };
+
+  this.combineDateParts = function (yearName, monthName, dateName, timeName, dayName, locale) {
     var lang = getLanguageFromLocale(locale);
     var delimiter = getDelimiter(lang);
 
     var dateString = void 0;
+
     if (_this.isYearBeforeMonth(locale)) {
       dateString = [yearName, monthName, dateName].join(delimiter).trim();
     } else if (_this.isMonthBeforeDay(locale)) {
       dateString = [monthName, dateName].join(delimiter).trim();
-      if (hasYear) {
+      if (yearName) {
         dateString += ', ' + yearName;
       }
     } else {
       dateString = [dateName, monthName, yearName].join(delimiter).trim();
     }
 
-    if (hasWeekday) {
+    if (dayName) {
       if (lang === 'ja') {
-        return (dateString + ' ' + timeName + ' (' + weekdayName + ')').trim();
+        return (dateString + ' ' + timeName + ' (' + dayName + ')').trim();
       }
-      dateString = (weekdayName + ' ' + dateString).trim();
+      // For longer dates use a comma
+      if (monthName || yearName) {
+        dateString = (dayName + ', ' + dateString).trim();
+      } else {
+        dateString = (dayName + ' ' + dateString).trim();
+      }
     }
     dateString = dateString + ' ' + timeName;
 
@@ -617,7 +724,7 @@ function DateService() {
 
   function getLanguageFromLocale(locale) {
     if (!locale) {
-      return null;
+      return 'en';
     }
     return locale.substring(0, 2);
   }
@@ -688,7 +795,7 @@ function DateService() {
 exports.default = DateService;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -702,7 +809,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _dateService = __webpack_require__(7);
+var _dateService = __webpack_require__(8);
 
 var _dateService2 = _interopRequireDefault(_dateService);
 
@@ -711,7 +818,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.services.date', []).service('TwDateService', _dateService2.default).name;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -775,7 +882,152 @@ function DomService() {
 exports.default = DomService;
 
 /***/ }),
-/* 10 */
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _requirementsService = __webpack_require__(12);
+
+var _requirementsService2 = _interopRequireDefault(_requirementsService);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.styleguide.services.requirements', []).service('TwRequirementsService', _requirementsService2.default).name;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function RequirementsService() {
+  var _this = this;
+
+  this.prepRequirements = function (types) {
+    types.forEach(function (type) {
+      _this.prepFields(type.fields);
+    });
+  };
+
+  this.prepFields = function (fields, model, validationMessages) {
+    if (!fields) {
+      return;
+    }
+    fields.forEach(function (field) {
+      if (field.group) {
+        field.group.forEach(function (fieldSection) {
+          if (fieldSection.refreshRequirementsOnChange) {
+            field.refreshRequirementsOnChange = true;
+          }
+          _this.prepRegExp(fieldSection);
+          _this.prepValuesAsync(fieldSection, model);
+          _this.prepValuesAllowed(fieldSection);
+          _this.prepValidationMessages(fieldSection, validationMessages);
+        });
+
+        if (field.group.length) {
+          field.key = field.key || field.group[0].key;
+          field.type = field.type || field.group[0].type;
+        }
+      } else {
+        _this.prepRegExp(field);
+        _this.prepValuesAsync(field, model);
+        _this.prepValuesAllowed(field);
+        _this.prepValidationMessages(field, validationMessages);
+      }
+    });
+  };
+
+  this.prepRegExp = function (field) {
+    if (field.validationRegexp) {
+      try {
+        field.validationRegexp = new RegExp(field.validationRegexp);
+      } catch (ex) {
+        // eslint-disable-next-line no-console
+        console.warn('API regexp is invalid');
+        field.validationRegexp = false;
+      }
+    } else {
+      field.validationRegexp = false;
+    }
+  };
+
+  this.prepValuesAsync = function (field, model) {
+    if (!field.valuesAsync) {
+      return;
+    }
+    var postData = {};
+    if (field.valuesAsync.params && field.valuesAsync.params.length) {
+      postData = _this.getParamValuesFromModel(model, field.valuesAsync.params);
+    }
+
+    _this.fetchValuesAsync(field, postData).catch(function () {
+      return (
+        // Retry once on failure
+        _this.fetchValuesAsync(field, postData)
+      );
+    });
+  };
+
+  this.fetchValuesAsync = function (field, postData) {
+    return _this.$http.post(field.valuesAsync.url, postData).then(function (response) {
+      field.valuesAllowed = response.data;
+      _this.prepValuesAllowed(field);
+    });
+  };
+
+  this.prepValuesAllowed = function (field) {
+    if (!_angular2.default.isArray(field.valuesAllowed)) {
+      return;
+    }
+    field.valuesAllowed.forEach(function (valueAllowed) {
+      valueAllowed.value = valueAllowed.value || valueAllowed.key;
+      valueAllowed.label = valueAllowed.label || valueAllowed.name;
+    });
+  };
+
+  this.getParamValuesFromModel = function (model, params) {
+    var data = {};
+    params.forEach(function (param) {
+      if (model[param.key]) {
+        data[param.parameterName] = model[param.key];
+      } else if (param.required) {
+        // TODO Problem, parameter is required, but data is missing.
+      }
+    });
+    return data;
+  };
+
+  this.prepValidationMessages = function (field, validationMessages) {
+    field.validationMessages = field.validationMessages ? field.validationMessages : validationMessages;
+  };
+}
+
+exports.default = RequirementsService;
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -841,7 +1093,7 @@ ValidationController.$inject = ['$scope', '$element', 'TwDomService'];
 exports.default = ValidationController;
 
 /***/ }),
-/* 11 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -851,7 +1103,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _controlValidationController = __webpack_require__(10);
+var _controlValidationController = __webpack_require__(13);
 
 var _controlValidationController2 = _interopRequireDefault(_controlValidationController);
 
@@ -870,7 +1122,7 @@ function TwValidation() {
 exports.default = TwValidation;
 
 /***/ }),
-/* 12 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -884,7 +1136,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _controlValidationDirective = __webpack_require__(11);
+var _controlValidationDirective = __webpack_require__(14);
 
 var _controlValidationDirective2 = _interopRequireDefault(_controlValidationDirective);
 
@@ -897,7 +1149,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.stylguide.validation.control', [_dom2.default]).directive('twValidation', _controlValidationDirective2.default).name;
 
 /***/ }),
-/* 13 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -953,7 +1205,7 @@ FormValidation.$inject = ['TwDomService'];
 exports.default = FormValidation;
 
 /***/ }),
-/* 14 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -967,7 +1219,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _formValidationDirective = __webpack_require__(13);
+var _formValidationDirective = __webpack_require__(16);
 
 var _formValidationDirective2 = _interopRequireDefault(_formValidationDirective);
 
