@@ -1,9 +1,9 @@
 import angular from 'angular';
 
 function RequirementsService() {
-  this.prepRequirements = (types) => {
-    types.forEach((type) => {
-      this.prepFields(type.fields);
+  this.prepRequirements = (alternatives) => {
+    alternatives.forEach((alternative) => {
+      this.prepFields(alternative.fields);
     });
   };
 
@@ -11,29 +11,69 @@ function RequirementsService() {
     if (!fields) {
       return;
     }
-    fields.forEach((field) => {
-      if (field.group) {
-        field.group.forEach((fieldSection) => {
-          if (fieldSection.refreshRequirementsOnChange) {
-            field.refreshRequirementsOnChange = true;
-          }
-          this.prepRegExp(fieldSection);
-          this.prepValuesAsync(fieldSection, model);
-          this.prepValuesAllowed(fieldSection);
-          this.prepValidationMessages(fieldSection, validationMessages);
-        });
-
-        if (field.group.length) {
-          field.key = field.key || field.group[0].key;
-          field.type = field.type || field.group[0].type;
-        }
-      } else {
-        this.prepRegExp(field);
-        this.prepValuesAsync(field, model);
-        this.prepValuesAllowed(field);
-        this.prepValidationMessages(field, validationMessages);
+    const isArrayForm = Array.isArray(fields);
+    // const preparedFields = {};
+    const preparedFields = [];
+    if (isArrayForm) {
+      fields.forEach((field) => {
+        preparedFields.push(this.prepField(field, model, validationMessages));
+        // preparedFields[field.key] = this.prepField(field, model, validationMessages);
+      });
+    } else {
+      for (const key in fields) {
+        const field = fields[key];
+        field.key = key;
+        preparedFields.push(this.prepField(field, model, validationMessages));
+        // preparedFields[key] = this.prepField(field, model, validationMessages);
       }
-    });
+    }
+    return preparedFields;
+  };
+
+  this.prepField = (field, model, validationMessages) => {
+    const preparedField = Object.assign({}, field);
+
+    if (preparedField.group) {
+      preparedField.group.forEach((fieldSection) => {
+        if (fieldSection.refreshRequirementsOnChange) {
+          preparedField.refreshRequirementsOnChange = true;
+        }
+        this.prepRegExp(fieldSection);
+        this.prepValuesAsync(fieldSection, model);
+        this.prepValuesAllowed(fieldSection);
+        this.prepValidationMessages(fieldSection, validationMessages);
+      });
+
+      if (preparedField.group.length) {
+        field.key = field.key || field.group[0].key;
+        field.type = field.type || field.group[0].type;
+      }
+    } else {
+      this.prepRegExp(preparedField);
+      this.prepValuesAsync(preparedField, model);
+      this.prepValuesAllowed(preparedField);
+      this.prepValidationMessages(preparedField, validationMessages);
+    }
+    return preparedField;
+  };
+
+  this.prepType = (field) => {
+    switch (field.type) {
+      case 'date':
+        field.type = 'string';
+        field.format = 'date';
+        break;
+      case 'password':
+        field.type = 'string';
+        field.format = 'password';
+        break;
+      case 'checkbox':
+        field.type = 'boolean';
+        break;
+      case 'select':
+      case 'radio':
+        break;
+    }
   };
 
   this.prepRegExp = (field) => {

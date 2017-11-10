@@ -924,9 +924,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function RequirementsService() {
   var _this = this;
 
-  this.prepRequirements = function (types) {
-    types.forEach(function (type) {
-      _this.prepFields(type.fields);
+  this.prepRequirements = function (alternatives) {
+    alternatives.forEach(function (alternative) {
+      _this.prepFields(alternative.fields);
     });
   };
 
@@ -934,29 +934,69 @@ function RequirementsService() {
     if (!fields) {
       return;
     }
-    fields.forEach(function (field) {
-      if (field.group) {
-        field.group.forEach(function (fieldSection) {
-          if (fieldSection.refreshRequirementsOnChange) {
-            field.refreshRequirementsOnChange = true;
-          }
-          _this.prepRegExp(fieldSection);
-          _this.prepValuesAsync(fieldSection, model);
-          _this.prepValuesAllowed(fieldSection);
-          _this.prepValidationMessages(fieldSection, validationMessages);
-        });
-
-        if (field.group.length) {
-          field.key = field.key || field.group[0].key;
-          field.type = field.type || field.group[0].type;
-        }
-      } else {
-        _this.prepRegExp(field);
-        _this.prepValuesAsync(field, model);
-        _this.prepValuesAllowed(field);
-        _this.prepValidationMessages(field, validationMessages);
+    var isArrayForm = Array.isArray(fields);
+    // const preparedFields = {};
+    var preparedFields = [];
+    if (isArrayForm) {
+      fields.forEach(function (field) {
+        preparedFields.push(_this.prepField(field, model, validationMessages));
+        // preparedFields[field.key] = this.prepField(field, model, validationMessages);
+      });
+    } else {
+      for (var key in fields) {
+        var field = fields[key];
+        field.key = key;
+        preparedFields.push(_this.prepField(field, model, validationMessages));
+        // preparedFields[key] = this.prepField(field, model, validationMessages);
       }
-    });
+    }
+    return preparedFields;
+  };
+
+  this.prepField = function (field, model, validationMessages) {
+    var preparedField = Object.assign({}, field);
+
+    if (preparedField.group) {
+      preparedField.group.forEach(function (fieldSection) {
+        if (fieldSection.refreshRequirementsOnChange) {
+          preparedField.refreshRequirementsOnChange = true;
+        }
+        _this.prepRegExp(fieldSection);
+        _this.prepValuesAsync(fieldSection, model);
+        _this.prepValuesAllowed(fieldSection);
+        _this.prepValidationMessages(fieldSection, validationMessages);
+      });
+
+      if (preparedField.group.length) {
+        field.key = field.key || field.group[0].key;
+        field.type = field.type || field.group[0].type;
+      }
+    } else {
+      _this.prepRegExp(preparedField);
+      _this.prepValuesAsync(preparedField, model);
+      _this.prepValuesAllowed(preparedField);
+      _this.prepValidationMessages(preparedField, validationMessages);
+    }
+    return preparedField;
+  };
+
+  this.prepType = function (field) {
+    switch (field.type) {
+      case 'date':
+        field.type = 'string';
+        field.format = 'date';
+        break;
+      case 'password':
+        field.type = 'string';
+        field.format = 'password';
+        break;
+      case 'checkbox':
+        field.type = 'boolean';
+        break;
+      case 'select':
+      case 'radio':
+        break;
+    }
   };
 
   this.prepRegExp = function (field) {

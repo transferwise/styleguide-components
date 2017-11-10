@@ -15,7 +15,9 @@
         {{$ctrl.label || $ctrl.description}}
       </h4>
       <p class="m-b-2">{{$ctrl.placeholder || $ctrl.instructions}}</p>
-      <label class="btn btn-primary">{{$ctrl.buttonText}}
+      <label class="btn btn-primary">
+        <span ng-if="$ctrl.buttonText" ng-bind="$ctrl.buttonText"></span>
+        <span ng-if="!$ctrl.buttonText" class="icon icon-upload m-r-0"></span>
         <input tw-file-input
           type="file"
           accept="{{$ctrl.accept}}"

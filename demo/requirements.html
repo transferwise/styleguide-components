@@ -22,6 +22,13 @@
   <link type="text/css" rel="stylesheet" href="lib/currency-flags.css" />
   <link type="text/css" rel="stylesheet" href="css/examples.css" />
 
+  <style>
+  pre {
+    font-size: 11px;
+    line-height: 16px;
+  }
+  </style>
+
 </head>
 <body ng-app="my-app" class="bg-default">
   <div class="container" ng-controller="PageController as $ctrl">
@@ -30,39 +37,66 @@
         <h2 class="panel-title">Requirements</h2>
       </div>
       <div class="panel-body">
-        <p>Fieldsets</p>
+        <p>
+          Our requirements format allows you to build rich forms, which are 100%
+          configurable using a JSON structure.  This allows us to control the
+          business logic for our complex, and evolving domain objects, from
+          the API, rather than in our clients.</p>
+
+        <h3 class="page-header">Fieldsets</h3>
 <pre>
 &lt;tw-fieldset
   legend="<span ng-non-bindable>{{ fieldset.legend }}</span>"
+  description="<span ng-non-bindable>{{ fieldset.description }}</span>"
   fields="fieldset.fields"&gt;
+  locale="en-GB"&gt;
 &lt;/tw-fieldset&gt;
 </pre>
-        <div class="row">
-          <div class="col-sm-6">
-            <tw-fieldset
-              legend="{{ $ctrl.fieldsetBasic.legend }}"
-              fields="$ctrl.fieldsetBasic.fields"
-              model="$ctrl.fieldsetBasicModel">
-            </tw-fieldset>
-          </div>
-          <div class="col-sm-6">
-            <pre>fieldset: {{ $ctrl.fieldsetBasic | json }}</pre>
-            <pre>{{ $ctrl.fieldsetBasicModel | json }}</pre>
-          </div>
-        </div>
 
-        Fieldsets
-        <div class="row">
-          <div class="col-sm-6">
-            <tw-fieldset
-              model="$ctrl.fieldsetBasicModel"
-              requirements="$ctrl.fieldsetBasic">
-            </tw-fieldset>
-          </div>
-          <div class="col-sm-6">
-            {{ $ctrl.fieldsetBasic | json }}
-          </div>
-        </div>
+        <requirements-docs
+          requirements="$ctrl.fieldsetBasic"
+          model="$ctrl.fieldsetBasicModel">
+        </requirements-docs>
+
+        <hr />
+
+        <requirements-docs
+          requirements="$ctrl.fieldsetOptions"
+          model="$ctrl.fieldsetOptionsModel">
+        </requirements-docs>
+
+        <hr />
+
+        <h3 class="page-header">Fields</h3>
+
+        <h4 class="m-b-3">Simple types</h4>
+        <requirements-docs
+          requirements="$ctrl.simpleTypes"
+          model="$ctrl.simpleTypesModel">
+        </requirements-docs>
+
+        <hr />
+
+        <h4 class="m-b-3">Values allowed</h4>
+        <requirements-docs
+          requirements="$ctrl.valuesAllowed"
+          model="$ctrl.valuesAllowedModel">
+        </requirements-docs>
+
+        <hr />
+
+        <h4 class="m-b-3">Upload component</h4>
+        <requirements-docs
+          requirements="$ctrl.uploadComponent"
+          model="$ctrl.uploadComponentModel">
+        </requirements-docs>
+
+        <hr />
+        <!--
+        Help text
+        Validation
+
+        -->
       </div>
     </div>
   </div>

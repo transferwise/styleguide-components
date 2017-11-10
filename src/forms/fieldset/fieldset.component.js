@@ -6,7 +6,7 @@ const Fieldset = {
   template,
   bindings: {
     model: '=',
-    fields: '<',
+    rawFields: '<fields',
     uploadOptions: '<',
     locale: '@',
     legend: '@',

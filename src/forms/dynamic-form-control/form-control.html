@@ -1,5 +1,5 @@
 <div ng-switch="$ctrl.type">
-  <input ng-switch-default="text"
+  <input ng-switch-default
     name="{{$ctrl.name}}"
     type="text"
     class="form-control"
@@ -29,7 +29,7 @@
     ng-blur="$ctrl.blur()"
     ng-minlength="$ctrl.ngMinlength"
     ng-maxlength="$ctrl.ngMaxlength" />
-  <input ng-switch-when="number"
+  <input ng-switch-when="number|integer" ng-switch-when-separator="|"
     name="{{$ctrl.name}}"
     type="number"
     step="{{$ctrl.step}}"

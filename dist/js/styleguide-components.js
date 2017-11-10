@@ -3439,7 +3439,7 @@ var Fieldset = {
   template: _fieldset2.default,
   bindings: {
     model: '=',
-    fields: '<',
+    rawFields: '<fields',
     uploadOptions: '<',
     locale: '@',
     legend: '@',
@@ -3503,13 +3503,14 @@ var FieldsetController = function () {
         };
       }
 
-      if (this.fields) {
-        this.RequirementsService.prepFields(this.fields, this.model, this.validationMessages);
+      if (this.rawFields) {
+        console.log('raw');
+        this.fields = this.RequirementsService.prepFields(this.rawFields, this.model, this.validationMessages);
       }
 
       this.$scope.$watch('$ctrl.fields', function (newValue, oldValue) {
         if (!_angular2.default.equals(newValue, oldValue)) {
-          _this.RequirementsService.prepFields(_this.fields, _this.model, _this.validationMessages);
+          _this.fields = _this.RequirementsService.prepFields(_this.rawFields, _this.model, _this.validationMessages);
         }
       });
 
@@ -6634,9 +6635,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function RequirementsService() {
   var _this = this;
 
-  this.prepRequirements = function (types) {
-    types.forEach(function (type) {
-      _this.prepFields(type.fields);
+  this.prepRequirements = function (alternatives) {
+    alternatives.forEach(function (alternative) {
+      _this.prepFields(alternative.fields);
     });
   };
 
@@ -6644,29 +6645,69 @@ function RequirementsService() {
     if (!fields) {
       return;
     }
-    fields.forEach(function (field) {
-      if (field.group) {
-        field.group.forEach(function (fieldSection) {
-          if (fieldSection.refreshRequirementsOnChange) {
-            field.refreshRequirementsOnChange = true;
-          }
-          _this.prepRegExp(fieldSection);
-          _this.prepValuesAsync(fieldSection, model);
-          _this.prepValuesAllowed(fieldSection);
-          _this.prepValidationMessages(fieldSection, validationMessages);
-        });
-
-        if (field.group.length) {
-          field.key = field.key || field.group[0].key;
-          field.type = field.type || field.group[0].type;
-        }
-      } else {
-        _this.prepRegExp(field);
-        _this.prepValuesAsync(field, model);
-        _this.prepValuesAllowed(field);
-        _this.prepValidationMessages(field, validationMessages);
+    var isArrayForm = Array.isArray(fields);
+    // const preparedFields = {};
+    var preparedFields = [];
+    if (isArrayForm) {
+      fields.forEach(function (field) {
+        preparedFields.push(_this.prepField(field, model, validationMessages));
+        // preparedFields[field.key] = this.prepField(field, model, validationMessages);
+      });
+    } else {
+      for (var key in fields) {
+        var field = fields[key];
+        field.key = key;
+        preparedFields.push(_this.prepField(field, model, validationMessages));
+        // preparedFields[key] = this.prepField(field, model, validationMessages);
       }
-    });
+    }
+    return preparedFields;
+  };
+
+  this.prepField = function (field, model, validationMessages) {
+    var preparedField = Object.assign({}, field);
+
+    if (preparedField.group) {
+      preparedField.group.forEach(function (fieldSection) {
+        if (fieldSection.refreshRequirementsOnChange) {
+          preparedField.refreshRequirementsOnChange = true;
+        }
+        _this.prepRegExp(fieldSection);
+        _this.prepValuesAsync(fieldSection, model);
+        _this.prepValuesAllowed(fieldSection);
+        _this.prepValidationMessages(fieldSection, validationMessages);
+      });
+
+      if (preparedField.group.length) {
+        field.key = field.key || field.group[0].key;
+        field.type = field.type || field.group[0].type;
+      }
+    } else {
+      _this.prepRegExp(preparedField);
+      _this.prepValuesAsync(preparedField, model);
+      _this.prepValuesAllowed(preparedField);
+      _this.prepValidationMessages(preparedField, validationMessages);
+    }
+    return preparedField;
+  };
+
+  this.prepType = function (field) {
+    switch (field.type) {
+      case 'date':
+        field.type = 'string';
+        field.format = 'date';
+        break;
+      case 'password':
+        field.type = 'string';
+        field.format = 'password';
+        break;
+      case 'checkbox':
+        field.type = 'boolean';
+        break;
+      case 'select':
+      case 'radio':
+        break;
+    }
   };
 
   this.prepRegExp = function (field) {
@@ -6987,7 +7028,7 @@ module.exports = "<div class=\"m-t-1\">\n  <h4\n    ng-if=\"$ctrl.legend\"\n    
 /* 107 */
 /***/ (function(module, exports) {
 
-module.exports = "<div ng-switch=\"$ctrl.type\">\n  <input ng-switch-default=\"text\"\n    name=\"{{$ctrl.name}}\"\n    type=\"text\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-pattern=\"$ctrl.ngPattern\"\n    ng-change=\"$ctrl.change()\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-minlength=\"$ctrl.ngMinlength\"\n    ng-maxlength=\"$ctrl.ngMaxlength\"\n    tw-text-format=\"{{$ctrl.textFormat}}\" />\n  <input ng-switch-when=\"password\"\n    name=\"{{$ctrl.name}}\"\n    type=\"password\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-change=\"$ctrl.change()\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-minlength=\"$ctrl.ngMinlength\"\n    ng-maxlength=\"$ctrl.ngMaxlength\" />\n  <input ng-switch-when=\"number\"\n    name=\"{{$ctrl.name}}\"\n    type=\"number\"\n    step=\"{{$ctrl.step}}\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-change=\"$ctrl.change()\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-min=\"$ctrl.ngMin\"\n    ng-max=\"$ctrl.ngMax\" />\n  <div ng-switch-when=\"radio\"\n    class=\"radio\"\n    ng-class=\"{disabled: $ctrl.ngDisabled}\"\n    ng-repeat=\"option in $ctrl.options\">\n    <label>\n      <tw-radio\n        name=\"{{$ctrl.name}}\"\n        ng-value=\"option.value\"\n        ng-model=\"$ctrl.ngModel\"\n        ng-required=\"$ctrl.ngRequired\"\n        ng-disabled=\"$ctrl.ngDisabled\"\n        ng-change=\"$ctrl.change(option.value)\"\n        ng-click=\"$ctrl.change(option.value)\"\n        ng-focus=\"$ctrl.focus()\"\n        ng-blur=\"$ctrl.blur()\"></tw-radio>\n      {{option.label}}\n    </label>\n  </div>\n  <div ng-switch-when=\"checkbox\"\n    class=\"checkbox\"\n    ng-class=\"{disabled: $ctrl.ngDisabled}\">\n    <label>\n      <tw-checkbox\n        name=\"{{$ctrl.name}}\"\n        ng-model=\"$ctrl.ngModel\"\n        ng-required=\"$ctrl.ngRequired\"\n        ng-disabled=\"$ctrl.ngDisabled\"\n        ng-change=\"$ctrl.change()\"\n        ng-click=\"$ctrl.change()\"\n        ng-focus=\"$ctrl.focus()\"\n        ng-blur=\"$ctrl.blur()\"></tw-checkbox>\n      {{$ctrl.placeholder}}\n    </label>\n  </div>\n  <div ng-switch-when=\"select\">\n    <tw-select\n      name=\"{{$ctrl.name}}\"\n      options=\"$ctrl.options\"\n      placeholder=\"{{$ctrl.placeholder}}\"\n      ng-model=\"$ctrl.ngModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change()\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"></tw-select>\n  </div>\n  <div ng-switch-when=\"upload\">\n    <tw-upload\n      name=\"{{$ctrl.name}}\"\n      label=\"{{$ctrl.label}}\"\n      icon=\"{{$ctrl.uploadIcon}}\"\n      placeholder=\"{{$ctrl.placeholder}}\"\n      accept=\"{{$ctrl.uploadAccept}}\"\n      complete-text=\"{{$ctrl.label}}\"\n      button-text=\"{{$ctrl.uploadOptions.buttonText}}\"\n      cancel-text=\"{{$ctrl.uploadOptions.cancelText}}\"\n      too-large-message=\"{{$ctrl.uploadTooLargeMessage}}\"\n      max-size=\"$ctrl.ngMax\"\n      ng-model=\"$ctrl.ngModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change()\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"></tw-upload>\n  </div>\n  <div ng-switch-when=\"date\">\n    <tw-date\n      name=\"{{$ctrl.name}}\"\n      locale=\"{{$ctrl.locale}}\"\n      ng-min=\"$ctrl.ngMin\"\n      ng-max=\"$ctrl.ngMax\"\n      ng-model=\"$ctrl.ngModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change()\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"></tw-date>\n  </div>\n  <input ng-switch-when=\"hidden\"\n      name=\"{{$ctrl.name}}\"\n      type=\"hidden\"\n      ng-model=\"$ctrl.ngModel\"/>\n</div>\n";
+module.exports = "<div ng-switch=\"$ctrl.type\">\n  <input ng-switch-default\n    name=\"{{$ctrl.name}}\"\n    type=\"text\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-pattern=\"$ctrl.ngPattern\"\n    ng-change=\"$ctrl.change()\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-minlength=\"$ctrl.ngMinlength\"\n    ng-maxlength=\"$ctrl.ngMaxlength\"\n    tw-text-format=\"{{$ctrl.textFormat}}\" />\n  <input ng-switch-when=\"password\"\n    name=\"{{$ctrl.name}}\"\n    type=\"password\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-change=\"$ctrl.change()\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-minlength=\"$ctrl.ngMinlength\"\n    ng-maxlength=\"$ctrl.ngMaxlength\" />\n  <input ng-switch-when=\"number|integer\" ng-switch-when-separator=\"|\"\n    name=\"{{$ctrl.name}}\"\n    type=\"number\"\n    step=\"{{$ctrl.step}}\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-change=\"$ctrl.change()\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-min=\"$ctrl.ngMin\"\n    ng-max=\"$ctrl.ngMax\" />\n  <div ng-switch-when=\"radio\"\n    class=\"radio\"\n    ng-class=\"{disabled: $ctrl.ngDisabled}\"\n    ng-repeat=\"option in $ctrl.options\">\n    <label>\n      <tw-radio\n        name=\"{{$ctrl.name}}\"\n        ng-value=\"option.value\"\n        ng-model=\"$ctrl.ngModel\"\n        ng-required=\"$ctrl.ngRequired\"\n        ng-disabled=\"$ctrl.ngDisabled\"\n        ng-change=\"$ctrl.change(option.value)\"\n        ng-click=\"$ctrl.change(option.value)\"\n        ng-focus=\"$ctrl.focus()\"\n        ng-blur=\"$ctrl.blur()\"></tw-radio>\n      {{option.label}}\n    </label>\n  </div>\n  <div ng-switch-when=\"checkbox\"\n    class=\"checkbox\"\n    ng-class=\"{disabled: $ctrl.ngDisabled}\">\n    <label>\n      <tw-checkbox\n        name=\"{{$ctrl.name}}\"\n        ng-model=\"$ctrl.ngModel\"\n        ng-required=\"$ctrl.ngRequired\"\n        ng-disabled=\"$ctrl.ngDisabled\"\n        ng-change=\"$ctrl.change()\"\n        ng-click=\"$ctrl.change()\"\n        ng-focus=\"$ctrl.focus()\"\n        ng-blur=\"$ctrl.blur()\"></tw-checkbox>\n      {{$ctrl.placeholder}}\n    </label>\n  </div>\n  <div ng-switch-when=\"select\">\n    <tw-select\n      name=\"{{$ctrl.name}}\"\n      options=\"$ctrl.options\"\n      placeholder=\"{{$ctrl.placeholder}}\"\n      ng-model=\"$ctrl.ngModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change()\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"></tw-select>\n  </div>\n  <div ng-switch-when=\"upload\">\n    <tw-upload\n      name=\"{{$ctrl.name}}\"\n      label=\"{{$ctrl.label}}\"\n      icon=\"{{$ctrl.uploadIcon}}\"\n      placeholder=\"{{$ctrl.placeholder}}\"\n      accept=\"{{$ctrl.uploadAccept}}\"\n      complete-text=\"{{$ctrl.label}}\"\n      button-text=\"{{$ctrl.uploadOptions.buttonText}}\"\n      cancel-text=\"{{$ctrl.uploadOptions.cancelText}}\"\n      too-large-message=\"{{$ctrl.uploadTooLargeMessage}}\"\n      max-size=\"$ctrl.ngMax\"\n      ng-model=\"$ctrl.ngModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change()\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"></tw-upload>\n  </div>\n  <div ng-switch-when=\"date\">\n    <tw-date\n      name=\"{{$ctrl.name}}\"\n      locale=\"{{$ctrl.locale}}\"\n      ng-min=\"$ctrl.ngMin\"\n      ng-max=\"$ctrl.ngMax\"\n      ng-model=\"$ctrl.ngModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change()\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"></tw-date>\n  </div>\n  <input ng-switch-when=\"hidden\"\n      name=\"{{$ctrl.name}}\"\n      type=\"hidden\"\n      ng-model=\"$ctrl.ngModel\"/>\n</div>\n";
 
 /***/ }),
 /* 108 */
@@ -7023,7 +7064,7 @@ module.exports = "<div class=\"text-center tw-upload-droppable-box\"\n  ng-class
 /* 113 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"droppable\" ng-class=\"{\n  'droppable-sm': $ctrl.size ==='sm',\n  'droppable-md': $ctrl.size ==='md' || !$ctrl.size,\n  'droppable-lg': $ctrl.size ==='lg',\n  'droppable-dropping': $ctrl.isDroppable,\n  'droppable-processing': !$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError),\n  'droppable-complete': $ctrl.isDone\n}\">\n  <div class=\"droppable-default-card\" aria-hidden=\"{{$ctrl.isDone}}\">\n    <div class=\"droppable-card-content\">\n      <div class=\"m-b-2\">\n        <span class=\"icon icon-{{$ctrl.viewIcon}} icon-xxl\"></span>\n      </div>\n      <h4 class=\"m-b-1\" ng-if=\"$ctrl.label || $ctrl.description\">\n        {{$ctrl.label || $ctrl.description}}\n      </h4>\n      <p class=\"m-b-2\">{{$ctrl.placeholder || $ctrl.instructions}}</p>\n      <label class=\"btn btn-primary\">{{$ctrl.buttonText}}\n        <input tw-file-input\n          type=\"file\"\n          accept=\"{{$ctrl.accept}}\"\n          class=\"tw-droppable-input hidden\"\n\n          name=\"file-upload\"\n          on-user-input=\"$ctrl.onManualUpload()\"\n          ng-model=\"$ctrl.inputFile\" />\n        <!-- ng-change=\"$ctrl.onManualUpload()\" -->\n      </label>\n    </div>\n  </div>\n  <div class=\"droppable-processing-card droppable-card\"\n    aria-hidden=\"{{$ctrl.isDone}}\">\n    <div class=\"droppable-card-content\">\n      <h4 class=\"m-b-2\">\n        <span ng-if=\"$ctrl.isProcessing && $ctrl.processingText\">{{$ctrl.processingText}}</span>\n        <span ng-if=\"$ctrl.isSuccess && $ctrl.successText\">{{$ctrl.successText}}</span>\n        <span ng-if=\"$ctrl.isError && $ctrl.failureText\">{{$ctrl.failureText}}</span>\n      </h4>\n      <tw-process size=\"sm\" state=\"$ctrl.processingState\"\n        ng-if=\"($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)\"></tw-process>\n    </div>\n  </div>\n  <div class=\"droppable-complete-card droppable-card\"\n    aria-hidden=\"{{!$ctrl.isDone}}\">\n    <div class=\"droppable-card-content\">\n      <div ng-if=\"!$ctrl.hasTranscluded && !$ctrl.isError\">\n        <h4 class=\"m-b-2\" ng-if=\"$ctrl.label\">\n          {{$ctrl.label}}\n        </h4>\n        <img\n          ng-if=\"$ctrl.isImage\"\n          src=\"data:image/png;base64,\n            iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=\"\n          ng-src=\"{{$ctrl.image}}\"\n          alt=\"OK\"\n          class=\"thumbnail m-b-3\" />\n        <span class=\"icon icon-pdf icon-xxl\" ng-if=\"!$ctrl.isImage\"></span>\n        <p class=\"text-ellipsis m-b-2\">{{$ctrl.fileName}}</p>\n      </div>\n      <div ng-if=\"!$ctrl.hasTranscluded && $ctrl.isError\">\n        <h4 class=\"m-b-2\" ng-if=\"$ctrl.isTooLarge\">{{$ctrl.tooLargeMessage}}</h4>\n        <h4 class=\"m-b-2\" ng-if=\"$ctrl.isWrongType\">{{$ctrl.wrongTypeText}}</h4>\n        <h4 class=\"m-b-2\" ng-if=\"!$ctrl.isTooLarge && $ctrl.errorMessage\">{{$ctrl.errorMessage}}</h4>\n        <span class=\"icon icon-alert icon-xxl text-danger m-b-1\"></span>\n      </div>\n      <div ng-if=\"$ctrl.hasTranscluded\" ng-transclude></div>\n      <p ng-if=\"$ctrl.cancelText\" class=\"m-t-2 m-b-0\">\n        <a href=\"\" ng-click=\"$ctrl.clear()\">{{$ctrl.cancelText}}</a>\n      </p>\n    </div>\n  </div>\n  <div class=\"droppable-dropping-card droppable-card\">\n    <div class=\"droppable-card-content\">\n      <h4 class=\"m-b-2\">Drop file to start upload</h4>\n      <div class=\"circle circle-sm\">\n        <span class=\"icon icon-add\"></span>\n      </div>\n      <p class=\"m-t-2 m-b-0\"></p>\n    </div>\n  </div>\n</div>'\n";
+module.exports = "<div class=\"droppable\" ng-class=\"{\n  'droppable-sm': $ctrl.size ==='sm',\n  'droppable-md': $ctrl.size ==='md' || !$ctrl.size,\n  'droppable-lg': $ctrl.size ==='lg',\n  'droppable-dropping': $ctrl.isDroppable,\n  'droppable-processing': !$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError),\n  'droppable-complete': $ctrl.isDone\n}\">\n  <div class=\"droppable-default-card\" aria-hidden=\"{{$ctrl.isDone}}\">\n    <div class=\"droppable-card-content\">\n      <div class=\"m-b-2\">\n        <span class=\"icon icon-{{$ctrl.viewIcon}} icon-xxl\"></span>\n      </div>\n      <h4 class=\"m-b-1\" ng-if=\"$ctrl.label || $ctrl.description\">\n        {{$ctrl.label || $ctrl.description}}\n      </h4>\n      <p class=\"m-b-2\">{{$ctrl.placeholder || $ctrl.instructions}}</p>\n      <label class=\"btn btn-primary\">\n        <span ng-if=\"$ctrl.buttonText\" ng-bind=\"$ctrl.buttonText\"></span>\n        <span ng-if=\"!$ctrl.buttonText\" class=\"icon icon-upload m-r-0\"></span>\n        <input tw-file-input\n          type=\"file\"\n          accept=\"{{$ctrl.accept}}\"\n          class=\"tw-droppable-input hidden\"\n\n          name=\"file-upload\"\n          on-user-input=\"$ctrl.onManualUpload()\"\n          ng-model=\"$ctrl.inputFile\" />\n        <!-- ng-change=\"$ctrl.onManualUpload()\" -->\n      </label>\n    </div>\n  </div>\n  <div class=\"droppable-processing-card droppable-card\"\n    aria-hidden=\"{{$ctrl.isDone}}\">\n    <div class=\"droppable-card-content\">\n      <h4 class=\"m-b-2\">\n        <span ng-if=\"$ctrl.isProcessing && $ctrl.processingText\">{{$ctrl.processingText}}</span>\n        <span ng-if=\"$ctrl.isSuccess && $ctrl.successText\">{{$ctrl.successText}}</span>\n        <span ng-if=\"$ctrl.isError && $ctrl.failureText\">{{$ctrl.failureText}}</span>\n      </h4>\n      <tw-process size=\"sm\" state=\"$ctrl.processingState\"\n        ng-if=\"($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)\"></tw-process>\n    </div>\n  </div>\n  <div class=\"droppable-complete-card droppable-card\"\n    aria-hidden=\"{{!$ctrl.isDone}}\">\n    <div class=\"droppable-card-content\">\n      <div ng-if=\"!$ctrl.hasTranscluded && !$ctrl.isError\">\n        <h4 class=\"m-b-2\" ng-if=\"$ctrl.label\">\n          {{$ctrl.label}}\n        </h4>\n        <img\n          ng-if=\"$ctrl.isImage\"\n          src=\"data:image/png;base64,\n            iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=\"\n          ng-src=\"{{$ctrl.image}}\"\n          alt=\"OK\"\n          class=\"thumbnail m-b-3\" />\n        <span class=\"icon icon-pdf icon-xxl\" ng-if=\"!$ctrl.isImage\"></span>\n        <p class=\"text-ellipsis m-b-2\">{{$ctrl.fileName}}</p>\n      </div>\n      <div ng-if=\"!$ctrl.hasTranscluded && $ctrl.isError\">\n        <h4 class=\"m-b-2\" ng-if=\"$ctrl.isTooLarge\">{{$ctrl.tooLargeMessage}}</h4>\n        <h4 class=\"m-b-2\" ng-if=\"$ctrl.isWrongType\">{{$ctrl.wrongTypeText}}</h4>\n        <h4 class=\"m-b-2\" ng-if=\"!$ctrl.isTooLarge && $ctrl.errorMessage\">{{$ctrl.errorMessage}}</h4>\n        <span class=\"icon icon-alert icon-xxl text-danger m-b-1\"></span>\n      </div>\n      <div ng-if=\"$ctrl.hasTranscluded\" ng-transclude></div>\n      <p ng-if=\"$ctrl.cancelText\" class=\"m-t-2 m-b-0\">\n        <a href=\"\" ng-click=\"$ctrl.clear()\">{{$ctrl.cancelText}}</a>\n      </p>\n    </div>\n  </div>\n  <div class=\"droppable-dropping-card droppable-card\">\n    <div class=\"droppable-card-content\">\n      <h4 class=\"m-b-2\">Drop file to start upload</h4>\n      <div class=\"circle circle-sm\">\n        <span class=\"icon icon-add\"></span>\n      </div>\n      <p class=\"m-t-2 m-b-0\"></p>\n    </div>\n  </div>\n</div>'\n";
 
 /***/ }),
 /* 114 */

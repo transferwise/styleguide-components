@@ -23,9 +23,10 @@ class FieldsetController {
       };
     }
 
-    if (this.fields) {
-      this.RequirementsService.prepFields(
-        this.fields,
+    if (this.rawFields) {
+      console.log('raw');
+      this.fields = this.RequirementsService.prepFields(
+        this.rawFields,
         this.model,
         this.validationMessages
       );
@@ -33,8 +34,8 @@ class FieldsetController {
 
     this.$scope.$watch('$ctrl.fields', (newValue, oldValue) => {
       if (!angular.equals(newValue, oldValue)) {
-        this.RequirementsService.prepFields(
-          this.fields,
+        this.fields = this.RequirementsService.prepFields(
+          this.rawFields,
           this.model,
           this.validationMessages
         );
