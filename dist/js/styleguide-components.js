@@ -949,9 +949,7 @@ function CurrencyFormatFilter($filter, CurrencyService, numberFormat) {
 } // eslint-disable-line
 
 
-CurrencyFormatFilter.$inject = ['$filter',
-// ,CurrencyServiceModule
-'TwCurrencyService', 'twNumberFormatFilter'];
+CurrencyFormatFilter.$inject = ['$filter', 'TwCurrencyService', 'twNumberFormatFilter'];
 
 exports.default = CurrencyFormatFilter;
 

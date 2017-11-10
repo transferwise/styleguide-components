@@ -26,7 +26,6 @@ function CurrencyFormatFilter($filter, CurrencyService, numberFormat) {
 
 CurrencyFormatFilter.$inject = [
   '$filter',
-  // ,CurrencyServiceModule
   'TwCurrencyService',
   'twNumberFormatFilter'
 ];
