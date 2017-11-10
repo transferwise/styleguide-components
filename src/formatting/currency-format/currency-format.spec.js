@@ -21,7 +21,6 @@ describe('CurrencyFormat filter, ', function() {
       $scope.value = 123456;
       $scope.currency = 'GBP';
       $element = getCompiledDirectiveElement($scope);
-      $scope.$apply();
       textValue = $element.text().trim();
     });
 
@@ -44,7 +43,6 @@ describe('CurrencyFormat filter, ', function() {
         $scope.value = 123456;
         $scope.currency = 'GBP';
         $element = getCompiledDirectiveElement($scope);
-        $scope.$apply();
         textValue = $element.text().trim();
       });
 
@@ -66,7 +64,6 @@ describe('CurrencyFormat filter, ', function() {
         beforeEach(function() {
           $scope.currency = 'JPY';
           $element = getCompiledDirectiveElement($scope);
-          $scope.$apply();
           textValue = $element.text().trim();
         });
 
@@ -100,7 +97,6 @@ describe('CurrencyFormat filter, ', function() {
         beforeEach(function() {
           $scope.currency = 'JOD';
           $element = getCompiledDirectiveElement($scope);
-          $scope.$apply();
           textValue = $element.text().trim();
         });
 
@@ -141,7 +137,6 @@ describe('CurrencyFormat filter, ', function() {
         beforeEach(function() {
           $scope.currency = 'JPY';
           $element = getCompiledDirectiveElement($scope);
-          $scope.$apply();
           textValue = $element.text().trim();
         });
 
@@ -158,7 +153,6 @@ describe('CurrencyFormat filter, ', function() {
         beforeEach(function() {
           $scope.currency = 'GBP';
           $element = getCompiledDirectiveElement($scope);
-          $scope.$apply();
           textValue = $element.text().trim();
         });
 
@@ -175,7 +169,6 @@ describe('CurrencyFormat filter, ', function() {
         beforeEach(function() {
           $scope.currency = 'JOD';
           $element = getCompiledDirectiveElement($scope);
-          $scope.$apply();
           textValue = $element.text().trim();
         });
 
@@ -200,7 +193,6 @@ describe('CurrencyFormat filter, ', function() {
         $scope.value = 123456;
         $scope.currency = 'GBP';
         $element = getCompiledDirectiveElement($scope);
-        $scope.$apply();
         textValue = $element.text().trim();
       });
 
@@ -222,7 +214,6 @@ describe('CurrencyFormat filter, ', function() {
         beforeEach(function() {
           $scope.currency = 'JPY';
           $element = getCompiledDirectiveElement($scope);
-          $scope.$apply();
           textValue = $element.text().trim();
         });
 
@@ -239,7 +230,6 @@ describe('CurrencyFormat filter, ', function() {
         beforeEach(function() {
           $scope.currency = 'GBP';
           $element = getCompiledDirectiveElement($scope);
-          $scope.$apply();
           textValue = $element.text().trim();
         });
 
@@ -256,7 +246,6 @@ describe('CurrencyFormat filter, ', function() {
         beforeEach(function() {
           $scope.currency = 'JOD';
           $element = getCompiledDirectiveElement($scope);
-          $scope.$apply();
           textValue = $element.text().trim();
         });
 
@@ -275,7 +264,6 @@ describe('CurrencyFormat filter, ', function() {
         $scope.value = '123456';
         $scope.currency = 'GBP';
         $element = getCompiledDirectiveElement($scope);
-        $scope.$apply();
         textValue = $element.text().trim();
       });
 
@@ -297,7 +285,6 @@ describe('CurrencyFormat filter, ', function() {
         beforeEach(function() {
           $scope.currency = 'JPY';
           $element = getCompiledDirectiveElement($scope);
-          $scope.$apply();
           textValue = $element.text().trim();
         });
 
@@ -314,7 +301,6 @@ describe('CurrencyFormat filter, ', function() {
         beforeEach(function() {
           $scope.currency = 'GBP';
           $element = getCompiledDirectiveElement($scope);
-          $scope.$apply();
           textValue = $element.text().trim();
         });
 
@@ -331,7 +317,6 @@ describe('CurrencyFormat filter, ', function() {
         beforeEach(function() {
           $scope.currency = 'JOD';
           $element = getCompiledDirectiveElement($scope);
-          $scope.$apply();
           textValue = $element.text().trim();
         });
 

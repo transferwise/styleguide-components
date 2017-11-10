@@ -20,7 +20,6 @@ describe('NumberFormat filter, ', function() {
     beforeEach(function() {
       $scope.value = 123456;
       $element = getCompiledDirectiveElement($scope);
-      $scope.$apply();
       textValue = $element.text().trim();
     });
     it('should default to en-GB format', function() {
@@ -41,7 +40,6 @@ describe('NumberFormat filter, ', function() {
       beforeEach(function() {
         $scope.value = 123456;
         $element = getCompiledDirectiveElement($scope);
-        $scope.$apply();
         textValue = $element.text().trim();
       });
 
@@ -58,7 +56,6 @@ describe('NumberFormat filter, ', function() {
       beforeEach(function() {
         $scope.value = 1234.56;
         $element = getCompiledDirectiveElement($scope);
-        $scope.$apply();
         textValue = $element.text().trim();
       });
 
@@ -75,7 +72,6 @@ describe('NumberFormat filter, ', function() {
       beforeEach(function() {
         $scope.value = '123456';
         $element = getCompiledDirectiveElement($scope);
-        $scope.$apply();
         textValue = $element.text().trim();
       });
 
@@ -92,7 +88,6 @@ describe('NumberFormat filter, ', function() {
       beforeEach(function() {
         $scope.value = '1234.56';
         $element = getCompiledDirectiveElement($scope);
-        $scope.$apply();
         textValue = $element.text().trim();
       });
 
@@ -114,7 +109,6 @@ describe('NumberFormat filter, ', function() {
       beforeEach(function() {
         $scope.value = 123456;
         $element = getCompiledDirectiveElement($scope);
-        $scope.$apply();
         textValue = $element.text().trim();
       });
 
@@ -131,7 +125,6 @@ describe('NumberFormat filter, ', function() {
       beforeEach(function() {
         $scope.value = 1234.56;
         $element = getCompiledDirectiveElement($scope);
-        $scope.$apply();
         textValue = $element.text().trim();
       });
 
@@ -148,7 +141,6 @@ describe('NumberFormat filter, ', function() {
       beforeEach(function() {
         $scope.value = '123456';
         $element = getCompiledDirectiveElement($scope);
-        $scope.$apply();
         textValue = $element.text().trim();
       });
 
@@ -165,7 +157,6 @@ describe('NumberFormat filter, ', function() {
       beforeEach(function() {
         $scope.value = '1234.56';
         $element = getCompiledDirectiveElement($scope);
-        $scope.$apply();
         textValue = $element.text().trim();
       });
 
@@ -185,7 +176,6 @@ describe('NumberFormat filter, ', function() {
       $scope.value = '1234.5';
       $scope.precision = 2;
       $element = getCompiledDirectiveElement($scope);
-      $scope.$apply();
       textValue = $element.text().trim();
     });
 
