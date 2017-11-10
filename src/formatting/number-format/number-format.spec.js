@@ -5,15 +5,14 @@ describe('NumberFormat filter, ', function() {
       $rootScope,
       $scope,
       $element,
-      $timeout,
-      input;
+      input,
+      textValue;
 
   beforeEach(module('tw.styleguide-components'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');
     $compile = $injector.get('$compile');
-    $timeout = $injector.get('$timeout');
     $scope = $rootScope.$new();
   }));
 
@@ -22,9 +21,9 @@ describe('NumberFormat filter, ', function() {
       $scope.value = 123456;
       $element = getCompiledDirectiveElement($scope);
       $scope.$apply();
+      textValue = $element.text().trim();
     });
     it('should default to en-GB format', function() {
-      var textValue = $element.text().trim();
       if (isNumberLocaleSupported()) {
         expect(textValue).toEqual('123,456');
       } else {
@@ -37,16 +36,16 @@ describe('NumberFormat filter, ', function() {
     beforeEach(function() {
       $scope.locale = 'en-GB';
     });
-    
+
     describe('and given an integer number', function() {
       beforeEach(function() {
         $scope.value = 123456;
         $element = getCompiledDirectiveElement($scope);
         $scope.$apply();
+        textValue = $element.text().trim();
       });
 
       it('should format the value', function() {
-        var textValue = $element.text().trim();
         if (isNumberLocaleSupported()) {
           expect(textValue).toEqual('123,456');
         } else {
@@ -60,10 +59,10 @@ describe('NumberFormat filter, ', function() {
         $scope.value = 1234.56;
         $element = getCompiledDirectiveElement($scope);
         $scope.$apply();
+        textValue = $element.text().trim();
       });
 
       it('should format the value', function() {
-        var textValue = $element.text().trim();
         if (isNumberLocaleSupported()) {
           expect(textValue).toEqual('1,234.56');
         } else {
@@ -77,10 +76,10 @@ describe('NumberFormat filter, ', function() {
         $scope.value = '123456';
         $element = getCompiledDirectiveElement($scope);
         $scope.$apply();
+        textValue = $element.text().trim();
       });
 
       it('should format the value', function() {
-        var textValue = $element.text().trim();
         if (isNumberLocaleSupported()) {
           expect(textValue).toEqual('123,456');
         } else {
@@ -94,10 +93,10 @@ describe('NumberFormat filter, ', function() {
         $scope.value = '1234.56';
         $element = getCompiledDirectiveElement($scope);
         $scope.$apply();
+        textValue = $element.text().trim();
       });
 
       it('should format the value', function() {
-        var textValue = $element.text().trim();
         if (isNumberLocaleSupported()) {
           expect(textValue).toEqual('1,234.56');
         } else {
@@ -116,10 +115,10 @@ describe('NumberFormat filter, ', function() {
         $scope.value = 123456;
         $element = getCompiledDirectiveElement($scope);
         $scope.$apply();
+        textValue = $element.text().trim();
       });
 
       it('should format the value', function() {
-        var textValue = $element.text().trim();
         if (isNumberLocaleSupported()) {
           expect(textValue).toEqual('123.456');
         } else {
@@ -133,10 +132,10 @@ describe('NumberFormat filter, ', function() {
         $scope.value = 1234.56;
         $element = getCompiledDirectiveElement($scope);
         $scope.$apply();
+        textValue = $element.text().trim();
       });
 
       it('should format the value', function() {
-        var textValue = $element.text().trim();
         if (isNumberLocaleSupported()) {
           expect(textValue).toEqual('1.234,56');
         } else {
@@ -150,10 +149,10 @@ describe('NumberFormat filter, ', function() {
         $scope.value = '123456';
         $element = getCompiledDirectiveElement($scope);
         $scope.$apply();
+        textValue = $element.text().trim();
       });
 
       it('should format the value', function() {
-        var textValue = $element.text().trim();
         if (isNumberLocaleSupported()) {
           expect(textValue).toEqual('123.456');
         } else {
@@ -167,10 +166,10 @@ describe('NumberFormat filter, ', function() {
         $scope.value = '1234.56';
         $element = getCompiledDirectiveElement($scope);
         $scope.$apply();
+        textValue = $element.text().trim();
       });
 
       it('should format the value', function() {
-        var textValue = $element.text().trim();
         if (isNumberLocaleSupported()) {
           expect(textValue).toEqual('1.234,56');
         } else {
@@ -180,10 +179,29 @@ describe('NumberFormat filter, ', function() {
     });
   });
 
+  describe('when a precision is supplied', function() {
+    beforeEach(function() {
+      $scope.locale = 'en-GB';
+      $scope.value = '1234.5';
+      $scope.precision = 2;
+      $element = getCompiledDirectiveElement($scope);
+      $scope.$apply();
+      textValue = $element.text().trim();
+    });
+
+    it('should format the value with the correct decimals', function() {
+      if (isNumberLocaleSupported()) {
+        expect(textValue).toEqual('1,234.50');
+      } else {
+        expect(textValue).toEqual('1234.50');
+      }
+    });
+  });
+
   function getCompiledDirectiveElement(scope, template) {
     if (!template) {
       template = " \
-        <span>{{value | twNumberFormat : locale}}</span>";
+        <span>{{value | twNumberFormat : locale : precision}}</span>";
     }
 
     var element = angular.element(template);

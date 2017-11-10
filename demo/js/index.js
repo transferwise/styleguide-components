@@ -530,6 +530,30 @@ angular.module('tw.styleguide.docs', [])
     },
     templateUrl: 'partials/formatting/number-format.html'
   })
+  .component('twCurrencyFormatDocs', {
+    bindings: {
+      locales: '<'
+    },
+    controller: function() {
+      this.number = 123456.78;
+      this.locale = 'en-GB';
+      this.currency = 'GBP';
+      this.currencies = [{
+        value: 'GBP',
+        label: 'Great British Pound',
+        note: '2 decimals'
+      },{
+        value: 'JPY',
+        label: 'Japanese Yen',
+        note: '0 decimals'
+      },{
+        value: 'JOD',
+        label: 'Jordanian Dinar',
+        note: '3 decimals'
+      }];
+    },
+    templateUrl: 'partials/formatting/currency-format.html'
+  })
   .component('twDateFormatDocs', {
     bindings: {
       locales: '<'
