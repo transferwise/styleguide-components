@@ -6,13 +6,12 @@ angular.module('tw.styleguide.docs', [])
     this.log = function (message) { console.log(message); };
 
     this.fieldsetBasic = {
-      fields: {
-        keyName: {
-          type: "text",
-          name: "Control label",
-          placeholder: "Please enter text"
-        }
-      }
+      fields: [{
+        type: "text",
+        name: "Control label",
+        key: "keyName",
+        placeholder: "Please enter text"
+      }]
     };
     this.fieldsetBasicModel = {
       keyName: "Example"
@@ -53,7 +52,7 @@ angular.module('tw.styleguide.docs', [])
         key: "passwordProperty",
         placeholder: "Please enter password"
       },{
-        type: "checkbox",
+        type: "boolean",
         name: "Checkbox control",
         key: "checkboxProperty",
         placeholder: "Please choose"
@@ -107,6 +106,69 @@ angular.module('tw.styleguide.docs', [])
     };
     this.uploadComponentModel = {
       uploadProperty: null
+    };
+
+    this.validationTypes = {
+      fields: [{
+        type: "text",
+        name: "Text control",
+        key: "textProperty",
+        placeholder: "Please enter text",
+        pattern: '^[A-Z]*$',
+        minLength: 4,
+        maxLength: 6,
+        validationMessage: {
+          minLength: "Must contain at least 4 characters",
+          maxLength: "Must contain 6 characters or less",
+          pattern: "Must only contain capital letters A to Z"
+        }
+      },{
+        type: "number",
+        name: "Number control",
+        key: "numberProperty",
+        placeholder: "Please enter number",
+        minimum: 10,
+        maximum: 99,
+        validationMessage: {
+          minimum: "Must be 10 or greater",
+          maximum: "Must be 99 or less"
+        }
+      }]
+    };
+    this.validationTypesModel = {
+      textProperty: "Tex",
+      numberProperty: 123
+    };
+
+    this.helpTypes = {
+      fields: [{
+        type: "text",
+        name: "Help text",
+        key: "helpText",
+        placeholder: "Please enter text",
+        helpText: "Some helpful information"
+      },{
+        type: "text",
+        name: "Help list",
+        key: "helpList",
+        placeholder: "Please enter number",
+        helpList: [
+          "Make sure of this",
+          "And this",
+          "And avoid this"
+        ]
+      },{
+        type: "text",
+        name: "Help image",
+        key: "helpImage",
+        placeholder: "Please enter number",
+        helpImage: ""
+      }]
+    };
+    this.helpTypesModel = {
+      helpText: "Tex",
+      helpList: "123",
+      helpImage: "123"
     };
   })
   .component('requirementsDocs', {

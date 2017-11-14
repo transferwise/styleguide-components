@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Styleguide Components - TransferWise</title>
+  <title>Requirements Format - TransferWise</title>
   <meta charset="UTF-8">
   <meta name="viewport"
     content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -44,6 +44,13 @@
           the API, rather than in our clients.</p>
 
         <h3 class="page-header">Fieldsets</h3>
+        <div class="row">
+          <div class="col-md-6">
+            <p>As it's name suggests the fieldset helps us render a set of fields
+              It can optionally include a legend (title) and/or a description.</p>
+          </div>
+          <div class="col-md-6">
+            <h5>Component API</h5>
 <pre>
 &lt;tw-fieldset
   legend="<span ng-non-bindable>{{ fieldset.legend }}</span>"
@@ -52,51 +59,60 @@
   locale="en-GB"&gt;
 &lt;/tw-fieldset&gt;
 </pre>
+          </div>
+        </div>
 
+        <h4 class="page-header">Basic example</h4>
         <requirements-docs
           requirements="$ctrl.fieldsetBasic"
           model="$ctrl.fieldsetBasicModel">
         </requirements-docs>
 
-        <hr />
-
+        <h4 class="page-header">Legend &amp; description</h4>
         <requirements-docs
           requirements="$ctrl.fieldsetOptions"
           model="$ctrl.fieldsetOptionsModel">
         </requirements-docs>
 
-        <hr />
-
         <h3 class="page-header">Fields</h3>
+        <div class="row">
+          <div class="col-md-6">
+            <p>The field is the basic building block of a form, it contains the
+              type, the porperty key to which the data should be bound, validation
+              information, and various pieces of useful presentation data.</p>
+          </div>
+        </div>
 
-        <h4 class="m-b-3">Simple types</h4>
+        <h4 class="page-header">Simple types</h4>
         <requirements-docs
           requirements="$ctrl.simpleTypes"
           model="$ctrl.simpleTypesModel">
         </requirements-docs>
 
-        <hr />
-
-        <h4 class="m-b-3">Values allowed</h4>
+        <h4 class="page-header">Values allowed</h4>
         <requirements-docs
           requirements="$ctrl.valuesAllowed"
           model="$ctrl.valuesAllowedModel">
         </requirements-docs>
 
-        <hr />
-
-        <h4 class="m-b-3">Upload component</h4>
+        <h4 class="page-header">Upload component</h4>
         <requirements-docs
           requirements="$ctrl.uploadComponent"
           model="$ctrl.uploadComponentModel">
         </requirements-docs>
 
-        <hr />
-        <!--
-        Help text
-        Validation
+        <h4 class="page-header">Validation</h4>
+        <requirements-docs
+          requirements="$ctrl.validationTypes"
+          model="$ctrl.validationTypesModel">
+        </requirements-docs>
 
-        -->
+        <h4 class="page-header">Help information</h4>
+        <requirements-docs
+          requirements="$ctrl.helpTypes"
+          model="$ctrl.helpTypesModel">
+        </requirements-docs>
+
       </div>
     </div>
   </div>

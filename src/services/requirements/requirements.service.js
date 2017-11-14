@@ -38,6 +38,8 @@ function RequirementsService() {
         if (fieldSection.refreshRequirementsOnChange) {
           preparedField.refreshRequirementsOnChange = true;
         }
+
+        this.prepType(fieldSection);
         this.prepRegExp(fieldSection);
         this.prepValuesAsync(fieldSection, model);
         this.prepValuesAllowed(fieldSection);
@@ -49,6 +51,7 @@ function RequirementsService() {
         field.type = field.type || field.group[0].type;
       }
     } else {
+      this.prepType(preparedField);
       this.prepRegExp(preparedField);
       this.prepValuesAsync(preparedField, model);
       this.prepValuesAllowed(preparedField);

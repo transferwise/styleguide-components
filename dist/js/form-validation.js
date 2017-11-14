@@ -961,6 +961,8 @@ function RequirementsService() {
         if (fieldSection.refreshRequirementsOnChange) {
           preparedField.refreshRequirementsOnChange = true;
         }
+
+        _this.prepType(fieldSection);
         _this.prepRegExp(fieldSection);
         _this.prepValuesAsync(fieldSection, model);
         _this.prepValuesAllowed(fieldSection);
@@ -972,6 +974,7 @@ function RequirementsService() {
         field.type = field.type || field.group[0].type;
       }
     } else {
+      _this.prepType(preparedField);
       _this.prepRegExp(preparedField);
       _this.prepValuesAsync(preparedField, model);
       _this.prepValuesAllowed(preparedField);

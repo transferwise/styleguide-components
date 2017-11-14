@@ -18,15 +18,16 @@
 
         <div ng-if="!field.group">
           <tw-form-control
-            name="{{field.key}}"
-            label="{{field.name}}"
-            type="{{field.type | lowercase}}"
-            placeholder="{{field.placeholder || field.example}}"
-            help-text="{{field.helpText}}"
-            locale="{{$ctrl.locale}}"
-            upload-accept="{{field.accept}}"
-            upload-icon="{{field.icon}}"
-            upload-too-large-message="{{field.tooLargeMessage}}"
+            name="{{ field.key }}"
+            label="{{ field.name }}"
+            type="{{ field.type | lowercase }}"
+            format="{{ field.format | lowercase }}"
+            placeholder="{{ field.placeholder || field.example }}"
+            help-text="{{ field.helpText }}"
+            locale="{{ $ctrl.locale }}"
+            upload-accept="{{ field.accept }}"
+            upload-icon="{{ field.icon }}"
+            upload-too-large-message="{{ field.tooLargeMessage }}"
             options="field.valuesAllowed"
             upload-options="$ctrl.uploadOptions"
             ng-model="$ctrl.model[field.key]"
@@ -36,9 +37,9 @@
             ng-disabled="field.disabled"
             tw-minlength="field.minLength"
             tw-maxlength="field.maxLength"
-            ng-min="field.min"
-            ng-max="field.max"
-            ng-pattern="field.validationRegexp"
+            ng-min="field.min || field.minimum"
+            ng-max="field.max || field.maximum"
+            ng-pattern="field.validationRegexp || field.pattern"
             text-format="field.displayFormat"
             tw-validation
           ></tw-form-control>
@@ -52,10 +53,17 @@
               {{ $ctrl.errorMessages[field.key] }}
             </div>
           </div>
-          <div ng-if="field.tooltip"
+          <div ng-if="field.helpList"
+            class="alert alert-focus"
+            ng-class="{'alert-detach': fieldSection.type === 'date' || fieldSection.type === 'upload'}">
+            <ul class="list-unstyled">
+              <li ng-repeat="helpMessage in field.helpList">{{ helpMessage }}</li>
+            </ul>
+          </div>
+          <div ng-if="field.tooltip || field.helpText"
             class="alert alert-focus"
             ng-class="{'alert-detach': field.type === 'date' || field.type === 'upload'}">
-            {{field.tooltip}}
+            {{ field.tooltip || field.helpText }}
           </div>
         </div>
 
@@ -82,9 +90,9 @@
               ng-disabled="fieldSection.disabled"
               tw-minlength="fieldSection.minLength"
               tw-maxlength="fieldSection.maxLength"
-              ng-min="fieldSection.min"
-              ng-max="fieldSection.max"
-              ng-pattern="fieldSection.validationRegexp"
+              ng-min="fieldSection.min || field.minimum"
+              ng-max="fieldSection.max || field.maximum"
+              ng-pattern="fieldSection.validationRegexp || field.pattern"
               text-format="fieldSection.displayFormat"
               tw-validation
             ></tw-form-control>
@@ -98,10 +106,10 @@
                 {{ $ctrl.errorMessages[fieldSection.key] }}
               </div>
             </div>
-            <div ng-if="fieldSection.tooltip"
+            <div ng-if="fieldSection.tooltip || fieldSection.helpText"
               class="alert alert-focus"
               ng-class="{'alert-detach': fieldSection.type === 'date' || fieldSection.type === 'upload'}">
-              {{fieldSection.tooltip}}
+              {{ fieldSection.tooltip || fieldSection.helpText}}
             </div>
           </div>
           <!-- End old format -->
