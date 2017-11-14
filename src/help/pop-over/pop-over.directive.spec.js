@@ -65,7 +65,7 @@ describe('Popover directive', function() {
         <a tw-pop-over \
           data-original-title='Popover title' \
           data-content='Full description copy, explaining in more detail'\
-          data-content-html='<div class=\"popover-content\">__content__</div> \
+          data-template='<div class=\"popover-content\">__content__</div> \
                              <div class=\"popover-info\">__content__</div>'> \
             Clicky \
         </a>";

@@ -12,7 +12,7 @@ describe('TwPopoverService', function() {
       'title': 'Transferwise',
       'content': 'Rules',
       'info': 'More info',
-      'html': " \
+      'template': " \
         <div class='popover-title'>__title__</div> \
         <div class='popover-content'>__content__</div> \
         <div class='popover-info'>__info__</div> \

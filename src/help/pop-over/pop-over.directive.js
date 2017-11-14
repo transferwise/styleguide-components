@@ -74,8 +74,8 @@ function getElementOptions(element) {
   if (element.dataset.trigger) {
     options.trigger = element.dataset.trigger;
   }
-  if (element.dataset.contentHtml) {
-    options.html = element.dataset.contentHtml;
+  if (element.dataset.template) {
+    options.template = element.dataset.template;
   }
 
   return options;

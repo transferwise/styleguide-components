@@ -433,7 +433,7 @@ export default function () {
    * @return {String}
    */
   function getGivenPopoverTemplate(popoverOptions) {
-    return curry(getObjectProperty)('html')(popoverOptions);
+    return curry(getObjectProperty)('template')(popoverOptions);
   }
 
   /**

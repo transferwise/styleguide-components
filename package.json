@@ -10,7 +10,7 @@
     "prestart": "npm install",
     "start": "npm run copy:demo && npm run less && webpack;",
     "dev": "live-server --port=1666 --open=demo/index.html",
-    "build": "npm run less && webpack --watch;",
+    "build": "npm run less && npm run webpack",
     "htmllint": "htmllint src/**/*.html; htmllint demo/**/*.html; exit 0",
     "jshint": "jshint src/**/* --exclude-path .jshintignore; exit 0",
     "eslint": "eslint src; exit 0",
