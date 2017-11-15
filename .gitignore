@@ -14,3 +14,4 @@ newrelic_agent.log
 *.iml
 .gradle/
 /gh-pages/
+.vscode/

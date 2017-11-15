@@ -24,6 +24,7 @@
             format="{{ field.format | lowercase }}"
             placeholder="{{ field.placeholder || field.example }}"
             help-text="{{ field.helpText }}"
+            help-image="{{ field.helpImage }}"
             locale="{{ $ctrl.locale }}"
             upload-accept="{{ field.accept }}"
             upload-icon="{{ field.icon }}"
@@ -53,17 +54,20 @@
               {{ $ctrl.errorMessages[field.key] }}
             </div>
           </div>
-          <div ng-if="field.helpList"
-            class="alert alert-focus"
-            ng-class="{'alert-detach': fieldSection.type === 'date' || fieldSection.type === 'upload'}">
-            <ul class="list-unstyled">
-              <li ng-repeat="helpMessage in field.helpList">{{ helpMessage }}</li>
-            </ul>
-          </div>
-          <div ng-if="field.tooltip || field.helpText"
+          <div ng-if="field.tooltip || field.helpText || field.helpList || field.helpImage"
             class="alert alert-focus"
             ng-class="{'alert-detach': field.type === 'date' || field.type === 'upload'}">
-            {{ field.tooltip || field.helpText }}
+            <span ng-if="field.tooltip || field.helpText">
+              {{ field.tooltip || field.helpText }}
+            </span>
+            <ul ng-if="field.helpList" class="list-unstyled">
+              <li ng-repeat="helpMessage in field.helpList">{{ helpMessage }}</li>
+            </ul>
+            <img
+              ng-if="field.helpImage && field.type !== 'upload'"
+              ng-src="{{field.helpImage}}"
+              alt="{{field.name}}"
+              class="thumbnail m-y-2" />
           </div>
         </div>
 
@@ -77,6 +81,7 @@
               type="{{fieldSection.type | lowercase}}"
               placeholder="{{fieldSection.placeholder || fieldSection.example}}"
               help-text="{{fieldSection.helpText}}"
+              help-image="{{fieldSection.helpImage}}"
               locale="{{$ctrl.locale}}"
               upload-accept="{{fieldSection.accept}}"
               upload-icon="{{fieldSection.icon}}"
@@ -90,9 +95,9 @@
               ng-disabled="fieldSection.disabled"
               tw-minlength="fieldSection.minLength"
               tw-maxlength="fieldSection.maxLength"
-              ng-min="fieldSection.min || field.minimum"
-              ng-max="fieldSection.max || field.maximum"
-              ng-pattern="fieldSection.validationRegexp || field.pattern"
+              ng-min="fieldSection.min || fieldSection.minimum"
+              ng-max="fieldSection.max || fieldSection.maximum"
+              ng-pattern="fieldSection.validationRegexp || fieldSection.pattern"
               text-format="fieldSection.displayFormat"
               tw-validation
             ></tw-form-control>
@@ -111,6 +116,11 @@
               ng-class="{'alert-detach': fieldSection.type === 'date' || fieldSection.type === 'upload'}">
               {{ fieldSection.tooltip || fieldSection.helpText}}
             </div>
+            <img
+              ng-if="fieldSection.helpImage && fieldSection.type !== 'upload'"
+              ng-src="fieldSection.helpImage"
+              alt="{{field.name}}"
+              class="thumbnail m-t-2 m-b-0" />
           </div>
           <!-- End old format -->
         </div>

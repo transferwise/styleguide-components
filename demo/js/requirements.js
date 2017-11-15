@@ -117,7 +117,7 @@ angular.module('tw.styleguide.docs', [])
         pattern: '^[A-Z]*$',
         minLength: 4,
         maxLength: 6,
-        validationMessage: {
+        validationMessages: {
           minLength: "Must contain at least 4 characters",
           maxLength: "Must contain 6 characters or less",
           pattern: "Must only contain capital letters A to Z"
@@ -129,9 +129,19 @@ angular.module('tw.styleguide.docs', [])
         placeholder: "Please enter number",
         minimum: 10,
         maximum: 99,
-        validationMessage: {
+        validationMessages: {
           minimum: "Must be 10 or greater",
           maximum: "Must be 99 or less"
+        }
+      },{
+        type: "date",
+        name: "Date control",
+        key: "dateProperty",
+        minimum: '2000-01-01',
+        maximum: '2020-01-01',
+        validationMessages: {
+          minimum: "Must be after Jan 1st, 2000",
+          maximum: "Must be before Jan 1st, 2020"
         }
       }]
     };
@@ -162,7 +172,7 @@ angular.module('tw.styleguide.docs', [])
         name: "Help image",
         key: "helpImage",
         placeholder: "Please enter number",
-        helpImage: ""
+        helpImage: "images/captcha.png"
       }]
     };
     this.helpTypesModel = {
