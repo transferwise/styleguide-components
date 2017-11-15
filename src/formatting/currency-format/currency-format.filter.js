@@ -1,4 +1,3 @@
-
 import CurrencyServiceModule from '../../services/currency/';  // eslint-disable-line
 import NumberFormat from '../number-format/'; // eslint-disable-line
 
