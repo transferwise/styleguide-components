@@ -1,4 +1,4 @@
-export default function () {
+function PopoverService() {
   /**
    * Register the global event listeners for clicks on the body element and
    * viewport resizing
@@ -437,6 +437,16 @@ export default function () {
   }
 
   /**
+   * [getHtmlRenderingMode    Check if we should render the passed HTML, in the
+   *                          dataset attributes, as part of the popover]
+   * @param  {Object} popoverOptions
+   * @return {String}
+   */
+  function getHtmlRenderingMode(popoverOptions) {
+    return curry(getObjectProperty)('html')(popoverOptions);
+  }
+
+  /**
    * [getPopoverTemplate Each value in the template, which is equivalent to the
    *                     keys of the binded object, is prefixed and suffixed with
    *                     '__'. For example '__title__' corresponds to the value
@@ -444,39 +454,9 @@ export default function () {
    * @return {String}   [Popover template]
    */
   function getPopoverTemplate() {
-    return `
-      <button class='close popover-close'>&times;</button>
-      <h3 class='popover-title'>__title__</h3>
-      <div class='popover-content'>
-        __content__
-      </div>`;
-  }
-
-  /**
-   * [bindDataToTemplate Takes a @template and some @data and binds them together]
-   * @param  {String} template
-   * @param  {Object} data
-   * @return {String}
-   */
-  function bindDataToTemplate(template, data) {
-    /**
-     * \w stands for "word character", usually [A-Za-z0-9_]
-     * '*' stands for Zero or more times
-     *
-     * For example, if the RegEX /(\a+)(\b+)/ was given,
-     * parenthesizedSubmatch is the match for \a+
-     *
-     * Thus, match all the word characters prefixed and suffixed by two __
-     * get their parenthesized submatch value and replace them in the @template with
-     * data found at the parenthesized submatch property on the @data object
-     */
-    return template.replace(
-      /__(\w*)__/g,
-      (matchedSubstring, parenthesizedSubmatch) =>
-        (Object.prototype.hasOwnProperty.call(data, parenthesizedSubmatch)
-          ? data[parenthesizedSubmatch]
-          : '')
-    );
+    return "<button class='popover-close'>&times;</button>\n" +
+      "<h3 class='popover-title'></h3>\n" +
+      "<div class='popover-content'></div>";
   }
 
   /**
@@ -486,9 +466,39 @@ export default function () {
    * @return {String}
    */
   function getPopoverContent(options) {
-    const optionsTemplate = getGivenPopoverTemplate(options);
+    const popoverTemplate = getGivenPopoverTemplate(options) || getPopoverTemplate();
+    const shouldRenderHTML = getHtmlRenderingMode(options);
 
-    return bindDataToTemplate((optionsTemplate || getPopoverTemplate()), options);
+    const popoverContainer = document.createElement('div');
+    popoverContainer.innerHTML = popoverTemplate;
+
+    ['title', 'content'].forEach((optionKey) => {
+      const popoverElementSelector = `.popover-${optionKey}`;
+      const popoverElement = popoverContainer.querySelector(popoverElementSelector);
+      const popoverElementValue = options[optionKey];
+
+      popoverElement.innerHTML = '';
+
+      const insertMethod = shouldRenderHTML ?
+        'insertAdjacentHTML' :
+        'insertAdjacentText';
+
+      popoverElement[insertMethod]('beforeend', popoverElementValue);
+    });
+
+    const popoverImageElement = popoverContainer.querySelector('.popover-image');
+    const popoverImageURL = curry(getObjectProperty)('image')(options);
+
+    /**
+     * Images are optional, the in-use template should have a child with a
+     * .popover-image class and the passed options should contain a relative /
+     * absolute image path
+     */
+    if (popoverImageElement && popoverImageURL) {
+      popoverImageElement.src = popoverImageURL;
+    }
+
+    return popoverContainer.innerHTML;
   }
 
   /**
@@ -563,3 +573,5 @@ export default function () {
     unregisterGlobalEventListeners,
   };
 }
+
+export default PopoverService;

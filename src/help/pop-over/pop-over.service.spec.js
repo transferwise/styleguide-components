@@ -9,13 +9,14 @@ describe('TwPopoverService', function() {
       </a>",
     popoverOptions = {
       'placement': 'right',
-      'title': 'Transferwise',
-      'content': 'Rules',
-      'info': 'More info',
+      'title': '<span>Transferwise</span>',
+      'content': '<span>Rules</span>',
+      'html': 'true',
+      'image': 'http://transferwise.com/logo.png',
       'template': " \
-        <div class='popover-title'>__title__</div> \
-        <div class='popover-content'>__content__</div> \
-        <div class='popover-info'>__info__</div> \
+        <h3 class='popover-title'></h3> \
+        <img class='popover-image' /> \
+        <div class='popover-content'></div> \
       "
     };
 
@@ -69,11 +70,11 @@ describe('TwPopoverService', function() {
       expect(popoverContent).toBe(popoverOptions.content);
     });
 
-    it('should work with a custom template', function() {
-      var popoverInfoElement = popover.querySelector('.popover-info');
-      var popoverInfo = popoverInfoElement && popoverInfoElement.innerHTML.trim();
+    it('should have the correct image', function() {
+      var popoverImageElement = popover.querySelector('.popover-image');
+      var popoverImageURL = popoverImageElement && popoverImageElement.getAttribute('src');
 
-      expect(popoverInfo).toBe(popoverOptions.info);
+      expect(popoverImageURL).toBe(popoverOptions.image);
     });
 
     describe('when we hide a popover', function() {

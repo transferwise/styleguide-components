@@ -34,14 +34,17 @@ describe('Popover directive', function() {
       expect(popoverVisibility).toBe(true);
     });
 
+    it('should display the correct title', function() {
+      var popoverTitle = popover.querySelector('.popover-title');
+
+      expect(popoverTitle.innerHTML).toBe('&lt;span&gt;Popover title&lt;/span&gt;');
+    });
+
     it('should have a working custom template', function() {
-      var popoverContent = popover.querySelector('.popover-content');
-      var popoverInfo = popover.querySelector('.popover-info');
+      var popoverImage = popover.querySelector('.popover-image');
+      var popoverAlt = popoverImage.getAttribute('src');
 
-      popoverContent = popoverContent && popoverContent.innerHTML.trim();
-      popoverInfo = popoverInfo && popoverInfo.innerHTML.trim();
-
-      expect(popoverContent === popoverInfo).toBe(true);
+      expect(popoverAlt).toBe('http://www.transferwise.com/logo.png');
     })
 
     describe('when we click outside the popover', function () {
@@ -63,11 +66,13 @@ describe('Popover directive', function() {
     if (!template) {
       template = " \
         <a tw-pop-over \
-          data-original-title='Popover title' \
+          data-original-title='<span>Popover title</span>' \
           data-content='Full description copy, explaining in more detail'\
-          data-template='<div class=\"popover-content\">__content__</div> \
-                             <div class=\"popover-info\">__content__</div>'> \
-            Clicky \
+          data-image='http://www.transferwise.com/logo.png'\
+          data-template='<h3 class=\"popover-title\"></h3> \
+                         <img class=\"popover-image\" alt=\"Popover content\" /> \
+                         <div class=\"popover-content\"></div>'> \
+            Click it \
         </a>";
     }
 
