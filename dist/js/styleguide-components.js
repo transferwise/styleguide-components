@@ -5437,7 +5437,9 @@ function getTriggeringEvent(element) {
  */
 function getElementOptions(element) {
   var options = {
-    placement: 'right'
+    trigger: 'click',
+    placement: 'right',
+    modalMode: true
   };
 
   if (element.dataset.placement) {
@@ -5545,7 +5547,7 @@ function PopoverService() {
       elementWithPopover = highlightedElement;
       elementPopoverOptions = popoverOptions;
 
-      var isModalModeEnabled = getModalModeVisibility(elementPopoverOptions);
+      var isModalModeEnabled = getModalMode(elementPopoverOptions);
 
       var displayHandlers = [displayPopover];
 
@@ -5819,10 +5821,10 @@ function PopoverService() {
       var clickedPopoverClose = event.target.classList.contains('popover-close');
       var closeModalCondition = clickedOutsidePopover || clickedInsidePopover && clickedPopoverClose;
 
-      var isInModalMode = getModalModeVisibility(elementPopoverOptions);
+      var isModalModeEnabled = getModalMode(elementPopoverOptions);
 
       if (closeModalCondition) {
-        if (isInModalMode) {
+        if (isModalModeEnabled) {
           toggleModalMode(false);
 
           setElementInlineStyles({
@@ -5843,7 +5845,7 @@ function PopoverService() {
    */
   function resizeCallback() {
     if (elementWithPopover instanceof HTMLElement && popover) {
-      var isInModalMode = getModalModeVisibility(elementPopoverOptions);
+      var isModalModeEnabled = getModalMode(elementPopoverOptions);
       var isPopoverVisible = popover && !popover.classList.contains('scale-down');
 
       /**
@@ -5851,11 +5853,11 @@ function PopoverService() {
        * and we're not in modal mode
        */
       if (isPopoverVisible) {
-        if (!isInModalMode) {
+        if (!isModalModeEnabled) {
           compose(setPopoverPosition, getPopoverPlacement)(elementPopoverOptions);
         }
 
-        toggleModalMode(isInModalMode);
+        toggleModalMode(isModalModeEnabled);
       }
     }
   }
@@ -5950,7 +5952,14 @@ function PopoverService() {
    * @return {String} [CSS class]
    */
   function hidePopover() {
-    return addClass(popover, 'scale-down');
+    var isModalModeEnabled = getModalMode(elementPopoverOptions);
+    var popoverTriggerEvent = getTriggeringEvent(elementPopoverOptions);
+
+    if (popoverTriggerEvent === 'hover' && !isModalModeEnabled || popoverTriggerEvent === 'click') {
+      return addClass(popover, 'scale-down');
+    }
+
+    return 'scale-down';
   }
 
   /**
@@ -6034,6 +6043,15 @@ function PopoverService() {
     return curry(getObjectProperty)('modalMode')(popoverOptions);
   }
 
+  /**
+   * [getTriggeringEvent Get the popover trigger mode, either 'click' or 'hover']
+   * @param  {Object} popoverOptions
+   * @return {String}
+   */
+  function getTriggeringEvent(popoverOptions) {
+    return curry(getObjectProperty)('trigger')(popoverOptions);
+  }
+
   function getModalOverlayNode() {
     return BODY.querySelector('.popover-modal-cover');
   }
@@ -6077,7 +6095,7 @@ function PopoverService() {
     return modalModeEnabled ? enableModalMode() : disableModalMode();
   }
 
-  function getModalModeVisibility(popoverOptions) {
+  function getModalMode(popoverOptions) {
     var isModalModeEnabled = getPopoverModalMode(popoverOptions);
     var viewportClientDimensions = getClientDimensions(document.documentElement);
 
@@ -6160,7 +6178,8 @@ function PopoverService() {
   function validateOptions(object) {
     return curry(looksLike)({
       title: 'Popover title',
-      content: 'Popover content'
+      content: 'Popover content',
+      trigger: 'click'
     })(object);
   }
 
