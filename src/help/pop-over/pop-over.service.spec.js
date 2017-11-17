@@ -14,7 +14,7 @@ describe('TwPopoverService', function() {
       'html': true,
       'image': 'http://transferwise.com/logo.png',
       'template': " \
-        <div class='popover popover-modal'> \
+        <div class='popover'> \
           <h3 class='popover-title'></h3> \
           <img class='popover-image' /> \
           <div class='popover-content'></div> \

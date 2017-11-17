@@ -5438,8 +5438,7 @@ function getTriggeringEvent(element) {
 function getElementOptions(element) {
   var options = {
     trigger: 'click',
-    placement: 'right',
-    modalMode: true
+    placement: 'right'
   };
 
   if (element.dataset.placement) {
@@ -5523,7 +5522,8 @@ function PopoverService() {
 
   var elementWithPopover = null;
   var elementPopoverOptions = {
-    placement: 'right'
+    placement: 'right',
+    trigger: 'click'
   };
 
   var popover = null;
@@ -5545,7 +5545,7 @@ function PopoverService() {
        * object for reference
        */
       elementWithPopover = highlightedElement;
-      elementPopoverOptions = popoverOptions;
+      elementPopoverOptions = mergeObjects(elementPopoverOptions, popoverOptions);
 
       var isModalModeEnabled = getModalMode(elementPopoverOptions);
 
@@ -6178,8 +6178,7 @@ function PopoverService() {
   function validateOptions(object) {
     return curry(looksLike)({
       title: 'Popover title',
-      content: 'Popover content',
-      trigger: 'click'
+      content: 'Popover content'
     })(object);
   }
 
@@ -6195,6 +6194,13 @@ function PopoverService() {
     return firstObject && secondObject && Object.keys(firstObject).every(function (firstObjectKey) {
       return Object.prototype.hasOwnProperty.call(secondObject, firstObjectKey);
     });
+  }
+
+  function mergeObjects(obj, src) {
+    Object.keys(src).forEach(function (key) {
+      obj[key] = src[key];
+    });
+    return obj;
   }
 
   /**

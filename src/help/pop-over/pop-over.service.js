@@ -11,6 +11,7 @@ function PopoverService() {
   let elementWithPopover = null;
   let elementPopoverOptions = {
     placement: 'right',
+    trigger: 'click',
   };
 
   let popover = null;
@@ -32,7 +33,7 @@ function PopoverService() {
        * object for reference
        */
       elementWithPopover = highlightedElement;
-      elementPopoverOptions = popoverOptions;
+      elementPopoverOptions = mergeObjects(elementPopoverOptions, popoverOptions);
 
       const isModalModeEnabled = getModalMode(elementPopoverOptions);
 
@@ -686,7 +687,6 @@ function PopoverService() {
     return curry(looksLike)({
       title: 'Popover title',
       content: 'Popover content',
-      trigger: 'click',
     })(object);
   }
 
@@ -705,6 +705,13 @@ function PopoverService() {
       Object.keys(firstObject).every(firstObjectKey =>
         Object.prototype.hasOwnProperty.call(secondObject, firstObjectKey))
     );
+  }
+
+  function mergeObjects(obj, src) {
+    Object.keys(src).forEach((key) => {
+      obj[key] = src[key];
+    });
+    return obj;
   }
 
   /**

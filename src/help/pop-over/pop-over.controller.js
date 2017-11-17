@@ -67,7 +67,6 @@ function getElementOptions(element) {
   const options = {
     trigger: 'click',
     placement: 'right',
-    modalMode: true,
   };
 
   if (element.dataset.placement) {
