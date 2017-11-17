@@ -69,9 +69,11 @@ describe('Popover directive', function() {
           data-original-title='<span>Popover title</span>' \
           data-content='Full description copy, explaining in more detail'\
           data-image='http://www.transferwise.com/logo.png'\
-          data-template='<h3 class=\"popover-title\"></h3> \
-                         <img class=\"popover-image\" alt=\"Popover content\" /> \
-                         <div class=\"popover-content\"></div>'> \
+          data-template='<div class=\"popover\"> \
+                           <h3 class=\"popover-title\"></h3> \
+                           <img class=\"popover-image\" alt=\"Popover content\" /> \
+                           <div class=\"popover-content\"></div>'> \
+                         </div> \
             Click it \
         </a>";
     }

@@ -9,10 +9,11 @@ function PopoverService() {
   const POPOVER_SPACING = 8;
 
   let elementWithPopover = null;
+  let elementPopoverOptions = {
+    placement: 'right',
+  };
 
   let popover = null;
-  let popoverPosition = 'right';
-
   /**
    * [showPopover          Call this method to display a popover next to an
    *                       element]
@@ -27,15 +28,17 @@ function PopoverService() {
   function showPopover(highlightedElement, popoverOptions) {
     if (highlightedElement instanceof HTMLElement && validateOptions(popoverOptions)) {
       elementWithPopover = highlightedElement;
-      popoverPosition = getPopoverPlacement(popoverOptions);
+      elementPopoverOptions = popoverOptions;
 
       if (!document.body.contains(popover)) {
-        popover = getPopover(popoverPosition);
+        popover = compose(getPopover, getPopoverPlacement)(elementPopoverOptions);
         BODY.appendChild(popover);
       }
 
-      popover.innerHTML = getPopoverContent(popoverOptions);
-      compose(displayPopover, setPopoverPosition)(popoverPosition);
+      popover.innerHTML = getPopoverContent(elementPopoverOptions);
+
+      compose(toggleModalMode, getModalModeVisibility)(elementPopoverOptions);
+      compose(displayPopover, setPopoverPosition, getPopoverPlacement)(elementPopoverOptions);
     } else {
       throw Error('Invalid element type or options object passed to the @showPopover function');
     }
@@ -69,14 +72,18 @@ function PopoverService() {
    *                            'left-top', 'right-top']
    */
   function setPopoverPosition(placement) {
-    popover.setAttribute('style', 'display:block; visibility:hidden;');
+    setElementInlineStyles({
+      display: 'block',
+      visibility: 'hidden',
+    }, popover);
 
     const { offsetX, offsetY } = getPopoverPosition(placement);
 
-    popover.setAttribute(
-      'style',
-      `display:block; visibility:visible; top:${offsetY}px; left:${offsetX}px`
-    );
+    setElementInlineStyles({
+      visibility: 'visible',
+      top: `${offsetY}px`,
+      left: `${offsetX}px`,
+    }, popover);
   }
 
   /**
@@ -118,7 +125,7 @@ function PopoverService() {
    * @return {String}           [Popover's new placement]
    */
   function checkPopoverPlacement(placement) {
-    const viewportOffsetDimensions = getOffsetDimensions(document.documentElement);
+    const viewportClientDimensions = getClientDimensions(document.documentElement);
 
     const elementOffsetDimensions = getOffsetDimensions(elementWithPopover);
     const elementOffset = getBoundingOffset(elementWithPopover);
@@ -131,7 +138,7 @@ function PopoverService() {
     const popoverLeftOffset = elementOffset.offsetX -
       (popoverOffsetDimensions.offsetWidth + POPOVER_SPACING);
 
-    const overflowsRight = popoverOffsetWidth > viewportOffsetDimensions.offsetWidth;
+    const overflowsRight = popoverOffsetWidth > viewportClientDimensions.clientWidth;
     const overflowsLeft = popoverLeftOffset < 0;
 
     if (overflowsRight && overflowsLeft) {
@@ -289,8 +296,21 @@ function PopoverService() {
       const clickedOutsidePopover = !popover.contains(event.target);
       const clickedInsidePopover = popover.contains(event.target);
       const clickedPopoverClose = event.target.classList.contains('popover-close');
+      const closeModalCondition = clickedOutsidePopover ||
+        (clickedInsidePopover && clickedPopoverClose);
 
-      if (clickedOutsidePopover || (clickedInsidePopover && clickedPopoverClose)) {
+      const isInModalMode = getModalModeVisibility(elementPopoverOptions);
+
+      if (closeModalCondition) {
+        if (isInModalMode) {
+          toggleModalMode(false);
+
+          setElementInlineStyles({
+            top: 'auto',
+            left: 'auto'
+          }, popover);
+        }
+
         hidePopover();
       }
     }
@@ -303,7 +323,13 @@ function PopoverService() {
    */
   function resizeCallback() {
     if (elementWithPopover instanceof HTMLElement && popover) {
-      setPopoverPosition(popoverPosition);
+      const isInModalMode = getModalModeVisibility(elementPopoverOptions);
+      const isPopoverVisible = popover && !popover.classList.contains('scale-down');
+
+      if (isPopoverVisible) {
+        compose(setPopoverPosition, getPopoverPlacement)(elementPopoverOptions);
+        toggleModalMode(isInModalMode);
+      }
     }
   }
 
@@ -339,6 +365,20 @@ function PopoverService() {
     return {
       offsetWidth: element.offsetWidth,
       offsetHeight: element.offsetHeight,
+    };
+  }
+
+  /**
+   * [getClientDimensions Get the inner width of an element in pixels. It includes
+   *                      padding but not the vertical scrollbar (if present,
+   *                      if rendered), border or margin.]
+   * @param  {HTMLElement} element
+   * @return {Object}
+   */
+  function getClientDimensions(element) {
+    return {
+      clientWidth: element.clientWidth,
+      clientHeight: element.clientHeight,
     };
   }
 
@@ -417,6 +457,18 @@ function PopoverService() {
   }
 
   /**
+   * [setElementInlineStyles Set @element's inline styles according to the
+   *                         @styles object]
+   * @param {Object}      styles
+   * @param {HTMLElement} element
+   */
+  function setElementInlineStyles(styles, element) {
+    Object.keys(styles).forEach((styleKey) => {
+      element.style[styleKey] = styles[styleKey];
+    });
+  }
+
+  /**
    * [getPopoverPlacement     Returns the placement of the popover from the
    *                          options object]
    * @param  {Object} popoverOptions
@@ -440,10 +492,69 @@ function PopoverService() {
    * [getHtmlRenderingMode    Check if we should render the passed HTML, in the
    *                          dataset attributes, as part of the popover]
    * @param  {Object} popoverOptions
-   * @return {String}
+   * @return {Boolean}
    */
   function getHtmlRenderingMode(popoverOptions) {
     return curry(getObjectProperty)('html')(popoverOptions);
+  }
+
+  /**
+   * [getPopoverModalMode Check if we should morph the popover into a modal]
+   * @param  {Object} popoverOptions
+   * @return {Boolean}
+   */
+  function getPopoverModalMode(popoverOptions) {
+    return curry(getObjectProperty)('modalMode')(popoverOptions);
+  }
+
+  function getModalOverlayNode() {
+    return BODY.querySelector('.popover-modal-cover');
+  }
+
+  function getPopoverOverlay() {
+    const popoverOverlay = document.createElement('div');
+    popoverOverlay.classList.add('popover-modal-cover');
+
+    return popoverOverlay;
+  }
+
+  function removePopoverOverlay() {
+    const overlayNode = getModalOverlayNode();
+
+    return overlayNode && BODY.removeChild(overlayNode);
+  }
+
+  function addPopoverOverlay() {
+    const overlayNode = getModalOverlayNode();
+
+    return overlayNode === null && BODY.appendChild(getPopoverOverlay());
+  }
+
+  function setPopoverToModal() {
+    return addClass(popover, 'popover-modal');
+  }
+
+  function revertModalToPopover() {
+    return removeClass(popover, 'popover-modal');
+  }
+
+  function enableModalMode() {
+    return compose(setPopoverToModal, addPopoverOverlay)();
+  }
+
+  function disableModalMode() {
+    return compose(revertModalToPopover, removePopoverOverlay)();
+  }
+
+  function toggleModalMode(modalModeEnabled) {
+    return modalModeEnabled ? enableModalMode() : disableModalMode();
+  }
+
+  function getModalModeVisibility(popoverOptions) {
+    const isModalModeEnabled = getPopoverModalMode(popoverOptions);
+    const viewportClientDimensions = getClientDimensions(document.documentElement);
+
+    return isModalModeEnabled && viewportClientDimensions.clientWidth <= 991;
   }
 
   /**
@@ -454,9 +565,11 @@ function PopoverService() {
    * @return {String}   [Popover template]
    */
   function getPopoverTemplate() {
-    return "<button class='popover-close'>&times;</button>\n" +
+    return "<div class='popover'>\n" +
+      "<button class='popover-close'>&times;</button>\n" +
       "<h3 class='popover-title'></h3>\n" +
-      "<div class='popover-content'></div>";
+      "<div class='popover-content'></div>\n" +
+      '</div>';
   }
 
   /**
@@ -465,35 +578,45 @@ function PopoverService() {
    * @param  {Object} options
    * @return {String}
    */
-  function getPopoverContent(options) {
-    const popoverTemplate = getGivenPopoverTemplate(options) || getPopoverTemplate();
-    const shouldRenderHTML = getHtmlRenderingMode(options);
+  function getPopoverContent(popoverValues) {
+    const popoverTemplate = getGivenPopoverTemplate(popoverValues) || getPopoverTemplate();
+    const shouldRenderHTML = getHtmlRenderingMode(popoverValues);
 
-    const popoverContainer = document.createElement('div');
-    popoverContainer.innerHTML = popoverTemplate;
+    const popoverContainer = angular.element(popoverTemplate)[0];
 
-    ['title', 'content'].forEach((optionKey) => {
-      const popoverElementSelector = `.popover-${optionKey}`;
-      const popoverElement = popoverContainer.querySelector(popoverElementSelector);
-      const popoverElementValue = options[optionKey];
-
-      popoverElement.innerHTML = '';
-
-      const insertMethod = shouldRenderHTML ?
-        'insertAdjacentHTML' :
-        'insertAdjacentText';
-
-      popoverElement[insertMethod]('beforeend', popoverElementValue);
+    /**
+     * For the 'title' and 'content' elements, we get their container elements
+     * from the in-memory popover container, and, depending if the dataset attribute
+     * 'html' is true, we either insert the parsed text, via
+     * insertAdjacentHTML, that was passed in the 'popoverValues', or we just insert it
+     * as text, via insertAdjacentText. 'beforeend' just specifies where the
+     * content is inserted, in our case as the last child of the in-memory
+     * 'title' and 'content' elements.
+     */
+    ['title', 'content'].forEach((property) => {
+      const popoverElement = popoverContainer.querySelector(`.popover-${property}`);
+      /**
+       * Call the 'insertAdjacentHTML' or 'insertAdjacentText' on the HTMLElement,
+       * inserting the values passed through the dataset attributes
+       *
+       * This form is a shorthand for element.insertAdjacentText or
+       * element.insertAdjacentHTML
+       */
+      if (shouldRenderHTML) {
+        popoverElement.insertAdjacentHTML('beforeend', popoverValues[property]);
+      } else {
+        popoverElement.insertAdjacentText('beforeend', popoverValues[property]);
+      }
     });
-
-    const popoverImageElement = popoverContainer.querySelector('.popover-image');
-    const popoverImageURL = curry(getObjectProperty)('image')(options);
 
     /**
      * Images are optional, the in-use template should have a child with a
-     * .popover-image class and the passed options should contain a relative /
+     * .popover-image class and the passed popoverValues should contain a relative /
      * absolute image path
      */
+    const popoverImageElement = popoverContainer.querySelector('.popover-image');
+    const popoverImageURL = curry(getObjectProperty)('image')(popoverValues);
+
     if (popoverImageElement && popoverImageURL) {
       popoverImageElement.src = popoverImageURL;
     }

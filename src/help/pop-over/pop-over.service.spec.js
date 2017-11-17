@@ -11,13 +11,15 @@ describe('TwPopoverService', function() {
       'placement': 'right',
       'title': '<span>Transferwise</span>',
       'content': '<span>Rules</span>',
-      'html': 'true',
+      'html': true,
       'image': 'http://transferwise.com/logo.png',
       'template': " \
-        <h3 class='popover-title'></h3> \
-        <img class='popover-image' /> \
-        <div class='popover-content'></div> \
-      "
+        <div class='popover popover-modal'> \
+          <h3 class='popover-title'></h3> \
+          <img class='popover-image' /> \
+          <div class='popover-content'></div> \
+        </div>",
+      'modalMode': true,
     };
 
   beforeEach(module('tw.styleguide-components'));
