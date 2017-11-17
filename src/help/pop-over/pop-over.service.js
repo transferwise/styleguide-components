@@ -27,8 +27,16 @@ function PopoverService() {
    */
   function showPopover(highlightedElement, popoverOptions) {
     if (highlightedElement instanceof HTMLElement && validateOptions(popoverOptions)) {
+      /**
+       * Store the passed element and the options as properties of the Service
+       * object for reference
+       */
       elementWithPopover = highlightedElement;
       elementPopoverOptions = popoverOptions;
+
+      const isModalModeEnabled = getModalModeVisibility(elementPopoverOptions);
+
+      let displayHandlers = [displayPopover];
 
       if (!document.body.contains(popover)) {
         popover = compose(getPopover, getPopoverPlacement)(elementPopoverOptions);
@@ -37,8 +45,25 @@ function PopoverService() {
 
       popover.innerHTML = getPopoverContent(elementPopoverOptions);
 
-      compose(toggleModalMode, getModalModeVisibility)(elementPopoverOptions);
-      compose(displayPopover, setPopoverPosition, getPopoverPlacement)(elementPopoverOptions);
+      /**
+       * Build the display handler function array depending on the display mode,
+       * either modal mode or normal mode, i.e. depending on the modalMode flag
+       * set in the passed options, thus saving the need to compute the
+       * coordinates of the popover when modal mode is enabled
+       */
+      if (!isModalModeEnabled) {
+        displayHandlers = [...displayHandlers, setPopoverPosition, getPopoverPlacement];
+      }
+
+      /**
+       * Append overlay and add the popover-modal class to the popover element
+       */
+      toggleModalMode(isModalModeEnabled);
+
+      /**
+       * Display the popover with or without computing its position
+       */
+      compose(...displayHandlers)(elementPopoverOptions);
     } else {
       throw Error('Invalid element type or options object passed to the @showPopover function');
     }
@@ -326,8 +351,15 @@ function PopoverService() {
       const isInModalMode = getModalModeVisibility(elementPopoverOptions);
       const isPopoverVisible = popover && !popover.classList.contains('scale-down');
 
+      /**
+       * Compute the coordinates of the popover only if the popover is visible
+       * and we're not in modal mode
+       */
       if (isPopoverVisible) {
-        compose(setPopoverPosition, getPopoverPlacement)(elementPopoverOptions);
+        if (!isInModalMode) {
+          compose(setPopoverPosition, getPopoverPlacement)(elementPopoverOptions);
+        }
+
         toggleModalMode(isInModalMode);
       }
     }
@@ -582,6 +614,9 @@ function PopoverService() {
     const popoverTemplate = getGivenPopoverTemplate(popoverValues) || getPopoverTemplate();
     const shouldRenderHTML = getHtmlRenderingMode(popoverValues);
 
+    /**
+     * Create in-memory element based on provided template
+     */
     const popoverContainer = angular.element(popoverTemplate)[0];
 
     /**

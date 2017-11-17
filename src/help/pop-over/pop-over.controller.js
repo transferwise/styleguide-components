@@ -65,7 +65,7 @@ function getTriggeringEvent(element) {
  */
 function getElementOptions(element) {
   const options = {
-    placement: 'right',
+    placement: 'right'
   };
 
   if (element.dataset.placement) {
