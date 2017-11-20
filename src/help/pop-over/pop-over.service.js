@@ -43,7 +43,7 @@ function PopoverService() {
       let displayHandlers = [displayPopover];
 
       if (!document.body.contains(popover)) {
-        popover = compose(getPopover, getPopoverPlacement)(elementPopoverOptions);
+        popover = getPopover(elementPopoverOptions);
         BODY.appendChild(popover);
       }
 
@@ -77,15 +77,22 @@ function PopoverService() {
    * [getPopover                        Gets the popover container in which we
    *                                    will append the binded content to the
    *                                    template]
-   * @param  {String} placement        [Can be either 'top', 'right', 'bottom',
-   *                                    'left', 'left-top', 'right-top']
-   * @return {HTMLElement}             [Popover container]
+   * @param  {Object} popoverOptions
+   * @return {HTMLElement}
    */
-  function getPopover(placement) {
+  function getPopover(popoverOptions) {
+    /**
+     * Can be either 'top', 'right', 'bottom', 'left', 'left-top', 'right-top'
+     */
+    const placement = getPopoverPlacement(popoverOptions);
+    const isInModalMode = getModalMode(popoverOptions);
+
     const popoverContainer = document.createElement('div');
-    const popoverClasses = [
-      'popover', 'in', placement, 'animate', 'scale-down'
-    ];
+    const popoverClasses = ['popover', 'in', placement, 'scale-down'];
+
+    if (!isInModalMode) {
+      popoverClasses.push('animate');
+    }
 
     popoverContainer.classList.add(...popoverClasses);
     popoverContainer.setAttribute('role', 'popover');
@@ -102,7 +109,6 @@ function PopoverService() {
    */
   function setPopoverPosition(placement) {
     setElementInlineStyles({
-      display: 'block',
       visibility: 'hidden',
     }, popover);
 
@@ -325,22 +331,17 @@ function PopoverService() {
       const clickedOutsidePopover = !popover.contains(event.target);
       const clickedInsidePopover = popover.contains(event.target);
       const clickedPopoverClose = event.target.classList.contains('popover-close');
+
       const closeModalCondition = clickedOutsidePopover ||
         (clickedInsidePopover && clickedPopoverClose);
-
       const isModalModeEnabled = getModalMode(elementPopoverOptions);
 
       if (closeModalCondition) {
+        hidePopover();
+
         if (isModalModeEnabled) {
           toggleModalMode(false);
-
-          setElementInlineStyles({
-            top: 'auto',
-            left: 'auto'
-          }, popover);
         }
-
-        hidePopover();
       }
     }
   }
@@ -359,13 +360,17 @@ function PopoverService() {
        * Compute the coordinates of the popover only if the popover is visible
        * and we're not in modal mode
        */
-      if (isPopoverVisible) {
-        if (!isModalModeEnabled) {
-          compose(setPopoverPosition, getPopoverPlacement)(elementPopoverOptions);
-        }
-
-        toggleModalMode(isModalModeEnabled);
+      if (isModalModeEnabled) {
+        removeClass(popover, 'animate');
+      } else {
+        addClass(popover, 'animate');
       }
+
+      if (isPopoverVisible && !isModalModeEnabled) {
+        compose(setPopoverPosition, getPopoverPlacement)(elementPopoverOptions);
+      }
+
+      toggleModalMode(isPopoverVisible && isModalModeEnabled);
     }
   }
 
@@ -459,17 +464,7 @@ function PopoverService() {
    * @return {String} [CSS class]
    */
   function hidePopover() {
-    const isModalModeEnabled = getModalMode(elementPopoverOptions);
-    const popoverTriggerEvent = getTriggeringEvent(elementPopoverOptions);
-
-    if (
-      (popoverTriggerEvent === 'hover' && !isModalModeEnabled) ||
-      (popoverTriggerEvent === 'click' || popoverTriggerEvent === undefined)
-    ) {
-      return addClass(popover, 'scale-down');
-    }
-
-    return 'scale-down';
+    return addClass(popover, 'scale-down');
   }
 
   /**
@@ -553,15 +548,6 @@ function PopoverService() {
     return curry(getObjectProperty)('modalMode')(popoverOptions);
   }
 
-  /**
-   * [getTriggeringEvent Get the popover trigger mode, either 'click' or 'hover']
-   * @param  {Object} popoverOptions
-   * @return {String}
-   */
-  function getTriggeringEvent(popoverOptions) {
-    return curry(getObjectProperty)('trigger')(popoverOptions);
-  }
-
   function getModalOverlayNode() {
     return BODY.querySelector('.popover-modal-cover');
   }
@@ -582,7 +568,7 @@ function PopoverService() {
   function addPopoverOverlay() {
     const overlayNode = getModalOverlayNode();
 
-    return overlayNode === null && BODY.appendChild(getPopoverOverlay());
+    return overlayNode === null && BODY.insertBefore(getPopoverOverlay(), popover);
   }
 
   function setPopoverToModal() {
