@@ -8,7 +8,6 @@ describe('TwPopoverService', function() {
         Show a popover next to this element \
       </a>",
     popoverOptions = {
-      'placement': 'right',
       'title': '<span>Transferwise</span>',
       'content': '<span>Rules</span>',
       'html': true,

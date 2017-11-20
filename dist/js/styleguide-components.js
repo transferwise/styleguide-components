@@ -5437,8 +5437,7 @@ function getTriggeringEvent(element) {
  */
 function getElementOptions(element) {
   var options = {
-    trigger: 'click',
-    placement: 'right'
+    trigger: 'click'
   };
 
   if (element.dataset.placement) {
@@ -5521,10 +5520,7 @@ function PopoverService() {
   var POPOVER_SPACING = 8;
 
   var elementWithPopover = null;
-  var elementPopoverOptions = {
-    placement: 'right',
-    trigger: 'click'
-  };
+  var elementPopoverOptions = {};
 
   var popover = null;
   /**
@@ -5545,7 +5541,13 @@ function PopoverService() {
        * object for reference
        */
       elementWithPopover = highlightedElement;
-      elementPopoverOptions = mergeObjects(elementPopoverOptions, popoverOptions);
+
+      /**
+       * Default options merged with passed options
+       */
+      elementPopoverOptions = mergeObjects({
+        placement: 'right'
+      }, popoverOptions);
 
       var isModalModeEnabled = getModalMode(elementPopoverOptions);
 
@@ -5955,7 +5957,7 @@ function PopoverService() {
     var isModalModeEnabled = getModalMode(elementPopoverOptions);
     var popoverTriggerEvent = getTriggeringEvent(elementPopoverOptions);
 
-    if (popoverTriggerEvent === 'hover' && !isModalModeEnabled || popoverTriggerEvent === 'click') {
+    if (popoverTriggerEvent === 'hover' && !isModalModeEnabled || popoverTriggerEvent === 'click' || popoverTriggerEvent === undefined) {
       return addClass(popover, 'scale-down');
     }
 
