@@ -10,15 +10,15 @@ describe('TwPopoverService', function() {
     popoverOptions = {
       'title': '<span>Transferwise</span>',
       'content': '<span>Rules</span>',
-      'html': true,
       'image': 'http://transferwise.com/logo.png',
-      'template': " \
-        <div class='popover'> \
-          <h3 class='popover-title'></h3> \
-          <img class='popover-image' /> \
-          <div class='popover-content'></div> \
-        </div>",
-      'modalMode': true,
+      'placement': 'right-top',
+      'template': "<div class='popover'> \n" +
+        "<button class='popover-close'>&times;</button> \n" +
+        "<h3 class='popover-title'></h3> \n" +
+        "<img class='popover-image' /> \n" +
+        "<div class='popover-content'></div> \n" +
+      '</div>',
+      'html': true
     };
 
   beforeEach(module('tw.styleguide-components'));
@@ -27,6 +27,10 @@ describe('TwPopoverService', function() {
     service = $injector.get('twPopOverService');
     $window = $injector.get('$window');
   }));
+
+  it('should load the service', function() {
+    expect(typeof service).toBe('object');
+  });
 
   describe('when we show a popover', function() {
     beforeEach(function() {
@@ -49,7 +53,7 @@ describe('TwPopoverService', function() {
       $window.document.body.removeChild(document.querySelector('.popover'));
     });
 
-    it('should append the popover to the body element', function () {
+    it('should append the popover and make it visible', function () {
       var popoverAppended = $window.document.body.contains(popover);
       var popoverVisible = !popover.classList.contains('scale-down');
       var popoverVisibility = popoverAppended && popoverVisible;

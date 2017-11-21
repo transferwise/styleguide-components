@@ -5437,7 +5437,8 @@ function getTriggeringEvent(element) {
  */
 function getElementOptions(element) {
   var options = {
-    trigger: 'click'
+    trigger: 'click',
+    placement: 'right'
   };
 
   if (element.dataset.placement) {
@@ -5541,13 +5542,7 @@ function PopoverService() {
        * object for reference
        */
       elementWithPopover = highlightedElement;
-
-      /**
-       * Default options merged with passed options
-       */
-      elementPopoverOptions = mergeObjects({
-        placement: 'right'
-      }, popoverOptions);
+      elementPopoverOptions = popoverOptions;
 
       var isModalModeEnabled = getModalMode(elementPopoverOptions);
 
@@ -5853,16 +5848,16 @@ function PopoverService() {
       var isModalModeEnabled = getModalMode(elementPopoverOptions);
       var isPopoverVisible = popover && !popover.classList.contains('scale-down');
 
-      /**
-       * Compute the coordinates of the popover only if the popover is visible
-       * and we're not in modal mode
-       */
       if (isModalModeEnabled) {
         removeClass(popover, 'animate');
       } else {
         addClass(popover, 'animate');
       }
 
+      /**
+       * Compute the coordinates of the popover only if the popover is visible
+       * and we're not in modal mode
+       */
       if (isPopoverVisible && !isModalModeEnabled) {
         compose(setPopoverPosition, getPopoverPlacement)(elementPopoverOptions);
       }
@@ -6026,25 +6021,6 @@ function PopoverService() {
     return curry(getObjectProperty)('template')(popoverOptions);
   }
 
-  /**
-   * [getHtmlRenderingMode    Check if we should render the passed HTML, in the
-   *                          dataset attributes, as part of the popover]
-   * @param  {Object} popoverOptions
-   * @return {Boolean}
-   */
-  function getHtmlRenderingMode(popoverOptions) {
-    return curry(getObjectProperty)('html')(popoverOptions);
-  }
-
-  /**
-   * [getPopoverModalMode Check if we should morph the popover into a modal]
-   * @param  {Object} popoverOptions
-   * @return {Boolean}
-   */
-  function getPopoverModalMode(popoverOptions) {
-    return curry(getObjectProperty)('modalMode')(popoverOptions);
-  }
-
   function getModalOverlayNode() {
     return BODY.querySelector('.popover-modal-cover');
   }
@@ -6089,7 +6065,7 @@ function PopoverService() {
   }
 
   function getModalMode(popoverOptions) {
-    var isModalModeEnabled = getPopoverModalMode(popoverOptions);
+    var isModalModeEnabled = getObjectProperty('modalMode', popoverOptions);
     var viewportClientDimensions = getClientDimensions(document.documentElement);
 
     return isModalModeEnabled && viewportClientDimensions.clientWidth <= 991;
@@ -6112,9 +6088,9 @@ function PopoverService() {
    * @param  {Object} options
    * @return {String}
    */
-  function getPopoverContent(popoverValues) {
-    var popoverTemplate = getGivenPopoverTemplate(popoverValues) || getPopoverTemplate();
-    var shouldRenderHTML = getHtmlRenderingMode(popoverValues);
+  function getPopoverContent(popoverOptions) {
+    var popoverTemplate = getGivenPopoverTemplate(popoverOptions) || getPopoverTemplate();
+    var shouldRenderHTML = getObjectProperty('html', popoverOptions);
 
     /**
      * Create in-memory element based on provided template
@@ -6125,7 +6101,7 @@ function PopoverService() {
      * For the 'title' and 'content' elements, we get their container elements
      * from the in-memory popover container, and, depending if the dataset attribute
      * 'html' is true, we either insert the parsed text, via
-     * insertAdjacentHTML, that was passed in the 'popoverValues', or we just insert it
+     * insertAdjacentHTML, that was passed in the 'popoverOptions', or we just insert it
      * as text, via insertAdjacentText. 'beforeend' just specifies where the
      * content is inserted, in our case as the last child of the in-memory
      * 'title' and 'content' elements.
@@ -6140,19 +6116,19 @@ function PopoverService() {
        * element.insertAdjacentHTML
        */
       if (shouldRenderHTML) {
-        popoverElement.insertAdjacentHTML('beforeend', popoverValues[property]);
+        popoverElement.insertAdjacentHTML('beforeend', popoverOptions[property]);
       } else {
-        popoverElement.insertAdjacentText('beforeend', popoverValues[property]);
+        popoverElement.insertAdjacentText('beforeend', popoverOptions[property]);
       }
     });
 
     /**
      * Images are optional, the in-use template should have a child with a
-     * .popover-image class and the passed popoverValues should contain a relative /
+     * .popover-image class and the passed popoverOptions should contain a relative /
      * absolute image path
      */
     var popoverImageElement = popoverContainer.querySelector('.popover-image');
-    var popoverImageURL = curry(getObjectProperty)('image')(popoverValues);
+    var popoverImageURL = curry(getObjectProperty)('image')(popoverOptions);
 
     if (popoverImageElement && popoverImageURL) {
       popoverImageElement.src = popoverImageURL;
@@ -6187,13 +6163,6 @@ function PopoverService() {
     return firstObject && secondObject && Object.keys(firstObject).every(function (firstObjectKey) {
       return Object.prototype.hasOwnProperty.call(secondObject, firstObjectKey);
     });
-  }
-
-  function mergeObjects(obj, src) {
-    Object.keys(src).forEach(function (key) {
-      obj[key] = src[key];
-    });
-    return obj;
   }
 
   /**
