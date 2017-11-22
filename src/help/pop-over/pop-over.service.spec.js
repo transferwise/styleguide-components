@@ -13,12 +13,11 @@ describe('TwPopoverService', function() {
       'image': 'http://transferwise.com/logo.png',
       'placement': 'right-top',
       'template': "<div class='popover'> \n" +
-        "<button class='popover-close'>&times;</button> \n" +
         "<h3 class='popover-title'></h3> \n" +
         "<img class='popover-image' /> \n" +
         "<div class='popover-content'></div> \n" +
       '</div>',
-      'html': true
+      'contentHtml': true
     };
 
   beforeEach(module('tw.styleguide-components'));
