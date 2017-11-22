@@ -5459,8 +5459,8 @@ function getElementOptions(element) {
   if (element.dataset.template) {
     options.template = element.dataset.template;
   }
-  if (element.dataset.html) {
-    options.html = element.dataset.html === 'true';
+  if (element.dataset.contentHtml) {
+    options.contentHtml = element.dataset.contentHtml === 'true';
   }
   if (element.dataset.image) {
     options.image = element.dataset.image;
@@ -5849,6 +5849,10 @@ function PopoverService() {
       var isPopoverVisible = popover && !popover.classList.contains('scale-down');
 
       if (isModalModeEnabled) {
+        if (!popover.querySelector('.popover-close')) {
+          popover.insertAdjacentHTML('afterbegin', "<button class='popover-close'>&times;</button>");
+        }
+
         removeClass(popover, 'animate');
       } else {
         addClass(popover, 'animate');
@@ -6079,7 +6083,7 @@ function PopoverService() {
    * @return {String}   [Popover template]
    */
   function getPopoverTemplate() {
-    return "<div class='popover'>\n" + "<button class='popover-close'>&times;</button>\n" + "<h3 class='popover-title'></h3>\n" + "<div class='popover-content'></div>\n" + '</div>';
+    return "<div class='popover'>\n" + "<h3 class='popover-title'></h3>\n" + "<div class='popover-content'></div>\n" + '</div>';
   }
 
   /**
@@ -6090,12 +6094,17 @@ function PopoverService() {
    */
   function getPopoverContent(popoverOptions) {
     var popoverTemplate = getGivenPopoverTemplate(popoverOptions) || getPopoverTemplate();
-    var shouldRenderHTML = getObjectProperty('html', popoverOptions);
+    var shouldRenderHTML = getObjectProperty('contentHtml', popoverOptions);
+    var modalModeEnabled = getModalMode(popoverOptions);
+
+    var popoverContainer = angular.element(popoverTemplate)[0];
 
     /**
-     * Create in-memory element based on provided template
+     * Insert the close button only when in modal mode
      */
-    var popoverContainer = angular.element(popoverTemplate)[0];
+    if (modalModeEnabled) {
+      popoverContainer.insertAdjacentHTML('afterbegin', "<button class='popover-close'>&times;</button>");
+    }
 
     /**
      * For the 'title' and 'content' elements, we get their container elements

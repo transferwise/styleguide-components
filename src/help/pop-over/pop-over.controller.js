@@ -87,8 +87,8 @@ function getElementOptions(element) {
   if (element.dataset.template) {
     options.template = element.dataset.template;
   }
-  if (element.dataset.html) {
-    options.html = element.dataset.html === 'true';
+  if (element.dataset.contentHtml) {
+    options.contentHtml = element.dataset.contentHtml === 'true';
   }
   if (element.dataset.image) {
     options.image = element.dataset.image;
