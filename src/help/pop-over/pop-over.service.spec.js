@@ -17,6 +17,7 @@ describe('TwPopoverService', function() {
         "<img class='popover-image' /> \n" +
         "<div class='popover-content'></div> \n" +
       '</div>',
+      'container': 'body',
       'contentHtml': true
     };
 

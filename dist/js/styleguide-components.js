@@ -5441,29 +5441,24 @@ function getElementOptions(element) {
     placement: 'right'
   };
 
-  if (element.dataset.placement) {
-    options.placement = element.dataset.placement;
-  }
-  if (element.dataset.title) {
-    options.title = element.dataset.title;
-  }
+  var dataAttributes = ['placement', 'title', 'content', 'trigger', 'template', 'image', 'container'];
+
+  options = dataAttributes.reduce(function (accumulatedOptions, dataAttr) {
+    if (element.dataset[dataAttr]) {
+      accumulatedOptions[dataAttr] = element.dataset[dataAttr];
+    }
+    return accumulatedOptions;
+  }, options);
+
+  /**
+   * Special cases
+   */
   if (element.dataset.originalTitle) {
     options.title = element.dataset.originalTitle;
   }
-  if (element.dataset.content) {
-    options.content = element.dataset.content;
-  }
-  if (element.dataset.trigger) {
-    options.trigger = element.dataset.trigger;
-  }
-  if (element.dataset.template) {
-    options.template = element.dataset.template;
-  }
+
   if (element.dataset.contentHtml) {
     options.contentHtml = element.dataset.contentHtml === 'true';
-  }
-  if (element.dataset.image) {
-    options.image = element.dataset.image;
   }
 
   return options;
@@ -5545,12 +5540,13 @@ function PopoverService() {
       elementPopoverOptions = popoverOptions;
 
       var isModalModeEnabled = getModalMode(elementPopoverOptions);
+      var popoverParentElement = getPopoverParentElement(elementPopoverOptions);
 
       var displayHandlers = [displayPopover];
 
-      if (!document.body.contains(popover)) {
+      if (!popoverParentElement.contains(popover)) {
         popover = getPopover(elementPopoverOptions);
-        BODY.appendChild(popover);
+        popoverParentElement.appendChild(popover);
       }
 
       popover.innerHTML = getPopoverContent(elementPopoverOptions);
@@ -5594,12 +5590,19 @@ function PopoverService() {
      */
     var placement = getPopoverPlacement(popoverOptions);
     var isInModalMode = getModalMode(popoverOptions);
+    var isPositionedFixed = getFixedPlacementCondition(popoverOptions);
 
     var popoverContainer = document.createElement('div');
     var popoverClasses = ['popover', 'in', placement, 'scale-down'];
 
     if (!isInModalMode) {
       popoverClasses.push('animate');
+    }
+
+    if (isPositionedFixed) {
+      setElementInlineStyles({
+        position: 'fixed'
+      }, popoverContainer);
     }
 
     (_popoverContainer$cla = popoverContainer.classList).add.apply(_popoverContainer$cla, popoverClasses);
@@ -5672,11 +5675,13 @@ function PopoverService() {
    * @return {String}           [Popover's new placement]
    */
   function checkPopoverPlacement(placement) {
+    var popoverContainerElement = getPopoverParentElement(elementPopoverOptions);
+    var coordinateComputeFunction = popoverContainerElement === BODY ? getBoundingOffset : getParentOffset;
+    var elementOffset = coordinateComputeFunction(elementWithPopover);
+
     var viewportClientDimensions = getClientDimensions(document.documentElement);
 
     var elementOffsetDimensions = getOffsetDimensions(elementWithPopover);
-    var elementOffset = getBoundingOffset(elementWithPopover);
-
     var popoverOffsetDimensions = getOffsetDimensions(popover);
 
     var popoverOffsetWidth = elementOffset.offsetX + elementOffsetDimensions.offsetWidth + POPOVER_SPACING + popoverOffsetDimensions.offsetWidth;
@@ -5716,10 +5721,9 @@ function PopoverService() {
    * @return {Object}           [Popover's coordinates]
    */
   function getPopoverCoordinates(placement) {
-    /**
-     * The promoted element's coordinates, for which we want to display the popover
-     */
-    var elementOffset = getBoundingOffset(elementWithPopover);
+    var popoverContainerElement = getPopoverParentElement(elementPopoverOptions);
+    var coordinateComputeFunction = popoverContainerElement === BODY ? getBoundingOffset : getParentOffset;
+    var elementOffset = coordinateComputeFunction(elementWithPopover);
 
     /**
      * The promoted element's size, for which we want to display the popover
@@ -5889,6 +5893,19 @@ function PopoverService() {
   }
 
   /**
+   * [getParentOffset              Get the distance of the current element
+   *                               relative to the top and left of the parent
+   *                               node.]
+   * @param {HTMLElement} element
+   */
+  function getParentOffset(element) {
+    return {
+      offsetY: element.offsetTop,
+      offsetX: element.offsetLeft
+    };
+  }
+
+  /**
    * [getOffsetDimensions         Get the element's offset dimensions,
    *                              i.e. measurement which includes the element
    *                              borders, the element horizontal padding, the
@@ -6016,6 +6033,16 @@ function PopoverService() {
   }
 
   /**
+   * [getFixedPlacementCondition Returns a Boolean value indicating if we should
+   *                             position the popover with a fixed value]
+   * @param  {Object} popoverOptions
+   * @return {Boolean}
+   */
+  function getFixedPlacementCondition(popoverOptions) {
+    return curry(getObjectProperty)('promotedElementIsFixed')(popoverOptions);
+  }
+
+  /**
    * [getGivenPopoverTemplate Returns the template of the popover from the
    *                          options object]
    * @param  {Object} popoverOptions
@@ -6023,6 +6050,20 @@ function PopoverService() {
    */
   function getGivenPopoverTemplate(popoverOptions) {
     return curry(getObjectProperty)('template')(popoverOptions);
+  }
+
+  function getPopoverParentElement(popoverOptions) {
+    var popoverParent = getObjectProperty('container', popoverOptions);
+
+    if (typeof popoverParent === 'string' && document.querySelector(popoverParent)) {
+      popoverParent = document.querySelector(popoverParent);
+    } else if (popoverParent && popoverParent.toLowerCase() === 'body') {
+      popoverParent = BODY;
+    } else {
+      popoverParent = elementWithPopover.parentNode;
+    }
+
+    return popoverParent;
   }
 
   function getModalOverlayNode() {
@@ -6044,8 +6085,15 @@ function PopoverService() {
 
   function addPopoverOverlay() {
     var overlayNode = getModalOverlayNode();
+    var popoverParentElement = getPopoverParentElement(elementPopoverOptions);
 
-    return overlayNode === null && BODY.insertBefore(getPopoverOverlay(), popover);
+    if (overlayNode === null) {
+      if (popoverParentElement === BODY) {
+        BODY.insertBefore(getPopoverOverlay(), popover);
+      } else {
+        BODY.appendChild(getPopoverOverlay());
+      }
+    }
   }
 
   function setPopoverToModal() {

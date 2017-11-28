@@ -64,34 +64,37 @@ function getTriggeringEvent(element) {
  * @return {Object}              [Map of data attributes and their values]
  */
 function getElementOptions(element) {
-  const options = {
+  let options = {
     trigger: 'click',
     placement: 'right'
   };
 
-  if (element.dataset.placement) {
-    options.placement = element.dataset.placement;
-  }
-  if (element.dataset.title) {
-    options.title = element.dataset.title;
-  }
+  const dataAttributes = [
+    'placement',
+    'title',
+    'content',
+    'trigger',
+    'template',
+    'image',
+    'container'
+  ];
+
+  options = dataAttributes.reduce((accumulatedOptions, dataAttr) => {
+    if (element.dataset[dataAttr]) {
+      accumulatedOptions[dataAttr] = element.dataset[dataAttr];
+    }
+    return accumulatedOptions;
+  }, options);
+
+  /**
+   * Special cases
+   */
   if (element.dataset.originalTitle) {
     options.title = element.dataset.originalTitle;
   }
-  if (element.dataset.content) {
-    options.content = element.dataset.content;
-  }
-  if (element.dataset.trigger) {
-    options.trigger = element.dataset.trigger;
-  }
-  if (element.dataset.template) {
-    options.template = element.dataset.template;
-  }
+
   if (element.dataset.contentHtml) {
     options.contentHtml = element.dataset.contentHtml === 'true';
-  }
-  if (element.dataset.image) {
-    options.image = element.dataset.image;
   }
 
   return options;
