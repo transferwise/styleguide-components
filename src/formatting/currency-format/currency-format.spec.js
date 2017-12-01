@@ -6,7 +6,8 @@ describe('CurrencyFormat filter, ', function() {
       $scope,
       $element,
       input,
-      textValue;
+      textValue,
+      LocaleService;
 
   beforeEach(module('tw.styleguide-components'));
 
@@ -14,18 +15,21 @@ describe('CurrencyFormat filter, ', function() {
     $rootScope = $injector.get('$rootScope');
     $compile = $injector.get('$compile');
     $scope = $rootScope.$new();
+    LocaleService = $injector.get('TwLocaleService');
   }));
 
   describe('when no locale supplied', function() {
     beforeEach(function() {
       $scope.value = 123456;
       $scope.currency = 'GBP';
+      spyOn(LocaleService, 'get').and.returnValue('en-GB');
       $element = getCompiledDirectiveElement($scope);
       textValue = $element.text().trim();
     });
 
-    it('should default to en-GB format', function() {
+    it('should use the locale from the locale service', function() {
       if (isNumberLocaleSupported()) {
+        expect(LocaleService.get).toHaveBeenCalled();
         expect(textValue).toEqual('123,456 GBP');
       } else {
         expect(textValue).toEqual('123456 GBP');

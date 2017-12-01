@@ -1,7 +1,8 @@
 <h4 id="currency-format">TW Currency Format</h4>
 <p>
-  <code>twCurrencyFormat</code> is a filter for formatting numbers as currency
-  amounts, based on an ISO currency code and a given locale.
+  <code>twCurrencyFormat</code> provides both a component and a filter for
+  formatting numbers as currency amounts, based on an ISO currency code and a
+  given locale.
 </p>
 <ul>
   <li>Numbers without decimals are rendered without decimals, regardless of currency.</li>
@@ -16,7 +17,26 @@
 <div class="row m-b-3">
   <div class="col-md-6">
     <dl>
-      <dt>Currency formatted</dt>
+      <dt>Component</dt>
+      <dd>
+        <tw-currency-format
+          amount="$ctrl.number"
+          currency="$ctrl.currency"
+          locale="$ctrl.locale">
+        </tw-currency-format>
+      </dd>
+    </dl>
+<pre>
+&lt;tw-currency-format
+  amount="{{ $ctrl.number }}"
+  currency="{{ $ctrl.currency }}"
+  locale="{{ $ctrl.locale }}"&gt;
+&lt;/tw-currency-format&gt;
+</pre>
+    <h5>Currency format filter</h5>
+    <p> We also provide a <code>twCurrencyFormat</code> filter.</p>
+    <dl>
+      <dt>Filter</dt>
       <dd>{{ $ctrl.number | twCurrencyFormat : $ctrl.currency : $ctrl.locale }}</dd>
     </dl>
 <pre>
