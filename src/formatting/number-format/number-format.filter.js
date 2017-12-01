@@ -10,10 +10,15 @@ function NumberFormatFilter() {
     }
 
     const options = {};
-    if (precision) {
+    if (typeof precision === 'number') {
       options.minimumFractionDigits = precision;
       options.maximumFractionDigits = precision;
+
+      if (!isNumberLocaleSupported()) {
+        return number.toFixed(precision);
+      }
     }
+
     if (locale) {
       return number.toLocaleString(locale, options);
     }
@@ -21,5 +26,10 @@ function NumberFormatFilter() {
   };
 }
 
+function isNumberLocaleSupported() {
+  const num = 1234;
+  const numString = num.toLocaleString('en-GB');
+  return numString === '1,234';
+}
 
 export default NumberFormatFilter;
