@@ -7,6 +7,18 @@
         'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),
         'col-sm-12': $ctrl.narrow || field.width === 'lg' || !field.maxlength || field.maxlength > 10
       }">
+      <tw-form-group style="width: 100%"
+        model="$ctrl.model[field.key]"
+        field="field"
+        locale="$ctrl.locale"
+        upload-options="$ctrl.uploadOptions"
+        error-message="$ctrl.errorMessages[field.key]">
+      </tw-form-group>
+      <!--
+      ng-blur="$ctrl.onBlur(field)"
+      ng-change="$ctrl.onChange(field)"
+      -->
+      <!--
       <div class="form-group tw-form-group-{{field.key}}"
         ng-class="{
           'has-error': $ctrl.errorMessages[field.key]
@@ -70,6 +82,7 @@
               class="thumbnail m-y-2" />
           </div>
         </div>
+        -->
 
         <!-- Start old format -->
         <div class="row" ng-if="field.group">

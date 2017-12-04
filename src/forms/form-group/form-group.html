@@ -1,0 +1,61 @@
+<div class="form-group tw-form-group-{{$ctrl.field.key}}"
+  ng-class="{
+    'has-error': $ctrl.errorMessage
+  }">
+  <label class="control-label"
+    ng-if="$ctrl.field.type !== 'upload'">
+    {{$ctrl.field.name}}
+  </label>
+  <tw-form-control
+    name="{{ $ctrl.field.key }}"
+    label="{{ $ctrl.field.name }}"
+    type="{{ $ctrl.field.type | lowercase }}"
+    format="{{ $ctrl.field.format | lowercase }}"
+    placeholder="{{ $ctrl.field.placeholder || $ctrl.field.example }}"
+    help-text="{{ $ctrl.field.helpText }}"
+    help-image="{{ $ctrl.field.helpImage }}"
+    locale="{{ $ctrl.locale }}"
+    upload-accept="{{ $ctrl.field.accept }}"
+    upload-icon="{{ $ctrl.field.icon }}"
+    upload-too-large-message="{{ $ctrl.field.tooLargeMessage }}"
+    options="$ctrl.field.valuesAllowed"
+    upload-options="$ctrl.uploadOptions"
+    ng-model="$ctrl.model"
+    ng-blur="$ctrl.onBlur($ctrl.field)"
+    ng-change="$ctrl.onChange($ctrl.field)"
+    ng-required="$ctrl.field.required"
+    ng-disabled="$ctrl.field.disabled"
+    tw-minlength="$ctrl.field.minLength"
+    tw-maxlength="$ctrl.field.maxLength"
+    ng-min="$ctrl.field.min || $ctrl.field.minimum"
+    ng-max="$ctrl.field.max || $ctrl.field.maximum"
+    ng-pattern="$ctrl.field.validationRegexp || $ctrl.field.pattern"
+    text-format="$ctrl.field.displayFormat"
+    tw-validation
+  ></tw-form-control>
+  <div class="alert alert-danger error-messages"
+    ng-class="{'alert-detach': $ctrl.field.type === 'date' || $ctrl.field.type === 'upload'}">
+    <div ng-repeat="(validationType, validationMessage) in $ctrl.field.validationMessages track by $index"
+      class="error-{{validationType}}">
+      {{validationMessage}}
+    </div>
+    <div class="error-provided" ng-if="$ctrl.errorMessage">
+      {{ $ctrl.errorMessage }}
+    </div>
+  </div>
+  <div ng-if="$ctrl.field.tooltip || $ctrl.field.helpText || $ctrl.field.helpList || $ctrl.field.helpImage"
+    class="alert alert-focus"
+    ng-class="{'alert-detach': $ctrl.field.type === 'date' || $ctrl.field.type === 'upload'}">
+    <span ng-if="$ctrl.field.tooltip || $ctrl.field.helpText">
+      {{ $ctrl.field.tooltip || $ctrl.field.helpText }}
+    </span>
+    <ul ng-if="$ctrl.field.helpList" class="list-unstyled">
+      <li ng-repeat="helpMessage in $ctrl.field.helpList">{{ helpMessage }}</li>
+    </ul>
+    <img
+      ng-if="$ctrl.field.helpImage && $ctrl.field.type !== 'upload'"
+      ng-src="{{$ctrl.field.helpImage}}"
+      alt="{{$ctrl.field.name}}"
+      class="thumbnail m-y-2" />
+  </div>
+</div>

@@ -932,7 +932,7 @@ function RequirementsService() {
 
   this.prepFields = function (fields, model, validationMessages) {
     if (!fields) {
-      return;
+      return [];
     }
     var isArrayForm = Array.isArray(fields);
     // const preparedFields = {};
@@ -943,12 +943,12 @@ function RequirementsService() {
         // preparedFields[field.key] = this.prepField(field, model, validationMessages);
       });
     } else {
-      for (var key in fields) {
+      Object.keys(fields).forEach(function (key) {
         var field = fields[key];
         field.key = key;
         preparedFields.push(_this.prepField(field, model, validationMessages));
         // preparedFields[key] = this.prepField(field, model, validationMessages);
-      }
+      });
     }
     return preparedFields;
   };
@@ -999,6 +999,7 @@ function RequirementsService() {
       case 'select':
       case 'radio':
         break;
+      default:
     }
   };
 

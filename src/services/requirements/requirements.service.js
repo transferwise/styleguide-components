@@ -9,7 +9,7 @@ function RequirementsService() {
 
   this.prepFields = (fields, model, validationMessages) => {
     if (!fields) {
-      return;
+      return [];
     }
     const isArrayForm = Array.isArray(fields);
     // const preparedFields = {};
@@ -20,12 +20,12 @@ function RequirementsService() {
         // preparedFields[field.key] = this.prepField(field, model, validationMessages);
       });
     } else {
-      for (const key in fields) {
+      Object.keys(fields).forEach((key) => {
         const field = fields[key];
         field.key = key;
         preparedFields.push(this.prepField(field, model, validationMessages));
         // preparedFields[key] = this.prepField(field, model, validationMessages);
-      }
+      });
     }
     return preparedFields;
   };
@@ -76,6 +76,7 @@ function RequirementsService() {
       case 'select':
       case 'radio':
         break;
+      default:
     }
   };
 
