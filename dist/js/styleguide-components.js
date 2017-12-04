@@ -8030,7 +8030,7 @@ module.exports = "<input type=\"hidden\" class=\"sr-only\"\n  name=\"{{$ctrl.nam
 /* 114 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"input-group\" ng-class=\"{\n  'input-group-sm': $ctrl.size === 'sm',\n  'input-group-lg': $ctrl.size === 'lg',\n  'disabled': $ctrl.ngDisabled\n}\">\n  <input\n    type=\"tel\"\n    autocomplete=\"off\"\n    name=\"amount\"\n    step=\"any\"\n    class=\"form-control p-r-0\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    show-decimals=\"$ctrl.showDecimals\"\n    tw-focusable\n    tw-number-input-formatter\n    ng-change=\"$ctrl.changedInputValue()\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-disabled=\"$ctrl.ngDisabled\" />\n  <span class=\"hello-world input-group-addon tw-currency-input-code p-l-1\">\n    <span ng-transclude=\"addon\"></span>\n    {{ $ctrl.currency || $ctrl.currencyCode }}\n  </span>\n</div>\n";
+module.exports = "<div class=\"input-group\" ng-class=\"{\n  'input-group-sm': $ctrl.size === 'sm',\n  'input-group-lg': $ctrl.size === 'lg',\n  'disabled': $ctrl.ngDisabled\n}\">\n  <input\n    type=\"text\"\n    autocomplete=\"off\"\n    name=\"amount\"\n    step=\"any\"\n    class=\"form-control p-r-0\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    show-decimals=\"$ctrl.showDecimals\"\n    tw-focusable\n    tw-number-input-formatter\n    ng-change=\"$ctrl.changedInputValue()\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-disabled=\"$ctrl.ngDisabled\" />\n  <span class=\"hello-world input-group-addon tw-currency-input-code p-l-1\">\n    <span ng-transclude=\"addon\"></span>\n    {{ $ctrl.currency || $ctrl.currencyCode }}\n  </span>\n</div>\n";
 
 /***/ }),
 /* 115 */
