@@ -20,19 +20,18 @@ describe('CurrencyFormat filter, ', function() {
 
   describe('when no locale supplied', function() {
     beforeEach(function() {
-      $scope.value = 123456;
+      $scope.value = 1234.56;
       $scope.currency = 'GBP';
-      spyOn(LocaleService, 'get').and.returnValue('en-GB');
+      LocaleService.setCurrent('fr-FR');
       $element = getCompiledDirectiveElement($scope);
       textValue = $element.text().trim();
     });
 
     it('should use the locale from the locale service', function() {
       if (isNumberLocaleSupported()) {
-        expect(LocaleService.get).toHaveBeenCalled();
-        expect(textValue).toEqual('123,456 GBP');
+        expect(textValue).toEqual('1 234,56 GBP');
       } else {
-        expect(textValue).toEqual('123456 GBP');
+        expect(textValue).toEqual('1234.56 GBP');
       }
     });
   });

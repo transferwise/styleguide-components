@@ -1,6 +1,6 @@
 import template from './currency-format.html';
 
-const CurrencyDisplay = {
+const CurrencyFormat = {
   template,
   bindings: {
     amount: '<',
@@ -9,4 +9,4 @@ const CurrencyDisplay = {
   }
 };
 
-export default CurrencyDisplay;
+export default CurrencyFormat;

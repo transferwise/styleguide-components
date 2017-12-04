@@ -1,4 +1,4 @@
-function TwUndoStackFactory() {
+function UndoStackFactory() {
   this.new = () => new UndoStack();
 }
 
@@ -43,4 +43,4 @@ function UndoStack() {
   };
 }
 
-export default TwUndoStackFactory;
+export default UndoStackFactory;

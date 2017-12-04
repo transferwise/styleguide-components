@@ -21,12 +21,12 @@ describe('NumberFormat filter, ', function() {
   describe('when no locale supplied', function() {
     beforeEach(function() {
       $scope.value = 123456;
-      spyOn(LocaleService, 'get').and.returnValue('en-GB');
+      spyOn(LocaleService, 'getCurrent').and.returnValue('en-GB');
       $element = getCompiledDirectiveElement($scope);
       textValue = $element.text().trim();
     });
     it('should use the locale from the locale service', function() {
-      expect(LocaleService.get).toHaveBeenCalled();
+      expect(LocaleService.getCurrent).toHaveBeenCalled();
       if (isNumberLocaleSupported()) {
         expect(textValue).toEqual('123,456');
       } else {

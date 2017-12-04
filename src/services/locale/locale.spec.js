@@ -11,34 +11,34 @@ describe('TwDateService test', function() {
 
   describe('when getting the locale', function() {
     it('should return en-GB by default', function () {
-      expect(LocaleService.get()).toBe('en-GB');
+      expect(LocaleService.getCurrent()).toBe('en-GB');
     });
   });
 
   describe('when setting the locale to a valid full locale', function() {
     beforeEach(function() {
-      LocaleService.set('fr-FR');
+      LocaleService.setCurrent('fr-FR');
     });
     it('should update the locale', function () {
-      expect(LocaleService.get()).toBe('fr-FR');
+      expect(LocaleService.getCurrent()).toBe('fr-FR');
     });
   });
 
   describe('when setting the locale to a valid language locale', function() {
     beforeEach(function() {
-      LocaleService.set('fr');
+      LocaleService.setCurrent('fr');
     });
     it('should update the locale', function () {
-      expect(LocaleService.get()).toBe('fr');
+      expect(LocaleService.getCurrent()).toBe('fr');
     });
   });
 
   describe('when setting the locale with uncapitalised country', function() {
     beforeEach(function() {
-      LocaleService.set('fr-fr');
+      LocaleService.setCurrent('fr-fr');
     });
     it('should change the case', function () {
-      expect(LocaleService.get()).toBe('fr-FR');
+      expect(LocaleService.getCurrent()).toBe('fr-FR');
     });
   });
 
@@ -46,7 +46,7 @@ describe('TwDateService test', function() {
     var setIncorrect;
     beforeEach(function() {
       setIncorrect = function() {
-        LocaleService.set('xyz');
+        LocaleService.setCurrent('xyz');
       }
     });
     it('should throw an error', function () {

@@ -22,7 +22,7 @@ function NumberFormatFilter(LocaleService) {
       return number.toLocaleString(locale, options);
     }
 
-    return number.toLocaleString(LocaleService.get(), options);
+    return number.toLocaleString(LocaleService.getCurrent(), options);
   };
 }
 

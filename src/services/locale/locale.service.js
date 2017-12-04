@@ -3,9 +3,9 @@ function LocaleService() {
   this.regex = /^[a-z]{2}(-[A-Z][A-Z])?$/;
   this.lowerCaseCountry = /^[a-z]{2}(-[a-z][a-z])?$/;
 
-  this.get = () => this.locale;
+  this.getCurrent = () => this.locale;
 
-  this.set = (newLocale) => {
+  this.setCurrent = (newLocale) => {
     if (this.isValid(newLocale)) {
       this.locale = newLocale;
       return this.locale;

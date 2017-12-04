@@ -849,7 +849,7 @@ var _currencyFormat2 = _interopRequireDefault(_currencyFormat);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var CurrencyDisplay = {
+var CurrencyFormat = {
   template: _currencyFormat2.default,
   bindings: {
     amount: '<',
@@ -858,7 +858,7 @@ var CurrencyDisplay = {
   }
 };
 
-exports.default = CurrencyDisplay;
+exports.default = CurrencyFormat;
 
 /***/ }),
 /* 27 */
@@ -1085,7 +1085,7 @@ function NumberFormatFilter(LocaleService) {
       return number.toLocaleString(locale, options);
     }
 
-    return number.toLocaleString(LocaleService.get(), options);
+    return number.toLocaleString(LocaleService.getCurrent(), options);
   };
 }
 
@@ -1726,7 +1726,7 @@ exports.default = TextFormatService;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-function TwUndoStackFactory() {
+function UndoStackFactory() {
   this.new = function () {
     return new UndoStack();
   };
@@ -1771,7 +1771,7 @@ function UndoStack() {
   };
 }
 
-exports.default = TwUndoStackFactory;
+exports.default = UndoStackFactory;
 
 /***/ }),
 /* 40 */
@@ -7617,11 +7617,11 @@ function LocaleService() {
   this.regex = /^[a-z]{2}(-[A-Z][A-Z])?$/;
   this.lowerCaseCountry = /^[a-z]{2}(-[a-z][a-z])?$/;
 
-  this.get = function () {
+  this.getCurrent = function () {
     return _this.locale;
   };
 
-  this.set = function (newLocale) {
+  this.setCurrent = function (newLocale) {
     if (_this.isValid(newLocale)) {
       _this.locale = newLocale;
       return _this.locale;
@@ -8018,7 +8018,7 @@ module.exports = "{{ $ctrl.amount | twNumberFormat : $ctrl.precision : $ctrl.loc
 /* 112 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"input-group\"\n  ng-class=\"{\n    'input-group-sm': $ctrl.size === 'sm',\n    'input-group-lg': $ctrl.size === 'lg',\n    'disabled': $ctrl.ngDisabled\n  }\">\n  <input\n    type=\"tel\"\n    autocomplete=\"off\"\n    name=\"amount\"\n    step=\"any\"\n    class=\"form-control\"\n    placeholder=\"{{ $ctrl.placeholder }}\"\n    tw-focusable\n    show-decimals=\"$ctrl.showDecimals\"\n    tw-number-input-formatter\n    ng-change=\"$ctrl.changedAmount()\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-disabled=\"$ctrl.ngDisabled\" />\n  <span class=\"input-group-addon\"\n    ng-class=\"{'input-lg': $ctrl.size ==='lg'}\"\n    ng-transclude=\"addon\"></span>\n  <span class=\"input-group-btn\">\n    <tw-select\n      ng-model=\"$ctrl.currency\"\n      ng-required=\"true\"\n      size=\"{{ $ctrl.size }}\"\n      inverse=\"true\"\n      dropdown-right=\"xs\"\n      dropdown-width=\"lg\"\n      hide-currency=\"xs\"\n      hide-note=\"true\"\n      hide-secondary=\"true\"\n      options=\"$ctrl.currencies\"\n      filter=\"{{ $ctrl.currencyFilterPlaceholder }}\"\n      ng-change=\"$ctrl.changedCurrency()\">\n      <a href=\"\"\n        ng-if=\"!!$ctrl.customActionLabel\"\n        ng-click=\"$ctrl.onCustomAction()\">\n        {{ $ctrl.customActionLabel }}\n      </a>\n    </tw-select>\n  </span>\n</div>\n";
+module.exports = "<div class=\"input-group\"\n  ng-class=\"{\n    'input-group-sm': $ctrl.size === 'sm',\n    'input-group-lg': $ctrl.size === 'lg',\n    'disabled': $ctrl.ngDisabled\n  }\">\n  <input\n    type=\"text\"\n    autocomplete=\"off\"\n    name=\"amount\"\n    step=\"any\"\n    class=\"form-control\"\n    placeholder=\"{{ $ctrl.placeholder }}\"\n    tw-focusable\n    show-decimals=\"$ctrl.showDecimals\"\n    tw-number-input-formatter\n    ng-change=\"$ctrl.changedAmount()\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-disabled=\"$ctrl.ngDisabled\" />\n  <span class=\"input-group-addon\"\n    ng-class=\"{'input-lg': $ctrl.size ==='lg'}\"\n    ng-transclude=\"addon\"></span>\n  <span class=\"input-group-btn\">\n    <tw-select\n      ng-model=\"$ctrl.currency\"\n      ng-required=\"true\"\n      size=\"{{ $ctrl.size }}\"\n      inverse=\"true\"\n      dropdown-right=\"xs\"\n      dropdown-width=\"lg\"\n      hide-currency=\"xs\"\n      hide-note=\"true\"\n      hide-secondary=\"true\"\n      options=\"$ctrl.currencies\"\n      filter=\"{{ $ctrl.currencyFilterPlaceholder }}\"\n      ng-change=\"$ctrl.changedCurrency()\">\n      <a href=\"\"\n        ng-if=\"!!$ctrl.customActionLabel\"\n        ng-click=\"$ctrl.onCustomAction()\">\n        {{ $ctrl.customActionLabel }}\n      </a>\n    </tw-select>\n  </span>\n</div>\n";
 
 /***/ }),
 /* 113 */

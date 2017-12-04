@@ -925,11 +925,11 @@ function LocaleService() {
   this.regex = /^[a-z]{2}(-[A-Z][A-Z])?$/;
   this.lowerCaseCountry = /^[a-z]{2}(-[a-z][a-z])?$/;
 
-  this.get = function () {
+  this.getCurrent = function () {
     return _this.locale;
   };
 
-  this.set = function (newLocale) {
+  this.setCurrent = function (newLocale) {
     if (_this.isValid(newLocale)) {
       _this.locale = newLocale;
       return _this.locale;
