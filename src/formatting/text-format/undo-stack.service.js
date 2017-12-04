@@ -1,6 +1,4 @@
-import angular from 'angular';
-
-function TwUndoStackFactory() {
+function UndoStackFactory() {
   this.new = () => new UndoStack();
 }
 
@@ -45,6 +43,4 @@ function UndoStack() {
   };
 }
 
-export default angular
-  .module('tw.styleguide.formatting.text-format.undo-stack', [])
-  .service('TwUndoStackFactory', TwUndoStackFactory).name;
+export default UndoStackFactory;

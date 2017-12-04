@@ -6,7 +6,8 @@ describe('NumberFormat filter, ', function() {
       $scope,
       $element,
       input,
-      textValue;
+      textValue,
+      LocaleService;
 
   beforeEach(module('tw.styleguide-components'));
 
@@ -14,15 +15,18 @@ describe('NumberFormat filter, ', function() {
     $rootScope = $injector.get('$rootScope');
     $compile = $injector.get('$compile');
     $scope = $rootScope.$new();
+    LocaleService = $injector.get('TwLocaleService');
   }));
 
   describe('when no locale supplied', function() {
     beforeEach(function() {
       $scope.value = 123456;
+      spyOn(LocaleService, 'getCurrent').and.returnValue('en-GB');
       $element = getCompiledDirectiveElement($scope);
       textValue = $element.text().trim();
     });
-    it('should default to en-GB format', function() {
+    it('should use the locale from the locale service', function() {
+      expect(LocaleService.getCurrent).toHaveBeenCalled();
       if (isNumberLocaleSupported()) {
         expect(textValue).toEqual('123,456');
       } else {
@@ -191,7 +195,7 @@ describe('NumberFormat filter, ', function() {
   function getCompiledDirectiveElement(scope, template) {
     if (!template) {
       template = " \
-        <span>{{value | twNumberFormat : locale : precision}}</span>";
+        <span>{{ value | twNumberFormat : precision : locale }}</span>";
     }
 
     var element = angular.element(template);

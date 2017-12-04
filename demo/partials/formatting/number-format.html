@@ -1,9 +1,9 @@
 <h4 id="number-format">TW Number Format</h4>
 <p>
-  <code>twNumberFormat</code> is a filter for formatting numbers based on a
-  given locale. You can also supply a precision if you want a precise number of
-  decimals.  If precision is not supplied it will simply display any decimals
-  the number value already has.
+  <code>twNumberFormat</code> provides a component and a filter for formatting
+  numbers based on a given locale. You can also supply a precision if you want
+  a specific number of decimals.  If precision is not supplied it will simply
+  display any decimals the number value already has.
 </p>
 <p class="text-danger">
   Internally this uses Number.prototype.getLocaleString, which is not yet
@@ -12,11 +12,31 @@
 <div class="row m-b-3">
   <div class="col-md-6">
     <dl>
-      <dt>Formatted number</dt>
-      <dd>{{ $ctrl.number | twNumberFormat : $ctrl.locale : $ctrl.precision }}</dd>
+      <dt>Component</dt>
+      <dd>
+        <tw-number-format
+          amount="$ctrl.number"
+          precision="$ctrl.precision"
+          locale="$ctrl.locale">
+        </tw-number-format>
+      </dd>
     </dl>
 <pre>
-<code ng-non-bindable>{{</code>{{ $ctrl.number }} | twNumberFormat : "{{ $ctrl.locale }}" <span ng-if="$ctrl.precision">: {{ $ctrl.precision }} </span><code ng-non-bindable>}}</code>
+&lt;tw-number-format
+  amount="{{ $ctrl.number }}"
+  precision="{{ $ctrl.precision }}"
+  locale="{{ $ctrl.locale }}"&gt;
+&lt;/tw-number-format&gt;
+</pre>
+    <h5>Number format filter</h5>
+    <p> We also provide a <code>twNumberFormat</code> filter.</p>
+    <dl>
+      <dt>Filter</dt>
+      <dd>{{ $ctrl.number | twNumberFormat : $ctrl.precision : $ctrl.locale}}</dd>
+
+    </dl>
+<pre>
+<code ng-non-bindable>{{</code>{{ $ctrl.number }} | twNumberFormat : {{ $ctrl.precision }} : "{{ $ctrl.locale }}"<code ng-non-bindable>}}</code>
 </pre>
   </div>
   <div class="col-md-6">

@@ -1,6 +1,5 @@
-
-function NumberFormatFilter() {
-  return (number, locale, precision) => {
+function NumberFormatFilter(LocaleService) {
+  return (number, precision, locale) => {
     if (!number) {
       return number;
     }
@@ -22,7 +21,8 @@ function NumberFormatFilter() {
     if (locale) {
       return number.toLocaleString(locale, options);
     }
-    return number.toLocaleString('en-GB', options);
+
+    return number.toLocaleString(LocaleService.getCurrent(), options);
   };
 }
 
@@ -31,5 +31,9 @@ function isNumberLocaleSupported() {
   const numString = num.toLocaleString('en-GB');
   return numString === '1,234';
 }
+
+NumberFormatFilter.$inject = [
+  'TwLocaleService'
+];
 
 export default NumberFormatFilter;
