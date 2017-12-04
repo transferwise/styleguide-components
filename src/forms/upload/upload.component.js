@@ -6,6 +6,7 @@ const Upload = {
   template,
   transclude: true,
   bindings: {
+    ngDisabled: '<',
     ngModel: '=',
     name: '@',
     icon: '@',
