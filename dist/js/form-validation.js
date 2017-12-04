@@ -831,7 +831,6 @@ exports.default = _angular2.default.module('tw.styleguide.services.date', []).se
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
 function DomService() {
   this.getClosestParentByTagName = function (element, tagName) {
     var tagNameUpper = tagName.toUpperCase();

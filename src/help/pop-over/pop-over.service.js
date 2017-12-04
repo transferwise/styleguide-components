@@ -33,12 +33,13 @@ function PopoverService() {
       elementPopoverOptions = popoverOptions;
 
       const isModalModeEnabled = getModalMode(elementPopoverOptions);
+      const popoverParentElement = getPopoverParentElement(elementPopoverOptions);
 
       let displayHandlers = [displayPopover];
 
-      if (!document.body.contains(popover)) {
+      if (!popoverParentElement.contains(popover)) {
         popover = getPopover(elementPopoverOptions);
-        BODY.appendChild(popover);
+        popoverParentElement.appendChild(popover);
       }
 
       popover.innerHTML = getPopoverContent(elementPopoverOptions);
@@ -80,12 +81,19 @@ function PopoverService() {
      */
     const placement = getPopoverPlacement(popoverOptions);
     const isInModalMode = getModalMode(popoverOptions);
+    const isPositionedFixed = getFixedPlacementCondition(popoverOptions);
 
     const popoverContainer = document.createElement('div');
     const popoverClasses = ['popover', 'in', placement, 'scale-down'];
 
     if (!isInModalMode) {
       popoverClasses.push('animate');
+    }
+
+    if (isPositionedFixed) {
+      setElementInlineStyles({
+        position: 'fixed',
+      }, popoverContainer);
     }
 
     popoverContainer.classList.add(...popoverClasses);
@@ -154,11 +162,14 @@ function PopoverService() {
    * @return {String}           [Popover's new placement]
    */
   function checkPopoverPlacement(placement) {
+    const popoverContainerElement = getPopoverParentElement(elementPopoverOptions);
+    const coordinateComputeFunction =
+      popoverContainerElement === BODY ? getBoundingOffset : getParentOffset;
+    const elementOffset = coordinateComputeFunction(elementWithPopover);
+
     const viewportClientDimensions = getClientDimensions(document.documentElement);
 
     const elementOffsetDimensions = getOffsetDimensions(elementWithPopover);
-    const elementOffset = getBoundingOffset(elementWithPopover);
-
     const popoverOffsetDimensions = getOffsetDimensions(popover);
 
     const popoverOffsetWidth = elementOffset.offsetX +
@@ -201,10 +212,10 @@ function PopoverService() {
    * @return {Object}           [Popover's coordinates]
    */
   function getPopoverCoordinates(placement) {
-    /**
-     * The promoted element's coordinates, for which we want to display the popover
-     */
-    const elementOffset = getBoundingOffset(elementWithPopover);
+    const popoverContainerElement = getPopoverParentElement(elementPopoverOptions);
+    const coordinateComputeFunction =
+      popoverContainerElement === BODY ? getBoundingOffset : getParentOffset;
+    const elementOffset = coordinateComputeFunction(elementWithPopover);
 
     /**
      * The promoted element's size, for which we want to display the popover
@@ -392,6 +403,19 @@ function PopoverService() {
   }
 
   /**
+   * [getParentOffset              Get the distance of the current element
+   *                               relative to the top and left of the parent
+   *                               node.]
+   * @param {HTMLElement} element
+   */
+  function getParentOffset(element) {
+    return {
+      offsetY: element.offsetTop,
+      offsetX: element.offsetLeft,
+    };
+  }
+
+  /**
    * [getOffsetDimensions         Get the element's offset dimensions,
    *                              i.e. measurement which includes the element
    *                              borders, the element horizontal padding, the
@@ -519,6 +543,16 @@ function PopoverService() {
   }
 
   /**
+   * [getFixedPlacementCondition Returns a Boolean value indicating if we should
+   *                             position the popover with a fixed value]
+   * @param  {Object} popoverOptions
+   * @return {Boolean}
+   */
+  function getFixedPlacementCondition(popoverOptions) {
+    return curry(getObjectProperty)('promotedElementIsFixed')(popoverOptions);
+  }
+
+  /**
    * [getGivenPopoverTemplate Returns the template of the popover from the
    *                          options object]
    * @param  {Object} popoverOptions
@@ -526,6 +560,20 @@ function PopoverService() {
    */
   function getGivenPopoverTemplate(popoverOptions) {
     return curry(getObjectProperty)('template')(popoverOptions);
+  }
+
+  function getPopoverParentElement(popoverOptions) {
+    let popoverParent = getObjectProperty('container', popoverOptions);
+
+    if (typeof popoverParent === 'string' && document.querySelector(popoverParent)) {
+      popoverParent = document.querySelector(popoverParent);
+    } else if (popoverParent && popoverParent.toLowerCase() === 'body') {
+      popoverParent = BODY;
+    } else {
+      popoverParent = elementWithPopover.parentNode;
+    }
+
+    return popoverParent;
   }
 
   function getModalOverlayNode() {
@@ -547,8 +595,15 @@ function PopoverService() {
 
   function addPopoverOverlay() {
     const overlayNode = getModalOverlayNode();
+    const popoverParentElement = getPopoverParentElement(elementPopoverOptions);
 
-    return overlayNode === null && BODY.insertBefore(getPopoverOverlay(), popover);
+    if (overlayNode === null) {
+      if (popoverParentElement === BODY) {
+        BODY.insertBefore(getPopoverOverlay(), popover);
+      } else {
+        BODY.appendChild(getPopoverOverlay());
+      }
+    }
   }
 
   function setPopoverToModal() {
