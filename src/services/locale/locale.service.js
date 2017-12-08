@@ -16,7 +16,11 @@ function LocaleService() {
       return this.locale;
     }
 
-    throw new Error('Invalid locale');
+    if (console && console.warn) {
+      console.warn(`Incorrect locale: ${newLocale}`);
+    }
+    this.locale = 'en-GB';
+    return this.locale;
   };
 
   this.isValid = testLocale => this.regex.test(testLocale);
