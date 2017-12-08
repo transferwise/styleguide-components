@@ -7679,7 +7679,11 @@ function LocaleService() {
       return _this.locale;
     }
 
-    throw new Error('Invalid locale');
+    if (console && console.warn) {
+      console.warn('Incorrect locale: ' + newLocale);
+    }
+    _this.locale = 'en-GB';
+    return _this.locale;
   };
 
   this.isValid = function (testLocale) {

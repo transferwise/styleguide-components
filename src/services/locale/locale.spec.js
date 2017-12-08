@@ -49,8 +49,8 @@ describe('TwDateService test', function() {
         LocaleService.setCurrent('xyz');
       }
     });
-    it('should throw an error', function () {
-      expect(setIncorrect).toThrow();
+    it('should fall back to en-GB', function () {
+      expect(LocaleService.getCurrent()).toBe('en-GB');
     });
   });
 });
