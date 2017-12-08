@@ -1,7 +1,4 @@
-import CurrencyServiceModule from '../../services/currency/';  // eslint-disable-line
-import NumberFormat from '../number-format/'; // eslint-disable-line
-
-function CurrencyFormatFilter($filter, CurrencyService, numberFormat) {
+function CurrencyFormatFilter($filter, CurrencyService, numberFormatFilter) {
   return (number, currency, locale) => {
     let precision;
 
@@ -16,10 +13,7 @@ function CurrencyFormatFilter($filter, CurrencyService, numberFormat) {
       precision = CurrencyService.getDecimals(currency);
     }
 
-    if (!locale) {
-      return `${numberFormat(number, 'en-GB', precision)} ${currency}`;
-    }
-    return `${numberFormat(number, locale, precision)} ${currency}`;
+    return `${numberFormatFilter(number, precision, locale)} ${currency}`;
   };
 }
 

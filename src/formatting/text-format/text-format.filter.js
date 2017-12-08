@@ -1,7 +1,4 @@
-import angular from 'angular';
-import TextFormatService from './text-format.service.js';
-
-function TextFormatFilter(TwTextFormatService) {
+function TextFormatFilter(TextFormatService) {
   return (input, pattern) => {
     input = input || '';
     if (!pattern) {
@@ -10,14 +7,10 @@ function TextFormatFilter(TwTextFormatService) {
     if (pattern.indexOf('||') > 0) {
       pattern = pattern.substring(0, pattern.indexOf('||'));
     }
-    return TwTextFormatService.formatUsingPattern(input, pattern);
+    return TextFormatService.formatUsingPattern(input, pattern);
   };
 }
 
 TextFormatFilter.$inject = ['TwTextFormatService'];
 
-export default angular
-  .module('tw.styleguide.formatting.text-format.filter', [
-    TextFormatService
-  ])
-  .filter('twTextFormat', TextFormatFilter).name;
+export default TextFormatFilter;

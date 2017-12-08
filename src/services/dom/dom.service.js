@@ -1,4 +1,3 @@
-
 function DomService() {
   this.getClosestParentByTagName = (element, tagName) => {
     const tagNameUpper = tagName.toUpperCase();

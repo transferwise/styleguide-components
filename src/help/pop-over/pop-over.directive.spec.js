@@ -67,8 +67,9 @@ describe('Popover directive', function() {
       template = " \
         <a tw-pop-over \
           data-original-title='<span>Popover title</span>' \
-          data-content='Full description copy, explaining in more detail'\
-          data-image='http://www.transferwise.com/logo.png'\
+          data-content='Full description copy, explaining in more detail' \
+          data-container='body' \
+          data-image='http://www.transferwise.com/logo.png' \
           data-template='<div class=\"popover\"> \
                            <h3 class=\"popover-title\"></h3> \
                            <img class=\"popover-image\" alt=\"Popover content\" /> \

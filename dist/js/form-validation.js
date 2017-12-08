@@ -143,17 +143,21 @@ var _currency = __webpack_require__(7);
 
 var _currency2 = _interopRequireDefault(_currency);
 
+var _locale = __webpack_require__(11);
+
+var _locale2 = _interopRequireDefault(_locale);
+
 var _dom = __webpack_require__(1);
 
 var _dom2 = _interopRequireDefault(_dom);
 
-var _requirements = __webpack_require__(11);
+var _requirements = __webpack_require__(13);
 
 var _requirements2 = _interopRequireDefault(_requirements);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.services', [_date2.default, _currency2.default, _dom2.default, _requirements2.default]).name;
+exports.default = _angular2.default.module('tw.styleguide.services', [_date2.default, _currency2.default, _locale2.default, _dom2.default, _requirements2.default]).name;
 
 /***/ }),
 /* 4 */
@@ -170,11 +174,11 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _formValidation = __webpack_require__(17);
+var _formValidation = __webpack_require__(19);
 
 var _formValidation2 = _interopRequireDefault(_formValidation);
 
-var _controlValidation = __webpack_require__(15);
+var _controlValidation = __webpack_require__(17);
 
 var _controlValidation2 = _interopRequireDefault(_controlValidation);
 
@@ -827,7 +831,6 @@ exports.default = _angular2.default.module('tw.styleguide.services.date', []).se
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
 function DomService() {
   this.getClosestParentByTagName = function (element, tagName) {
     var tagNameUpper = tagName.toUpperCase();
@@ -896,7 +899,76 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _requirementsService = __webpack_require__(12);
+var _localeService = __webpack_require__(12);
+
+var _localeService2 = _interopRequireDefault(_localeService);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.styleguide.services.locale', []).service('TwLocaleService', _localeService2.default).name;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function LocaleService() {
+  var _this = this;
+
+  this.locale = 'en-GB';
+  this.regex = /^[a-z]{2}(-[A-Z][A-Z])?$/;
+  this.lowerCaseCountry = /^[a-z]{2}(-[a-z][a-z])?$/;
+
+  this.getCurrent = function () {
+    return _this.locale;
+  };
+
+  this.setCurrent = function (newLocale) {
+    if (_this.isValid(newLocale)) {
+      _this.locale = newLocale;
+      return _this.locale;
+    }
+
+    if (_this.lowerCaseCountry.test(newLocale)) {
+      _this.locale = changeCountryToUpperCase(newLocale);
+      return _this.locale;
+    }
+
+    throw new Error('Invalid locale');
+  };
+
+  this.isValid = function (testLocale) {
+    return _this.regex.test(testLocale);
+  };
+
+  function changeCountryToUpperCase(lowerCaseLocale) {
+    return lowerCaseLocale.slice(0, 3) + lowerCaseLocale.slice(3, 5).toUpperCase();
+  }
+}
+
+exports.default = LocaleService;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _requirementsService = __webpack_require__(14);
 
 var _requirementsService2 = _interopRequireDefault(_requirementsService);
 
@@ -905,7 +977,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.services.requirements', []).service('TwRequirementsService', _requirementsService2.default).name;
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1071,7 +1143,7 @@ function RequirementsService() {
 exports.default = RequirementsService;
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1137,7 +1209,7 @@ ValidationController.$inject = ['$scope', '$element', 'TwDomService'];
 exports.default = ValidationController;
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1147,7 +1219,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _controlValidationController = __webpack_require__(13);
+var _controlValidationController = __webpack_require__(15);
 
 var _controlValidationController2 = _interopRequireDefault(_controlValidationController);
 
@@ -1166,7 +1238,7 @@ function TwValidation() {
 exports.default = TwValidation;
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1180,7 +1252,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _controlValidationDirective = __webpack_require__(14);
+var _controlValidationDirective = __webpack_require__(16);
 
 var _controlValidationDirective2 = _interopRequireDefault(_controlValidationDirective);
 
@@ -1193,7 +1265,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.stylguide.validation.control', [_dom2.default]).directive('twValidation', _controlValidationDirective2.default).name;
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1249,7 +1321,7 @@ FormValidation.$inject = ['TwDomService'];
 exports.default = FormValidation;
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1263,7 +1335,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _formValidationDirective = __webpack_require__(16);
+var _formValidationDirective = __webpack_require__(18);
 
 var _formValidationDirective2 = _interopRequireDefault(_formValidationDirective);
 
