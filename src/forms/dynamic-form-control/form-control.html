@@ -1,22 +1,7 @@
+{{ $ctrl.type }} {{ $ctrl.format }}
 <div ng-switch="$ctrl.type">
   <div ng-switch-default>
     <div ng-switch="$ctrl.format">
-      <input ng-switch-default
-        name="{{$ctrl.name}}"
-        type="text"
-        class="form-control"
-        placeholder="{{$ctrl.placeholder}}"
-        ng-model="$ctrl.ngModel"
-        ng-model-options="{ allowInvalid: true }"
-        ng-required="$ctrl.ngRequired"
-        ng-disabled="$ctrl.ngDisabled"
-        ng-pattern="$ctrl.ngPattern"
-        ng-change="$ctrl.change()"
-        ng-focus="$ctrl.focus()"
-        ng-blur="$ctrl.blur()"
-        ng-minlength="$ctrl.ngMinlength"
-        ng-maxlength="$ctrl.ngMaxlength"
-        tw-text-format="{{$ctrl.textFormat}}" />
       <input ng-switch-when="password"
         name="{{$ctrl.name}}"
         type="password"
@@ -45,6 +30,22 @@
           ng-blur="$ctrl.blur()">
         </tw-date>
       </div>
+      <input ng-switch-default
+        name="{{$ctrl.name}}"
+        type="text"
+        class="form-control"
+        placeholder="{{$ctrl.placeholder}}"
+        ng-model="$ctrl.ngModel"
+        ng-model-options="{ allowInvalid: true }"
+        ng-required="$ctrl.ngRequired"
+        ng-disabled="$ctrl.ngDisabled"
+        ng-pattern="$ctrl.ngPattern"
+        ng-change="$ctrl.change()"
+        ng-focus="$ctrl.focus()"
+        ng-blur="$ctrl.blur()"
+        ng-minlength="$ctrl.ngMinlength"
+        ng-maxlength="$ctrl.ngMaxlength"
+        tw-text-format="{{$ctrl.textFormat}}" />
     </div>
   </div>
   <input ng-switch-when="number|integer" ng-switch-when-separator="|"
@@ -80,7 +81,7 @@
       {{option.label}}
     </label>
   </div>
-  <div ng-switch-when="checkbox|boolean" ng-switch-when-separator="|"
+  <div ng-switch-when="boolean|checkbox" ng-switch-when-separator="|"
     class="checkbox"
     ng-class="{disabled: $ctrl.ngDisabled}">
     <label>

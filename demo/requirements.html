@@ -43,6 +43,85 @@
           business logic for our complex, and evolving domain objects, from
           the API, rather than in our clients.</p>
 
+        <h3 class="page-header">Form Groups</h3>
+        <div class="row">
+          <div class="col-md-6">
+            <p>The form group is the basic building block of our forms, it accepts
+              a field specification to configure it's presentation, and a model
+              to which it will bind a value.</p>
+          </div>
+          <div class="col-md-6">
+            <h5>Component API</h5>
+<pre>
+&lt;tw-form-group
+  field="field"&gt;
+  model="model"
+  locale="en-GB"&gt;
+&lt;/tw-form-group&gt;
+</pre>
+          </div>
+        </div>
+
+        <h4 class="page-header">Basic types</h4>
+        <form-group-docs
+          field="$ctrl.stringFieldBasic"
+          model="$ctrl.basicTypesModel.stringProperty">
+        </form-group-docs>
+        <form-group-docs
+          field="$ctrl.numberFieldBasic"
+          model="$ctrl.basicTypesModel.numberProperty">
+        </form-group-docs>
+        <form-group-docs
+          field="$ctrl.booleanFieldBasic"
+          model="$ctrl.basicTypesModel.booleanProperty">
+        </form-group-docs>
+        <pre>model: {{ $ctrl.basicTypesModel | json }}</pre>
+
+        <h4 class="page-header">Formats</h4>
+        <p class="text-max-width">
+          Beyond the basic types, formats can be used to indicate other types
+          of controls are required
+        </p>
+        <form-group-docs
+          field="$ctrl.dateFieldBasic"
+          model="$ctrl.basicFormatsModel.dateProperty">
+        </form-group-docs>
+        <form-group-docs
+          field="$ctrl.passwordFieldBasic"
+          model="$ctrl.basicFormatsModel.passwordProperty">
+        </form-group-docs>
+        <pre>model: {{ $ctrl.basicFormatsModel | json }}</pre>
+
+        <h4 class="page-header">Simple types</h4>
+        <requirements-docs
+          requirements="$ctrl.simpleTypes"
+          model="$ctrl.simpleTypesModel">
+        </requirements-docs>
+
+        <h4 class="page-header">Values allowed</h4>
+        <requirements-docs
+          requirements="$ctrl.valuesAllowed"
+          model="$ctrl.valuesAllowedModel">
+        </requirements-docs>
+
+        <h4 class="page-header">Upload component</h4>
+        <requirements-docs
+          requirements="$ctrl.uploadComponent"
+          model="$ctrl.uploadComponentModel">
+        </requirements-docs>
+
+        <h4 class="page-header">Validation</h4>
+        <requirements-docs
+          requirements="$ctrl.validationTypes"
+          model="$ctrl.validationTypesModel">
+        </requirements-docs>
+
+        <h4 class="page-header">Help information</h4>
+        <requirements-docs
+          requirements="$ctrl.helpTypes"
+          model="$ctrl.helpTypesModel">
+        </requirements-docs>
+
         <h3 class="page-header">Fieldsets</h3>
         <div class="row">
           <div class="col-md-6">
@@ -82,36 +161,6 @@
               information, and various pieces of useful presentation data.</p>
           </div>
         </div>
-
-        <h4 class="page-header">Simple types</h4>
-        <requirements-docs
-          requirements="$ctrl.simpleTypes"
-          model="$ctrl.simpleTypesModel">
-        </requirements-docs>
-
-        <h4 class="page-header">Values allowed</h4>
-        <requirements-docs
-          requirements="$ctrl.valuesAllowed"
-          model="$ctrl.valuesAllowedModel">
-        </requirements-docs>
-
-        <h4 class="page-header">Upload component</h4>
-        <requirements-docs
-          requirements="$ctrl.uploadComponent"
-          model="$ctrl.uploadComponentModel">
-        </requirements-docs>
-
-        <h4 class="page-header">Validation</h4>
-        <requirements-docs
-          requirements="$ctrl.validationTypes"
-          model="$ctrl.validationTypesModel">
-        </requirements-docs>
-
-        <h4 class="page-header">Help information</h4>
-        <requirements-docs
-          requirements="$ctrl.helpTypes"
-          model="$ctrl.helpTypesModel">
-        </requirements-docs>
 
       </div>
     </div>

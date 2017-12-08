@@ -1,10 +1,13 @@
 
 class FormControlController {
   constructor($element) {
-    const $ngModel = $element.controller('ngModel');
-
     this.$element = $element;
     this.element = $element[0];
+  }
+
+  $onInit() {
+    console.log(this.format);
+    const $ngModel = this.$element.controller('ngModel');
 
     $ngModel.$validators.minlength = (modelValue, viewValue) => {
       const value = modelValue || viewValue;

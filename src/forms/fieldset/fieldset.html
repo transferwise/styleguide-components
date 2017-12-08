@@ -7,7 +7,8 @@
         'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),
         'col-sm-12': $ctrl.narrow || field.width === 'lg' || !field.maxlength || field.maxlength > 10
       }">
-      <tw-form-group style="width: 100%"
+      <tw-form-group
+        style="width: 100%"
         model="$ctrl.model[field.key]"
         field="field"
         locale="$ctrl.locale"

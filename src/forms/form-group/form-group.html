@@ -4,7 +4,7 @@
   }">
   <label class="control-label"
     ng-if="$ctrl.field.type !== 'upload'">
-    {{$ctrl.field.name}}
+    {{$ctrl.field.name}} {{$ctrl.field.format}}
   </label>
   <tw-form-control
     name="{{ $ctrl.field.key }}"

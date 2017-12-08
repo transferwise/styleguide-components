@@ -5,6 +5,56 @@ angular.module('tw.styleguide.docs', [])
   .controller('PageController', function () {
     this.log = function (message) { console.log(message); };
 
+    // Basic types
+    this.stringFieldBasic = {
+      type: "string",
+      name: "String label",
+      key: "textProperty",
+      placeholder: "Please enter string"
+    };
+    this.numberFieldBasic = {
+      type: "number",
+      name: "Number control",
+      key: "numberProperty",
+      placeholder: "Please enter number"
+    };
+    this.booleanFieldBasic = {
+      type: "boolean",
+      name: "Checkbox control",
+      key: "booleanProperty",
+      placeholder: "Please choose"
+    };
+
+    this.basicTypesModel = {
+      stringProperty: "Example",
+      numberProperty: 123,
+      booleanProperty: false
+    }
+
+    // Formats
+    this.dateFieldBasic = {
+      type: "string",
+      format: "date",
+      name: "Date control",
+      key: "dateProperty"
+    };
+    this.passwordFieldBasic = {
+      type: "string",
+      format: "password",
+      name: "Password control",
+      key: "passwordProperty"
+    };
+
+    this.basicFormatsModel = {
+      dateProperty: "2017-12-01",
+      passwordProperty: "qwerty"
+    };
+
+
+
+
+
+
     this.fieldsetBasic = {
       fields: [{
         type: "text",
@@ -201,4 +251,22 @@ angular.module('tw.styleguide.docs', [])
           <pre>fieldset: {{ $ctrl.requirements | json }}</pre> \
         </div> \
       </div>'
-  });
+  })
+  .component('formGroupDocs', {
+    bindings: {
+      model: '=',
+      field: '='
+    },
+    template: ' \
+      <div class="row"> \
+        <div class="col-sm-6"> \
+          <tw-form-group \
+            field="$ctrl.field" \
+            model="$ctrl.model"> \
+          </tw-form-group> \
+        </div> \
+        <div class="col-sm-6"> \
+          <pre>field: {{ $ctrl.field | json }}</pre> \
+        </div> \
+      </div>'
+  });;
