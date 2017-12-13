@@ -24,7 +24,7 @@ describe('CurrencyFormat filter, ', function() {
       $scope.currency = 'GBP';
       LocaleService.setCurrent('fr-FR');
       $element = getCompiledDirectiveElement($scope);
-      textValue = $element.text().trim();
+      textValue = $element.text().trim().replace(/\s/g,' ');
     });
 
     it('should use the locale from the locale service', function() {
