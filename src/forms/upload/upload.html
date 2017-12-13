@@ -20,12 +20,12 @@
         {{$ctrl.label || $ctrl.description}}
       </h4>
       <p class="m-b-2">{{$ctrl.placeholder || $ctrl.instructions}}</p>
-      <label class="btn btn-primary">{{$ctrl.buttonText}}
+      <label class="btn btn-primary"  ng-class="{'disabled': $ctrl.ngDisabled}"> {{$ctrl.buttonText}}
         <input tw-file-input
           type="file"
           accept="{{$ctrl.accept}}"
           class="tw-droppable-input hidden"
-
+          ng-disabled="$ctrl.ngDisabled"
           name="file-upload"
           on-user-input="$ctrl.onManualUpload()"
           ng-model="$ctrl.inputFile" />
@@ -83,4 +83,4 @@
       <p class="m-t-2 m-b-0"></p>
     </div>
   </div>
-</div>'
+</div>
