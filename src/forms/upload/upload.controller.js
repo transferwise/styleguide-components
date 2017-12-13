@@ -10,7 +10,6 @@ class UploadController {
     $q,
     $attrs
   ) {
-    this.ngDisabled = false;
     this.$timeout = $timeout;
     this.$element = $element;
     this.$http = $http;

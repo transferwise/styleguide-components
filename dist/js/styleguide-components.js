@@ -5092,7 +5092,6 @@ var UploadController = function () {
 
     _classCallCheck(this, UploadController);
 
-    this.ngDisabled = false;
     this.$timeout = $timeout;
     this.$element = $element;
     this.$http = $http;
