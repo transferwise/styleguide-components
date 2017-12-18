@@ -18,11 +18,13 @@ class TextFormatController {
     this.element = $element[0];
 
     // We need the formatter for external model changes
-    this.$ngModel.$formatters.push(value =>
-      TwTextFormatService.formatUsingPattern(value, this.pattern));
+    this.$ngModel.$formatters.push(value => (this.pattern ?
+      TwTextFormatService.formatUsingPattern(value, this.pattern) :
+      value));
 
-    this.$ngModel.$parsers.push(value =>
-      TwTextFormatService.unformatUsingPattern(value, this.pattern));
+    this.$ngModel.$parsers.push(value => (this.pattern ?
+      TwTextFormatService.unformatUsingPattern(value, this.pattern) :
+      value));
 
     this.element.addEventListener('change', (event) => {
       this.onChange(event);
@@ -59,7 +61,7 @@ class TextFormatController {
   }
 
   onModelChange(newModel, oldModel) {
-    if (newModel === oldModel) {
+    if (newModel === oldModel || !this.pattern) {
       return;
     }
 
@@ -113,11 +115,17 @@ class TextFormatController {
   }
 
   onChange() {
+    if (!this.pattern) {
+      return;
+    }
     this.reformatControl(this.element);
     this.undoStack.add(this.element.value);
   }
 
   onPaste(event) {
+    if (!this.pattern) {
+      return;
+    }
     const selectionStart = this.element.selectionStart;
     const clipboardData = event.clipboardData || window.clipboardData;
     const pastedData = clipboardData.getData('Text');
@@ -137,6 +145,9 @@ class TextFormatController {
   }
 
   onKeydown(event) {
+    if (!this.pattern) {
+      return;
+    }
     this.keydownCount++;
     const currentKeydownCount = this.keydownCount;
     const key = event.keyCode || event.which;
@@ -337,6 +348,9 @@ class TextFormatController {
   }
 
   onCut() {
+    if (!this.pattern) {
+      return;
+    }
     const selectionStart = this.element.selectionStart;
     this.$timeout(() => {
       this.reformatControl(this.element);
@@ -353,6 +367,9 @@ class TextFormatController {
   }
 
   onCopy() {
+    if (!this.pattern) {
+      return;
+    }
     // Reset selection as otherwise lost
     const selectionStart = this.element.selectionStart;
     const selectionEnd = this.element.selectionEnd;

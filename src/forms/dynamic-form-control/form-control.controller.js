@@ -6,12 +6,11 @@ class FormControlController {
   }
 
   $onInit() {
-    console.log(this.format);
     const $ngModel = this.$element.controller('ngModel');
 
     $ngModel.$validators.minlength = (modelValue, viewValue) => {
       const value = modelValue || viewValue;
-      if (this.type !== 'text' || !this.ngMinlength) {
+      if (!(this.type === 'string' || this.type === 'text') || !this.ngMinlength) {
         return true;
       }
       return !value || value.length >= this.ngMinlength;
@@ -19,7 +18,7 @@ class FormControlController {
 
     $ngModel.$validators.maxlength = (modelValue, viewValue) => {
       const value = modelValue || viewValue;
-      if (this.type !== 'text' || !this.ngMaxlength) {
+      if (!(this.type === 'string' || this.type === 'text') || !this.ngMaxlength) {
         return true;
       }
       return !value || value.length <= this.ngMaxlength;
@@ -69,7 +68,7 @@ class FormControlController {
     this.$ngModel.$setDirty();
     if (this.ngChange) {
       // don't fire change for the radio button becoming false
-      if (this.type === 'radio' && this.ngModel !== value) {
+      if ((this.type === 'radio' || this.format === 'radio') && this.ngModel !== value) {
         return;
       }
       this.ngChange();

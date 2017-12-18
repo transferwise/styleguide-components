@@ -1,15 +1,15 @@
-<div class="form-group tw-form-group-{{$ctrl.field.key}}"
+<div class="form-group tw-field-{{$ctrl.field.key}}"
   ng-class="{
-    'has-error': $ctrl.errorMessage
+    'has-error': $ctrl.field.errorMessage || $ctrl.errorMessage
   }">
   <label class="control-label"
-    ng-if="$ctrl.field.type !== 'upload'">
-    {{$ctrl.field.name}} {{$ctrl.field.format}}
+    ng-if="$ctrl.field.type !== 'upload' && $ctrl.field.format !== 'base64url'">
+    {{$ctrl.field.name}}
   </label>
   <tw-form-control
     name="{{ $ctrl.field.key }}"
     label="{{ $ctrl.field.name }}"
-    type="{{ $ctrl.field.type | lowercase }}"
+    type="{{ $ctrl.getControlType() }}"
     format="{{ $ctrl.field.format | lowercase }}"
     placeholder="{{ $ctrl.field.placeholder || $ctrl.field.example }}"
     help-text="{{ $ctrl.field.helpText }}"
@@ -21,12 +21,13 @@
     options="$ctrl.field.valuesAllowed"
     upload-options="$ctrl.uploadOptions"
     ng-model="$ctrl.model"
-    ng-blur="$ctrl.onBlur($ctrl.field)"
-    ng-change="$ctrl.onChange($ctrl.field)"
+    ng-focus="$ctrl.onFocus()"
+    ng-blur="$ctrl.onBlur()"
+    ng-change="$ctrl.onChange()"
     ng-required="$ctrl.field.required"
     ng-disabled="$ctrl.field.disabled"
-    tw-minlength="$ctrl.field.minLength"
-    tw-maxlength="$ctrl.field.maxLength"
+    tw-minlength="$ctrl.field.minlength || $ctrl.field.minLength"
+    tw-maxlength="$ctrl.field.maxlength || $ctrl.field.maxLength"
     ng-min="$ctrl.field.min || $ctrl.field.minimum"
     ng-max="$ctrl.field.max || $ctrl.field.maximum"
     ng-pattern="$ctrl.field.validationRegexp || $ctrl.field.pattern"
@@ -34,13 +35,16 @@
     tw-validation
   ></tw-form-control>
   <div class="alert alert-danger error-messages"
-    ng-class="{'alert-detach': $ctrl.field.type === 'date' || $ctrl.field.type === 'upload'}">
+    ng-class="{
+      'alert-detach': $ctrl.field.type === 'date' || $ctrl.field.format === 'date' ||
+                      $ctrl.field.type === 'upload' || $ctrl.field.format === 'base64url'
+    }">
     <div ng-repeat="(validationType, validationMessage) in $ctrl.field.validationMessages track by $index"
       class="error-{{validationType}}">
       {{validationMessage}}
     </div>
-    <div class="error-provided" ng-if="$ctrl.errorMessage">
-      {{ $ctrl.errorMessage }}
+    <div class="error-provided" ng-if="$ctrl.field.errorMessage || $ctrl.errorMessage">
+      {{ $ctrl.field.errorMessage || $ctrl.errorMessage }}
     </div>
   </div>
   <div ng-if="$ctrl.field.tooltip || $ctrl.field.helpText || $ctrl.field.helpList || $ctrl.field.helpImage"

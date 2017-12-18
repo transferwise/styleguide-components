@@ -6,21 +6,21 @@ angular.module('tw.styleguide.docs', [])
     this.log = function (message) { console.log(message); };
 
     // Basic types
-    this.stringFieldBasic = {
+    this.stringBasic = {
       type: "string",
       name: "String label",
-      key: "textProperty",
+      key: "stringProperty",
       placeholder: "Please enter string"
     };
-    this.numberFieldBasic = {
+    this.numberBasic = {
       type: "number",
       name: "Number control",
       key: "numberProperty",
       placeholder: "Please enter number"
     };
-    this.booleanFieldBasic = {
+    this.booleanBasic = {
       type: "boolean",
-      name: "Checkbox control",
+      name: "Boolean control",
       key: "booleanProperty",
       placeholder: "Please choose"
     };
@@ -32,17 +32,25 @@ angular.module('tw.styleguide.docs', [])
     }
 
     // Formats
-    this.dateFieldBasic = {
+    this.dateBasic = {
       type: "string",
       format: "date",
       name: "Date control",
       key: "dateProperty"
     };
-    this.passwordFieldBasic = {
+    this.passwordBasic = {
       type: "string",
       format: "password",
       name: "Password control",
-      key: "passwordProperty"
+      key: "passwordProperty",
+      placeholder: "Choose password..."
+    };
+    this.uploadBasic = {
+      type: "string",
+      format: "base64url",
+      name: "Upload control",
+      key: "base64urlProperty",
+      placeholder: "Choose file..."
     };
 
     this.basicFormatsModel = {
@@ -50,26 +58,166 @@ angular.module('tw.styleguide.docs', [])
       passwordProperty: "qwerty"
     };
 
+    this.selectBasic = {
+      type: "number",
+      name: "Select control",
+      key: "selectProperty",
+      placeholder: "Please choose",
+      valuesAllowed: [{
+        value: 1, label: "One"
+      },{
+        value: 2, label: "Two"
+      },{
+        value: 3, label: "Three"
+      },{
+        value: 4, label: "Four"
+      }]
+    };
+    this.radioBasic = {
+      type: "string",
+      name: "Radio control",
+      key: "radioProperty",
+      valuesAllowed: [{
+        value: "1", label: "One"
+      },{
+        value: "2", label: "Two"
+      }]
+    };
+    this.selectionsModel = {
+      selectProperty: 1,
+      radioProperty: "2"
+    };
 
 
+    this.stringValidation = {
+      type: "string",
+      name: "String validation",
+      key: "stringProperty",
+      placeholder: "Please enter text",
+      required: true,
+      pattern: '^[A-Z]*$',
+      minLength: 4,
+      maxLength: 6,
+      validationMessages: {
+        required: "String is required",
+        minlength: "Must contain at least 4 characters",
+        maxlength: "Must contain 6 characters or less",
+        pattern: "Must only contain capital letters A to Z"
+      }
+    };
+    this.numberValidation = {
+      type: "number",
+      name: "Number control",
+      key: "numberProperty",
+      placeholder: "Please enter number",
+      required: true,
+      minimum: 10,
+      maximum: 99,
+      validationMessages: {
+        required: "Number is required",
+        minimum: "Must be 10 or greater",
+        maximum: "Must be 99 or less"
+      }
+    };
+    this.dateValidation = {
+      type: "string",
+      format: "date",
+      name: "Date control",
+      key: "dateProperty",
+      required: true,
+      minimum: '2000-01-01',
+      maximum: '2020-01-01',
+      validationMessages: {
+        required: "Date is required",
+        minimum: "Must be after Jan 1st, 2000",
+        maximum: "Must be before Jan 1st, 2020"
+      }
+    };
+    this.validationModel = {
+      stringProperty: "Tex",
+      numberProperty: 123,
+      dateProperty: null
+    };
 
+    this.customErrors = {
+      type: "string",
+      name: "Custom error",
+      key: "stringProperty",
+      placeholder: "Please enter text",
+      errorMessage: "Custom error message"
+    };
+
+    this.helpText = {
+      type: "string",
+      name: "Help text",
+      key: "helpText",
+      placeholder: "Please enter text",
+      helpText: "Some helpful information"
+    }
+    this.helpList = {
+      type: "string",
+      name: "Help list",
+      key: "helpList",
+      placeholder: "Please enter number",
+      helpList: [
+        "Make sure of this",
+        "And this",
+        "And avoid this"
+      ]
+    }
+    this.helpImage = {
+      type: "string",
+      name: "Help image",
+      key: "helpImage",
+      placeholder: "Please enter number",
+      helpImage: "images/captcha.png"
+    };
+
+    this.displayFormat = {
+      type: "string",
+      name: "String display format",
+      key: "displayFormat",
+      placeholder: "Please enter...",
+      displayFormat: "** - ** - **"
+    };
+
+    this.presentationModel = {
+      displayFormat: "123456"
+    };
+
+    this.uploadComponent = {
+      type: "string",
+      format: "base64url",
+      name: "Upload options",
+      key: "uploadOptions",
+      placeholder: "Please choose a file",
+      uploadOptions: {
+        buttonText: "Choose file..."
+      }
+    };
 
 
     this.fieldsetBasic = {
       fields: [{
-        type: "text",
-        name: "Control label",
-        key: "keyName",
+        type: "string",
+        name: "String label",
+        key: "stringProperty",
         placeholder: "Please enter text"
+      },{
+        type: "number",
+        name: "Number label",
+        key: "numberProperty",
+        placeholder: "Please enter number"
       }]
     };
     this.fieldsetBasicModel = {
-      keyName: "Example"
+      stringProperty: "Example",
+      numberProperty: 123
     };
 
     this.fieldsetOptions = {
       legend: "Fieldset legend",
-      description: "Optionally you can supply a legend, to give you fieldset a title, and a description, with more information about the content.",
+      description: "Optional fieldset description, with more information about the content.",
       fields: [{
         type: "text",
         name: "Control label",
@@ -81,164 +229,17 @@ angular.module('tw.styleguide.docs', [])
       keyName: "Example"
     };
 
-    this.simpleTypes = {
-      fields: [{
-        type: "text",
-        name: "Text control",
-        key: "textProperty",
-        placeholder: "Please enter text"
-      },{
-        type: "number",
-        name: "Number control",
-        key: "numberProperty",
-        placeholder: "Please enter number"
-      },{
-        type: "date",
-        name: "Date control",
-        key: "dateProperty"
-      },{
-        type: "password",
-        name: "Password control",
-        key: "passwordProperty",
-        placeholder: "Please enter password"
-      },{
-        type: "boolean",
-        name: "Checkbox control",
-        key: "checkboxProperty",
-        placeholder: "Please choose"
-      }]
-    };
-    this.simpleTypesModel = {
-      textProperty: "Text",
-      numberProperty: 123.45,
-      dateProperty: "2000-01-01",
-      passwordProperty: "qwerty",
-      checkboxProperty: true
-    };
 
-    this.valuesAllowed = {
-      fields: [{
-        type: "select",
-        name: "Select control",
-        key: "selectProperty",
-        placeholder: "Please choose",
-        valuesAllowed: [{
-          value: 1, label: "One"
-        },{
-          value: 2, label: "Two"
-        }]
-      },{
-        type: "radio",
-        name: "Radio control",
-        key: "radioProperty",
-        valuesAllowed: [{
-          value: 1, label: "One"
-        },{
-          value: 2, label: "Two"
-        }]
-      }]
-    };
-    this.valuesAllowedModel = {
-      selectProperty: 1,
-      radioProperty: 2
-    };
 
-    this.uploadComponent = {
-      fields: [{
-        type: "upload",
-        name: "Upload control",
-        key: "uploadProperty",
-        placeholder: "Please choose a file",
-        uploadOptions: {
-          buttonText: "Choose file..."
-        }
-      }]
-    };
-    this.uploadComponentModel = {
-      uploadProperty: null
-    };
-
-    this.validationTypes = {
-      fields: [{
-        type: "text",
-        name: "Text control",
-        key: "textProperty",
-        placeholder: "Please enter text",
-        pattern: '^[A-Z]*$',
-        minLength: 4,
-        maxLength: 6,
-        validationMessages: {
-          minLength: "Must contain at least 4 characters",
-          maxLength: "Must contain 6 characters or less",
-          pattern: "Must only contain capital letters A to Z"
-        }
-      },{
-        type: "number",
-        name: "Number control",
-        key: "numberProperty",
-        placeholder: "Please enter number",
-        minimum: 10,
-        maximum: 99,
-        validationMessages: {
-          minimum: "Must be 10 or greater",
-          maximum: "Must be 99 or less"
-        }
-      },{
-        type: "date",
-        name: "Date control",
-        key: "dateProperty",
-        minimum: '2000-01-01',
-        maximum: '2020-01-01',
-        validationMessages: {
-          minimum: "Must be after Jan 1st, 2000",
-          maximum: "Must be before Jan 1st, 2020"
-        }
-      }]
-    };
-    this.validationTypesModel = {
-      textProperty: "Tex",
-      numberProperty: 123
-    };
-
-    this.helpTypes = {
-      fields: [{
-        type: "text",
-        name: "Help text",
-        key: "helpText",
-        placeholder: "Please enter text",
-        helpText: "Some helpful information"
-      },{
-        type: "text",
-        name: "Help list",
-        key: "helpList",
-        placeholder: "Please enter number",
-        helpList: [
-          "Make sure of this",
-          "And this",
-          "And avoid this"
-        ]
-      },{
-        type: "text",
-        name: "Help image",
-        key: "helpImage",
-        placeholder: "Please enter number",
-        helpImage: "images/captcha.png"
-      }]
-    };
-    this.helpTypesModel = {
-      helpText: "Tex",
-      helpList: "123",
-      helpImage: "123"
-    };
   })
-  .component('requirementsDocs', {
+  .component('fieldsetDocs', {
     bindings: {
       model: '=',
       requirements: '='
     },
     template: ' \
       <div class="row"> \
-        <div class="col-sm-6"> \
+        <div class="col-md-6"> \
           <tw-fieldset \
             legend="{{ $ctrl.requirements.legend }}" \
             description="{{ $ctrl.requirements.description }}" \
@@ -247,26 +248,26 @@ angular.module('tw.styleguide.docs', [])
           </tw-fieldset> \
           <pre>model: {{ $ctrl.model | json }}</pre> \
         </div> \
-        <div class="col-sm-6"> \
+        <div class="col-md-6 p-t-3"> \
           <pre>fieldset: {{ $ctrl.requirements | json }}</pre> \
         </div> \
       </div>'
   })
-  .component('formGroupDocs', {
+  .component('fieldDocs', {
     bindings: {
       model: '=',
       field: '='
     },
     template: ' \
       <div class="row"> \
-        <div class="col-sm-6"> \
-          <tw-form-group \
-            field="$ctrl.field" \
+        <div class="col-md-6"> \
+          <tw-field \
+            options="$ctrl.field" \
             model="$ctrl.model"> \
-          </tw-form-group> \
+          </tw-field> \
         </div> \
-        <div class="col-sm-6"> \
-          <pre>field: {{ $ctrl.field | json }}</pre> \
+        <div class="col-md-6" ng-class="{\'p-t-3\': $ctrl.field.format !== \'base64url\'}"> \
+          <pre>options: {{ $ctrl.field | json }}</pre> \
         </div> \
       </div>'
   });;

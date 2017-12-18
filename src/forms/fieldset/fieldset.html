@@ -1,5 +1,6 @@
 <fieldset ng-form="twFieldset">
-  <legend ng-if="$ctrl.legend">{{$ctrl.legend}}</legend>
+  <legend ng-if="$ctrl.legend">{{ $ctrl.legend }}</legend>
+  <p class="text-max-width" ng-if="$ctrl.description">{{ $ctrl.description }}</p>
   <div class="row row-equal-height">
     <div ng-repeat="field in $ctrl.fields track by $index" class="col-xs-12" ng-hide="field.hidden"
       ng-class="{
@@ -7,20 +8,19 @@
         'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),
         'col-sm-12': $ctrl.narrow || field.width === 'lg' || !field.maxlength || field.maxlength > 10
       }">
-      <tw-form-group
-        style="width: 100%"
+      <tw-field
         model="$ctrl.model[field.key]"
-        field="field"
+        options="field"
         locale="$ctrl.locale"
         upload-options="$ctrl.uploadOptions"
         error-message="$ctrl.errorMessages[field.key]">
-      </tw-form-group>
+      </tw-field>
       <!--
       ng-blur="$ctrl.onBlur(field)"
       ng-change="$ctrl.onChange(field)"
       -->
       <!--
-      <div class="form-group tw-form-group-{{field.key}}"
+      <div class="form-group tw-field-{{field.key}}"
         ng-class="{
           'has-error': $ctrl.errorMessages[field.key]
         }">

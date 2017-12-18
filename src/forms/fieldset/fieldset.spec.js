@@ -29,21 +29,21 @@ describe('Fieldset', function() {
       directiveElement = getCompiledDirectiveElement();
     });
     it('should show supplied error message on the correct field', function() {
-      var errorBlock = directiveElement.find('.tw-form-group-sortCode .error-provided');
+      var errorBlock = directiveElement.find('.tw-field-sortCode .error-provided');
       expect(errorBlock.text().trim()).toBe($scope.errorMessages.sortCode);
     });
     it('should remove supplied error message from the correct field onChange event', function() {
       var input = directiveElement.find('input');
       input.val('1010102').triggerHandler('input');
 
-      var errorBlock = directiveElement.find('.tw-form-group-sortCode .error-provided');
+      var errorBlock = directiveElement.find('.tw-field-sortCode .error-provided');
       expect(errorBlock.text().trim()).not.toBeTruthy();
     });
     it('should remove supplied error message from the correct field onBlur event', function() {
       var formControl = directiveElement.find('.form-control');
       formControl.trigger('blur');
 
-      var errorBlock = directiveElement.find('.tw-form-group-sortCode .error-provided');
+      var errorBlock = directiveElement.find('.tw-field-sortCode .error-provided');
       expect(errorBlock.text().trim()).toBe('');
     });
   });
@@ -73,8 +73,8 @@ describe('Fieldset', function() {
     });
 
     it('should contain custom messages', function() {
-      var requiredErrorSortCode = directiveElement.find('.tw-form-group-sortCode .error-messages .error-required');
-      var requiredErrorIBAN = directiveElement.find('.tw-form-group-iban .error-messages .error-required');
+      var requiredErrorSortCode = directiveElement.find('.tw-field-sortCode .error-messages .error-required');
+      var requiredErrorIBAN = directiveElement.find('.tw-field-iban .error-messages .error-required');
 
       expect(requiredErrorSortCode.text()).toContain('sortCode required');
       expect(requiredErrorIBAN.text()).toContain('default required');

@@ -34,7 +34,7 @@
   <div class="container" ng-controller="PageController as $ctrl">
     <div class="panel">
       <div class="panel-heading">
-        <h2 class="panel-title">Requirements</h2>
+        <h1 class="panel-title h2">Requirements</h1>
       </div>
       <div class="panel-body">
         <p>
@@ -43,90 +43,171 @@
           business logic for our complex, and evolving domain objects, from
           the API, rather than in our clients.</p>
 
-        <h3 class="page-header">Form Groups</h3>
+        <h2 class="page-header">Fields</h2>
         <div class="row">
           <div class="col-md-6">
-            <p>The form group is the basic building block of our forms, it accepts
-              a field specification to configure it's presentation, and a model
+            <p>The field is the basic building block of our forms, it accepts
+              a set of options to configure it's presentation, and a model
               to which it will bind a value.</p>
+            <p>The field controls labelling, validation and help text, alongside
+              the rendering of the form control itself.</p>
           </div>
           <div class="col-md-6">
             <h5>Component API</h5>
 <pre>
-&lt;tw-form-group
-  field="field"&gt;
-  model="model"
-  locale="en-GB"&gt;
-&lt;/tw-form-group&gt;
+&lt;tw-field
+  options="{...}"&gt;
+  model="$ctrl.model"
+  locale="'en-GB'"
+  on-focus=""
+  on-blur=""
+  on-change=""&gt;
+&lt;/tw-field&gt;
 </pre>
           </div>
         </div>
 
-        <h4 class="page-header">Basic types</h4>
-        <form-group-docs
-          field="$ctrl.stringFieldBasic"
+        <h4 id="types" class="page-header">
+          Basic types
+          <a href="#types" class="pull-xs-right">
+            <span class="glyphicon glyphicon-link"></span>
+          </a>
+        </h4>
+        <field-docs
+          field="$ctrl.stringBasic"
           model="$ctrl.basicTypesModel.stringProperty">
-        </form-group-docs>
-        <form-group-docs
-          field="$ctrl.numberFieldBasic"
+        </field-docs>
+        <field-docs
+          field="$ctrl.numberBasic"
           model="$ctrl.basicTypesModel.numberProperty">
-        </form-group-docs>
-        <form-group-docs
-          field="$ctrl.booleanFieldBasic"
+        </field-docs>
+        <field-docs
+          field="$ctrl.booleanBasic"
           model="$ctrl.basicTypesModel.booleanProperty">
-        </form-group-docs>
+        </field-docs>
         <pre>model: {{ $ctrl.basicTypesModel | json }}</pre>
 
-        <h4 class="page-header">Formats</h4>
+        <h4 id="formats" class="page-header">
+          Formats
+          <a href="#formats" class="pull-xs-right">
+            <span class="glyphicon glyphicon-link"></span>
+          </a>
+        </h4>
         <p class="text-max-width">
           Beyond the basic types, formats can be used to indicate other types
           of controls are required
         </p>
-        <form-group-docs
-          field="$ctrl.dateFieldBasic"
+        <field-docs
+          field="$ctrl.dateBasic"
           model="$ctrl.basicFormatsModel.dateProperty">
-        </form-group-docs>
-        <form-group-docs
-          field="$ctrl.passwordFieldBasic"
+        </field-docs>
+        <field-docs
+          field="$ctrl.passwordBasic"
           model="$ctrl.basicFormatsModel.passwordProperty">
-        </form-group-docs>
+        </field-docs>
+        <field-docs
+          field="$ctrl.uploadBasic"
+          model="$ctrl.basicFormatsModel.base64urlProperty">
+        </field-docs>
         <pre>model: {{ $ctrl.basicFormatsModel | json }}</pre>
 
-        <h4 class="page-header">Simple types</h4>
-        <requirements-docs
-          requirements="$ctrl.simpleTypes"
-          model="$ctrl.simpleTypesModel">
-        </requirements-docs>
+        <h4 id="selections" class="page-header">
+          Selections
+          <a href="#selections" class="pull-xs-right">
+            <span class="glyphicon glyphicon-link"></span>
+          </a>
+        </h4>
+        <p class="text-max-width">
+          Often we want the user to choose from a set of values.
+        </p>
+        <field-docs
+          field="$ctrl.selectBasic"
+          model="$ctrl.selectionsModel.selectProperty">
+        </field-docs>
+        <field-docs
+          field="$ctrl.radioBasic"
+          model="$ctrl.selectionsModel.radioProperty">
+        </field-docs>
+        <pre>model: {{ $ctrl.selectionsModel | json }}</pre>
 
-        <h4 class="page-header">Values allowed</h4>
-        <requirements-docs
-          requirements="$ctrl.valuesAllowed"
-          model="$ctrl.valuesAllowedModel">
-        </requirements-docs>
+        <h4 id="validation" class="page-header">
+          Validation
+          <a href="#validation" class="pull-xs-right">
+            <span class="glyphicon glyphicon-link"></span>
+          </a>
+        </h4>
+        <field-docs
+          field="$ctrl.stringValidation"
+          model="$ctrl.validationModel.stringProperty">
+        </field-docs>
+        <field-docs
+          field="$ctrl.numberValidation"
+          model="$ctrl.validationModel.numberProperty">
+        </field-docs>
+        <field-docs
+          field="$ctrl.dateValidation"
+          model="$ctrl.validationModel.dateProperty">
+        </field-docs>
+        <pre>model: {{ $ctrl.validationModel | json }}</pre>
 
-        <h4 class="page-header">Upload component</h4>
-        <requirements-docs
-          requirements="$ctrl.uploadComponent"
-          model="$ctrl.uploadComponentModel">
-        </requirements-docs>
+        <h4 id="custom-errors" class="page-header">
+          Custom errors
+          <a href="#custom-errors" class="pull-xs-right">
+            <span class="glyphicon glyphicon-link"></span>
+          </a>
+        </h4>
+        <field-docs
+          field="$ctrl.customErrors"
+          model="$ctrl.customErrorsModel">
+        </field-docs>
 
-        <h4 class="page-header">Validation</h4>
-        <requirements-docs
-          requirements="$ctrl.validationTypes"
-          model="$ctrl.validationTypesModel">
-        </requirements-docs>
-
-        <h4 class="page-header">Help information</h4>
-        <requirements-docs
+        <h4 id="help-information" class="page-header">
+          Help information
+          <a href="#help-information" class="pull-xs-right">
+            <span class="glyphicon glyphicon-link"></span>
+          </a>
+        </h4>
+        <field-docs
+          field="$ctrl.helpText"
+          model="$ctrl.helpModel.text">
+        </field-docs>
+        <field-docs
+          field="$ctrl.helpList"
+          model="$ctrl.helpModel.list">
+        </field-docs>
+        <field-docs
+          field="$ctrl.helpImage"
+          model="$ctrl.helpModel.image">
+        </field-docs>
+        <!-- <fieldset-docs
           requirements="$ctrl.helpTypes"
           model="$ctrl.helpTypesModel">
-        </requirements-docs>
+        </fieldset-docs> -->
 
-        <h3 class="page-header">Fieldsets</h3>
+        <h4 class="page-header">
+          Presentation options
+        </h4>
+        <field-docs
+          field="$ctrl.displayFormat"
+          model="$ctrl.presentationModel.displayFormat">
+        </field-docs>
+        <field-docs
+          field="$ctrl.uploadComponent"
+          model="$ctrl.presentationModel.uploadOptions">
+        </field-docs>
+
+        <pre>model: {{ $ctrl.presentationModel | json }}</pre>
+
+        <h2 id="fieldsets" class="page-header">
+          Fieldsets
+          <a href="#fieldsets" class="pull-xs-right">
+            <span class="glyphicon glyphicon-link"></span>
+          </a>
+        </h2>
         <div class="row">
           <div class="col-md-6">
-            <p>As it's name suggests the fieldset helps us render a set of fields
-              It can optionally include a legend (title) and/or a description.</p>
+            <p>Fieldsets represent a collection of fields.  A fieldset can
+              optionally include a legend (title) and/or a description.</p>
           </div>
           <div class="col-md-6">
             <h5>Component API</h5>
@@ -141,26 +222,27 @@
           </div>
         </div>
 
-        <h4 class="page-header">Basic example</h4>
-        <requirements-docs
+        <h4 id="fieldset-basic" class="page-header">
+          Basic example
+          <a href="#fieldset-basic" class="pull-xs-right">
+            <span class="glyphicon glyphicon-link"></span>
+          </a>
+        </h4>
+        <fieldset-docs
           requirements="$ctrl.fieldsetBasic"
           model="$ctrl.fieldsetBasicModel">
-        </requirements-docs>
+        </fieldset-docs>
 
-        <h4 class="page-header">Legend &amp; description</h4>
-        <requirements-docs
+        <h4 id="fieldset-legend" class="page-header">
+          Legend &amp; description
+          <a href="#fieldset-legend" class="pull-xs-right">
+            <span class="glyphicon glyphicon-link"></span>
+          </a>
+        </h4>
+        <fieldset-docs
           requirements="$ctrl.fieldsetOptions"
           model="$ctrl.fieldsetOptionsModel">
-        </requirements-docs>
-
-        <h3 class="page-header">Fields</h3>
-        <div class="row">
-          <div class="col-md-6">
-            <p>The field is the basic building block of a form, it contains the
-              type, the porperty key to which the data should be bound, validation
-              information, and various pieces of useful presentation data.</p>
-          </div>
-        </div>
+        </fieldset-docs>
 
       </div>
     </div>

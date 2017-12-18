@@ -2,6 +2,8 @@ pre {
   border: 0;
   background-color: transparent;
   padding: 0;
+  font-size: 11px;
+  line-height: 16px;
 }
 .status-messages {
   display: none;
@@ -39,3 +41,7 @@ ng-transclude.error-messages,
   width: 52px;
 }
 /* Delete above after Bootstrap update */
+
+tw-field {
+  width: 100%;
+}

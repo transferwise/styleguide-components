@@ -24,7 +24,6 @@ class FieldsetController {
     }
 
     if (this.rawFields) {
-      console.log('raw');
       this.fields = this.RequirementsService.prepFields(
         this.rawFields,
         this.model,

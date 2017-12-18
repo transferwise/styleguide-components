@@ -10,6 +10,7 @@ const Fieldset = {
     uploadOptions: '<',
     locale: '@',
     legend: '@',
+    description: '@',
     onRefreshRequirements: '&',
     validationMessages: '<',
     errorMessages: '<',

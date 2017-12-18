@@ -9,7 +9,7 @@ import DateLookup from './date-lookup/';
 import CurrencyInput from './currency-input/';
 import AmountCurrencySelect from './amount-currency-select/';
 import FormControl from './dynamic-form-control/';
-import FormGroup from './form-group/';
+import Field from './field/';
 import Fieldset from './fieldset/';
 import RequirementsForm from './requirements-form/';
 import Focusable from './focusable/';
@@ -28,7 +28,7 @@ export default angular.module('tw.styleguide.forms', [
   CurrencyInput,
   AmountCurrencySelect,
   FormControl,
-  FormGroup,
+  Field,
   Fieldset,
   RequirementsForm,
   Focusable,

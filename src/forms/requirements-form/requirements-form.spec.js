@@ -127,15 +127,15 @@ describe('RequirementsForm', function() {
       directiveElement = getCompiledDirectiveElement();
     });
     it('should show error state on the field associated with supplied error key', function() {
-      var sortFormGroup = directiveElement.find('.tw-form-group-sortCode');
-      expect(sortFormGroup.hasClass('has-error')).toBe(true);
+      var sortField = directiveElement.find('.tw-field-sortCode');
+      expect(sortField.hasClass('has-error')).toBe(true);
     });
     it('should not show error state on other fields', function() {
       expect(directiveElement.find('.has-error').length).toBe(1);
     });
     it('should show supplied error message on the correct field', function() {
       var errorBlock =
-        directiveElement.find('.tw-form-group-sortCode .error-provided');
+        directiveElement.find('.tw-field-sortCode .error-provided');
       expect(errorBlock.text().trim()).toBe($scope.errorMessages.sortCode);
     });
     it('should not show provided errors on other fields', function() {
@@ -145,7 +145,7 @@ describe('RequirementsForm', function() {
       expect($scope.isValid).toBe(false);
     });
     it('should set isValid true when all fields are valid', function() {
-      var accountNumberInput = directiveElement.find('.tw-form-group-accountNumber input');
+      var accountNumberInput = directiveElement.find('.tw-field-accountNumber input');
       accountNumberInput.val('12345677').trigger('input');
       expect($scope.isValid).toBe(true);
     });
