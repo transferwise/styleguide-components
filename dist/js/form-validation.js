@@ -262,7 +262,7 @@ function CurrencyService() {
   };
 
   this.getDecimals = function (currency) {
-    if (currency.toUpperCase && typeof currencyDecimals[currency.toUpperCase()] !== 'undefined') {
+    if (currency && currency.toUpperCase && typeof currencyDecimals[currency.toUpperCase()] !== 'undefined') {
       return currencyDecimals[currency.toUpperCase()];
     }
     return 2;
@@ -942,7 +942,11 @@ function LocaleService() {
       return _this.locale;
     }
 
-    throw new Error('Invalid locale');
+    if (console && console.warn) {
+      console.warn('Incorrect locale: ' + newLocale);
+    }
+    _this.locale = 'en-GB';
+    return _this.locale;
   };
 
   this.isValid = function (testLocale) {

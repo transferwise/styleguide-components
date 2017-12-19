@@ -52,6 +52,10 @@ class UploadController {
   }
 
   fileDropped(file) {
+    if (this.ngDisabled) {
+      return;
+    }
+
     this.reset();
 
     this.isImage_instant = (file.type && file.type.indexOf('image') > -1);
@@ -110,7 +114,7 @@ class UploadController {
   onDragEnter() {
     this.dragCounter++;
     if (this.dragCounter >= 1) {
-      this.isDroppable = true;
+      this.isDroppable = true && !this.ngDisabled;
     }
   }
   onDragLeave() {

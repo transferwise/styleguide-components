@@ -29,7 +29,8 @@ function CurrencyService() {
   };
 
   this.getDecimals = (currency) => {
-    if (currency.toUpperCase &&
+    if (currency &&
+      currency.toUpperCase &&
       typeof currencyDecimals[currency.toUpperCase()] !== 'undefined') {
       return currencyDecimals[currency.toUpperCase()];
     }
