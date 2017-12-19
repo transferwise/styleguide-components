@@ -6,7 +6,7 @@ const Field = {
   template,
   bindings: {
     model: '=',
-    field: '<options',
+    options: '<options',
     uploadOptions: '<',
     locale: '@',
     changeHandler: '&?onChange',

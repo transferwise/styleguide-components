@@ -81,6 +81,8 @@ function DateService() {
     const hours = parseInt(isoDate.substr(11, 2), 10) || 0;
     const minutes = parseInt(isoDate.substr(14, 2), 10) || 0;
     const seconds = parseInt(isoDate.substr(17, 2), 10) || 0;
+
+    // TODO if there are milliseconds, need to adjust this
     let hoursOffset = parseInt(isoDate.substr(20, 2), 10) || 0;
     let minutesOffset = parseInt(isoDate.substr(23, 2), 10) || 0;
 
@@ -96,8 +98,10 @@ function DateService() {
   this.isIsoStringValid = (isoDate) => {
     const dateSection = '[0-9]{4}-[0-9]{2}-[0-9]{2}';
     const timeSection = 'T[0-9]{2}:[0-9]{2}:[0-9]{2}';
+    const millisecondSection = '(.[0-9]{3})?';
     const zoneSection = '(Z|[+,-][0-9]{2}(:[0-9]{2})?)';
-    const regex = new RegExp(`^${dateSection}(${timeSection}${zoneSection})?$`);
+    const regex =
+      new RegExp(`^${dateSection}(${timeSection}${millisecondSection}${zoneSection})?$`);
     return regex.test(isoDate);
   };
 

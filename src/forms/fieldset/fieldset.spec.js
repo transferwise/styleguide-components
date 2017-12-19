@@ -4,7 +4,8 @@ describe('Fieldset', function() {
   var $compile,
       $rootScope,
       $scope,
-      directiveElement;
+      $element,
+      element;
 
   beforeEach(module('tw.styleguide-components'));
 
@@ -13,93 +14,107 @@ describe('Fieldset', function() {
     $compile = $injector.get('$compile');
     $scope = $rootScope.$new();
     $scope.onRefreshRequirements = function () {}
+    spyOn($scope, 'onRefreshRequirements');
   }));
 
-  describe('validation', function() {
+  describe('when given an array of fields', function() {
+    beforeEach(function() {
+      $scope.fields = getFields();
+      element = getCompiledDirectiveElement();
+    });
+    it('should show the correct number of fields', function() {
+      expect(element.querySelectorAll('tw-field').length).toBe(2);
+    });
+  });
+
+  describe('when given custom error messages', function() {
     beforeEach(function() {
       $scope.model = {
         type: 'sort_code',
         sortCode: '101010'
       };
-      $scope.fields = getRequirement()[0].fields;
-      $scope.isValid = null;
+      $scope.fields = getFields();
       $scope.errorMessages = {
-          sortCode: "Sort code not found"
+        sortCode: "Sort code not found"
       };
-      directiveElement = getCompiledDirectiveElement();
+      element = getCompiledDirectiveElement();
     });
-    it('should show supplied error message on the correct field', function() {
-      var errorBlock = directiveElement.find('.tw-field-sortCode .error-provided');
-      expect(errorBlock.text().trim()).toBe($scope.errorMessages.sortCode);
-    });
-    it('should remove supplied error message from the correct field onChange event', function() {
-      var input = directiveElement.find('input');
-      input.val('1010102').triggerHandler('input');
 
-      var errorBlock = directiveElement.find('.tw-field-sortCode .error-provided');
-      expect(errorBlock.text().trim()).not.toBeTruthy();
+    it('should show an error state only on the correct field', function() {
+      var errorFields = element.querySelectorAll('.has-error');
+      var errorField = element.querySelector('.tw-field-sortCode ');
+      expect(errorFields.length).toBe(1);
+      expect(errorField.classList.contains('has-error')).toBe(true);
     });
-    it('should remove supplied error message from the correct field onBlur event', function() {
-      var formControl = directiveElement.find('.form-control');
-      formControl.trigger('blur');
 
-      var errorBlock = directiveElement.find('.tw-field-sortCode .error-provided');
-      expect(errorBlock.text().trim()).toBe('');
+    it('should show the supplied error message', function() {
+      var errorBlock = element.querySelector('.tw-field-sortCode .error-provided');
+      expect(errorBlock.innerText.trim()).toBe($scope.errorMessages.sortCode);
     });
   });
 
-  describe('onRefreshRequirements', function() {
+  describe('when a field has refreshRequirementsOnChange: true', function() {
     beforeEach(function() {
-      $scope.fields = getRequirement()[0].fields;
-      directiveElement = getCompiledDirectiveElement();
-      spyOn($scope, 'onRefreshRequirements');
+      $scope.fields = getFields();
+      element = getCompiledDirectiveElement();
+      var formControl = element.querySelector('.form-control');
+      formControl.dispatchEvent(new Event('blur'));
     });
 
-    it('should be triggered onBlur', function() {
-      var formControl = directiveElement.find('.form-control');
-      formControl.trigger('blur');
-
+    it('should trigger the handler on field blur', function() {
       expect($scope.onRefreshRequirements).toHaveBeenCalled()
     });
   });
 
-  describe('validationMessages', function() {
+  describe('when given validation messages', function() {
     beforeEach(function() {
-      $scope.fields = getRequirement()[0].fields;
+      $scope.fields = getFields();
       $scope.validationMessages = {
         required: 'default required'
       };
-      directiveElement = getCompiledDirectiveElement();
+      element = getCompiledDirectiveElement();
     });
 
-    it('should contain custom messages', function() {
-      var requiredErrorSortCode = directiveElement.find('.tw-field-sortCode .error-messages .error-required');
-      var requiredErrorIBAN = directiveElement.find('.tw-field-iban .error-messages .error-required');
+    it('should use them instead of the default messages', function() {
+      var requiredErrorSortCode =
+        element.querySelector('.tw-field-sortCode .error-messages .error-required');
+      var requiredErrorIBAN =
+        element.querySelector('.tw-field-iban .error-messages .error-required');
 
-      expect(requiredErrorSortCode.text()).toContain('sortCode required');
-      expect(requiredErrorIBAN.text()).toContain('default required');
+      expect(requiredErrorSortCode.innerText).toContain('sortCode required');
+      expect(requiredErrorIBAN.innerText).toContain('default required');
     });
   });
 
-  describe('columns & hidden fields', function() {
+  describe('when given a field with hidden: true', function() {
     beforeEach(function() {
-      $scope.fields = getRequirementWithHiddenAndMdSmFields()[0].fields;
-      directiveElement = getCompiledDirectiveElement();
+      $scope.fields = getRequirementWithHiddenAndMdSmFields();
+      element = getCompiledDirectiveElement();
     });
 
-    it('should have a hidden fieldset', function() {
-      var requiredErrorSortCode = directiveElement.find('.row.row-equal-height .col-xs-12.ng-hide');
-      expect(requiredErrorSortCode.length).toBe(1);
+    it('should hide the field', function() {
+      var hiddenFields =
+        element.querySelectorAll('.row.row-equal-height .col-xs-12.ng-hide');
+      expect(hiddenFields.length).toBe(1);
+    });
+  });
+
+  describe('when given fields with custom widths', function() {
+    beforeEach(function() {
+      $scope.fields = getRequirementWithHiddenAndMdSmFields();
+      element = getCompiledDirectiveElement();
     });
 
     it('should have one col-sm-4 fieldset', function() {
-      var requiredErrorSortCode = directiveElement.find('.row.row-equal-height .col-xs-12.col-sm-4');
-      expect(requiredErrorSortCode.length).toBe(1);
+      var smFields =
+        element.querySelectorAll('.row.row-equal-height .col-xs-12.col-sm-4');
+      expect(smFields.length).toBe(1);
     });
 
     it('should have one col-sm-6 fieldset', function() {
-      var requiredErrorSortCode = directiveElement.find('.row.row-equal-height .col-xs-12.col-sm-6');
-      expect(requiredErrorSortCode.length).toBe(1);
+      var mdFields =
+        element.querySelectorAll('.row.row-equal-height .col-xs-12.col-sm-6');
+      expect(mdFields.length).toBe(1);
     });
   });
 
@@ -116,96 +131,96 @@ describe('Fieldset', function() {
     var compiledElement = $compile(template)($scope);
 
     $scope.$digest();
-    return compiledElement;
+    return compiledElement[0];
   }
 
-  function getRequirement() {
+  function getFieldsWithGroups() {
     return [
       {
-        "type": "sort_code",
-        "label": "Use sort code",
-        "fields": [
+        "name": "UK Sort code",
+        "group": [
           {
-            "name": "UK Sort code",
-            "group": [
-              {
-                "key": "sortCode",
-                "type": "text",
-                "refreshRequirementsOnChange": true,
-                "required": true,
-                "displayFormat": "**-**-**",
-                "example": "40-30-20",
-                "minLength": 6,
-                "maxLength": 8,
-                "validationRegexp": null,
-                "valuesAllowed": null,
-                "validationMessages": {
-                  "required": "sortCode required"
-                }
-              }
-            ]
-          },
+            "key": "sortCode",
+            "type": "text",
+            "refreshRequirementsOnChange": true,
+            "required": true,
+            "displayFormat": "**-**-**",
+            "minLength": 6,
+            "maxLength": 8,
+            "validationMessages": {
+              "required": "sortCode required"
+            }
+          }
+        ]
+      },
+      {
+        "name": "IBAN",
+        "group": [
           {
-            "name": "IBAN",
-            "group": [
-              {
-                "key": "iban",
-                "type": "text",
-                "refreshRequirementsOnChange": true,
-                "required": true,
-                "displayFormat": "**-**-**",
-                "example": "40-30-20",
-                "minLength": 6,
-                "maxLength": 8,
-                "validationRegexp": null,
-                "valuesAllowed": null
-              }
-            ]
+            "key": "iban",
+            "type": "text",
+            "refreshRequirementsOnChange": true,
+            "required": true,
+            "displayFormat": "**-**-**",
+            "minLength": 6,
+            "maxLength": 8
           }
         ]
       }
     ];
+  }
+
+  function getFields() {
+    return [
+      {
+        "name": "UK Sort code",
+        "key": "sortCode",
+        "type": "string",
+        "refreshRequirementsOnChange": true,
+        "required": true,
+        "displayFormat": "**-**-**",
+        "minLength": 6,
+        "maxLength": 8,
+        "validationMessages": {
+          "required": "sortCode required"
+        }
+      },
+      {
+        "name": "IBAN",
+        "key": "iban",
+        "type": "string",
+        "refreshRequirementsOnChange": true,
+        "required": true,
+        "displayFormat": "**-**-**",
+        "minLength": 6,
+        "maxLength": 8,
+      }
+    ]
   }
 
   function getRequirementWithHiddenAndMdSmFields() {
-    return [
-      {
-        "type": "hidden_and_sm_md_fields",
-        "label": "Hidden & sm/md field test",
-        "fields": [
-          {
-            "name": "HIDDEN",
-            "hidden": true,
-            "group": [
-              {
-                "key": "iban",
-                "type": "hidden"
-              }
-            ]
-          },
-          {
-            "name": "COL-SM-4",
-            "width": "sm",
-            "group": [
-              {
-                "key": "colsm4",
-                "type": "text"
-              }
-            ]
-          },
-          {
-            "name": "COL-SM-6",
-            "width": "md",
-            "group": [
-              {
-                "key": "colsm6",
-                "type": "text"
-              }
-            ]
-          }
-        ]
-      }
-    ];
+    return [hiddenField, smField, mdField];
+  }
+
+  var hiddenField = {
+    "name": "HIDDEN",
+    "hidden": true,
+    "key": "iban",
+    "type": "hidden"
+  };
+
+  var smField = {
+    "name": "COL-SM-4",
+    "width": "sm",
+    "key": "colsm4",
+    "type": "text"
+  };
+
+  var mdField = {
+    "name": "COL-SM-6",
+    "width": "md",
+    "key": "colsm6",
+    "type": "text"
   }
 
 });

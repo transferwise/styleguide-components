@@ -126,21 +126,7 @@ describe('RequirementsForm', function() {
       }
       directiveElement = getCompiledDirectiveElement();
     });
-    it('should show error state on the field associated with supplied error key', function() {
-      var sortField = directiveElement.find('.tw-field-sortCode');
-      expect(sortField.hasClass('has-error')).toBe(true);
-    });
-    it('should not show error state on other fields', function() {
-      expect(directiveElement.find('.has-error').length).toBe(1);
-    });
-    it('should show supplied error message on the correct field', function() {
-      var errorBlock =
-        directiveElement.find('.tw-field-sortCode .error-provided');
-      expect(errorBlock.text().trim()).toBe($scope.errorMessages.sortCode);
-    });
-    it('should not show provided errors on other fields', function() {
-      expect(directiveElement.find('.error-provided').length).toBe(1);
-    });
+
     it('should set isValid false if not all fields are valid', function() {
       expect($scope.isValid).toBe(false);
     });
@@ -189,12 +175,6 @@ describe('RequirementsForm', function() {
                 "type": "select",
                 "refreshRequirementsOnChange": false,
                 "required": true,
-                "displayFormat": null,
-                "example": "",
-                "minLength": null,
-                "maxLength": null,
-                "validationRegexp": null,
-                "validationAsync": null,
                 "valuesAllowed": [
                   {
                     "key": "PRIVATE",
@@ -220,7 +200,6 @@ describe('RequirementsForm', function() {
                 "example": "40-30-20",
                 "minLength": 6,
                 "maxLength": 8,
-                "validationRegexp": null,
                 "validationAsync": {
                   "url": "https://api.transferwise.com/v1/validators/sort-code",
                   "params": [
@@ -230,8 +209,7 @@ describe('RequirementsForm', function() {
                       "required": true
                     }
                   ]
-                },
-                "valuesAllowed": null
+                }
               }
             ]
           },
@@ -243,7 +221,6 @@ describe('RequirementsForm', function() {
                 "type": "text",
                 "refreshRequirementsOnChange": false,
                 "required": true,
-                "displayFormat": null,
                 "example": "12345678",
                 "minLength": 8,
                 "maxLength": 8,
@@ -257,8 +234,7 @@ describe('RequirementsForm', function() {
                       "required": true
                     }
                   ]
-                },
-                "valuesAllowed": null
+                }
               }
             ]
           }
@@ -276,12 +252,6 @@ describe('RequirementsForm', function() {
                 "type": "select",
                 "refreshRequirementsOnChange": false,
                 "required": true,
-                "displayFormat": null,
-                "example": "",
-                "minLength": null,
-                "maxLength": null,
-                "validationRegexp": null,
-                "validationAsync": null,
                 "valuesAllowed": [
                   {
                     "key": "PRIVATE",
@@ -307,8 +277,6 @@ describe('RequirementsForm', function() {
                 "displayFormat": "**** **** **** **** **** **** **** ****",
                 "example": "GB89370400440532013000",
                 "minLength": 2,
-                "maxLength": null,
-                "validationRegexp": null,
                 "validationAsync": {
                   "url": "https://api.transferwise.com/v1/validators/iban",
                   "params": [
@@ -318,8 +286,7 @@ describe('RequirementsForm', function() {
                       "required": true
                     }
                   ]
-                },
-                "valuesAllowed": null
+                }
               }
             ]
           },
@@ -331,10 +298,7 @@ describe('RequirementsForm', function() {
                 "type": "text",
                 "refreshRequirementsOnChange": false,
                 "required": false,
-                "displayFormat": null,
                 "example": "ABCDDE22 (Optional)",
-                "minLength": null,
-                "maxLength": null,
                 "validationRegexp": "[A-Z]",
                 "validationAsync": {
                   "url": "https://api.transferwise.com/v1/validators/bic",

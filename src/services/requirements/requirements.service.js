@@ -11,52 +11,31 @@ function RequirementsService() {
     if (!fields) {
       return [];
     }
-    const isArrayForm = Array.isArray(fields);
-    // const preparedFields = {};
+
+    // TODO map
     const preparedFields = [];
-    if (isArrayForm) {
-      fields.forEach((field) => {
-        preparedFields.push(this.prepField(field, model, validationMessages));
-        // preparedFields[field.key] = this.prepField(field, model, validationMessages);
-      });
-    } else {
-      Object.keys(fields).forEach((key) => {
-        const field = fields[key];
-        field.key = key;
-        preparedFields.push(this.prepField(field, model, validationMessages));
-        // preparedFields[key] = this.prepField(field, model, validationMessages);
-      });
-    }
+    fields.forEach((field) => {
+      preparedFields.push(this.prepField(field, model, validationMessages));
+    });
+
     return preparedFields;
   };
 
   this.prepField = (field, model, validationMessages) => {
-    const preparedField = Object.assign({}, field);
+    // Copy object, Object.assign is nicer, but lacks ie support
+    const preparedField = JSON.parse(JSON.stringify(field));
 
-    if (preparedField.group) {
-      preparedField.group.forEach((fieldSection) => {
-        if (fieldSection.refreshRequirementsOnChange) {
-          preparedField.refreshRequirementsOnChange = true;
-        }
-
-        this.prepType(fieldSection);
-        this.prepRegExp(fieldSection);
-        this.prepValuesAsync(fieldSection, model);
-        this.prepValuesAllowed(fieldSection);
-        this.prepValidationMessages(fieldSection, validationMessages);
-      });
-
-      if (preparedField.group.length) {
-        field.key = field.key || field.group[0].key;
-        field.type = field.type || field.group[0].type;
-      }
-    } else {
-      this.prepType(preparedField);
-      this.prepRegExp(preparedField);
-      this.prepValuesAsync(preparedField, model);
-      this.prepValuesAllowed(preparedField);
-      this.prepValidationMessages(preparedField, validationMessages);
+    if (preparedField.group && preparedField.group[0]) {
+      angular.extend(preparedField, preparedField.group[0]);
+      delete preparedField.group;
     }
+
+    this.prepType(preparedField);
+    this.prepRegExp(preparedField);
+    this.prepValuesAsync(preparedField, model);
+    this.prepValuesAllowed(preparedField);
+    this.prepValidationMessages(preparedField, validationMessages);
+
     return preparedField;
   };
 
@@ -74,9 +53,20 @@ function RequirementsService() {
         field.type = 'boolean';
         break;
       case 'select':
+        field.control = 'select';
+        break;
       case 'radio':
+        field.control = 'radio';
+        break;
+      case 'upload':
+        field.type = 'string';
+        field.format = 'base64url';
         break;
       default:
+    }
+
+    if (!field.control) {
+      field.control = getControlType(field);
     }
   };
 
@@ -143,6 +133,68 @@ function RequirementsService() {
       field.validationMessages :
       validationMessages;
   };
+}
+
+function getControlType(field) {
+  if (field.control) {
+    return field.control;
+  }
+  if (field.hidden) {
+    return 'hidden';
+  }
+  if (field.enum || field.values || field.valuesAllowed) {
+    return getSelectionType(field);
+  }
+
+  switch (field.type) {
+    case 'string':
+      return getControlForStringFormat(field.format);
+    case 'number':
+    case 'integer':
+      return 'number';
+    case 'boolean':
+      return 'checkbox';
+    default:
+      return 'text';
+  }
+}
+
+function getControlForStringFormat(format) {
+  switch (format) {
+    case 'date':
+      return 'date';
+    case 'base64url':
+      return 'file';
+    case 'password':
+      return 'password';
+    case 'uri':
+      return 'text'; // 'url'; - not implemented
+    case 'email':
+      return 'text'; // 'email'; - not implemented
+    case 'phone':
+      return 'text'; // 'tel'; - not implemented
+    default:
+      return 'text';
+  }
+}
+
+function getSelectionType(field) {
+  if (field.type === 'select') {
+    return 'select';
+  } else if (field.type === 'radio') {
+    return 'radio';
+  }
+
+  if (field.enum) {
+    return field.enum.length > 3 ? 'select' : 'radio';
+  }
+  if (field.values) {
+    return field.values.length > 3 ? 'select' : 'radio';
+  }
+  if (field.valuesAllowed) {
+    return field.valuesAllowed.length > 3 ? 'select' : 'radio';
+  }
+  return 'select';
 }
 
 export default RequirementsService;

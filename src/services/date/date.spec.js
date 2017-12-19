@@ -113,6 +113,12 @@ describe('TwDateService test', function() {
         });
       });
     });
+    describe('with milliseconds', function() {
+      it('should correctly extract the date parts', function() {
+        var dateParts = service.getDatePartsFromIso('2001-05-01T23:45:43.123+10:30');
+        expect(dateParts).toEqual([2001, 4, 1, 23, 45, 43, 10, 30]);
+      });
+    });
   });
 
   describe('when converting iso dates to UTC', function() {
@@ -159,8 +165,13 @@ describe('TwDateService test', function() {
       expect(service.isIsoStringValid('2001-12-31T12:34:56Z')).toBe(true);
     });
     it('should correctly validate an ISO date, time and timezone', function() {
-      expect(service.isIsoStringValid('2001-12-31T12:34:56+10:00')).toBe(true);
       expect(service.isIsoStringValid('2001-12-31T12:34:56-02')).toBe(true);
+      expect(service.isIsoStringValid('2001-12-31T12:34:56+10:00')).toBe(true);
+    });
+    it('should correctly validate a full ISO date with milliseconds', function() {
+      expect(service.isIsoStringValid('2001-12-31T12:34:56.789Z')).toBe(true);
+      expect(service.isIsoStringValid('2001-12-31T12:34:56.789-02')).toBe(true);
+      expect(service.isIsoStringValid('2001-12-31T12:34:56.789+10:00')).toBe(true);
     });
 
     it('should return false for invalid strings', function() {

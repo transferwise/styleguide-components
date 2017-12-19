@@ -13,7 +13,7 @@
 
     <dl ng-if="!field.group">
       <dt ng-bind="field.name"></dt>
-      <dd ng-switch="field.type">
+      <dd ng-switch="field.control">
         <span ng-switch-when="select|radio" ng-switch-when-separator="|">
           {{ $ctrl.getValueLabel(field.valuesAllowed, $ctrl.model[field.key]) }}
         </span>
@@ -26,7 +26,7 @@
         <span ng-switch-when="password">
           {{ $ctrl.mask($ctrl.model[field.key]) }}
         </span>
-        <div ng-switch-when="upload" class="thumbnail">
+        <div ng-switch-when="file" class="thumbnail">
           <img alt="{{ field.name }}"
             ng-src="{{ $ctrl.model[field.key] }}"
             ng-attr-alt="{{ field.name }}" />
@@ -42,7 +42,7 @@
       <dt ng-bind="field.name"></dt>
       <dd>
         <span ng-repeat="fieldSection in field.group">
-          <span ng-switch="fieldSection.type">
+          <span ng-switch="fieldSection.control">
             <span ng-switch-when="select|radio" ng-switch-when-separator="|">
               {{ $ctrl.getValueLabel(fieldSection.valuesAllowed, $ctrl.model[fieldSection.key]) }}
             </span>
@@ -55,7 +55,7 @@
             <span ng-switch-when="password">
               {{ $ctrl.mask($ctrl.model[fieldSection.key]) }}
             </span>
-            <div ng-switch-when="upload" class="thumbnail">
+            <div ng-switch-when="file" class="thumbnail">
               <img alt="{{ field.name }}"
                 ng-src="{{ $ctrl.model[fieldSection.key] }}"
                 ng-attr-alt="{{ field.name }}" />

@@ -8,85 +8,26 @@
         'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),
         'col-sm-12': $ctrl.narrow || field.width === 'lg' || !field.maxlength || field.maxlength > 10
       }">
+
       <tw-field
+        ng-if="!field.group"
         model="$ctrl.model[field.key]"
         options="field"
         locale="$ctrl.locale"
         upload-options="$ctrl.uploadOptions"
-        error-message="$ctrl.errorMessages[field.key]">
+        error-message="$ctrl.errorMessages[field.key]"
+        on-change="$ctrl.onFieldChange(field)"
+        on-focus="$ctrl.onFieldFocus(field)"
+        on-blur="$ctrl.onFieldBlur(field)">
       </tw-field>
-      <!--
-      ng-blur="$ctrl.onBlur(field)"
-      ng-change="$ctrl.onChange(field)"
-      -->
-      <!--
-      <div class="form-group tw-field-{{field.key}}"
+
+      <!-- Start old format -->
+      <div class="form-group" ng-if="field.group"
         ng-class="{
           'has-error': $ctrl.errorMessages[field.key]
         }">
-        <label class="control-label"
-          ng-if="field.type !== 'upload'">
-          {{field.name}}
-        </label>
-
-        <div ng-if="!field.group">
-          <tw-form-control
-            name="{{ field.key }}"
-            label="{{ field.name }}"
-            type="{{ field.type | lowercase }}"
-            format="{{ field.format | lowercase }}"
-            placeholder="{{ field.placeholder || field.example }}"
-            help-text="{{ field.helpText }}"
-            help-image="{{ field.helpImage }}"
-            locale="{{ $ctrl.locale }}"
-            upload-accept="{{ field.accept }}"
-            upload-icon="{{ field.icon }}"
-            upload-too-large-message="{{ field.tooLargeMessage }}"
-            options="field.valuesAllowed"
-            upload-options="$ctrl.uploadOptions"
-            ng-model="$ctrl.model[field.key]"
-            ng-blur="$ctrl.onBlur(field)"
-            ng-change="$ctrl.onChange(field)"
-            ng-required="field.required"
-            ng-disabled="field.disabled"
-            tw-minlength="field.minLength"
-            tw-maxlength="field.maxLength"
-            ng-min="field.min || field.minimum"
-            ng-max="field.max || field.maximum"
-            ng-pattern="field.validationRegexp || field.pattern"
-            text-format="field.displayFormat"
-            tw-validation
-          ></tw-form-control>
-          <div class="alert alert-danger error-messages"
-            ng-class="{'alert-detach': field.type === 'date' || field.type === 'upload'}">
-            <div ng-repeat="(validationType, validationMessage) in field.validationMessages track by $index"
-              class="error-{{validationType}}">
-              {{validationMessage}}
-            </div>
-            <div class="error-provided" ng-if="$ctrl.errorMessages[field.key]">
-              {{ $ctrl.errorMessages[field.key] }}
-            </div>
-          </div>
-          <div ng-if="field.tooltip || field.helpText || field.helpList || field.helpImage"
-            class="alert alert-focus"
-            ng-class="{'alert-detach': field.type === 'date' || field.type === 'upload'}">
-            <span ng-if="field.tooltip || field.helpText">
-              {{ field.tooltip || field.helpText }}
-            </span>
-            <ul ng-if="field.helpList" class="list-unstyled">
-              <li ng-repeat="helpMessage in field.helpList">{{ helpMessage }}</li>
-            </ul>
-            <img
-              ng-if="field.helpImage && field.type !== 'upload'"
-              ng-src="{{field.helpImage}}"
-              alt="{{field.name}}"
-              class="thumbnail m-y-2" />
-          </div>
-        </div>
-        -->
-
-        <!-- Start old format -->
-        <div class="row" ng-if="field.group">
+        <label class="control-label">{{ field.name }}</label>
+        <div class="row">
           <div class="col-xs-{{field.columns}}"
             ng-repeat="fieldSection in field.group track by $index">
             <tw-form-control
@@ -136,8 +77,8 @@
               alt="{{field.name}}"
               class="thumbnail m-t-2 m-b-0" />
           </div>
-          <!-- End old format -->
         </div>
+        <!-- End old format -->
       </div>
     </div>
   </div>

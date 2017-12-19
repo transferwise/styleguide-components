@@ -37,6 +37,7 @@ class RequirementsFormController {
     });
 
     $scope.$watch('twForm.$valid', (validity) => {
+      console.log(`validity: ${validity}`);
       this.isValid = validity;
     });
 

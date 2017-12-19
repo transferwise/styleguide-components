@@ -9,7 +9,7 @@
   <tw-form-control
     name="{{ $ctrl.field.key }}"
     label="{{ $ctrl.field.name }}"
-    type="{{ $ctrl.getControlType() }}"
+    type="{{ $ctrl.field.control }}"
     format="{{ $ctrl.field.format | lowercase }}"
     placeholder="{{ $ctrl.field.placeholder || $ctrl.field.example }}"
     help-text="{{ $ctrl.field.helpText }}"
@@ -43,8 +43,8 @@
       class="error-{{validationType}}">
       {{validationMessage}}
     </div>
-    <div class="error-provided" ng-if="$ctrl.field.errorMessage || $ctrl.errorMessage">
-      {{ $ctrl.field.errorMessage || $ctrl.errorMessage }}
+    <div class="error-provided" ng-if="$ctrl.errorMessage">
+      {{ $ctrl.errorMessage }}
     </div>
   </div>
   <div ng-if="$ctrl.field.tooltip || $ctrl.field.helpText || $ctrl.field.helpList || $ctrl.field.helpImage"

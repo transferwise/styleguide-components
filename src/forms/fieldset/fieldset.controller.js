@@ -31,50 +31,57 @@ class FieldsetController {
       );
     }
 
-    this.$scope.$watch('$ctrl.fields', (newValue, oldValue) => {
-      if (!angular.equals(newValue, oldValue)) {
+    // this.$scope.$watch('$ctrl.fields', (newValue, oldValue) => {
+    //   if (!angular.equals(newValue, oldValue)) {
+    //     this.fields = this.RequirementsService.prepFields(
+    //       this.rawFields,
+    //       this.model,
+    //       this.validationMessages
+    //     );
+    //   }
+    // });
+
+    // this.$scope.$watch('twFieldset.$valid', (validity) => {
+    //   this.isValid = validity;
+    // });
+
+    // TODO can we add asyncvalidator here? - prob not
+  }
+
+  $onChanges(changes) {
+    if (changes.$valid) {
+      console.log(`validity changed: ${changes.$valid.currentValue}`);
+      this.isValid = changes.$valid.currentValue;
+    }
+
+    if (changes.rawFields) {
+      if (!angular.equals(changes.rawFields.currentValue, changes.rawFields.previousValue)) {
         this.fields = this.RequirementsService.prepFields(
           this.rawFields,
           this.model,
           this.validationMessages
         );
       }
-    });
-
-    this.$scope.$watch('twFieldset.$valid', (validity) => {
-      this.isValid = validity;
-    });
-
-    // TODO can we add asyncvalidator here? - prob not
-  }
-
-  onBlur(field) {
-    this.removeFieldError(field.key);
-
-    if (!field.refreshRequirementsOnChange) {
-      // eslint-disable-next-line no-useless-return
-      return;
-    }
-    // TODO disabled the form while we refresh requirements?
-    if (this.onRefreshRequirements) {
-      // Should post the current model back to the requirements end
-      // point and update the requirements.
-      if (!fieldTypeRefreshesOnChange(field.type)) {
-        this.onRefreshRequirements();
-      }
     }
   }
 
-  onChange(field) {
-    this.removeFieldError(field.key);
-    if (fieldTypeRefreshesOnChange(field.type)) {
+  // eslint-disable-next-line
+  onFieldFocus(field) {
+
+  }
+
+  onFieldBlur(field) {
+    if (field.refreshRequirementsOnChange &&
+      this.onRefreshRequirements) {
       this.onRefreshRequirements();
     }
   }
 
-  removeFieldError(fieldKey) {
-    if (this.errorMessages) {
-      delete this.errorMessages[fieldKey];
+  onFieldChange(field) {
+    if (fieldTypeRefreshesOnChange(field.type) &&
+      field.refreshRequirementsOnChange &&
+      this.onRefreshRequirements) {
+      this.onRefreshRequirements();
     }
   }
 }

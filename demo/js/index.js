@@ -410,12 +410,17 @@ angular.module('tw.styleguide.docs', [])
       function getFirstRequirementKey(requirements) {
         var key;
         $ctrl.requirements.forEach(function(requirementType) {
-          requirementType.fields.forEach(function(fieldGroup) {
-            fieldGroup.group.forEach(function(field) {
-              if (!key) {
-                key = field.key;
-              }
-            });
+          requirementType.fields.forEach(function(field) {
+            if (!field.group) {
+              key = field.key;
+            } else {
+              // TODO deprecate
+              field.group.forEach(function(fieldSection) {
+                if (!key) {
+                  key = fieldSection.key;
+                }
+              });
+            }
           });
         });
         return key;
