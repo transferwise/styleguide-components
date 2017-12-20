@@ -131,8 +131,9 @@ describe('RequirementsForm', function() {
       expect($scope.isValid).toBe(false);
     });
     it('should set isValid true when all fields are valid', function() {
-      var accountNumberInput = directiveElement.find('.tw-field-accountNumber input');
-      accountNumberInput.val('12345677').trigger('input');
+      var accountNumberInput = directiveElement.find('.tw-field-accountNumber input')[0];
+      accountNumberInput.value = '12345678';
+      accountNumberInput.dispatchEvent(new Event('input'));
       expect($scope.isValid).toBe(true);
     });
   });
@@ -224,7 +225,7 @@ describe('RequirementsForm', function() {
                 "example": "12345678",
                 "minLength": 8,
                 "maxLength": 8,
-                "validationRegexp": "[0-9]{8}",
+                "validationRegexp": "^[0-9]{8}$",
                 "validationAsync": {
                   "url": "https://api.transferwise.com/v1/validators/sort-code-account-number",
                   "params": [
@@ -299,7 +300,7 @@ describe('RequirementsForm', function() {
                 "refreshRequirementsOnChange": false,
                 "required": false,
                 "example": "ABCDDE22 (Optional)",
-                "validationRegexp": "[A-Z]",
+                "validationRegexp": "^[A-Z]{6}[A-Z,0-9]{2}([A-Z,0-9]{3})?$",
                 "validationAsync": {
                   "url": "https://api.transferwise.com/v1/validators/bic",
                   "params": [

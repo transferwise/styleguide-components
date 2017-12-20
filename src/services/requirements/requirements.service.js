@@ -12,13 +12,7 @@ function RequirementsService() {
       return [];
     }
 
-    // TODO map
-    const preparedFields = [];
-    fields.forEach((field) => {
-      preparedFields.push(this.prepField(field, model, validationMessages));
-    });
-
-    return preparedFields;
+    return fields.map(field => this.prepField(field, model, validationMessages));
   };
 
   this.prepField = (field, model, validationMessages) => {
@@ -30,8 +24,10 @@ function RequirementsService() {
       delete preparedField.group;
     }
 
+    this.prepLegacyProps(preparedField);
+
     this.prepType(preparedField);
-    this.prepRegExp(preparedField);
+    this.prepPattern(preparedField);
     this.prepValuesAsync(preparedField, model);
     this.prepValuesAllowed(preparedField);
     this.prepValidationMessages(preparedField, validationMessages);
@@ -70,17 +66,44 @@ function RequirementsService() {
     }
   };
 
-  this.prepRegExp = (field) => {
+  this.prepLegacyProps = (field) => {
     if (field.validationRegexp) {
+      field.pattern = field.validationRegexp;
+      delete field.validationRegexp;
+    }
+
+    if (field.min) {
+      field.minimum = field.min;
+      delete field.min;
+    }
+
+    if (field.max) {
+      field.maximum = field.max;
+      delete field.max;
+    }
+
+    if (field.example && !field.placeholder) {
+      field.placeholder = field.example;
+      delete field.example;
+    }
+
+    if (field.tooltip && !field.helpText) {
+      field.helpText = field.tooltip;
+      delete field.tooltip;
+    }
+  };
+
+  this.prepPattern = (field) => {
+    if (field.pattern) {
       try {
-        field.validationRegexp = new RegExp(field.validationRegexp);
+        RegExp(field.pattern);
       } catch (ex) {
         // eslint-disable-next-line no-console
         console.warn('API regexp is invalid');
-        field.validationRegexp = false;
+        field.pattern = false;
       }
     } else {
-      field.validationRegexp = false;
+      field.pattern = false;
     }
   };
 
@@ -179,20 +202,17 @@ function getControlForStringFormat(format) {
 }
 
 function getSelectionType(field) {
-  if (field.type === 'select') {
+  if (field.control) {
+    return field.control;
+  } else if (field.type === 'select') {
     return 'select';
   } else if (field.type === 'radio') {
     return 'radio';
   }
 
-  if (field.enum) {
-    return field.enum.length > 3 ? 'select' : 'radio';
-  }
-  if (field.values) {
-    return field.values.length > 3 ? 'select' : 'radio';
-  }
-  if (field.valuesAllowed) {
-    return field.valuesAllowed.length > 3 ? 'select' : 'radio';
+  const values = field.enum || field.values || field.valuesAllowed;
+  if (values) {
+    return values.length > 3 ? 'select' : 'radio';
   }
   return 'select';
 }

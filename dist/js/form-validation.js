@@ -389,6 +389,9 @@ function DateService() {
   };
 
   this.getDatePartsFromIso = function (isoDate) {
+    var hoursOffset = 0;
+    var minutesOffset = 0;
+
     var year = parseInt(isoDate.substr(0, 4), 10);
     var month = parseInt(isoDate.substr(5, 2), 10) - 1;
     var day = parseInt(isoDate.substr(8, 2), 10);
@@ -396,14 +399,20 @@ function DateService() {
     var minutes = parseInt(isoDate.substr(14, 2), 10) || 0;
     var seconds = parseInt(isoDate.substr(17, 2), 10) || 0;
 
-    // TODO if there are milliseconds, need to adjust this
-    var hoursOffset = parseInt(isoDate.substr(20, 2), 10) || 0;
-    var minutesOffset = parseInt(isoDate.substr(23, 2), 10) || 0;
+    // It's possible for the date to match the offset regex
+    var stringAfterDate = isoDate.substring(10);
+    var offsetRegex = '[+-]{1}[0-9]{2}(:[0-9]{2})?$';
+    var offset = stringAfterDate.match(offsetRegex);
 
-    var isOffsetNegative = isoDate.substr(19, 1) === '-';
-    if (isOffsetNegative) {
-      hoursOffset *= -1;
-      minutesOffset *= -1;
+    if (offset) {
+      // TODO if there are milliseconds, need to adjust this
+      hoursOffset = parseInt(offset[0].substr(1, 2), 10) || 0;
+      minutesOffset = parseInt(offset[0].substr(4, 2), 10) || 0;
+
+      if (offset[0].substr(0, 1) === '-') {
+        hoursOffset *= -1;
+        minutesOffset *= -1;
+      }
     }
 
     return [year, month, day, hours, minutes, seconds, hoursOffset, minutesOffset];
@@ -943,7 +952,8 @@ function LocaleService() {
     }
 
     if (console && console.warn) {
-      console.warn('Incorrect locale: ' + newLocale);
+      // eslint-disable-line
+      console.warn('Incorrect locale: ' + newLocale); // eslint-disable-line
     }
     _this.locale = 'en-GB';
     return _this.locale;
@@ -1014,13 +1024,9 @@ function RequirementsService() {
       return [];
     }
 
-    // TODO map
-    var preparedFields = [];
-    fields.forEach(function (field) {
-      preparedFields.push(_this.prepField(field, model, validationMessages));
+    return fields.map(function (field) {
+      return _this.prepField(field, model, validationMessages);
     });
-
-    return preparedFields;
   };
 
   this.prepField = function (field, model, validationMessages) {
@@ -1032,8 +1038,10 @@ function RequirementsService() {
       delete preparedField.group;
     }
 
+    _this.prepLegacyProps(preparedField);
+
     _this.prepType(preparedField);
-    _this.prepRegExp(preparedField);
+    _this.prepPattern(preparedField);
     _this.prepValuesAsync(preparedField, model);
     _this.prepValuesAllowed(preparedField);
     _this.prepValidationMessages(preparedField, validationMessages);
@@ -1072,17 +1080,44 @@ function RequirementsService() {
     }
   };
 
-  this.prepRegExp = function (field) {
+  this.prepLegacyProps = function (field) {
     if (field.validationRegexp) {
+      field.pattern = field.validationRegexp;
+      delete field.validationRegexp;
+    }
+
+    if (field.min) {
+      field.minimum = field.min;
+      delete field.min;
+    }
+
+    if (field.max) {
+      field.maximum = field.max;
+      delete field.max;
+    }
+
+    if (field.example && !field.placeholder) {
+      field.placeholder = field.example;
+      delete field.example;
+    }
+
+    if (field.tooltip && !field.helpText) {
+      field.helpText = field.tooltip;
+      delete field.tooltip;
+    }
+  };
+
+  this.prepPattern = function (field) {
+    if (field.pattern) {
       try {
-        field.validationRegexp = new RegExp(field.validationRegexp);
+        RegExp(field.pattern);
       } catch (ex) {
         // eslint-disable-next-line no-console
         console.warn('API regexp is invalid');
-        field.validationRegexp = false;
+        field.pattern = false;
       }
     } else {
-      field.validationRegexp = false;
+      field.pattern = false;
     }
   };
 
@@ -1181,20 +1216,17 @@ function getControlForStringFormat(format) {
 }
 
 function getSelectionType(field) {
-  if (field.type === 'select') {
+  if (field.control) {
+    return field.control;
+  } else if (field.type === 'select') {
     return 'select';
   } else if (field.type === 'radio') {
     return 'radio';
   }
 
-  if (field.enum) {
-    return field.enum.length > 3 ? 'select' : 'radio';
-  }
-  if (field.values) {
-    return field.values.length > 3 ? 'select' : 'radio';
-  }
-  if (field.valuesAllowed) {
-    return field.valuesAllowed.length > 3 ? 'select' : 'radio';
+  var values = field.enum || field.values || field.valuesAllowed;
+  if (values) {
+    return values.length > 3 ? 'select' : 'radio';
   }
   return 'select';
 }

@@ -75,6 +75,9 @@ function DateService() {
   };
 
   this.getDatePartsFromIso = (isoDate) => {
+    let hoursOffset = 0;
+    let minutesOffset = 0;
+
     const year = parseInt(isoDate.substr(0, 4), 10);
     const month = parseInt(isoDate.substr(5, 2), 10) - 1;
     const day = parseInt(isoDate.substr(8, 2), 10);
@@ -82,14 +85,20 @@ function DateService() {
     const minutes = parseInt(isoDate.substr(14, 2), 10) || 0;
     const seconds = parseInt(isoDate.substr(17, 2), 10) || 0;
 
-    // TODO if there are milliseconds, need to adjust this
-    let hoursOffset = parseInt(isoDate.substr(20, 2), 10) || 0;
-    let minutesOffset = parseInt(isoDate.substr(23, 2), 10) || 0;
+    // It's possible for the date to match the offset regex
+    const stringAfterDate = isoDate.substring(10);
+    const offsetRegex = '[+-]{1}[0-9]{2}(:[0-9]{2})?$';
+    const offset = stringAfterDate.match(offsetRegex);
 
-    const isOffsetNegative = isoDate.substr(19, 1) === '-';
-    if (isOffsetNegative) {
-      hoursOffset *= -1;
-      minutesOffset *= -1;
+    if (offset) {
+      // TODO if there are milliseconds, need to adjust this
+      hoursOffset = parseInt(offset[0].substr(1, 2), 10) || 0;
+      minutesOffset = parseInt(offset[0].substr(4, 2), 10) || 0;
+
+      if (offset[0].substr(0, 1) === '-') {
+        hoursOffset *= -1;
+        minutesOffset *= -1;
+      }
     }
 
     return [year, month, day, hours, minutes, seconds, hoursOffset, minutesOffset];

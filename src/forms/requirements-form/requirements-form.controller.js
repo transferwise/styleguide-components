@@ -12,6 +12,7 @@ class RequirementsFormController {
       this.RequirementsFormService.prepRequirements(this.requirements);
     }
 
+    // TODO move watches to $onChanges
     $scope.$watch('$ctrl.requirements', (newRequirements, oldRequirements) => {
       if (!angular.equals(newRequirements, oldRequirements)) {
         this.RequirementsFormService.prepRequirements(this.requirements);
@@ -37,7 +38,6 @@ class RequirementsFormController {
     });
 
     $scope.$watch('twForm.$valid', (validity) => {
-      console.log(`validity: ${validity}`);
       this.isValid = validity;
     });
 

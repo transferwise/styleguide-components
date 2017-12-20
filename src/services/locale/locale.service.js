@@ -16,8 +16,8 @@ function LocaleService() {
       return this.locale;
     }
 
-    if (console && console.warn) {
-      console.warn(`Incorrect locale: ${newLocale}`);
+    if (console && console.warn) { // eslint-disable-line
+      console.warn(`Incorrect locale: ${newLocale}`); // eslint-disable-line
     }
     this.locale = 'en-GB';
     return this.locale;

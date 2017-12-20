@@ -9,7 +9,6 @@ const FormControl = {
   },
   bindings: {
     type: '@',
-    format: '@',
     name: '@',
     id: '@',
     label: '@',
