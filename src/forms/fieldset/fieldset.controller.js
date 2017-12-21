@@ -14,8 +14,8 @@ class FieldsetController {
       this.validationMessages = {
         required: 'Required',
         pattern: 'Incorrect format',
-        min: 'The value is too low',
-        max: 'The value is too high',
+        minimum: 'The value is too low',
+        maximum: 'The value is too high',
         minlength: 'The value is too short',
         maxlength: 'The value is too long'
       };
@@ -49,19 +49,27 @@ class FieldsetController {
   }
 
   // eslint-disable-next-line
-  onFieldFocus(field) {
-
+  fieldFocus(field) {
+    if (this.onFieldFocus) {
+      this.onFieldFocus({ field });
+    }
   }
 
-  onFieldBlur(field) {
+  fieldBlur(field) {
+    if (this.onFieldBlur) {
+      this.onFieldBlur({ field });
+    }
     if (field.refreshRequirementsOnChange &&
       this.onRefreshRequirements) {
       this.onRefreshRequirements();
     }
   }
 
-  onFieldChange(field) {
-    if (fieldTypeRefreshesOnChange(field.type) &&
+  fieldChange(field) {
+    if (this.onFieldChange) {
+      this.onFieldChange({ field });
+    }
+    if (controlRefreshesOnChange(field.control) &&
       field.refreshRequirementsOnChange &&
       this.onRefreshRequirements) {
       this.onRefreshRequirements();
@@ -69,12 +77,12 @@ class FieldsetController {
   }
 }
 
-function fieldTypeRefreshesOnChange(fieldType) {
-  return fieldType === 'select' ||
-    fieldType === 'checkbox' ||
-    fieldType === 'radio' ||
-    fieldType === 'date' ||
-    fieldType === 'upload';
+function controlRefreshesOnChange(control) {
+  return control === 'select' ||
+    control === 'checkbox' ||
+    control === 'radio' ||
+    control === 'date' ||
+    control === 'upload';
 }
 
 FieldsetController.$inject = [

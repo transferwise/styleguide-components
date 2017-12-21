@@ -44,3 +44,13 @@ ng-transclude.error-messages,
 tw-field {
   width: 100%;
 }
+.error-minimum,
+.error-maximum {
+  display: none;
+}
+.ng-invalid-min ~ .error-messages > .error-minimum,
+.ng-invalid-max ~ .error-messages > .error-maximum,
+.ng-invalid-min ~ .alert-danger > .error-minimum,
+.ng-invalid-max ~ .alert-danger > .error-maximum {
+  display: block;
+}

@@ -3,7 +3,7 @@ angular.module('tw.styleguide.docs', [])
     $compileProvider.debugInfoEnabled(false);
   }])
   .controller('PageController', function () {
-    this.log = function (message) { console.log(message); };
+    this.log = function(message) { console.log(message); };
 
     // Basic types
     this.stringBasic = {
@@ -143,9 +143,9 @@ angular.module('tw.styleguide.docs', [])
       type: "string",
       name: "Custom error",
       key: "stringProperty",
-      placeholder: "Please enter text",
-      errorMessage: "Custom error message"
+      placeholder: "Please enter text"
     };
+    this.customErrorsMessage = "Custom error message";
 
     this.helpText = {
       type: "string",
@@ -192,7 +192,11 @@ angular.module('tw.styleguide.docs', [])
       key: "uploadOptions",
       placeholder: "Please choose a file",
       uploadOptions: {
-        buttonText: "Choose file..."
+        buttonText: "Choose file...",
+        cancelText: "Choose a different file?",
+        processingText: "Processing...",
+        successText: "Upload complete!",
+        failureText: "Upload failed"
       }
     };
 
@@ -208,6 +212,19 @@ angular.module('tw.styleguide.docs', [])
         name: "Number label",
         key: "numberProperty",
         placeholder: "Please enter number"
+      },{
+        type: "string",
+        format: "base64url",
+        name: "Upload options",
+        key: "uploadOptions",
+        placeholder: "Please choose a file",
+        uploadOptions: {
+          buttonText: "Choose file...",
+          cancelText: "Choose a different file?",
+          processingText: "Processing...",
+          successText: "Upload complete!",
+          failureText: "Upload failed"
+        }
       }]
     };
     this.fieldsetBasicModel = {
@@ -229,45 +246,59 @@ angular.module('tw.styleguide.docs', [])
       keyName: "Example"
     };
 
-
-
+    this.fieldsetLayout = {
+      fields: [{
+        type: "string",
+        name: "String label",
+        key: "stringProperty",
+        placeholder: "Please enter text",
+        width: "md"
+      },{
+        type: "boolean",
+        name: "Boolean label",
+        key: "booleanProperty",
+        placeholder: "Check it",
+        width: "md"
+      },{
+        type: "number",
+        name: "Number label",
+        key: "numberProperty",
+        placeholder: "Please enter number",
+        width: "sm"
+      }]
+    };
+    this.fieldsetLayoutModel = {};
   })
   .component('fieldsetDocs', {
     bindings: {
       model: '=',
-      requirements: '='
+      requirements: '<',
+      onRefreshRequirements: '&?',
+      onFieldFocus: '&?',
+      onFieldBlur: '&?',
+      onFieldChange: '&?'
     },
-    template: ' \
-      <div class="row"> \
-        <div class="col-md-6"> \
-          <tw-fieldset \
-            legend="{{ $ctrl.requirements.legend }}" \
-            description="{{ $ctrl.requirements.description }}" \
-            fields="$ctrl.requirements.fields" \
-            model="$ctrl.model"> \
-          </tw-fieldset> \
-          <pre>model: {{ $ctrl.model | json }}</pre> \
-        </div> \
-        <div class="col-md-6 p-t-3"> \
-          <pre>fieldset: {{ $ctrl.requirements | json }}</pre> \
-        </div> \
-      </div>'
+    controller: function() {
+      this.fieldFocus = function(field) {
+        this.onFieldFocus && this.onFieldFocus({ field: field });
+      };
+      this.fieldBlur = function(field) {
+        this.onFieldBlur && this.onFieldBlur({ field: field });
+      };
+      this.fieldChange = function(field) {
+        this.onFieldChange && this.onFieldChange({ field: field });
+      };
+    },
+    templateUrl: 'partials/dynamic-forms/fieldset-example.html'
   })
   .component('fieldDocs', {
     bindings: {
       model: '=',
-      field: '='
+      field: '<',
+      errorMessage: '<',
+      onFocus: '&?',
+      onBlur: '&?',
+      onChange: '&?'
     },
-    template: ' \
-      <div class="row"> \
-        <div class="col-md-6"> \
-          <tw-field \
-            options="$ctrl.field" \
-            model="$ctrl.model"> \
-          </tw-field> \
-        </div> \
-        <div class="col-md-6" ng-class="{\'p-t-3\': $ctrl.field.format !== \'base64url\'}"> \
-          <pre>options: {{ $ctrl.field | json }}</pre> \
-        </div> \
-      </div>'
+    templateUrl: 'partials/dynamic-forms/field-example.html'
   });;

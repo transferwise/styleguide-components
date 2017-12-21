@@ -76,6 +76,9 @@ describe('Field', function() {
       it('should render a password control', function() {
         expect(element.querySelector('tw-upload')).toBeTruthy();
       });
+      it('should not render a visible label', function() {
+        expect(element.querySelector('.control-label')).toBeFalsy();
+      });
     });
   });
 
@@ -241,7 +244,7 @@ describe('Field', function() {
     var template = " \
       <tw-field \
         model='model' \
-        options='options' \
+        field='options' \
         validation-messages='validationMessages' \
         error-message='errorMessage' \
         on-change='onChange()' \

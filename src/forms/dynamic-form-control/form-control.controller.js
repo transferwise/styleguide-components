@@ -71,7 +71,7 @@ class FormControlController {
       if (this.type === 'radio' && this.ngModel !== value) {
         return;
       }
-      this.ngChange();
+      this.ngChange({ newValue: value });
     }
   }
 

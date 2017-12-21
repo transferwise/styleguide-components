@@ -1,9 +1,9 @@
-<div class="form-group tw-field-{{$ctrl.field.key}}"
+<div class="form-group tw-field-{{ $ctrl.field.key }}"
   ng-class="{
     'has-error': $ctrl.field.errorMessage || $ctrl.errorMessage
   }">
   <label class="control-label"
-    ng-if="$ctrl.field.control !== 'upload'">
+    ng-if="$ctrl.field.control !== 'file'">
     {{$ctrl.field.name}}
   </label>
   <tw-form-control
@@ -18,11 +18,11 @@
     upload-icon="{{ $ctrl.field.icon }}"
     upload-too-large-message="{{ $ctrl.field.tooLargeMessage }}"
     options="$ctrl.field.valuesAllowed"
-    upload-options="$ctrl.uploadOptions"
+    upload-options="$ctrl.field.uploadOptions"
     ng-model="$ctrl.model"
     ng-focus="$ctrl.onFocus()"
     ng-blur="$ctrl.onBlur()"
-    ng-change="$ctrl.onChange()"
+    ng-change="$ctrl.onChange(newValue)"
     ng-required="$ctrl.field.required"
     ng-disabled="$ctrl.field.disabled"
     tw-minlength="$ctrl.field.minlength || $ctrl.field.minLength"
@@ -40,7 +40,7 @@
                       $ctrl.field.control === 'radio'
     }">
     <div ng-repeat="(validationType, validationMessage) in $ctrl.field.validationMessages track by $index"
-      class="error-{{validationType}}">
+      class="error-{{ validationType | lowercase }}">
       {{validationMessage}}
     </div>
     <div class="error-provided" ng-if="$ctrl.errorMessage">

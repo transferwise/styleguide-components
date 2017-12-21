@@ -59,9 +59,9 @@
   options="{...}"&gt;
   model="$ctrl.model"
   locale="'en-GB'"
-  on-focus=""
-  on-blur=""
-  on-change=""&gt;
+  on-focus="focusHandler()"
+  on-blur="blurHandler()"
+  on-change="changeHandler(newValue, oldValue)"&gt;
 &lt;/tw-field&gt;
 </pre>
           </div>
@@ -158,7 +158,8 @@
         </h4>
         <field-docs
           field="$ctrl.customErrors"
-          model="$ctrl.customErrorsModel">
+          model="$ctrl.customErrorsModel"
+          error-message="$ctrl.customErrorsMessage">
         </field-docs>
 
         <h4 id="help-information" class="page-header">
@@ -196,7 +197,17 @@
           model="$ctrl.presentationModel.uploadOptions">
         </field-docs>
 
-        <pre>model: {{ $ctrl.presentationModel | json }}</pre>
+        <h4 class="page-header">
+          Events
+        </h4>
+        <field-docs
+          field="$ctrl.stringBasic"
+          model="$ctrl.eventsModel"
+          on-focus="$ctrl.log('focus')"
+          on-blur="$ctrl.log('blur')"
+          on-change="$ctrl.log('change')">
+        </field-docs>
+
 
         <h2 id="fieldsets" class="page-header">
           Fieldsets
@@ -216,7 +227,10 @@
   legend="<span ng-non-bindable>{{ fieldset.legend }}</span>"
   description="<span ng-non-bindable>{{ fieldset.description }}</span>"
   fields="fieldset.fields"&gt;
-  locale="en-GB"&gt;
+  locale="en-GB"
+  on-field-focus="focusHandler(field)"
+  on-field-blur="blurHandler(field)"
+  on-field-change="changeHandler(field)"&gt;
 &lt;/tw-fieldset&gt;
 </pre>
           </div>
@@ -242,6 +256,31 @@
         <fieldset-docs
           requirements="$ctrl.fieldsetOptions"
           model="$ctrl.fieldsetOptionsModel">
+        </fieldset-docs>
+
+        <h4 id="fieldset-events" class="page-header">
+          Events
+          <a href="#fieldset-events" class="pull-xs-right">
+            <span class="glyphicon glyphicon-link"></span>
+          </a>
+        </h4>
+        <fieldset-docs
+          requirements="$ctrl.fieldsetBasic"
+          model="$ctrl.fieldsetBasicModel"
+          on-field-focus="$ctrl.log(field)"
+          on-field-blur="$ctrl.log(field)"
+          on-field-change="$ctrl.log(field)">
+        </fieldset-docs>
+
+        <h4 id="fieldset-layout" class="page-header">
+          Layout
+          <a href="#fieldset-layout" class="pull-xs-right">
+            <span class="glyphicon glyphicon-link"></span>
+          </a>
+        </h4>
+        <fieldset-docs
+          requirements="$ctrl.fieldsetLayout"
+          model="$ctrl.fieldsetLayoutModel">
         </fieldset-docs>
 
       </div>

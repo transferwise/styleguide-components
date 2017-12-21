@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col-md-6">
+    <tw-fieldset
+      legend="{{ $ctrl.requirements.legend }}"
+      description="{{ $ctrl.requirements.description }}"
+      fields="$ctrl.requirements.fields"
+      model="$ctrl.model"
+      on-field-focus="$ctrl.fieldFocus(field)"
+      on-field-blur="$ctrl.fieldBlur(field)"
+      on-field-change="$ctrl.fieldChange(field)"
+      on-refresh-requirements="$ctrl.onRefreshRequirements()">
+    </tw-fieldset>
+  </div>
+  <div class="col-md-6 p-t-3">
+<pre>&lt;tw-fieldset<span ng-if="$ctrl.requirements.legend">
+  legend="{{ $ctrl.requirements.legend }}"</span><span ng-if="$ctrl.requirements.description">
+  description="{{ $ctrl.requirements.description }}"</span>
+  model="{{ $ctrl.model | json }}"
+  fields="{{ $ctrl.requirements.fields | json }}"<span ng-if="$ctrl.onFieldFocus">
+  on-field-focus="console.log(field)"</span><span ng-if="$ctrl.onFieldBlur">
+  on-field-blur="console.log(field)"</span><span ng-if="$ctrl.onFieldChange">
+  on-field-change="console.log(field)"</span>&gt;
+&lt;/tw-fieldset&gt;</pre>
+  </div>
+</div>

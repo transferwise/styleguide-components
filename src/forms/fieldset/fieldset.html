@@ -12,13 +12,13 @@
       <tw-field
         ng-if="!field.group"
         model="$ctrl.model[field.key]"
-        options="field"
+        field="field"
         locale="$ctrl.locale"
         upload-options="$ctrl.uploadOptions"
         error-message="$ctrl.errorMessages[field.key]"
-        on-change="$ctrl.onFieldChange(field)"
-        on-focus="$ctrl.onFieldFocus(field)"
-        on-blur="$ctrl.onFieldBlur(field)">
+        on-change="$ctrl.fieldChange(field)"
+        on-focus="$ctrl.fieldFocus(field)"
+        on-blur="$ctrl.fieldBlur(field)">
       </tw-field>
 
       <!-- Start old format -->
@@ -44,8 +44,9 @@
               options="fieldSection.valuesAllowed"
               upload-options="$ctrl.uploadOptions"
               ng-model="$ctrl.model[fieldSection.key]"
-              ng-blur="$ctrl.onBlur(field)"
-              ng-change="$ctrl.onChange(field)"
+              ng-focus="$ctrl.fieldFocus(field)"
+              ng-blur="$ctrl.fieldBlur(field)"
+              ng-change="$ctrl.fieldChange(field)"
               ng-required="fieldSection.required"
               ng-disabled="fieldSection.disabled"
               tw-minlength="fieldSection.minLength"

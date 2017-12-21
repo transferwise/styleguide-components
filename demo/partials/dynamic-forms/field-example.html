@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-md-6">
+    <tw-field
+      field="$ctrl.field"
+      model="$ctrl.model"
+      error-message="$ctrl.errorMessage"
+      on-focus="$ctrl.onFocus()"
+      on-blur="$ctrl.onBlur()"
+      on-change="$ctrl.onChange()">
+    </tw-field>
+  </div>
+  <div class="col-md-6" ng-class="{'p-t-3': $ctrl.field.format !== 'base64url'}">
+<pre>&lt;tw-field
+  model="{{ $ctrl.model }}"
+  field="{{ $ctrl.field | json }}"<span ng-if="$ctrl.errorMessage">
+  error-message="'{{ $ctrl.errorMessage }}'"</span><span ng-if="$ctrl.onFocus">
+  on-focus="console.log('focus')"</span><span ng-if="$ctrl.onBlur">
+  on-blur="console.log('blur')"</span><span ng-if="$ctrl.onChange">
+  on-change="console.log('change')"</span>&gt;
+&lt;/tw-field&gt;</pre>
+  </div>
+</div>

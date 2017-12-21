@@ -4,8 +4,8 @@ class FieldController {
   }
 
   $onChanges(changes) {
-    if (changes.options) {
-      this.field = this.RequirementsService.prepField(this.options, this.model, []);
+    if (changes.rawField) {
+      this.field = this.RequirementsService.prepField(this.rawField, this.model, []);
     }
   }
 
@@ -21,9 +21,9 @@ class FieldController {
     }
   }
 
-  onChange() {
+  onChange(newValue) {
     if (this.changeHandler) {
-      this.changeHandler();
+      this.changeHandler({ newValue });
     }
     this.errorMessage = false;
   }

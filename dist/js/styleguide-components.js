@@ -3641,7 +3641,7 @@ var FormControlController = function () {
         if (this.type === 'radio' && this.ngModel !== value) {
           return;
         }
-        this.ngChange();
+        this.ngChange({ newValue: value });
       }
     }
   }, {
@@ -3690,7 +3690,7 @@ var Field = {
   template: _field2.default,
   bindings: {
     model: '=',
-    options: '<options',
+    rawField: '<field',
     uploadOptions: '<',
     locale: '@',
     changeHandler: '&?onChange',
@@ -3728,8 +3728,8 @@ var FieldController = function () {
   _createClass(FieldController, [{
     key: '$onChanges',
     value: function $onChanges(changes) {
-      if (changes.options) {
-        this.field = this.RequirementsService.prepField(this.options, this.model, []);
+      if (changes.rawField) {
+        this.field = this.RequirementsService.prepField(this.rawField, this.model, []);
       }
     }
   }, {
@@ -3748,9 +3748,9 @@ var FieldController = function () {
     }
   }, {
     key: 'onChange',
-    value: function onChange() {
+    value: function onChange(newValue) {
       if (this.changeHandler) {
-        this.changeHandler();
+        this.changeHandler({ newValue: newValue });
       }
       this.errorMessage = false;
     }
@@ -3794,7 +3794,10 @@ var Fieldset = {
     locale: '@',
     legend: '@',
     description: '@',
-    onRefreshRequirements: '&',
+    onRefreshRequirements: '&?',
+    onFieldFocus: '&?',
+    onFieldBlur: '&?',
+    onFieldChange: '&?',
     validationMessages: '<',
     errorMessages: '<',
     isValid: '=?',
@@ -3843,8 +3846,8 @@ var FieldsetController = function () {
         this.validationMessages = {
           required: 'Required',
           pattern: 'Incorrect format',
-          min: 'The value is too low',
-          max: 'The value is too high',
+          minimum: 'The value is too low',
+          maximum: 'The value is too high',
           minlength: 'The value is too short',
           maxlength: 'The value is too long'
         };
@@ -3873,19 +3876,29 @@ var FieldsetController = function () {
     // eslint-disable-next-line
 
   }, {
-    key: 'onFieldFocus',
-    value: function onFieldFocus(field) {}
+    key: 'fieldFocus',
+    value: function fieldFocus(field) {
+      if (this.onFieldFocus) {
+        this.onFieldFocus({ field: field });
+      }
+    }
   }, {
-    key: 'onFieldBlur',
-    value: function onFieldBlur(field) {
+    key: 'fieldBlur',
+    value: function fieldBlur(field) {
+      if (this.onFieldBlur) {
+        this.onFieldBlur({ field: field });
+      }
       if (field.refreshRequirementsOnChange && this.onRefreshRequirements) {
         this.onRefreshRequirements();
       }
     }
   }, {
-    key: 'onFieldChange',
-    value: function onFieldChange(field) {
-      if (fieldTypeRefreshesOnChange(field.type) && field.refreshRequirementsOnChange && this.onRefreshRequirements) {
+    key: 'fieldChange',
+    value: function fieldChange(field) {
+      if (this.onFieldChange) {
+        this.onFieldChange({ field: field });
+      }
+      if (controlRefreshesOnChange(field.control) && field.refreshRequirementsOnChange && this.onRefreshRequirements) {
         this.onRefreshRequirements();
       }
     }
@@ -3894,8 +3907,8 @@ var FieldsetController = function () {
   return FieldsetController;
 }();
 
-function fieldTypeRefreshesOnChange(fieldType) {
-  return fieldType === 'select' || fieldType === 'checkbox' || fieldType === 'radio' || fieldType === 'date' || fieldType === 'upload';
+function controlRefreshesOnChange(control) {
+  return control === 'select' || control === 'checkbox' || control === 'radio' || control === 'date' || control === 'upload';
 }
 
 FieldsetController.$inject = ['TwRequirementsService'];
@@ -5204,6 +5217,7 @@ var Upload = {
   bindings: {
     ngDisabled: '<',
     ngModel: '=',
+    ngChange: '&',
     name: '@',
     icon: '@',
     helpImage: '@',
@@ -8384,19 +8398,19 @@ module.exports = "<div class=\"m-t-1\">\n  <h4\n    ng-if=\"$ctrl.legend\"\n    
 /* 121 */
 /***/ (function(module, exports) {
 
-module.exports = "<div ng-switch=\"$ctrl.type\">\n  <input ng-switch-when=\"number\"\n    name=\"{{$ctrl.name}}\"\n    type=\"number\"\n    step=\"{{$ctrl.step}}\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-change=\"$ctrl.change()\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-min=\"$ctrl.ngMin\"\n    ng-max=\"$ctrl.ngMax\" />\n\n  <div ng-switch-when=\"radio\"\n    class=\"radio\"\n    ng-class=\"{disabled: $ctrl.ngDisabled}\"\n    ng-repeat=\"option in $ctrl.options\">\n    <label>\n      <tw-radio\n        name=\"{{$ctrl.name}}\"\n        ng-value=\"option.value\"\n        ng-model=\"$ctrl.ngModel\"\n        ng-required=\"$ctrl.ngRequired\"\n        ng-disabled=\"$ctrl.ngDisabled\"\n        ng-change=\"$ctrl.change(option.value)\"\n        ng-click=\"$ctrl.change(option.value)\"\n        ng-focus=\"$ctrl.focus()\"\n        ng-blur=\"$ctrl.blur()\"\n      ></tw-radio>\n      {{option.label}}\n    </label>\n  </div>\n\n  <div ng-switch-when=\"checkbox\"\n    class=\"checkbox\"\n    ng-class=\"{disabled: $ctrl.ngDisabled}\">\n    <label>\n      <tw-checkbox\n        name=\"{{$ctrl.name}}\"\n        ng-model=\"$ctrl.ngModel\"\n        ng-required=\"$ctrl.ngRequired\"\n        ng-disabled=\"$ctrl.ngDisabled\"\n        ng-change=\"$ctrl.change()\"\n        ng-click=\"$ctrl.change()\"\n        ng-focus=\"$ctrl.focus()\"\n        ng-blur=\"$ctrl.blur()\"\n      ></tw-checkbox>\n      {{$ctrl.placeholder}}\n    </label>\n  </div>\n\n  <div ng-switch-when=\"select\">\n    <tw-select\n      name=\"{{$ctrl.name}}\"\n      options=\"$ctrl.options\"\n      placeholder=\"{{$ctrl.placeholder}}\"\n      ng-model=\"$ctrl.ngModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change()\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n    ></tw-select>\n  </div>\n\n  <div ng-switch-when=\"file|upload\" ng-switch-when-separator=\"|\">\n    <tw-upload\n      name=\"{{$ctrl.name}}\"\n      label=\"{{$ctrl.label}}\"\n      icon=\"{{$ctrl.uploadIcon}}\"\n      help-image=\"{{$ctrl.helpImage}}\"\n      placeholder=\"{{$ctrl.placeholder}}\"\n      accept=\"{{$ctrl.uploadAccept}}\"\n      complete-text=\"{{$ctrl.label}}\"\n      button-text=\"{{$ctrl.uploadOptions.buttonText}}\"\n      cancel-text=\"{{$ctrl.uploadOptions.cancelText}}\"\n      too-large-message=\"{{$ctrl.uploadTooLargeMessage}}\"\n      max-size=\"$ctrl.ngMax\"\n      ng-model=\"$ctrl.ngModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change()\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n    ></tw-upload>\n  </div>\n\n  <input ng-switch-when=\"hidden\"\n    name=\"{{$ctrl.name}}\"\n    type=\"hidden\"\n    ng-model=\"$ctrl.ngModel\"/>\n\n  <input ng-switch-when=\"password\"\n    name=\"{{$ctrl.name}}\"\n    type=\"password\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-change=\"$ctrl.change()\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-minlength=\"$ctrl.ngMinlength\"\n    ng-maxlength=\"$ctrl.ngMaxlength\" />\n\n  <div ng-switch-when=\"date|date-time\" ng-switch-when-separator=\"|\">\n    <tw-date\n      name=\"{{$ctrl.name}}\"\n      locale=\"{{$ctrl.locale}}\"\n      ng-min=\"$ctrl.ngMin\"\n      ng-max=\"$ctrl.ngMax\"\n      ng-model=\"$ctrl.ngModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change()\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n    ></tw-date>\n  </div>\n\n  <input ng-switch-default\n    name=\"{{$ctrl.name}}\"\n    type=\"text\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-pattern=\"$ctrl.ngPattern\"\n    ng-change=\"$ctrl.change()\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-minlength=\"$ctrl.ngMinlength\"\n    ng-maxlength=\"$ctrl.ngMaxlength\"\n    tw-text-format=\"{{ $ctrl.textFormat }}\" />\n\n</div>\n";
+module.exports = "<div ng-switch=\"$ctrl.type\">\n  <input ng-switch-when=\"number\"\n    name=\"{{$ctrl.name}}\"\n    type=\"number\"\n    step=\"{{$ctrl.step}}\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-change=\"$ctrl.change($ctrl.ngModel)\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-min=\"$ctrl.ngMin\"\n    ng-max=\"$ctrl.ngMax\" />\n\n  <div ng-switch-when=\"radio\"\n    class=\"radio\"\n    ng-class=\"{disabled: $ctrl.ngDisabled}\"\n    ng-repeat=\"option in $ctrl.options\">\n    <label>\n      <tw-radio\n        name=\"{{$ctrl.name}}\"\n        ng-value=\"option.value\"\n        ng-model=\"$ctrl.ngModel\"\n        ng-required=\"$ctrl.ngRequired\"\n        ng-disabled=\"$ctrl.ngDisabled\"\n        ng-change=\"$ctrl.change(option.value)\"\n        ng-click=\"$ctrl.change(option.value)\"\n        ng-focus=\"$ctrl.focus()\"\n        ng-blur=\"$ctrl.blur()\"\n      ></tw-radio>\n      {{option.label}}\n    </label>\n  </div>\n\n  <div ng-switch-when=\"checkbox\"\n    class=\"checkbox\"\n    ng-class=\"{disabled: $ctrl.ngDisabled}\">\n    <label>\n      <tw-checkbox\n        name=\"{{$ctrl.name}}\"\n        ng-model=\"$ctrl.ngModel\"\n        ng-required=\"$ctrl.ngRequired\"\n        ng-disabled=\"$ctrl.ngDisabled\"\n        ng-change=\"$ctrl.change($ctrl.ngModel)\"\n        ng-click=\"$ctrl.change()\"\n        ng-focus=\"$ctrl.focus()\"\n        ng-blur=\"$ctrl.blur()\"\n      ></tw-checkbox>\n      {{$ctrl.placeholder}}\n    </label>\n  </div>\n\n  <div ng-switch-when=\"select\">\n    <tw-select\n      name=\"{{$ctrl.name}}\"\n      options=\"$ctrl.options\"\n      placeholder=\"{{$ctrl.placeholder}}\"\n      ng-model=\"$ctrl.ngModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change($ctrl.ngModel)\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n    ></tw-select>\n  </div>\n\n  <div ng-switch-when=\"file|upload\" ng-switch-when-separator=\"|\">\n    <tw-upload\n      name=\"{{$ctrl.name}}\"\n      label=\"{{$ctrl.label}}\"\n      icon=\"{{$ctrl.uploadIcon}}\"\n      help-image=\"{{$ctrl.helpImage}}\"\n      placeholder=\"{{$ctrl.placeholder}}\"\n      accept=\"{{$ctrl.uploadAccept}}\"\n      complete-text=\"{{$ctrl.label}}\"\n      button-text=\"{{$ctrl.uploadOptions.buttonText}}\"\n      cancel-text=\"{{$ctrl.uploadOptions.cancelText}}\"\n      too-large-message=\"{{$ctrl.uploadTooLargeMessage}}\"\n      max-size=\"$ctrl.ngMax\"\n      ng-model=\"$ctrl.ngModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change($ctrl.ngModel)\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n    ></tw-upload>\n  </div>\n\n  <input ng-switch-when=\"hidden\"\n    name=\"{{$ctrl.name}}\"\n    type=\"hidden\"\n    ng-model=\"$ctrl.ngModel\"/>\n\n  <input ng-switch-when=\"password\"\n    name=\"{{$ctrl.name}}\"\n    type=\"password\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-change=\"$ctrl.change($ctrl.ngModel)\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-minlength=\"$ctrl.ngMinlength\"\n    ng-maxlength=\"$ctrl.ngMaxlength\" />\n\n  <div ng-switch-when=\"date|date-time\" ng-switch-when-separator=\"|\">\n    <tw-date\n      name=\"{{$ctrl.name}}\"\n      locale=\"{{$ctrl.locale}}\"\n      ng-min=\"$ctrl.ngMin\"\n      ng-max=\"$ctrl.ngMax\"\n      ng-model=\"$ctrl.ngModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change($ctrl.ngModel)\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n    ></tw-date>\n  </div>\n\n  <input ng-switch-default\n    name=\"{{$ctrl.name}}\"\n    type=\"text\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-pattern=\"$ctrl.ngPattern\"\n    ng-change=\"$ctrl.change($ctrl.ngModel)\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-minlength=\"$ctrl.ngMinlength\"\n    ng-maxlength=\"$ctrl.ngMaxlength\"\n    tw-text-format=\"{{ $ctrl.textFormat }}\" />\n\n</div>\n";
 
 /***/ }),
 /* 122 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"form-group tw-field-{{$ctrl.field.key}}\"\n  ng-class=\"{\n    'has-error': $ctrl.field.errorMessage || $ctrl.errorMessage\n  }\">\n  <label class=\"control-label\"\n    ng-if=\"$ctrl.field.control !== 'upload'\">\n    {{$ctrl.field.name}}\n  </label>\n  <tw-form-control\n    name=\"{{ $ctrl.field.key }}\"\n    label=\"{{ $ctrl.field.name }}\"\n    type=\"{{ $ctrl.field.control | lowercase }}\"\n    placeholder=\"{{ $ctrl.field.placeholder }}\"\n    help-text=\"{{ $ctrl.field.helpText }}\"\n    help-image=\"{{ $ctrl.field.helpImage }}\"\n    locale=\"{{ $ctrl.locale }}\"\n    upload-accept=\"{{ $ctrl.field.accept }}\"\n    upload-icon=\"{{ $ctrl.field.icon }}\"\n    upload-too-large-message=\"{{ $ctrl.field.tooLargeMessage }}\"\n    options=\"$ctrl.field.valuesAllowed\"\n    upload-options=\"$ctrl.uploadOptions\"\n    ng-model=\"$ctrl.model\"\n    ng-focus=\"$ctrl.onFocus()\"\n    ng-blur=\"$ctrl.onBlur()\"\n    ng-change=\"$ctrl.onChange()\"\n    ng-required=\"$ctrl.field.required\"\n    ng-disabled=\"$ctrl.field.disabled\"\n    tw-minlength=\"$ctrl.field.minlength || $ctrl.field.minLength\"\n    tw-maxlength=\"$ctrl.field.maxlength || $ctrl.field.maxLength\"\n    ng-min=\"$ctrl.field.minimum\"\n    ng-max=\"$ctrl.field.maximum\"\n    ng-pattern=\"$ctrl.field.pattern\"\n    text-format=\"$ctrl.field.displayFormat\"\n    tw-validation\n  ></tw-form-control>\n  <div class=\"alert alert-danger error-messages\"\n    ng-class=\"{\n      'alert-detach': $ctrl.field.control === 'date'  ||\n                      $ctrl.field.control === 'upload' ||\n                      $ctrl.field.control === 'radio'\n    }\">\n    <div ng-repeat=\"(validationType, validationMessage) in $ctrl.field.validationMessages track by $index\"\n      class=\"error-{{validationType}}\">\n      {{validationMessage}}\n    </div>\n    <div class=\"error-provided\" ng-if=\"$ctrl.errorMessage\">\n      {{ $ctrl.errorMessage }}\n    </div>\n  </div>\n  <div ng-if=\"$ctrl.field.helpText || $ctrl.field.helpList || $ctrl.field.helpImage\"\n    class=\"alert alert-focus\"\n    ng-class=\"{\n      'alert-detach': $ctrl.field.control === 'date' ||\n                      $ctrl.field.control === 'upload' ||\n                      $ctrl.field.control === 'radio'\n    }\">\n    <span ng-if=\"$ctrl.field.helpText\">\n      {{ $ctrl.field.helpText }}\n    </span>\n    <ul ng-if=\"$ctrl.field.helpList\" class=\"list-unstyled\">\n      <li ng-repeat=\"helpMessage in $ctrl.field.helpList\">{{ helpMessage }}</li>\n    </ul>\n    <img\n      ng-if=\"$ctrl.field.helpImage && $ctrl.field.control !== 'upload'\"\n      ng-src=\"{{$ctrl.field.helpImage}}\"\n      alt=\"{{$ctrl.field.name}}\"\n      class=\"thumbnail m-y-2\" />\n  </div>\n</div>\n";
+module.exports = "<div class=\"form-group tw-field-{{ $ctrl.field.key }}\"\n  ng-class=\"{\n    'has-error': $ctrl.field.errorMessage || $ctrl.errorMessage\n  }\">\n  <label class=\"control-label\"\n    ng-if=\"$ctrl.field.control !== 'file'\">\n    {{$ctrl.field.name}}\n  </label>\n  <tw-form-control\n    name=\"{{ $ctrl.field.key }}\"\n    label=\"{{ $ctrl.field.name }}\"\n    type=\"{{ $ctrl.field.control | lowercase }}\"\n    placeholder=\"{{ $ctrl.field.placeholder }}\"\n    help-text=\"{{ $ctrl.field.helpText }}\"\n    help-image=\"{{ $ctrl.field.helpImage }}\"\n    locale=\"{{ $ctrl.locale }}\"\n    upload-accept=\"{{ $ctrl.field.accept }}\"\n    upload-icon=\"{{ $ctrl.field.icon }}\"\n    upload-too-large-message=\"{{ $ctrl.field.tooLargeMessage }}\"\n    options=\"$ctrl.field.valuesAllowed\"\n    upload-options=\"$ctrl.field.uploadOptions\"\n    ng-model=\"$ctrl.model\"\n    ng-focus=\"$ctrl.onFocus()\"\n    ng-blur=\"$ctrl.onBlur()\"\n    ng-change=\"$ctrl.onChange(newValue)\"\n    ng-required=\"$ctrl.field.required\"\n    ng-disabled=\"$ctrl.field.disabled\"\n    tw-minlength=\"$ctrl.field.minlength || $ctrl.field.minLength\"\n    tw-maxlength=\"$ctrl.field.maxlength || $ctrl.field.maxLength\"\n    ng-min=\"$ctrl.field.minimum\"\n    ng-max=\"$ctrl.field.maximum\"\n    ng-pattern=\"$ctrl.field.pattern\"\n    text-format=\"$ctrl.field.displayFormat\"\n    tw-validation\n  ></tw-form-control>\n  <div class=\"alert alert-danger error-messages\"\n    ng-class=\"{\n      'alert-detach': $ctrl.field.control === 'date'  ||\n                      $ctrl.field.control === 'upload' ||\n                      $ctrl.field.control === 'radio'\n    }\">\n    <div ng-repeat=\"(validationType, validationMessage) in $ctrl.field.validationMessages track by $index\"\n      class=\"error-{{ validationType | lowercase }}\">\n      {{validationMessage}}\n    </div>\n    <div class=\"error-provided\" ng-if=\"$ctrl.errorMessage\">\n      {{ $ctrl.errorMessage }}\n    </div>\n  </div>\n  <div ng-if=\"$ctrl.field.helpText || $ctrl.field.helpList || $ctrl.field.helpImage\"\n    class=\"alert alert-focus\"\n    ng-class=\"{\n      'alert-detach': $ctrl.field.control === 'date' ||\n                      $ctrl.field.control === 'upload' ||\n                      $ctrl.field.control === 'radio'\n    }\">\n    <span ng-if=\"$ctrl.field.helpText\">\n      {{ $ctrl.field.helpText }}\n    </span>\n    <ul ng-if=\"$ctrl.field.helpList\" class=\"list-unstyled\">\n      <li ng-repeat=\"helpMessage in $ctrl.field.helpList\">{{ helpMessage }}</li>\n    </ul>\n    <img\n      ng-if=\"$ctrl.field.helpImage && $ctrl.field.control !== 'upload'\"\n      ng-src=\"{{$ctrl.field.helpImage}}\"\n      alt=\"{{$ctrl.field.name}}\"\n      class=\"thumbnail m-y-2\" />\n  </div>\n</div>\n";
 
 /***/ }),
 /* 123 */
 /***/ (function(module, exports) {
 
-module.exports = "<fieldset ng-form=\"twFieldset\">\n  <legend ng-if=\"$ctrl.legend\">{{ $ctrl.legend }}</legend>\n  <p class=\"text-max-width\" ng-if=\"$ctrl.description\">{{ $ctrl.description }}</p>\n  <div class=\"row row-equal-height\">\n    <div ng-repeat=\"field in $ctrl.fields track by $index\" class=\"col-xs-12\" ng-hide=\"field.hidden\"\n      ng-class=\"{\n        'col-sm-4': !$ctrl.narrow  && field.width === 'sm',\n        'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),\n        'col-sm-12': $ctrl.narrow || field.width === 'lg' || !field.maxlength || field.maxlength > 10\n      }\">\n\n      <tw-field\n        ng-if=\"!field.group\"\n        model=\"$ctrl.model[field.key]\"\n        options=\"field\"\n        locale=\"$ctrl.locale\"\n        upload-options=\"$ctrl.uploadOptions\"\n        error-message=\"$ctrl.errorMessages[field.key]\"\n        on-change=\"$ctrl.onFieldChange(field)\"\n        on-focus=\"$ctrl.onFieldFocus(field)\"\n        on-blur=\"$ctrl.onFieldBlur(field)\">\n      </tw-field>\n\n      <!-- Start old format -->\n      <div class=\"form-group\" ng-if=\"field.group\"\n        ng-class=\"{\n          'has-error': $ctrl.errorMessages[field.key]\n        }\">\n        <label class=\"control-label\">{{ field.name }}</label>\n        <div class=\"row\">\n          <div class=\"col-xs-{{field.columns}}\"\n            ng-repeat=\"fieldSection in field.group track by $index\">\n            <tw-form-control\n              name=\"{{fieldSection.key}}\"\n              label=\"{{field.name}}\"\n              type=\"{{fieldSection.type | lowercase}}\"\n              placeholder=\"{{fieldSection.placeholder || fieldSection.example}}\"\n              help-text=\"{{fieldSection.helpText}}\"\n              help-image=\"{{fieldSection.helpImage}}\"\n              locale=\"{{$ctrl.locale}}\"\n              upload-accept=\"{{fieldSection.accept}}\"\n              upload-icon=\"{{fieldSection.icon}}\"\n              upload-too-large-message=\"{{fieldSection.tooLargeMessage}}\"\n              options=\"fieldSection.valuesAllowed\"\n              upload-options=\"$ctrl.uploadOptions\"\n              ng-model=\"$ctrl.model[fieldSection.key]\"\n              ng-blur=\"$ctrl.onBlur(field)\"\n              ng-change=\"$ctrl.onChange(field)\"\n              ng-required=\"fieldSection.required\"\n              ng-disabled=\"fieldSection.disabled\"\n              tw-minlength=\"fieldSection.minLength\"\n              tw-maxlength=\"fieldSection.maxLength\"\n              ng-min=\"fieldSection.minimum\"\n              ng-max=\"fieldSection.maximum\"\n              ng-pattern=\"fieldSection.pattern\"\n              text-format=\"fieldSection.displayFormat\"\n              tw-validation\n            ></tw-form-control>\n            <div class=\"alert alert-danger error-messages\"\n              ng-class=\"{'alert-detach': fieldSection.type === 'date' || fieldSection.type === 'upload'}\">\n              <div ng-repeat=\"(validationType, validationMessage) in fieldSection.validationMessages\"\n                class=\"error-{{validationType}}\">\n                {{validationMessage}}\n              </div>\n              <div class=\"error-provided\" ng-if=\"$ctrl.errorMessages[fieldSection.key]\">\n                {{ $ctrl.errorMessages[fieldSection.key] }}\n              </div>\n            </div>\n            <div ng-if=\"fieldSection.tooltip || fieldSection.helpText\"\n              class=\"alert alert-focus\"\n              ng-class=\"{'alert-detach': fieldSection.type === 'date' || fieldSection.type === 'upload'}\">\n              {{ fieldSection.tooltip || fieldSection.helpText}}\n            </div>\n            <img\n              ng-if=\"fieldSection.helpImage && fieldSection.type !== 'upload'\"\n              ng-src=\"fieldSection.helpImage\"\n              alt=\"{{field.name}}\"\n              class=\"thumbnail m-t-2 m-b-0\" />\n          </div>\n        </div>\n        <!-- End old format -->\n      </div>\n    </div>\n  </div>\n</fieldset>\n";
+module.exports = "<fieldset ng-form=\"twFieldset\">\n  <legend ng-if=\"$ctrl.legend\">{{ $ctrl.legend }}</legend>\n  <p class=\"text-max-width\" ng-if=\"$ctrl.description\">{{ $ctrl.description }}</p>\n  <div class=\"row row-equal-height\">\n    <div ng-repeat=\"field in $ctrl.fields track by $index\" class=\"col-xs-12\" ng-hide=\"field.hidden\"\n      ng-class=\"{\n        'col-sm-4': !$ctrl.narrow  && field.width === 'sm',\n        'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),\n        'col-sm-12': $ctrl.narrow || field.width === 'lg' || !field.maxlength || field.maxlength > 10\n      }\">\n\n      <tw-field\n        ng-if=\"!field.group\"\n        model=\"$ctrl.model[field.key]\"\n        field=\"field\"\n        locale=\"$ctrl.locale\"\n        upload-options=\"$ctrl.uploadOptions\"\n        error-message=\"$ctrl.errorMessages[field.key]\"\n        on-change=\"$ctrl.fieldChange(field)\"\n        on-focus=\"$ctrl.fieldFocus(field)\"\n        on-blur=\"$ctrl.fieldBlur(field)\">\n      </tw-field>\n\n      <!-- Start old format -->\n      <div class=\"form-group\" ng-if=\"field.group\"\n        ng-class=\"{\n          'has-error': $ctrl.errorMessages[field.key]\n        }\">\n        <label class=\"control-label\">{{ field.name }}</label>\n        <div class=\"row\">\n          <div class=\"col-xs-{{field.columns}}\"\n            ng-repeat=\"fieldSection in field.group track by $index\">\n            <tw-form-control\n              name=\"{{fieldSection.key}}\"\n              label=\"{{field.name}}\"\n              type=\"{{fieldSection.type | lowercase}}\"\n              placeholder=\"{{fieldSection.placeholder || fieldSection.example}}\"\n              help-text=\"{{fieldSection.helpText}}\"\n              help-image=\"{{fieldSection.helpImage}}\"\n              locale=\"{{$ctrl.locale}}\"\n              upload-accept=\"{{fieldSection.accept}}\"\n              upload-icon=\"{{fieldSection.icon}}\"\n              upload-too-large-message=\"{{fieldSection.tooLargeMessage}}\"\n              options=\"fieldSection.valuesAllowed\"\n              upload-options=\"$ctrl.uploadOptions\"\n              ng-model=\"$ctrl.model[fieldSection.key]\"\n              ng-focus=\"$ctrl.fieldFocus(field)\"\n              ng-blur=\"$ctrl.fieldBlur(field)\"\n              ng-change=\"$ctrl.fieldChange(field)\"\n              ng-required=\"fieldSection.required\"\n              ng-disabled=\"fieldSection.disabled\"\n              tw-minlength=\"fieldSection.minLength\"\n              tw-maxlength=\"fieldSection.maxLength\"\n              ng-min=\"fieldSection.minimum\"\n              ng-max=\"fieldSection.maximum\"\n              ng-pattern=\"fieldSection.pattern\"\n              text-format=\"fieldSection.displayFormat\"\n              tw-validation\n            ></tw-form-control>\n            <div class=\"alert alert-danger error-messages\"\n              ng-class=\"{'alert-detach': fieldSection.type === 'date' || fieldSection.type === 'upload'}\">\n              <div ng-repeat=\"(validationType, validationMessage) in fieldSection.validationMessages\"\n                class=\"error-{{validationType}}\">\n                {{validationMessage}}\n              </div>\n              <div class=\"error-provided\" ng-if=\"$ctrl.errorMessages[fieldSection.key]\">\n                {{ $ctrl.errorMessages[fieldSection.key] }}\n              </div>\n            </div>\n            <div ng-if=\"fieldSection.tooltip || fieldSection.helpText\"\n              class=\"alert alert-focus\"\n              ng-class=\"{'alert-detach': fieldSection.type === 'date' || fieldSection.type === 'upload'}\">\n              {{ fieldSection.tooltip || fieldSection.helpText}}\n            </div>\n            <img\n              ng-if=\"fieldSection.helpImage && fieldSection.type !== 'upload'\"\n              ng-src=\"fieldSection.helpImage\"\n              alt=\"{{field.name}}\"\n              class=\"thumbnail m-t-2 m-b-0\" />\n          </div>\n        </div>\n        <!-- End old format -->\n      </div>\n    </div>\n  </div>\n</fieldset>\n";
 
 /***/ }),
 /* 124 */
