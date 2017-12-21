@@ -3,45 +3,63 @@ class PhoneNumberController {
     this.prefixes = [];
   }
 
-  $onInit() {
-    this.prefix = findPrefixByNumber(this.ngModel, this.countries);
-    if (this.prefix) {
-      this.localNumber = this.ngModel.substring(this.prefix.callingCode.length + 1);
-    } else {
-      this.prefix = findPrefixByNumber('+44', this.countries);
-    }
-  }
-
   $onChanges(changes) {
     if (changes.countries && changes.countries.currentValue) {
-      this.prefixes = [];
-      this.countries.forEach((country) => {
-        this.prefixes.push({
-          value: country,
-          label: `+${country.callingCode}`,
-          note: country.name,
-        });
-      });
-      this.prefix = findPrefixByNumber(this.ngModel, this.countries);
+      this.formatCountriesToPrefixes();
+      this.explodeNumberModel(this.ngModel);
     }
 
     if (changes.ngModel && changes.ngModel.currentValue) {
-      this.prefix = findPrefixByNumber(this.ngModel, this.countries);
-      this.localNumber = this.ngModel.substring(this.prefix.callingCode.length + 1);
+      if (validNumber(this.ngModel)) {
+        this.explodeNumberModel(this.ngModel);
+      }
     }
+  }
 
-    if (changes.ngModel && changes.ngModel.defaultCountry && !this.prefix) {
-      this.prefix = this.defaultCountry;
+  sendNewNumberToCallback(newNumber) {
+    this.onNumberChange({ newNumber });
+  }
+
+  explodeNumberModel(number) {
+    this.prefix = findPrefixByNumber(number, this.countries);
+    if (this.prefix) {
+      this.localNumber = number.substring(this.prefix.callingCode.length + 1);
+    } else {
+      this.setDefaultPrefix();
     }
   }
 
   updatePrefix(prefix) {
     this.ngModel = buildCompleteNumber(prefix.callingCode, this.localNumber);
+    this.sendNewNumberToCallback(this.ngModel);
   }
 
   updateLocalNumber(localNumber) {
     this.ngModel = buildCompleteNumber(this.prefix.callingCode, localNumber);
+    this.sendNewNumberToCallback(this.ngModel);
   }
+
+  setDefaultPrefix() {
+    this.prefix = findPrefixByNumber('+44', this.countries);
+    this.sendNewNumberToCallback(this.ngModel);
+  }
+
+  formatCountriesToPrefixes() {
+    this.prefixes = [];
+    this.countries.forEach((country) => {
+      this.prefixes.push({
+        value: country,
+        label: `+${country.callingCode}`,
+        note: country.name,
+      });
+    });
+  }
+}
+
+function validNumber(number) {
+  return typeof number === 'string'
+    && number.length > 4
+    && number.substring(0, 1) === '+';
 }
 
 function buildCompleteNumber(prefix, localNumber) {

@@ -378,8 +378,12 @@ angular.module('tw.styleguide.docs', [])
       model: '='
     },
     controller: function() {
+      this.updateModel = function(newNumber) {
+        this.model = newNumber;
+      };
       this.phoneNumber = {
         countries: [
+          { callingCode: '1', iso2Code: 'US', iso3Code: 'usa', name: 'United States of America' },
           { callingCode: '44', iso2Code: 'GG', iso3Code: 'ggy', name: 'Guernsey' },
           { callingCode: '44', iso2Code: 'GB', iso3Code: 'gbr', name: 'United Kingdom' },
           { callingCode: '33', iso2Code: 'FR', iso3Code: 'fra', name: 'France' }

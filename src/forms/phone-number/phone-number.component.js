@@ -4,17 +4,14 @@ import template from './phone-number.html';
 const PhoneNumberControl = {
   controller,
   template,
-  require: {
-    $ngModel: 'ngModel'
-  },
   bindings: {
-    ngModel: '=',
+    ngModel: '<',
     ngRequired: '<',
     ngDisabled: '<',
     countries: '<',
-    defaultCountry: '<',
-    searchPlaceholder: '@'
-  }
+    searchPlaceholder: '@',
+    onNumberChange: '&',
+  },
 };
 
 export default PhoneNumberControl;

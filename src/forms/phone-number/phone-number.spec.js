@@ -1,7 +1,7 @@
 'use strict';
 
 fdescribe('Phone Number', function() {
-  var $compile, $rootScope, $scope, element;
+  var $compile, $scope, element;
 
   var PREFIX_SELECTOR = 'input[name=phoneNumberPrefix]';
   var PREFIX_SELECT_SELECTOR = 'tw-select[name=phoneNumberPrefix]';
@@ -11,53 +11,56 @@ fdescribe('Phone Number', function() {
     { callingCode: '44', iso2Code: 'GB', iso3Code: 'gbr', name: 'United Kingdom' },
     { callingCode: '33', iso2Code: 'FR', iso3Code: 'fra', name: 'France' }
   ];
+  var onNumberChangeSpy = jasmine.createSpy('onNumberChange');
 
-  beforeEach(module('tw.styleguide.forms'));
+  beforeEach(function() {
+    module('tw.styleguide.forms');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
-    $scope = $rootScope.$new();
-    $scope.countries = COUNTRIES;
-  }));
+    inject(function($injector) {
+      var $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      $scope = $rootScope.$new();
+      $scope.countries = COUNTRIES;
+      $scope.onNumberChange = onNumberChangeSpy;
+    });
+  });
 
   describe('init', function() {
-    describe('when empty input $scope is passed', function () {
-      beforeEach(function () {
+    describe('when empty input $scope is passed', function() {
+      beforeEach(function() {
         $scope.ngModel = null;
         element = getCompiledDirectiveElement($scope);
       });
-      it('should leave model empty', function () {
+      it('should leave model empty', function() {
         expect($scope.ngModel).toBe(null);
       });
-      it('should set prefix control to first value', function () {
+      it('should set prefix control to default value', function() {
         expect(selectedPrefixValue(element)).toEqual(COUNTRIES[0]);
       });
-      it('should set number control to empty', function () {
+      it('should set number control to empty', function() {
         expect(numberValue(element)).toBe('');
       });
     });
-    describe('when phone number model input $scope is passed', function () {
-        beforeEach(function () {
+    describe('when phone number model input $scope is passed', function() {
+        beforeEach(function() {
           $scope.ngModel = '+44123456789';
           element = getCompiledDirectiveElement($scope);
         });
-        it('should set control values correctly', function () {
+        it('should set control values correctly', function() {
           expect(selectedPrefixValue(element)).toEqual(COUNTRIES[0]);
           expect(numberValue(element)).toBe('123456789');
         });
-        it('should leave date model as it was defined', function () {
+        it('should leave number model as it was defined', function() {
           expect($scope.ngModel).toBe('+44123456789');
         });
-        it('should return an updated date as a string', function() {
+        it('should return an updated number as a string', function() {
           setNumberUsingControls(element, COUNTRIES[2], '09876543');
-          expect(typeof $scope.ngModel).toBe('string');
-          expect($scope.ngModel).toBe('+3309876543');
+          expect(onNumberChangeSpy).toHaveBeenCalledWith('+3309876543');
         });
     });
-    describe('when ngRequired input $scope is passed', function () {
+    describe('when ngRequired input $scope is passed', function() {
       var ngModelController;
-      it('should be $invalid when model is null', function () {
+      it('should be $invalid when model is null', function() {
         $scope.ngModel = null;
         $scope.ngRequired = true;
         element = getCompiledDirectiveElement($scope);
@@ -68,7 +71,7 @@ fdescribe('Phone Number', function() {
         expect(element.hasClass('ng-invalid')).toBe(true);
         expect(element.hasClass('ng-invalid-required')).toBe(true);
       });
-      it('should be $valid when model is valid date', function () {
+      it('should be $valid when model is valid date', function() {
         $scope.ngModel = '+44123456789';
         $scope.ngRequired = true;
         element = getCompiledDirectiveElement($scope);
@@ -80,8 +83,8 @@ fdescribe('Phone Number', function() {
         expect(element.hasClass('ng-invalid-required')).toBe(false);
       });
     });
-    describe('when ngDisabled=true', function () {
-      it('should be disabled', function () {
+    describe('when ngDisabled=true', function() {
+      it('should be disabled', function() {
         $scope.ngModel = null;
         $scope.ngDisabled = true
         element = getCompiledDirectiveElement($scope);
@@ -89,8 +92,8 @@ fdescribe('Phone Number', function() {
         expect(element.find(NUMBER_SELECTOR).attr('disabled')).toBeDefined();
       });
     });
-    describe('when ngDisabled=false', function () {
-      it('should not be disabled', function () {
+    describe('when ngDisabled=false', function() {
+      it('should not be disabled', function() {
         $scope.ngModel = null;
         $scope.ngDisabled = false;
         element = getCompiledDirectiveElement($scope);
@@ -100,7 +103,7 @@ fdescribe('Phone Number', function() {
     });
   });
 
-  describe('watchers on shared $scope', function() {
+  describe('onChanges watchers', function() {
     describe('ngModel', function() {
       var $prefixInput, $numberInput, prefixModelController;
 
@@ -117,8 +120,22 @@ fdescribe('Phone Number', function() {
         expect(selectedPrefixValue(element)).toEqual(COUNTRIES[2]);
         expect(numberValue(element)).toBe('987654321');
       });
-      it('should not re-explode date if new date is not valid', function() {
-        $scope.ngModel = 'qwerty';
+      it('should not re-explode model if new model is not a string', function() {
+        $scope.ngModel = 1234;
+        $scope.$digest();
+
+        expect(selectedPrefixValue(element)).toEqual(COUNTRIES[0]);
+        expect(numberValue(element)).toBe('123456789');
+      });
+      it('should not re-explode model if new model is not starting with a +', function() {
+        $scope.ngModel = '12345';
+        $scope.$digest();
+
+        expect(selectedPrefixValue(element)).toEqual(COUNTRIES[0]);
+        expect(numberValue(element)).toBe('123456789');
+      });
+      it('should not re-explode model if new model is shorter than 4', function() {
+        $scope.ngModel = '1234';
         $scope.$digest();
 
         expect(selectedPrefixValue(element)).toEqual(COUNTRIES[0]);
@@ -188,37 +205,38 @@ fdescribe('Phone Number', function() {
         prefixModelController = $prefixInput.controller('ngModel');
       });
 
-      it('should update prefix and ngModel', function () {
+      it('should update prefix and ngModel', function() {
         prefixModelController.$setViewValue(COUNTRIES[2]);
-        expect($scope.ngModel).toBe('+33123456789');
+        expect(onNumberChangeSpy).toHaveBeenCalledWith('+33123456789');
       });
-      it('should update touched status on change', function () {
+      it('should update touched status on change', function() {
         prefixModelController.$setViewValue(COUNTRIES[1]);
         expect(ngModelController.$touched).toBe(true);
       });
-      it('should update pristine status on change', function () {
+      it('should update pristine status on change', function() {
         prefixModelController.$setViewValue(COUNTRIES[1]);
         expect(ngModelController.$pristine).toBe(false);
       });
     });
 
     describe('with localNumber input', function() {
-      it('should update localNumber and ngModel', function () {
+      it('should update localNumber and ngModel', function() {
         $numberInput.val('987654321').triggerHandler('input');
-        expect($scope.ngModel).toBe('+44987654321');
+        expect(onNumberChangeSpy).toHaveBeenCalledWith('+44987654321');
       });
-      it('should update touched status on blur', function () {
+      it('should update touched status on blur', function() {
         $numberInput[0].focus();
         $numberInput[0].dispatchEvent(new CustomEvent('blur'));
+        console.log(element);
         expect(ngModelController.$touched).toBe(true);
       });
-      it('should update pristine status on change', function () {
+      it('should update pristine status on change', function() {
         $numberInput.val('987654321').triggerHandler('input');
         expect(ngModelController.$pristine).toBe(false);
       });
-      it('should ignore localNumber part of the model when invalid', function () {
+      it('should ignore localNumber part of the model when invalid', function() {
         $numberInput.val('abc').triggerHandler('input');
-        expect($scope.ngModel).toBe('+44');
+        expect(onNumberChangeSpy).toHaveBeenCalledWith('+44');
       });
     });
   });
@@ -249,6 +267,7 @@ fdescribe('Phone Number', function() {
           ng-model='ngModel' \
           ng-required='ngRequired' \
           ng-disabled='ngDisabled' \
+          on-number-change='onNumberChange(newNumber)' \
         ></tw-phone-number>";
     }
 
