@@ -1,8 +1,9 @@
 import angular from 'angular';
 
 class FieldsetController {
-  constructor(TwRequirementsService) {
+  constructor(TwRequirementsService, $scope) {
     this.RequirementsService = TwRequirementsService;
+    this.$scope = $scope;
   }
 
   $onInit() {
@@ -29,14 +30,14 @@ class FieldsetController {
       );
     }
 
+    this.$scope.$watch('twFieldset.$valid', (validity) => {
+      this.isValid = validity;
+    });
+
     // TODO can we add asyncvalidator here? - prob not
   }
 
   $onChanges(changes) {
-    if (changes.$valid) {
-      this.isValid = changes.$valid.currentValue;
-    }
-
     if (changes.rawFields) {
       if (!angular.equals(changes.rawFields.currentValue, changes.rawFields.previousValue)) {
         this.fields = this.RequirementsService.prepFields(
@@ -86,7 +87,8 @@ function controlRefreshesOnChange(control) {
 }
 
 FieldsetController.$inject = [
-  'TwRequirementsService'
+  'TwRequirementsService',
+  '$scope'
 ];
 
 export default FieldsetController;

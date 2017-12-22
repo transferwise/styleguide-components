@@ -3,8 +3,9 @@
     <tw-fieldset
       legend="{{ $ctrl.requirements.legend }}"
       description="{{ $ctrl.requirements.description }}"
-      fields="$ctrl.requirements.fields"
       model="$ctrl.model"
+      fields="$ctrl.requirements.fields"
+      is-valid="$ctrl.isValid"
       on-field-focus="$ctrl.fieldFocus(field)"
       on-field-blur="$ctrl.fieldBlur(field)"
       on-field-change="$ctrl.fieldChange(field)"
@@ -16,7 +17,8 @@
   legend="{{ $ctrl.requirements.legend }}"</span><span ng-if="$ctrl.requirements.description">
   description="{{ $ctrl.requirements.description }}"</span>
   model="{{ $ctrl.model | json }}"
-  fields="{{ $ctrl.requirements.fields | json }}"<span ng-if="$ctrl.onFieldFocus">
+  fields="{{ $ctrl.requirements.fields | json }}"
+  is-valid="{{ $ctrl.isValid }}"<span ng-if="$ctrl.onFieldFocus">
   on-field-focus="console.log(field)"</span><span ng-if="$ctrl.onFieldBlur">
   on-field-blur="console.log(field)"</span><span ng-if="$ctrl.onFieldChange">
   on-field-change="console.log(field)"</span>&gt;

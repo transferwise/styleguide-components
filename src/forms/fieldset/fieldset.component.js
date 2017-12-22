@@ -9,7 +9,7 @@ const Fieldset = {
     rawFields: '<fields',
     uploadOptions: '<',
     locale: '@',
-    legend: '@',
+    title: '@',
     description: '@',
     onRefreshRequirements: '&?',
     onFieldFocus: '&?',

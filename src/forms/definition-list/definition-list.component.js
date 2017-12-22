@@ -8,7 +8,7 @@ const DefinitionList = {
     model: '<',
     rawFields: '<fields',
     locale: '@',
-    legend: '@',
+    title: '@',
     narrow: '<'
   }
 };

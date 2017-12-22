@@ -104,6 +104,57 @@ describe('Field', function() {
     });
   });
 
+  describe('when given field.values', function() {
+    describe('if there are 3 or less', function() {
+      beforeEach(function() {
+        $scope.options = {
+          key: "keyName",
+          type: "number",
+          values: [{value: 1, label: "One"}, {value: 2, label: "Two"}]
+        };
+        element = getCompiledDirectiveElement();
+      });
+
+      it('should render radio buttons', function() {
+        expect(element.querySelectorAll('tw-radio').length).toBe(2);
+      });
+    });
+    describe('if there are 4 or more', function() {
+      beforeEach(function() {
+        $scope.options = {
+          key: "keyName",
+          type: "number",
+          values: [
+            {value: 1, label: "One"},
+            {value: 2, label: "Two"},
+            {value: 3, label: "Three"},
+            {value: 4, label: "Four"}
+          ]
+        };
+        element = getCompiledDirectiveElement();
+      });
+
+      it('should render a select', function() {
+        expect(element.querySelector('tw-select')).toBeTruthy();
+      });
+    });
+    describe('if control:select is supplied', function() {
+      beforeEach(function() {
+        $scope.options = {
+          key: "keyName",
+          type: "number",
+          control: "select",
+          values: [{value: 1, label: "One"}, {value: 2, label: "Two"}]
+        };
+        element = getCompiledDirectiveElement();
+      });
+
+      it('should render select regardless of number of options', function() {
+        expect(element.querySelector('tw-select')).toBeTruthy();
+      });
+    });
+  });
+
   describe('when the model already contains a value', function() {
     beforeEach(function() {
       $scope.options = { key: "keyName", type: "string" };
@@ -235,7 +286,6 @@ describe('Field', function() {
     });
   });
 
-  // TODO values types
   // TODO validation
   // TODO help information
   // TODO display formats

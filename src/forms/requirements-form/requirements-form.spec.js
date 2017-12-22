@@ -176,7 +176,7 @@ describe('RequirementsForm', function() {
                 "type": "select",
                 "refreshRequirementsOnChange": false,
                 "required": true,
-                "valuesAllowed": [
+                "values": [
                   {
                     "key": "PRIVATE",
                     "name": "Private"
@@ -253,7 +253,7 @@ describe('RequirementsForm', function() {
                 "type": "select",
                 "refreshRequirementsOnChange": false,
                 "required": true,
-                "valuesAllowed": [
+                "values": [
                   {
                     "key": "PRIVATE",
                     "name": "Private"
@@ -315,8 +315,7 @@ describe('RequirementsForm', function() {
                       "required": true
                     }
                   ]
-                },
-                "valuesAllowed": null
+                }
               }
             ]
           }

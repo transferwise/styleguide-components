@@ -1010,7 +1010,7 @@ var _angular2 = _interopRequireDefault(_angular);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function RequirementsService() {
+function RequirementsService($http) {
   var _this = this;
 
   this.prepRequirements = function (alternatives) {
@@ -1043,7 +1043,7 @@ function RequirementsService() {
     _this.prepType(preparedField);
     _this.prepPattern(preparedField);
     _this.prepValuesAsync(preparedField, model);
-    _this.prepValuesAllowed(preparedField);
+    _this.prepValues(preparedField);
     _this.prepValidationMessages(preparedField, validationMessages);
 
     return preparedField;
@@ -1105,6 +1105,11 @@ function RequirementsService() {
       field.helpText = field.tooltip;
       delete field.tooltip;
     }
+
+    if (field.valuesAllowed && !field.values) {
+      field.values = field.valuesAllowed;
+      delete field.valuesAllowed;
+    }
   };
 
   this.prepPattern = function (field) {
@@ -1125,6 +1130,7 @@ function RequirementsService() {
     if (!field.valuesAsync) {
       return;
     }
+
     var postData = {};
     if (field.valuesAsync.params && field.valuesAsync.params.length) {
       postData = _this.getParamValuesFromModel(model, field.valuesAsync.params);
@@ -1139,19 +1145,24 @@ function RequirementsService() {
   };
 
   this.fetchValuesAsync = function (field, postData) {
-    return _this.$http.post(field.valuesAsync.url, postData).then(function (response) {
-      field.valuesAllowed = response.data;
-      _this.prepValuesAllowed(field);
+    return $http({
+      method: field.valuesAsync.method || 'GET',
+      url: field.valuesAsync.url,
+      data: postData || {}
+    }).then(function (response) {
+      console.log('here');
+      field.values = response.data;
+      _this.prepValues(field);
     });
   };
 
-  this.prepValuesAllowed = function (field) {
-    if (!_angular2.default.isArray(field.valuesAllowed)) {
+  this.prepValues = function (field) {
+    if (!_angular2.default.isArray(field.values)) {
       return;
     }
-    field.valuesAllowed.forEach(function (valueAllowed) {
-      valueAllowed.value = valueAllowed.value || valueAllowed.key;
-      valueAllowed.label = valueAllowed.label || valueAllowed.name;
+    field.values.forEach(function (option) {
+      option.value = option.value || option.key;
+      option.label = option.label || option.name;
     });
   };
 
@@ -1179,7 +1190,7 @@ function getControlType(field) {
   if (field.hidden) {
     return 'hidden';
   }
-  if (field.enum || field.values || field.valuesAllowed) {
+  if (field.values && field.values.length) {
     return getSelectionType(field);
   }
 
@@ -1224,12 +1235,14 @@ function getSelectionType(field) {
     return 'radio';
   }
 
-  var values = field.enum || field.values || field.valuesAllowed;
+  var values = field.enum || field.values;
   if (values) {
     return values.length > 3 ? 'select' : 'radio';
   }
   return 'select';
 }
+
+RequirementsService.$inject = ['$http'];
 
 exports.default = RequirementsService;
 

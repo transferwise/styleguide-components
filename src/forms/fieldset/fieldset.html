@@ -1,5 +1,5 @@
 <fieldset ng-form="twFieldset">
-  <legend ng-if="$ctrl.legend">{{ $ctrl.legend }}</legend>
+  <legend ng-if="$ctrl.title">{{ $ctrl.title }}</legend>
   <p class="text-max-width" ng-if="$ctrl.description">{{ $ctrl.description }}</p>
   <div class="row row-equal-height">
     <div ng-repeat="field in $ctrl.fields track by $index" class="col-xs-12" ng-hide="field.hidden"
@@ -21,66 +21,6 @@
         on-blur="$ctrl.fieldBlur(field)">
       </tw-field>
 
-      <!-- Start old format -->
-      <div class="form-group" ng-if="field.group"
-        ng-class="{
-          'has-error': $ctrl.errorMessages[field.key]
-        }">
-        <label class="control-label">{{ field.name }}</label>
-        <div class="row">
-          <div class="col-xs-{{field.columns}}"
-            ng-repeat="fieldSection in field.group track by $index">
-            <tw-form-control
-              name="{{fieldSection.key}}"
-              label="{{field.name}}"
-              type="{{fieldSection.type | lowercase}}"
-              placeholder="{{fieldSection.placeholder || fieldSection.example}}"
-              help-text="{{fieldSection.helpText}}"
-              help-image="{{fieldSection.helpImage}}"
-              locale="{{$ctrl.locale}}"
-              upload-accept="{{fieldSection.accept}}"
-              upload-icon="{{fieldSection.icon}}"
-              upload-too-large-message="{{fieldSection.tooLargeMessage}}"
-              options="fieldSection.valuesAllowed"
-              upload-options="$ctrl.uploadOptions"
-              ng-model="$ctrl.model[fieldSection.key]"
-              ng-focus="$ctrl.fieldFocus(field)"
-              ng-blur="$ctrl.fieldBlur(field)"
-              ng-change="$ctrl.fieldChange(field)"
-              ng-required="fieldSection.required"
-              ng-disabled="fieldSection.disabled"
-              tw-minlength="fieldSection.minLength"
-              tw-maxlength="fieldSection.maxLength"
-              ng-min="fieldSection.minimum"
-              ng-max="fieldSection.maximum"
-              ng-pattern="fieldSection.pattern"
-              text-format="fieldSection.displayFormat"
-              tw-validation
-            ></tw-form-control>
-            <div class="alert alert-danger error-messages"
-              ng-class="{'alert-detach': fieldSection.type === 'date' || fieldSection.type === 'upload'}">
-              <div ng-repeat="(validationType, validationMessage) in fieldSection.validationMessages"
-                class="error-{{validationType}}">
-                {{validationMessage}}
-              </div>
-              <div class="error-provided" ng-if="$ctrl.errorMessages[fieldSection.key]">
-                {{ $ctrl.errorMessages[fieldSection.key] }}
-              </div>
-            </div>
-            <div ng-if="fieldSection.tooltip || fieldSection.helpText"
-              class="alert alert-focus"
-              ng-class="{'alert-detach': fieldSection.type === 'date' || fieldSection.type === 'upload'}">
-              {{ fieldSection.tooltip || fieldSection.helpText}}
-            </div>
-            <img
-              ng-if="fieldSection.helpImage && fieldSection.type !== 'upload'"
-              ng-src="fieldSection.helpImage"
-              alt="{{field.name}}"
-              class="thumbnail m-t-2 m-b-0" />
-          </div>
-        </div>
-        <!-- End old format -->
-      </div>
     </div>
   </div>
 </fieldset>

@@ -1,6 +1,6 @@
 import angular from 'angular';
 
-function RequirementsService() {
+function RequirementsService($http) {
   this.prepRequirements = (alternatives) => {
     alternatives.forEach((alternative) => {
       this.prepFields(alternative.fields);
@@ -29,7 +29,7 @@ function RequirementsService() {
     this.prepType(preparedField);
     this.prepPattern(preparedField);
     this.prepValuesAsync(preparedField, model);
-    this.prepValuesAllowed(preparedField);
+    this.prepValues(preparedField);
     this.prepValidationMessages(preparedField, validationMessages);
 
     return preparedField;
@@ -91,6 +91,11 @@ function RequirementsService() {
       field.helpText = field.tooltip;
       delete field.tooltip;
     }
+
+    if (field.valuesAllowed && !field.values) {
+      field.values = field.valuesAllowed;
+      delete field.valuesAllowed;
+    }
   };
 
   this.prepPattern = (field) => {
@@ -111,6 +116,7 @@ function RequirementsService() {
     if (!field.valuesAsync) {
       return;
     }
+
     let postData = {};
     if (field.valuesAsync.params &&
       field.valuesAsync.params.length) {
@@ -123,19 +129,23 @@ function RequirementsService() {
   };
 
   this.fetchValuesAsync = (field, postData) =>
-    this.$http.post(field.valuesAsync.url, postData)
-      .then((response) => {
-        field.valuesAllowed = response.data;
-        this.prepValuesAllowed(field);
-      });
+    $http({
+      method: field.valuesAsync.method || 'GET',
+      url: field.valuesAsync.url,
+      data: postData || {}
+    }).then((response) => {
+      console.log('here');
+      field.values = response.data;
+      this.prepValues(field);
+    });
 
-  this.prepValuesAllowed = (field) => {
-    if (!angular.isArray(field.valuesAllowed)) {
+  this.prepValues = (field) => {
+    if (!angular.isArray(field.values)) {
       return;
     }
-    field.valuesAllowed.forEach((valueAllowed) => {
-      valueAllowed.value = valueAllowed.value || valueAllowed.key;
-      valueAllowed.label = valueAllowed.label || valueAllowed.name;
+    field.values.forEach((option) => {
+      option.value = option.value || option.key;
+      option.label = option.label || option.name;
     });
   };
 
@@ -165,7 +175,7 @@ function getControlType(field) {
   if (field.hidden) {
     return 'hidden';
   }
-  if (field.enum || field.values || field.valuesAllowed) {
+  if (field.values && field.values.length) {
     return getSelectionType(field);
   }
 
@@ -210,11 +220,13 @@ function getSelectionType(field) {
     return 'radio';
   }
 
-  const values = field.enum || field.values || field.valuesAllowed;
+  const values = field.enum || field.values;
   if (values) {
     return values.length > 3 ? 'select' : 'radio';
   }
   return 'select';
 }
+
+RequirementsService.$inject = ['$http'];
 
 export default RequirementsService;

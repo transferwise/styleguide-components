@@ -658,7 +658,7 @@ angular.module('tw.styleguide.docs', [])
           'type': 'select',
           'width': 'md',
           'refreshRequirementsOnChange': true,
-          'valuesAllowed': [
+          'values': [
             {
               'key': '1',
               'name': 'One'
@@ -697,7 +697,7 @@ angular.module('tw.styleguide.docs', [])
           'type': 'radio',
           'width': 'md',
           'refreshRequirementsOnChange': true,
-          'valuesAllowed': [
+          'values': [
             {
               'key': '1',
               'name': 'One'

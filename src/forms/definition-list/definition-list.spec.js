@@ -91,7 +91,7 @@ describe('Definition list', function() {
         name: 'Select label',
         key: 'key',
         type: 'select',
-        valuesAllowed: [
+        values: [
           {
             'key': '1',
             'name': 'One'
@@ -118,7 +118,7 @@ describe('Definition list', function() {
         name: 'Radio label',
         key: 'key',
         type: 'radio',
-        valuesAllowed: [
+        values: [
           {
             'key': '1',
             'name': 'One'
@@ -244,7 +244,7 @@ describe('Definition list', function() {
           group: [{
             key: 'key',
             type: 'select',
-            valuesAllowed: [
+            values: [
               {
                 'key': '1',
                 'name': 'One'
@@ -273,7 +273,7 @@ describe('Definition list', function() {
           group: [{
             key: 'key',
             type: 'radio',
-            valuesAllowed: [
+            values: [
               {
                 'key': '1',
                 'name': 'One'

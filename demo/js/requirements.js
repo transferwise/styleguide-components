@@ -63,7 +63,7 @@ angular.module('tw.styleguide.docs', [])
       name: "Select control",
       key: "selectProperty",
       placeholder: "Please choose",
-      valuesAllowed: [{
+      values: [{
         value: 1, label: "One"
       },{
         value: 2, label: "Two"
@@ -77,7 +77,7 @@ angular.module('tw.styleguide.docs', [])
       type: "string",
       name: "Radio control",
       key: "radioProperty",
-      valuesAllowed: [{
+      values: [{
         value: "1", label: "One"
       },{
         value: "2", label: "Two"
@@ -87,6 +87,19 @@ angular.module('tw.styleguide.docs', [])
       selectProperty: 1,
       radioProperty: "2"
     };
+
+    this.valuesAsync = {
+      type: "number",
+      name: "Values async",
+      key: "asyncProperty",
+      control: "select",
+      placeholder: "Please choose",
+      valuesAsync: {
+        method: "GET",
+        url: "json/values-async.json"
+      }
+    }
+    this.valuesAsyncModel = null;
 
 
     this.stringValidation = {
@@ -212,19 +225,6 @@ angular.module('tw.styleguide.docs', [])
         name: "Number label",
         key: "numberProperty",
         placeholder: "Please enter number"
-      },{
-        type: "string",
-        format: "base64url",
-        name: "Upload options",
-        key: "uploadOptions",
-        placeholder: "Please choose a file",
-        uploadOptions: {
-          buttonText: "Choose file...",
-          cancelText: "Choose a different file?",
-          processingText: "Processing...",
-          successText: "Upload complete!",
-          failureText: "Upload failed"
-        }
       }]
     };
     this.fieldsetBasicModel = {
@@ -264,7 +264,8 @@ angular.module('tw.styleguide.docs', [])
         name: "Number label",
         key: "numberProperty",
         placeholder: "Please enter number",
-        width: "sm"
+        width: "sm",
+        required: true
       }]
     };
     this.fieldsetLayoutModel = {};
@@ -279,6 +280,7 @@ angular.module('tw.styleguide.docs', [])
       onFieldChange: '&?'
     },
     controller: function() {
+      this.isValid = false;
       this.fieldFocus = function(field) {
         this.onFieldFocus && this.onFieldFocus({ field: field });
       };

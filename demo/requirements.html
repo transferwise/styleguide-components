@@ -85,7 +85,6 @@
           field="$ctrl.booleanBasic"
           model="$ctrl.basicTypesModel.booleanProperty">
         </field-docs>
-        <pre>model: {{ $ctrl.basicTypesModel | json }}</pre>
 
         <h4 id="formats" class="page-header">
           Formats
@@ -109,7 +108,6 @@
           field="$ctrl.uploadBasic"
           model="$ctrl.basicFormatsModel.base64urlProperty">
         </field-docs>
-        <pre>model: {{ $ctrl.basicFormatsModel | json }}</pre>
 
         <h4 id="selections" class="page-header">
           Selections
@@ -118,7 +116,11 @@
           </a>
         </h4>
         <p class="text-max-width">
-          Often we want the user to choose from a set of values.
+          Often we want the user to choose from a set of values.  By passing an
+          array of <code>values</code> the field will render as a radio selection
+          (3 or less options), or a select box (4 or more options).  To force
+          the display of one or the other, pass <code>control: "radio"</code> or
+          <code>control: "select"</code>.
         </p>
         <field-docs
           field="$ctrl.selectBasic"
@@ -128,7 +130,16 @@
           field="$ctrl.radioBasic"
           model="$ctrl.selectionsModel.radioProperty">
         </field-docs>
-        <pre>model: {{ $ctrl.selectionsModel | json }}</pre>
+
+        <h5>Loading values asynchronously</h5>
+        <p class="text-max-width">
+          Sometimes the list of values is excessively long, or dependent on
+          some other data in the model.  In these cases you can load these
+          values asynchronously.</p>
+        <field-docs
+          field="$ctrl.valuesAsync"
+          model="$ctrl.valuesAsyncModel">
+        </field-docs>
 
         <h4 id="validation" class="page-header">
           Validation
@@ -148,7 +159,8 @@
           field="$ctrl.dateValidation"
           model="$ctrl.validationModel.dateProperty">
         </field-docs>
-        <pre>model: {{ $ctrl.validationModel | json }}</pre>
+
+        <!-- <h5>Async validation</h5> -->
 
         <h4 id="custom-errors" class="page-header">
           Custom errors
@@ -156,6 +168,12 @@
             <span class="glyphicon glyphicon-link"></span>
           </a>
         </h4>
+        <p class="text-max-width">
+          When we want to render a custom error, or render an error on page load,
+          we can pass in an additional error message that will be immediately
+          displayed.  When the value of the field changes the error messages
+          (and state) will be removed as we fall back to regular validation.
+        </p>
         <field-docs
           field="$ctrl.customErrors"
           model="$ctrl.customErrorsModel"
@@ -168,6 +186,10 @@
             <span class="glyphicon glyphicon-link"></span>
           </a>
         </h4>
+        <p class="text-max-width">
+          We have a number of ways to show helpful information, this information
+          appears when the control is focused to draw attention.
+        </p>
         <field-docs
           field="$ctrl.helpText"
           model="$ctrl.helpModel.text">
@@ -180,14 +202,16 @@
           field="$ctrl.helpImage"
           model="$ctrl.helpModel.image">
         </field-docs>
-        <!-- <fieldset-docs
-          requirements="$ctrl.helpTypes"
-          model="$ctrl.helpTypesModel">
-        </fieldset-docs> -->
 
-        <h4 class="page-header">
+        <h4 id="presentation-options" class="page-header">
           Presentation options
+          <a href="#presentation-options" class="pull-xs-right">
+            <span class="glyphicon glyphicon-link"></span>
+          </a>
         </h4>
+        <p class="text-max-width">
+          Some fields have additional presentation options, as seen below.
+        </p>
         <field-docs
           field="$ctrl.displayFormat"
           model="$ctrl.presentationModel.displayFormat">
@@ -197,8 +221,11 @@
           model="$ctrl.presentationModel.uploadOptions">
         </field-docs>
 
-        <h4 class="page-header">
+        <h4 id="field-events" class="page-header">
           Events
+          <a href="#field-events" class="pull-xs-right">
+            <span class="glyphicon glyphicon-link"></span>
+          </a>
         </h4>
         <field-docs
           field="$ctrl.stringBasic"
@@ -207,7 +234,6 @@
           on-blur="$ctrl.log('blur')"
           on-change="$ctrl.log('change')">
         </field-docs>
-
 
         <h2 id="fieldsets" class="page-header">
           Fieldsets
@@ -218,16 +244,21 @@
         <div class="row">
           <div class="col-md-6">
             <p>Fieldsets represent a collection of fields.  A fieldset can
-              optionally include a legend (title) and/or a description.</p>
+              optionally include a title and/or a description.</p>
+            <p>Fieldsets provide a 2-way bound model that is updated as the user
+              interacts.  There is also a 2-way bound 'is-valid' property, that
+              can be useful for enabling/disabling submit buttons.</p>
           </div>
           <div class="col-md-6">
             <h5>Component API</h5>
 <pre>
 &lt;tw-fieldset
-  legend="<span ng-non-bindable>{{ fieldset.legend }}</span>"
+  title="<span ng-non-bindable>{{ fieldset.title }}</span>"
   description="<span ng-non-bindable>{{ fieldset.description }}</span>"
   fields="fieldset.fields"&gt;
   locale="en-GB"
+  model="..."
+  is-valid="..."
   on-field-focus="focusHandler(field)"
   on-field-blur="blurHandler(field)"
   on-field-change="changeHandler(field)"&gt;
@@ -247,9 +278,9 @@
           model="$ctrl.fieldsetBasicModel">
         </fieldset-docs>
 
-        <h4 id="fieldset-legend" class="page-header">
-          Legend &amp; description
-          <a href="#fieldset-legend" class="pull-xs-right">
+        <h4 id="fieldset-title" class="page-header">
+          Title &amp; description
+          <a href="#fieldset-title" class="pull-xs-right">
             <span class="glyphicon glyphicon-link"></span>
           </a>
         </h4>

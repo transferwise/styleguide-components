@@ -1,7 +1,7 @@
 <div class="m-t-1">
   <h4
-    ng-if="$ctrl.legend"
-    ng-bind="$ctrl.legend"
+    ng-if="$ctrl.title"
+    ng-bind="$ctrl.title"
     class="page-header p-t-3">
   </h4>
 </div>
@@ -15,7 +15,7 @@
       <dt ng-bind="field.name"></dt>
       <dd ng-switch="field.control">
         <span ng-switch-when="select|radio" ng-switch-when-separator="|">
-          {{ $ctrl.getValueLabel(field.valuesAllowed, $ctrl.model[field.key]) }}
+          {{ $ctrl.getValueLabel(field.values, $ctrl.model[field.key]) }}
         </span>
         <span ng-switch-when="date">
           {{ $ctrl.model[field.key] | twDateFormat: $ctrl.locale }}
@@ -44,7 +44,7 @@
         <span ng-repeat="fieldSection in field.group">
           <span ng-switch="fieldSection.control">
             <span ng-switch-when="select|radio" ng-switch-when-separator="|">
-              {{ $ctrl.getValueLabel(fieldSection.valuesAllowed, $ctrl.model[fieldSection.key]) }}
+              {{ $ctrl.getValueLabel(fieldSection.values, $ctrl.model[fieldSection.key]) }}
             </span>
             <span ng-switch-when="date">
               {{ $ctrl.model[fieldSection.key] | twDateFormat: $ctrl.locale }}
