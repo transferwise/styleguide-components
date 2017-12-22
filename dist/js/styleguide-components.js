@@ -3092,7 +3092,7 @@ var DateController = function () {
           throw new Error('Invalid modelType, should be ' + STRING_TYPE + ' or ' + OBJECT_TYPE);
         }
       } else {
-        this.dateModelType = OBJECT_TYPE;
+        this.dateModelType = STRING_TYPE;
       }
 
       this.day = null;
@@ -3589,7 +3589,7 @@ var FormControlController = function () {
 
       $ngModel.$validators.minlength = function (modelValue, viewValue) {
         var value = modelValue || viewValue;
-        if (!(_this.type === 'string' || _this.type === 'text') || !_this.ngMinlength) {
+        if (_this.type !== 'string' || !_this.ngMinlength) {
           return true;
         }
         return !value || value.length >= _this.ngMinlength;
@@ -3597,7 +3597,7 @@ var FormControlController = function () {
 
       $ngModel.$validators.maxlength = function (modelValue, viewValue) {
         var value = modelValue || viewValue;
-        if (!(_this.type === 'string' || _this.type === 'text') || !_this.ngMaxlength) {
+        if (_this.type !== 'string' || !_this.ngMaxlength) {
           return true;
         }
         return !value || value.length <= _this.ngMaxlength;
@@ -3635,6 +3635,7 @@ var FormControlController = function () {
   }, {
     key: 'change',
     value: function change(value) {
+      console.log(this.$ngModel.$valid);
       this.$ngModel.$setDirty();
       if (this.ngChange) {
         // don't fire change for the radio button becoming false
@@ -7956,6 +7957,9 @@ function RequirementsService($http) {
 
   this.prepType = function (field) {
     switch (field.type) {
+      case 'text':
+        field.type = 'string';
+        break;
       case 'date':
         field.type = 'string';
         field.format = 'date';

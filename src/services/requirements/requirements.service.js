@@ -37,6 +37,9 @@ function RequirementsService($http) {
 
   this.prepType = (field) => {
     switch (field.type) {
+      case 'text':
+        field.type = 'string';
+        break;
       case 'date':
         field.type = 'string';
         field.format = 'date';
