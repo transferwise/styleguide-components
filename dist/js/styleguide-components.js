@@ -3878,7 +3878,8 @@ var PhoneNumberControl = {
     countries: '<',
     searchPlaceholder: '@',
     onNumberChange: '&'
-  }
+  },
+  transclude: true
 };
 
 exports.default = PhoneNumberControl;
@@ -8297,7 +8298,7 @@ module.exports = "<fieldset ng-form=\"twFieldset\">\n  <legend ng-if=\"$ctrl.leg
 /* 123 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <tw-select\n    name=\"phoneNumberPrefix\"\n    class=\"col-xs-5\"\n    ng-model=\"$ctrl.prefix\"\n    ng-change=\"$ctrl.updatePrefix($ctrl.prefix)\"\n    options=\"$ctrl.prefixes\"\n    filter=\"{{ $ctrl.searchPlaceholder }}\"\n    dropdown-width=\"md\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n  ></tw-select>\n  <div class=\"col-xs-7\">\n    <input type=\"tel\" tw-validation\n      name=\"phoneNumber\"\n      class=\"form-control\"\n      ng-model=\"$ctrl.localNumber\"\n      ng-change=\"$ctrl.updateLocalNumber($ctrl.localNumber)\"\n      ng-pattern=\"/^[0-9\\\\s.-]*$/\"\n      ng-minlength=\"4\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\" />\n  </div>\n</div>\n";
+module.exports = "<div class=\"row\">\n  <tw-select\n    name=\"phoneNumberPrefix\"\n    class=\"col-xs-5\"\n    ng-model=\"$ctrl.prefix\"\n    ng-change=\"$ctrl.updatePrefix($ctrl.prefix)\"\n    options=\"$ctrl.prefixes\"\n    filter=\"{{ $ctrl.searchPlaceholder }}\"\n    dropdown-width=\"md\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n  ></tw-select>\n  <div class=\"col-xs-7\">\n    <input type=\"tel\" tw-validation\n      name=\"phoneNumber\"\n      class=\"form-control\"\n      ng-model=\"$ctrl.localNumber\"\n      ng-change=\"$ctrl.updateLocalNumber($ctrl.localNumber)\"\n      ng-pattern=\"/^[0-9\\\\s.-]*$/\"\n      ng-minlength=\"4\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\" />\n      <div ng-transclude class=\"error-messages\"></div>\n  </div>\n</div>\n";
 
 /***/ }),
 /* 124 */

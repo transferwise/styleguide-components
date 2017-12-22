@@ -1,7 +1,7 @@
 'use strict';
 
 fdescribe('Phone Number', function() {
-  var $compile, $scope, element;
+  var $compile, $scope, $timeout, element;
 
   var PREFIX_SELECTOR = 'input[name=phoneNumberPrefix]';
   var PREFIX_SELECT_SELECTOR = 'tw-select[name=phoneNumberPrefix]';
@@ -19,6 +19,7 @@ fdescribe('Phone Number', function() {
     inject(function($injector) {
       var $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
+      $timeout = $injector.get('$timeout');
       $scope = $rootScope.$new();
       $scope.countries = COUNTRIES;
       $scope.onNumberChange = onNumberChangeSpy;
@@ -188,34 +189,31 @@ fdescribe('Phone Number', function() {
   });
 
   describe('user interactions', function() {
-    var element, ngModelController, $prefixInput, $numberInput;
+    var element, $prefixSelect, $numberInput;
 
     beforeEach(function() {
       $scope.ngModel = '+44123456789';
       element = getCompiledDirectiveElement($scope);
-      ngModelController = element.controller('ngModel');
 
-      $prefixInput = element.find(PREFIX_SELECTOR);
+      $prefixSelect = element.find(PREFIX_SELECT_SELECTOR);
       $numberInput = element.find(NUMBER_SELECTOR);
     });
 
     describe('with prefix select', function() {
-      var prefixModelController;
-      beforeEach(function() {
-        prefixModelController = $prefixInput.controller('ngModel');
-      });
-
       it('should update prefix and ngModel', function() {
-        prefixModelController.$setViewValue(COUNTRIES[2]);
+        simulatePrefixSelection(element, 2);
         expect(onNumberChangeSpy).toHaveBeenCalledWith('+33123456789');
       });
       it('should update touched status on change', function() {
-        prefixModelController.$setViewValue(COUNTRIES[1]);
-        expect(ngModelController.$touched).toBe(true);
+        // $prefixSelect.focus();
+        simulatePrefixSelection($prefixSelect, 1);
+        $prefixSelect.focusout();
+        console.log($prefixSelect[0]);
+        expect($prefixSelect.hasClass('ng-touched')).toBe(true);
       });
       it('should update pristine status on change', function() {
-        prefixModelController.$setViewValue(COUNTRIES[1]);
-        expect(ngModelController.$pristine).toBe(false);
+        simulatePrefixSelection(element, 1);
+        expect($prefixSelect.hasClass('ng-pristine')).toBe(false);
       });
     });
 
@@ -227,18 +225,25 @@ fdescribe('Phone Number', function() {
       it('should update touched status on blur', function() {
         $numberInput[0].focus();
         $numberInput[0].dispatchEvent(new CustomEvent('blur'));
-        console.log(element);
-        expect(ngModelController.$touched).toBe(true);
+        expect($numberInput.hasClass('ng-touched')).toBe(true);
       });
       it('should update pristine status on change', function() {
         $numberInput.val('987654321').triggerHandler('input');
-        expect(ngModelController.$pristine).toBe(false);
+        expect($numberInput.hasClass('ng-pristine')).toBe(false);
       });
       it('should ignore localNumber part of the model when invalid', function() {
         $numberInput.val('abc').triggerHandler('input');
         expect(onNumberChangeSpy).toHaveBeenCalledWith('+44');
       });
     });
+
+    function simulatePrefixSelection(element, index) {
+      element.find('tw-select').triggerHandler('click');
+
+      var dropdown = element.find('.dropdown-menu');
+      dropdown.find('a')[index].click();
+      $timeout.flush();
+    };
   });
 
   function setNumberUsingControls(element, prefix, number) {

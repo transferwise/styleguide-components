@@ -12,6 +12,7 @@ const PhoneNumberControl = {
     searchPlaceholder: '@',
     onNumberChange: '&',
   },
+  transclude: true,
 };
 
 export default PhoneNumberControl;
