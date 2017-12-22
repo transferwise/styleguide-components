@@ -8,9 +8,9 @@ const PhoneNumberControl = {
     ngModel: '<',
     ngRequired: '<',
     ngDisabled: '<',
+    ngChange: '&',
     countries: '<',
     searchPlaceholder: '@',
-    onNumberChange: '&',
   },
   transclude: true,
 };

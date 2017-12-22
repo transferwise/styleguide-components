@@ -1,6 +1,6 @@
 'use strict';
 
-fdescribe('Phone Number', function() {
+describe('Phone Number', function() {
   var $compile, $scope, $timeout, element;
 
   var PREFIX_SELECTOR = 'input[name=phoneNumberPrefix]';
@@ -11,7 +11,7 @@ fdescribe('Phone Number', function() {
     { callingCode: '44', iso2Code: 'GB', iso3Code: 'gbr', name: 'United Kingdom' },
     { callingCode: '33', iso2Code: 'FR', iso3Code: 'fra', name: 'France' }
   ];
-  var onNumberChangeSpy = jasmine.createSpy('onNumberChange');
+  var ngChangeSpy = jasmine.createSpy('ngChange');
 
   beforeEach(function() {
     module('tw.styleguide.forms');
@@ -22,7 +22,7 @@ fdescribe('Phone Number', function() {
       $timeout = $injector.get('$timeout');
       $scope = $rootScope.$new();
       $scope.countries = COUNTRIES;
-      $scope.onNumberChange = onNumberChangeSpy;
+      $scope.ngChange = ngChangeSpy;
     });
   });
 
@@ -56,7 +56,7 @@ fdescribe('Phone Number', function() {
         });
         it('should return an updated number as a string', function() {
           setNumberUsingControls(element, COUNTRIES[2], '09876543');
-          expect(onNumberChangeSpy).toHaveBeenCalledWith('+3309876543');
+          expect(ngChangeSpy).toHaveBeenCalledWith('+3309876543');
         });
     });
     describe('when ngRequired input $scope is passed', function() {
@@ -202,13 +202,11 @@ fdescribe('Phone Number', function() {
     describe('with prefix select', function() {
       it('should update prefix and ngModel', function() {
         simulatePrefixSelection(element, 2);
-        expect(onNumberChangeSpy).toHaveBeenCalledWith('+33123456789');
+        expect(ngChangeSpy).toHaveBeenCalledWith('+33123456789');
       });
       it('should update touched status on change', function() {
-        // $prefixSelect.focus();
+        $prefixSelect[0].dispatchEvent(new CustomEvent('blur'));
         simulatePrefixSelection($prefixSelect, 1);
-        $prefixSelect.focusout();
-        console.log($prefixSelect[0]);
         expect($prefixSelect.hasClass('ng-touched')).toBe(true);
       });
       it('should update pristine status on change', function() {
@@ -220,10 +218,9 @@ fdescribe('Phone Number', function() {
     describe('with localNumber input', function() {
       it('should update localNumber and ngModel', function() {
         $numberInput.val('987654321').triggerHandler('input');
-        expect(onNumberChangeSpy).toHaveBeenCalledWith('+44987654321');
+        expect(ngChangeSpy).toHaveBeenCalledWith('+44987654321');
       });
       it('should update touched status on blur', function() {
-        $numberInput[0].focus();
         $numberInput[0].dispatchEvent(new CustomEvent('blur'));
         expect($numberInput.hasClass('ng-touched')).toBe(true);
       });
@@ -233,7 +230,7 @@ fdescribe('Phone Number', function() {
       });
       it('should ignore localNumber part of the model when invalid', function() {
         $numberInput.val('abc').triggerHandler('input');
-        expect(onNumberChangeSpy).toHaveBeenCalledWith('+44');
+        expect(ngChangeSpy).toHaveBeenCalledWith('+44');
       });
     });
 
@@ -272,7 +269,7 @@ fdescribe('Phone Number', function() {
           ng-model='ngModel' \
           ng-required='ngRequired' \
           ng-disabled='ngDisabled' \
-          on-number-change='onNumberChange(newNumber)' \
+          ng-change='ngChange(newNumber)' \
         ></tw-phone-number>";
     }
 

@@ -3875,9 +3875,9 @@ var PhoneNumberControl = {
     ngModel: '<',
     ngRequired: '<',
     ngDisabled: '<',
+    ngChange: '&',
     countries: '<',
-    searchPlaceholder: '@',
-    onNumberChange: '&'
+    searchPlaceholder: '@'
   },
   transclude: true
 };
@@ -3923,7 +3923,7 @@ var PhoneNumberController = function () {
   }, {
     key: 'sendNewNumberToCallback',
     value: function sendNewNumberToCallback(newNumber) {
-      this.onNumberChange({ newNumber: newNumber });
+      this.ngChange({ newNumber: newNumber });
     }
   }, {
     key: 'explodeNumberModel',

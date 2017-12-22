@@ -17,7 +17,7 @@ class PhoneNumberController {
   }
 
   sendNewNumberToCallback(newNumber) {
-    this.onNumberChange({ newNumber });
+    this.ngChange({ newNumber });
   }
 
   explodeNumberModel(number) {
