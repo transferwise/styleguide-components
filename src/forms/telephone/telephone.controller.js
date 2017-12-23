@@ -1,4 +1,4 @@
-class PhoneNumberController {
+class TelephoneController {
   constructor() {
     this.prefixes = [];
   }
@@ -76,7 +76,7 @@ function findPrefixByNumber(number, countries) {
   return undefined;
 }
 
-PhoneNumberController.$inject = [
+TelephoneController.$inject = [
 ];
 
-export default PhoneNumberController;
+export default TelephoneController;

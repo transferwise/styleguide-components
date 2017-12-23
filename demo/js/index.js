@@ -373,7 +373,7 @@ angular.module('tw.styleguide.docs', [])
     },
     templateUrl: 'partials/forms/form-control.html'
   })
-  .component('twPhoneNumberDocs', {
+  .component('twTelephoneDocs', {
     bindings: {
       model: '='
     },
@@ -381,7 +381,7 @@ angular.module('tw.styleguide.docs', [])
       this.updateModel = function(newNumber) {
         this.model = newNumber;
       };
-      this.phoneNumber = {
+      this.telephone = {
         countries: [
           { callingCode: '1', iso2Code: 'US', iso3Code: 'usa', name: 'United States of America' },
           { callingCode: '44', iso2Code: 'GG', iso3Code: 'ggy', name: 'Guernsey' },
@@ -392,7 +392,7 @@ angular.module('tw.styleguide.docs', [])
       };
       this.log = function (message) { console.log(message); };
     },
-    templateUrl: 'partials/forms/phone-number.html'
+    templateUrl: 'partials/forms/telephone.html'
   })
   .component('twRequirementsFormDocs', {
     controller: ['$scope', '$http', function ($scope, $http) {

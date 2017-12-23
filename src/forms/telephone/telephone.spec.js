@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Phone Number', function() {
+describe('Telephone', function() {
   var $compile, $scope, $timeout, element;
 
   var PREFIX_SELECTOR = 'input[name=phoneNumberPrefix]';
@@ -264,13 +264,13 @@ describe('Phone Number', function() {
   function getCompiledDirectiveElement(scope, template) {
     if (!template) {
       template = " \
-        <tw-phone-number \
+        <tw-telephone \
           countries='countries' \
           ng-model='ngModel' \
           ng-required='ngRequired' \
           ng-disabled='ngDisabled' \
           ng-change='ngChange(newNumber)' \
-        ></tw-phone-number>";
+        ></tw-telephone>";
     }
 
     var element = angular.element(template);

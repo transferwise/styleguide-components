@@ -1,7 +1,7 @@
-import controller from './phone-number.controller.js';
-import template from './phone-number.html';
+import controller from './telephone.controller.js';
+import template from './telephone.html';
 
-const PhoneNumberControl = {
+const TelephoneControl = {
   controller,
   template,
   bindings: {
@@ -15,4 +15,4 @@ const PhoneNumberControl = {
   transclude: true,
 };
 
-export default PhoneNumberControl;
+export default TelephoneControl;

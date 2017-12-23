@@ -1,5 +1,5 @@
-<h4 id="phone-number">TW Phone Number</h4>
-<p>Two way data binding via ng-model, with TODO</p>
+<h4 id="telephone">TW Telephone</h4>
+<p>One way data binding via ng-model, with TODO</p>
 <hr/>
 <form>
 <div class="row m-b-3">
@@ -8,26 +8,26 @@
       <label class="control-label" for="date">
         Example phone number control
       </label>
-      <tw-phone-number name="phone-number"
+      <tw-telephone name="telephone"
         ng-model="$ctrl.model"
-        ng-required="$ctrl.phoneNumber.required"
-        ng-disabled="$ctrl.phoneNumber.disabled"
+        ng-required="$ctrl.telephone.required"
+        ng-disabled="$ctrl.telephone.disabled"
         ng-change="$ctrl.updateModel(newNumber)"
-        countries="$ctrl.phoneNumber.countries"
+        countries="$ctrl.telephone.countries"
         search-placeholder="Prefix"
         tw-validation
       >
         <div class="error-required">Required</div>
         <div class="error-pattern">Invalid characters</div>
         <div class="error-minlength">Too short</div>
-      </tw-phone-number>
+      </tw-telephone>
       <docs-status-messages></docs-status-messages>
     </div>
     <h5>Configuration</h5>
-<pre>&lt;tw-phone-number
+<pre>&lt;tw-telephone
   ng-model="{{$ctrl.model}}"
-  ng-required="{{$ctrl.phoneNumber.required}}"
-  ng-disabled="{{$ctrl.phoneNumber.disabled}}"
+  ng-required="{{$ctrl.telephone.required}}"
+  ng-disabled="{{$ctrl.telephone.disabled}}"
   ng-change="$ctrl.updateModel(newNumber)"
   countries="{[
     { callingCode: '1', iso2Code: 'US', iso3Code: 'usa', name: 'United States of America' },
@@ -49,7 +49,7 @@
         </label>
         <div class="checkbox">
           <label>
-            <tw-checkbox ng-model="$ctrl.phoneNumber.required" />
+            <tw-checkbox ng-model="$ctrl.telephone.required" />
             Is the control required?
           </label>
         </div>
@@ -60,7 +60,7 @@
         </label>
         <div class="checkbox">
           <label>
-            <tw-checkbox ng-model="$ctrl.phoneNumber.disabled" />
+            <tw-checkbox ng-model="$ctrl.telephone.disabled" />
             Is the control disabled?
           </label>
         </div>

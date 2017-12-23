@@ -197,7 +197,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _selectComponent = __webpack_require__(72);
+var _selectComponent = __webpack_require__(69);
 
 var _selectComponent2 = _interopRequireDefault(_selectComponent);
 
@@ -322,7 +322,7 @@ var _fieldset = __webpack_require__(15);
 
 var _fieldset2 = _interopRequireDefault(_fieldset);
 
-var _requirementsForm = __webpack_require__(68);
+var _requirementsForm = __webpack_require__(65);
 
 var _requirementsForm2 = _interopRequireDefault(_requirementsForm);
 
@@ -334,9 +334,9 @@ var _definitionList = __webpack_require__(55);
 
 var _definitionList2 = _interopRequireDefault(_definitionList);
 
-var _phoneNumber = __webpack_require__(63);
+var _telephone = __webpack_require__(71);
 
-var _phoneNumber2 = _interopRequireDefault(_phoneNumber);
+var _telephone2 = _interopRequireDefault(_telephone);
 
 var _uploadDroppable = __webpack_require__(75);
 
@@ -344,7 +344,7 @@ var _uploadDroppable2 = _interopRequireDefault(_uploadDroppable);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.forms', [_checkbox2.default, _radio2.default, _select2.default, _upload2.default, _date2.default, _dateLookup2.default, _currencyInput2.default, _amountCurrencySelect2.default, _dynamicFormControl2.default, _fieldset2.default, _requirementsForm2.default, _focusable2.default, _definitionList2.default, _phoneNumber2.default, _uploadDroppable2.default]).name;
+exports.default = _angular2.default.module('tw.styleguide.forms', [_checkbox2.default, _radio2.default, _select2.default, _upload2.default, _date2.default, _dateLookup2.default, _currencyInput2.default, _amountCurrencySelect2.default, _dynamicFormControl2.default, _fieldset2.default, _requirementsForm2.default, _focusable2.default, _definitionList2.default, _telephone2.default, _uploadDroppable2.default]).name;
 
 // Deprecated
 
@@ -610,7 +610,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _radioComponent = __webpack_require__(66);
+var _radioComponent = __webpack_require__(63);
 
 var _radioComponent2 = _interopRequireDefault(_radioComponent);
 
@@ -3835,183 +3835,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _angular = __webpack_require__(0);
-
-var _angular2 = _interopRequireDefault(_angular);
-
-var _phoneNumberComponent = __webpack_require__(64);
-
-var _phoneNumberComponent2 = _interopRequireDefault(_phoneNumberComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _angular2.default.module('tw.styleguide.forms.phone-number', []).component('twPhoneNumber', _phoneNumberComponent2.default).name;
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _phoneNumberController = __webpack_require__(65);
-
-var _phoneNumberController2 = _interopRequireDefault(_phoneNumberController);
-
-var _phoneNumber = __webpack_require__(123);
-
-var _phoneNumber2 = _interopRequireDefault(_phoneNumber);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var PhoneNumberControl = {
-  controller: _phoneNumberController2.default,
-  template: _phoneNumber2.default,
-  bindings: {
-    ngModel: '<',
-    ngRequired: '<',
-    ngDisabled: '<',
-    ngChange: '&',
-    countries: '<',
-    searchPlaceholder: '@'
-  },
-  transclude: true
-};
-
-exports.default = PhoneNumberControl;
-
-/***/ }),
-/* 65 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var PhoneNumberController = function () {
-  function PhoneNumberController() {
-    _classCallCheck(this, PhoneNumberController);
-
-    this.prefixes = [];
-  }
-
-  _createClass(PhoneNumberController, [{
-    key: '$onChanges',
-    value: function $onChanges(changes) {
-      if (changes.countries && changes.countries.currentValue) {
-        this.formatCountriesToPrefixes();
-        this.explodeNumberModel(this.ngModel);
-      }
-
-      if (changes.ngModel && changes.ngModel.currentValue) {
-        if (validNumber(this.ngModel)) {
-          this.explodeNumberModel(this.ngModel);
-        }
-      }
-    }
-  }, {
-    key: 'sendNewNumberToCallback',
-    value: function sendNewNumberToCallback(newNumber) {
-      this.ngChange({ newNumber: newNumber });
-    }
-  }, {
-    key: 'explodeNumberModel',
-    value: function explodeNumberModel(number) {
-      this.prefix = findPrefixByNumber(number, this.countries);
-      if (this.prefix) {
-        this.localNumber = number.substring(this.prefix.callingCode.length + 1);
-      } else {
-        this.setDefaultPrefix();
-      }
-    }
-  }, {
-    key: 'updatePrefix',
-    value: function updatePrefix(prefix) {
-      this.ngModel = buildCompleteNumber(prefix.callingCode, this.localNumber);
-      this.sendNewNumberToCallback(this.ngModel);
-    }
-  }, {
-    key: 'updateLocalNumber',
-    value: function updateLocalNumber(localNumber) {
-      this.ngModel = buildCompleteNumber(this.prefix.callingCode, localNumber);
-      this.sendNewNumberToCallback(this.ngModel);
-    }
-  }, {
-    key: 'setDefaultPrefix',
-    value: function setDefaultPrefix() {
-      this.prefix = findPrefixByNumber('+44', this.countries);
-      this.sendNewNumberToCallback(this.ngModel);
-    }
-  }, {
-    key: 'formatCountriesToPrefixes',
-    value: function formatCountriesToPrefixes() {
-      var _this = this;
-
-      this.prefixes = [];
-      this.countries.forEach(function (country) {
-        _this.prefixes.push({
-          value: country,
-          label: '+' + country.callingCode,
-          note: country.name
-        });
-      });
-    }
-  }]);
-
-  return PhoneNumberController;
-}();
-
-function validNumber(number) {
-  return typeof number === 'string' && number.length > 4 && number.substring(0, 1) === '+';
-}
-
-function buildCompleteNumber(prefix, localNumber) {
-  if (localNumber) {
-    return '+' + prefix + localNumber;
-  }
-  return '+' + prefix;
-}
-
-function findPrefixByNumber(number, countries) {
-  if (countries && countries.length && number && number.length > 2) {
-    return countries.filter(function (country) {
-      return number.substring(1).indexOf(country.callingCode) === 0;
-    })[0];
-  }
-  return undefined;
-}
-
-PhoneNumberController.$inject = [];
-
-exports.default = PhoneNumberController;
-
-/***/ }),
-/* 66 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _radioController = __webpack_require__(67);
+var _radioController = __webpack_require__(64);
 
 var _radioController2 = _interopRequireDefault(_radioController);
 
-var _radio = __webpack_require__(124);
+var _radio = __webpack_require__(123);
 
 var _radio2 = _interopRequireDefault(_radio);
 
@@ -4037,7 +3865,7 @@ var Radio = {
 exports.default = Radio;
 
 /***/ }),
-/* 67 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4147,7 +3975,7 @@ RadioController.$inject = ['$scope', '$element', 'TwDomService'];
 exports.default = RadioController;
 
 /***/ }),
-/* 68 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4161,11 +3989,11 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _requirementsFormService = __webpack_require__(71);
+var _requirementsFormService = __webpack_require__(68);
 
 var _requirementsFormService2 = _interopRequireDefault(_requirementsFormService);
 
-var _requirementsFormComponent = __webpack_require__(69);
+var _requirementsFormComponent = __webpack_require__(66);
 
 var _requirementsFormComponent2 = _interopRequireDefault(_requirementsFormComponent);
 
@@ -4182,7 +4010,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.forms.requirements-form', [_tabs2.default, _fieldset2.default]).service('TwRequirementsFormService', _requirementsFormService2.default).component('twRequirementsForm', _requirementsFormComponent2.default).name;
 
 /***/ }),
-/* 69 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4192,11 +4020,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _requirementsFormController = __webpack_require__(70);
+var _requirementsFormController = __webpack_require__(67);
 
 var _requirementsFormController2 = _interopRequireDefault(_requirementsFormController);
 
-var _requirementsForm = __webpack_require__(125);
+var _requirementsForm = __webpack_require__(124);
 
 var _requirementsForm2 = _interopRequireDefault(_requirementsForm);
 
@@ -4220,7 +4048,7 @@ var RequirementsForm = {
 exports.default = RequirementsForm;
 
 /***/ }),
-/* 70 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4331,7 +4159,7 @@ RequirementsFormController.$inject = ['$scope', 'TwRequirementsFormService'];
 exports.default = RequirementsFormController;
 
 /***/ }),
-/* 71 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4418,7 +4246,7 @@ function RequirementsFormService() {
 exports.default = RequirementsFormService;
 
 /***/ }),
-/* 72 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4428,11 +4256,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _selectController = __webpack_require__(73);
+var _selectController = __webpack_require__(70);
 
 var _selectController2 = _interopRequireDefault(_selectController);
 
-var _select = __webpack_require__(126);
+var _select = __webpack_require__(125);
 
 var _select2 = _interopRequireDefault(_select);
 
@@ -4478,7 +4306,7 @@ var Select = {
 exports.default = Select;
 
 /***/ }),
-/* 73 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4978,6 +4806,178 @@ var keys = {
 SelectController.$inject = ['$element', '$scope', '$transclude', '$timeout', '$attrs', 'TwDomService'];
 
 exports.default = SelectController;
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _telephoneComponent = __webpack_require__(72);
+
+var _telephoneComponent2 = _interopRequireDefault(_telephoneComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.styleguide.forms.telephone', []).component('twTelephone', _telephoneComponent2.default).name;
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _telephoneController = __webpack_require__(73);
+
+var _telephoneController2 = _interopRequireDefault(_telephoneController);
+
+var _telephone = __webpack_require__(126);
+
+var _telephone2 = _interopRequireDefault(_telephone);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var TelephoneControl = {
+  controller: _telephoneController2.default,
+  template: _telephone2.default,
+  bindings: {
+    ngModel: '<',
+    ngRequired: '<',
+    ngDisabled: '<',
+    ngChange: '&',
+    countries: '<',
+    searchPlaceholder: '@'
+  },
+  transclude: true
+};
+
+exports.default = TelephoneControl;
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var TelephoneController = function () {
+  function TelephoneController() {
+    _classCallCheck(this, TelephoneController);
+
+    this.prefixes = [];
+  }
+
+  _createClass(TelephoneController, [{
+    key: '$onChanges',
+    value: function $onChanges(changes) {
+      if (changes.countries && changes.countries.currentValue) {
+        this.formatCountriesToPrefixes();
+        this.explodeNumberModel(this.ngModel);
+      }
+
+      if (changes.ngModel && changes.ngModel.currentValue) {
+        if (validNumber(this.ngModel)) {
+          this.explodeNumberModel(this.ngModel);
+        }
+      }
+    }
+  }, {
+    key: 'sendNewNumberToCallback',
+    value: function sendNewNumberToCallback(newNumber) {
+      this.ngChange({ newNumber: newNumber });
+    }
+  }, {
+    key: 'explodeNumberModel',
+    value: function explodeNumberModel(number) {
+      this.prefix = findPrefixByNumber(number, this.countries);
+      if (this.prefix) {
+        this.localNumber = number.substring(this.prefix.callingCode.length + 1);
+      } else {
+        this.setDefaultPrefix();
+      }
+    }
+  }, {
+    key: 'updatePrefix',
+    value: function updatePrefix(prefix) {
+      this.ngModel = buildCompleteNumber(prefix.callingCode, this.localNumber);
+      this.sendNewNumberToCallback(this.ngModel);
+    }
+  }, {
+    key: 'updateLocalNumber',
+    value: function updateLocalNumber(localNumber) {
+      this.ngModel = buildCompleteNumber(this.prefix.callingCode, localNumber);
+      this.sendNewNumberToCallback(this.ngModel);
+    }
+  }, {
+    key: 'setDefaultPrefix',
+    value: function setDefaultPrefix() {
+      this.prefix = findPrefixByNumber('+44', this.countries);
+      this.sendNewNumberToCallback(this.ngModel);
+    }
+  }, {
+    key: 'formatCountriesToPrefixes',
+    value: function formatCountriesToPrefixes() {
+      var _this = this;
+
+      this.prefixes = [];
+      this.countries.forEach(function (country) {
+        _this.prefixes.push({
+          value: country,
+          label: '+' + country.callingCode,
+          note: country.name
+        });
+      });
+    }
+  }]);
+
+  return TelephoneController;
+}();
+
+function validNumber(number) {
+  return typeof number === 'string' && number.length > 4 && number.substring(0, 1) === '+';
+}
+
+function buildCompleteNumber(prefix, localNumber) {
+  if (localNumber) {
+    return '+' + prefix + localNumber;
+  }
+  return '+' + prefix;
+}
+
+function findPrefixByNumber(number, countries) {
+  if (countries && countries.length && number && number.length > 2) {
+    return countries.filter(function (country) {
+      return number.substring(1).indexOf(country.callingCode) === 0;
+    })[0];
+  }
+  return undefined;
+}
+
+TelephoneController.$inject = [];
+
+exports.default = TelephoneController;
 
 /***/ }),
 /* 74 */
@@ -8298,25 +8298,25 @@ module.exports = "<fieldset ng-form=\"twFieldset\">\n  <legend ng-if=\"$ctrl.leg
 /* 123 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <tw-select\n    name=\"phoneNumberPrefix\"\n    class=\"col-xs-5\"\n    ng-model=\"$ctrl.prefix\"\n    ng-change=\"$ctrl.updatePrefix($ctrl.prefix)\"\n    options=\"$ctrl.prefixes\"\n    filter=\"{{ $ctrl.searchPlaceholder }}\"\n    dropdown-width=\"md\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n  ></tw-select>\n  <div class=\"col-xs-7\">\n    <input type=\"tel\" tw-validation\n      name=\"phoneNumber\"\n      class=\"form-control\"\n      ng-model=\"$ctrl.localNumber\"\n      ng-change=\"$ctrl.updateLocalNumber($ctrl.localNumber)\"\n      ng-pattern=\"/^[0-9\\\\s.-]*$/\"\n      ng-minlength=\"4\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\" />\n      <div ng-transclude class=\"error-messages\"></div>\n  </div>\n</div>\n";
+module.exports = "<input type=\"radio\" class=\"sr-only\"\n  name=\"{{$ctrl.name}}\"\n  ng-value=\"$ctrl.ngValue || $ctrl.value\"\n  ng-model=\"$ctrl.ngModel\"\n  ng-disabled=\"$ctrl.ngDisabled\"\n  ng-change=\"$ctrl.hiddenInputChange()\"\n  tabindex=\"-1\" />\n<button type=\"button\" class=\"tw-radio-button\" tw-focusable\n  ng-click=\"$ctrl.buttonClick($event)\"\n  ng-focus=\"$ctrl.buttonFocus()\"\n  ng-blur=\"$ctrl.buttonBlur()\"\n  ng-disabled=\"$ctrl.ngDisabled\"\n  ng-class=\"{checked: $ctrl.checked}\"\n  aria-pressed=\"{{$ctrl.checked}}\">\n  <span class=\"tw-radio-check\"></span>\n</button>\n";
 
 /***/ }),
 /* 124 */
 /***/ (function(module, exports) {
 
-module.exports = "<input type=\"radio\" class=\"sr-only\"\n  name=\"{{$ctrl.name}}\"\n  ng-value=\"$ctrl.ngValue || $ctrl.value\"\n  ng-model=\"$ctrl.ngModel\"\n  ng-disabled=\"$ctrl.ngDisabled\"\n  ng-change=\"$ctrl.hiddenInputChange()\"\n  tabindex=\"-1\" />\n<button type=\"button\" class=\"tw-radio-button\" tw-focusable\n  ng-click=\"$ctrl.buttonClick($event)\"\n  ng-focus=\"$ctrl.buttonFocus()\"\n  ng-blur=\"$ctrl.buttonBlur()\"\n  ng-disabled=\"$ctrl.ngDisabled\"\n  ng-class=\"{checked: $ctrl.checked}\"\n  aria-pressed=\"{{$ctrl.checked}}\">\n  <span class=\"tw-radio-check\"></span>\n</button>\n";
+module.exports = "<tw-tabs\n  ng-if=\"$ctrl.requirements.length > 1\"\n  tabs=\"$ctrl.requirements\"\n  active=\"$ctrl.model.type\">\n</tw-tabs>\n<div class=\"tab-content\" ng-form=\"twForm\">\n  <div ng-repeat=\"requirementType in $ctrl.requirements\"\n    ng-if=\"$ctrl.model.type == requirementType.type\"\n    class=\"tab-pane active\"\n    id=\"{{requirementType.type}}\">\n    <p>{{requirementType.description}}</p>\n    <tw-fieldset\n      fields=\"requirementType.fields\"\n      model=\"$ctrl.model\"\n      upload-options=\"$ctrl.uploadOptions\"\n      locale=\"{{$ctrl.locale}}\"\n      on-refresh-requirements=\"$ctrl.onRefreshRequirements()\"\n      validation-messages=\"$ctrl.validationMessages\"\n      error-messages=\"$ctrl.errorMessages\">\n    </tw-fieldset>\n  </div>\n</div>\n";
 
 /***/ }),
 /* 125 */
 /***/ (function(module, exports) {
 
-module.exports = "<tw-tabs\n  ng-if=\"$ctrl.requirements.length > 1\"\n  tabs=\"$ctrl.requirements\"\n  active=\"$ctrl.model.type\">\n</tw-tabs>\n<div class=\"tab-content\" ng-form=\"twForm\">\n  <div ng-repeat=\"requirementType in $ctrl.requirements\"\n    ng-if=\"$ctrl.model.type == requirementType.type\"\n    class=\"tab-pane active\"\n    id=\"{{requirementType.type}}\">\n    <p>{{requirementType.description}}</p>\n    <tw-fieldset\n      fields=\"requirementType.fields\"\n      model=\"$ctrl.model\"\n      upload-options=\"$ctrl.uploadOptions\"\n      locale=\"{{$ctrl.locale}}\"\n      on-refresh-requirements=\"$ctrl.onRefreshRequirements()\"\n      validation-messages=\"$ctrl.validationMessages\"\n      error-messages=\"$ctrl.errorMessages\">\n    </tw-fieldset>\n  </div>\n</div>\n";
+module.exports = "<div class=\"btn-group btn-block tw-select\"\n  ng-class=\"{\n    dropdown: !$ctrl.dropdownUp,\n    dropup: $ctrl.dropdownUp\n  }\" aria-hidden=\"false\">\n\n  <button type=\"button\" class=\"btn btn-input dropdown-toggle\"\n    ng-class=\"{\n      'btn-input-inverse': $ctrl.inverse,\n      'btn-addon': $ctrl.inverse,\n      'btn-sm': $ctrl.size === 'sm',\n      'btn-lg': $ctrl.size === 'lg'\n    }\"\n    data-toggle=\"dropdown\" aria-expanded=\"false\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-focus=\"$ctrl.buttonFocus()\"\n    tw-focusable>\n\n    <span class=\"tw-select-selected\" ng-if=\"$ctrl.selected\">\n      <span class=\"circle circle-inverse pull-xs-left circle-sm\"\n        ng-if=\"$ctrl.selected && $ctrl.selected.icon && $ctrl.selected.secondary\">\n        <span class=\"icon {{$ctrl.selected.icon}}\"></span>\n      </span>\n\n      <span class=\"circle circle-inverse pull-xs-left\"\n        ng-class=\"$ctrl.circleClasses($ctrl.hideCircle)\"\n        ng-if=\"($ctrl.selected.circleText || $ctrl.selected.circleImage || $ctrl.selected.circleIcon)\">\n        <span ng-if=\"$ctrl.selected.circleText\">{{$ctrl.selected.circleText}}</span>\n        <img alt=\"{{$ctrl.selected.label}}\"\n          ng-if=\"$ctrl.selected.circleImage\"\n          src=\"data:image/png;base64,\n            iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=\"\n          ng-src=\"{{$ctrl.selected.circleImage}}\" />\n        <span ng-if=\"$ctrl.selected.circleIcon\" class=\"icon {{$ctrl.selected.circleIcon}}\"></span>\n      </span>\n\n      <span class=\"text-ellipsis\">\n        <span class=\"currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}}\"\n          ng-if=\"$ctrl.selected && $ctrl.selected.currency\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideCurrency)\"\n        ></span>\n        <span class=\"icon {{$ctrl.selected.icon}}\"\n          ng-if=\"$ctrl.selected && $ctrl.selected.icon && !$ctrl.selected.secondary\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideIcon)\"\n        ></span>\n        <span class=\"tw-select-label\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideLabel)\">\n          {{$ctrl.selected.label}}\n        </span>\n        <span\n          ng-if=\"$ctrl.selected.note\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideNote)\"\n          class=\"tw-select-note small m-l-1\">\n          {{$ctrl.selected.note}}\n        </span>\n\n        <span\n          ng-if=\"$ctrl.selected.secondary\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideSecondary)\"\n          class=\"tw-select-secondary small secondary text-ellipsis\">\n          {{$ctrl.selected.secondary}}\n        </span>\n      </span>\n    </span>\n\n    <span class=\"form-control-placeholder\" ng-if=\"!$ctrl.selected\">{{$ctrl.placeholder}}</span>\n    <span class=\"caret\"></span>\n  </button>\n  <ul class=\"dropdown-menu\" role=\"menu\"\n    ng-class=\"{\n      'dropdown-menu-xs-right': $ctrl.dropdownRight === 'xs',\n      'dropdown-menu-sm-right': $ctrl.dropdownRight === 'sm',\n      'dropdown-menu-md-right': $ctrl.dropdownRight === 'md',\n      'dropdown-menu-lg-right': $ctrl.dropdownRight === 'lg',\n      'dropdown-menu-xl-right': $ctrl.dropdownRight === 'xl',\n      'dropdown-menu-sm': $ctrl.dropdownWidth === 'sm',\n      'dropdown-menu-md': $ctrl.dropdownWidth === 'md',\n      'dropdown-menu-lg': $ctrl.dropdownWidth === 'lg'\n    }\">\n\n    <li ng-if=\"$ctrl.filter\">\n      <a href=\"\" class=\"tw-select-filter-link p-a-0\" tabindex=\"-1\"\n        ng-focus=\"$ctrl.focusOnFilterInput()\">\n        <div class=\"input-group\">\n          <span class=\"input-group-addon\"><span class=\"icon icon-search\"></span> </span>\n          <input type=\"text\"\n            class=\"form-control tw-select-filter\"\n            placeholder=\"{{$ctrl.filter}}\"\n            ng-model=\"$ctrl.filterString\"\n            ng-change=\"$ctrl.filterChange()\"\n            ng-keydown=\"$ctrl.filterKeydown($event)\" />\n        </div>\n      </a>\n    </li>\n\n    <li ng-class=\"{active: !$ctrl.selected}\"\n      ng-if=\"$ctrl.placeholder && !$ctrl.ngRequired && !$ctrl.filter\">\n      <a href=\"\" tabindex=\"-1\"\n        ng-click=\"$ctrl.placeholderClick()\"\n        ng-focus=\"$ctrl.placeholderFocus()\"\n        class=\"tw-select-placeholder\" tw-focusable>\n        {{$ctrl.placeholder}}\n      </a>\n    </li>\n\n    <li ng-if=\"($ctrl.placeholder && !$ctrl.ngRequired) || $ctrl.filter\" class=\"divider\"></li>\n\n    <li\n      ng-repeat=\"option in $ctrl.filteredOptions\"\n      ng-class=\"{\n        'active': $ctrl.ngModel === option.value,\n        'disabled': option.disabled,\n        'dropdown-header': option.header,\n        'tw-select-option': !option.header && !option.disabled\n      }\">\n      <span ng-if=\"option.header\" class=\"text-ellipsis\">{{option.header}}</span>\n      <a href=\"\"\n        ng-if=\"!option.header\"\n        ng-click=\"$ctrl.optionClick(option, $event)\"\n        ng-focus=\"$ctrl.optionFocus(option)\"\n        ng-class=\"{'tw-select-option-link': !option.disabled}\"\n        index=\"{{$index}}\"\n        tabindex=\"-1\"\n        tw-focusable >\n        <div ng-if=\"option.icon && option.secondary\"\n          class=\"circle circle-inverse pull-xs-left circle-sm\">\n          <span class=\"icon {{option.icon}}\"></span>\n        </div>\n        <span ng-if=\"option.icon && !option.secondary\"\n          class=\"icon {{option.icon}} pull-xs-left\" >\n        </span> <span ng-if=\"option.currency\"\n          class=\"currency-flag currency-flag-{{option.currency | lowercase}} pull-xs-left\" >\n        </span> <span class=\"circle circle-inverse pull-xs-left\"\n          ng-class=\"{\n            'circle-sm': option.secondary,\n            'circle-xs': !option.secondary\n          }\"\n          ng-if=\"option.circleText || option.circleImage || option.circleIcon\">\n          <span class=\"tw-select-circle-text\"\n            ng-if=\"option.circleText\">{{option.circleText}}</span>\n          <img alt=\"{{option.label}}\"\n            ng-if=\"option.circleImage\"\n            src=\"data:image/png;base64,\n              iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=\"\n            ng-src=\"{{option.circleImage}}\" />\n          <span ng-if=\"option.circleIcon\" class=\"icon {{option.circleIcon}}\"></span>\n        </span>{{option.label}}<span\n          ng-if=\"option.note\" class=\"tw-select-note small m-l-1\">{{option.note}}</span><span\n          ng-if=\"option.secondary\"\n          class=\"tw-select-secondary small text-ellipsis\">{{option.secondary}}</span>\n      </a>\n    </li>\n\n    <li ng-if=\"$ctrl.hasTranscluded\" class=\"divider\"></li>\n\n    <li ng-transclude ng-if=\"$ctrl.hasTranscluded\" class=\"tw-select-transcluded\"></li>\n  </ul>\n</div>\n<input type=\"hidden\" class=\"tw-select-hidden\"\n  name=\"{{$ctrl.name}}\"\n  value=\"{{$ctrl.ngModel}}\"\n  ng-disabled=\"$ctrl.ngDisabled\" />\n";
 
 /***/ }),
 /* 126 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"btn-group btn-block tw-select\"\n  ng-class=\"{\n    dropdown: !$ctrl.dropdownUp,\n    dropup: $ctrl.dropdownUp\n  }\" aria-hidden=\"false\">\n\n  <button type=\"button\" class=\"btn btn-input dropdown-toggle\"\n    ng-class=\"{\n      'btn-input-inverse': $ctrl.inverse,\n      'btn-addon': $ctrl.inverse,\n      'btn-sm': $ctrl.size === 'sm',\n      'btn-lg': $ctrl.size === 'lg'\n    }\"\n    data-toggle=\"dropdown\" aria-expanded=\"false\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-focus=\"$ctrl.buttonFocus()\"\n    tw-focusable>\n\n    <span class=\"tw-select-selected\" ng-if=\"$ctrl.selected\">\n      <span class=\"circle circle-inverse pull-xs-left circle-sm\"\n        ng-if=\"$ctrl.selected && $ctrl.selected.icon && $ctrl.selected.secondary\">\n        <span class=\"icon {{$ctrl.selected.icon}}\"></span>\n      </span>\n\n      <span class=\"circle circle-inverse pull-xs-left\"\n        ng-class=\"$ctrl.circleClasses($ctrl.hideCircle)\"\n        ng-if=\"($ctrl.selected.circleText || $ctrl.selected.circleImage || $ctrl.selected.circleIcon)\">\n        <span ng-if=\"$ctrl.selected.circleText\">{{$ctrl.selected.circleText}}</span>\n        <img alt=\"{{$ctrl.selected.label}}\"\n          ng-if=\"$ctrl.selected.circleImage\"\n          src=\"data:image/png;base64,\n            iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=\"\n          ng-src=\"{{$ctrl.selected.circleImage}}\" />\n        <span ng-if=\"$ctrl.selected.circleIcon\" class=\"icon {{$ctrl.selected.circleIcon}}\"></span>\n      </span>\n\n      <span class=\"text-ellipsis\">\n        <span class=\"currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}}\"\n          ng-if=\"$ctrl.selected && $ctrl.selected.currency\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideCurrency)\"\n        ></span>\n        <span class=\"icon {{$ctrl.selected.icon}}\"\n          ng-if=\"$ctrl.selected && $ctrl.selected.icon && !$ctrl.selected.secondary\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideIcon)\"\n        ></span>\n        <span class=\"tw-select-label\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideLabel)\">\n          {{$ctrl.selected.label}}\n        </span>\n        <span\n          ng-if=\"$ctrl.selected.note\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideNote)\"\n          class=\"tw-select-note small m-l-1\">\n          {{$ctrl.selected.note}}\n        </span>\n\n        <span\n          ng-if=\"$ctrl.selected.secondary\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideSecondary)\"\n          class=\"tw-select-secondary small secondary text-ellipsis\">\n          {{$ctrl.selected.secondary}}\n        </span>\n      </span>\n    </span>\n\n    <span class=\"form-control-placeholder\" ng-if=\"!$ctrl.selected\">{{$ctrl.placeholder}}</span>\n    <span class=\"caret\"></span>\n  </button>\n  <ul class=\"dropdown-menu\" role=\"menu\"\n    ng-class=\"{\n      'dropdown-menu-xs-right': $ctrl.dropdownRight === 'xs',\n      'dropdown-menu-sm-right': $ctrl.dropdownRight === 'sm',\n      'dropdown-menu-md-right': $ctrl.dropdownRight === 'md',\n      'dropdown-menu-lg-right': $ctrl.dropdownRight === 'lg',\n      'dropdown-menu-xl-right': $ctrl.dropdownRight === 'xl',\n      'dropdown-menu-sm': $ctrl.dropdownWidth === 'sm',\n      'dropdown-menu-md': $ctrl.dropdownWidth === 'md',\n      'dropdown-menu-lg': $ctrl.dropdownWidth === 'lg'\n    }\">\n\n    <li ng-if=\"$ctrl.filter\">\n      <a href=\"\" class=\"tw-select-filter-link p-a-0\" tabindex=\"-1\"\n        ng-focus=\"$ctrl.focusOnFilterInput()\">\n        <div class=\"input-group\">\n          <span class=\"input-group-addon\"><span class=\"icon icon-search\"></span> </span>\n          <input type=\"text\"\n            class=\"form-control tw-select-filter\"\n            placeholder=\"{{$ctrl.filter}}\"\n            ng-model=\"$ctrl.filterString\"\n            ng-change=\"$ctrl.filterChange()\"\n            ng-keydown=\"$ctrl.filterKeydown($event)\" />\n        </div>\n      </a>\n    </li>\n\n    <li ng-class=\"{active: !$ctrl.selected}\"\n      ng-if=\"$ctrl.placeholder && !$ctrl.ngRequired && !$ctrl.filter\">\n      <a href=\"\" tabindex=\"-1\"\n        ng-click=\"$ctrl.placeholderClick()\"\n        ng-focus=\"$ctrl.placeholderFocus()\"\n        class=\"tw-select-placeholder\" tw-focusable>\n        {{$ctrl.placeholder}}\n      </a>\n    </li>\n\n    <li ng-if=\"($ctrl.placeholder && !$ctrl.ngRequired) || $ctrl.filter\" class=\"divider\"></li>\n\n    <li\n      ng-repeat=\"option in $ctrl.filteredOptions\"\n      ng-class=\"{\n        'active': $ctrl.ngModel === option.value,\n        'disabled': option.disabled,\n        'dropdown-header': option.header,\n        'tw-select-option': !option.header && !option.disabled\n      }\">\n      <span ng-if=\"option.header\" class=\"text-ellipsis\">{{option.header}}</span>\n      <a href=\"\"\n        ng-if=\"!option.header\"\n        ng-click=\"$ctrl.optionClick(option, $event)\"\n        ng-focus=\"$ctrl.optionFocus(option)\"\n        ng-class=\"{'tw-select-option-link': !option.disabled}\"\n        index=\"{{$index}}\"\n        tabindex=\"-1\"\n        tw-focusable >\n        <div ng-if=\"option.icon && option.secondary\"\n          class=\"circle circle-inverse pull-xs-left circle-sm\">\n          <span class=\"icon {{option.icon}}\"></span>\n        </div>\n        <span ng-if=\"option.icon && !option.secondary\"\n          class=\"icon {{option.icon}} pull-xs-left\" >\n        </span> <span ng-if=\"option.currency\"\n          class=\"currency-flag currency-flag-{{option.currency | lowercase}} pull-xs-left\" >\n        </span> <span class=\"circle circle-inverse pull-xs-left\"\n          ng-class=\"{\n            'circle-sm': option.secondary,\n            'circle-xs': !option.secondary\n          }\"\n          ng-if=\"option.circleText || option.circleImage || option.circleIcon\">\n          <span class=\"tw-select-circle-text\"\n            ng-if=\"option.circleText\">{{option.circleText}}</span>\n          <img alt=\"{{option.label}}\"\n            ng-if=\"option.circleImage\"\n            src=\"data:image/png;base64,\n              iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=\"\n            ng-src=\"{{option.circleImage}}\" />\n          <span ng-if=\"option.circleIcon\" class=\"icon {{option.circleIcon}}\"></span>\n        </span>{{option.label}}<span\n          ng-if=\"option.note\" class=\"tw-select-note small m-l-1\">{{option.note}}</span><span\n          ng-if=\"option.secondary\"\n          class=\"tw-select-secondary small text-ellipsis\">{{option.secondary}}</span>\n      </a>\n    </li>\n\n    <li ng-if=\"$ctrl.hasTranscluded\" class=\"divider\"></li>\n\n    <li ng-transclude ng-if=\"$ctrl.hasTranscluded\" class=\"tw-select-transcluded\"></li>\n  </ul>\n</div>\n<input type=\"hidden\" class=\"tw-select-hidden\"\n  name=\"{{$ctrl.name}}\"\n  value=\"{{$ctrl.ngModel}}\"\n  ng-disabled=\"$ctrl.ngDisabled\" />\n";
+module.exports = "<div class=\"row\">\n  <tw-select\n    name=\"phoneNumberPrefix\"\n    class=\"col-xs-5\"\n    ng-model=\"$ctrl.prefix\"\n    ng-change=\"$ctrl.updatePrefix($ctrl.prefix)\"\n    options=\"$ctrl.prefixes\"\n    filter=\"{{ $ctrl.searchPlaceholder }}\"\n    dropdown-width=\"md\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n  ></tw-select>\n  <div class=\"col-xs-7\">\n    <input type=\"tel\" tw-validation\n      name=\"phoneNumber\"\n      class=\"form-control\"\n      ng-model=\"$ctrl.localNumber\"\n      ng-change=\"$ctrl.updateLocalNumber($ctrl.localNumber)\"\n      ng-pattern=\"/^[0-9\\\\s.-]*$/\"\n      ng-minlength=\"4\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\" />\n      <div ng-transclude class=\"error-messages\"></div>\n  </div>\n</div>\n";
 
 /***/ }),
 /* 127 */
