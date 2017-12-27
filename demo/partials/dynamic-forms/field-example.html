@@ -4,6 +4,7 @@
       field="$ctrl.field"
       model="$ctrl.model"
       error-message="$ctrl.errorMessage"
+      warning-message="$ctrl.warningMessage"
       on-focus="$ctrl.onFocus()"
       on-blur="$ctrl.onBlur()"
       on-change="$ctrl.onChange()">
@@ -13,7 +14,8 @@
 <pre>&lt;tw-field
   model="{{ $ctrl.model }}"
   field="{{ $ctrl.field | json }}"<span ng-if="$ctrl.errorMessage">
-  error-message="'{{ $ctrl.errorMessage }}'"</span><span ng-if="$ctrl.onFocus">
+  error-message="'{{ $ctrl.errorMessage }}'"</span><span ng-if="$ctrl.warningMessage">
+  warning-message="'{{ $ctrl.warningMessage }}'"</span><span ng-if="$ctrl.onFocus">
   on-focus="console.log('focus')"</span><span ng-if="$ctrl.onBlur">
   on-blur="console.log('blur')"</span><span ng-if="$ctrl.onChange">
   on-change="console.log('change')"</span>&gt;

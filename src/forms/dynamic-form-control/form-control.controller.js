@@ -7,6 +7,9 @@ class FormControlController {
 
   $onInit() {
     const $ngModel = this.$element.controller('ngModel');
+    console.log(this.type);
+    console.log(this.element.querySelector('[ng-model]'));
+    console.log(this.element.querySelector('input'));
 
     $ngModel.$validators.minlength = (modelValue, viewValue) => {
       const value = modelValue || viewValue;
@@ -62,6 +65,15 @@ class FormControlController {
       }
       return true;
     };
+
+    if (this.validationAsync) {
+      // TODO add to ngModel async validators
+      // TODO create data package
+      // $http({
+      //   method: this.validationAsync.method || 'POST',
+      //   url: this.validationAsync.url
+      // });
+    }
   }
 
   change(value) {

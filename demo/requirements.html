@@ -56,7 +56,7 @@
             <h5>Component API</h5>
 <pre>
 &lt;tw-field
-  options="{...}"&gt;
+  field="{...}"&gt;
   model="$ctrl.model"
   locale="'en-GB'"
   on-focus="focusHandler()"
@@ -179,6 +179,11 @@
           model="$ctrl.customErrorsModel"
           error-message="$ctrl.customErrorsMessage">
         </field-docs>
+        <field-docs
+          field="$ctrl.customWarning"
+          model="$ctrl.customErrorsModel"
+          warning-message="$ctrl.customWarningMessage">
+        </field-docs>
 
         <h4 id="help-information" class="page-header">
           Help information
@@ -220,6 +225,10 @@
           field="$ctrl.uploadComponent"
           model="$ctrl.presentationModel.uploadOptions">
         </field-docs>
+        <field-docs
+          field="$ctrl.disabledControl"
+          model="$ctrl.presentationModel.disabledControl">
+        </field-docs>
 
         <h4 id="field-events" class="page-header">
           Events
@@ -257,7 +266,7 @@
   description="<span ng-non-bindable>{{ fieldset.description }}</span>"
   fields="fieldset.fields"&gt;
   locale="en-GB"
-  model="..."
+  model="{...}"
   is-valid="..."
   on-field-focus="focusHandler(field)"
   on-field-blur="blurHandler(field)"

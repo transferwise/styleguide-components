@@ -32,7 +32,8 @@ const FormControl = {
     ngMax: '<',
     ngPattern: '<',
     uploadOptions: '<',
-    textFormat: '<'
+    textFormat: '<',
+    validationAsync: '<'
   }
 };
 

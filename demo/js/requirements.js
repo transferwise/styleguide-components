@@ -160,6 +160,14 @@ angular.module('tw.styleguide.docs', [])
     };
     this.customErrorsMessage = "Custom error message";
 
+    this.customWarning = {
+      type: "string",
+      name: "Warning message",
+      key: "stringProperty",
+      placeholder: "Please enter text"
+    };
+    this.customWarningMessage = "This is a warning!";
+
     this.helpText = {
       type: "string",
       name: "Help text",
@@ -212,7 +220,13 @@ angular.module('tw.styleguide.docs', [])
         failureText: "Upload failed"
       }
     };
-
+    this.disabledControl = {
+      type: "string",
+      name: "Disabled control",
+      key: "displayFormat",
+      placeholder: "Please enter...",
+      disabled: true
+    };
 
     this.fieldsetBasic = {
       fields: [{
@@ -298,6 +312,7 @@ angular.module('tw.styleguide.docs', [])
       model: '=',
       field: '<',
       errorMessage: '<',
+      warningMessage: '<',
       onFocus: '&?',
       onBlur: '&?',
       onChange: '&?'

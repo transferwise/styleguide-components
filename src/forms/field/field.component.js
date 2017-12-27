@@ -13,7 +13,8 @@ const Field = {
     focusHandler: '&?onFocus',
     blurHandler: '&?onBlur',
     validationMessages: '<',
-    errorMessage: '<'
+    errorMessage: '<',
+    warningMessage: '<'
   }
 };
 

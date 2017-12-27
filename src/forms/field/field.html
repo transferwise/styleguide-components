@@ -1,6 +1,7 @@
 <div class="form-group tw-field-{{ $ctrl.field.key }}"
   ng-class="{
-    'has-error': $ctrl.field.errorMessage || $ctrl.errorMessage
+    'has-error': $ctrl.field.errorMessage || $ctrl.errorMessage,
+    'has-warning': $ctrl.field.warningMessage || $ctrl.warningMessage
   }">
   <label class="control-label"
     ng-if="$ctrl.field.control !== 'file'">
@@ -46,6 +47,15 @@
     <div class="error-provided" ng-if="$ctrl.errorMessage">
       {{ $ctrl.errorMessage }}
     </div>
+  </div>
+  <div class="alert alert-warning"
+    ng-if="$ctrl.warningMessage"
+    ng-class="{
+      'alert-detach': $ctrl.field.control === 'date'  ||
+                      $ctrl.field.control === 'upload' ||
+                      $ctrl.field.control === 'radio'
+    }">
+    {{ $ctrl.warningMessage }}
   </div>
   <div ng-if="$ctrl.field.helpText || $ctrl.field.helpList || $ctrl.field.helpImage"
     class="alert alert-focus"
