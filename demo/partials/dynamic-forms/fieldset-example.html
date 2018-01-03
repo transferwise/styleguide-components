@@ -6,9 +6,10 @@
       model="$ctrl.model"
       fields="$ctrl.requirements.fields"
       is-valid="$ctrl.isValid"
-      on-field-focus="$ctrl.fieldFocus(field)"
-      on-field-blur="$ctrl.fieldBlur(field)"
-      on-field-change="$ctrl.fieldChange(field)"
+      on-model-change="$ctrl.onModelChange(model)"
+      on-field-focus="$ctrl.onFieldFocus(field)"
+      on-field-blur="$ctrl.onFieldBlur(field)"
+      on-field-change="$ctrl.onFieldChange(field, value)"
       on-refresh-requirements="$ctrl.onRefreshRequirements()">
     </tw-fieldset>
   </div>
@@ -18,10 +19,11 @@
   description="{{ $ctrl.requirements.description }}"</span>
   model="{{ $ctrl.model | json }}"
   fields="{{ $ctrl.requirements.fields | json }}"
-  is-valid="{{ $ctrl.isValid }}"<span ng-if="$ctrl.onFieldFocus">
-  on-field-focus="console.log(field)"</span><span ng-if="$ctrl.onFieldBlur">
-  on-field-blur="console.log(field)"</span><span ng-if="$ctrl.onFieldChange">
-  on-field-change="console.log(field)"</span>&gt;
+  is-valid="{{ $ctrl.isValid }}"<span ng-if="$ctrl.onModelChangeHandler">
+  on-model-change="(model) => { console.log(model); }"</span><span ng-if="$ctrl.onFieldFocusHandler">
+  on-field-focus="(field) => { console.log(field); }"</span><span ng-if="$ctrl.onFieldBlurHandler">
+  on-field-blur="(field) => { console.log(field); }"</span><span ng-if="$ctrl.onFieldChangeHandler">
+  on-field-change="(field, value) => { console.log(field); console.log(value); }"</span>&gt;
 &lt;/tw-fieldset&gt;</pre>
   </div>
 </div>

@@ -1153,7 +1153,6 @@ function RequirementsService($http) {
       url: field.valuesAsync.url,
       data: postData || {}
     }).then(function (response) {
-      console.log('here');
       field.values = response.data;
       _this.prepValues(field);
     });
@@ -1192,6 +1191,9 @@ function getControlType(field) {
   }
   if (field.hidden) {
     return 'hidden';
+  }
+  if (field.valuesAsync) {
+    return 'select';
   }
   if (field.values && field.values.length) {
     return getSelectionType(field);

@@ -1,4 +1,4 @@
-fdescribe('FormControl', function() {
+describe('FormControl', function() {
   var $compile,
     $rootScope,
     $scope,
@@ -17,6 +17,10 @@ fdescribe('FormControl', function() {
     $scope = $rootScope.$new();
     $compile = $injector.get('$compile');
     $timeout = $injector.get('$timeout');
+
+    $scope.onFocus = jasmine.createSpy();
+    $scope.onBlur = jasmine.createSpy();
+    $scope.onChange = jasmine.createSpy();
   }));
 
   describe('type: text', function() {
@@ -24,7 +28,10 @@ fdescribe('FormControl', function() {
       $scope.model = null;
       element = compileTemplate(
         "<tw-form-control type='text' \
-          ng-model='model'> \
+          ng-model='model' \
+          ng-focus='onFocus()' \
+          ng-blur='onBlur()'' \
+          ng-change='onChange()'> \
         </tw-form-control>");
       input = element.querySelector('input');
     });
@@ -34,15 +41,38 @@ fdescribe('FormControl', function() {
       expect(input.getAttribute("type")).toBe("text");
     });
 
-    it('should set $dirty when changed', function() {
-      input.value = 'example';
-      input.dispatchEvent(new Event('input'));
-      expect(element.classList.contains("ng-dirty")).toBe(true);
+    describe('when focused', function() {
+      beforeEach(function() {
+        input.dispatchEvent(new Event('focus'));
+      });
+      it('should call the focus handler', function() {
+        expect($scope.onFocus).toHaveBeenCalled();
+      });
     });
 
-    it('should set $touched when blurred', function() {
-      input.dispatchEvent(new Event('blur'));
-      expect(element.classList.contains("ng-touched")).toBe(true);
+    describe('when changed', function() {
+      beforeEach(function() {
+        input.value = 'example';
+        input.dispatchEvent(new Event('input'));
+      });
+      it('should set the control to $dirty', function() {
+        expect(element.classList).toContain("ng-dirty");
+      });
+      it('should call the change handler', function() {
+        expect($scope.onChange).toHaveBeenCalled();
+      });
+    });
+
+    describe('when blurred', function() {
+      beforeEach(function() {
+        input.dispatchEvent(new Event('blur'));
+      });
+      it('should set the control to $touched', function() {
+        expect(element.classList).toContain("ng-touched");
+      });
+      it('should call the blur handler', function() {
+        expect($scope.onBlur).toHaveBeenCalled();
+      });
     });
   });
 
@@ -72,83 +102,89 @@ fdescribe('FormControl', function() {
         input.dispatchEvent(new Event('input'));
       });
       it('should set ngModel.$invalid', function() {
-        expect(element.classList.contains("ng-invalid")).toBe(true);
-        expect(element.classList.contains("ng-invalid-required")).toBe(true);
+        expect(element.classList).toContain("ng-invalid");
+        expect(element.classList).toContain("ng-invalid-required");
       });
       // it('should not bind to the model', function() {
       //   expect($scope.model).toBe(null);
       // });
     });
+
     describe('when required and value is entered', function() {
       beforeEach(function() {
         input.value = 'abcd';
         input.dispatchEvent(new Event('input'));
       });
       it('should set ngModel.$valid', function() {
-        expect(element.classList.contains("ng-valid-required")).toBe(true);
+        expect(element.classList).toContain("ng-valid-required");
       });
       it('should bind to the model', function() {
         expect($scope.model).toBe('abcd');
       });
     });
+
     describe('when entered value is shorter than min length', function() {
       beforeEach(function() {
         input.value = 'abc';
         input.dispatchEvent(new Event('input'));
       });
       it('should set ngModel.$invalid', function() {
-        expect(element.classList.contains("ng-invalid")).toBe(true);
-        expect(element.classList.contains("ng-invalid-minlength")).toBe(true);
+        expect(element.classList).toContain("ng-invalid");
+        expect(element.classList).toContain("ng-invalid-minlength");
       });
       it('should not bind to the model', function() {
-        expect($scope.model).toBe(null);
+        expect($scope.model).toBeFalsy();
       });
     });
+
     describe('when entered value is longer than max length', function() {
       beforeEach(function() {
         input.value = 'abcdefg';
         input.dispatchEvent(new Event('input'));
       });
       it('should set ngModel.$valid when value is longer than min length', function() {
-        expect(element.classList.contains("ng-invalid")).toBe(true);
-        expect(element.classList.contains("ng-invalid-maxlength")).toBe(true);
+        expect(element.classList).toContain("ng-invalid");
+        expect(element.classList).toContain("ng-invalid-maxlength");
       });
       it('should not bind to the model', function() {
-        expect($scope.model).toBe(null);
+        expect($scope.model).toBeFalsy();
       });
     });
+
     describe('when entered value is between min and max length', function() {
       beforeEach(function() {
         input.value = 'abcd';
         input.dispatchEvent(new Event('input'));
       });
       it('should set ngModel.$valid', function() {
-        expect(element.classList.contains("ng-valid-maxlength")).toBe(true);
+        expect(element.classList).toContain("ng-valid-maxlength");
       });
       it('should bind to the model', function() {
         expect($scope.model).toBe('abcd');
       });
     });
+
     describe('when entered value does not match pattern', function() {
       beforeEach(function() {
         input.value = '1';
         input.dispatchEvent(new Event('input'));
       });
       it('should set ngModel.$invalid', function() {
-        expect(element.classList.contains("ng-invalid")).toBe(true);
-        expect(element.classList.contains("ng-invalid-pattern")).toBe(true);
+        expect(element.classList).toContain("ng-invalid");
+        expect(element.classList).toContain("ng-invalid-pattern");
       });
       it('should not bind to the model', function() {
-        expect($scope.model).toBe(null);
+        expect($scope.model).toBeFalsy();
       });
     });
+
     describe('when entered value matches pattern', function() {
       beforeEach(function() {
         input.value = 'abcd';
         input.dispatchEvent(new Event('input'));
       });
       it('should set ngModel.$valid', function() {
-        expect(element.classList.contains("ng-valid-pattern")).toBe(true);
+        expect(element.classList).toContain("ng-valid-pattern");
       });
       it('should bind to the model', function() {
         expect($scope.model).toBe('abcd');
@@ -175,12 +211,12 @@ fdescribe('FormControl', function() {
     it('should set $dirty when changed', function() {
       input.value = 'example';
       input.dispatchEvent(new Event('input'));
-      expect(element.classList.contains("ng-dirty")).toBe(true);
+      expect(element.classList).toContain("ng-dirty");
     });
 
     it('should set $touched when blurred', function() {
       input.dispatchEvent(new Event('blur'));
-      expect(element.classList.contains("ng-touched")).toBe(true);
+      expect(element.classList).toContain("ng-touched");
     });
   });
 
@@ -207,47 +243,47 @@ fdescribe('FormControl', function() {
     it('should set ngModel.$invalid when required value not set', function() {
       input.value = '';
       input.dispatchEvent(new Event('input'));
-      expect(element.classList.contains("ng-invalid")).toBe(true);
-      expect(element.classList.contains("ng-invalid-required")).toBe(true);
+      expect(element.classList).toContain("ng-invalid");
+      expect(element.classList).toContain("ng-invalid-required");
     });
     it('should set ngModel.$valid when required value set', function() {
       input.value = 'abcd';
       input.dispatchEvent(new Event('input'));
-      expect(element.classList.contains("ng-valid-required")).toBe(true);
+      expect(element.classList).toContain("ng-valid-required");
     });
     it('should set ngModel.$invalid when value is shorter than ngMinlength', function() {
       input.value = 'abc';
       input.dispatchEvent(new Event('input'));
-      expect(element.classList.contains("ng-invalid")).toBe(true);
-      expect(element.classList.contains("ng-invalid-minlength")).toBe(true);
+      expect(element.classList).toContain("ng-invalid");
+      expect(element.classList).toContain("ng-invalid-minlength");
     });
     it('should set ngModel.$valid when value is longer than ngMinlength', function() {
       input.value = 'abcd';
       input.dispatchEvent(new Event('input'));
-      expect(element.classList.contains("ng-valid-minlength")).toBe(true);
+      expect(element.classList).toContain("ng-valid-minlength");
     });
     it('should set ngModel.$invalid when value is longer than ngMaxlength', function() {
       input.value = 'abcdefg';
       input.dispatchEvent(new Event('input'));
-      expect(element.classList.contains("ng-invalid")).toBe(true);
-      expect(element.classList.contains("ng-invalid-maxlength")).toBe(true);
+      expect(element.classList).toContain("ng-invalid");
+      expect(element.classList).toContain("ng-invalid-maxlength");
     });
     it('should set ngModel.$valid when value is shorter than ngMaxlength', function() {
       input.value = 'abcd';
       input.dispatchEvent(new Event('input'));
-      expect(element.classList.contains("ng-valid-maxlength")).toBe(true);
+      expect(element.classList).toContain("ng-valid-maxlength");
     });
 
     it('should set ngModel.$invalid when value does not match ngPattern', function() {
       input.value = '1';
       input.dispatchEvent(new Event('input'));
-      expect(element.classList.contains("ng-invalid")).toBe(true);
-      expect(element.classList.contains("ng-invalid-pattern")).toBe(true);
+      expect(element.classList).toContain("ng-invalid");
+      expect(element.classList).toContain("ng-invalid-pattern");
     });
     it('should set ngModel.$valid when value does match ngPattern', function() {
       input.value = 'abcd';
       input.dispatchEvent(new Event('input'));
-      expect(element.classList.contains("ng-valid-pattern")).toBe(true);
+      expect(element.classList).toContain("ng-valid-pattern");
     });
   });
 
@@ -272,12 +308,12 @@ fdescribe('FormControl', function() {
     it('should set $dirty when changed', function() {
       input.value = 2;
       input.dispatchEvent(new Event('input'));
-      expect(element.classList.contains("ng-dirty")).toBe(true);
+      expect(element.classList).toContain("ng-dirty");
     });
 
     it('should set $touched when blurred', function() {
       input.dispatchEvent(new Event('blur'));
-      expect(element.classList.contains("ng-touched")).toBe(true);
+      expect(element.classList).toContain("ng-touched");
     });
   });
 
@@ -300,8 +336,8 @@ fdescribe('FormControl', function() {
     });
 
     it('should set ngModel.$invalid when required value not set', function() {
-      expect(element.classList.contains('ng-invalid')).toBe(true);
-      expect(element.classList.contains('ng-invalid-required')).toBe(true);
+      expect(element.classList).toContain("ng-invalid");
+      expect(element.classList).toContain("ng-invalid-required");
     });
 
     describe('when value is below min', function() {
@@ -310,11 +346,11 @@ fdescribe('FormControl', function() {
         input.dispatchEvent(new Event('input'));
       });
       it('should set ngModel.$invalid', function() {
-        expect(element.classList.contains('ng-invalid')).toBe(true);
-        expect(element.classList.contains('ng-invalid-min')).toBe(true);
+        expect(element.classList).toContain("ng-invalid");
+        expect(element.classList).toContain("ng-invalid-min");
       });
       it('should not bind to the model', function() {
-        expect($scope.model).toBe(null);
+        expect($scope.model).toBeFalsy();
       });
     });
 
@@ -324,11 +360,11 @@ fdescribe('FormControl', function() {
         input.dispatchEvent(new Event('input'));
       });
       it('should set ngModel.$invalid', function() {
-        expect(element.classList.contains('ng-invalid')).toBe(true);
-        expect(element.classList.contains('ng-invalid-max')).toBe(true);
+        expect(element.classList).toContain("ng-invalid");
+        expect(element.classList).toContain("ng-invalid-max");
       });
       it('should not bind to the model', function() {
-        expect($scope.model).toBe(null);
+        expect($scope.model).toBeFalsy();
       });
     });
 
@@ -338,9 +374,9 @@ fdescribe('FormControl', function() {
         input.dispatchEvent(new Event('input'));
       });
       it('should set ngModel.$valid', function() {
-        expect(element.classList.contains('ng-valid')).toBe(true);
-        expect(element.classList.contains('ng-valid-min')).toBe(true);
-        expect(element.classList.contains('ng-valid-max')).toBe(true);
+        expect(element.classList).toContain("ng-valid");
+        expect(element.classList).toContain("ng-valid-min");
+        expect(element.classList).toContain("ng-valid-max");
       });
       it('should bind the value to the model', function() {
         expect($scope.model).toBe(4);
@@ -376,19 +412,19 @@ fdescribe('FormControl', function() {
 
     // Select presets if ngRequired and no ngModel supplied
     xit('should set ngModel.$invalid when required value not set', function() {
-      expect(element.classList.contains('ng-invalid')).toBe(true);
-      expect(element.classList.contains('ng-invalid-required')).toBe(true);
+      expect(element.classList).toContain("ng-invalid");
+      expect(element.classList).toContain("ng-invalid-required");
     });
 
     it('should set $dirty when changed', function() {
       var selectModelController = angular.element(selectElem).controller('ngModel');
       selectModelController.$setViewValue('2');
-      expect(element.classList.contains("ng-dirty")).toBe(true);
+      expect(element.classList).toContain("ng-dirty");
     });
 
     it('should set $touched when blurred', function() {
       selectElem.dispatchEvent(new Event('blur'));
-      expect(element.classList.contains("ng-touched")).toBe(true);
+      expect(element.classList).toContain("ng-touched");
     });
   });
 
@@ -411,18 +447,18 @@ fdescribe('FormControl', function() {
 
     it('should set $dirty when clicked', function() {
       $(checkbox).click();
-      expect(element.classList.contains("ng-dirty")).toBe(true);
+      expect(element.classList).toContain("ng-dirty");
     });
 
     it('should set $touched when blurred', function() {
       $(checkbox).focus().blur();
-      expect(element.classList.contains("ng-touched")).toBe(true);
+      expect(element.classList).toContain("ng-touched");
     });
 
     describe('when required', function() {
       it('should set ngModel.$invalid if no value set', function() {
-        expect(element.classList.contains('ng-invalid')).toBe(true);
-        expect(element.classList.contains('ng-invalid-required')).toBe(true);
+        expect(element.classList).toContain("ng-invalid");
+        expect(element.classList).toContain("ng-invalid-required");
       });
     });
   });
@@ -460,12 +496,12 @@ fdescribe('FormControl', function() {
 
     it('should set $dirty when changed ', function() {
       $(radio[0]).click();
-      expect(element.classList.contains("ng-dirty")).toBe(true);
+      expect(element.classList).toContain("ng-dirty");
     });
 
     it('should set $touched when blurred', function() {
       $(radio[0]).focus().blur();
-      expect(element.classList.contains("ng-touched")).toBe(true);
+      expect(element.classList).toContain("ng-touched");
     });
 
     describe(' - validation', function() {
@@ -473,15 +509,15 @@ fdescribe('FormControl', function() {
         $scope.required = true;
         element = compileTemplate(template);
 
-        expect(element.classList.contains('ng-invalid')).toBe(true);
-        expect(element.classList.contains('ng-invalid-required')).toBe(true);
+        expect(element.classList).toContain("ng-invalid");
+        expect(element.classList).toContain("ng-invalid-required");
       });
       it('should set ngModel.$valid when not required', function() {
         $scope.required = false;
         element = compileTemplate(template);
 
-        expect(element.classList.contains('ng-valid')).toBe(true);
-        expect(element.classList.contains('ng-valid-required')).toBe(true);
+        expect(element.classList).toContain("ng-valid");
+        expect(element.classList).toContain("ng-valid-required");
       });
     });
   });
@@ -529,9 +565,11 @@ fdescribe('FormControl', function() {
       yearInput = element.querySelector('.tw-date-year');
     });
 
-    it('should set ngModel.$invalid when required value not set', function() {
-      expect(element.classList.contains('ng-invalid')).toBe(true);
-      expect(element.classList.contains('ng-invalid-required')).toBe(true);
+    describe('when required and not set', function() {
+      it('should set ngModel.$invalid', function() {
+        expect(element.classList).toContain("ng-invalid");
+        expect(element.classList).toContain("ng-invalid-required");
+      });
     });
 
     describe('when value is below ngMin', function() {
@@ -543,11 +581,11 @@ fdescribe('FormControl', function() {
         yearInput.dispatchEvent(new Event('input'));
       });
       it('should set ngModel.$invalid', function() {
-        expect(element.classList.contains('ng-invalid')).toBe(true);
-        expect(element.classList.contains('ng-invalid-min')).toBe(true);
+        expect(element.classList).toContain("ng-invalid");
+        expect(element.classList).toContain("ng-invalid-min");
       });
       it('should not bind to the model', function() {
-        expect($scope.model).toBe(null);
+        expect($scope.model).toBeFalsy();
       });
     });
 
@@ -559,12 +597,12 @@ fdescribe('FormControl', function() {
         yearInput.value = '2020';
         yearInput.dispatchEvent(new Event('input'));
       })
-      it('should set ngModel.$invalid when value is above ngMax', function() {
-        expect(element.classList.contains('ng-invalid')).toBe(true);
-        expect(element.classList.contains('ng-invalid-max')).toBe(true);
+      it('should set ngModel.$invalid', function() {
+        expect(element.classList).toContain("ng-invalid");
+        expect(element.classList).toContain("ng-invalid-max");
       });
       it('should not bind to the model', function() {
-        expect($scope.model).toBe(null);
+        expect($scope.model).toBeFalsy();
       });
     });
 
@@ -577,17 +615,13 @@ fdescribe('FormControl', function() {
         yearInput.dispatchEvent(new Event('input'));
       })
       it('should set ngModel.$valid ', function() {
-        expect(element.classList.contains('ng-valid')).toBe(true);
-        expect(element.classList.contains('ng-valid-min')).toBe(true);
-        expect(element.classList.contains('ng-valid-max')).toBe(true);
+        expect(element.classList).toContain("ng-valid");
+        expect(element.classList).toContain("ng-valid-min");
+        expect(element.classList).toContain("ng-valid-max");
       });
       it('should bind to the model', function() {
         expect($scope.model).toBe('2016-01-01');
       });
-    });
-
-    it('should not set invalid minlength', function() {
-      expect(element.classList.contains('ng-invalid-minlength')).toBe(false);
     });
   });
 

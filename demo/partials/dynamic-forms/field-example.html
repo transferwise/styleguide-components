@@ -7,7 +7,7 @@
       warning-message="$ctrl.warningMessage"
       on-focus="$ctrl.onFocus()"
       on-blur="$ctrl.onBlur()"
-      on-change="$ctrl.onChange()">
+      on-change="$ctrl.onChange(value)">
     </tw-field>
   </div>
   <div class="col-md-6" ng-class="{'p-t-3': $ctrl.field.format !== 'base64url'}">
@@ -18,7 +18,7 @@
   warning-message="'{{ $ctrl.warningMessage }}'"</span><span ng-if="$ctrl.onFocus">
   on-focus="console.log('focus')"</span><span ng-if="$ctrl.onBlur">
   on-blur="console.log('blur')"</span><span ng-if="$ctrl.onChange">
-  on-change="console.log('change')"</span>&gt;
+  on-change="console.log(value)"</span>&gt;
 &lt;/tw-field&gt;</pre>
   </div>
 </div>

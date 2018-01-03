@@ -6,14 +6,37 @@ class FormControlController {
   }
 
   $onInit() {
-    const $ngModel = this.$element.controller('ngModel');
-    console.log(this.type);
-    console.log(this.element.querySelector('[ng-model]'));
-    console.log(this.element.querySelector('input'));
+    this.$ngModel = this.$element.controller('ngModel');
+    this.addValidators();
+  }
+
+  change() {
+    this.$ngModel.$setDirty();
+
+    // Pass internal value through our validators
+    this.$ngModel.$setViewValue(this.internalModel);
+  }
+
+  focus() {
+    this.element.dispatchEvent(new CustomEvent('focus'));
+  }
+
+  blur() {
+    this.$ngModel.$setTouched();
+    this.element.dispatchEvent(new CustomEvent('blur'));
+  }
+
+  addValidators() {
+    const $ngModel = this.$ngModel;
+
+    $ngModel.$validators.required = (modelValue, viewValue) => {
+      const value = modelValue || viewValue;
+      return !value || !this.ngRequired;
+    };
 
     $ngModel.$validators.minlength = (modelValue, viewValue) => {
       const value = modelValue || viewValue;
-      if (this.type !== 'string' || !this.ngMinlength) {
+      if (this.type !== 'text' || !this.ngMinlength) {
         return true;
       }
       return !value || value.length >= this.ngMinlength;
@@ -21,7 +44,7 @@ class FormControlController {
 
     $ngModel.$validators.maxlength = (modelValue, viewValue) => {
       const value = modelValue || viewValue;
-      if (this.type !== 'string' || !this.ngMaxlength) {
+      if (this.type !== 'text' || !this.ngMaxlength) {
         return true;
       }
       return !value || value.length <= this.ngMaxlength;
@@ -38,8 +61,13 @@ class FormControlController {
         value < this.ngMin) {
         return false;
       }
-      if (value &&
-        value.getUTCDate &&
+      if (this.type === 'date' &&
+        typeof value === 'string' &&
+        typeof this.ngMin === 'string') {
+        return value >= this.ngMin;
+      }
+      if (this.type === 'date' &&
+        value && value.getUTCDate &&
         this.ngMin.getUTCDate &&
         value < this.ngMin) {
         return false;
@@ -57,14 +85,25 @@ class FormControlController {
         value > this.ngMax) {
         return false;
       }
-      if (value &&
-        viewValue.getUTCDate &&
+      if (this.type === 'date' &&
+        typeof value === 'string' &&
+        typeof this.ngMax === 'string') {
+        return value <= this.ngMax;
+      }
+      if (this.type === 'date' &&
+        value && value.getUTCDate &&
         this.ngMax.getUTCDate &&
         value > this.ngMax) {
         return false;
       }
       return true;
     };
+
+
+    $ngModel.$formatters.push((modelValue) => {
+      this.internalModel = modelValue;
+      return modelValue;
+    });
 
     if (this.validationAsync) {
       // TODO add to ngModel async validators
@@ -74,27 +113,6 @@ class FormControlController {
       //   url: this.validationAsync.url
       // });
     }
-  }
-
-  change(value) {
-    console.log(this.$ngModel.$valid);
-    this.$ngModel.$setDirty();
-    if (this.ngChange) {
-      // don't fire change for the radio button becoming false
-      if (this.type === 'radio' && this.ngModel !== value) {
-        return;
-      }
-      this.ngChange({ newValue: value });
-    }
-  }
-
-  focus() {
-    this.element.dispatchEvent(new CustomEvent('focus'));
-  }
-
-  blur() {
-    this.$ngModel.$setTouched();
-    this.element.dispatchEvent(new CustomEvent('blur'));
   }
 }
 

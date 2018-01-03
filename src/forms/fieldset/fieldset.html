@@ -16,7 +16,7 @@
         locale="$ctrl.locale"
         upload-options="$ctrl.uploadOptions"
         error-message="$ctrl.errorMessages[field.key]"
-        on-change="$ctrl.fieldChange(field)"
+        on-change="$ctrl.fieldChange(value, field)"
         on-focus="$ctrl.fieldFocus(field)"
         on-blur="$ctrl.fieldBlur(field)">
       </tw-field>

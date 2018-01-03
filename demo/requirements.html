@@ -149,15 +149,18 @@
         </h4>
         <field-docs
           field="$ctrl.stringValidation"
-          model="$ctrl.validationModel.stringProperty">
+          model="$ctrl.validationModel.stringProperty"
+          on-change="$ctrl.log(value)">
         </field-docs>
         <field-docs
           field="$ctrl.numberValidation"
-          model="$ctrl.validationModel.numberProperty">
+          model="$ctrl.validationModel.numberProperty"
+          on-change="$ctrl.log(value)">
         </field-docs>
         <field-docs
           field="$ctrl.dateValidation"
-          model="$ctrl.validationModel.dateProperty">
+          model="$ctrl.validationModel.dateProperty"
+          on-change="$ctrl.log(value)">
         </field-docs>
 
         <!-- <h5>Async validation</h5> -->
@@ -241,7 +244,7 @@
           model="$ctrl.eventsModel"
           on-focus="$ctrl.log('focus')"
           on-blur="$ctrl.log('blur')"
-          on-change="$ctrl.log('change')">
+          on-change="$ctrl.log(value)">
         </field-docs>
 
         <h2 id="fieldsets" class="page-header">
@@ -268,9 +271,10 @@
   locale="en-GB"
   model="{...}"
   is-valid="..."
+  on-model-change="modelHandler(model)"
   on-field-focus="focusHandler(field)"
   on-field-blur="blurHandler(field)"
-  on-field-change="changeHandler(field)"&gt;
+  on-field-change="changeHandler(field, value)"&gt;
 &lt;/tw-fieldset&gt;
 </pre>
           </div>
@@ -307,9 +311,10 @@
         <fieldset-docs
           requirements="$ctrl.fieldsetBasic"
           model="$ctrl.fieldsetBasicModel"
+          on-model-change="$ctrl.log(model)"
           on-field-focus="$ctrl.log(field)"
           on-field-blur="$ctrl.log(field)"
-          on-field-change="$ctrl.log(field)">
+          on-field-change="$ctrl.onFieldChange(field, value)">
         </fieldset-docs>
 
         <h4 id="fieldset-layout" class="page-header">

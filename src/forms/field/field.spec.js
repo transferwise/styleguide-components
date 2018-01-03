@@ -13,13 +13,9 @@ describe('Field', function() {
     $compile = $injector.get('$compile');
     $scope = $rootScope.$new();
     $scope.model;
-    $scope.onChange = function () {};
-    $scope.onFocus = function () {};
-    $scope.onBlur = function () {};
-
-    spyOn($scope, 'onChange');
-    spyOn($scope, 'onFocus');
-    spyOn($scope, 'onBlur');
+    $scope.onChange = jasmine.createSpy();
+    $scope.onFocus = jasmine.createSpy();
+    $scope.onBlur = jasmine.createSpy();
   }));
 
   describe('when given a name for the field', function() {

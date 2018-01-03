@@ -23,7 +23,7 @@
     ng-model="$ctrl.model"
     ng-focus="$ctrl.onFocus()"
     ng-blur="$ctrl.onBlur()"
-    ng-change="$ctrl.onChange(newValue)"
+    ng-change="$ctrl.onChange($ctrl.model)"
     ng-required="$ctrl.field.required"
     ng-disabled="$ctrl.field.disabled"
     tw-minlength="$ctrl.field.minlength || $ctrl.field.minLength"

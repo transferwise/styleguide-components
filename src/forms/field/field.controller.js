@@ -23,9 +23,11 @@ class FieldController {
 
   onChange(newValue) {
     if (this.changeHandler) {
-      this.changeHandler({ newValue });
+      this.changeHandler({ value: newValue });
     }
-    this.errorMessage = false;
+    if (this.errorMessage) {
+      delete this.errorMessage;
+    }
   }
 }
 

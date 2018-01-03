@@ -11,6 +11,7 @@ const Fieldset = {
     locale: '@',
     title: '@',
     description: '@',
+    onModelChange: '&?',
     onRefreshRequirements: '&?',
     onFieldFocus: '&?',
     onFieldBlur: '&?',

@@ -1,9 +1,10 @@
 import angular from 'angular';
 
 class FieldsetController {
-  constructor(TwRequirementsService, $scope) {
+  constructor(TwRequirementsService, $scope, $timeout) {
     this.RequirementsService = TwRequirementsService;
     this.$scope = $scope;
+    this.$timeout = $timeout;
   }
 
   $onInit() {
@@ -66,15 +67,28 @@ class FieldsetController {
     }
   }
 
-  fieldChange(field) {
+  fieldChange(value, field) {
     if (this.onFieldChange) {
-      this.onFieldChange({ field });
+      this.onFieldChange({ field, value });
     }
+
     if (controlRefreshesOnChange(field.control) &&
       field.refreshRequirementsOnChange &&
       this.onRefreshRequirements) {
       this.onRefreshRequirements();
     }
+
+    // We remove custom error messages on change, as they're no longer relevant
+    if (this.errorMessages && this.errorMessages[field.key]) {
+      delete this.errorMessages[field.key];
+    }
+
+    // Delay so model can update
+    this.$timeout(() => {
+      if (this.onModelChange) {
+        this.onModelChange({ model: this.model });
+      }
+    });
   }
 }
 
@@ -88,7 +102,8 @@ function controlRefreshesOnChange(control) {
 
 FieldsetController.$inject = [
   'TwRequirementsService',
-  '$scope'
+  '$scope',
+  '$timeout'
 ];
 
 export default FieldsetController;

@@ -443,6 +443,7 @@ angular.module('tw.styleguide.docs', [])
         { value: 2, label: 'Two' },
         { value: 3, label: 'Three' }
       ];
+      this.log = function(msg) { console.log(msg); };
     },
     templateUrl: 'partials/tw-validation.html'
   })
@@ -634,6 +635,10 @@ angular.module('tw.styleguide.docs', [])
 
       this.refresh = function() {
         console.log('onRefreshRequirements');
+      };
+
+      this.onModelChange = function(model) {
+        console.log(model);
       };
 
       this.fields = [

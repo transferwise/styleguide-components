@@ -1,20 +1,4 @@
 <div ng-switch="$ctrl.type">
-  <input ng-switch-when="number"
-    name="{{$ctrl.name}}"
-    type="number"
-    step="{{$ctrl.step}}"
-    class="form-control"
-    placeholder="{{$ctrl.placeholder}}"
-    ng-model="$ctrl.ngModel"
-    ng-model-options="{ allowInvalid: true }"
-    ng-required="$ctrl.ngRequired"
-    ng-disabled="$ctrl.ngDisabled"
-    ng-change="$ctrl.change($ctrl.ngModel)"
-    ng-focus="$ctrl.focus()"
-    ng-blur="$ctrl.blur()"
-    ng-min="$ctrl.ngMin"
-    ng-max="$ctrl.ngMax" />
-
   <div ng-switch-when="radio"
     class="radio"
     ng-class="{disabled: $ctrl.ngDisabled}"
@@ -23,7 +7,7 @@
       <tw-radio
         name="{{$ctrl.name}}"
         ng-value="option.value"
-        ng-model="$ctrl.ngModel"
+        ng-model="$ctrl.internalModel"
         ng-required="$ctrl.ngRequired"
         ng-disabled="$ctrl.ngDisabled"
         ng-change="$ctrl.change(option.value)"
@@ -41,10 +25,10 @@
     <label>
       <tw-checkbox
         name="{{$ctrl.name}}"
-        ng-model="$ctrl.ngModel"
+        ng-model="$ctrl.internalModel"
         ng-required="$ctrl.ngRequired"
         ng-disabled="$ctrl.ngDisabled"
-        ng-change="$ctrl.change($ctrl.ngModel)"
+        ng-change="$ctrl.change($ctrl.internalModel)"
         ng-click="$ctrl.change()"
         ng-focus="$ctrl.focus()"
         ng-blur="$ctrl.blur()"
@@ -58,10 +42,10 @@
       name="{{$ctrl.name}}"
       options="$ctrl.options"
       placeholder="{{$ctrl.placeholder}}"
-      ng-model="$ctrl.ngModel"
+      ng-model="$ctrl.internalModel"
       ng-required="$ctrl.ngRequired"
       ng-disabled="$ctrl.ngDisabled"
-      ng-change="$ctrl.change($ctrl.ngModel)"
+      ng-change="$ctrl.change($ctrl.internalModel)"
       ng-focus="$ctrl.focus()"
       ng-blur="$ctrl.blur()"
     ></tw-select>
@@ -80,14 +64,46 @@
       cancel-text="{{$ctrl.uploadOptions.cancelText}}"
       too-large-message="{{$ctrl.uploadTooLargeMessage}}"
       max-size="$ctrl.ngMax"
-      ng-model="$ctrl.ngModel"
+      ng-model="$ctrl.internalModel"
       ng-required="$ctrl.ngRequired"
       ng-disabled="$ctrl.ngDisabled"
-      ng-change="$ctrl.change($ctrl.ngModel)"
+      ng-change="$ctrl.change($ctrl.internalModel)"
       ng-focus="$ctrl.focus()"
       ng-blur="$ctrl.blur()"
     ></tw-upload>
   </div>
+
+  <div ng-switch-when="date|date-time" ng-switch-when-separator="|">
+    <tw-date
+      name="{{$ctrl.name}}"
+      locale="{{$ctrl.locale}}"
+      ng-min="$ctrl.ngMin"
+      ng-max="$ctrl.ngMax"
+      ng-model="$ctrl.internalModel"
+      ng-model-options="{ allowInvalid: true }"
+      ng-required="$ctrl.ngRequired"
+      ng-disabled="$ctrl.ngDisabled"
+      ng-change="$ctrl.change($ctrl.internalModel)"
+      ng-focus="$ctrl.focus()"
+      ng-blur="$ctrl.blur()"
+    ></tw-date>
+  </div>
+
+  <input ng-switch-when="number"
+    name="{{$ctrl.name}}"
+    type="number"
+    step="{{$ctrl.step}}"
+    class="form-control"
+    placeholder="{{$ctrl.placeholder}}"
+    ng-model="$ctrl.internalModel"
+    ng-model-options="{ allowInvalid: true }"
+    ng-required="$ctrl.ngRequired"
+    ng-disabled="$ctrl.ngDisabled"
+    ng-change="$ctrl.change($ctrl.internalModel)"
+    ng-focus="$ctrl.focus()"
+    ng-blur="$ctrl.blur()"
+    ng-min="$ctrl.ngMin"
+    ng-max="$ctrl.ngMax" />
 
   <input ng-switch-when="hidden"
     name="{{$ctrl.name}}"
@@ -99,47 +115,31 @@
     type="password"
     class="form-control"
     placeholder="{{$ctrl.placeholder}}"
-    ng-model="$ctrl.ngModel"
+    ng-model="$ctrl.internalModel"
     ng-model-options="{ allowInvalid: true }"
     ng-required="$ctrl.ngRequired"
     ng-disabled="$ctrl.ngDisabled"
-    ng-change="$ctrl.change($ctrl.ngModel)"
+    ng-change="$ctrl.change($ctrl.internalModel)"
     ng-focus="$ctrl.focus()"
     ng-blur="$ctrl.blur()"
     ng-minlength="$ctrl.ngMinlength"
     ng-maxlength="$ctrl.ngMaxlength" />
-
-  <div ng-switch-when="date|date-time" ng-switch-when-separator="|">
-    <tw-date
-      name="{{$ctrl.name}}"
-      locale="{{$ctrl.locale}}"
-      ng-min="$ctrl.ngMin"
-      ng-max="$ctrl.ngMax"
-      ng-model="$ctrl.ngModel"
-      ng-model-options="{ allowInvalid: true }"
-      ng-required="$ctrl.ngRequired"
-      ng-disabled="$ctrl.ngDisabled"
-      ng-change="$ctrl.change($ctrl.ngModel)"
-      ng-focus="$ctrl.focus()"
-      ng-blur="$ctrl.blur()"
-    ></tw-date>
-  </div>
 
   <input ng-switch-default
     name="{{$ctrl.name}}"
     type="text"
     class="form-control"
     placeholder="{{$ctrl.placeholder}}"
-    ng-model="$ctrl.ngModel"
+    ng-model="$ctrl.internalModel"
     ng-model-options="{ allowInvalid: true }"
     ng-required="$ctrl.ngRequired"
-    ng-disabled="$ctrl.ngDisabled"
     ng-pattern="$ctrl.ngPattern"
-    ng-change="$ctrl.change($ctrl.ngModel)"
-    ng-focus="$ctrl.focus()"
-    ng-blur="$ctrl.blur()"
     ng-minlength="$ctrl.ngMinlength"
     ng-maxlength="$ctrl.ngMaxlength"
+    ng-change="$ctrl.change($ctrl.internalModel)"
+    ng-focus="$ctrl.focus()"
+    ng-blur="$ctrl.blur()"
+    ng-disabled="$ctrl.ngDisabled"
     tw-text-format="{{ $ctrl.textFormat }}" />
 
 </div>

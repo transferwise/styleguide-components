@@ -3,7 +3,14 @@ angular.module('tw.styleguide.docs', [])
     $compileProvider.debugInfoEnabled(false);
   }])
   .controller('PageController', function () {
-    this.log = function(message) { console.log(message); };
+    this.log = function(message) {
+      console.log(message);
+    };
+    this.onFieldChange = function(field, value) {
+      console.log('onFieldChange');
+      console.log(field);
+      console.log(value);
+    };
 
     // Basic types
     this.stringBasic = {
@@ -238,7 +245,9 @@ angular.module('tw.styleguide.docs', [])
         type: "number",
         name: "Number label",
         key: "numberProperty",
-        placeholder: "Please enter number"
+        placeholder: "Please enter number",
+        required: true,
+        min: 5
       }]
     };
     this.fieldsetBasicModel = {
@@ -289,20 +298,24 @@ angular.module('tw.styleguide.docs', [])
       model: '=',
       requirements: '<',
       onRefreshRequirements: '&?',
-      onFieldFocus: '&?',
-      onFieldBlur: '&?',
-      onFieldChange: '&?'
+      onModelChangeHandler: '&?onModelChange',
+      onFieldFocusHandler: '&?onFieldFocus',
+      onFieldBlurHandler: '&?onFieldBlur',
+      onFieldChangeHandler: '&?onFieldChange'
     },
     controller: function() {
       this.isValid = false;
-      this.fieldFocus = function(field) {
-        this.onFieldFocus && this.onFieldFocus({ field: field });
+      this.onFieldFocus = function(field) {
+        this.onFieldFocusHandler && this.onFieldFocusHandler({ field: field });
       };
-      this.fieldBlur = function(field) {
-        this.onFieldBlur && this.onFieldBlur({ field: field });
+      this.onFieldBlur = function(field) {
+        this.onFieldBlurHandler && this.onFieldBlurHandler({ field: field });
       };
-      this.fieldChange = function(field) {
-        this.onFieldChange && this.onFieldChange({ field: field });
+      this.onFieldChange = function(field, value) {
+        this.onFieldChangeHandler && this.onFieldChangeHandler({ field: field, value: value });
+      };
+      this.onModelChange = function(model) {
+        this.onModelChangeHandler && this.onModelChangeHandler({ model });
       };
     },
     templateUrl: 'partials/dynamic-forms/fieldset-example.html'
@@ -313,9 +326,16 @@ angular.module('tw.styleguide.docs', [])
       field: '<',
       errorMessage: '<',
       warningMessage: '<',
-      onFocus: '&?',
-      onBlur: '&?',
-      onChange: '&?'
+      onFocusHandler: '&?onFocus',
+      onBlurHandler: '&?onBlur',
+      onChangeHandler: '&?onChange'
+    },
+    controller: function() {
+      this.log = function(msg) { console.log(`field ${this.field.key} changed: ${msg}`); };
+      this.onChange = function(newValue) {
+        console.log(`field on change ${this.field.key} changed: ${newValue}`);
+        this.onChangeHandler && this.onChangeHandler({ value: newValue });
+      };
     },
     templateUrl: 'partials/dynamic-forms/field-example.html'
   });;
