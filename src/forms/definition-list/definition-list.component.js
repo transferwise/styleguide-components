@@ -6,7 +6,7 @@ const DefinitionList = {
   template,
   bindings: {
     model: '<',
-    rawFields: '<fields',
+    initialFields: '<fields',
     locale: '@',
     title: '@',
     narrow: '<'

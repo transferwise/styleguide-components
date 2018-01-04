@@ -23,9 +23,9 @@ class FieldsetController {
       };
     }
 
-    if (this.rawFields) {
+    if (this.initialFields) {
       this.fields = this.RequirementsService.prepFields(
-        this.rawFields,
+        this.initialFields,
         this.model,
         this.validationMessages
       );
@@ -39,10 +39,11 @@ class FieldsetController {
   }
 
   $onChanges(changes) {
-    if (changes.rawFields) {
-      if (!angular.equals(changes.rawFields.currentValue, changes.rawFields.previousValue)) {
+    const fieldsChanged = changes.initialFields;
+    if (fieldsChanged) {
+      if (!angular.equals(fieldsChanged.currentValue, fieldsChanged.previousValue)) {
         this.fields = this.RequirementsService.prepFields(
-          this.rawFields,
+          fieldsChanged.currentValue,
           this.model,
           this.validationMessages
         );

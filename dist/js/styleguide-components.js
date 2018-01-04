@@ -3407,7 +3407,7 @@ var DefinitionList = {
   template: _definitionList2.default,
   bindings: {
     model: '<',
-    rawFields: '<fields',
+    initialFields: '<fields',
     locale: '@',
     title: '@',
     narrow: '<'
@@ -3450,11 +3450,11 @@ var DefinitionListController = function () {
     value: function $onInit() {
       var _this = this;
 
-      this.fields = this.RequirementsService.prepFields(this.rawFields, this.model);
+      this.fields = this.RequirementsService.prepFields(this.initialFields, this.model);
 
       this.$scope.$watch('$ctrl.fields', function (newValue, oldValue) {
         if (!_angular2.default.equals(newValue, oldValue)) {
-          _this.fields = _this.RequirementsService.prepFields(_this.rawFields, _this.model);
+          _this.fields = _this.RequirementsService.prepFields(_this.initialFields, _this.model);
         }
       });
     }
@@ -3656,14 +3656,14 @@ var FormControlController = function () {
         if (typeof _this.ngMin === 'undefined') {
           return true;
         }
-        if (typeof value === 'number' && typeof _this.ngMin === 'number' && value < _this.ngMin) {
-          return false;
+        if (typeof value === 'number' && typeof _this.ngMin === 'number') {
+          return value >= _this.ngMin;
         }
         if (_this.type === 'date' && typeof value === 'string' && typeof _this.ngMin === 'string') {
           return value >= _this.ngMin;
         }
-        if (_this.type === 'date' && value && value.getUTCDate && _this.ngMin.getUTCDate && value < _this.ngMin) {
-          return false;
+        if (_this.type === 'date' && value instanceof Date && _this.ngMin instanceof Date) {
+          return value >= _this.ngMin;
         }
         return true;
       };
@@ -3673,14 +3673,14 @@ var FormControlController = function () {
         if (typeof _this.ngMax === 'undefined') {
           return true;
         }
-        if (typeof value === 'number' && typeof _this.ngMax === 'number' && value > _this.ngMax) {
-          return false;
+        if (typeof value === 'number' && typeof _this.ngMax === 'number') {
+          return value <= _this.ngMax;
         }
         if (_this.type === 'date' && typeof value === 'string' && typeof _this.ngMax === 'string') {
           return value <= _this.ngMax;
         }
-        if (_this.type === 'date' && value && value.getUTCDate && _this.ngMax.getUTCDate && value > _this.ngMax) {
-          return false;
+        if (_this.type === 'date' && value instanceof Date && _this.ngMax instanceof Date) {
+          return value <= _this.ngMax;
         }
         return true;
       };
@@ -3734,7 +3734,7 @@ var Field = {
   template: _field2.default,
   bindings: {
     model: '=',
-    rawField: '<field',
+    initialField: '<field',
     uploadOptions: '<',
     locale: '@',
     changeHandler: '&?onChange',
@@ -3773,8 +3773,8 @@ var FieldController = function () {
   _createClass(FieldController, [{
     key: '$onChanges',
     value: function $onChanges(changes) {
-      if (changes.rawField) {
-        this.field = this.RequirementsService.prepField(this.rawField, this.model, []);
+      if (changes.initialField) {
+        this.field = this.RequirementsService.prepField(this.initialField, this.model, []);
       }
     }
   }, {
@@ -3836,7 +3836,7 @@ var Fieldset = {
   template: _fieldset2.default,
   bindings: {
     model: '=',
-    rawFields: '<fields',
+    initialFields: '<fields',
     uploadOptions: '<',
     locale: '@',
     title: '@',
@@ -3905,8 +3905,8 @@ var FieldsetController = function () {
         };
       }
 
-      if (this.rawFields) {
-        this.fields = this.RequirementsService.prepFields(this.rawFields, this.model, this.validationMessages);
+      if (this.initialFields) {
+        this.fields = this.RequirementsService.prepFields(this.initialFields, this.model, this.validationMessages);
       }
 
       this.$scope.$watch('twFieldset.$valid', function (validity) {
@@ -3918,9 +3918,10 @@ var FieldsetController = function () {
   }, {
     key: '$onChanges',
     value: function $onChanges(changes) {
-      if (changes.rawFields) {
-        if (!_angular2.default.equals(changes.rawFields.currentValue, changes.rawFields.previousValue)) {
-          this.fields = this.RequirementsService.prepFields(this.rawFields, this.model, this.validationMessages);
+      var fieldsChanged = changes.initialFields;
+      if (fieldsChanged) {
+        if (!_angular2.default.equals(fieldsChanged.currentValue, fieldsChanged.previousValue)) {
+          this.fields = this.RequirementsService.prepFields(fieldsChanged.currentValue, this.model, this.validationMessages);
         }
       }
     }

@@ -7,11 +7,11 @@ class DefinitionListController {
   }
 
   $onInit() {
-    this.fields = this.RequirementsService.prepFields(this.rawFields, this.model);
+    this.fields = this.RequirementsService.prepFields(this.initialFields, this.model);
 
     this.$scope.$watch('$ctrl.fields', (newValue, oldValue) => {
       if (!angular.equals(newValue, oldValue)) {
-        this.fields = this.RequirementsService.prepFields(this.rawFields, this.model);
+        this.fields = this.RequirementsService.prepFields(this.initialFields, this.model);
       }
     });
   }

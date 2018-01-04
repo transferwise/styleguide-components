@@ -4,8 +4,8 @@ class FieldController {
   }
 
   $onChanges(changes) {
-    if (changes.rawField) {
-      this.field = this.RequirementsService.prepField(this.rawField, this.model, []);
+    if (changes.initialField) {
+      this.field = this.RequirementsService.prepField(this.initialField, this.model, []);
     }
   }
 
