@@ -61,7 +61,7 @@
   locale="'en-GB'"
   on-focus="focusHandler()"
   on-blur="blurHandler()"
-  on-change="changeHandler(newValue, oldValue)"&gt;
+  on-change="changeHandler(value)"&gt;
 &lt;/tw-field&gt;
 </pre>
           </div>
@@ -92,10 +92,14 @@
             <span class="glyphicon glyphicon-link"></span>
           </a>
         </h4>
-        <p class="text-max-width">
-          Beyond the basic types, formats can be used to indicate other types
-          of controls are required
-        </p>
+        <div class="row">
+          <div class="col-md-6">
+            <p>
+              Beyond the basic types, formats can be used to indicate other types
+              of controls are required
+            </p>
+          </div>
+        </div>
         <field-docs
           field="$ctrl.dateBasic"
           model="$ctrl.basicFormatsModel.dateProperty">
@@ -115,13 +119,17 @@
             <span class="glyphicon glyphicon-link"></span>
           </a>
         </h4>
-        <p class="text-max-width">
-          Often we want the user to choose from a set of values.  By passing an
-          array of <code>values</code> the field will render as a radio selection
-          (3 or less options), or a select box (4 or more options).  To force
-          the display of one or the other, pass <code>control: "radio"</code> or
-          <code>control: "select"</code>.
-        </p>
+        <div class="row">
+          <div class="col-md-6">
+            <p>
+              Often we want the user to choose from a set of values.  By passing an
+              array of <code>values</code> the field will render as a radio selection
+              (3 or less options), or a select box (4 or more options).  To force
+              the display of one or the other, pass <code>control: "radio"</code> or
+              <code>control: "select"</code>.
+            </p>
+          </div>
+        </div>
         <field-docs
           field="$ctrl.selectBasic"
           model="$ctrl.selectionsModel.selectProperty">
@@ -132,10 +140,15 @@
         </field-docs>
 
         <h5>Loading values asynchronously</h5>
-        <p class="text-max-width">
-          Sometimes the list of values is excessively long, or dependent on
-          some other data in the model.  In these cases you can load these
-          values asynchronously.</p>
+        <div class="row">
+          <div class="col-md-6">
+            <p>
+              Sometimes the list of values is excessively long, or dependent on
+              some other data in the model.  In these cases you can load these
+              values asynchronously.
+            </p>
+          </div>
+        </div>
         <field-docs
           field="$ctrl.valuesAsync"
           model="$ctrl.valuesAsyncModel">
@@ -171,12 +184,23 @@
             <span class="glyphicon glyphicon-link"></span>
           </a>
         </h4>
-        <p class="text-max-width">
-          When we want to render a custom error, or render an error on page load,
-          we can pass in an additional error message that will be immediately
-          displayed.  When the value of the field changes the error messages
-          (and state) will be removed as we fall back to regular validation.
-        </p>
+        <div class="row">
+          <div class="col-md-6">
+            <p>
+              When we want to render a custom error, or render an error on page load,
+              we can pass in an additional error message that will be immediately
+              displayed.  When the value of the field changes the error messages
+              (and state) will be removed as we fall back to regular validation.
+            </p>
+          </div>
+          <div class="col-md-6">
+            <p>
+              We can also supply warning messages, it is up to the consumer to
+              show/hide these messages as the value evolves.  Warning messages will
+              be superceded by errors if they both exist at the same time.
+            </p>
+          </div>
+        </div>
         <field-docs
           field="$ctrl.customErrors"
           model="$ctrl.customErrorsModel"
@@ -194,10 +218,14 @@
             <span class="glyphicon glyphicon-link"></span>
           </a>
         </h4>
-        <p class="text-max-width">
-          We have a number of ways to show helpful information, this information
-          appears when the control is focused to draw attention.
-        </p>
+        <div class="row">
+          <div class="col-md-6">
+            <p>
+              We have a number of ways to show helpful information, this information
+              appears when the control is focused to draw attention.
+            </p>
+          </div>
+        </div>
         <field-docs
           field="$ctrl.helpText"
           model="$ctrl.helpModel.text">
@@ -217,9 +245,13 @@
             <span class="glyphicon glyphicon-link"></span>
           </a>
         </h4>
-        <p class="text-max-width">
-          Some fields have additional presentation options, as seen below.
-        </p>
+        <div class="row">
+          <div class="col-md-6">
+            <p>
+              Some fields have additional presentation options, as seen below.
+            </p>
+          </div>
+        </div>
         <field-docs
           field="$ctrl.displayFormat"
           model="$ctrl.presentationModel.displayFormat">
