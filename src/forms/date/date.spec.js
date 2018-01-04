@@ -71,9 +71,9 @@ describe('Date', function() {
         }
       });
       describe('and date is entered', function () {
-        it('should bind the date as a string', function() {
+        it('should bind the date as an object', function() {
           setDateUsingControls(element, '2000', '0', '1');
-          expect($scope.ngModel).toEqual('2000-01-01');
+          expect($scope.ngModel).toEqual(getUTCDate(2000, 0, 1));
         });
       });
     });

@@ -16,7 +16,7 @@ class DateController {
           throw new Error(`Invalid modelType, should be ${STRING_TYPE} or ${OBJECT_TYPE}`);
         }
       } else {
-        this.dateModelType = STRING_TYPE;
+        this.dateModelType = OBJECT_TYPE;
       }
 
       this.day = null;
