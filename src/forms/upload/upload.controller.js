@@ -113,8 +113,8 @@ class UploadController {
 
   onDragEnter() {
     this.dragCounter++;
-    if (this.dragCounter >= 1) {
-      this.isDroppable = true && !this.ngDisabled;
+    if (this.dragCounter >= 1 && !this.ngDisabled) {
+      this.isDroppable = true;
     }
   }
   onDragLeave() {
