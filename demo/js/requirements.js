@@ -331,9 +331,13 @@ angular.module('tw.styleguide.docs', [])
       onChangeHandler: '&?onChange'
     },
     controller: function() {
-      this.log = function(msg) { console.log(`field ${this.field.key} changed: ${msg}`); };
+      this.onFocus = function() {
+        this.onFocusHandler && this.onFocusHandler();
+      };
+      this.onBlur = function() {
+        this.onBlurHandler && this.onBlurHandler();
+      };
       this.onChange = function(newValue) {
-        console.log(`field on change ${this.field.key} changed: ${newValue}`);
         this.onChangeHandler && this.onChangeHandler({ value: newValue });
       };
     },

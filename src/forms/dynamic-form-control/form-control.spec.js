@@ -18,9 +18,9 @@ describe('FormControl', function() {
     $compile = $injector.get('$compile');
     $timeout = $injector.get('$timeout');
 
-    $scope.onFocus = jasmine.createSpy();
-    $scope.onBlur = jasmine.createSpy();
-    $scope.onChange = jasmine.createSpy();
+    $scope.onFocus = jasmine.createSpy('onFocus');
+    $scope.onBlur = jasmine.createSpy('onBlur');
+    $scope.onChange = jasmine.createSpy('onChange');
   }));
 
   describe('type: text', function() {
@@ -31,7 +31,7 @@ describe('FormControl', function() {
           ng-model='model' \
           ng-focus='onFocus()' \
           ng-blur='onBlur()'' \
-          ng-change='onChange()'> \
+          ng-change='onChange(value)'> \
         </tw-form-control>");
       input = element.querySelector('input');
     });
@@ -197,7 +197,10 @@ describe('FormControl', function() {
       $scope.model = null;
       element = compileTemplate(
         "<tw-form-control type='password' \
-          ng-model='model'> \
+          ng-model='model' \
+          ng-focus='onFocus()' \
+          ng-blur='onBlur()'' \
+          ng-change='onChange(value)'> \
         </tw-form-control>"
       );
       input = element.querySelector('input');
@@ -208,15 +211,38 @@ describe('FormControl', function() {
       expect(input.getAttribute("type")).toBe("password");
     });
 
-    it('should set $dirty when changed', function() {
-      input.value = 'example';
-      input.dispatchEvent(new Event('input'));
-      expect(element.classList).toContain("ng-dirty");
+    describe('when focused', function() {
+      beforeEach(function() {
+        input.dispatchEvent(new Event('focus'));
+      });
+      it('should call the focus handler', function() {
+        expect($scope.onFocus).toHaveBeenCalled();
+      });
     });
 
-    it('should set $touched when blurred', function() {
-      input.dispatchEvent(new Event('blur'));
-      expect(element.classList).toContain("ng-touched");
+    describe('when changed', function() {
+      beforeEach(function() {
+        input.value = 'example';
+        input.dispatchEvent(new Event('input'));
+      });
+      it('should set the control to $dirty', function() {
+        expect(element.classList).toContain("ng-dirty");
+      });
+      it('should call the change handler', function() {
+        expect($scope.onChange).toHaveBeenCalled();
+      });
+    });
+
+    describe('when blurred', function() {
+      beforeEach(function() {
+        input.dispatchEvent(new Event('blur'));
+      });
+      it('should set the control to $touched', function() {
+        expect(element.classList).toContain("ng-touched");
+      });
+      it('should call the blur handler', function() {
+        expect($scope.onBlur).toHaveBeenCalled();
+      });
     });
   });
 
@@ -294,7 +320,10 @@ describe('FormControl', function() {
       $scope.model = null;
       element = compileTemplate(
         "<tw-form-control type='number' \
-          ng-model='model'> \
+          ng-model='model' \
+          ng-focus='onFocus()' \
+          ng-blur='onBlur()'' \
+          ng-change='onChange(value)'> \
         </tw-form-control>"
       );
       input = element.querySelector('input');
@@ -305,15 +334,38 @@ describe('FormControl', function() {
       expect(input.getAttribute("type")).toBe("number");
     });
 
-    it('should set $dirty when changed', function() {
-      input.value = 2;
-      input.dispatchEvent(new Event('input'));
-      expect(element.classList).toContain("ng-dirty");
+    describe('when focused', function() {
+      beforeEach(function() {
+        input.dispatchEvent(new Event('focus'));
+      });
+      it('should call the focus handler', function() {
+        expect($scope.onFocus).toHaveBeenCalled();
+      });
     });
 
-    it('should set $touched when blurred', function() {
-      input.dispatchEvent(new Event('blur'));
-      expect(element.classList).toContain("ng-touched");
+    describe('when changed', function() {
+      beforeEach(function() {
+        input.value = 2;
+        input.dispatchEvent(new Event('input'));
+      });
+      it('should set the control to $dirty', function() {
+        expect(element.classList).toContain("ng-dirty");
+      });
+      it('should call the change handler', function() {
+        expect($scope.onChange).toHaveBeenCalled();
+      });
+    });
+
+    describe('when blurred', function() {
+      beforeEach(function() {
+        input.dispatchEvent(new Event('blur'));
+      });
+      it('should set the control to $touched', function() {
+        expect(element.classList).toContain("ng-touched");
+      });
+      it('should call the blur handler', function() {
+        expect($scope.onBlur).toHaveBeenCalled();
+      });
     });
   });
 
@@ -400,7 +452,10 @@ describe('FormControl', function() {
         "<tw-form-control type='select' \
           ng-model='model' \
           options='options' \
-          ng-required='true'> \
+          ng-required='required' \
+          ng-focus='onFocus()' \
+          ng-blur='onBlur()'' \
+          ng-change='onChange(value)'> \
         </tw-form-control>"
       );
       selectElem = element.querySelector('tw-select');
@@ -410,21 +465,38 @@ describe('FormControl', function() {
       expect(selectElem).toBeTruthy();
     });
 
-    // Select presets if ngRequired and no ngModel supplied
-    xit('should set ngModel.$invalid when required value not set', function() {
-      expect(element.classList).toContain("ng-invalid");
-      expect(element.classList).toContain("ng-invalid-required");
+    describe('when control is focused', function() {
+      beforeEach(function() {
+        selectElem.dispatchEvent(new Event('focus'));
+      });
+      it('should call the focus handler', function() {
+        expect($scope.onFocus).toHaveBeenCalled();
+      });
     });
 
-    it('should set $dirty when changed', function() {
-      var selectModelController = angular.element(selectElem).controller('ngModel');
-      selectModelController.$setViewValue('2');
-      expect(element.classList).toContain("ng-dirty");
+    describe('when value is changed', function() {
+      beforeEach(function() {
+        var selectModelController = angular.element(selectElem).controller('ngModel');
+        selectModelController.$setViewValue('2');
+      });
+      it('should set the control to $dirty', function() {
+        expect(element.classList).toContain("ng-dirty");
+      });
+      it('should call the change handler', function() {
+        expect($scope.onChange).toHaveBeenCalled();
+      });
     });
 
-    it('should set $touched when blurred', function() {
-      selectElem.dispatchEvent(new Event('blur'));
-      expect(element.classList).toContain("ng-touched");
+    describe('when control is blurred', function() {
+      beforeEach(function() {
+        selectElem.dispatchEvent(new Event('blur'));
+      });
+      it('should set the control to $touched', function() {
+        expect(element.classList).toContain("ng-touched");
+      });
+      it('should call the blur handler', function() {
+        expect($scope.onBlur).toHaveBeenCalled();
+      });
     });
   });
 
@@ -435,7 +507,10 @@ describe('FormControl', function() {
       element = compileTemplate(
         "<tw-form-control type='checkbox' \
           ng-model='model' \
-          ng-required='true'> \
+          ng-required='true' \
+          ng-focus='onFocus()' \
+          ng-blur='onBlur()' \
+          ng-change='onChange(value)'> \
         </tw-form-control>"
       );
       checkbox = element.querySelector('tw-checkbox');
@@ -445,14 +520,40 @@ describe('FormControl', function() {
       expect(checkbox).toBeTruthy();
     });
 
-    it('should set $dirty when clicked', function() {
-      $(checkbox).click();
-      expect(element.classList).toContain("ng-dirty");
+    describe('when focused', function() {
+      beforeEach(function() {
+        checkbox.dispatchEvent(new Event('focus'));
+      });
+      it('should call the focus handler', function() {
+        expect($scope.onFocus).toHaveBeenCalled();
+      });
     });
 
-    it('should set $touched when blurred', function() {
-      $(checkbox).focus().blur();
-      expect(element.classList).toContain("ng-touched");
+    describe('when clicked', function() {
+      beforeEach(function() {
+        checkbox.querySelector('button').click();
+      });
+      it('should set the correct value', function() {
+        expect($scope.model).toBe(true);
+      });
+      it('should set the control to $dirty', function() {
+        expect(element.classList).toContain("ng-dirty");
+      });
+      it('should call the change handler', function() {
+        expect($scope.onChange).toHaveBeenCalled();
+      });
+    });
+
+    describe('when blurred', function() {
+      beforeEach(function() {
+        checkbox.dispatchEvent(new Event('blur'));
+      });
+      it('should set the control to $touched', function() {
+        expect(element.classList).toContain("ng-touched");
+      });
+      it('should call the blur handler', function() {
+        expect($scope.onBlur).toHaveBeenCalled();
+      });
     });
 
     describe('when required', function() {
@@ -464,12 +565,15 @@ describe('FormControl', function() {
   });
 
   describe('type: radio', function() {
-    var radio, template;
+    var radios, template;
     beforeEach(function() {
       template = "<tw-form-control type='radio' \
         options='options' \
         ng-model='model' \
-        ng-required='required'> \
+        ng-required='required' \
+        ng-focus='onFocus()' \
+        ng-blur='onBlur()' \
+        ng-change='onChange(value)'> \
       </tw-form-control>";
 
       $scope.model = null;
@@ -479,29 +583,51 @@ describe('FormControl', function() {
       ];
       $scope.required = true;
       element = compileTemplate(template);
-      radio = element.querySelectorAll('tw-radio');
+      radios = element.querySelectorAll('tw-radio');
     });
 
     it('should render two radio buttons', function() {
-      expect(radio.length).toBe(2);
-    });
-    it('should set correct value when clicked', function() {
-      $(radio[0]).find('button').trigger('click');
-      expect($scope.model).toBe(1);
+      expect(radios.length).toBe(2);
     });
     it('should use the options correctly for the label', function() {
       var label = element.querySelector('label');
       expect(label.innerText.trim()).toContain('One');
     });
 
-    it('should set $dirty when changed ', function() {
-      $(radio[0]).click();
-      expect(element.classList).toContain("ng-dirty");
+    describe('when focused', function() {
+      beforeEach(function() {
+        radios[0].dispatchEvent(new Event('focus'));
+      });
+      it('should call the focus handler', function() {
+        expect($scope.onFocus).toHaveBeenCalled();
+      });
     });
 
-    it('should set $touched when blurred', function() {
-      $(radio[0]).focus().blur();
-      expect(element.classList).toContain("ng-touched");
+    describe('when clicked', function() {
+      beforeEach(function() {
+        radios[0].querySelector('button').click();
+      });
+      it('should set the correct value', function() {
+        expect($scope.model).toBe(1);
+      });
+      it('should set the control to $dirty', function() {
+        expect(element.classList).toContain("ng-dirty");
+      });
+      it('should call the change handler', function() {
+        expect($scope.onChange).toHaveBeenCalled();
+      });
+    });
+
+    describe('when blurred', function() {
+      beforeEach(function() {
+        radios[0].dispatchEvent(new Event('blur'));
+      });
+      it('should set the control to $touched', function() {
+        expect(element.classList).toContain("ng-touched");
+      });
+      it('should call the blur handler', function() {
+        expect($scope.onBlur).toHaveBeenCalled();
+      });
     });
 
     describe(' - validation', function() {
@@ -530,6 +656,9 @@ describe('FormControl', function() {
           <label class='control-label'></label> \
           <tw-form-control type='upload' \
             ng-model='model' \
+            ng-focus='onFocus()' \
+            ng-blur='onBlur()' \
+            ng-change='onChange(value)' \
             required> \
           </tw-form-control> \
         </div>"
@@ -541,7 +670,7 @@ describe('FormControl', function() {
     });
   });
 
-  describe('type: date - validation', function() {
+  describe('type: date', function() {
     var dayInput, yearInput;
     beforeEach(function() {
       $scope.model = null;
@@ -556,13 +685,55 @@ describe('FormControl', function() {
             ng-min='ngMin' \
             ng-max='ngMax' \
             tw-minlength='' \
-            ng-required='true'> \
+            ng-required='true' \
+            ng-focus='onFocus()' \
+            ng-blur='onBlur()' \
+            ng-change='onChange(value)'> \
           </tw-form-control> \
         </div>"
       );
       element = formGroup.querySelector('tw-form-control');
       dayInput = element.querySelector('.tw-date-day');
       yearInput = element.querySelector('.tw-date-year');
+    });
+
+    describe('when focused', function() {
+      beforeEach(function() {
+        dayInput.dispatchEvent(new Event('focus'));
+      });
+      it('should call the focus handler', function() {
+        expect($scope.onFocus).toHaveBeenCalled();
+      });
+    });
+
+    describe('when changed', function() {
+      beforeEach(function() {
+        dayInput.value = '01';
+        dayInput.dispatchEvent(new Event('input'));
+        yearInput.value = '2016';
+        yearInput.dispatchEvent(new Event('input'));
+      });
+      it('should set the correct value', function() {
+        expect($scope.model).toBe('2016-01-01');
+      });
+      it('should set the control to $dirty', function() {
+        expect(element.classList).toContain("ng-dirty");
+      });
+      it('should call the change handler', function() {
+        expect($scope.onChange).toHaveBeenCalled();
+      });
+    });
+
+    describe('when blurred', function() {
+      beforeEach(function() {
+        yearInput.dispatchEvent(new Event('blur'));
+      });
+      it('should set the control to $touched', function() {
+        expect(element.classList).toContain("ng-touched");
+      });
+      it('should call the blur handler', function() {
+        expect($scope.onBlur).toHaveBeenCalled();
+      });
     });
 
     describe('when required and not set', function() {

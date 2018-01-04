@@ -15,9 +15,9 @@
   model="{{ $ctrl.model }}"
   field="{{ $ctrl.field | json }}"<span ng-if="$ctrl.errorMessage">
   error-message="'{{ $ctrl.errorMessage }}'"</span><span ng-if="$ctrl.warningMessage">
-  warning-message="'{{ $ctrl.warningMessage }}'"</span><span ng-if="$ctrl.onFocus">
-  on-focus="console.log('focus')"</span><span ng-if="$ctrl.onBlur">
-  on-blur="console.log('blur')"</span><span ng-if="$ctrl.onChange">
+  warning-message="'{{ $ctrl.warningMessage }}'"</span><span ng-if="$ctrl.onFocusHandler">
+  on-focus="console.log('focus')"</span><span ng-if="$ctrl.onBlurHandler">
+  on-blur="console.log('blur')"</span><span ng-if="$ctrl.onChangeHandler">
   on-change="console.log(value)"</span>&gt;
 &lt;/tw-field&gt;</pre>
   </div>
