@@ -1,7 +1,8 @@
 <div class="form-group tw-field-{{ $ctrl.field.key }}"
   ng-class="{
     'has-error': $ctrl.field.errorMessage || $ctrl.errorMessage,
-    'has-warning': $ctrl.field.warningMessage || $ctrl.warningMessage
+    'has-warning': $ctrl.field.warningMessage || $ctrl.warningMessage,
+    'hidden': $ctrl.field.hidden
   }">
   <label class="control-label"
     ng-if="$ctrl.field.control !== 'file'">

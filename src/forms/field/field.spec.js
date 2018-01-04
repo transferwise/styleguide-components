@@ -4,7 +4,8 @@ describe('Field', function() {
   var $compile,
       $rootScope,
       $scope,
-      element;
+      element,
+      formGroup;
 
   beforeEach(module('tw.styleguide-components'));
 
@@ -168,14 +169,26 @@ describe('Field', function() {
       $scope.options = { key: "keyName", type: "string" };
       $scope.errorMessage = 'Custom error';
       element = getCompiledDirectiveElement();
+      formGroup = element.querySelector('.form-group');
     });
 
     it('should render in an error state', function() {
-      expect(element.querySelector('.form-group').classList.contains('has-error')).toBe(true);
+      expect(formGroup.classList).toContain('has-error');
     });
 
     it('should render the message', function() {
       expect(element.querySelector('.error-provided').innerText.trim()).toBe('Custom error');
+    });
+  });
+  describe('when given hidden: true', function() {
+    beforeEach(function() {
+      $scope.options = { key: "keyName", type: "string", hidden: true };
+      element = getCompiledDirectiveElement();
+      formGroup = element.querySelector('.form-group');
+    });
+
+    it('should not be visible', function() {
+      expect(formGroup.classList).toContain('hidden');
     });
   });
 
@@ -198,6 +211,7 @@ describe('Field', function() {
       element = getCompiledDirectiveElement();
       element.querySelector('input').value = 'changed';
       element.querySelector('input').dispatchEvent(new Event('input'));
+      formGroup = element.querySelector('.form-group');
     });
 
     it('should update the model', function() {
@@ -209,7 +223,7 @@ describe('Field', function() {
     });
 
     it('should remove custom error state', function() {
-      expect(element.querySelector('.form-group').classList.contains('has-error')).toBe(false);
+      expect(formGroup.classList).not.toContain('has-error');
     });
 
     it('should trigger the onChange handler', function() {

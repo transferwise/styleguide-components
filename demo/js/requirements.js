@@ -210,7 +210,9 @@ angular.module('tw.styleguide.docs', [])
     };
 
     this.presentationModel = {
-      displayFormat: "123456"
+      displayFormat: "123456",
+      disabledControl: "I'm disabled",
+      hiddenControl: "I'm hidden"
     };
 
     this.uploadComponent = {
@@ -233,6 +235,11 @@ angular.module('tw.styleguide.docs', [])
       key: "displayFormat",
       placeholder: "Please enter...",
       disabled: true
+    };
+    this.hiddenControl = {
+      type: "string",
+      key: "hiddenControl",
+      hidden: true
     };
 
     this.fieldsetBasic = {
