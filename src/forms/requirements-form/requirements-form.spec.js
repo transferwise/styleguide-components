@@ -102,7 +102,7 @@ describe('RequirementsForm', function() {
             expect(fieldElement.length).toBe(1);
 
             var tooltipElement = fieldElement.find('.alert-focus');
-            if (ibanField.group[0].tooltip) {
+            if (ibanField.tooltip) {
               expect(tooltipElement.length).toBe(1);
             } else {
               expect(tooltipElement.length).toBe(0);
@@ -117,6 +117,7 @@ describe('RequirementsForm', function() {
     beforeEach(function() {
       $scope.model = {
         type: 'sort_code',
+        legalType: 'PRIVATE',
         sortCode: '101010'
       }
       $scope.requirements = getMultipleRequirements();
@@ -134,6 +135,7 @@ describe('RequirementsForm', function() {
       var accountNumberInput = directiveElement.find('.tw-field-accountNumber input')[0];
       accountNumberInput.value = '12345678';
       accountNumberInput.dispatchEvent(new Event('input'));
+
       expect($scope.isValid).toBe(true);
     });
   });
@@ -163,6 +165,138 @@ describe('RequirementsForm', function() {
   }
 
   function getMultipleRequirements() {
+    return [
+      {
+        "type": "sort_code",
+        "label": "Use sort code",
+        "fields": [
+          {
+            "name": "Legal type",
+            "key": "legalType",
+            "type": "select",
+            "required": true,
+            "values": [
+              {
+                "value": "PRIVATE",
+                "label": "Private"
+              },
+              {
+                "value": "BUSINESS",
+                "label": "Business"
+              }
+            ]
+          },
+          {
+            "name": "UK Sort code",
+            "key": "sortCode",
+            "type": "text",
+            "required": true,
+            "displayFormat": "**-**-**",
+            "example": "40-30-20",
+            "minLength": 6,
+            "maxLength": 8,
+            "validationAsync": {
+              "url": "https://api.transferwise.com/v1/validators/sort-code",
+              "params": [
+                {
+                  "key": "sortCode",
+                  "parameterName": "sortCode",
+                  "required": true
+                }
+              ]
+            }
+          },
+          {
+            "name": "Account number",
+            "key": "accountNumber",
+            "type": "text",
+            "required": true,
+            "example": "12345678",
+            "minLength": 8,
+            "maxLength": 8,
+            "validationRegexp": "^[0-9]{8}$",
+            "validationAsync": {
+              "url": "https://api.transferwise.com/v1/validators/sort-code-account-number",
+              "params": [
+                {
+                  "key": "accountNumber",
+                  "parameterName": "accountNumber",
+                  "required": true
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "type": "iban_With_unDerscOres",
+        "description": "IBAN description",
+        "fields": [
+          {
+            "name": "Legal type",
+            "key": "legalType",
+            "type": "select",
+            "required": true,
+            "values": [
+              {
+                "value": "PRIVATE",
+                "label": "Private"
+              },
+              {
+                "value": "BUSINESS",
+                "label": "Business"
+              }
+            ],
+            "tooltip": "I am a nice tooltip that was created by fingers pressing buttons"
+          },
+          {
+            "name": "IBAN",
+            "key": "IBAN",
+            "type": "text",
+            "required": true,
+            "displayFormat": "**** **** **** **** **** **** **** ****",
+            "example": "GB89370400440532013000",
+            "minLength": 2,
+            "validationAsync": {
+              "url": "https://api.transferwise.com/v1/validators/iban",
+              "params": [
+                {
+                  "key": "iban",
+                  "parameterName": "iban",
+                  "required": true
+                }
+              ]
+            }
+          },
+          {
+            "name": "Bank code (BIC/SWIFT)",
+            "key": "BIC",
+            "type": "text",
+            "example": "ABCDDE22 (Optional)",
+            "validationRegexp": "^[A-Z]{6}[A-Z,0-9]{2}([A-Z,0-9]{3})?$",
+            "validationAsync": {
+              "url": "https://api.transferwise.com/v1/validators/bic",
+              "params": [
+                {
+                  "key": "iban",
+                  "parameterName": "iban",
+                  "required": true
+                },
+                {
+                  "key": "bic",
+                  "parameterName": "bic",
+                  "required": true
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ];
+  }
+
+  // TODO tests for legacy type
+  function getLegacyRequirements() {
     return [
       {
         "type": "sort_code",
@@ -240,87 +374,7 @@ describe('RequirementsForm', function() {
             ]
           }
         ]
-      },
-      {
-        "type": "iban_With_unDerscOres",
-        "description": "IBAN description",
-        "fields": [
-          {
-            "name": "Legal type",
-            "group": [
-              {
-                "key": "legalType",
-                "type": "select",
-                "refreshRequirementsOnChange": false,
-                "required": true,
-                "values": [
-                  {
-                    "key": "PRIVATE",
-                    "name": "Private"
-                  },
-                  {
-                    "key": "BUSINESS",
-                    "name": "Business"
-                  }
-                ],
-                "tooltip": "I am a nice tooltip that was created by fingers pressing buttons"
-              }
-            ]
-          },
-          {
-            "name": "IBAN",
-            "group": [
-              {
-                "key": "IBAN",
-                "type": "text",
-                "refreshRequirementsOnChange": false,
-                "required": true,
-                "displayFormat": "**** **** **** **** **** **** **** ****",
-                "example": "GB89370400440532013000",
-                "minLength": 2,
-                "validationAsync": {
-                  "url": "https://api.transferwise.com/v1/validators/iban",
-                  "params": [
-                    {
-                      "key": "iban",
-                      "parameterName": "iban",
-                      "required": true
-                    }
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "name": "Bank code (BIC/SWIFT)",
-            "group": [
-              {
-                "key": "BIC",
-                "type": "text",
-                "refreshRequirementsOnChange": false,
-                "required": false,
-                "example": "ABCDDE22 (Optional)",
-                "validationRegexp": "^[A-Z]{6}[A-Z,0-9]{2}([A-Z,0-9]{3})?$",
-                "validationAsync": {
-                  "url": "https://api.transferwise.com/v1/validators/bic",
-                  "params": [
-                    {
-                      "key": "iban",
-                      "parameterName": "iban",
-                      "required": true
-                    },
-                    {
-                      "key": "bic",
-                      "parameterName": "bic",
-                      "required": true
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        ]
       }
-   ];
+    ];
   }
 });
