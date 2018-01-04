@@ -167,6 +167,19 @@ function RequirementsService($http) {
     field.validationMessages = field.validationMessages ?
       field.validationMessages :
       validationMessages;
+
+    if (!field.validationMessages) {
+      return;
+    }
+
+    if (field.validationMessages.minimum) {
+      field.validationMessages.min = field.validationMessages.minimum;
+      delete field.validationMessages.minimum;
+    }
+    if (field.validationMessages.maximum) {
+      field.validationMessages.max = field.validationMessages.maximum;
+      delete field.validationMessages.maximum;
+    }
   };
 }
 

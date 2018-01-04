@@ -4,7 +4,6 @@ describe('Fieldset', function() {
   var $compile,
       $rootScope,
       $scope,
-      $element,
       element;
 
   beforeEach(module('tw.styleguide-components'));

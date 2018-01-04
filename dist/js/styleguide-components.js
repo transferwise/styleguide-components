@@ -8152,6 +8152,19 @@ function RequirementsService($http) {
 
   this.prepValidationMessages = function (field, validationMessages) {
     field.validationMessages = field.validationMessages ? field.validationMessages : validationMessages;
+
+    if (!field.validationMessages) {
+      return;
+    }
+
+    if (field.validationMessages.minimum) {
+      field.validationMessages.min = field.validationMessages.minimum;
+      delete field.validationMessages.minimum;
+    }
+    if (field.validationMessages.maximum) {
+      field.validationMessages.max = field.validationMessages.maximum;
+      delete field.validationMessages.maximum;
+    }
   };
 }
 
@@ -8496,7 +8509,7 @@ module.exports = "<div class=\"form-group tw-field-{{ $ctrl.field.key }}\"\n  ng
 /* 123 */
 /***/ (function(module, exports) {
 
-module.exports = "<fieldset ng-form=\"twFieldset\">\n  <legend ng-if=\"$ctrl.title\">{{ $ctrl.title }}</legend>\n  <p class=\"text-max-width\" ng-if=\"$ctrl.description\">{{ $ctrl.description }}</p>\n  <div class=\"row row-equal-height\">\n    <div ng-repeat=\"field in $ctrl.fields track by $index\" class=\"col-xs-12\" ng-hide=\"field.hidden\"\n      ng-class=\"{\n        'col-sm-4': !$ctrl.narrow  && field.width === 'sm',\n        'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),\n        'col-sm-12': $ctrl.narrow || field.width === 'lg' || !field.maxlength || field.maxlength > 10\n      }\">\n\n      <tw-field\n        ng-if=\"!field.group\"\n        model=\"$ctrl.model[field.key]\"\n        field=\"field\"\n        locale=\"$ctrl.locale\"\n        upload-options=\"$ctrl.uploadOptions\"\n        error-message=\"$ctrl.errorMessages[field.key]\"\n        on-change=\"$ctrl.fieldChange(value, field)\"\n        on-focus=\"$ctrl.fieldFocus(field)\"\n        on-blur=\"$ctrl.fieldBlur(field)\">\n      </tw-field>\n\n    </div>\n  </div>\n</fieldset>\n";
+module.exports = "<fieldset ng-form=\"twFieldset\">\n  <legend ng-if=\"$ctrl.title\">{{ $ctrl.title }}</legend>\n  <p class=\"text-max-width\" ng-if=\"$ctrl.description\">{{ $ctrl.description }}</p>\n  <div class=\"row row-equal-height\">\n    <div ng-repeat=\"field in $ctrl.fields track by $index\" class=\"col-xs-12\" ng-hide=\"field.hidden\"\n      ng-class=\"{\n        'col-sm-4': !$ctrl.narrow  && field.width === 'sm',\n        'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),\n        'col-sm-12': $ctrl.narrow || field.width === 'lg' || !field.maxlength || field.maxlength > 10\n      }\">\n\n      <tw-field\n        ng-if=\"!field.group\"\n        model=\"$ctrl.model[field.key]\"\n        field=\"field\"\n        locale=\"$ctrl.locale\"\n        upload-options=\"$ctrl.uploadOptions\"\n        error-message=\"$ctrl.errorMessages[field.key]\"\n        on-change=\"$ctrl.fieldChange(value, field)\"\n        on-focus=\"$ctrl.fieldFocus(field)\"\n        on-blur=\"$ctrl.fieldBlur(field)\"\n        class=\"btn-block\">  <!-- Remove btn-block after boostrap update -->\n      </tw-field>\n\n    </div>\n  </div>\n</fieldset>\n";
 
 /***/ }),
 /* 124 */
