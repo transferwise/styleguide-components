@@ -36,7 +36,7 @@
     tw-validation
   ></tw-form-control>
   <div class="alert alert-danger error-messages"
-    ng-if="$ctrl.field.validationMessages.length || $ctrl.errorMessage"
+    ng-if="$ctrl.sizeOf($ctrl.field.validationMessages) > 0 || $ctrl.errorMessage"
     ng-class="{
       'alert-detach': $ctrl.control === 'date'  ||
                       $ctrl.control === 'file' ||
