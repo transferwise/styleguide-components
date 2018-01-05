@@ -19,9 +19,9 @@ describe('Field', function() {
     $scope.onBlur = jasmine.createSpy();
   }));
 
-  describe('when given a name for the field', function() {
+  describe('when given a title for the field', function() {
     beforeEach(function() {
-      $scope.options = { name: "Control label", type: "string" };
+      $scope.options = { title: "Control label", type: "string" };
       element = getCompiledDirectiveElement();
     });
 

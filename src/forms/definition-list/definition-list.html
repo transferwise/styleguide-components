@@ -12,7 +12,7 @@
     ng-if="$ctrl.model[key]">
 
     <dl ng-if="!field.group">
-      <dt ng-bind="field.name"></dt>
+      <dt ng-bind="field.title"></dt>
       <dd ng-switch="field.control">
         <span ng-switch-when="select|radio" ng-switch-when-separator="|">
           {{ $ctrl.getValueLabel(field.values, $ctrl.model[key]) }}
@@ -27,9 +27,9 @@
           {{ $ctrl.mask($ctrl.model[key]) }}
         </span>
         <div ng-switch-when="file" class="thumbnail">
-          <img alt="{{ field.name }}"
+          <img alt="{{ field.title }}"
             ng-src="{{ $ctrl.model[key] }}"
-            ng-attr-alt="{{ field.name }}" />
+            ng-attr-alt="{{ field.title }}" />
         </div>
         <span ng-switch-default>
           {{ $ctrl.model[key] | twTextFormat: field.displayFormat }}
@@ -39,7 +39,7 @@
 
     <!-- Start old 'nested group' style -->
     <dl ng-if="field.group">
-      <dt ng-bind="field.name"></dt>
+      <dt ng-bind="field.title"></dt>
       <dd>
         <span ng-repeat="fieldSection in field.group">
           <span ng-switch="fieldSection.control">
@@ -56,9 +56,9 @@
               {{ $ctrl.mask($ctrl.model[fieldSection.key]) }}
             </span>
             <div ng-switch-when="file" class="thumbnail">
-              <img alt="{{ field.name }}"
+              <img alt="{{ field.title }}"
                 ng-src="{{ $ctrl.model[fieldSection.key] }}"
-                ng-attr-alt="{{ field.name }}" />
+                ng-attr-alt="{{ field.title }}" />
             </div>
             <span ng-switch-default>
               {{ $ctrl.model[fieldSection.key] | twTextFormat: fieldSection.displayFormat }}

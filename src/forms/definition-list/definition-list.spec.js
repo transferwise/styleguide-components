@@ -33,7 +33,7 @@ describe('Definition list', function() {
       };
       $scope.fields = {
         key: {
-          name: 'Text label',
+          title: 'Text label',
           type: 'text',
           displayFormat: '** - **'
         }
@@ -52,7 +52,7 @@ describe('Definition list', function() {
       };
       $scope.fields = {
         key: {
-          name: 'Number label',
+          title: 'Number label',
           type: 'number'
         }
       };
@@ -74,7 +74,7 @@ describe('Definition list', function() {
       };
       $scope.fields = {
         key: {
-          name: 'Date label',
+          title: 'Date label',
           type: 'date'
         }
       };
@@ -92,7 +92,7 @@ describe('Definition list', function() {
       };
       $scope.fields = {
         key: {
-          name: 'Select label',
+          title: 'Select label',
           type: 'select',
           values: [
             {
@@ -120,7 +120,7 @@ describe('Definition list', function() {
       };
       $scope.fields = {
         key: {
-          name: 'Radio label',
+          title: 'Radio label',
           type: 'radio',
           values: [
             {
@@ -148,7 +148,7 @@ describe('Definition list', function() {
       };
       $scope.fields = {
         key: {
-          name: 'Checkbox label',
+          title: 'Checkbox label',
           type: 'boolean'
         }
       };
@@ -166,7 +166,7 @@ describe('Definition list', function() {
       };
       $scope.fields = {
         key: {
-          name: 'Password label',
+          title: 'Password label',
           type: 'string',
           control: 'password'
         }
@@ -187,7 +187,7 @@ describe('Definition list', function() {
         };
         $scope.fields = {
           key: {
-            name: 'Text label',
+            title: 'Text label',
             type: 'string',
             displayFormat: '** - **'
           }
@@ -206,7 +206,7 @@ describe('Definition list', function() {
         };
         $scope.fields = {
           key: {
-            name: 'Number label',
+            title: 'Number label',
             type: 'number'
           }
         };
@@ -228,7 +228,7 @@ describe('Definition list', function() {
         };
         $scope.fields = {
           key: {
-            name: 'Date label',
+            title: 'Date label',
             type: 'string',
             format: 'date'
           }
@@ -247,7 +247,7 @@ describe('Definition list', function() {
         };
         $scope.fields = {
           key: {
-            name: 'Select label',
+            title: 'Select label',
             type: 'string',
             control: 'select',
             values: [
@@ -276,7 +276,7 @@ describe('Definition list', function() {
         };
         $scope.fields = {
           key: {
-            name: 'Radio label',
+            title: 'Radio label',
             type: 'string',
             control: 'radio',
             values: [
@@ -305,7 +305,7 @@ describe('Definition list', function() {
         };
         $scope.fields = {
           key: {
-            name: 'Checkbox label',
+            title: 'Checkbox label',
             type: 'boolean'
           }
         };
@@ -323,7 +323,7 @@ describe('Definition list', function() {
         };
         $scope.fields = {
           key: {
-            name: 'Password label',
+            title: 'Password label',
             type: 'string',
             control: 'password'
           }
