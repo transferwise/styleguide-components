@@ -43,16 +43,15 @@ class FieldsetController {
     }
   }
 
-  // eslint-disable-next-line
-  fieldFocus(field) {
+  fieldFocus(key, field) {
     if (this.onFieldFocus) {
-      this.onFieldFocus({ field });
+      this.onFieldFocus({ key, field });
     }
   }
 
-  fieldBlur(field) {
+  fieldBlur(key, field) {
     if (this.onFieldBlur) {
-      this.onFieldBlur({ field });
+      this.onFieldBlur({ key, field });
     }
     if (field.refreshRequirementsOnChange &&
       this.onRefreshRequirements) {
@@ -60,9 +59,9 @@ class FieldsetController {
     }
   }
 
-  fieldChange(value, field) {
+  fieldChange(value, key, field) {
     if (this.onFieldChange) {
-      this.onFieldChange({ field, value });
+      this.onFieldChange({ value, key, field });
     }
 
     if (controlRefreshesOnChange(field.control) &&
@@ -72,8 +71,8 @@ class FieldsetController {
     }
 
     // We remove custom error messages on change, as they're no longer relevant
-    if (this.errorMessages && this.errorMessages[field.key]) {
-      delete this.errorMessages[field.key];
+    if (this.errorMessages && this.errorMessages[key]) {
+      delete this.errorMessages[key];
     }
 
     // Delay so model can update

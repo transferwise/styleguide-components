@@ -6,10 +6,8 @@ angular.module('tw.styleguide.docs', [])
     this.log = function(message) {
       console.log(message);
     };
-    this.onFieldChange = function(field, value) {
-      console.log('onFieldChange');
-      console.log(field);
-      console.log(value);
+    this.onFieldChange = function(value, key) {
+      console.log('change: ' + key + ' to ' + value);
     };
 
     // Basic types
@@ -317,14 +315,14 @@ angular.module('tw.styleguide.docs', [])
     },
     controller: function() {
       this.isValid = false;
-      this.onFieldFocus = function(field) {
-        this.onFieldFocusHandler && this.onFieldFocusHandler({ field: field });
+      this.onFieldFocus = function(key, field) {
+        this.onFieldFocusHandler && this.onFieldFocusHandler({ key: key, field: field });
       };
-      this.onFieldBlur = function(field) {
-        this.onFieldBlurHandler && this.onFieldBlurHandler({ field: field });
+      this.onFieldBlur = function(key, field) {
+        this.onFieldBlurHandler && this.onFieldBlurHandler({ key: key,  field: field });
       };
-      this.onFieldChange = function(field, value) {
-        this.onFieldChangeHandler && this.onFieldChangeHandler({ field: field, value: value });
+      this.onFieldChange = function(value, key, field) {
+        this.onFieldChangeHandler && this.onFieldChangeHandler({ value: value, key: key, field: field });
       };
       this.onModelChange = function(model) {
         this.onModelChangeHandler && this.onModelChangeHandler({ model });

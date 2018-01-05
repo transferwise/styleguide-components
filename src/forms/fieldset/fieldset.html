@@ -17,9 +17,9 @@
         upload-options="$ctrl.uploadOptions"
         error-message="$ctrl.errorMessages[key]"
         warning-message="$ctrl.warningMessages[key]"
-        on-change="$ctrl.fieldChange(value, field)"
-        on-focus="$ctrl.fieldFocus(field)"
-        on-blur="$ctrl.fieldBlur(field)"
+        on-change="$ctrl.fieldChange(value, key, field)"
+        on-focus="$ctrl.fieldFocus(key, field)"
+        on-blur="$ctrl.fieldBlur(key, field)"
         class="btn-block">  <!-- Remove btn-block after boostrap update -->
       </tw-field>
 

@@ -3923,21 +3923,18 @@ var FieldsetController = function () {
         }
       }
     }
-
-    // eslint-disable-next-line
-
   }, {
     key: 'fieldFocus',
-    value: function fieldFocus(field) {
+    value: function fieldFocus(key, field) {
       if (this.onFieldFocus) {
-        this.onFieldFocus({ field: field });
+        this.onFieldFocus({ key: key, field: field });
       }
     }
   }, {
     key: 'fieldBlur',
-    value: function fieldBlur(field) {
+    value: function fieldBlur(key, field) {
       if (this.onFieldBlur) {
-        this.onFieldBlur({ field: field });
+        this.onFieldBlur({ key: key, field: field });
       }
       if (field.refreshRequirementsOnChange && this.onRefreshRequirements) {
         this.onRefreshRequirements();
@@ -3945,11 +3942,11 @@ var FieldsetController = function () {
     }
   }, {
     key: 'fieldChange',
-    value: function fieldChange(value, field) {
+    value: function fieldChange(value, key, field) {
       var _this2 = this;
 
       if (this.onFieldChange) {
-        this.onFieldChange({ field: field, value: value });
+        this.onFieldChange({ value: value, key: key, field: field });
       }
 
       if (controlRefreshesOnChange(field.control) && field.refreshRequirementsOnChange && this.onRefreshRequirements) {
@@ -3957,8 +3954,8 @@ var FieldsetController = function () {
       }
 
       // We remove custom error messages on change, as they're no longer relevant
-      if (this.errorMessages && this.errorMessages[field.key]) {
-        delete this.errorMessages[field.key];
+      if (this.errorMessages && this.errorMessages[key]) {
+        delete this.errorMessages[key];
       }
 
       // Delay so model can update
@@ -8545,7 +8542,7 @@ module.exports = "<div class=\"form-group tw-field-{{ $ctrl.name }}\"\n  ng-clas
 /* 123 */
 /***/ (function(module, exports) {
 
-module.exports = "<fieldset ng-form=\"twFieldset\">\n  <legend ng-if=\"$ctrl.title\">{{ $ctrl.title }}</legend>\n  <p class=\"text-max-width\" ng-if=\"$ctrl.description\">{{ $ctrl.description }}</p>\n  <div class=\"row row-equal-height\">\n    <div ng-repeat=\"(key, field) in $ctrl.fields track by $index\" class=\"col-xs-12\" ng-hide=\"field.hidden\"\n      ng-class=\"{\n        'col-sm-4': !$ctrl.narrow  && field.width === 'sm',\n        'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),\n        'col-sm-12': $ctrl.narrow || field.width === 'lg' || !field.maxlength || field.maxlength > 10\n      }\">\n\n      <tw-field\n        name=\"{{ key }}\"\n        model=\"$ctrl.model[key]\"\n        field=\"field\"\n        locale=\"$ctrl.locale\"\n        upload-options=\"$ctrl.uploadOptions\"\n        error-message=\"$ctrl.errorMessages[key]\"\n        warning-message=\"$ctrl.warningMessages[key]\"\n        on-change=\"$ctrl.fieldChange(value, field)\"\n        on-focus=\"$ctrl.fieldFocus(field)\"\n        on-blur=\"$ctrl.fieldBlur(field)\"\n        class=\"btn-block\">  <!-- Remove btn-block after boostrap update -->\n      </tw-field>\n\n    </div>\n  </div>\n</fieldset>\n";
+module.exports = "<fieldset ng-form=\"twFieldset\">\n  <legend ng-if=\"$ctrl.title\">{{ $ctrl.title }}</legend>\n  <p class=\"text-max-width\" ng-if=\"$ctrl.description\">{{ $ctrl.description }}</p>\n  <div class=\"row row-equal-height\">\n    <div ng-repeat=\"(key, field) in $ctrl.fields track by $index\" class=\"col-xs-12\" ng-hide=\"field.hidden\"\n      ng-class=\"{\n        'col-sm-4': !$ctrl.narrow  && field.width === 'sm',\n        'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),\n        'col-sm-12': $ctrl.narrow || field.width === 'lg' || !field.maxlength || field.maxlength > 10\n      }\">\n\n      <tw-field\n        name=\"{{ key }}\"\n        model=\"$ctrl.model[key]\"\n        field=\"field\"\n        locale=\"$ctrl.locale\"\n        upload-options=\"$ctrl.uploadOptions\"\n        error-message=\"$ctrl.errorMessages[key]\"\n        warning-message=\"$ctrl.warningMessages[key]\"\n        on-change=\"$ctrl.fieldChange(value, key, field)\"\n        on-focus=\"$ctrl.fieldFocus(key, field)\"\n        on-blur=\"$ctrl.fieldBlur(key, field)\"\n        class=\"btn-block\">  <!-- Remove btn-block after boostrap update -->\n      </tw-field>\n\n    </div>\n  </div>\n</fieldset>\n";
 
 /***/ }),
 /* 124 */

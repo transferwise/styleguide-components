@@ -372,9 +372,9 @@
   model="{...}"
   is-valid="..."
   on-model-change="modelHandler(model)"
-  on-field-focus="focusHandler(field)"
-  on-field-blur="blurHandler(field)"
-  on-field-change="changeHandler(field, value)"&gt;
+  on-field-focus="focusHandler(key, field)"
+  on-field-blur="blurHandler(key, field)"
+  on-field-change="changeHandler(value, key, field)"&gt;
 &lt;/tw-fieldset&gt;
 </pre>
           </div>
@@ -412,9 +412,9 @@
           requirements="$ctrl.fieldsetBasic"
           model="$ctrl.fieldsetBasicModel"
           on-model-change="$ctrl.log(model)"
-          on-field-focus="$ctrl.log(field)"
-          on-field-blur="$ctrl.log(field)"
-          on-field-change="$ctrl.onFieldChange(field, value)">
+          on-field-focus="$ctrl.log('focus: ' + key)"
+          on-field-blur="$ctrl.log('blur: ' + key)"
+          on-field-change="$ctrl.onFieldChange(value, key, field)">
         </fieldset-docs>
 
         <h4 id="fieldset-layout" class="page-header">
