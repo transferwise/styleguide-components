@@ -1101,6 +1101,11 @@ function RequirementsService($http) {
   this.prepLegacyProps = function (field) {
     delete field.key;
 
+    if (field.name) {
+      field.title = field.name;
+      delete field.name;
+    }
+
     if (field.validationRegexp) {
       field.pattern = field.validationRegexp;
       delete field.validationRegexp;

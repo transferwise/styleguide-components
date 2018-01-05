@@ -6,11 +6,11 @@
   }">
   <label class="control-label"
     ng-if="$ctrl.control !== 'file'">
-    {{$ctrl.field.name}}
+    {{$ctrl.field.title}}
   </label>
   <tw-form-control
     name="{{ $ctrl.field.key }}"
-    label="{{ $ctrl.field.name }}"
+    label="{{ $ctrl.field.title }}"
     type="{{ $ctrl.control | lowercase }}"
     placeholder="{{ $ctrl.field.placeholder }}"
     help-text="{{ $ctrl.field.helpText }}"
@@ -74,7 +74,7 @@
     <img
       ng-if="$ctrl.field.helpImage && $ctrl.control !== 'file'"
       ng-src="{{$ctrl.field.helpImage}}"
-      alt="{{$ctrl.field.name}}"
+      alt="{{$ctrl.field.title}}"
       class="thumbnail m-y-2" />
   </div>
 </div>

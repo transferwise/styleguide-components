@@ -64,11 +64,28 @@ describe('Requirements Service', function() {
 
     it('should convert old props to new', function() {
       var legacy = {
-        typeText: { type: "string", example: "Example", tooltip: "Tool tip", min: 1, max: 2, validationRegexp: "[A-Z]" }
+        typeText: {
+          name: "Thing",
+          type: "string",
+          example: "Example",
+          tooltip: "Tool tip",
+          min: 1,
+          max: 2,
+          validationRegexp: "[A-Z]"
+        }
       };
 
       var current = {
-        typeText:  { type: "string", control: "text", placeholder: "Example", helpText: "Tool tip", minimum: 1, maximum: 2, pattern: "[A-Z]" }
+        typeText:  {
+          title: "Thing",
+          type: "string",
+          control: "text",
+          placeholder: "Example",
+          helpText: "Tool tip",
+          minimum: 1,
+          maximum: 2,
+          pattern: "[A-Z]"
+        }
       };
 
       expect(service.prepFields(legacy)).toEqual(current);
@@ -88,7 +105,7 @@ describe('Requirements Service', function() {
 
       var current = {
         grouped:  {
-          name: "whatever",
+          title: "whatever",
           type: "string",
           control: "text"
         }
