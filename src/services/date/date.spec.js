@@ -1,7 +1,7 @@
 describe('TwDateService test', function() {
   'use strict';
 
-  var service, $scope, $rootScope, $window;
+  var service;
 
   var dateFormats = ['narrow', 'short', 'long', null];
 
@@ -9,9 +9,6 @@ describe('TwDateService test', function() {
 
   beforeEach(inject(function($injector) {
     service = $injector.get('TwDateService');
-    $rootScope = $injector.get('$rootScope');
-    $window = $injector.get('$window');
-    $scope = $rootScope.$new();
   }));
 
   describe('when English locale', function() {
@@ -186,7 +183,7 @@ describe('TwDateService test', function() {
 
   function isPhantomJsBrowser() {
     //PhantomJS can't do translation to Japanese
-    return $window.navigator.userAgent.indexOf("PhantomJS") !== -1
+    return window.navigator.userAgent.indexOf("PhantomJS") !== -1
   }
 
   var englishMonths = {

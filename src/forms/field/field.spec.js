@@ -21,7 +21,7 @@ describe('Field', function() {
 
   describe('when given a name for the field', function() {
     beforeEach(function() {
-      $scope.options = { key: "keyName", name: "Control label", type: "string" };
+      $scope.options = { name: "Control label", type: "string" };
       element = getCompiledDirectiveElement();
     });
 
@@ -33,7 +33,7 @@ describe('Field', function() {
   describe('when given type:string', function() {
     describe('and no format', function() {
       beforeEach(function() {
-        $scope.options = { key: "keyName", type: "string" };
+        $scope.options = { type: "string" };
         element = getCompiledDirectiveElement();
       });
 
@@ -44,7 +44,7 @@ describe('Field', function() {
 
     describe('and date format', function() {
       beforeEach(function() {
-        $scope.options = { key: "keyName", type: "string", format: "date" };
+        $scope.options = { type: "string", format: "date" };
         element = getCompiledDirectiveElement();
       });
 
@@ -55,7 +55,7 @@ describe('Field', function() {
 
     describe('and password format', function() {
       beforeEach(function() {
-        $scope.options = { key: "keyName", type: "string", format: "password" };
+        $scope.options = { type: "string", control: "password" };
         element = getCompiledDirectiveElement();
       });
 
@@ -66,7 +66,7 @@ describe('Field', function() {
 
     describe('and base64url format', function() {
       beforeEach(function() {
-        $scope.options = { key: "keyName", type: "string", format: "base64url" };
+        $scope.options = { type: "string", format: "base64url" };
         element = getCompiledDirectiveElement();
       });
 
@@ -81,7 +81,7 @@ describe('Field', function() {
 
   describe('when given type:number', function() {
     beforeEach(function() {
-      $scope.options = { key: "keyName", type: "number" };
+      $scope.options = { type: "number" };
       element = getCompiledDirectiveElement();
     });
 
@@ -92,7 +92,7 @@ describe('Field', function() {
 
   describe('when given type:boolean', function() {
     beforeEach(function() {
-      $scope.options = { key: "keyName", type: "boolean" };
+      $scope.options = { type: "boolean" };
       element = getCompiledDirectiveElement();
     });
 
@@ -105,7 +105,6 @@ describe('Field', function() {
     describe('if there are 3 or less', function() {
       beforeEach(function() {
         $scope.options = {
-          key: "keyName",
           type: "number",
           values: [{value: 1, label: "One"}, {value: 2, label: "Two"}]
         };
@@ -119,7 +118,6 @@ describe('Field', function() {
     describe('if there are 4 or more', function() {
       beforeEach(function() {
         $scope.options = {
-          key: "keyName",
           type: "number",
           values: [
             {value: 1, label: "One"},
@@ -138,7 +136,6 @@ describe('Field', function() {
     describe('if control:select is supplied', function() {
       beforeEach(function() {
         $scope.options = {
-          key: "keyName",
           type: "number",
           control: "select",
           values: [{value: 1, label: "One"}, {value: 2, label: "Two"}]
@@ -154,7 +151,7 @@ describe('Field', function() {
 
   describe('when the model already contains a value', function() {
     beforeEach(function() {
-      $scope.options = { key: "keyName", type: "string" };
+      $scope.options = { type: "string" };
       $scope.model = 'supplied value';
       element = getCompiledDirectiveElement();
     });
@@ -166,7 +163,7 @@ describe('Field', function() {
 
   describe('when given an error message', function() {
     beforeEach(function() {
-      $scope.options = { key: "keyName", type: "string" };
+      $scope.options = { type: "string" };
       $scope.errorMessage = 'Custom error';
       element = getCompiledDirectiveElement();
       formGroup = element.querySelector('.form-group');
@@ -182,7 +179,7 @@ describe('Field', function() {
   });
   describe('when given hidden: true', function() {
     beforeEach(function() {
-      $scope.options = { key: "keyName", type: "string", hidden: true };
+      $scope.options = { type: "string", hidden: true };
       element = getCompiledDirectiveElement();
       formGroup = element.querySelector('.form-group');
     });
@@ -194,7 +191,7 @@ describe('Field', function() {
 
   describe('when the control is focused', function() {
     beforeEach(function() {
-      $scope.options = { key: "keyName", type: "string"};
+      $scope.options = { type: "string"};
       element = getCompiledDirectiveElement();
       element.querySelector('input').dispatchEvent(new Event('focus'));
     });
@@ -206,7 +203,7 @@ describe('Field', function() {
 
   describe('when the control value changes', function() {
     beforeEach(function() {
-      $scope.options = { key: "keyName", type: "string" };
+      $scope.options = { type: "string" };
       $scope.errorMessage = 'Custom error';
       element = getCompiledDirectiveElement();
       element.querySelector('input').value = 'changed';
@@ -233,7 +230,7 @@ describe('Field', function() {
 
   describe('when the control is blurred', function() {
     beforeEach(function() {
-      $scope.options = { key: "keyName", type: "string"};
+      $scope.options = { type: "string"};
       $scope.errorMessage = 'Custom error';
       element = getCompiledDirectiveElement();
       element.querySelector('input').dispatchEvent(new Event('blur'));
@@ -248,54 +245,6 @@ describe('Field', function() {
     });
   });
 
-  describe('when given legacy types', function() {
-    var legacyTypes = {
-      "text": "input[type=text]",
-      "password": "input[type=password]",
-      "date": "tw-date",
-      "upload": "tw-upload",
-      "checkbox": "tw-checkbox",
-      "select": "tw-select",
-      "radio": "tw-radio"
-    };
-
-    Object.keys(legacyTypes).forEach(function(type) {
-      describe(type, function() {
-        beforeEach(function() {
-          if (type === 'radio') {
-            // Radio won't render unless it has values
-            $scope.options = { key: "keyName", type: type, valuesAllowed: [{value: 1}] };
-          } else {
-            $scope.options = { key: "keyName", type: type };
-          }
-          element = getCompiledDirectiveElement();
-        });
-        it('should render the correct control', function() {
-          expect(element.querySelector(legacyTypes[type])).toBeTruthy();
-        });
-      });
-    })
-
-    describe('in sub groups', function() {
-      Object.keys(legacyTypes).forEach(function(type) {
-        describe(type, function() {
-          beforeEach(function() {
-            if (type === 'radio') {
-              // Radio won't render unless it has values
-              $scope.options = { group: [{ key: "keyName", type: type, valuesAllowed: [{value: 1}] }] };
-            } else {
-              $scope.options = { group: [{ key: "keyName", type: type }] };
-            }
-            element = getCompiledDirectiveElement();
-          });
-          it('should render the correct control', function() {
-            expect(element.querySelector(legacyTypes[type])).toBeTruthy();
-          });
-        });
-      })
-    });
-  });
-
   // TODO validation
   // TODO help information
   // TODO display formats
@@ -303,6 +252,7 @@ describe('Field', function() {
   function getCompiledDirectiveElement() {
     var template = " \
       <tw-field \
+        name='keyName' \
         model='model' \
         field='options' \
         validation-messages='validationMessages' \

@@ -1,8 +1,9 @@
 <div class="row">
   <div class="col-md-6">
     <tw-field
-      field="$ctrl.field"
+      name="$ctrl.name"
       model="$ctrl.model"
+      field="$ctrl.field"
       error-message="$ctrl.errorMessage"
       warning-message="$ctrl.warningMessage"
       on-focus="$ctrl.onFocus()"
@@ -12,13 +13,14 @@
   </div>
   <div class="col-md-6" ng-class="{'p-t-3': $ctrl.field.format !== 'base64url'}">
 <pre>&lt;tw-field
-  model="{{ $ctrl.model }}"
-  field="{{ $ctrl.field | json }}"<span ng-if="$ctrl.errorMessage">
+  name="{{ $ctrl.name }}"
+  model="{{ $ctrl.model }}"<span ng-if="$ctrl.errorMessage">
   error-message="'{{ $ctrl.errorMessage }}'"</span><span ng-if="$ctrl.warningMessage">
   warning-message="'{{ $ctrl.warningMessage }}'"</span><span ng-if="$ctrl.onFocusHandler">
   on-focus="console.log('focus')"</span><span ng-if="$ctrl.onBlurHandler">
   on-blur="console.log('blur')"</span><span ng-if="$ctrl.onChangeHandler">
-  on-change="console.log(value)"</span>&gt;
-&lt;/tw-field&gt;</pre>
+  on-change="console.log(value)"</span>
+  field="
+<div class="m-l-2">{{ $ctrl.field | json }}"&gt;</div>&lt;/tw-field&gt;</pre>
   </div>
 </div>

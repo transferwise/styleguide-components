@@ -16,19 +16,16 @@ angular.module('tw.styleguide.docs', [])
     this.stringBasic = {
       type: "string",
       name: "String label",
-      key: "stringProperty",
       placeholder: "Please enter string"
     };
     this.numberBasic = {
       type: "number",
       name: "Number control",
-      key: "numberProperty",
       placeholder: "Please enter number"
     };
     this.booleanBasic = {
       type: "boolean",
       name: "Boolean control",
-      key: "booleanProperty",
       placeholder: "Please choose"
     };
 
@@ -42,21 +39,12 @@ angular.module('tw.styleguide.docs', [])
     this.dateBasic = {
       type: "string",
       format: "date",
-      name: "Date control",
-      key: "dateProperty"
-    };
-    this.passwordBasic = {
-      type: "string",
-      format: "password",
-      name: "Password control",
-      key: "passwordProperty",
-      placeholder: "Choose password..."
+      name: "Date control"
     };
     this.uploadBasic = {
       type: "string",
       format: "base64url",
       name: "Upload control",
-      key: "base64urlProperty",
       placeholder: "Choose file..."
     };
 
@@ -68,7 +56,6 @@ angular.module('tw.styleguide.docs', [])
     this.selectBasic = {
       type: "number",
       name: "Select control",
-      key: "selectProperty",
       placeholder: "Please choose",
       values: [{
         value: 1, label: "One"
@@ -83,7 +70,6 @@ angular.module('tw.styleguide.docs', [])
     this.radioBasic = {
       type: "string",
       name: "Radio control",
-      key: "radioProperty",
       values: [{
         value: "1", label: "One"
       },{
@@ -95,10 +81,33 @@ angular.module('tw.styleguide.docs', [])
       radioProperty: "2"
     };
 
+    // Control type overrides
+    this.passwordOverride = {
+      type: "string",
+      control: "password",
+      name: "Password override",
+      placeholder: "Choose password..."
+    };
+    this.selectOverride = {
+      type: "string",
+      name: "Select override",
+      control: "select",
+      values: [{
+        value: "1", label: "One"
+      },{
+        value: "2", label: "Two"
+      }]
+    };
+
+    this.override = {
+      password: "qwerty",
+      select: "1"
+    };
+
+    // Values Async
     this.valuesAsync = {
       type: "number",
       name: "Values async",
-      key: "asyncProperty",
       control: "select",
       placeholder: "Please choose",
       valuesAsync: {
@@ -108,11 +117,10 @@ angular.module('tw.styleguide.docs', [])
     }
     this.valuesAsyncModel = null;
 
-
+    // Validation
     this.stringValidation = {
       type: "string",
       name: "String validation",
-      key: "stringProperty",
       placeholder: "Please enter text",
       required: true,
       pattern: '^[A-Z]*$',
@@ -128,7 +136,6 @@ angular.module('tw.styleguide.docs', [])
     this.numberValidation = {
       type: "number",
       name: "Number control",
-      key: "numberProperty",
       placeholder: "Please enter number",
       required: true,
       minimum: 10,
@@ -143,7 +150,6 @@ angular.module('tw.styleguide.docs', [])
       type: "string",
       format: "date",
       name: "Date control",
-      key: "dateProperty",
       required: true,
       minimum: '2000-01-01',
       maximum: '2020-01-01',
@@ -159,10 +165,10 @@ angular.module('tw.styleguide.docs', [])
       dateProperty: null
     };
 
+    // Custom messages
     this.customErrors = {
       type: "string",
       name: "Custom error",
-      key: "stringProperty",
       placeholder: "Please enter text"
     };
     this.customErrorsMessage = "Custom error message";
@@ -175,17 +181,16 @@ angular.module('tw.styleguide.docs', [])
     };
     this.customWarningMessage = "This is a warning!";
 
+    // Help information
     this.helpText = {
       type: "string",
       name: "Help text",
-      key: "helpText",
       placeholder: "Please enter text",
       helpText: "Some helpful information"
     }
     this.helpList = {
       type: "string",
       name: "Help list",
-      key: "helpList",
       placeholder: "Please enter number",
       helpList: [
         "Make sure of this",
@@ -196,15 +201,14 @@ angular.module('tw.styleguide.docs', [])
     this.helpImage = {
       type: "string",
       name: "Help image",
-      key: "helpImage",
       placeholder: "Please enter number",
       helpImage: "images/captcha.png"
     };
 
+    // Presentation options
     this.displayFormat = {
       type: "string",
       name: "String display format",
-      key: "displayFormat",
       placeholder: "Please enter...",
       displayFormat: "** - ** - **"
     };
@@ -219,7 +223,6 @@ angular.module('tw.styleguide.docs', [])
       type: "string",
       format: "base64url",
       name: "Upload options",
-      key: "uploadOptions",
       placeholder: "Please choose a file",
       uploadOptions: {
         buttonText: "Choose file...",
@@ -232,30 +235,30 @@ angular.module('tw.styleguide.docs', [])
     this.disabledControl = {
       type: "string",
       name: "Disabled control",
-      key: "displayFormat",
       placeholder: "Please enter...",
       disabled: true
     };
     this.hiddenControl = {
       type: "string",
-      key: "hiddenControl",
       hidden: true
     };
 
+    // Fieldsets
     this.fieldsetBasic = {
-      fields: [{
-        type: "string",
-        name: "String label",
-        key: "stringProperty",
-        placeholder: "Please enter text"
-      },{
-        type: "number",
-        name: "Number label",
-        key: "numberProperty",
-        placeholder: "Please enter number",
-        required: true,
-        min: 5
-      }]
+      fields: {
+        stringProperty: {
+          type: "string",
+          name: "String label",
+          placeholder: "Please enter text"
+        },
+        numberProperty: {
+          type: "number",
+          name: "Number label",
+          placeholder: "Please enter number",
+          required: true,
+          min: 5
+        }
+      }
     };
     this.fieldsetBasicModel = {
       stringProperty: "Example",
@@ -265,38 +268,40 @@ angular.module('tw.styleguide.docs', [])
     this.fieldsetOptions = {
       legend: "Fieldset legend",
       description: "Optional fieldset description, with more information about the content.",
-      fields: [{
-        type: "text",
-        name: "Control label",
-        key: "keyName",
-        placeholder: "Please enter text"
-      }]
+      fields: {
+        keyName: {
+          type: "text",
+          name: "Control label",
+          placeholder: "Please enter text"
+        }
+      }
     };
     this.fieldsetOptionsModel = {
       keyName: "Example"
     };
 
     this.fieldsetLayout = {
-      fields: [{
-        type: "string",
-        name: "String label",
-        key: "stringProperty",
-        placeholder: "Please enter text",
-        width: "md"
-      },{
-        type: "boolean",
-        name: "Boolean label",
-        key: "booleanProperty",
-        placeholder: "Check it",
-        width: "md"
-      },{
-        type: "number",
-        name: "Number label",
-        key: "numberProperty",
-        placeholder: "Please enter number",
-        width: "sm",
-        required: true
-      }]
+      fields: {
+        stringProperty: {
+          type: "string",
+          name: "String label",
+          placeholder: "Please enter text",
+          width: "md"
+        },
+        booleanProperty: {
+          type: "boolean",
+          name: "Boolean label",
+          placeholder: "Check it",
+          width: "md"
+        },
+        numberProperty: {
+          type: "number",
+          name: "Number label",
+          placeholder: "Please enter number",
+          width: "sm",
+          required: true
+        }
+      }
     };
     this.fieldsetLayoutModel = {};
   })
@@ -329,6 +334,7 @@ angular.module('tw.styleguide.docs', [])
   })
   .component('fieldDocs', {
     bindings: {
+      name: '@',
       model: '=',
       field: '<',
       errorMessage: '<',

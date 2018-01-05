@@ -5,7 +5,9 @@ class FieldController {
 
   $onChanges(changes) {
     if (changes.initialField) {
-      this.field = this.RequirementsService.prepField(this.initialField, this.model, []);
+      this.field = this.initialField;
+      this.control = this.field.control ? this.field.control :
+        this.RequirementsService.getControlType(changes.initialField.currentValue);
     }
   }
 
@@ -30,6 +32,7 @@ class FieldController {
     }
   }
 }
+
 
 FieldController.$inject = ['TwRequirementsService'];
 

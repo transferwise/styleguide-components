@@ -5,6 +5,7 @@ const Field = {
   controller,
   template,
   bindings: {
+    name: '@',
     model: '=',
     initialField: '<field',
     uploadOptions: '<',
@@ -12,7 +13,6 @@ const Field = {
     changeHandler: '&?onChange',
     focusHandler: '&?onFocus',
     blurHandler: '&?onBlur',
-    validationMessages: '<',
     errorMessage: '<',
     warningMessage: '<'
   }

@@ -56,6 +56,7 @@
             <h5>Component API</h5>
 <pre>
 &lt;tw-field
+  name="inputName"
   field="{...}"&gt;
   model="$ctrl.model"
   locale="'en-GB'"
@@ -74,14 +75,17 @@
           </a>
         </h4>
         <field-docs
+          name="stringProperty"
           field="$ctrl.stringBasic"
           model="$ctrl.basicTypesModel.stringProperty">
         </field-docs>
         <field-docs
+          name="numberProperty"
           field="$ctrl.numberBasic"
           model="$ctrl.basicTypesModel.numberProperty">
         </field-docs>
         <field-docs
+          name="booleanProperty"
           field="$ctrl.booleanBasic"
           model="$ctrl.basicTypesModel.booleanProperty">
         </field-docs>
@@ -101,14 +105,12 @@
           </div>
         </div>
         <field-docs
+          name="dateProperty"
           field="$ctrl.dateBasic"
           model="$ctrl.basicFormatsModel.dateProperty">
         </field-docs>
         <field-docs
-          field="$ctrl.passwordBasic"
-          model="$ctrl.basicFormatsModel.passwordProperty">
-        </field-docs>
-        <field-docs
+          name="base64urlProperty"
           field="$ctrl.uploadBasic"
           model="$ctrl.basicFormatsModel.base64urlProperty">
         </field-docs>
@@ -131,12 +133,46 @@
           </div>
         </div>
         <field-docs
+          name="selectProperty"
           field="$ctrl.selectBasic"
           model="$ctrl.selectionsModel.selectProperty">
         </field-docs>
         <field-docs
+          name="radioProperty"
           field="$ctrl.radioBasic"
           model="$ctrl.selectionsModel.radioProperty">
+        </field-docs>
+
+        <h4 id="control-type"  class="page-header">
+          Forcing control type
+          <a href="#selections" class="pull-xs-right">
+            <span class="glyphicon glyphicon-link"></span>
+          </a>
+        </h4>
+        <div class="row">
+          <div class="col-md-6">
+            <p>
+              To force display of an alternative control, we can supply a 'control'
+              type. For example, a enumerated value with only two options would
+              normally display as radio buttons, but we can force it to show as
+              a select, using <code>control: "select"</code>.
+            </p>
+          </div>
+          <div class="col-md-6">
+            <p>A password is of string type, with no specific format, we can
+              render a password control using <code>control: "password"</code>.
+            </p>
+          </div>
+        </div>
+        <field-docs
+          name="selectProperty"
+          field="$ctrl.selectOverride"
+          model="$ctrl.override.select">
+        </field-docs>
+        <field-docs
+          name="passwordProperty"
+          field="$ctrl.passwordOverride"
+          model="$ctrl.override.password">
         </field-docs>
 
         <h5>Loading values asynchronously</h5>
@@ -150,6 +186,7 @@
           </div>
         </div>
         <field-docs
+          name="valuesAsyncModel"
           field="$ctrl.valuesAsync"
           model="$ctrl.valuesAsyncModel">
         </field-docs>
@@ -161,16 +198,19 @@
           </a>
         </h4>
         <field-docs
+          name="stringProperty"
           field="$ctrl.stringValidation"
           model="$ctrl.validationModel.stringProperty"
           on-change="$ctrl.log(value)">
         </field-docs>
         <field-docs
+          name="numberProperty"
           field="$ctrl.numberValidation"
           model="$ctrl.validationModel.numberProperty"
           on-change="$ctrl.log(value)">
         </field-docs>
         <field-docs
+          name="dateProperty"
           field="$ctrl.dateValidation"
           model="$ctrl.validationModel.dateProperty"
           on-change="$ctrl.log(value)">
@@ -202,11 +242,13 @@
           </div>
         </div>
         <field-docs
+          name="customErrorsMessage"
           field="$ctrl.customErrors"
           model="$ctrl.customErrorsModel"
           error-message="$ctrl.customErrorsMessage">
         </field-docs>
         <field-docs
+          name="customWarningMessage"
           field="$ctrl.customWarning"
           model="$ctrl.customErrorsModel"
           warning-message="$ctrl.customWarningMessage">
@@ -227,14 +269,17 @@
           </div>
         </div>
         <field-docs
+          name="text"
           field="$ctrl.helpText"
           model="$ctrl.helpModel.text">
         </field-docs>
         <field-docs
+          name="list"
           field="$ctrl.helpList"
           model="$ctrl.helpModel.list">
         </field-docs>
         <field-docs
+          name="image"
           field="$ctrl.helpImage"
           model="$ctrl.helpModel.image">
         </field-docs>
@@ -248,23 +293,41 @@
         <div class="row">
           <div class="col-md-6">
             <p>
-              Some fields have additional presentation options, as seen below.
+              Some fields have additional presentation options.
             </p>
           </div>
         </div>
         <field-docs
+          name="displayFormat"
           field="$ctrl.displayFormat"
           model="$ctrl.presentationModel.displayFormat">
         </field-docs>
         <field-docs
+          name="uploadOptions"
           field="$ctrl.uploadComponent"
           model="$ctrl.presentationModel.uploadOptions">
         </field-docs>
+
+        <h4 id="field-states" class="page-header">
+          Field states
+          <a href="#field-states" class="pull-xs-right">
+            <span class="glyphicon glyphicon-link"></span>
+          </a>
+        </h4>
+        <div class="row">
+          <div class="col-md-6">
+            <p>
+              Fields can be disabled or hidden from view.
+            </p>
+          </div>
+        </div>
         <field-docs
+          name="disabledControl"
           field="$ctrl.disabledControl"
           model="$ctrl.presentationModel.disabledControl">
         </field-docs>
         <field-docs
+          name="hiddenControl"
           field="$ctrl.hiddenControl"
           model="$ctrl.presentationModel.hiddenControl">
         </field-docs>
@@ -276,6 +339,7 @@
           </a>
         </h4>
         <field-docs
+          name="eventsModel"
           field="$ctrl.stringBasic"
           model="$ctrl.eventsModel"
           on-focus="$ctrl.log('focus')"

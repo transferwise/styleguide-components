@@ -728,7 +728,7 @@ angular.module('tw.styleguide.docs', [])
       model: '=',
       fields: '='
     },
-    templateUrl: 'partials/forms/definition-list.html'
+    templateUrl: 'partials/dynamic-forms/definition-list.html'
   })
   .component('twCardsDocs', { templateUrl: 'partials/tw-cards.html' })
   .component('formExample', {

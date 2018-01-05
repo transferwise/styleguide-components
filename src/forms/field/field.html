@@ -1,17 +1,17 @@
-<div class="form-group tw-field-{{ $ctrl.field.key }}"
+<div class="form-group tw-field-{{ $ctrl.name }}"
   ng-class="{
     'has-error': $ctrl.field.errorMessage || $ctrl.errorMessage,
     'has-warning': $ctrl.field.warningMessage || $ctrl.warningMessage,
     'hidden': $ctrl.field.hidden
   }">
   <label class="control-label"
-    ng-if="$ctrl.field.control !== 'file'">
+    ng-if="$ctrl.control !== 'file'">
     {{$ctrl.field.name}}
   </label>
   <tw-form-control
     name="{{ $ctrl.field.key }}"
     label="{{ $ctrl.field.name }}"
-    type="{{ $ctrl.field.control | lowercase }}"
+    type="{{ $ctrl.control | lowercase }}"
     placeholder="{{ $ctrl.field.placeholder }}"
     help-text="{{ $ctrl.field.helpText }}"
     help-image="{{ $ctrl.field.helpImage }}"
@@ -37,9 +37,9 @@
   ></tw-form-control>
   <div class="alert alert-danger error-messages"
     ng-class="{
-      'alert-detach': $ctrl.field.control === 'date'  ||
-                      $ctrl.field.control === 'upload' ||
-                      $ctrl.field.control === 'radio'
+      'alert-detach': $ctrl.control === 'date'  ||
+                      $ctrl.control === 'file' ||
+                      $ctrl.control === 'radio'
     }">
     <div ng-repeat="(validationType, validationMessage) in $ctrl.field.validationMessages track by $index"
       class="error-{{ validationType | lowercase }}">
@@ -52,18 +52,18 @@
   <div class="alert alert-warning"
     ng-if="$ctrl.warningMessage"
     ng-class="{
-      'alert-detach': $ctrl.field.control === 'date'  ||
-                      $ctrl.field.control === 'upload' ||
-                      $ctrl.field.control === 'radio'
+      'alert-detach': $ctrl.control === 'date'  ||
+                      $ctrl.control === 'file' ||
+                      $ctrl.control === 'radio'
     }">
     {{ $ctrl.warningMessage }}
   </div>
   <div ng-if="$ctrl.field.helpText || $ctrl.field.helpList || $ctrl.field.helpImage"
     class="alert alert-focus"
     ng-class="{
-      'alert-detach': $ctrl.field.control === 'date' ||
-                      $ctrl.field.control === 'upload' ||
-                      $ctrl.field.control === 'radio'
+      'alert-detach': $ctrl.control === 'date' ||
+                      $ctrl.control === 'file' ||
+                      $ctrl.control === 'radio'
     }">
     <span ng-if="$ctrl.field.helpText">
       {{ $ctrl.field.helpText }}
@@ -72,7 +72,7 @@
       <li ng-repeat="helpMessage in $ctrl.field.helpList">{{ helpMessage }}</li>
     </ul>
     <img
-      ng-if="$ctrl.field.helpImage && $ctrl.field.control !== 'upload'"
+      ng-if="$ctrl.field.helpImage && $ctrl.control !== 'file'"
       ng-src="{{$ctrl.field.helpImage}}"
       alt="{{$ctrl.field.name}}"
       class="thumbnail m-y-2" />

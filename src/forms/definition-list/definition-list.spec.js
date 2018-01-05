@@ -31,12 +31,13 @@ describe('Definition list', function() {
       $scope.model = {
         key: 'ABCD'
       };
-      $scope.fields = [{
-        name: 'Text label',
-        key: 'key',
-        type: 'text',
-        displayFormat: '** - **'
-      }];
+      $scope.fields = {
+        key: {
+          name: 'Text label',
+          type: 'text',
+          displayFormat: '** - **'
+        }
+      };
       setupVars();
     });
     it('should display the formatted text value', function() {
@@ -49,11 +50,12 @@ describe('Definition list', function() {
       $scope.model = {
         key: 1234
       };
-      $scope.fields = [{
-        name: 'Number label',
-        key: 'key',
-        type: 'number'
-      }];
+      $scope.fields = {
+        key: {
+          name: 'Number label',
+          type: 'number'
+        }
+      };
       setupVars();
     });
     it('should display the formatted number value', function() {
@@ -70,11 +72,12 @@ describe('Definition list', function() {
       $scope.model = {
         key: '2000-01-01T00:00:00Z'
       };
-      $scope.fields = [{
-        name: 'Date label',
-        key: 'key',
-        type: 'date'
-      }];
+      $scope.fields = {
+        key: {
+          name: 'Date label',
+          type: 'date'
+        }
+      };
       setupVars();
     });
     it('should display the formatted date value', function() {
@@ -87,21 +90,22 @@ describe('Definition list', function() {
       $scope.model = {
         key: '2'
       };
-      $scope.fields = [{
-        name: 'Select label',
-        key: 'key',
-        type: 'select',
-        values: [
-          {
-            'key': '1',
-            'name': 'One'
-          },
-          {
-            'key': '2',
-            'name': 'Two'
-          }
-        ]
-      }];
+      $scope.fields = {
+        key: {
+          name: 'Select label',
+          type: 'select',
+          values: [
+            {
+              'value': '1',
+              'label': 'One'
+            },
+            {
+              'value': '2',
+              'label': 'Two'
+            }
+          ]
+        }
+      };
       setupVars();
     });
     it('should display the selected option value', function() {
@@ -114,21 +118,22 @@ describe('Definition list', function() {
       $scope.model = {
         key: '2'
       };
-      $scope.fields = [{
-        name: 'Radio label',
-        key: 'key',
-        type: 'radio',
-        values: [
-          {
-            'key': '1',
-            'name': 'One'
-          },
-          {
-            'key': '2',
-            'name': 'Two'
-          }
-        ]
-      }];
+      $scope.fields = {
+        key: {
+          name: 'Radio label',
+          type: 'radio',
+          values: [
+            {
+              'value': '1',
+              'label': 'One'
+            },
+            {
+              'value': '2',
+              'label': 'Two'
+            }
+          ]
+        }
+      };
       setupVars();
     });
     it('should display the selected radio value', function() {
@@ -141,11 +146,12 @@ describe('Definition list', function() {
       $scope.model = {
         key: true
       };
-      $scope.fields = [{
-        name: 'Checkbox label',
-        key: 'key',
-        type: 'checkbox'
-      }];
+      $scope.fields = {
+        key: {
+          name: 'Checkbox label',
+          type: 'boolean'
+        }
+      };
       setupVars();
     });
     it('should display the boolean', function() {
@@ -158,11 +164,13 @@ describe('Definition list', function() {
       $scope.model = {
         key: '1234'
       };
-      $scope.fields = [{
-        name: 'Password label',
-        key: 'key',
-        type: 'password'
-      }];
+      $scope.fields = {
+        key: {
+          name: 'Password label',
+          type: 'string',
+          control: 'password'
+        }
+      };
       setupVars();
     });
     it('should display the password masked', function() {
@@ -177,14 +185,13 @@ describe('Definition list', function() {
         $scope.model = {
           key: 'ABCD'
         };
-        $scope.fields = [{
-          name: 'Text label',
-          group: [{
-            key: 'key',
-            type: 'text',
+        $scope.fields = {
+          key: {
+            name: 'Text label',
+            type: 'string',
             displayFormat: '** - **'
-          }]
-        }];
+          }
+        };
         setupVars();
       });
       it('should display the formatted text value', function() {
@@ -197,13 +204,12 @@ describe('Definition list', function() {
         $scope.model = {
           key: 1234
         };
-        $scope.fields = [{
-          name: 'Number label',
-          group: [{
-            key: 'key',
+        $scope.fields = {
+          key: {
+            name: 'Number label',
             type: 'number'
-          }]
-        }];
+          }
+        };
         setupVars();
       });
       it('should display the formatted number value', function() {
@@ -220,13 +226,13 @@ describe('Definition list', function() {
         $scope.model = {
           key: '2000-01-01T00:00:00Z'
         };
-        $scope.fields = [{
-          name: 'Date label',
-          group: [{
-            key: 'key',
-            type: 'date'
-          }]
-        }];
+        $scope.fields = {
+          key: {
+            name: 'Date label',
+            type: 'string',
+            format: 'date'
+          }
+        };
         setupVars();
       });
       it('should display the formatted date value', function() {
@@ -239,23 +245,23 @@ describe('Definition list', function() {
         $scope.model = {
           key: '2'
         };
-        $scope.fields = [{
-          name: 'Select label',
-          group: [{
-            key: 'key',
-            type: 'select',
+        $scope.fields = {
+          key: {
+            name: 'Select label',
+            type: 'string',
+            control: 'select',
             values: [
               {
-                'key': '1',
-                'name': 'One'
+                'value': '1',
+                'label': 'One'
               },
               {
-                'key': '2',
-                'name': 'Two'
+                'value': '2',
+                'label': 'Two'
               }
             ]
-          }]
-        }];
+          }
+        };
         setupVars();
       });
       it('should display the selected option value', function() {
@@ -268,23 +274,23 @@ describe('Definition list', function() {
         $scope.model = {
           key: '2'
         };
-        $scope.fields = [{
-          name: 'Radio label',
-          group: [{
-            key: 'key',
-            type: 'radio',
+        $scope.fields = {
+          key: {
+            name: 'Radio label',
+            type: 'string',
+            control: 'radio',
             values: [
               {
-                'key': '1',
-                'name': 'One'
+                'value': '1',
+                'label': 'One'
               },
               {
-                'key': '2',
-                'name': 'Two'
+                'value': '2',
+                'label': 'Two'
               }
             ]
-          }]
-        }];
+          }
+        };
         setupVars();
       });
       it('should display the selected radio value', function() {
@@ -297,13 +303,12 @@ describe('Definition list', function() {
         $scope.model = {
           key: true
         };
-        $scope.fields = [{
-          name: 'Checkbox label',
-          group: [{
-            key: 'key',
-            type: 'checkbox'
-          }]
-        }];
+        $scope.fields = {
+          key: {
+            name: 'Checkbox label',
+            type: 'boolean'
+          }
+        };
         setupVars();
       });
       it('should display the boolean', function() {
@@ -316,13 +321,13 @@ describe('Definition list', function() {
         $scope.model = {
           key: '1234'
         };
-        $scope.fields = [{
-          name: 'Password label',
-          group: [{
-            key: 'key',
-            type: 'password'
-          }]
-        }];
+        $scope.fields = {
+          key: {
+            name: 'Password label',
+            type: 'string',
+            control: 'password'
+          }
+        };
         setupVars();
       });
       it('should display the password masked', function() {

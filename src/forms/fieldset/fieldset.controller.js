@@ -23,14 +23,6 @@ class FieldsetController {
       };
     }
 
-    if (this.initialFields) {
-      this.fields = this.RequirementsService.prepFields(
-        this.initialFields,
-        this.model,
-        this.validationMessages
-      );
-    }
-
     this.$scope.$watch('twFieldset.$valid', (validity) => {
       this.isValid = validity;
     });

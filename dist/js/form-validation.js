@@ -1021,22 +1021,35 @@ function RequirementsService($http) {
 
   this.prepFields = function (fields, model, validationMessages) {
     if (!fields) {
-      return [];
+      return {};
     }
 
-    return fields.map(function (field) {
-      return _this.prepField(field, model, validationMessages);
+    var preparedFields = void 0;
+    if (fields instanceof Array) {
+      preparedFields = {};
+      fields.forEach(function (field) {
+        // If the field still has groups, we need to flatten to get the key
+        if (field.group) {
+          flattenGroup(field);
+        }
+        preparedFields[field.key] = field;
+      });
+    } else {
+      preparedFields = fields;
+    }
+
+    Object.keys(preparedFields).forEach(function (key) {
+      preparedFields[key] = _this.prepField(preparedFields[key], model, validationMessages);
     });
+
+    return preparedFields;
   };
 
   this.prepField = function (field, model, validationMessages) {
     // Copy object, Object.assign is nicer, but lacks ie support
     var preparedField = JSON.parse(JSON.stringify(field));
 
-    if (preparedField.group && preparedField.group[0]) {
-      _angular2.default.extend(preparedField, preparedField.group[0]);
-      delete preparedField.group;
-    }
+    flattenGroup(preparedField);
 
     _this.prepLegacyProps(preparedField);
 
@@ -1060,16 +1073,18 @@ function RequirementsService($http) {
         break;
       case 'password':
         field.type = 'string';
-        field.format = 'password';
+        field.control = 'password';
         break;
       case 'checkbox':
         field.type = 'boolean';
         break;
       case 'select':
         field.control = 'select';
+        delete field.type;
         break;
       case 'radio':
         field.control = 'radio';
+        delete field.type;
         break;
       case 'upload':
         field.type = 'string';
@@ -1079,11 +1094,13 @@ function RequirementsService($http) {
     }
 
     if (!field.control) {
-      field.control = getControlType(field);
+      field.control = _this.getControlType(field);
     }
   };
 
   this.prepLegacyProps = function (field) {
+    delete field.key;
+
     if (field.validationRegexp) {
       field.pattern = field.validationRegexp;
       delete field.validationRegexp;
@@ -1122,10 +1139,10 @@ function RequirementsService($http) {
       } catch (ex) {
         // eslint-disable-next-line no-console
         console.warn('API regexp is invalid');
-        field.pattern = false;
+        delete field.pattern;
       }
     } else {
-      field.pattern = false;
+      delete field.pattern;
     }
   };
 
@@ -1165,6 +1182,8 @@ function RequirementsService($http) {
     field.values.forEach(function (option) {
       option.value = option.value || option.key;
       option.label = option.label || option.name;
+      delete option.key;
+      delete option.name;
     });
   };
 
@@ -1184,6 +1203,7 @@ function RequirementsService($http) {
     field.validationMessages = field.validationMessages ? field.validationMessages : validationMessages;
 
     if (!field.validationMessages) {
+      delete field.validationMessages;
       return;
     }
 
@@ -1196,11 +1216,13 @@ function RequirementsService($http) {
       delete field.validationMessages.maximum;
     }
   };
+
+  this.getControlType = getControlType;
 }
 
 function getControlType(field) {
   if (field.control) {
-    return field.control;
+    return field.control.toLowerCase();
   }
   if (field.hidden) {
     return 'hidden';
@@ -1258,6 +1280,13 @@ function getSelectionType(field) {
     return values.length > 3 ? 'select' : 'radio';
   }
   return 'select';
+}
+
+function flattenGroup(field) {
+  if (field.group && field.group[0]) {
+    _angular2.default.extend(field, field.group[0]);
+    delete field.group;
+  }
 }
 
 RequirementsService.$inject = ['$http'];

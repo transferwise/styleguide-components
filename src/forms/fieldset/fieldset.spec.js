@@ -133,42 +133,6 @@ describe('Fieldset', function() {
     return compiledElement[0];
   }
 
-  function getFieldsWithGroups() {
-    return [
-      {
-        "name": "UK Sort code",
-        "group": [
-          {
-            "key": "sortCode",
-            "type": "text",
-            "refreshRequirementsOnChange": true,
-            "required": true,
-            "displayFormat": "**-**-**",
-            "minLength": 6,
-            "maxLength": 8,
-            "validationMessages": {
-              "required": "sortCode required"
-            }
-          }
-        ]
-      },
-      {
-        "name": "IBAN",
-        "group": [
-          {
-            "key": "iban",
-            "type": "text",
-            "refreshRequirementsOnChange": true,
-            "required": true,
-            "displayFormat": "**-**-**",
-            "minLength": 6,
-            "maxLength": 8
-          }
-        ]
-      }
-    ];
-  }
-
   function getFields() {
     return [
       {

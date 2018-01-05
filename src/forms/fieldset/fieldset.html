@@ -2,7 +2,7 @@
   <legend ng-if="$ctrl.title">{{ $ctrl.title }}</legend>
   <p class="text-max-width" ng-if="$ctrl.description">{{ $ctrl.description }}</p>
   <div class="row row-equal-height">
-    <div ng-repeat="field in $ctrl.fields track by $index" class="col-xs-12" ng-hide="field.hidden"
+    <div ng-repeat="(key, field) in $ctrl.fields track by $index" class="col-xs-12" ng-hide="field.hidden"
       ng-class="{
         'col-sm-4': !$ctrl.narrow  && field.width === 'sm',
         'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),
@@ -10,12 +10,13 @@
       }">
 
       <tw-field
-        ng-if="!field.group"
-        model="$ctrl.model[field.key]"
+        name="{{ key }}"
+        model="$ctrl.model[key]"
         field="field"
         locale="$ctrl.locale"
         upload-options="$ctrl.uploadOptions"
-        error-message="$ctrl.errorMessages[field.key]"
+        error-message="$ctrl.errorMessages[key]"
+        warning-message="$ctrl.warningMessages[key]"
         on-change="$ctrl.fieldChange(value, field)"
         on-focus="$ctrl.fieldFocus(field)"
         on-blur="$ctrl.fieldBlur(field)"

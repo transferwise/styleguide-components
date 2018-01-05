@@ -17,13 +17,12 @@
 <pre>&lt;tw-fieldset<span ng-if="$ctrl.requirements.legend">
   legend="{{ $ctrl.requirements.legend }}"</span><span ng-if="$ctrl.requirements.description">
   description="{{ $ctrl.requirements.description }}"</span>
-  model="{{ $ctrl.model | json }}"
-  fields="{{ $ctrl.requirements.fields | json }}"
   is-valid="{{ $ctrl.isValid }}"<span ng-if="$ctrl.onModelChangeHandler">
   on-model-change="(model) => { console.log(model); }"</span><span ng-if="$ctrl.onFieldFocusHandler">
   on-field-focus="(field) => { console.log(field); }"</span><span ng-if="$ctrl.onFieldBlurHandler">
   on-field-blur="(field) => { console.log(field); }"</span><span ng-if="$ctrl.onFieldChangeHandler">
-  on-field-change="(field, value) => { console.log(field); console.log(value); }"</span>&gt;
-&lt;/tw-fieldset&gt;</pre>
+  on-field-change="(field, value) => { console.log(field); console.log(value); }"</span>
+  model="{{ $ctrl.model | json }}"
+  fields="<div class="m-l-2">{{ $ctrl.requirements.fields | json }}"&gt;</div>&lt;/tw-fieldset&gt;</pre>
   </div>
 </div>
