@@ -32,6 +32,7 @@ class FieldController {
     }
   }
 
+  // eslint-disable-next-line
   sizeOf(obj) {
     return obj ? Object.keys(obj).length : 0;
   }

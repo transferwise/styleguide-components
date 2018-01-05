@@ -3798,6 +3798,9 @@ var FieldController = function () {
         delete this.errorMessage;
       }
     }
+
+    // eslint-disable-next-line
+
   }, {
     key: 'sizeOf',
     value: function sizeOf(obj) {
