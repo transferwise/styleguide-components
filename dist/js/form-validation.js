@@ -1032,10 +1032,10 @@ function RequirementsService($http) {
         if (field.group) {
           flattenGroup(field);
         }
-        preparedFields[field.key] = field;
+        preparedFields[field.key] = copyOf(field);
       });
     } else {
-      preparedFields = fields;
+      preparedFields = copyOf(fields);
     }
 
     Object.keys(preparedFields).forEach(function (key) {
@@ -1046,8 +1046,7 @@ function RequirementsService($http) {
   };
 
   this.prepField = function (field, model, validationMessages) {
-    // Copy object, Object.assign is nicer, but lacks ie support
-    var preparedField = JSON.parse(JSON.stringify(field));
+    var preparedField = copyOf(field);
 
     flattenGroup(preparedField);
 
@@ -1292,6 +1291,11 @@ function flattenGroup(field) {
     _angular2.default.extend(field, field.group[0]);
     delete field.group;
   }
+}
+
+function copyOf(obj) {
+  // Object.assign is nicer, but lacks ie support
+  return JSON.parse(JSON.stringify(obj));
 }
 
 RequirementsService.$inject = ['$http'];
