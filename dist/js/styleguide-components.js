@@ -3948,6 +3948,9 @@ var FieldsetController = function () {
     value: function fieldChange(value, key, field) {
       var _this2 = this;
 
+      if (typeof value === 'undefined') {
+        delete this.model[key];
+      }
       if (this.onFieldChange) {
         this.onFieldChange({ value: value, key: key, field: field });
       }

@@ -60,6 +60,9 @@ class FieldsetController {
   }
 
   fieldChange(value, key, field) {
+    if (typeof value === 'undefined') {
+      delete this.model[key];
+    }
     if (this.onFieldChange) {
       this.onFieldChange({ value, key, field });
     }
