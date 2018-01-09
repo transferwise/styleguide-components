@@ -3685,15 +3685,6 @@ var FormControlController = function () {
         _this.internalModel = modelValue;
         return modelValue;
       });
-
-      if (this.validationAsync) {
-        // TODO add to ngModel async validators
-        // TODO create data package
-        // $http({
-        //   method: this.validationAsync.method || 'POST',
-        //   url: this.validationAsync.url
-        // });
-      }
     }
   }]);
 

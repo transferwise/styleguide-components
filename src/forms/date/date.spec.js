@@ -116,7 +116,7 @@ describe('Date', function() {
         it('should return an updated date as an object', function() {
           setDateUsingControls(element, '2000', '0', '1');
           expect(typeof $scope.ngModel).toBe('object');
-          //expect($scope.ngModel).toEqual(new Date(2000, 0, 1));
+          expect($scope.ngModel).toEqual(getUTCDate(2000, 0, 1));
         })
       });
       describe('as a valid long ISO8601 string', function () {
@@ -137,7 +137,7 @@ describe('Date', function() {
         it('should return an updated date as a string', function() {
           setDateUsingControls(element, '2000', '0', '1');
           expect(typeof $scope.ngModel).toBe('string');
-          //expect($scope.ngModel).toEqual('2000-01-01');
+          expect($scope.ngModel).toEqual(getUTCDate(2000, 0, 1));
         })
       });
       describe('as an invalid ISO8601 string', function () {

@@ -95,20 +95,10 @@ class FormControlController {
       return true;
     };
 
-
     $ngModel.$formatters.push((modelValue) => {
       this.internalModel = modelValue;
       return modelValue;
     });
-
-    if (this.validationAsync) {
-      // TODO add to ngModel async validators
-      // TODO create data package
-      // $http({
-      //   method: this.validationAsync.method || 'POST',
-      //   url: this.validationAsync.url
-      // });
-    }
   }
 }
 

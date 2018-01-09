@@ -400,31 +400,6 @@ angular.module('tw.styleguide.docs', [])
           $ctrl.requirements = response.data;
         });
       });
-
-      $ctrl.addError = function () {
-        const key = getFirstRequirementKey($ctrl.requirements);
-        $ctrl.errorMessages = {};
-        $ctrl.errorMessages[key] = "Server doesn't like this value";
-      };
-
-      function getFirstRequirementKey(requirements) {
-        var key;
-        $ctrl.requirements.forEach(function(requirementType) {
-          requirementType.fields.forEach(function(field) {
-            if (!field.group) {
-              key = field.key;
-            } else {
-              // TODO deprecate
-              field.group.forEach(function(fieldSection) {
-                if (!key) {
-                  key = fieldSection.key;
-                }
-              });
-            }
-          });
-        });
-        return key;
-      }
     }],
     bindings: {
       model: '='
