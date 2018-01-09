@@ -1,0 +1,81 @@
+<div class="form-group tw-field-{{ $ctrl.name }}"
+  ng-class="{
+    'has-error': $ctrl.field.errorMessage || $ctrl.errorMessage,
+    'has-warning': $ctrl.field.warningMessage || $ctrl.warningMessage,
+    'hidden': $ctrl.field.hidden
+  }">
+  <label class="control-label"
+    ng-if="$ctrl.control !== 'file'">
+    {{$ctrl.field.title}}
+  </label>
+  <tw-form-control
+    name="{{ $ctrl.field.key }}"
+    label="{{ $ctrl.field.title }}"
+    type="{{ $ctrl.control | lowercase }}"
+    placeholder="{{ $ctrl.field.placeholder }}"
+    help-text="{{ $ctrl.field.helpText }}"
+    help-image="{{ $ctrl.field.helpImage }}"
+    locale="{{ $ctrl.locale }}"
+    upload-accept="{{ $ctrl.field.accept }}"
+    upload-icon="{{ $ctrl.field.icon }}"
+    upload-too-large-message="{{ $ctrl.field.tooLargeMessage }}"
+    options="$ctrl.field.values"
+    upload-options="$ctrl.field.uploadOptions"
+    ng-model="$ctrl.model"
+    ng-focus="$ctrl.onFocus()"
+    ng-blur="$ctrl.onBlur()"
+    ng-change="$ctrl.onChange($ctrl.model)"
+    ng-required="$ctrl.field.required"
+    ng-disabled="$ctrl.field.disabled"
+    tw-minlength="$ctrl.field.minlength || $ctrl.field.minLength"
+    tw-maxlength="$ctrl.field.maxlength || $ctrl.field.maxLength"
+    ng-min="$ctrl.field.minimum"
+    ng-max="$ctrl.field.maximum"
+    ng-pattern="$ctrl.field.pattern"
+    text-format="$ctrl.field.displayFormat"
+    tw-validation
+  ></tw-form-control>
+  <div class="alert alert-danger error-messages"
+    ng-if="$ctrl.sizeOf($ctrl.field.validationMessages) > 0 || $ctrl.errorMessage"
+    ng-class="{
+      'alert-detach': $ctrl.control === 'date'  ||
+                      $ctrl.control === 'file' ||
+                      $ctrl.control === 'radio'
+    }">
+    <div ng-repeat="(validationType, validationMessage) in $ctrl.field.validationMessages track by $index"
+      class="error-{{ validationType | lowercase }}">
+      {{validationMessage}}
+    </div>
+    <div class="error-provided" ng-if="$ctrl.errorMessage">
+      {{ $ctrl.errorMessage }}
+    </div>
+  </div>
+  <div class="alert alert-warning"
+    ng-if="$ctrl.warningMessage"
+    ng-class="{
+      'alert-detach': $ctrl.control === 'date'  ||
+                      $ctrl.control === 'file' ||
+                      $ctrl.control === 'radio'
+    }">
+    {{ $ctrl.warningMessage }}
+  </div>
+  <div ng-if="$ctrl.field.helpText || $ctrl.field.helpList || $ctrl.field.helpImage"
+    class="alert alert-focus"
+    ng-class="{
+      'alert-detach': $ctrl.control === 'date' ||
+                      $ctrl.control === 'file' ||
+                      $ctrl.control === 'radio'
+    }">
+    <span ng-if="$ctrl.field.helpText">
+      {{ $ctrl.field.helpText }}
+    </span>
+    <ul ng-if="$ctrl.field.helpList" class="list-unstyled">
+      <li ng-repeat="helpMessage in $ctrl.field.helpList">{{ helpMessage }}</li>
+    </ul>
+    <img
+      ng-if="$ctrl.field.helpImage && $ctrl.control !== 'file'"
+      ng-src="{{$ctrl.field.helpImage}}"
+      alt="{{$ctrl.field.title}}"
+      class="thumbnail m-y-2" />
+  </div>
+</div>

@@ -13,7 +13,8 @@
   model="$ctrl.model"
   locale="en-GB"
   upload-options="{buttonText: 'Choose file'}"
-  on-refresh-requirements="$ctrl.refresh()">
+  on-refresh-requirements="$ctrl.refresh()"
+  on-model-change="$ctrl.onModelChange(model)">
 </tw-fieldset>
 
 <div class="row">

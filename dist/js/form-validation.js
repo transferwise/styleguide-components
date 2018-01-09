@@ -389,19 +389,30 @@ function DateService() {
   };
 
   this.getDatePartsFromIso = function (isoDate) {
+    var hoursOffset = 0;
+    var minutesOffset = 0;
+
     var year = parseInt(isoDate.substr(0, 4), 10);
     var month = parseInt(isoDate.substr(5, 2), 10) - 1;
     var day = parseInt(isoDate.substr(8, 2), 10);
     var hours = parseInt(isoDate.substr(11, 2), 10) || 0;
     var minutes = parseInt(isoDate.substr(14, 2), 10) || 0;
     var seconds = parseInt(isoDate.substr(17, 2), 10) || 0;
-    var hoursOffset = parseInt(isoDate.substr(20, 2), 10) || 0;
-    var minutesOffset = parseInt(isoDate.substr(23, 2), 10) || 0;
 
-    var isOffsetNegative = isoDate.substr(19, 1) === '-';
-    if (isOffsetNegative) {
-      hoursOffset *= -1;
-      minutesOffset *= -1;
+    // It's possible for the date to match the offset regex
+    var stringAfterDate = isoDate.substring(10);
+    var offsetRegex = '[+-]{1}[0-9]{2}(:[0-9]{2})?$';
+    var offset = stringAfterDate.match(offsetRegex);
+
+    if (offset) {
+      // TODO if there are milliseconds, need to adjust this
+      hoursOffset = parseInt(offset[0].substr(1, 2), 10) || 0;
+      minutesOffset = parseInt(offset[0].substr(4, 2), 10) || 0;
+
+      if (offset[0].substr(0, 1) === '-') {
+        hoursOffset *= -1;
+        minutesOffset *= -1;
+      }
     }
 
     return [year, month, day, hours, minutes, seconds, hoursOffset, minutesOffset];
@@ -410,8 +421,9 @@ function DateService() {
   this.isIsoStringValid = function (isoDate) {
     var dateSection = '[0-9]{4}-[0-9]{2}-[0-9]{2}';
     var timeSection = 'T[0-9]{2}:[0-9]{2}:[0-9]{2}';
+    var millisecondSection = '(.[0-9]{3})?';
     var zoneSection = '(Z|[+,-][0-9]{2}(:[0-9]{2})?)';
-    var regex = new RegExp('^' + dateSection + '(' + timeSection + zoneSection + ')?$');
+    var regex = new RegExp('^' + dateSection + '(' + timeSection + millisecondSection + zoneSection + ')?$');
     return regex.test(isoDate);
   };
 
@@ -940,7 +952,8 @@ function LocaleService() {
     }
 
     if (console && console.warn) {
-      console.warn('Incorrect locale: ' + newLocale);
+      // eslint-disable-line
+      console.warn('Incorrect locale: ' + newLocale); // eslint-disable-line
     }
     _this.locale = 'en-GB';
     return _this.locale;
@@ -997,55 +1010,143 @@ var _angular2 = _interopRequireDefault(_angular);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function RequirementsService() {
+function RequirementsService($http) {
   var _this = this;
 
-  this.prepRequirements = function (types) {
-    types.forEach(function (type) {
-      _this.prepFields(type.fields);
+  this.prepRequirements = function (alternatives) {
+    alternatives.forEach(function (alternative) {
+      _this.prepFields(alternative.fields);
     });
   };
 
   this.prepFields = function (fields, model, validationMessages) {
     if (!fields) {
-      return;
+      return {};
     }
-    fields.forEach(function (field) {
-      if (field.group) {
-        field.group.forEach(function (fieldSection) {
-          if (fieldSection.refreshRequirementsOnChange) {
-            field.refreshRequirementsOnChange = true;
-          }
-          _this.prepRegExp(fieldSection);
-          _this.prepValuesAsync(fieldSection, model);
-          _this.prepValuesAllowed(fieldSection);
-          _this.prepValidationMessages(fieldSection, validationMessages);
-        });
 
-        if (field.group.length) {
-          field.key = field.key || field.group[0].key;
-          field.type = field.type || field.group[0].type;
+    var preparedFields = void 0;
+    if (fields instanceof Array) {
+      preparedFields = {};
+      fields.forEach(function (field) {
+        // If the field still has groups, we need to flatten to get the key
+        if (field.group) {
+          flattenGroup(field);
         }
-      } else {
-        _this.prepRegExp(field);
-        _this.prepValuesAsync(field, model);
-        _this.prepValuesAllowed(field);
-        _this.prepValidationMessages(field, validationMessages);
-      }
+        preparedFields[field.key] = copyOf(field);
+      });
+    } else {
+      preparedFields = copyOf(fields);
+    }
+
+    Object.keys(preparedFields).forEach(function (key) {
+      preparedFields[key] = _this.prepField(preparedFields[key], model, validationMessages);
     });
+
+    return preparedFields;
   };
 
-  this.prepRegExp = function (field) {
+  this.prepField = function (field, model, validationMessages) {
+    var preparedField = copyOf(field);
+
+    flattenGroup(preparedField);
+
+    _this.prepLegacyProps(preparedField);
+
+    _this.prepType(preparedField);
+    _this.prepPattern(preparedField);
+    _this.prepValuesAsync(preparedField, model);
+    _this.prepValues(preparedField);
+    _this.prepValidationMessages(preparedField, validationMessages);
+
+    return preparedField;
+  };
+
+  this.prepType = function (field) {
+    switch (field.type) {
+      case 'text':
+        field.type = 'string';
+        break;
+      case 'date':
+        field.type = 'string';
+        field.format = 'date';
+        break;
+      case 'password':
+        field.type = 'string';
+        field.control = 'password';
+        break;
+      case 'checkbox':
+        field.type = 'boolean';
+        break;
+      case 'select':
+        field.control = 'select';
+        delete field.type;
+        break;
+      case 'radio':
+        field.control = 'radio';
+        delete field.type;
+        break;
+      case 'upload':
+        field.type = 'string';
+        field.format = 'base64url';
+        break;
+      default:
+    }
+
+    if (!field.control) {
+      field.control = _this.getControlType(field);
+    }
+  };
+
+  this.prepLegacyProps = function (field) {
+    delete field.key;
+
+    if (field.name) {
+      field.title = field.name;
+      delete field.name;
+    }
+
     if (field.validationRegexp) {
+      field.pattern = field.validationRegexp;
+      delete field.validationRegexp;
+    }
+
+    if (field.min) {
+      field.minimum = field.min;
+      delete field.min;
+    }
+
+    if (field.max) {
+      field.maximum = field.max;
+      delete field.max;
+    }
+
+    if (field.example && !field.placeholder) {
+      field.placeholder = field.example;
+      delete field.example;
+    }
+
+    if (field.tooltip && !field.helpText) {
+      field.helpText = field.tooltip;
+      delete field.tooltip;
+    }
+
+    if (field.valuesAllowed && !field.values) {
+      field.values = field.valuesAllowed;
+      delete field.valuesAllowed;
+    }
+  };
+
+  this.prepPattern = function (field) {
+    if (field.pattern) {
       try {
-        field.validationRegexp = new RegExp(field.validationRegexp);
+        RegExp(field.pattern);
       } catch (ex) {
         // eslint-disable-next-line no-console
         console.warn('API regexp is invalid');
-        field.validationRegexp = false;
+        delete field.pattern;
       }
     } else {
-      field.validationRegexp = false;
+      delete field.pattern;
     }
   };
 
@@ -1053,6 +1154,7 @@ function RequirementsService() {
     if (!field.valuesAsync) {
       return;
     }
+
     var postData = {};
     if (field.valuesAsync.params && field.valuesAsync.params.length) {
       postData = _this.getParamValuesFromModel(model, field.valuesAsync.params);
@@ -1067,19 +1169,25 @@ function RequirementsService() {
   };
 
   this.fetchValuesAsync = function (field, postData) {
-    return _this.$http.post(field.valuesAsync.url, postData).then(function (response) {
-      field.valuesAllowed = response.data;
-      _this.prepValuesAllowed(field);
+    return $http({
+      method: field.valuesAsync.method || 'GET',
+      url: field.valuesAsync.url,
+      data: postData || {}
+    }).then(function (response) {
+      field.values = response.data;
+      _this.prepValues(field);
     });
   };
 
-  this.prepValuesAllowed = function (field) {
-    if (!_angular2.default.isArray(field.valuesAllowed)) {
+  this.prepValues = function (field) {
+    if (!_angular2.default.isArray(field.values)) {
       return;
     }
-    field.valuesAllowed.forEach(function (valueAllowed) {
-      valueAllowed.value = valueAllowed.value || valueAllowed.key;
-      valueAllowed.label = valueAllowed.label || valueAllowed.name;
+    field.values.forEach(function (option) {
+      option.value = option.value || option.key;
+      option.label = option.label || option.name;
+      delete option.key;
+      delete option.name;
     });
   };
 
@@ -1097,8 +1205,100 @@ function RequirementsService() {
 
   this.prepValidationMessages = function (field, validationMessages) {
     field.validationMessages = field.validationMessages ? field.validationMessages : validationMessages;
+
+    if (!field.validationMessages) {
+      delete field.validationMessages;
+      return;
+    }
+
+    if (field.validationMessages.minimum) {
+      field.validationMessages.min = field.validationMessages.minimum;
+      delete field.validationMessages.minimum;
+    }
+    if (field.validationMessages.maximum) {
+      field.validationMessages.max = field.validationMessages.maximum;
+      delete field.validationMessages.maximum;
+    }
   };
+
+  this.getControlType = getControlType;
 }
+
+function getControlType(field) {
+  if (field.control) {
+    return field.control.toLowerCase();
+  }
+  if (field.hidden) {
+    return 'hidden';
+  }
+  if (field.valuesAsync) {
+    return 'select';
+  }
+  if (field.values && field.values.length) {
+    return getSelectionType(field);
+  }
+
+  switch (field.type) {
+    case 'string':
+      return getControlForStringFormat(field.format);
+    case 'number':
+    case 'integer':
+      return 'number';
+    case 'boolean':
+      return 'checkbox';
+    default:
+      return 'text';
+  }
+}
+
+function getControlForStringFormat(format) {
+  switch (format) {
+    case 'date':
+      return 'date';
+    case 'base64url':
+      return 'file';
+    case 'password':
+      return 'password';
+    case 'uri':
+      return 'text'; // 'url'; - not implemented
+    case 'email':
+      return 'text'; // 'email'; - not implemented
+    case 'phone':
+      return 'text'; // 'tel'; - not implemented
+    default:
+      return 'text';
+  }
+}
+
+function getSelectionType(field) {
+  if (field.control) {
+    return field.control;
+  } else if (field.type === 'select') {
+    return 'select';
+  } else if (field.type === 'radio') {
+    return 'radio';
+  }
+
+  var values = field.enum || field.values;
+  if (values) {
+    return values.length > 3 ? 'select' : 'radio';
+  }
+  return 'select';
+}
+
+function flattenGroup(field) {
+  if (field.group && field.group[0]) {
+    _angular2.default.extend(field, field.group[0]);
+    delete field.group;
+  }
+}
+
+function copyOf(obj) {
+  // Object.assign is nicer, but lacks ie support
+  return JSON.parse(JSON.stringify(obj));
+}
+
+RequirementsService.$inject = ['$http'];
 
 exports.default = RequirementsService;
 

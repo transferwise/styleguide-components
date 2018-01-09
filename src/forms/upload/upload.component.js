@@ -8,6 +8,7 @@ const Upload = {
   bindings: {
     ngDisabled: '<',
     ngModel: '=',
+    ngChange: '&',
     name: '@',
     icon: '@',
     helpImage: '@',

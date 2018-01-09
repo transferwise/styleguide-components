@@ -6,9 +6,9 @@ const DefinitionList = {
   template,
   bindings: {
     model: '<',
-    fields: '<',
+    initialFields: '<fields',
     locale: '@',
-    legend: '@',
+    title: '@',
     narrow: '<'
   }
 };

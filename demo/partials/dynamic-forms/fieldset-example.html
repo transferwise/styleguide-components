@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-md-6">
+    <tw-fieldset
+      legend="{{ $ctrl.requirements.legend }}"
+      description="{{ $ctrl.requirements.description }}"
+      model="$ctrl.model"
+      fields="$ctrl.requirements.fields"
+      is-valid="$ctrl.isValid"
+      on-model-change="$ctrl.onModelChange(model)"
+      on-field-focus="$ctrl.onFieldFocus(key, field)"
+      on-field-blur="$ctrl.onFieldBlur(key, field)"
+      on-field-change="$ctrl.onFieldChange(value, key, field)"
+      on-refresh-requirements="$ctrl.onRefreshRequirements()">
+    </tw-fieldset>
+  </div>
+  <div class="col-md-6 p-t-3">
+<pre>&lt;tw-fieldset<span ng-if="$ctrl.requirements.legend">
+  legend="{{ $ctrl.requirements.legend }}"</span><span ng-if="$ctrl.requirements.description">
+  description="{{ $ctrl.requirements.description }}"</span>
+  is-valid="{{ $ctrl.isValid }}"<span ng-if="$ctrl.onModelChangeHandler">
+  on-model-change="(model) => { console.log(model); }"</span><span ng-if="$ctrl.onFieldFocusHandler">
+  on-field-focus="(key, field) => { console.log('focus: ' + key); }"</span><span ng-if="$ctrl.onFieldBlurHandler">
+  on-field-blur="(key, field) => { console.log('blur: ' + key); }"</span><span ng-if="$ctrl.onFieldChangeHandler">
+  on-field-change="(value, key, field) => { console.log('changed: '+ key + ' to ' + value); }"</span>
+  model="{{ $ctrl.model | json }}"
+  fields="<div class="m-l-2">{{ $ctrl.requirements.fields | json }}"&gt;</div>&lt;/tw-fieldset&gt;</pre>
+  </div>
+</div>

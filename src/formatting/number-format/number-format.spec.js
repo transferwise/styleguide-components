@@ -25,6 +25,7 @@ describe('NumberFormat filter, ', function() {
       $element = getCompiledDirectiveElement($scope);
       textValue = $element.text().trim();
     });
+    
     it('should use the locale from the locale service', function() {
       expect(LocaleService.getCurrent).toHaveBeenCalled();
       if (isNumberLocaleSupported()) {

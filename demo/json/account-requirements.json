@@ -7,14 +7,8 @@
       {
         "name": "Legal type",
         "key": "legalType",
-        "type": "select",
+        "type": "radio",
         "required": true,
-        "displayFormat": null,
-        "example": null,
-        "minLength": null,
-        "maxLength": null,
-        "validationRegexp": null,
-        "validationAsync": null,
         "valuesAllowed": [
           {
             "key": "PRIVATE",

@@ -1,4 +1,3 @@
-
 function CurrencyFormatFilter($filter, CurrencyService, numberFormatFilter) {
   return (number, currency, locale) => {
     let precision;
