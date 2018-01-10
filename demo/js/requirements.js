@@ -264,7 +264,7 @@ angular.module('tw.styleguide.docs', [])
     };
 
     this.fieldsetOptions = {
-      legend: "Fieldset legend",
+      title: "Fieldset legend",
       description: "Optional fieldset description, with more information about the content.",
       fields: {
         keyName: {

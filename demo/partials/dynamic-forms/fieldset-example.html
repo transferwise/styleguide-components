@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-6">
     <tw-fieldset
-      legend="{{ $ctrl.requirements.legend }}"
+      title="{{ $ctrl.requirements.title }}"
       description="{{ $ctrl.requirements.description }}"
       model="$ctrl.model"
       fields="$ctrl.requirements.fields"
@@ -14,8 +14,8 @@
     </tw-fieldset>
   </div>
   <div class="col-md-6 p-t-3">
-<pre>&lt;tw-fieldset<span ng-if="$ctrl.requirements.legend">
-  legend="{{ $ctrl.requirements.legend }}"</span><span ng-if="$ctrl.requirements.description">
+<pre>&lt;tw-fieldset<span ng-if="$ctrl.requirements.title">
+  title="{{ $ctrl.requirements.title }}"</span><span ng-if="$ctrl.requirements.description">
   description="{{ $ctrl.requirements.description }}"</span>
   is-valid="{{ $ctrl.isValid }}"<span ng-if="$ctrl.onModelChangeHandler">
   on-model-change="(model) => { console.log(model); }"</span><span ng-if="$ctrl.onFieldFocusHandler">
