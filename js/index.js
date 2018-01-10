@@ -400,26 +400,6 @@ angular.module('tw.styleguide.docs', [])
           $ctrl.requirements = response.data;
         });
       });
-
-      $ctrl.addError = function () {
-        const key = getFirstRequirementKey($ctrl.requirements);
-        $ctrl.errorMessages = {};
-        $ctrl.errorMessages[key] = "Server doesn't like this value";
-      };
-
-      function getFirstRequirementKey(requirements) {
-        var key;
-        $ctrl.requirements.forEach(function(requirementType) {
-          requirementType.fields.forEach(function(fieldGroup) {
-            fieldGroup.group.forEach(function(field) {
-              if (!key) {
-                key = field.key;
-              }
-            });
-          });
-        });
-        return key;
-      }
     }],
     bindings: {
       model: '='
@@ -438,6 +418,7 @@ angular.module('tw.styleguide.docs', [])
         { value: 2, label: 'Two' },
         { value: 3, label: 'Three' }
       ];
+      this.log = function(msg) { console.log(msg); };
     },
     templateUrl: 'partials/tw-validation.html'
   })
@@ -631,6 +612,10 @@ angular.module('tw.styleguide.docs', [])
         console.log('onRefreshRequirements');
       };
 
+      this.onModelChange = function(model) {
+        console.log(model);
+      };
+
       this.fields = [
         {
           'name': 'Text',
@@ -653,7 +638,7 @@ angular.module('tw.styleguide.docs', [])
           'type': 'select',
           'width': 'md',
           'refreshRequirementsOnChange': true,
-          'valuesAllowed': [
+          'values': [
             {
               'key': '1',
               'name': 'One'
@@ -692,7 +677,7 @@ angular.module('tw.styleguide.docs', [])
           'type': 'radio',
           'width': 'md',
           'refreshRequirementsOnChange': true,
-          'valuesAllowed': [
+          'values': [
             {
               'key': '1',
               'name': 'One'
@@ -718,7 +703,7 @@ angular.module('tw.styleguide.docs', [])
       model: '=',
       fields: '='
     },
-    templateUrl: 'partials/forms/definition-list.html'
+    templateUrl: 'partials/dynamic-forms/definition-list.html'
   })
   .component('twCardsDocs', { templateUrl: 'partials/tw-cards.html' })
   .component('formExample', {
