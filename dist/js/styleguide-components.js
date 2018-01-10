@@ -3761,8 +3761,13 @@ var FieldController = function () {
     key: '$onChanges',
     value: function $onChanges(changes) {
       if (changes.initialField) {
-        this.field = this.initialField;
+        this.field = copyJSON(this.initialField);
         this.control = this.field.control ? this.field.control : this.RequirementsService.getControlType(changes.initialField.currentValue);
+
+        // TODO we should probably do this at fieldset level, so the model is available
+        if (this.field.valuesAsync) {
+          this.RequirementsService.prepValuesAsync(this.field, {});
+        }
       }
     }
   }, {
@@ -3801,6 +3806,10 @@ var FieldController = function () {
 
   return FieldController;
 }();
+
+function copyJSON(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
 
 FieldController.$inject = ['TwRequirementsService'];
 
