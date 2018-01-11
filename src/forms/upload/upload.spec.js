@@ -52,9 +52,9 @@ describe('Upload', function() {
       controller.maxSize = 1;
       var file = { size: 2 };
 
-      expect(controller.isError).toBe(false);
-      controller.fileDropped(file);
-      $timeout.flush(3001);
+      expect(controller.isError).toBe(false); // the initial state is no error
+      controller.fileDropped(file); // uploads the file
+      $timeout.flush(3001); // after 3s, isError shall be true
       expect(controller.isError).toBe(true);
     });
   });
