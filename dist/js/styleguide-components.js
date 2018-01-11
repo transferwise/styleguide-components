@@ -5403,20 +5403,20 @@ var UploadController = function () {
 
       if (!isSizeValid(file, this.maxSize)) {
         this.isTooLarge = true;
-        this.asyncFailure({
+        asyncFailure({
           status: 413,
           statusText: 'Request Entity Too Large'
-        });
+        }, this);
         return;
       }
 
       /*
       if (!isTypeValid(file, this.accept)) {
         this.isWrongType = true;
-        this.asyncFailure({
+        asyncFailure({
           status: 415,
           statusText: 'Unsupported Media Type'
-        });
+        }, this);
         return;
       }
       */
@@ -7735,7 +7735,7 @@ function DateService() {
     if (isLocaleTranslationRequiresStripping(locale)) {
       // strip out any numbers, spaces and commas in case browser (cough...Safari)
       // doesn't respect format
-      name = name.replace(/[0-9]|\s|,/g, '');
+      name = name.replace(/[\d\s,.]/g, '');
     }
 
     return name[0].toUpperCase() + name.substring(1);

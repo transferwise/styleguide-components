@@ -4,6 +4,8 @@ describe('Upload', function() {
   var $compile,
     $rootScope,
     $scope,
+    $timeout,
+    controller,
     isolateScope,
     directiveElement;
 
@@ -17,6 +19,7 @@ describe('Upload', function() {
     $rootScope = $injector.get('$rootScope');
     $compile = $injector.get('$compile');
     $scope = $rootScope.$new();
+    $timeout = $injector.get('$timeout');
   }));
 
   describe('transclusion', function() {
@@ -36,6 +39,23 @@ describe('Upload', function() {
     it('should render transcluded content', function() {
       var transcluded = directiveElement.find('.transcluded-content');
       expect(transcluded.length).toBe(1);
+    });
+  });
+
+  describe('Failure state', function() {
+    beforeEach(function() {
+      directiveElement = getCompiledDirectiveElement($scope);
+      controller = directiveElement.controller('twUpload');
+    });
+    it('when a big file is sent', function() {
+      controller.reset();
+      controller.maxSize = 1;
+      var file = { size: 2 };
+
+      expect(controller.isError).toBe(false); // the initial state is no error
+      controller.fileDropped(file); // uploads the file
+      $timeout.flush(3001); // after 3s, isError shall be true
+      expect(controller.isError).toBe(true);
     });
   });
 
