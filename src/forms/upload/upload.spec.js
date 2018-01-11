@@ -4,6 +4,8 @@ describe('Upload', function() {
   var $compile,
     $rootScope,
     $scope,
+    $timeout,
+    $controller,
     isolateScope,
     directiveElement;
 
@@ -13,10 +15,12 @@ describe('Upload', function() {
 
   beforeEach(module('tw.styleguide.forms'));
 
-  beforeEach(inject(function($injector) {
+  beforeEach(inject(function($injector, _$controller_) {
     $rootScope = $injector.get('$rootScope');
     $compile = $injector.get('$compile');
     $scope = $rootScope.$new();
+    $timeout = $injector.get('$timeout');
+    $controller = _$controller_;
   }));
 
   describe('transclusion', function() {
@@ -36,6 +40,28 @@ describe('Upload', function() {
     it('should render transcluded content', function() {
       var transcluded = directiveElement.find('.transcluded-content');
       expect(transcluded.length).toBe(1);
+    });
+  });
+
+  describe('Failure state', function() {
+    it('when a big file is sent', function() {
+      var ctrl = $controller('UploadController', {
+        $timeout: $timeout,
+        $element: getCompiledDirectiveElement($scope),
+        $http: {},
+        $scope: $scope,
+        $transclude: function() {},
+        $q: {},
+        $attrs: {}
+      });
+      ctrl.reset();
+      ctrl.maxSize = 1;
+      var file = { size: 2 };
+
+      expect(ctrl.isError).toBe(false);
+      ctrl.fileDropped(file);
+      $timeout.flush(3001);
+      expect(ctrl.isError).toBe(true);
     });
   });
 
