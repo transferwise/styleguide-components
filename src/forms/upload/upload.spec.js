@@ -5,7 +5,6 @@ describe('Upload', function() {
     $rootScope,
     $scope,
     $timeout,
-    controller,
     isolateScope,
     directiveElement;
 
@@ -44,18 +43,23 @@ describe('Upload', function() {
 
   describe('Failure state', function() {
     beforeEach(function() {
-      directiveElement = getCompiledDirectiveElement($scope);
-      controller = directiveElement.controller('twUpload');
+      var template = " \
+        <tw-upload \
+          too-large-message='File is too large' \
+          max-size='1'> \
+        </tw-upload>";
+      directiveElement = getCompiledDirectiveElement($scope, template);
     });
     it('when a big file is sent', function() {
-      controller.reset();
-      controller.maxSize = 1;
-      var file = { size: 2 };
+      var fakeDropEvent = new CustomEvent('drop'); // file drop can be mocked
+      fakeDropEvent.dataTransfer = { files : [{ size: 2 }] };
+      directiveElement[0].dispatchEvent(fakeDropEvent);
 
-      expect(controller.isError).toBe(false); // the initial state is no error
-      controller.fileDropped(file); // uploads the file
-      $timeout.flush(3001); // after 3s, isError shall be true
-      expect(controller.isError).toBe(true);
+      // after 4.1s the failure flow shall be done
+      $timeout.flush(4100);
+      // and complete-card is visible
+      var completeCard = directiveElement.find('.droppable-complete-card[aria-hidden="false"]');
+      expect(completeCard.text().trim()).toBe('File is too large');
     });
   });
 
