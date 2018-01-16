@@ -1,4 +1,4 @@
-function PopoverService() {
+function PopoverService($rootScope) {
   /**
    * Register the global event listeners for clicks on the body element and
    * viewport resizing
@@ -6,12 +6,12 @@ function PopoverService() {
   registerGlobalEventListeners();
 
   const BODY = document.getElementsByTagName('body')[0];
-  const POPOVER_SPACING = 8;
 
+  let popover = null;
+  let popoverSpacing = 0;
   let elementWithPopover = null;
   let elementPopoverOptions = {};
 
-  let popover = null;
   /**
    * [showPopover          Call this method to display a popover next to an
    *                       element]
@@ -31,11 +31,12 @@ function PopoverService() {
        */
       elementWithPopover = highlightedElement;
       elementPopoverOptions = popoverOptions;
+      popoverSpacing = popoverOptions.popoverSpacing || popoverSpacing;
 
       const isModalModeEnabled = getModalMode(elementPopoverOptions);
       const popoverParentElement = getPopoverParentElement(elementPopoverOptions);
 
-      let displayHandlers = [displayPopover];
+      let displayHandlers = [setupAdditionalOptions, displayPopover];
 
       if (!popoverParentElement.contains(popover)) {
         popover = getPopover(elementPopoverOptions);
@@ -83,7 +84,10 @@ function PopoverService() {
     const isInModalMode = getModalMode(popoverOptions);
     const isPositionedFixed = getFixedPlacementCondition(popoverOptions);
 
-    const popoverContainer = document.createElement('div');
+    const popoverTemplate = getGivenPopoverTemplate(popoverOptions) || getPopoverTemplate();
+
+    const popoverContainer = angular.element(popoverTemplate)[0];
+
     const popoverClasses = ['popover', 'in', placement, 'scale-down'];
 
     if (!isInModalMode) {
@@ -162,10 +166,7 @@ function PopoverService() {
    * @return {String}           [Popover's new placement]
    */
   function checkPopoverPlacement(placement) {
-    const popoverContainerElement = getPopoverParentElement(elementPopoverOptions);
-    const coordinateComputeFunction =
-      popoverContainerElement === BODY ? getBoundingOffset : getParentOffset;
-    const elementOffset = coordinateComputeFunction(elementWithPopover);
+    const elementOffset = getBoundingOffset(elementWithPopover);
 
     const viewportClientDimensions = getClientDimensions(document.documentElement);
 
@@ -173,10 +174,10 @@ function PopoverService() {
     const popoverOffsetDimensions = getOffsetDimensions(popover);
 
     const popoverOffsetWidth = elementOffset.offsetX +
-      elementOffsetDimensions.offsetWidth + POPOVER_SPACING +
+      elementOffsetDimensions.offsetWidth + popoverSpacing +
       popoverOffsetDimensions.offsetWidth;
     const popoverLeftOffset = elementOffset.offsetX -
-      (popoverOffsetDimensions.offsetWidth + POPOVER_SPACING);
+      (popoverOffsetDimensions.offsetWidth + popoverSpacing);
 
     const overflowsRight = popoverOffsetWidth > viewportClientDimensions.clientWidth;
     const overflowsLeft = popoverLeftOffset < 0;
@@ -243,7 +244,7 @@ function PopoverService() {
         (popoverOffsetDimensions.offsetWidth / 2)) +
         (elementOffsetDimensions.offsetWidth / 2);
       const popoverOffsetY = elementOffset.offsetY -
-        popoverOffsetDimensions.offsetHeight - POPOVER_SPACING;
+        popoverOffsetDimensions.offsetHeight - popoverSpacing;
 
       popoverOffsets = {
         offsetX: popoverOffsetX,
@@ -253,7 +254,7 @@ function PopoverService() {
 
     if (placement === 'right' || placement === 'right-top') {
       const popoverOffsetX = elementOffset.offsetX +
-        elementOffsetDimensions.offsetWidth + POPOVER_SPACING;
+        elementOffsetDimensions.offsetWidth + popoverSpacing;
       const popoverOffsetY =
         (elementOffset.offsetY -
         (popoverArrowTopOffset + popoverArrowMarginTop +
@@ -271,7 +272,7 @@ function PopoverService() {
         (popoverOffsetDimensions.offsetWidth / 2)) +
         (elementOffsetDimensions.offsetWidth / 2);
       const popoverOffsetY = elementOffset.offsetY +
-        elementOffsetDimensions.offsetHeight + POPOVER_SPACING;
+        elementOffsetDimensions.offsetHeight + popoverSpacing;
 
       popoverOffsets = {
         offsetX: popoverOffsetX,
@@ -281,7 +282,7 @@ function PopoverService() {
 
     if (placement === 'left' || placement === 'left-top') {
       const popoverOffsetX = elementOffset.offsetX -
-        popoverOffsetDimensions.offsetWidth - POPOVER_SPACING;
+        popoverOffsetDimensions.offsetWidth - popoverSpacing;
       const popoverOffsetY =
         (elementOffset.offsetY -
         (popoverArrowTopOffset + popoverArrowMarginTop +
@@ -336,9 +337,10 @@ function PopoverService() {
       const clickedOutsidePopover = !popover.contains(event.target);
       const clickedInsidePopover = popover.contains(event.target);
       const clickedPopoverClose = event.target.classList.contains('popover-close');
+      const popoverIsVisible = !popover.classList.contains('scale-down');
 
-      const closeModalCondition = clickedOutsidePopover ||
-        (clickedInsidePopover && clickedPopoverClose);
+      const closeModalCondition = popoverIsVisible && (clickedOutsidePopover ||
+        (clickedInsidePopover && clickedPopoverClose));
       const isModalModeEnabled = getModalMode(elementPopoverOptions);
 
       if (closeModalCondition) {
@@ -347,6 +349,10 @@ function PopoverService() {
         if (isModalModeEnabled) {
           toggleModalMode(false);
         }
+      }
+
+      if (clickedInsidePopover) {
+        $rootScope.$emit('promotion:click', elementPopoverOptions);
       }
     }
   }
@@ -487,6 +493,10 @@ function PopoverService() {
    * @return {String} [CSS class]
    */
   function hidePopover() {
+    $rootScope.$emit('promotion:close', elementPopoverOptions);
+
+    teardownAdditionalOptions(elementPopoverOptions);
+
     return addClass(popover, 'scale-down');
   }
 
@@ -631,6 +641,28 @@ function PopoverService() {
     const viewportClientDimensions = getClientDimensions(document.documentElement);
 
     return isModalModeEnabled && viewportClientDimensions.clientWidth <= 991;
+  }
+
+  function setupAdditionalOptions() {
+    const shouldHighlightPromotedElement = getObjectProperty(
+      'highlightPromotedElement',
+      elementPopoverOptions
+    );
+
+    if (shouldHighlightPromotedElement) {
+      addClass(elementWithPopover, 'promoted');
+    }
+  }
+
+  function teardownAdditionalOptions(popoverOptions) {
+    const shouldHighlightPromotedElement = getObjectProperty(
+      'highlightPromotedElement',
+      popoverOptions
+    );
+
+    if (shouldHighlightPromotedElement) {
+      removeClass(elementWithPopover, 'promoted');
+    }
   }
 
   /**
@@ -780,5 +812,7 @@ function PopoverService() {
     unregisterGlobalEventListeners,
   };
 }
+
+PopoverService.$inject = ['$rootScope'];
 
 export default PopoverService;

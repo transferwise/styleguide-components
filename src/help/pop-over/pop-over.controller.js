@@ -4,7 +4,13 @@ class PopOverController {
     this.popoverService = PopoverService;
 
     this.registerEventListeners = this.registerEventListeners.bind(this);
-    this.showPopover = this.showPopover.bind(this);
+    this.showPopover = (event) => {
+      event.preventDefault();
+      return this.popoverService.showPopover(
+        this.element,
+        getElementOptions(this.element),
+      );
+    };
   }
 
   $onInit() {
@@ -35,12 +41,6 @@ class PopOverController {
         this.element.removeEventListener('click', this.showPopover);
       }
     };
-  }
-
-  showPopover() {
-    const promotedElement = this.element;
-
-    return this.popoverService.showPopover(promotedElement, getElementOptions(promotedElement));
   }
 }
 
