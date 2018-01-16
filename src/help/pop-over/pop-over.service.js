@@ -6,12 +6,11 @@ function PopoverService($rootScope) {
   registerGlobalEventListeners();
 
   const BODY = document.getElementsByTagName('body')[0];
-  const POPOVER_SPACING = -24;
-
-  let elementWithPopover = null;
-  let elementPopoverOptions = {};
 
   let popover = null;
+  let popoverSpacing = 0;
+  let elementWithPopover = null;
+  let elementPopoverOptions = {};
 
   /**
    * [showPopover          Call this method to display a popover next to an
@@ -32,11 +31,12 @@ function PopoverService($rootScope) {
        */
       elementWithPopover = highlightedElement;
       elementPopoverOptions = popoverOptions;
+      popoverSpacing = popoverOptions.popoverSpacing || popoverSpacing;
 
       const isModalModeEnabled = getModalMode(elementPopoverOptions);
       const popoverParentElement = getPopoverParentElement(elementPopoverOptions);
 
-      let displayHandlers = [displayPopover];
+      let displayHandlers = [setupAdditionalOptions, displayPopover];
 
       if (!popoverParentElement.contains(popover)) {
         popover = getPopover(elementPopoverOptions);
@@ -174,10 +174,10 @@ function PopoverService($rootScope) {
     const popoverOffsetDimensions = getOffsetDimensions(popover);
 
     const popoverOffsetWidth = elementOffset.offsetX +
-      elementOffsetDimensions.offsetWidth + POPOVER_SPACING +
+      elementOffsetDimensions.offsetWidth + popoverSpacing +
       popoverOffsetDimensions.offsetWidth;
     const popoverLeftOffset = elementOffset.offsetX -
-      (popoverOffsetDimensions.offsetWidth + POPOVER_SPACING);
+      (popoverOffsetDimensions.offsetWidth + popoverSpacing);
 
     const overflowsRight = popoverOffsetWidth > viewportClientDimensions.clientWidth;
     const overflowsLeft = popoverLeftOffset < 0;
@@ -244,7 +244,7 @@ function PopoverService($rootScope) {
         (popoverOffsetDimensions.offsetWidth / 2)) +
         (elementOffsetDimensions.offsetWidth / 2);
       const popoverOffsetY = elementOffset.offsetY -
-        popoverOffsetDimensions.offsetHeight - POPOVER_SPACING;
+        popoverOffsetDimensions.offsetHeight - popoverSpacing;
 
       popoverOffsets = {
         offsetX: popoverOffsetX,
@@ -254,7 +254,7 @@ function PopoverService($rootScope) {
 
     if (placement === 'right' || placement === 'right-top') {
       const popoverOffsetX = elementOffset.offsetX +
-        elementOffsetDimensions.offsetWidth + POPOVER_SPACING;
+        elementOffsetDimensions.offsetWidth + popoverSpacing;
       const popoverOffsetY =
         (elementOffset.offsetY -
         (popoverArrowTopOffset + popoverArrowMarginTop +
@@ -272,7 +272,7 @@ function PopoverService($rootScope) {
         (popoverOffsetDimensions.offsetWidth / 2)) +
         (elementOffsetDimensions.offsetWidth / 2);
       const popoverOffsetY = elementOffset.offsetY +
-        elementOffsetDimensions.offsetHeight + POPOVER_SPACING;
+        elementOffsetDimensions.offsetHeight + popoverSpacing;
 
       popoverOffsets = {
         offsetX: popoverOffsetX,
@@ -282,7 +282,7 @@ function PopoverService($rootScope) {
 
     if (placement === 'left' || placement === 'left-top') {
       const popoverOffsetX = elementOffset.offsetX -
-        popoverOffsetDimensions.offsetWidth - POPOVER_SPACING;
+        popoverOffsetDimensions.offsetWidth - popoverSpacing;
       const popoverOffsetY =
         (elementOffset.offsetY -
         (popoverArrowTopOffset + popoverArrowMarginTop +
@@ -484,8 +484,6 @@ function PopoverService($rootScope) {
    * @return {String} [CSS class]
    */
   function displayPopover() {
-    setupAdditionalOptions(elementPopoverOptions);
-
     return removeClass(popover, 'scale-down');
   }
 
@@ -645,10 +643,10 @@ function PopoverService($rootScope) {
     return isModalModeEnabled && viewportClientDimensions.clientWidth <= 991;
   }
 
-  function setupAdditionalOptions(popoverOptions) {
+  function setupAdditionalOptions() {
     const shouldHighlightPromotedElement = getObjectProperty(
       'highlightPromotedElement',
-      popoverOptions
+      elementPopoverOptions
     );
 
     if (shouldHighlightPromotedElement) {
