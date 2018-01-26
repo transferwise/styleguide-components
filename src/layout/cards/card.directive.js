@@ -25,6 +25,7 @@ function Card() {
       expandedCard: 'expanded',
       cardForm: '?cardForm',
       cardIcon: 'cardIcon',
+      modals: '?modals',
     },
     link: CardLink
   };

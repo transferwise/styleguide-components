@@ -8,7 +8,7 @@ class PopOverController {
       event.preventDefault();
       return this.popoverService.showPopover(
         this.element,
-        getElementOptions(this.element),
+        getElementOptions(this.element)
       );
     };
   }
