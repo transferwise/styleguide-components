@@ -1,10 +1,10 @@
 import angular from 'angular';
 
 class FieldsetController {
-  constructor($scope, $http, TwRequirementsService) {
-    this.$scope = $scope;
-    this.$http = $http;
+  constructor(TwRequirementsService, $scope, $timeout) {
     this.RequirementsService = TwRequirementsService;
+    this.$scope = $scope;
+    this.$timeout = $timeout;
   }
 
   $onInit() {
@@ -16,30 +16,12 @@ class FieldsetController {
       this.validationMessages = {
         required: 'Required',
         pattern: 'Incorrect format',
-        min: 'The value is too low',
-        max: 'The value is too high',
+        minimum: 'The value is too low',
+        maximum: 'The value is too high',
         minlength: 'The value is too short',
         maxlength: 'The value is too long'
       };
     }
-
-    if (this.fields) {
-      this.RequirementsService.prepFields(
-        this.fields,
-        this.model,
-        this.validationMessages
-      );
-    }
-
-    this.$scope.$watch('$ctrl.fields', (newValue, oldValue) => {
-      if (!angular.equals(newValue, oldValue)) {
-        this.RequirementsService.prepFields(
-          this.fields,
-          this.model,
-          this.validationMessages
-        );
-      }
-    });
 
     this.$scope.$watch('twFieldset.$valid', (validity) => {
       this.isValid = validity;
@@ -48,49 +30,75 @@ class FieldsetController {
     // TODO can we add asyncvalidator here? - prob not
   }
 
-  onBlur(field) {
-    this.removeFieldError(field.key);
-
-    if (!field.refreshRequirementsOnChange) {
-      // eslint-disable-next-line no-useless-return
-      return;
-    }
-    // TODO disabled the form while we refresh requirements?
-    if (this.onRefreshRequirements) {
-      // Should post the current model back to the requirements end
-      // point and update the requirements.
-      if (!fieldTypeRefreshesOnChange(field.type)) {
-        this.onRefreshRequirements();
+  $onChanges(changes) {
+    const fieldsChanged = changes.initialFields;
+    if (fieldsChanged) {
+      if (!angular.equals(fieldsChanged.currentValue, fieldsChanged.previousValue)) {
+        this.fields = this.RequirementsService.prepFields(
+          fieldsChanged.currentValue,
+          this.model,
+          this.validationMessages
+        );
       }
     }
   }
 
-  onChange(field) {
-    this.removeFieldError(field.key);
-    if (fieldTypeRefreshesOnChange(field.type)) {
+  fieldFocus(key, field) {
+    if (this.onFieldFocus) {
+      this.onFieldFocus({ key, field });
+    }
+  }
+
+  fieldBlur(key, field) {
+    if (this.onFieldBlur) {
+      this.onFieldBlur({ key, field });
+    }
+    if (field.refreshRequirementsOnChange &&
+      this.onRefreshRequirements) {
       this.onRefreshRequirements();
     }
   }
 
-  removeFieldError(fieldKey) {
-    if (this.errorMessages) {
-      delete this.errorMessages[fieldKey];
+  fieldChange(value, key, field) {
+    if (typeof value === 'undefined') {
+      delete this.model[key];
     }
+    if (this.onFieldChange) {
+      this.onFieldChange({ value, key, field });
+    }
+
+    if (controlRefreshesOnChange(field.control) &&
+      field.refreshRequirementsOnChange &&
+      this.onRefreshRequirements) {
+      this.onRefreshRequirements();
+    }
+
+    // We remove custom error messages on change, as they're no longer relevant
+    if (this.errorMessages && this.errorMessages[key]) {
+      delete this.errorMessages[key];
+    }
+
+    // Delay so model can update
+    this.$timeout(() => {
+      if (this.onModelChange) {
+        this.onModelChange({ model: this.model });
+      }
+    });
   }
 }
 
-function fieldTypeRefreshesOnChange(fieldType) {
-  return fieldType === 'select' ||
-    fieldType === 'checkbox' ||
-    fieldType === 'radio' ||
-    fieldType === 'date' ||
-    fieldType === 'upload';
+function controlRefreshesOnChange(control) {
+  return control === 'select' ||
+    control === 'checkbox' ||
+    control === 'radio' ||
+    control === 'date' ||
+    control === 'upload';
 }
 
 FieldsetController.$inject = [
+  'TwRequirementsService',
   '$scope',
-  '$http',
-  'TwRequirementsService'
+  '$timeout'
 ];
 
 export default FieldsetController;

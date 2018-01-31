@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 86);
+/******/ 	return __webpack_require__(__webpack_require__.s = 87);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -87,7 +87,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _domService = __webpack_require__(103);
+var _domService = __webpack_require__(104);
 
 var _domService2 = _interopRequireDefault(_domService);
 
@@ -110,7 +110,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _currencyService = __webpack_require__(101);
+var _currencyService = __webpack_require__(102);
 
 var _currencyService2 = _interopRequireDefault(_currencyService);
 
@@ -166,7 +166,7 @@ var _currency = __webpack_require__(2);
 
 var _currency2 = _interopRequireDefault(_currency);
 
-var _locale = __webpack_require__(20);
+var _locale = __webpack_require__(22);
 
 var _locale2 = _interopRequireDefault(_locale);
 
@@ -174,7 +174,7 @@ var _dom = __webpack_require__(1);
 
 var _dom2 = _interopRequireDefault(_dom);
 
-var _requirements = __webpack_require__(105);
+var _requirements = __webpack_require__(7);
 
 var _requirements2 = _interopRequireDefault(_requirements);
 
@@ -197,7 +197,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _selectComponent = __webpack_require__(69);
+var _selectComponent = __webpack_require__(73);
 
 var _selectComponent2 = _interopRequireDefault(_selectComponent);
 
@@ -224,7 +224,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _dateService = __webpack_require__(102);
+var _dateService = __webpack_require__(103);
 
 var _dateService2 = _interopRequireDefault(_dateService);
 
@@ -247,25 +247,13 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _textFormat = __webpack_require__(34);
+var _requirementsService = __webpack_require__(106);
 
-var _textFormat2 = _interopRequireDefault(_textFormat);
-
-var _dateFormat = __webpack_require__(31);
-
-var _dateFormat2 = _interopRequireDefault(_dateFormat);
-
-var _numberFormat = __webpack_require__(11);
-
-var _numberFormat2 = _interopRequireDefault(_numberFormat);
-
-var _currencyFormat = __webpack_require__(28);
-
-var _currencyFormat2 = _interopRequireDefault(_currencyFormat);
+var _requirementsService2 = _interopRequireDefault(_requirementsService);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.formatting', [_textFormat2.default, _dateFormat2.default, _numberFormat2.default, _currencyFormat2.default]).name;
+exports.default = _angular2.default.module('tw.styleguide.services.requirements', []).service('TwRequirementsService', _requirementsService2.default).name;
 
 /***/ }),
 /* 8 */
@@ -282,71 +270,25 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _checkbox = __webpack_require__(12);
+var _textFormat = __webpack_require__(36);
 
-var _checkbox2 = _interopRequireDefault(_checkbox);
+var _textFormat2 = _interopRequireDefault(_textFormat);
 
-var _radio = __webpack_require__(17);
+var _dateFormat = __webpack_require__(33);
 
-var _radio2 = _interopRequireDefault(_radio);
+var _dateFormat2 = _interopRequireDefault(_dateFormat);
 
-var _select = __webpack_require__(5);
+var _numberFormat = __webpack_require__(12);
 
-var _select2 = _interopRequireDefault(_select);
+var _numberFormat2 = _interopRequireDefault(_numberFormat);
 
-var _upload = __webpack_require__(18);
+var _currencyFormat = __webpack_require__(30);
 
-var _upload2 = _interopRequireDefault(_upload);
-
-var _date = __webpack_require__(13);
-
-var _date2 = _interopRequireDefault(_date);
-
-var _dateLookup = __webpack_require__(50);
-
-var _dateLookup2 = _interopRequireDefault(_dateLookup);
-
-var _currencyInput = __webpack_require__(47);
-
-var _currencyInput2 = _interopRequireDefault(_currencyInput);
-
-var _amountCurrencySelect = __webpack_require__(42);
-
-var _amountCurrencySelect2 = _interopRequireDefault(_amountCurrencySelect);
-
-var _dynamicFormControl = __webpack_require__(14);
-
-var _dynamicFormControl2 = _interopRequireDefault(_dynamicFormControl);
-
-var _fieldset = __webpack_require__(15);
-
-var _fieldset2 = _interopRequireDefault(_fieldset);
-
-var _requirementsForm = __webpack_require__(65);
-
-var _requirementsForm2 = _interopRequireDefault(_requirementsForm);
-
-var _focusable = __webpack_require__(62);
-
-var _focusable2 = _interopRequireDefault(_focusable);
-
-var _definitionList = __webpack_require__(55);
-
-var _definitionList2 = _interopRequireDefault(_definitionList);
-
-var _telephone = __webpack_require__(71);
-
-var _telephone2 = _interopRequireDefault(_telephone);
-
-var _uploadDroppable = __webpack_require__(75);
-
-var _uploadDroppable2 = _interopRequireDefault(_uploadDroppable);
+var _currencyFormat2 = _interopRequireDefault(_currencyFormat);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.forms', [_checkbox2.default, _radio2.default, _select2.default, _upload2.default, _date2.default, _dateLookup2.default, _currencyInput2.default, _amountCurrencySelect2.default, _dynamicFormControl2.default, _fieldset2.default, _requirementsForm2.default, _focusable2.default, _definitionList2.default, _telephone2.default, _uploadDroppable2.default]).name;
-
-// Deprecated
+exports.default = _angular2.default.module('tw.styleguide.formatting', [_textFormat2.default, _dateFormat2.default, _numberFormat2.default, _currencyFormat2.default]).name;
 
 /***/ }),
 /* 9 */
@@ -363,11 +305,96 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _loader = __webpack_require__(94);
+var _checkbox = __webpack_require__(13);
+
+var _checkbox2 = _interopRequireDefault(_checkbox);
+
+var _radio = __webpack_require__(19);
+
+var _radio2 = _interopRequireDefault(_radio);
+
+var _select = __webpack_require__(5);
+
+var _select2 = _interopRequireDefault(_select);
+
+var _upload = __webpack_require__(20);
+
+var _upload2 = _interopRequireDefault(_upload);
+
+var _date = __webpack_require__(14);
+
+var _date2 = _interopRequireDefault(_date);
+
+var _dateLookup = __webpack_require__(52);
+
+var _dateLookup2 = _interopRequireDefault(_dateLookup);
+
+var _currencyInput = __webpack_require__(49);
+
+var _currencyInput2 = _interopRequireDefault(_currencyInput);
+
+var _amountCurrencySelect = __webpack_require__(44);
+
+var _amountCurrencySelect2 = _interopRequireDefault(_amountCurrencySelect);
+
+var _dynamicFormControl = __webpack_require__(15);
+
+var _dynamicFormControl2 = _interopRequireDefault(_dynamicFormControl);
+
+var _field = __webpack_require__(16);
+
+var _field2 = _interopRequireDefault(_field);
+
+var _fieldset = __webpack_require__(17);
+
+var _fieldset2 = _interopRequireDefault(_fieldset);
+
+var _requirementsForm = __webpack_require__(69);
+
+var _requirementsForm2 = _interopRequireDefault(_requirementsForm);
+
+var _focusable = __webpack_require__(66);
+
+var _focusable2 = _interopRequireDefault(_focusable);
+
+var _definitionList = __webpack_require__(57);
+
+var _definitionList2 = _interopRequireDefault(_definitionList);
+
+var _telephone = __webpack_require__(134);
+
+var _telephone2 = _interopRequireDefault(_telephone);
+
+var _uploadDroppable = __webpack_require__(76);
+
+var _uploadDroppable2 = _interopRequireDefault(_uploadDroppable);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.styleguide.forms', [_checkbox2.default, _radio2.default, _select2.default, _upload2.default, _date2.default, _dateLookup2.default, _currencyInput2.default, _amountCurrencySelect2.default, _dynamicFormControl2.default, _field2.default, _fieldset2.default, _requirementsForm2.default, _focusable2.default, _definitionList2.default, _telephone2.default, _uploadDroppable2.default]).name;
+
+// Deprecated
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _loader = __webpack_require__(95);
 
 var _loader2 = _interopRequireDefault(_loader);
 
-var _process = __webpack_require__(96);
+var _process = __webpack_require__(97);
 
 var _process2 = _interopRequireDefault(_process);
 
@@ -376,7 +403,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.loading', [_loader2.default, _process2.default]).name;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -407,37 +434,6 @@ exports.default = _angular2.default.module('tw.styleguide.validation', [_formVal
 ]).name;
 
 /***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _angular = __webpack_require__(0);
-
-var _angular2 = _interopRequireDefault(_angular);
-
-var _numberFormat = __webpack_require__(32);
-
-var _numberFormat2 = _interopRequireDefault(_numberFormat);
-
-var _numberFormat3 = __webpack_require__(33);
-
-var _numberFormat4 = _interopRequireDefault(_numberFormat3);
-
-var _locale = __webpack_require__(20);
-
-var _locale2 = _interopRequireDefault(_locale);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _angular2.default.module('tw.styleguide.formatting.number', [_locale2.default]).component('twNumberFormat', _numberFormat2.default).filter('twNumberFormat', _numberFormat4.default).name;
-
-/***/ }),
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -452,17 +448,21 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _checkboxComponent = __webpack_require__(43);
+var _numberFormat = __webpack_require__(34);
 
-var _checkboxComponent2 = _interopRequireDefault(_checkboxComponent);
+var _numberFormat2 = _interopRequireDefault(_numberFormat);
 
-var _dom = __webpack_require__(1);
+var _numberFormat3 = __webpack_require__(35);
 
-var _dom2 = _interopRequireDefault(_dom);
+var _numberFormat4 = _interopRequireDefault(_numberFormat3);
+
+var _locale = __webpack_require__(22);
+
+var _locale2 = _interopRequireDefault(_locale);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.forms.checkbox', [_dom2.default]).component('twCheckbox', _checkboxComponent2.default).name;
+exports.default = _angular2.default.module('tw.styleguide.formatting.number', [_locale2.default]).component('twNumberFormat', _numberFormat2.default).filter('twNumberFormat', _numberFormat4.default).name;
 
 /***/ }),
 /* 13 */
@@ -479,7 +479,34 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _dateComponent = __webpack_require__(51);
+var _checkboxComponent = __webpack_require__(45);
+
+var _checkboxComponent2 = _interopRequireDefault(_checkboxComponent);
+
+var _dom = __webpack_require__(1);
+
+var _dom2 = _interopRequireDefault(_dom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.styleguide.forms.checkbox', [_dom2.default]).component('twCheckbox', _checkboxComponent2.default).name;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _dateComponent = __webpack_require__(53);
 
 var _dateComponent2 = _interopRequireDefault(_dateComponent);
 
@@ -492,7 +519,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.forms.date', [_date2.default]).component('twDate', _dateComponent2.default).name;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -510,23 +537,23 @@ var _select = __webpack_require__(5);
 
 var _select2 = _interopRequireDefault(_select);
 
-var _radio = __webpack_require__(17);
+var _radio = __webpack_require__(19);
 
 var _radio2 = _interopRequireDefault(_radio);
 
-var _checkbox = __webpack_require__(12);
+var _checkbox = __webpack_require__(13);
 
 var _checkbox2 = _interopRequireDefault(_checkbox);
 
-var _date = __webpack_require__(13);
+var _date = __webpack_require__(14);
 
 var _date2 = _interopRequireDefault(_date);
 
-var _upload = __webpack_require__(18);
+var _upload = __webpack_require__(20);
 
 var _upload2 = _interopRequireDefault(_upload);
 
-var _formControlComponent = __webpack_require__(56);
+var _formControlComponent = __webpack_require__(58);
 
 var _formControlComponent2 = _interopRequireDefault(_formControlComponent);
 
@@ -536,7 +563,7 @@ exports.default = _angular2.default.module('tw.styleguide.forms.form-control', [
 .name;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -550,20 +577,55 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _dynamicFormControl = __webpack_require__(14);
+var _dynamicFormControl = __webpack_require__(15);
 
 var _dynamicFormControl2 = _interopRequireDefault(_dynamicFormControl);
 
-var _fieldsetComponent = __webpack_require__(58);
+var _fieldComponent = __webpack_require__(60);
 
-var _fieldsetComponent2 = _interopRequireDefault(_fieldsetComponent);
+var _fieldComponent2 = _interopRequireDefault(_fieldComponent);
+
+var _requirements = __webpack_require__(7);
+
+var _requirements2 = _interopRequireDefault(_requirements);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.forms.fieldset', [_dynamicFormControl2.default]).component('twFieldset', _fieldsetComponent2.default).name;
+exports.default = _angular2.default.module('tw.styleguide.forms.field', [_dynamicFormControl2.default, _requirements2.default]).component('twField', _fieldComponent2.default).name;
 
 /***/ }),
-/* 16 */
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _field = __webpack_require__(16);
+
+var _field2 = _interopRequireDefault(_field);
+
+var _fieldsetComponent = __webpack_require__(62);
+
+var _fieldsetComponent2 = _interopRequireDefault(_fieldsetComponent);
+
+var _requirements = __webpack_require__(7);
+
+var _requirements2 = _interopRequireDefault(_requirements);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.styleguide.forms.fieldset', [_field2.default, _requirements2.default]).component('twFieldset', _fieldsetComponent2.default).name;
+
+/***/ }),
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -596,60 +658,6 @@ FocusableController.$inject = ['$element', 'TwDomService'];
 exports.default = FocusableController;
 
 /***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _angular = __webpack_require__(0);
-
-var _angular2 = _interopRequireDefault(_angular);
-
-var _radioComponent = __webpack_require__(63);
-
-var _radioComponent2 = _interopRequireDefault(_radioComponent);
-
-var _dom = __webpack_require__(1);
-
-var _dom2 = _interopRequireDefault(_dom);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _angular2.default.module('tw.styleguide.forms.radio', [_dom2.default]).component('twRadio', _radioComponent2.default).name;
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _angular = __webpack_require__(0);
-
-var _angular2 = _interopRequireDefault(_angular);
-
-var _uploadComponent = __webpack_require__(78);
-
-var _uploadComponent2 = _interopRequireDefault(_uploadComponent);
-
-var _fileInputDirective = __webpack_require__(77);
-
-var _fileInputDirective2 = _interopRequireDefault(_fileInputDirective);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _angular2.default.module('tw.styleguide.forms.upload', []).directive('twFileInput', _fileInputDirective2.default).component('twUpload', _uploadComponent2.default).name;
-
-/***/ }),
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -664,13 +672,17 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _tabsComponent = __webpack_require__(99);
+var _radioComponent = __webpack_require__(67);
 
-var _tabsComponent2 = _interopRequireDefault(_tabsComponent);
+var _radioComponent2 = _interopRequireDefault(_radioComponent);
+
+var _dom = __webpack_require__(1);
+
+var _dom2 = _interopRequireDefault(_dom);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.navigation.tabs', []).component('twTabs', _tabsComponent2.default).name;
+exports.default = _angular2.default.module('tw.styleguide.forms.radio', [_dom2.default]).component('twRadio', _radioComponent2.default).name;
 
 /***/ }),
 /* 20 */
@@ -687,13 +699,17 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _localeService = __webpack_require__(104);
+var _uploadComponent = __webpack_require__(79);
 
-var _localeService2 = _interopRequireDefault(_localeService);
+var _uploadComponent2 = _interopRequireDefault(_uploadComponent);
+
+var _fileInputDirective = __webpack_require__(78);
+
+var _fileInputDirective2 = _interopRequireDefault(_fileInputDirective);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.services.locale', []).service('TwLocaleService', _localeService2.default).name;
+exports.default = _angular2.default.module('tw.styleguide.forms.upload', []).directive('twFileInput', _fileInputDirective2.default).component('twUpload', _uploadComponent2.default).name;
 
 /***/ }),
 /* 21 */
@@ -710,23 +726,13 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-__webpack_require__(3);
+var _tabsComponent = __webpack_require__(100);
 
-var _forms = __webpack_require__(8);
-
-var _forms2 = _interopRequireDefault(_forms);
-
-var _loading = __webpack_require__(9);
-
-var _loading2 = _interopRequireDefault(_loading);
-
-var _services = __webpack_require__(4);
-
-var _services2 = _interopRequireDefault(_services);
+var _tabsComponent2 = _interopRequireDefault(_tabsComponent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.form-components', [_forms2.default, _loading2.default, _services2.default]).name; /* This module is deprecated, but in use in several places */
+exports.default = _angular2.default.module('tw.styleguide.navigation.tabs', []).component('twTabs', _tabsComponent2.default).name;
 
 /***/ }),
 /* 22 */
@@ -743,21 +749,13 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-__webpack_require__(3);
+var _localeService = __webpack_require__(105);
 
-var _validation = __webpack_require__(10);
-
-var _validation2 = _interopRequireDefault(_validation);
-
-var _services = __webpack_require__(4);
-
-var _services2 = _interopRequireDefault(_services);
+var _localeService2 = _interopRequireDefault(_localeService);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* This module is deprecated, but in use in several places */
-
-exports.default = _angular2.default.module('tw.form-validation', [_validation2.default, _services2.default]).name;
+exports.default = _angular2.default.module('tw.styleguide.services.locale', []).service('TwLocaleService', _localeService2.default).name;
 
 /***/ }),
 /* 23 */
@@ -774,17 +772,23 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _popOver = __webpack_require__(80);
+__webpack_require__(3);
 
-var _popOver2 = _interopRequireDefault(_popOver);
+var _forms = __webpack_require__(9);
 
-var _toolTip = __webpack_require__(84);
+var _forms2 = _interopRequireDefault(_forms);
 
-var _toolTip2 = _interopRequireDefault(_toolTip);
+var _loading = __webpack_require__(10);
+
+var _loading2 = _interopRequireDefault(_loading);
+
+var _services = __webpack_require__(4);
+
+var _services2 = _interopRequireDefault(_services);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.help', [_popOver2.default, _toolTip2.default]).name;
+exports.default = _angular2.default.module('tw.form-components', [_forms2.default, _loading2.default, _services2.default]).name; /* This module is deprecated, but in use in several places */
 
 /***/ }),
 /* 24 */
@@ -801,17 +805,21 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _affix = __webpack_require__(88);
+__webpack_require__(3);
 
-var _affix2 = _interopRequireDefault(_affix);
+var _validation = __webpack_require__(11);
 
-var _cards = __webpack_require__(93);
+var _validation2 = _interopRequireDefault(_validation);
 
-var _cards2 = _interopRequireDefault(_cards);
+var _services = __webpack_require__(4);
+
+var _services2 = _interopRequireDefault(_services);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.layout', [_affix2.default, _cards2.default]).name;
+/* This module is deprecated, but in use in several places */
+
+exports.default = _angular2.default.module('tw.form-validation', [_validation2.default, _services2.default]).name;
 
 /***/ }),
 /* 25 */
@@ -828,7 +836,61 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _tabs = __webpack_require__(19);
+var _popOver = __webpack_require__(81);
+
+var _popOver2 = _interopRequireDefault(_popOver);
+
+var _toolTip = __webpack_require__(85);
+
+var _toolTip2 = _interopRequireDefault(_toolTip);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.styleguide.help', [_popOver2.default, _toolTip2.default]).name;
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _affix = __webpack_require__(89);
+
+var _affix2 = _interopRequireDefault(_affix);
+
+var _cards = __webpack_require__(94);
+
+var _cards2 = _interopRequireDefault(_cards);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.styleguide.layout', [_affix2.default, _cards2.default]).name;
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _tabs = __webpack_require__(21);
 
 var _tabs2 = _interopRequireDefault(_tabs);
 
@@ -837,7 +899,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.navigation', [_tabs2.default]).name;
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -865,7 +927,7 @@ var CurrencyFormat = {
 exports.default = CurrencyFormat;
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -874,7 +936,6 @@ exports.default = CurrencyFormat;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
 function CurrencyFormatFilter($filter, CurrencyService, numberFormatFilter) {
   return function (number, currency, locale) {
     var precision = void 0;
@@ -899,7 +960,7 @@ CurrencyFormatFilter.$inject = ['$filter', 'TwCurrencyService', 'twNumberFormatF
 exports.default = CurrencyFormatFilter;
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -913,11 +974,11 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _currencyFormat = __webpack_require__(26);
+var _currencyFormat = __webpack_require__(28);
 
 var _currencyFormat2 = _interopRequireDefault(_currencyFormat);
 
-var _currencyFormat3 = __webpack_require__(27);
+var _currencyFormat3 = __webpack_require__(29);
 
 var _currencyFormat4 = _interopRequireDefault(_currencyFormat3);
 
@@ -925,7 +986,7 @@ var _currency = __webpack_require__(2);
 
 var _currency2 = _interopRequireDefault(_currency);
 
-var _numberFormat = __webpack_require__(11);
+var _numberFormat = __webpack_require__(12);
 
 var _numberFormat2 = _interopRequireDefault(_numberFormat);
 
@@ -934,7 +995,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.formatting.currency', [_currency2.default, _numberFormat2.default]).component('twCurrencyFormat', _currencyFormat2.default).filter('twCurrencyFormat', _currencyFormat4.default).name;
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -962,7 +1023,7 @@ var DateDisplay = {
 exports.default = DateDisplay;
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1001,7 +1062,7 @@ DateFormatFilter.$inject = ['TwDateService'];
 exports.default = DateFormatFilter;
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1015,11 +1076,11 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _dateFormat = __webpack_require__(29);
+var _dateFormat = __webpack_require__(31);
 
 var _dateFormat2 = _interopRequireDefault(_dateFormat);
 
-var _dateFormat3 = __webpack_require__(30);
+var _dateFormat3 = __webpack_require__(32);
 
 var _dateFormat4 = _interopRequireDefault(_dateFormat3);
 
@@ -1028,7 +1089,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.formatting.date', []).component('twDateFormat', _dateFormat2.default).filter('twDateFormat', _dateFormat4.default).name;
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1056,7 +1117,7 @@ var NumberDisplay = {
 exports.default = NumberDisplay;
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1104,7 +1165,7 @@ NumberFormatFilter.$inject = ['TwLocaleService'];
 exports.default = NumberFormatFilter;
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1118,19 +1179,19 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _undoStackService = __webpack_require__(39);
+var _undoStackService = __webpack_require__(41);
 
 var _undoStackService2 = _interopRequireDefault(_undoStackService);
 
-var _textFormatService = __webpack_require__(38);
+var _textFormatService = __webpack_require__(40);
 
 var _textFormatService2 = _interopRequireDefault(_textFormatService);
 
-var _textFormatDirective = __webpack_require__(36);
+var _textFormatDirective = __webpack_require__(38);
 
 var _textFormatDirective2 = _interopRequireDefault(_textFormatDirective);
 
-var _textFormatFilter = __webpack_require__(37);
+var _textFormatFilter = __webpack_require__(39);
 
 var _textFormatFilter2 = _interopRequireDefault(_textFormatFilter);
 
@@ -1139,7 +1200,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.formatting.text-format', []).service('TwUndoStackFactory', _undoStackService2.default).service('TwTextFormatService', _textFormatService2.default).directive('twTextFormat', _textFormatDirective2.default).filter('twTextFormat', _textFormatFilter2.default).name;
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1171,11 +1232,11 @@ var TextFormatController = function () {
 
     // We need the formatter for external model changes
     this.$ngModel.$formatters.push(function (value) {
-      return TwTextFormatService.formatUsingPattern(value, _this.pattern);
+      return _this.pattern ? TwTextFormatService.formatUsingPattern(value, _this.pattern) : value;
     });
 
     this.$ngModel.$parsers.push(function (value) {
-      return TwTextFormatService.unformatUsingPattern(value, _this.pattern);
+      return _this.pattern ? TwTextFormatService.unformatUsingPattern(value, _this.pattern) : value;
     });
 
     this.element.addEventListener('change', function (event) {
@@ -1211,7 +1272,7 @@ var TextFormatController = function () {
   _createClass(TextFormatController, [{
     key: 'onModelChange',
     value: function onModelChange(newModel, oldModel) {
-      if (newModel === oldModel) {
+      if (newModel === oldModel || !this.pattern) {
         return;
       }
 
@@ -1265,6 +1326,9 @@ var TextFormatController = function () {
   }, {
     key: 'onChange',
     value: function onChange() {
+      if (!this.pattern) {
+        return;
+      }
       this.reformatControl(this.element);
       this.undoStack.add(this.element.value);
     }
@@ -1273,6 +1337,9 @@ var TextFormatController = function () {
     value: function onPaste(event) {
       var _this2 = this;
 
+      if (!this.pattern) {
+        return;
+      }
       var selectionStart = this.element.selectionStart;
       var clipboardData = event.clipboardData || window.clipboardData;
       var pastedData = clipboardData.getData('Text');
@@ -1291,6 +1358,9 @@ var TextFormatController = function () {
     value: function onKeydown(event) {
       var _this3 = this;
 
+      if (!this.pattern) {
+        return;
+      }
       this.keydownCount++;
       var currentKeydownCount = this.keydownCount;
       var key = event.keyCode || event.which;
@@ -1455,6 +1525,9 @@ var TextFormatController = function () {
     value: function onCut() {
       var _this4 = this;
 
+      if (!this.pattern) {
+        return;
+      }
       var selectionStart = this.element.selectionStart;
       this.$timeout(function () {
         _this4.reformatControl(_this4.element);
@@ -1470,6 +1543,9 @@ var TextFormatController = function () {
     value: function onCopy() {
       var _this5 = this;
 
+      if (!this.pattern) {
+        return;
+      }
       // Reset selection as otherwise lost
       var selectionStart = this.element.selectionStart;
       var selectionEnd = this.element.selectionEnd;
@@ -1543,7 +1619,7 @@ TextFormatController.$inject = ['$element', '$timeout', '$scope', 'TwTextFormatS
 exports.default = TextFormatController;
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1553,7 +1629,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _textFormatController = __webpack_require__(35);
+var _textFormatController = __webpack_require__(37);
 
 var _textFormatController2 = _interopRequireDefault(_textFormatController);
 
@@ -1576,7 +1652,7 @@ function TextFormat() {
 exports.default = TextFormat;
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1603,7 +1679,7 @@ TextFormatFilter.$inject = ['TwTextFormatService'];
 exports.default = TextFormatFilter;
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1721,7 +1797,7 @@ function TextFormatService() {
 exports.default = TextFormatService;
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1778,7 +1854,7 @@ function UndoStack() {
 exports.default = UndoStackFactory;
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1788,7 +1864,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _amountCurrencySelectController = __webpack_require__(41);
+var _amountCurrencySelectController = __webpack_require__(43);
 
 var _amountCurrencySelectController2 = _interopRequireDefault(_amountCurrencySelectController);
 
@@ -1838,7 +1914,7 @@ var AmountCurrencySelect = {
 exports.default = AmountCurrencySelect;
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1949,7 +2025,7 @@ AmountCurrencySelectController.$inject = ['$element', '$scope', '$timeout', 'TwC
 exports.default = AmountCurrencySelectController;
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1967,7 +2043,7 @@ var _select = __webpack_require__(5);
 
 var _select2 = _interopRequireDefault(_select);
 
-var _amountCurrencySelectComponent = __webpack_require__(40);
+var _amountCurrencySelectComponent = __webpack_require__(42);
 
 var _amountCurrencySelectComponent2 = _interopRequireDefault(_amountCurrencySelectComponent);
 
@@ -1980,7 +2056,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.forms.amount-currency-select', [_select2.default, _currency2.default]).component('twAmountCurrencySelect', _amountCurrencySelectComponent2.default).name;
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1990,7 +2066,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _checkboxController = __webpack_require__(44);
+var _checkboxController = __webpack_require__(46);
 
 var _checkboxController2 = _interopRequireDefault(_checkboxController);
 
@@ -2019,7 +2095,7 @@ var Checkbox = {
 exports.default = Checkbox;
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2204,7 +2280,7 @@ CheckboxController.$inject = ['$scope', '$element', 'TwDomService'];
 exports.default = CheckboxController;
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2214,7 +2290,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _currencyInputController = __webpack_require__(46);
+var _currencyInputController = __webpack_require__(48);
 
 var _currencyInputController2 = _interopRequireDefault(_currencyInputController);
 
@@ -2251,7 +2327,7 @@ var CurrencyInput = {
 exports.default = CurrencyInput;
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2341,7 +2417,7 @@ CurrencyInputController.$inject = ['$element', '$scope', '$timeout', 'TwCurrency
 exports.default = CurrencyInputController;
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2355,7 +2431,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _currencyInputComponent = __webpack_require__(45);
+var _currencyInputComponent = __webpack_require__(47);
 
 var _currencyInputComponent2 = _interopRequireDefault(_currencyInputComponent);
 
@@ -2368,7 +2444,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.forms.currency-input', [_currency2.default]).component('twCurrencyInput', _currencyInputComponent2.default).name;
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2378,7 +2454,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _dateLookupController = __webpack_require__(49);
+var _dateLookupController = __webpack_require__(51);
 
 var _dateLookupController2 = _interopRequireDefault(_dateLookupController);
 
@@ -2412,7 +2488,7 @@ var DateLookup = {
 exports.default = DateLookup;
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2910,7 +2986,7 @@ DateLookupController.$inject = ['$element', '$scope', '$timeout', 'TwDateService
 exports.default = DateLookupController;
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2924,7 +3000,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _dateLookupComponent = __webpack_require__(48);
+var _dateLookupComponent = __webpack_require__(50);
 
 var _dateLookupComponent2 = _interopRequireDefault(_dateLookupComponent);
 
@@ -2941,7 +3017,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.forms.date-lookup', [_date2.default, _dom2.default]).component('twDateLookup', _dateLookupComponent2.default).name;
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2951,7 +3027,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _dateController = __webpack_require__(52);
+var _dateController = __webpack_require__(54);
 
 var _dateController2 = _interopRequireDefault(_dateController);
 
@@ -2986,7 +3062,7 @@ var DateControl = {
 exports.default = DateControl;
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3036,6 +3112,7 @@ var DateController = function () {
 
     this.addValidators($ngModel);
     this.addWatchers($scope, $ngModel);
+    addFocusHandlers($element);
     addBlurHandlers($element, $ngModel);
   }
 
@@ -3266,6 +3343,21 @@ function extendMonthsWithIds(monthNames) {
   });
 }
 
+// TODO behaviour of focus/blur could be improved to prevent multiple fires
+function addFocusHandlers($element) {
+  var element = $element[0];
+  var dayInput = element.querySelector('input[name=day]');
+  var yearInput = element.querySelector('input[name=year]');
+
+  dayInput.addEventListener('focus', function () {
+    element.dispatchEvent(new CustomEvent('focus'));
+  });
+
+  yearInput.addEventListener('focus', function () {
+    element.dispatchEvent(new CustomEvent('focus'));
+  });
+}
+
 function addBlurHandlers($element, $ngModel) {
   var dayTouched = void 0;
   var yearTouched = void 0;
@@ -3294,7 +3386,7 @@ DateController.$inject = ['$element', '$log', '$scope', 'TwDateService'];
 exports.default = DateController;
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3304,7 +3396,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _definitionListController = __webpack_require__(54);
+var _definitionListController = __webpack_require__(56);
 
 var _definitionListController2 = _interopRequireDefault(_definitionListController);
 
@@ -3319,9 +3411,9 @@ var DefinitionList = {
   template: _definitionList2.default,
   bindings: {
     model: '<',
-    fields: '<',
+    initialFields: '<fields',
     locale: '@',
-    legend: '@',
+    title: '@',
     narrow: '<'
   }
 };
@@ -3329,7 +3421,7 @@ var DefinitionList = {
 exports.default = DefinitionList;
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3350,25 +3442,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var DefinitionListController = function () {
-  function DefinitionListController($scope, TwRequirementsService) {
+  function DefinitionListController(TwRequirementsService) {
     _classCallCheck(this, DefinitionListController);
 
-    this.$scope = $scope;
     this.RequirementsService = TwRequirementsService;
   }
 
   _createClass(DefinitionListController, [{
-    key: '$onInit',
-    value: function $onInit() {
-      var _this = this;
-
-      this.RequirementsService.prepFields(this.fields, this.model);
-
-      this.$scope.$watch('$ctrl.fields', function (newValue, oldValue) {
-        if (!_angular2.default.equals(newValue, oldValue)) {
-          _this.RequirementsService.prepFields(_this.fields, _this.model);
+    key: '$onChanges',
+    value: function $onChanges(changes) {
+      var fieldsChanged = changes.initialFields;
+      if (fieldsChanged) {
+        if (!_angular2.default.equals(fieldsChanged.currentValue, fieldsChanged.previousValue)) {
+          this.fields = this.RequirementsService.prepFields(fieldsChanged.currentValue, this.model);
         }
-      });
+      }
     }
 
     // eslint-disable-next-line
@@ -3396,12 +3484,12 @@ var DefinitionListController = function () {
   return DefinitionListController;
 }();
 
-DefinitionListController.$inject = ['$scope', 'TwRequirementsService'];
+DefinitionListController.$inject = ['TwRequirementsService'];
 
 exports.default = DefinitionListController;
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3415,11 +3503,11 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _definitionListComponent = __webpack_require__(53);
+var _definitionListComponent = __webpack_require__(55);
 
 var _definitionListComponent2 = _interopRequireDefault(_definitionListComponent);
 
-var _formatting = __webpack_require__(7);
+var _formatting = __webpack_require__(8);
 
 var _formatting2 = _interopRequireDefault(_formatting);
 
@@ -3428,7 +3516,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.requirements.definition-list', [_formatting2.default]).component('twDefinitionList', _definitionListComponent2.default).name;
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3438,7 +3526,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _formControlController = __webpack_require__(57);
+var _formControlController = __webpack_require__(59);
 
 var _formControlController2 = _interopRequireDefault(_formControlController);
 
@@ -3479,14 +3567,15 @@ var FormControl = {
     ngMax: '<',
     ngPattern: '<',
     uploadOptions: '<',
-    textFormat: '<'
+    textFormat: '<',
+    validationAsync: '<'
   }
 };
 
 exports.default = FormControl;
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3502,72 +3591,25 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var FormControlController = function () {
   function FormControlController($element) {
-    var _this = this;
-
     _classCallCheck(this, FormControlController);
-
-    var $ngModel = $element.controller('ngModel');
 
     this.$element = $element;
     this.element = $element[0];
-
-    $ngModel.$validators.minlength = function (modelValue, viewValue) {
-      var value = modelValue || viewValue;
-      if (_this.type !== 'text' || !_this.ngMinlength) {
-        return true;
-      }
-      return !value || value.length >= _this.ngMinlength;
-    };
-
-    $ngModel.$validators.maxlength = function (modelValue, viewValue) {
-      var value = modelValue || viewValue;
-      if (_this.type !== 'text' || !_this.ngMaxlength) {
-        return true;
-      }
-      return !value || value.length <= _this.ngMaxlength;
-    };
-
-    // Min and max do not work on custom elements, add manual validators
-    $ngModel.$validators.min = function (modelValue, viewValue) {
-      var value = modelValue || viewValue;
-      if (typeof _this.ngMin === 'undefined') {
-        return true;
-      }
-      if (typeof value === 'number' && typeof _this.ngMin === 'number' && value < _this.ngMin) {
-        return false;
-      }
-      if (value && value.getUTCDate && _this.ngMin.getUTCDate && value < _this.ngMin) {
-        return false;
-      }
-      return true;
-    };
-
-    $ngModel.$validators.max = function (modelValue, viewValue) {
-      var value = modelValue || viewValue;
-      if (typeof _this.ngMax === 'undefined') {
-        return true;
-      }
-      if (typeof value === 'number' && typeof _this.ngMax === 'number' && value > _this.ngMax) {
-        return false;
-      }
-      if (value && viewValue.getUTCDate && _this.ngMax.getUTCDate && value > _this.ngMax) {
-        return false;
-      }
-      return true;
-    };
   }
 
   _createClass(FormControlController, [{
+    key: '$onInit',
+    value: function $onInit() {
+      this.$ngModel = this.$element.controller('ngModel');
+      this.addValidators();
+    }
+  }, {
     key: 'change',
-    value: function change(value) {
+    value: function change() {
       this.$ngModel.$setDirty();
-      if (this.ngChange) {
-        // don't fire change for the radio button becoming false
-        if (this.type === 'radio' && this.ngModel !== value) {
-          return;
-        }
-        this.ngChange();
-      }
+
+      // Pass internal value through our validators
+      this.$ngModel.$setViewValue(this.internalModel);
     }
   }, {
     key: 'focus',
@@ -3580,6 +3622,74 @@ var FormControlController = function () {
       this.$ngModel.$setTouched();
       this.element.dispatchEvent(new CustomEvent('blur'));
     }
+  }, {
+    key: 'addValidators',
+    value: function addValidators() {
+      var _this = this;
+
+      var $ngModel = this.$ngModel;
+
+      $ngModel.$validators.required = function (modelValue, viewValue) {
+        var value = modelValue || viewValue;
+        return !value || !_this.ngRequired;
+      };
+
+      $ngModel.$validators.minlength = function (modelValue, viewValue) {
+        var value = modelValue || viewValue;
+        if (_this.type !== 'text' || !_this.ngMinlength) {
+          return true;
+        }
+        return !value || value.length >= _this.ngMinlength;
+      };
+
+      $ngModel.$validators.maxlength = function (modelValue, viewValue) {
+        var value = modelValue || viewValue;
+        if (_this.type !== 'text' || !_this.ngMaxlength) {
+          return true;
+        }
+        return !value || value.length <= _this.ngMaxlength;
+      };
+
+      // Min and max do not work on custom elements, add manual validators
+      $ngModel.$validators.min = function (modelValue, viewValue) {
+        var value = modelValue || viewValue;
+        if (typeof _this.ngMin === 'undefined') {
+          return true;
+        }
+        if (typeof value === 'number' && typeof _this.ngMin === 'number') {
+          return value >= _this.ngMin;
+        }
+        if (_this.type === 'date' && typeof value === 'string' && typeof _this.ngMin === 'string') {
+          return value >= _this.ngMin;
+        }
+        if (_this.type === 'date' && value instanceof Date && _this.ngMin instanceof Date) {
+          return value >= _this.ngMin;
+        }
+        return true;
+      };
+
+      $ngModel.$validators.max = function (modelValue, viewValue) {
+        var value = modelValue || viewValue;
+        if (typeof _this.ngMax === 'undefined') {
+          return true;
+        }
+        if (typeof value === 'number' && typeof _this.ngMax === 'number') {
+          return value <= _this.ngMax;
+        }
+        if (_this.type === 'date' && typeof value === 'string' && typeof _this.ngMax === 'string') {
+          return value <= _this.ngMax;
+        }
+        if (_this.type === 'date' && value instanceof Date && _this.ngMax instanceof Date) {
+          return value <= _this.ngMax;
+        }
+        return true;
+      };
+
+      $ngModel.$formatters.push(function (modelValue) {
+        _this.internalModel = modelValue;
+        return modelValue;
+      });
+    }
   }]);
 
   return FormControlController;
@@ -3590,7 +3700,7 @@ FormControlController.$inject = ['$element'];
 exports.default = FormControlController;
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3600,11 +3710,131 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _fieldsetController = __webpack_require__(59);
+var _fieldController = __webpack_require__(61);
+
+var _fieldController2 = _interopRequireDefault(_fieldController);
+
+var _field = __webpack_require__(122);
+
+var _field2 = _interopRequireDefault(_field);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Field = {
+  controller: _fieldController2.default,
+  template: _field2.default,
+  bindings: {
+    name: '@',
+    model: '=',
+    initialField: '<field',
+    uploadOptions: '<',
+    locale: '@',
+    changeHandler: '&?onChange',
+    focusHandler: '&?onFocus',
+    blurHandler: '&?onBlur',
+    errorMessage: '<',
+    warningMessage: '<'
+  }
+};
+
+exports.default = Field;
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var FieldController = function () {
+  function FieldController(RequirementsService) {
+    _classCallCheck(this, FieldController);
+
+    this.RequirementsService = RequirementsService;
+  }
+
+  _createClass(FieldController, [{
+    key: '$onChanges',
+    value: function $onChanges(changes) {
+      if (changes.initialField) {
+        this.field = copyJSON(this.initialField);
+        this.control = this.field.control ? this.field.control : this.RequirementsService.getControlType(changes.initialField.currentValue);
+
+        // TODO we should probably do this at fieldset level, so the model is available
+        if (this.field.valuesAsync) {
+          this.RequirementsService.prepValuesAsync(this.field, {});
+        }
+      }
+    }
+  }, {
+    key: 'onFocus',
+    value: function onFocus() {
+      if (this.focusHandler) {
+        this.focusHandler();
+      }
+    }
+  }, {
+    key: 'onBlur',
+    value: function onBlur() {
+      if (this.blurHandler) {
+        this.blurHandler();
+      }
+    }
+  }, {
+    key: 'onChange',
+    value: function onChange(newValue) {
+      if (this.changeHandler) {
+        this.changeHandler({ value: newValue });
+      }
+      if (this.errorMessage) {
+        delete this.errorMessage;
+      }
+    }
+
+    // eslint-disable-next-line
+
+  }, {
+    key: 'sizeOf',
+    value: function sizeOf(obj) {
+      return obj ? Object.keys(obj).length : 0;
+    }
+  }]);
+
+  return FieldController;
+}();
+
+function copyJSON(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
+
+FieldController.$inject = ['TwRequirementsService'];
+
+exports.default = FieldController;
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _fieldsetController = __webpack_require__(63);
 
 var _fieldsetController2 = _interopRequireDefault(_fieldsetController);
 
-var _fieldset = __webpack_require__(122);
+var _fieldset = __webpack_require__(123);
 
 var _fieldset2 = _interopRequireDefault(_fieldset);
 
@@ -3615,11 +3845,16 @@ var Fieldset = {
   template: _fieldset2.default,
   bindings: {
     model: '=',
-    fields: '<',
+    initialFields: '<fields',
     uploadOptions: '<',
     locale: '@',
-    legend: '@',
-    onRefreshRequirements: '&',
+    title: '@',
+    description: '@',
+    onModelChange: '&?',
+    onRefreshRequirements: '&?',
+    onFieldFocus: '&?',
+    onFieldBlur: '&?',
+    onFieldChange: '&?',
     validationMessages: '<',
     errorMessages: '<',
     isValid: '=?',
@@ -3630,7 +3865,7 @@ var Fieldset = {
 exports.default = Fieldset;
 
 /***/ }),
-/* 59 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3651,12 +3886,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var FieldsetController = function () {
-  function FieldsetController($scope, $http, TwRequirementsService) {
+  function FieldsetController(TwRequirementsService, $scope, $timeout) {
     _classCallCheck(this, FieldsetController);
 
-    this.$scope = $scope;
-    this.$http = $http;
     this.RequirementsService = TwRequirementsService;
+    this.$scope = $scope;
+    this.$timeout = $timeout;
   }
 
   _createClass(FieldsetController, [{
@@ -3672,22 +3907,12 @@ var FieldsetController = function () {
         this.validationMessages = {
           required: 'Required',
           pattern: 'Incorrect format',
-          min: 'The value is too low',
-          max: 'The value is too high',
+          minimum: 'The value is too low',
+          maximum: 'The value is too high',
           minlength: 'The value is too short',
           maxlength: 'The value is too long'
         };
       }
-
-      if (this.fields) {
-        this.RequirementsService.prepFields(this.fields, this.model, this.validationMessages);
-      }
-
-      this.$scope.$watch('$ctrl.fields', function (newValue, oldValue) {
-        if (!_angular2.default.equals(newValue, oldValue)) {
-          _this.RequirementsService.prepFields(_this.fields, _this.model, _this.validationMessages);
-        }
-      });
 
       this.$scope.$watch('twFieldset.$valid', function (validity) {
         _this.isValid = validity;
@@ -3696,53 +3921,75 @@ var FieldsetController = function () {
       // TODO can we add asyncvalidator here? - prob not
     }
   }, {
-    key: 'onBlur',
-    value: function onBlur(field) {
-      this.removeFieldError(field.key);
-
-      if (!field.refreshRequirementsOnChange) {
-        // eslint-disable-next-line no-useless-return
-        return;
-      }
-      // TODO disabled the form while we refresh requirements?
-      if (this.onRefreshRequirements) {
-        // Should post the current model back to the requirements end
-        // point and update the requirements.
-        if (!fieldTypeRefreshesOnChange(field.type)) {
-          this.onRefreshRequirements();
+    key: '$onChanges',
+    value: function $onChanges(changes) {
+      var fieldsChanged = changes.initialFields;
+      if (fieldsChanged) {
+        if (!_angular2.default.equals(fieldsChanged.currentValue, fieldsChanged.previousValue)) {
+          this.fields = this.RequirementsService.prepFields(fieldsChanged.currentValue, this.model, this.validationMessages);
         }
       }
     }
   }, {
-    key: 'onChange',
-    value: function onChange(field) {
-      this.removeFieldError(field.key);
-      if (fieldTypeRefreshesOnChange(field.type)) {
+    key: 'fieldFocus',
+    value: function fieldFocus(key, field) {
+      if (this.onFieldFocus) {
+        this.onFieldFocus({ key: key, field: field });
+      }
+    }
+  }, {
+    key: 'fieldBlur',
+    value: function fieldBlur(key, field) {
+      if (this.onFieldBlur) {
+        this.onFieldBlur({ key: key, field: field });
+      }
+      if (field.refreshRequirementsOnChange && this.onRefreshRequirements) {
         this.onRefreshRequirements();
       }
     }
   }, {
-    key: 'removeFieldError',
-    value: function removeFieldError(fieldKey) {
-      if (this.errorMessages) {
-        delete this.errorMessages[fieldKey];
+    key: 'fieldChange',
+    value: function fieldChange(value, key, field) {
+      var _this2 = this;
+
+      if (typeof value === 'undefined') {
+        delete this.model[key];
       }
+      if (this.onFieldChange) {
+        this.onFieldChange({ value: value, key: key, field: field });
+      }
+
+      if (controlRefreshesOnChange(field.control) && field.refreshRequirementsOnChange && this.onRefreshRequirements) {
+        this.onRefreshRequirements();
+      }
+
+      // We remove custom error messages on change, as they're no longer relevant
+      if (this.errorMessages && this.errorMessages[key]) {
+        delete this.errorMessages[key];
+      }
+
+      // Delay so model can update
+      this.$timeout(function () {
+        if (_this2.onModelChange) {
+          _this2.onModelChange({ model: _this2.model });
+        }
+      });
     }
   }]);
 
   return FieldsetController;
 }();
 
-function fieldTypeRefreshesOnChange(fieldType) {
-  return fieldType === 'select' || fieldType === 'checkbox' || fieldType === 'radio' || fieldType === 'date' || fieldType === 'upload';
+function controlRefreshesOnChange(control) {
+  return control === 'select' || control === 'checkbox' || control === 'radio' || control === 'date' || control === 'upload';
 }
 
-FieldsetController.$inject = ['$scope', '$http', 'TwRequirementsService'];
+FieldsetController.$inject = ['TwRequirementsService', '$scope', '$timeout'];
 
 exports.default = FieldsetController;
 
 /***/ }),
-/* 60 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3752,7 +3999,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _focusableController = __webpack_require__(16);
+var _focusableController = __webpack_require__(18);
 
 var _focusableController2 = _interopRequireDefault(_focusableController);
 
@@ -3768,7 +4015,7 @@ function Focusable() {
 exports.default = Focusable;
 
 /***/ }),
-/* 61 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3778,7 +4025,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _focusableController = __webpack_require__(16);
+var _focusableController = __webpack_require__(18);
 
 var _focusableController2 = _interopRequireDefault(_focusableController);
 
@@ -3794,7 +4041,7 @@ function FormControlFocus() {
 exports.default = FormControlFocus;
 
 /***/ }),
-/* 62 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3808,11 +4055,11 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _focusableDirective = __webpack_require__(60);
+var _focusableDirective = __webpack_require__(64);
 
 var _focusableDirective2 = _interopRequireDefault(_focusableDirective);
 
-var _formControlDirective = __webpack_require__(61);
+var _formControlDirective = __webpack_require__(65);
 
 var _formControlDirective2 = _interopRequireDefault(_formControlDirective);
 
@@ -3825,7 +4072,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.forms.focusable', [_dom2.default]).directive('twFocusable', _focusableDirective2.default).directive('formControl', _formControlDirective2.default).name;
 
 /***/ }),
-/* 63 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3835,11 +4082,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _radioController = __webpack_require__(64);
+var _radioController = __webpack_require__(68);
 
 var _radioController2 = _interopRequireDefault(_radioController);
 
-var _radio = __webpack_require__(123);
+var _radio = __webpack_require__(124);
 
 var _radio2 = _interopRequireDefault(_radio);
 
@@ -3865,7 +4112,7 @@ var Radio = {
 exports.default = Radio;
 
 /***/ }),
-/* 64 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3975,7 +4222,7 @@ RadioController.$inject = ['$scope', '$element', 'TwDomService'];
 exports.default = RadioController;
 
 /***/ }),
-/* 65 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3989,19 +4236,19 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _requirementsFormService = __webpack_require__(68);
+var _requirementsFormService = __webpack_require__(72);
 
 var _requirementsFormService2 = _interopRequireDefault(_requirementsFormService);
 
-var _requirementsFormComponent = __webpack_require__(66);
+var _requirementsFormComponent = __webpack_require__(70);
 
 var _requirementsFormComponent2 = _interopRequireDefault(_requirementsFormComponent);
 
-var _tabs = __webpack_require__(19);
+var _tabs = __webpack_require__(21);
 
 var _tabs2 = _interopRequireDefault(_tabs);
 
-var _fieldset = __webpack_require__(15);
+var _fieldset = __webpack_require__(17);
 
 var _fieldset2 = _interopRequireDefault(_fieldset);
 
@@ -4010,7 +4257,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.forms.requirements-form', [_tabs2.default, _fieldset2.default]).service('TwRequirementsFormService', _requirementsFormService2.default).component('twRequirementsForm', _requirementsFormComponent2.default).name;
 
 /***/ }),
-/* 66 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4020,11 +4267,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _requirementsFormController = __webpack_require__(67);
+var _requirementsFormController = __webpack_require__(71);
 
 var _requirementsFormController2 = _interopRequireDefault(_requirementsFormController);
 
-var _requirementsForm = __webpack_require__(124);
+var _requirementsForm = __webpack_require__(125);
 
 var _requirementsForm2 = _interopRequireDefault(_requirementsForm);
 
@@ -4048,7 +4295,7 @@ var RequirementsForm = {
 exports.default = RequirementsForm;
 
 /***/ }),
-/* 67 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4084,6 +4331,7 @@ var RequirementsFormController = function () {
       this.RequirementsFormService.prepRequirements(this.requirements);
     }
 
+    // TODO move watches to $onChanges
     $scope.$watch('$ctrl.requirements', function (newRequirements, oldRequirements) {
       if (!_angular2.default.equals(newRequirements, oldRequirements)) {
         _this.RequirementsFormService.prepRequirements(_this.requirements);
@@ -4159,7 +4407,7 @@ RequirementsFormController.$inject = ['$scope', 'TwRequirementsFormService'];
 exports.default = RequirementsFormController;
 
 /***/ }),
-/* 68 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4246,7 +4494,7 @@ function RequirementsFormService() {
 exports.default = RequirementsFormService;
 
 /***/ }),
-/* 69 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4256,11 +4504,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _selectController = __webpack_require__(70);
+var _selectController = __webpack_require__(74);
 
 var _selectController2 = _interopRequireDefault(_selectController);
 
-var _select = __webpack_require__(125);
+var _select = __webpack_require__(126);
 
 var _select2 = _interopRequireDefault(_select);
 
@@ -4306,7 +4554,7 @@ var Select = {
 exports.default = Select;
 
 /***/ }),
-/* 70 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4808,179 +5056,7 @@ SelectController.$inject = ['$element', '$scope', '$transclude', '$timeout', '$a
 exports.default = SelectController;
 
 /***/ }),
-/* 71 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _angular = __webpack_require__(0);
-
-var _angular2 = _interopRequireDefault(_angular);
-
-var _telephoneComponent = __webpack_require__(72);
-
-var _telephoneComponent2 = _interopRequireDefault(_telephoneComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _angular2.default.module('tw.styleguide.forms.telephone', []).component('twTelephone', _telephoneComponent2.default).name;
-
-/***/ }),
-/* 72 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _telephoneController = __webpack_require__(73);
-
-var _telephoneController2 = _interopRequireDefault(_telephoneController);
-
-var _telephone = __webpack_require__(126);
-
-var _telephone2 = _interopRequireDefault(_telephone);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var TelephoneControl = {
-  controller: _telephoneController2.default,
-  template: _telephone2.default,
-  bindings: {
-    ngModel: '<',
-    ngRequired: '<',
-    ngDisabled: '<',
-    ngChange: '&',
-    countries: '<',
-    searchPlaceholder: '@'
-  },
-  transclude: true
-};
-
-exports.default = TelephoneControl;
-
-/***/ }),
-/* 73 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var TelephoneController = function () {
-  function TelephoneController() {
-    _classCallCheck(this, TelephoneController);
-
-    this.prefixes = [];
-  }
-
-  _createClass(TelephoneController, [{
-    key: '$onChanges',
-    value: function $onChanges(changes) {
-      if (changes.countries && changes.countries.currentValue) {
-        this.formatCountriesToPrefixes();
-        this.explodeNumberModel(this.ngModel);
-      }
-
-      if (changes.ngModel && changes.ngModel.currentValue) {
-        if (validNumber(this.ngModel)) {
-          this.explodeNumberModel(this.ngModel);
-        }
-      }
-    }
-  }, {
-    key: 'sendNewNumberToCallback',
-    value: function sendNewNumberToCallback(newNumber) {
-      this.ngChange({ newNumber: newNumber });
-    }
-  }, {
-    key: 'explodeNumberModel',
-    value: function explodeNumberModel(number) {
-      this.prefix = findPrefixByNumber(number, this.countries);
-      if (this.prefix) {
-        this.localNumber = number.substring(this.prefix.callingCode.length + 1);
-      } else {
-        this.setDefaultPrefix();
-      }
-    }
-  }, {
-    key: 'updatePrefix',
-    value: function updatePrefix(prefix) {
-      this.ngModel = buildCompleteNumber(prefix.callingCode, this.localNumber);
-      this.sendNewNumberToCallback(this.ngModel);
-    }
-  }, {
-    key: 'updateLocalNumber',
-    value: function updateLocalNumber(localNumber) {
-      this.ngModel = buildCompleteNumber(this.prefix.callingCode, localNumber);
-      this.sendNewNumberToCallback(this.ngModel);
-    }
-  }, {
-    key: 'setDefaultPrefix',
-    value: function setDefaultPrefix() {
-      this.prefix = findPrefixByNumber('+44', this.countries);
-      this.sendNewNumberToCallback(this.ngModel);
-    }
-  }, {
-    key: 'formatCountriesToPrefixes',
-    value: function formatCountriesToPrefixes() {
-      var _this = this;
-
-      this.prefixes = [];
-      this.countries.forEach(function (country) {
-        _this.prefixes.push({
-          value: country,
-          label: '+' + country.callingCode,
-          note: country.name
-        });
-      });
-    }
-  }]);
-
-  return TelephoneController;
-}();
-
-function validNumber(number) {
-  return typeof number === 'string' && number.length > 4 && number.substring(0, 1) === '+';
-}
-
-function buildCompleteNumber(prefix, localNumber) {
-  if (localNumber) {
-    return '+' + prefix + localNumber;
-  }
-  return '+' + prefix;
-}
-
-function findPrefixByNumber(number, countries) {
-  if (countries && countries.length && number && number.length > 2) {
-    return countries.filter(function (country) {
-      return number.substring(1).indexOf(country.callingCode) === 0;
-    })[0];
-  }
-  return undefined;
-}
-
-TelephoneController.$inject = [];
-
-exports.default = TelephoneController;
-
-/***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5013,7 +5089,7 @@ function FileSelectLink(scope, $element) {
 exports.default = FileSelectDirective;
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5027,11 +5103,11 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _uploadDroppableDirective = __webpack_require__(76);
+var _uploadDroppableDirective = __webpack_require__(77);
 
 var _uploadDroppableDirective2 = _interopRequireDefault(_uploadDroppableDirective);
 
-var _fileSelectDirective = __webpack_require__(74);
+var _fileSelectDirective = __webpack_require__(75);
 
 var _fileSelectDirective2 = _interopRequireDefault(_fileSelectDirective);
 
@@ -5040,7 +5116,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.forms.upload-droppable', []).directive('twFileSelect', _fileSelectDirective2.default).component('twUploadDroppable', _uploadDroppableDirective2.default).name; /* DEPRECATED in favour of upload */
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5142,7 +5218,7 @@ function TwUploadDroppableLink(scope, element) {
 exports.default = TwUploadDroppableDirective;
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5187,7 +5263,7 @@ FileInputController.$inject = ['$element'];
 exports.default = FileInputDirective;
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5197,7 +5273,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _uploadController = __webpack_require__(79);
+var _uploadController = __webpack_require__(80);
 
 var _uploadController2 = _interopRequireDefault(_uploadController);
 
@@ -5214,6 +5290,7 @@ var Upload = {
   bindings: {
     ngDisabled: '<',
     ngModel: '=',
+    ngChange: '&',
     name: '@',
     icon: '@',
     helpImage: '@',
@@ -5242,7 +5319,7 @@ var Upload = {
 exports.default = Upload;
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5330,20 +5407,20 @@ var UploadController = function () {
 
       if (!isSizeValid(file, this.maxSize)) {
         this.isTooLarge = true;
-        this.asyncFailure({
+        asyncFailure({
           status: 413,
           statusText: 'Request Entity Too Large'
-        });
+        }, this);
         return;
       }
 
       /*
       if (!isTypeValid(file, this.accept)) {
         this.isWrongType = true;
-        this.asyncFailure({
+        asyncFailure({
           status: 415,
           statusText: 'Unsupported Media Type'
-        });
+        }, this);
         return;
       }
       */
@@ -5374,8 +5451,8 @@ var UploadController = function () {
     key: 'onDragEnter',
     value: function onDragEnter() {
       this.dragCounter++;
-      if (this.dragCounter >= 1) {
-        this.isDroppable = true && !this.ngDisabled;
+      if (this.dragCounter >= 1 && !this.ngDisabled) {
+        this.isDroppable = true;
       }
     }
   }, {
@@ -5581,7 +5658,7 @@ UploadController.$inject = ['$timeout', '$element', '$http', '$scope', '$transcl
 exports.default = UploadController;
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5595,11 +5672,11 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _popOverDirective = __webpack_require__(82);
+var _popOverDirective = __webpack_require__(83);
 
 var _popOverDirective2 = _interopRequireDefault(_popOverDirective);
 
-var _popOverService = __webpack_require__(83);
+var _popOverService = __webpack_require__(84);
 
 var _popOverService2 = _interopRequireDefault(_popOverService);
 
@@ -5608,7 +5685,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.help.popover', []).service('twPopOverService', _popOverService2.default).directive('twPopOver', _popOverDirective2.default).name;
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5624,13 +5701,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var PopOverController = function () {
   function PopOverController($element, PopoverService) {
+    var _this = this;
+
     _classCallCheck(this, PopOverController);
 
     this.element = $element[0];
     this.popoverService = PopoverService;
 
     this.registerEventListeners = this.registerEventListeners.bind(this);
-    this.showPopover = this.showPopover.bind(this);
+    this.showPopover = function (event) {
+      event.preventDefault();
+      return _this.popoverService.showPopover(_this.element, getElementOptions(_this.element));
+    };
   }
 
   _createClass(PopOverController, [{
@@ -5665,13 +5747,6 @@ var PopOverController = function () {
           this.element.removeEventListener('click', this.showPopover);
         }
       };
-    }
-  }, {
-    key: 'showPopover',
-    value: function showPopover() {
-      var promotedElement = this.element;
-
-      return this.popoverService.showPopover(promotedElement, getElementOptions(promotedElement));
     }
   }]);
 
@@ -5733,7 +5808,7 @@ PopOverController.$inject = ['$element', 'twPopOverService'];
 exports.default = PopOverController;
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5750,14 +5825,14 @@ exports.default = function () {
   };
 };
 
-var _popOver = __webpack_require__(81);
+var _popOver = __webpack_require__(82);
 
 var _popOver2 = _interopRequireDefault(_popOver);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5769,7 +5844,7 @@ Object.defineProperty(exports, "__esModule", {
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-function PopoverService() {
+function PopoverService($rootScope) {
   /**
    * Register the global event listeners for clicks on the body element and
    * viewport resizing
@@ -5777,12 +5852,12 @@ function PopoverService() {
   registerGlobalEventListeners();
 
   var BODY = document.getElementsByTagName('body')[0];
-  var POPOVER_SPACING = 8;
 
+  var popover = null;
+  var popoverSpacing = 0;
   var elementWithPopover = null;
   var elementPopoverOptions = {};
 
-  var popover = null;
   /**
    * [showPopover          Call this method to display a popover next to an
    *                       element]
@@ -5802,11 +5877,12 @@ function PopoverService() {
        */
       elementWithPopover = highlightedElement;
       elementPopoverOptions = popoverOptions;
+      popoverSpacing = popoverOptions.popoverSpacing || popoverSpacing;
 
       var isModalModeEnabled = getModalMode(elementPopoverOptions);
       var popoverParentElement = getPopoverParentElement(elementPopoverOptions);
 
-      var displayHandlers = [displayPopover];
+      var displayHandlers = [setupAdditionalOptions, displayPopover];
 
       if (!popoverParentElement.contains(popover)) {
         popover = getPopover(elementPopoverOptions);
@@ -5856,7 +5932,10 @@ function PopoverService() {
     var isInModalMode = getModalMode(popoverOptions);
     var isPositionedFixed = getFixedPlacementCondition(popoverOptions);
 
-    var popoverContainer = document.createElement('div');
+    var popoverTemplate = getGivenPopoverTemplate(popoverOptions) || getPopoverTemplate();
+
+    var popoverContainer = angular.element(popoverTemplate)[0];
+
     var popoverClasses = ['popover', 'in', placement, 'scale-down'];
 
     if (!isInModalMode) {
@@ -5939,17 +6018,15 @@ function PopoverService() {
    * @return {String}           [Popover's new placement]
    */
   function checkPopoverPlacement(placement) {
-    var popoverContainerElement = getPopoverParentElement(elementPopoverOptions);
-    var coordinateComputeFunction = popoverContainerElement === BODY ? getBoundingOffset : getParentOffset;
-    var elementOffset = coordinateComputeFunction(elementWithPopover);
+    var elementOffset = getBoundingOffset(elementWithPopover);
 
     var viewportClientDimensions = getClientDimensions(document.documentElement);
 
     var elementOffsetDimensions = getOffsetDimensions(elementWithPopover);
     var popoverOffsetDimensions = getOffsetDimensions(popover);
 
-    var popoverOffsetWidth = elementOffset.offsetX + elementOffsetDimensions.offsetWidth + POPOVER_SPACING + popoverOffsetDimensions.offsetWidth;
-    var popoverLeftOffset = elementOffset.offsetX - (popoverOffsetDimensions.offsetWidth + POPOVER_SPACING);
+    var popoverOffsetWidth = elementOffset.offsetX + elementOffsetDimensions.offsetWidth + popoverSpacing + popoverOffsetDimensions.offsetWidth;
+    var popoverLeftOffset = elementOffset.offsetX - (popoverOffsetDimensions.offsetWidth + popoverSpacing);
 
     var overflowsRight = popoverOffsetWidth > viewportClientDimensions.clientWidth;
     var overflowsLeft = popoverLeftOffset < 0;
@@ -6012,7 +6089,7 @@ function PopoverService() {
 
     if (placement === 'top') {
       var popoverOffsetX = elementOffset.offsetX - popoverOffsetDimensions.offsetWidth / 2 + elementOffsetDimensions.offsetWidth / 2;
-      var popoverOffsetY = elementOffset.offsetY - popoverOffsetDimensions.offsetHeight - POPOVER_SPACING;
+      var popoverOffsetY = elementOffset.offsetY - popoverOffsetDimensions.offsetHeight - popoverSpacing;
 
       popoverOffsets = {
         offsetX: popoverOffsetX,
@@ -6021,7 +6098,7 @@ function PopoverService() {
     }
 
     if (placement === 'right' || placement === 'right-top') {
-      var _popoverOffsetX = elementOffset.offsetX + elementOffsetDimensions.offsetWidth + POPOVER_SPACING;
+      var _popoverOffsetX = elementOffset.offsetX + elementOffsetDimensions.offsetWidth + popoverSpacing;
       var _popoverOffsetY = elementOffset.offsetY - (popoverArrowTopOffset + popoverArrowMarginTop + popoverArrowHeight / 2) + elementOffsetDimensions.offsetHeight / 2;
 
       popoverOffsets = {
@@ -6032,7 +6109,7 @@ function PopoverService() {
 
     if (placement === 'bottom') {
       var _popoverOffsetX2 = elementOffset.offsetX - popoverOffsetDimensions.offsetWidth / 2 + elementOffsetDimensions.offsetWidth / 2;
-      var _popoverOffsetY2 = elementOffset.offsetY + elementOffsetDimensions.offsetHeight + POPOVER_SPACING;
+      var _popoverOffsetY2 = elementOffset.offsetY + elementOffsetDimensions.offsetHeight + popoverSpacing;
 
       popoverOffsets = {
         offsetX: _popoverOffsetX2,
@@ -6041,7 +6118,7 @@ function PopoverService() {
     }
 
     if (placement === 'left' || placement === 'left-top') {
-      var _popoverOffsetX3 = elementOffset.offsetX - popoverOffsetDimensions.offsetWidth - POPOVER_SPACING;
+      var _popoverOffsetX3 = elementOffset.offsetX - popoverOffsetDimensions.offsetWidth - popoverSpacing;
       var _popoverOffsetY3 = elementOffset.offsetY - (popoverArrowTopOffset + popoverArrowMarginTop + popoverArrowHeight / 2) + elementOffsetDimensions.offsetHeight / 2;
 
       popoverOffsets = {
@@ -6092,8 +6169,9 @@ function PopoverService() {
       var clickedOutsidePopover = !popover.contains(event.target);
       var clickedInsidePopover = popover.contains(event.target);
       var clickedPopoverClose = event.target.classList.contains('popover-close');
+      var popoverIsVisible = !popover.classList.contains('scale-down');
 
-      var closeModalCondition = clickedOutsidePopover || clickedInsidePopover && clickedPopoverClose;
+      var closeModalCondition = popoverIsVisible && (clickedOutsidePopover || clickedInsidePopover && clickedPopoverClose);
       var isModalModeEnabled = getModalMode(elementPopoverOptions);
 
       if (closeModalCondition) {
@@ -6102,6 +6180,10 @@ function PopoverService() {
         if (isModalModeEnabled) {
           toggleModalMode(false);
         }
+      }
+
+      if (clickedInsidePopover) {
+        $rootScope.$emit('promotion:click', elementPopoverOptions);
       }
     }
   }
@@ -6241,6 +6323,10 @@ function PopoverService() {
    * @return {String} [CSS class]
    */
   function hidePopover() {
+    $rootScope.$emit('promotion:close', elementPopoverOptions);
+
+    teardownAdditionalOptions(elementPopoverOptions);
+
     return addClass(popover, 'scale-down');
   }
 
@@ -6385,6 +6471,22 @@ function PopoverService() {
     var viewportClientDimensions = getClientDimensions(document.documentElement);
 
     return isModalModeEnabled && viewportClientDimensions.clientWidth <= 991;
+  }
+
+  function setupAdditionalOptions() {
+    var shouldHighlightPromotedElement = getObjectProperty('highlightPromotedElement', elementPopoverOptions);
+
+    if (shouldHighlightPromotedElement) {
+      addClass(elementWithPopover, 'promoted');
+    }
+  }
+
+  function teardownAdditionalOptions(popoverOptions) {
+    var shouldHighlightPromotedElement = getObjectProperty('highlightPromotedElement', popoverOptions);
+
+    if (shouldHighlightPromotedElement) {
+      removeClass(elementWithPopover, 'promoted');
+    }
   }
 
   /**
@@ -6538,10 +6640,12 @@ function PopoverService() {
   };
 }
 
+PopoverService.$inject = ['$rootScope'];
+
 exports.default = PopoverService;
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6555,7 +6659,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _toolTipDirective = __webpack_require__(85);
+var _toolTipDirective = __webpack_require__(86);
 
 var _toolTipDirective2 = _interopRequireDefault(_toolTipDirective);
 
@@ -6564,7 +6668,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.help.tooltip', []).directive('twToolTip', _toolTipDirective2.default).name;
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6600,7 +6704,7 @@ function ToolTipLink(scope, element) {
 exports.default = ToolTip;
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6616,15 +6720,15 @@ var _angular2 = _interopRequireDefault(_angular);
 
 __webpack_require__(3);
 
-var _forms = __webpack_require__(8);
+var _forms = __webpack_require__(9);
 
 var _forms2 = _interopRequireDefault(_forms);
 
-var _validation = __webpack_require__(10);
+var _validation = __webpack_require__(11);
 
 var _validation2 = _interopRequireDefault(_validation);
 
-var _formatting = __webpack_require__(7);
+var _formatting = __webpack_require__(8);
 
 var _formatting2 = _interopRequireDefault(_formatting);
 
@@ -6632,27 +6736,27 @@ var _services = __webpack_require__(4);
 
 var _services2 = _interopRequireDefault(_services);
 
-var _help = __webpack_require__(23);
+var _help = __webpack_require__(25);
 
 var _help2 = _interopRequireDefault(_help);
 
-var _layout = __webpack_require__(24);
+var _layout = __webpack_require__(26);
 
 var _layout2 = _interopRequireDefault(_layout);
 
-var _loading = __webpack_require__(9);
+var _loading = __webpack_require__(10);
 
 var _loading2 = _interopRequireDefault(_loading);
 
-var _navigation = __webpack_require__(25);
+var _navigation = __webpack_require__(27);
 
 var _navigation2 = _interopRequireDefault(_navigation);
 
-var _formComponents = __webpack_require__(21);
+var _formComponents = __webpack_require__(23);
 
 var _formComponents2 = _interopRequireDefault(_formComponents);
 
-var _formValidation = __webpack_require__(22);
+var _formValidation = __webpack_require__(24);
 
 var _formValidation2 = _interopRequireDefault(_formValidation);
 
@@ -6663,7 +6767,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide-components', [_forms2.default, _validation2.default, _formatting2.default, _services2.default, _help2.default, _layout2.default, _loading2.default, _navigation2.default, _formComponents2.default, _formValidation2.default]).name;
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6705,7 +6809,7 @@ function AffixLink(scope, element) {
 exports.default = TwAffix;
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6719,7 +6823,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _affixDirective = __webpack_require__(87);
+var _affixDirective = __webpack_require__(88);
 
 var _affixDirective2 = _interopRequireDefault(_affixDirective);
 
@@ -6728,7 +6832,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.styling.affix', []).directive('twAffix', _affixDirective2.default).name;
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6756,7 +6860,7 @@ CardController.$inject = ['$transclude', 'TwCardsService'];
 exports.default = CardController;
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6766,7 +6870,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _cardController = __webpack_require__(89);
+var _cardController = __webpack_require__(90);
 
 var _cardController2 = _interopRequireDefault(_cardController);
 
@@ -6826,7 +6930,7 @@ function CardLink($scope, $element, $attrs, $ctrl) {
 exports.default = Card;
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6853,7 +6957,7 @@ var TwCards = {
 exports.default = TwCards;
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6902,37 +7006,6 @@ function TwCardsService() {
 exports.default = TwCardsService;
 
 /***/ }),
-/* 93 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _angular = __webpack_require__(0);
-
-var _angular2 = _interopRequireDefault(_angular);
-
-var _cardsService = __webpack_require__(92);
-
-var _cardsService2 = _interopRequireDefault(_cardsService);
-
-var _cardDirective = __webpack_require__(90);
-
-var _cardDirective2 = _interopRequireDefault(_cardDirective);
-
-var _cardsComponent = __webpack_require__(91);
-
-var _cardsComponent2 = _interopRequireDefault(_cardsComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _angular2.default.module('tw.styleguide.layout.cards', []).service('TwCardsService', _cardsService2.default).component('twCards', _cardsComponent2.default).directive('twCard', _cardDirective2.default).name;
-
-/***/ }),
 /* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6947,7 +7020,38 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _loaderComponent = __webpack_require__(95);
+var _cardsService = __webpack_require__(93);
+
+var _cardsService2 = _interopRequireDefault(_cardsService);
+
+var _cardDirective = __webpack_require__(91);
+
+var _cardDirective2 = _interopRequireDefault(_cardDirective);
+
+var _cardsComponent = __webpack_require__(92);
+
+var _cardsComponent2 = _interopRequireDefault(_cardsComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.styleguide.layout.cards', []).service('TwCardsService', _cardsService2.default).component('twCards', _cardsComponent2.default).directive('twCard', _cardDirective2.default).name;
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _loaderComponent = __webpack_require__(96);
 
 var _loaderComponent2 = _interopRequireDefault(_loaderComponent);
 
@@ -6956,7 +7060,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.loading.loader', []).component('twLoader', _loaderComponent2.default).name;
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6979,7 +7083,7 @@ var TwLoader = {
 exports.default = TwLoader;
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6993,7 +7097,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _processComponent = __webpack_require__(97);
+var _processComponent = __webpack_require__(98);
 
 var _processComponent2 = _interopRequireDefault(_processComponent);
 
@@ -7002,7 +7106,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.loading.process', []).component('twProcess', _processComponent2.default).name;
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7012,7 +7116,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _processController = __webpack_require__(98);
+var _processController = __webpack_require__(99);
 
 var _processController2 = _interopRequireDefault(_processController);
 
@@ -7036,7 +7140,7 @@ var Process = {
 exports.default = Process;
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7140,7 +7244,7 @@ ProcessController.$inject = ['$scope', '$interval', '$timeout'];
 exports.default = ProcessController;
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7150,7 +7254,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _tabsController = __webpack_require__(100);
+var _tabsController = __webpack_require__(101);
 
 var _tabsController2 = _interopRequireDefault(_tabsController);
 
@@ -7173,7 +7277,7 @@ var Tabs = {
 exports.default = Tabs;
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7212,7 +7316,7 @@ var TabsController = function () {
 exports.default = TabsController;
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7262,7 +7366,7 @@ function CurrencyService() {
 exports.default = CurrencyService;
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7356,19 +7460,30 @@ function DateService() {
   };
 
   this.getDatePartsFromIso = function (isoDate) {
+    var hoursOffset = 0;
+    var minutesOffset = 0;
+
     var year = parseInt(isoDate.substr(0, 4), 10);
     var month = parseInt(isoDate.substr(5, 2), 10) - 1;
     var day = parseInt(isoDate.substr(8, 2), 10);
     var hours = parseInt(isoDate.substr(11, 2), 10) || 0;
     var minutes = parseInt(isoDate.substr(14, 2), 10) || 0;
     var seconds = parseInt(isoDate.substr(17, 2), 10) || 0;
-    var hoursOffset = parseInt(isoDate.substr(20, 2), 10) || 0;
-    var minutesOffset = parseInt(isoDate.substr(23, 2), 10) || 0;
 
-    var isOffsetNegative = isoDate.substr(19, 1) === '-';
-    if (isOffsetNegative) {
-      hoursOffset *= -1;
-      minutesOffset *= -1;
+    // It's possible for the date to match the offset regex
+    var stringAfterDate = isoDate.substring(10);
+    var offsetRegex = '[+-]{1}[0-9]{2}(:[0-9]{2})?$';
+    var offset = stringAfterDate.match(offsetRegex);
+
+    if (offset) {
+      // TODO if there are milliseconds, need to adjust this
+      hoursOffset = parseInt(offset[0].substr(1, 2), 10) || 0;
+      minutesOffset = parseInt(offset[0].substr(4, 2), 10) || 0;
+
+      if (offset[0].substr(0, 1) === '-') {
+        hoursOffset *= -1;
+        minutesOffset *= -1;
+      }
     }
 
     return [year, month, day, hours, minutes, seconds, hoursOffset, minutesOffset];
@@ -7377,8 +7492,9 @@ function DateService() {
   this.isIsoStringValid = function (isoDate) {
     var dateSection = '[0-9]{4}-[0-9]{2}-[0-9]{2}';
     var timeSection = 'T[0-9]{2}:[0-9]{2}:[0-9]{2}';
+    var millisecondSection = '(.[0-9]{3})?';
     var zoneSection = '(Z|[+,-][0-9]{2}(:[0-9]{2})?)';
-    var regex = new RegExp('^' + dateSection + '(' + timeSection + zoneSection + ')?$');
+    var regex = new RegExp('^' + dateSection + '(' + timeSection + millisecondSection + zoneSection + ')?$');
     return regex.test(isoDate);
   };
 
@@ -7766,7 +7882,7 @@ function DateService() {
 exports.default = DateService;
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7829,7 +7945,7 @@ function DomService() {
 exports.default = DomService;
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7861,7 +7977,8 @@ function LocaleService() {
     }
 
     if (console && console.warn) {
-      console.warn('Incorrect locale: ' + newLocale);
+      // eslint-disable-line
+      console.warn('Incorrect locale: ' + newLocale); // eslint-disable-line
     }
     _this.locale = 'en-GB';
     return _this.locale;
@@ -7877,29 +7994,6 @@ function LocaleService() {
 }
 
 exports.default = LocaleService;
-
-/***/ }),
-/* 105 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _angular = __webpack_require__(0);
-
-var _angular2 = _interopRequireDefault(_angular);
-
-var _requirementsService = __webpack_require__(106);
-
-var _requirementsService2 = _interopRequireDefault(_requirementsService);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _angular2.default.module('tw.styleguide.services.requirements', []).service('TwRequirementsService', _requirementsService2.default).name;
 
 /***/ }),
 /* 106 */
@@ -7918,55 +8012,143 @@ var _angular2 = _interopRequireDefault(_angular);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function RequirementsService() {
+function RequirementsService($http) {
   var _this = this;
 
-  this.prepRequirements = function (types) {
-    types.forEach(function (type) {
-      _this.prepFields(type.fields);
+  this.prepRequirements = function (alternatives) {
+    alternatives.forEach(function (alternative) {
+      _this.prepFields(alternative.fields);
     });
   };
 
   this.prepFields = function (fields, model, validationMessages) {
     if (!fields) {
-      return;
+      return {};
     }
-    fields.forEach(function (field) {
-      if (field.group) {
-        field.group.forEach(function (fieldSection) {
-          if (fieldSection.refreshRequirementsOnChange) {
-            field.refreshRequirementsOnChange = true;
-          }
-          _this.prepRegExp(fieldSection);
-          _this.prepValuesAsync(fieldSection, model);
-          _this.prepValuesAllowed(fieldSection);
-          _this.prepValidationMessages(fieldSection, validationMessages);
-        });
 
-        if (field.group.length) {
-          field.key = field.key || field.group[0].key;
-          field.type = field.type || field.group[0].type;
+    var preparedFields = void 0;
+    if (fields instanceof Array) {
+      preparedFields = {};
+      fields.forEach(function (field) {
+        // If the field still has groups, we need to flatten to get the key
+        if (field.group) {
+          flattenGroup(field);
         }
-      } else {
-        _this.prepRegExp(field);
-        _this.prepValuesAsync(field, model);
-        _this.prepValuesAllowed(field);
-        _this.prepValidationMessages(field, validationMessages);
-      }
+        preparedFields[field.key] = copyOf(field);
+      });
+    } else {
+      preparedFields = copyOf(fields);
+    }
+
+    Object.keys(preparedFields).forEach(function (key) {
+      preparedFields[key] = _this.prepField(preparedFields[key], model, validationMessages);
     });
+
+    return preparedFields;
   };
 
-  this.prepRegExp = function (field) {
+  this.prepField = function (field, model, validationMessages) {
+    var preparedField = copyOf(field);
+
+    flattenGroup(preparedField);
+
+    _this.prepLegacyProps(preparedField);
+
+    _this.prepType(preparedField);
+    _this.prepPattern(preparedField);
+    _this.prepValuesAsync(preparedField, model);
+    _this.prepValues(preparedField);
+    _this.prepValidationMessages(preparedField, validationMessages);
+
+    return preparedField;
+  };
+
+  this.prepType = function (field) {
+    switch (field.type) {
+      case 'text':
+        field.type = 'string';
+        break;
+      case 'date':
+        field.type = 'string';
+        field.format = 'date';
+        break;
+      case 'password':
+        field.type = 'string';
+        field.control = 'password';
+        break;
+      case 'checkbox':
+        field.type = 'boolean';
+        break;
+      case 'select':
+        field.control = 'select';
+        delete field.type;
+        break;
+      case 'radio':
+        field.control = 'radio';
+        delete field.type;
+        break;
+      case 'upload':
+        field.type = 'string';
+        field.format = 'base64url';
+        break;
+      default:
+    }
+
+    if (!field.control) {
+      field.control = _this.getControlType(field);
+    }
+  };
+
+  this.prepLegacyProps = function (field) {
+    delete field.key;
+
+    if (field.name) {
+      field.title = field.name;
+      delete field.name;
+    }
+
     if (field.validationRegexp) {
+      field.pattern = field.validationRegexp;
+      delete field.validationRegexp;
+    }
+
+    if (field.min) {
+      field.minimum = field.min;
+      delete field.min;
+    }
+
+    if (field.max) {
+      field.maximum = field.max;
+      delete field.max;
+    }
+
+    if (field.example && !field.placeholder) {
+      field.placeholder = field.example;
+      delete field.example;
+    }
+
+    if (field.tooltip && !field.helpText) {
+      field.helpText = field.tooltip;
+      delete field.tooltip;
+    }
+
+    if (field.valuesAllowed && !field.values) {
+      field.values = field.valuesAllowed;
+      delete field.valuesAllowed;
+    }
+  };
+
+  this.prepPattern = function (field) {
+    if (field.pattern) {
       try {
-        field.validationRegexp = new RegExp(field.validationRegexp);
+        RegExp(field.pattern);
       } catch (ex) {
         // eslint-disable-next-line no-console
         console.warn('API regexp is invalid');
-        field.validationRegexp = false;
+        delete field.pattern;
       }
     } else {
-      field.validationRegexp = false;
+      delete field.pattern;
     }
   };
 
@@ -7974,6 +8156,7 @@ function RequirementsService() {
     if (!field.valuesAsync) {
       return;
     }
+
     var postData = {};
     if (field.valuesAsync.params && field.valuesAsync.params.length) {
       postData = _this.getParamValuesFromModel(model, field.valuesAsync.params);
@@ -7988,19 +8171,25 @@ function RequirementsService() {
   };
 
   this.fetchValuesAsync = function (field, postData) {
-    return _this.$http.post(field.valuesAsync.url, postData).then(function (response) {
-      field.valuesAllowed = response.data;
-      _this.prepValuesAllowed(field);
+    return $http({
+      method: field.valuesAsync.method || 'GET',
+      url: field.valuesAsync.url,
+      data: postData || {}
+    }).then(function (response) {
+      field.values = response.data;
+      _this.prepValues(field);
     });
   };
 
-  this.prepValuesAllowed = function (field) {
-    if (!_angular2.default.isArray(field.valuesAllowed)) {
+  this.prepValues = function (field) {
+    if (!_angular2.default.isArray(field.values)) {
       return;
     }
-    field.valuesAllowed.forEach(function (valueAllowed) {
-      valueAllowed.value = valueAllowed.value || valueAllowed.key;
-      valueAllowed.label = valueAllowed.label || valueAllowed.name;
+    field.values.forEach(function (option) {
+      option.value = option.value || option.key;
+      option.label = option.label || option.name;
+      delete option.key;
+      delete option.name;
     });
   };
 
@@ -8018,8 +8207,100 @@ function RequirementsService() {
 
   this.prepValidationMessages = function (field, validationMessages) {
     field.validationMessages = field.validationMessages ? field.validationMessages : validationMessages;
+
+    if (!field.validationMessages) {
+      delete field.validationMessages;
+      return;
+    }
+
+    if (field.validationMessages.minimum) {
+      field.validationMessages.min = field.validationMessages.minimum;
+      delete field.validationMessages.minimum;
+    }
+    if (field.validationMessages.maximum) {
+      field.validationMessages.max = field.validationMessages.maximum;
+      delete field.validationMessages.maximum;
+    }
   };
+
+  this.getControlType = getControlType;
 }
+
+function getControlType(field) {
+  if (field.control) {
+    return field.control.toLowerCase();
+  }
+  if (field.hidden) {
+    return 'hidden';
+  }
+  if (field.valuesAsync) {
+    return 'select';
+  }
+  if (field.values && field.values.length) {
+    return getSelectionType(field);
+  }
+
+  switch (field.type) {
+    case 'string':
+      return getControlForStringFormat(field.format);
+    case 'number':
+    case 'integer':
+      return 'number';
+    case 'boolean':
+      return 'checkbox';
+    default:
+      return 'text';
+  }
+}
+
+function getControlForStringFormat(format) {
+  switch (format) {
+    case 'date':
+      return 'date';
+    case 'base64url':
+      return 'file';
+    case 'password':
+      return 'password';
+    case 'uri':
+      return 'text'; // 'url'; - not implemented
+    case 'email':
+      return 'text'; // 'email'; - not implemented
+    case 'phone':
+      return 'text'; // 'tel'; - not implemented
+    default:
+      return 'text';
+  }
+}
+
+function getSelectionType(field) {
+  if (field.control) {
+    return field.control;
+  } else if (field.type === 'select') {
+    return 'select';
+  } else if (field.type === 'radio') {
+    return 'radio';
+  }
+
+  var values = field.enum || field.values;
+  if (values) {
+    return values.length > 3 ? 'select' : 'radio';
+  }
+  return 'select';
+}
+
+function flattenGroup(field) {
+  if (field.group && field.group[0]) {
+    _angular2.default.extend(field, field.group[0]);
+    delete field.group;
+  }
+}
+
+function copyOf(obj) {
+  // Object.assign is nicer, but lacks ie support
+  return JSON.parse(JSON.stringify(obj));
+}
+
+RequirementsService.$inject = ['$http'];
 
 exports.default = RequirementsService;
 
@@ -8250,7 +8531,7 @@ module.exports = "{{ $ctrl.amount | twNumberFormat : $ctrl.precision : $ctrl.loc
 /* 115 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"input-group\"\n  ng-class=\"{\n    'input-group-sm': $ctrl.size === 'sm',\n    'input-group-lg': $ctrl.size === 'lg',\n    'disabled': $ctrl.ngDisabled\n  }\">\n  <input\n    type=\"text\"\n    autocomplete=\"off\"\n    name=\"amount\"\n    step=\"any\"\n    class=\"form-control\"\n    placeholder=\"{{ $ctrl.placeholder }}\"\n    tw-focusable\n    show-decimals=\"$ctrl.showDecimals\"\n    tw-number-input-formatter\n    ng-change=\"$ctrl.changedAmount()\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-disabled=\"$ctrl.ngDisabled\" />\n  <span class=\"input-group-addon\"\n    ng-class=\"{'input-lg': $ctrl.size ==='lg'}\"\n    ng-transclude=\"addon\"></span>\n  <span class=\"input-group-btn\">\n    <tw-select\n      ng-model=\"$ctrl.currency\"\n      ng-required=\"true\"\n      size=\"{{ $ctrl.size }}\"\n      inverse=\"true\"\n      dropdown-right=\"xs\"\n      dropdown-width=\"lg\"\n      hide-currency=\"xs\"\n      hide-note=\"true\"\n      hide-secondary=\"true\"\n      options=\"$ctrl.currencies\"\n      filter=\"{{ $ctrl.currencyFilterPlaceholder }}\"\n      ng-change=\"$ctrl.changedCurrency()\">\n      <a href=\"\"\n        ng-if=\"!!$ctrl.customActionLabel\"\n        ng-click=\"$ctrl.onCustomAction()\">\n        {{ $ctrl.customActionLabel }}\n      </a>\n    </tw-select>\n  </span>\n</div>\n";
+module.exports = "<div class=\"input-group\"\n  ng-class=\"{\n    'input-group-sm': $ctrl.size === 'sm',\n    'input-group-lg': $ctrl.size === 'lg',\n    'disabled': $ctrl.ngDisabled\n  }\">\n  <input\n    type=\"text\"\n    autocomplete=\"off\"\n    name=\"amount\"\n    step=\"any\"\n    class=\"form-control\"\n    placeholder=\"{{ $ctrl.placeholder }}\"\n    tw-focusable\n    show-decimals=\"$ctrl.showDecimals\"\n    tw-number-input-formatter\n    ng-change=\"$ctrl.changedAmount()\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-disabled=\"$ctrl.ngDisabled\" />\n  <span class=\"input-group-addon\"\n    ng-class=\"{'input-lg': $ctrl.size ==='lg'}\"\n    ng-transclude=\"addon\"></span>\n  <span class=\"input-group-btn amount-currency-select-btn\">\n    <tw-select\n      ng-model=\"$ctrl.currency\"\n      ng-required=\"true\"\n      size=\"{{ $ctrl.size }}\"\n      inverse=\"true\"\n      dropdown-right=\"xs\"\n      dropdown-width=\"lg\"\n      hide-currency=\"xs\"\n      hide-note=\"true\"\n      hide-secondary=\"true\"\n      options=\"$ctrl.currencies\"\n      filter=\"{{ $ctrl.currencyFilterPlaceholder }}\"\n      ng-change=\"$ctrl.changedCurrency()\">\n      <a href=\"\"\n        ng-if=\"!!$ctrl.customActionLabel\"\n        ng-click=\"$ctrl.onCustomAction()\">\n        {{ $ctrl.customActionLabel }}\n      </a>\n    </tw-select>\n  </span>\n</div>\n";
 
 /***/ }),
 /* 116 */
@@ -8280,43 +8561,43 @@ module.exports = "<div class=\"row\">\n\n  <div class=\"col-sm-5 tw-date-month-c
 /* 120 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"m-t-1\">\n  <h4\n    ng-if=\"$ctrl.legend\"\n    ng-bind=\"$ctrl.legend\"\n    class=\"page-header p-t-3\">\n  </h4>\n</div>\n<div class=\"row row-equal-height\">\n  <div class=\"col-xs-12\"\n    ng-class=\"{'col-sm-6': !$ctrl.narrow}\"\n    ng-repeat=\"field in $ctrl.fields track by $index\"\n    ng-if=\"$ctrl.model[field.key] || $ctrl.model[field.group[0].key]\">\n\n    <dl ng-if=\"!field.group\">\n      <dt ng-bind=\"field.name\"></dt>\n      <dd ng-switch=\"field.type\">\n        <span ng-switch-when=\"select|radio\" ng-switch-when-separator=\"|\">\n          {{ $ctrl.getValueLabel(field.valuesAllowed, $ctrl.model[field.key]) }}\n        </span>\n        <span ng-switch-when=\"date\">\n          {{ $ctrl.model[field.key] | twDateFormat: $ctrl.locale }}\n        </span>\n        <span ng-switch-when=\"number\">\n          {{ $ctrl.model[field.key] | twNumberFormat: $ctrl.locale }}\n        </span>\n        <span ng-switch-when=\"password\">\n          {{ $ctrl.mask($ctrl.model[field.key]) }}\n        </span>\n        <div ng-switch-when=\"upload\" class=\"thumbnail\">\n          <img alt=\"{{ field.name }}\"\n            ng-src=\"{{ $ctrl.model[field.key] }}\"\n            ng-attr-alt=\"{{ field.name }}\" />\n        </div>\n        <span ng-switch-default>\n          {{ $ctrl.model[field.key] | twTextFormat: field.displayFormat }}\n        </span>\n      </dd>\n    </dl>\n\n    <!-- Start old 'nested group' style -->\n    <dl ng-if=\"field.group\">\n      <dt ng-bind=\"field.name\"></dt>\n      <dd>\n        <span ng-repeat=\"fieldSection in field.group\">\n          <span ng-switch=\"fieldSection.type\">\n            <span ng-switch-when=\"select|radio\" ng-switch-when-separator=\"|\">\n              {{ $ctrl.getValueLabel(fieldSection.valuesAllowed, $ctrl.model[fieldSection.key]) }}\n            </span>\n            <span ng-switch-when=\"date\">\n              {{ $ctrl.model[fieldSection.key] | twDateFormat: $ctrl.locale }}\n            </span>\n            <span ng-switch-when=\"number\">\n              {{ $ctrl.model[fieldSection.key] | twNumberFormat: $ctrl.locale }}\n            </span>\n            <span ng-switch-when=\"password\">\n              {{ $ctrl.mask($ctrl.model[fieldSection.key]) }}\n            </span>\n            <div ng-switch-when=\"upload\" class=\"thumbnail\">\n              <img alt=\"{{ field.name }}\"\n                ng-src=\"{{ $ctrl.model[fieldSection.key] }}\"\n                ng-attr-alt=\"{{ field.name }}\" />\n            </div>\n            <span ng-switch-default>\n              {{ $ctrl.model[fieldSection.key] | twTextFormat: fieldSection.displayFormat }}\n            </span>\n          </span>\n        </span>\n      </dd>\n    </dl>\n    <!-- End old 'nested group' style -->\n\n  </div>\n</div>\n";
+module.exports = "<div class=\"m-t-1\">\n  <h4\n    ng-if=\"$ctrl.title\"\n    ng-bind=\"$ctrl.title\"\n    class=\"page-header p-t-3\">\n  </h4>\n</div>\n<div class=\"row row-equal-height\">\n  <div class=\"col-xs-12\"\n    ng-class=\"{'col-sm-6': !$ctrl.narrow}\"\n    ng-repeat=\"(key, field) in $ctrl.fields track by $index\"\n    ng-if=\"$ctrl.model[key]\">\n\n    <dl ng-if=\"!field.group\">\n      <dt ng-bind=\"field.title\"></dt>\n      <dd ng-switch=\"field.control\">\n        <span ng-switch-when=\"select|radio\" ng-switch-when-separator=\"|\">\n          {{ $ctrl.getValueLabel(field.values, $ctrl.model[key]) }}\n        </span>\n        <span ng-switch-when=\"date\">\n          {{ $ctrl.model[key] | twDateFormat: $ctrl.locale }}\n        </span>\n        <span ng-switch-when=\"number\">\n          {{ $ctrl.model[key] | twNumberFormat: $ctrl.locale }}\n        </span>\n        <span ng-switch-when=\"password\">\n          {{ $ctrl.mask($ctrl.model[key]) }}\n        </span>\n        <div ng-switch-when=\"file\" class=\"thumbnail\">\n          <img alt=\"{{ field.title }}\"\n            ng-src=\"{{ $ctrl.model[key] }}\"\n            ng-attr-alt=\"{{ field.title }}\" />\n        </div>\n        <span ng-switch-default>\n          {{ $ctrl.model[key] | twTextFormat: field.displayFormat }}\n        </span>\n      </dd>\n    </dl>\n\n    <!-- Start old 'nested group' style -->\n    <dl ng-if=\"field.group\">\n      <dt ng-bind=\"field.title\"></dt>\n      <dd>\n        <span ng-repeat=\"fieldSection in field.group\">\n          <span ng-switch=\"fieldSection.control\">\n            <span ng-switch-when=\"select|radio\" ng-switch-when-separator=\"|\">\n              {{ $ctrl.getValueLabel(fieldSection.values, $ctrl.model[fieldSection.key]) }}\n            </span>\n            <span ng-switch-when=\"date\">\n              {{ $ctrl.model[fieldSection.key] | twDateFormat: $ctrl.locale }}\n            </span>\n            <span ng-switch-when=\"number\">\n              {{ $ctrl.model[fieldSection.key] | twNumberFormat: $ctrl.locale }}\n            </span>\n            <span ng-switch-when=\"password\">\n              {{ $ctrl.mask($ctrl.model[fieldSection.key]) }}\n            </span>\n            <div ng-switch-when=\"file\" class=\"thumbnail\">\n              <img alt=\"{{ field.title }}\"\n                ng-src=\"{{ $ctrl.model[fieldSection.key] }}\"\n                ng-attr-alt=\"{{ field.title }}\" />\n            </div>\n            <span ng-switch-default>\n              {{ $ctrl.model[fieldSection.key] | twTextFormat: fieldSection.displayFormat }}\n            </span>\n          </span>\n        </span>\n      </dd>\n    </dl>\n    <!-- End old 'nested group' style -->\n\n  </div>\n</div>\n";
 
 /***/ }),
 /* 121 */
 /***/ (function(module, exports) {
 
-module.exports = "<div ng-switch=\"$ctrl.type\">\n  <input ng-switch-default=\"text\"\n    name=\"{{$ctrl.name}}\"\n    type=\"text\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-pattern=\"$ctrl.ngPattern\"\n    ng-change=\"$ctrl.change()\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-minlength=\"$ctrl.ngMinlength\"\n    ng-maxlength=\"$ctrl.ngMaxlength\"\n    tw-text-format=\"{{$ctrl.textFormat}}\" />\n  <input ng-switch-when=\"password\"\n    name=\"{{$ctrl.name}}\"\n    type=\"password\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-change=\"$ctrl.change()\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-minlength=\"$ctrl.ngMinlength\"\n    ng-maxlength=\"$ctrl.ngMaxlength\" />\n  <input ng-switch-when=\"number\"\n    name=\"{{$ctrl.name}}\"\n    type=\"number\"\n    step=\"{{$ctrl.step}}\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.ngModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-change=\"$ctrl.change()\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-min=\"$ctrl.ngMin\"\n    ng-max=\"$ctrl.ngMax\" />\n  <div ng-switch-when=\"radio\"\n    class=\"radio\"\n    ng-class=\"{disabled: $ctrl.ngDisabled}\"\n    ng-repeat=\"option in $ctrl.options\">\n    <label>\n      <tw-radio\n        name=\"{{$ctrl.name}}\"\n        ng-value=\"option.value\"\n        ng-model=\"$ctrl.ngModel\"\n        ng-required=\"$ctrl.ngRequired\"\n        ng-disabled=\"$ctrl.ngDisabled\"\n        ng-change=\"$ctrl.change(option.value)\"\n        ng-click=\"$ctrl.change(option.value)\"\n        ng-focus=\"$ctrl.focus()\"\n        ng-blur=\"$ctrl.blur()\"></tw-radio>\n      {{option.label}}\n    </label>\n  </div>\n  <div ng-switch-when=\"checkbox\"\n    class=\"checkbox\"\n    ng-class=\"{disabled: $ctrl.ngDisabled}\">\n    <label>\n      <tw-checkbox\n        name=\"{{$ctrl.name}}\"\n        ng-model=\"$ctrl.ngModel\"\n        ng-required=\"$ctrl.ngRequired\"\n        ng-disabled=\"$ctrl.ngDisabled\"\n        ng-change=\"$ctrl.change()\"\n        ng-click=\"$ctrl.change()\"\n        ng-focus=\"$ctrl.focus()\"\n        ng-blur=\"$ctrl.blur()\"></tw-checkbox>\n      {{$ctrl.placeholder}}\n    </label>\n  </div>\n  <div ng-switch-when=\"select\">\n    <tw-select\n      name=\"{{$ctrl.name}}\"\n      options=\"$ctrl.options\"\n      placeholder=\"{{$ctrl.placeholder}}\"\n      ng-model=\"$ctrl.ngModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change()\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"></tw-select>\n  </div>\n  <div ng-switch-when=\"upload\">\n    <tw-upload\n      name=\"{{$ctrl.name}}\"\n      label=\"{{$ctrl.label}}\"\n      icon=\"{{$ctrl.uploadIcon}}\"\n      help-image=\"{{$ctrl.helpImage}}\"\n      placeholder=\"{{$ctrl.placeholder}}\"\n      accept=\"{{$ctrl.uploadAccept}}\"\n      complete-text=\"{{$ctrl.label}}\"\n      button-text=\"{{$ctrl.uploadOptions.buttonText}}\"\n      cancel-text=\"{{$ctrl.uploadOptions.cancelText}}\"\n      too-large-message=\"{{$ctrl.uploadTooLargeMessage}}\"\n      max-size=\"$ctrl.ngMax\"\n      ng-model=\"$ctrl.ngModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change()\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"></tw-upload>\n  </div>\n  <div ng-switch-when=\"date\">\n    <tw-date\n      name=\"{{$ctrl.name}}\"\n      locale=\"{{$ctrl.locale}}\"\n      ng-min=\"$ctrl.ngMin\"\n      ng-max=\"$ctrl.ngMax\"\n      ng-model=\"$ctrl.ngModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change()\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"></tw-date>\n  </div>\n  <input ng-switch-when=\"hidden\"\n      name=\"{{$ctrl.name}}\"\n      type=\"hidden\"\n      ng-model=\"$ctrl.ngModel\"/>\n</div>\n";
+module.exports = "<div ng-switch=\"$ctrl.type\">\n  <div ng-switch-when=\"radio\"\n    class=\"radio\"\n    ng-class=\"{disabled: $ctrl.ngDisabled}\"\n    ng-repeat=\"option in $ctrl.options\">\n    <label>\n      <tw-radio\n        name=\"{{$ctrl.name}}\"\n        ng-value=\"option.value\"\n        ng-model=\"$ctrl.internalModel\"\n        ng-required=\"$ctrl.ngRequired\"\n        ng-disabled=\"$ctrl.ngDisabled\"\n        ng-change=\"$ctrl.change(option.value)\"\n        ng-click=\"$ctrl.change(option.value)\"\n        ng-focus=\"$ctrl.focus()\"\n        ng-blur=\"$ctrl.blur()\"\n      ></tw-radio>\n      {{option.label}}\n    </label>\n  </div>\n\n  <div ng-switch-when=\"checkbox\"\n    class=\"checkbox\"\n    ng-class=\"{disabled: $ctrl.ngDisabled}\">\n    <label>\n      <tw-checkbox\n        name=\"{{$ctrl.name}}\"\n        ng-model=\"$ctrl.internalModel\"\n        ng-required=\"$ctrl.ngRequired\"\n        ng-disabled=\"$ctrl.ngDisabled\"\n        ng-change=\"$ctrl.change($ctrl.internalModel)\"\n        ng-click=\"$ctrl.change()\"\n        ng-focus=\"$ctrl.focus()\"\n        ng-blur=\"$ctrl.blur()\"\n      ></tw-checkbox>\n      {{$ctrl.placeholder}}\n    </label>\n  </div>\n\n  <div ng-switch-when=\"select\">\n    <tw-select\n      name=\"{{$ctrl.name}}\"\n      options=\"$ctrl.options\"\n      placeholder=\"{{$ctrl.placeholder}}\"\n      ng-model=\"$ctrl.internalModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change($ctrl.internalModel)\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n    ></tw-select>\n  </div>\n\n  <div ng-switch-when=\"file|upload\" ng-switch-when-separator=\"|\">\n    <tw-upload\n      name=\"{{$ctrl.name}}\"\n      label=\"{{$ctrl.label}}\"\n      icon=\"{{$ctrl.uploadIcon}}\"\n      help-image=\"{{$ctrl.helpImage}}\"\n      placeholder=\"{{$ctrl.placeholder}}\"\n      accept=\"{{$ctrl.uploadAccept}}\"\n      complete-text=\"{{$ctrl.label}}\"\n      button-text=\"{{$ctrl.uploadOptions.buttonText}}\"\n      cancel-text=\"{{$ctrl.uploadOptions.cancelText}}\"\n      too-large-message=\"{{$ctrl.uploadTooLargeMessage}}\"\n      max-size=\"$ctrl.ngMax\"\n      ng-model=\"$ctrl.internalModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change($ctrl.internalModel)\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n    ></tw-upload>\n  </div>\n\n  <div ng-switch-when=\"date|date-time\" ng-switch-when-separator=\"|\">\n    <tw-date\n      name=\"{{$ctrl.name}}\"\n      locale=\"{{$ctrl.locale}}\"\n      ng-min=\"$ctrl.ngMin\"\n      ng-max=\"$ctrl.ngMax\"\n      ng-model=\"$ctrl.internalModel\"\n      ng-model-options=\"{ allowInvalid: true }\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change($ctrl.internalModel)\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n      model-type=\"string\"\n    ></tw-date>\n  </div>\n\n  <input ng-switch-when=\"number\"\n    name=\"{{$ctrl.name}}\"\n    type=\"number\"\n    step=\"{{$ctrl.step}}\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.internalModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-change=\"$ctrl.change($ctrl.internalModel)\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-min=\"$ctrl.ngMin\"\n    ng-max=\"$ctrl.ngMax\" />\n\n  <input ng-switch-when=\"hidden\"\n    name=\"{{$ctrl.name}}\"\n    type=\"hidden\"\n    ng-model=\"$ctrl.ngModel\"/>\n\n  <input ng-switch-when=\"password\"\n    name=\"{{$ctrl.name}}\"\n    type=\"password\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.internalModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-change=\"$ctrl.change($ctrl.internalModel)\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-minlength=\"$ctrl.ngMinlength\"\n    ng-maxlength=\"$ctrl.ngMaxlength\" />\n\n  <input ng-switch-default\n    name=\"{{$ctrl.name}}\"\n    type=\"text\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.internalModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-pattern=\"$ctrl.ngPattern\"\n    ng-minlength=\"$ctrl.ngMinlength\"\n    ng-maxlength=\"$ctrl.ngMaxlength\"\n    ng-change=\"$ctrl.change($ctrl.internalModel)\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    tw-text-format=\"{{ $ctrl.textFormat }}\" />\n\n</div>\n";
 
 /***/ }),
 /* 122 */
 /***/ (function(module, exports) {
 
-module.exports = "<fieldset ng-form=\"twFieldset\">\n  <legend ng-if=\"$ctrl.legend\">{{$ctrl.legend}}</legend>\n  <div class=\"row row-equal-height\">\n    <div ng-repeat=\"field in $ctrl.fields track by $index\" class=\"col-xs-12\" ng-hide=\"field.hidden\"\n      ng-class=\"{\n        'col-sm-4': !$ctrl.narrow  && field.width === 'sm',\n        'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),\n        'col-sm-12': $ctrl.narrow || field.width === 'lg' || !field.maxlength || field.maxlength > 10\n      }\">\n      <div class=\"form-group tw-form-group-{{field.key}}\"\n        ng-class=\"{\n          'has-error': $ctrl.errorMessages[field.key]\n        }\">\n        <label class=\"control-label\"\n          ng-if=\"field.type !== 'upload'\">\n          {{field.name}}\n        </label>\n\n        <div ng-if=\"!field.group\">\n          <tw-form-control\n            name=\"{{field.key}}\"\n            label=\"{{field.name}}\"\n            type=\"{{field.type | lowercase}}\"\n            placeholder=\"{{field.placeholder || field.example}}\"\n            help-text=\"{{field.helpText}}\"\n            locale=\"{{$ctrl.locale}}\"\n            upload-accept=\"{{field.accept}}\"\n            upload-icon=\"{{field.icon}}\"\n            upload-too-large-message=\"{{field.tooLargeMessage}}\"\n            help-image=\"{{field.helpImage}}\"\n            options=\"field.valuesAllowed\"\n            upload-options=\"$ctrl.uploadOptions\"\n            ng-model=\"$ctrl.model[field.key]\"\n            ng-blur=\"$ctrl.onBlur(field)\"\n            ng-change=\"$ctrl.onChange(field)\"\n            ng-required=\"field.required\"\n            ng-disabled=\"field.disabled\"\n            tw-minlength=\"field.minLength\"\n            tw-maxlength=\"field.maxLength\"\n            ng-min=\"field.min\"\n            ng-max=\"field.max\"\n            ng-pattern=\"field.validationRegexp\"\n            text-format=\"field.displayFormat\"\n            tw-validation\n          ></tw-form-control>\n          <div class=\"alert alert-danger error-messages\"\n            ng-class=\"{'alert-detach': field.type === 'date' || field.type === 'upload'}\">\n            <div ng-repeat=\"(validationType, validationMessage) in field.validationMessages track by $index\"\n              class=\"error-{{validationType}}\">\n              {{validationMessage}}\n            </div>\n            <div class=\"error-provided\" ng-if=\"$ctrl.errorMessages[field.key]\">\n              {{ $ctrl.errorMessages[field.key] }}\n            </div>\n          </div>\n          <div ng-if=\"field.tooltip\"\n            class=\"alert alert-focus\"\n            ng-class=\"{'alert-detach': field.type === 'date' || field.type === 'upload'}\">\n            {{field.tooltip}}\n          </div>\n        </div>\n\n        <img\n          ng-if=\"field.helpImage && field.type !== 'upload'\"\n          ng-src=\"{{field.helpImage}}\"\n          alt=\"{{field.name}}\"\n          class=\"thumbnail m-t-2 m-b-0\" />\n\n        <!-- Start old format -->\n        <div class=\"row\" ng-if=\"field.group\">\n          <div class=\"col-xs-{{field.columns}}\"\n            ng-repeat=\"fieldSection in field.group track by $index\">\n            <tw-form-control\n              name=\"{{fieldSection.key}}\"\n              label=\"{{field.name}}\"\n              type=\"{{fieldSection.type | lowercase}}\"\n              placeholder=\"{{fieldSection.placeholder || fieldSection.example}}\"\n              help-text=\"{{fieldSection.helpText}}\"\n              locale=\"{{$ctrl.locale}}\"\n              upload-accept=\"{{fieldSection.accept}}\"\n              upload-icon=\"{{fieldSection.icon}}\"\n              upload-too-large-message=\"{{fieldSection.tooLargeMessage}}\"\n              help-image=\"{{fieldSection.helpImage}}\"\n              options=\"fieldSection.valuesAllowed\"\n              upload-options=\"$ctrl.uploadOptions\"\n              ng-model=\"$ctrl.model[fieldSection.key]\"\n              ng-blur=\"$ctrl.onBlur(field)\"\n              ng-change=\"$ctrl.onChange(field)\"\n              ng-required=\"fieldSection.required\"\n              ng-disabled=\"fieldSection.disabled\"\n              tw-minlength=\"fieldSection.minLength\"\n              tw-maxlength=\"fieldSection.maxLength\"\n              ng-min=\"fieldSection.min\"\n              ng-max=\"fieldSection.max\"\n              ng-pattern=\"fieldSection.validationRegexp\"\n              text-format=\"fieldSection.displayFormat\"\n              tw-validation\n            ></tw-form-control>\n            <div class=\"alert alert-danger error-messages\"\n              ng-class=\"{'alert-detach': fieldSection.type === 'date' || fieldSection.type === 'upload'}\">\n              <div ng-repeat=\"(validationType, validationMessage) in fieldSection.validationMessages\"\n                class=\"error-{{validationType}}\">\n                {{validationMessage}}\n              </div>\n              <div class=\"error-provided\" ng-if=\"$ctrl.errorMessages[fieldSection.key]\">\n                {{ $ctrl.errorMessages[fieldSection.key] }}\n              </div>\n            </div>\n            <div ng-if=\"fieldSection.tooltip\"\n              class=\"alert alert-focus\"\n              ng-class=\"{'alert-detach': fieldSection.type === 'date' || fieldSection.type === 'upload'}\">\n              {{fieldSection.tooltip}}\n            </div>\n            <img\n              ng-if=\"fieldSection.helpImage && fieldSection.type !== 'upload'\"\n              ng-src=\"fieldSection.helpImage\"\n              alt=\"{{field.name}}\"\n              class=\"thumbnail m-t-2 m-b-0\" />\n          </div>\n          <!-- End old format -->\n        </div>\n      </div>\n    </div>\n  </div>\n</fieldset>\n";
+module.exports = "<div class=\"form-group tw-field-{{ $ctrl.name }}\"\n  ng-class=\"{\n    'has-error': $ctrl.field.errorMessage || $ctrl.errorMessage,\n    'has-warning': $ctrl.field.warningMessage || $ctrl.warningMessage,\n    'hidden': $ctrl.field.hidden\n  }\">\n  <label class=\"control-label\"\n    ng-if=\"$ctrl.control !== 'file'\">\n    {{$ctrl.field.title}}\n  </label>\n  <tw-form-control\n    name=\"{{ $ctrl.field.key }}\"\n    label=\"{{ $ctrl.field.title }}\"\n    type=\"{{ $ctrl.control | lowercase }}\"\n    placeholder=\"{{ $ctrl.field.placeholder }}\"\n    help-text=\"{{ $ctrl.field.helpText }}\"\n    help-image=\"{{ $ctrl.field.helpImage }}\"\n    locale=\"{{ $ctrl.locale }}\"\n    upload-accept=\"{{ $ctrl.field.accept }}\"\n    upload-icon=\"{{ $ctrl.field.icon }}\"\n    upload-too-large-message=\"{{ $ctrl.field.tooLargeMessage }}\"\n    options=\"$ctrl.field.values\"\n    upload-options=\"$ctrl.field.uploadOptions\"\n    ng-model=\"$ctrl.model\"\n    ng-focus=\"$ctrl.onFocus()\"\n    ng-blur=\"$ctrl.onBlur()\"\n    ng-change=\"$ctrl.onChange($ctrl.model)\"\n    ng-required=\"$ctrl.field.required\"\n    ng-disabled=\"$ctrl.field.disabled\"\n    tw-minlength=\"$ctrl.field.minlength || $ctrl.field.minLength\"\n    tw-maxlength=\"$ctrl.field.maxlength || $ctrl.field.maxLength\"\n    ng-min=\"$ctrl.field.minimum\"\n    ng-max=\"$ctrl.field.maximum\"\n    ng-pattern=\"$ctrl.field.pattern\"\n    text-format=\"$ctrl.field.displayFormat\"\n    tw-validation\n  ></tw-form-control>\n  <div class=\"alert alert-danger error-messages\"\n    ng-if=\"$ctrl.sizeOf($ctrl.field.validationMessages) > 0 || $ctrl.errorMessage\"\n    ng-class=\"{\n      'alert-detach': $ctrl.control === 'date'  ||\n                      $ctrl.control === 'file' ||\n                      $ctrl.control === 'radio'\n    }\">\n    <div ng-repeat=\"(validationType, validationMessage) in $ctrl.field.validationMessages track by $index\"\n      class=\"error-{{ validationType | lowercase }}\">\n      {{validationMessage}}\n    </div>\n    <div class=\"error-provided\" ng-if=\"$ctrl.errorMessage\">\n      {{ $ctrl.errorMessage }}\n    </div>\n  </div>\n  <div class=\"alert alert-warning\"\n    ng-if=\"$ctrl.warningMessage\"\n    ng-class=\"{\n      'alert-detach': $ctrl.control === 'date'  ||\n                      $ctrl.control === 'file' ||\n                      $ctrl.control === 'radio'\n    }\">\n    {{ $ctrl.warningMessage }}\n  </div>\n  <div ng-if=\"$ctrl.field.helpText || $ctrl.field.helpList || $ctrl.field.helpImage\"\n    class=\"alert alert-focus\"\n    ng-class=\"{\n      'alert-detach': $ctrl.control === 'date' ||\n                      $ctrl.control === 'file' ||\n                      $ctrl.control === 'radio'\n    }\">\n    <span ng-if=\"$ctrl.field.helpText\">\n      {{ $ctrl.field.helpText }}\n    </span>\n    <ul ng-if=\"$ctrl.field.helpList\" class=\"list-unstyled\">\n      <li ng-repeat=\"helpMessage in $ctrl.field.helpList\">{{ helpMessage }}</li>\n    </ul>\n    <img\n      ng-if=\"$ctrl.field.helpImage && $ctrl.control !== 'file'\"\n      ng-src=\"{{$ctrl.field.helpImage}}\"\n      alt=\"{{$ctrl.field.title}}\"\n      class=\"thumbnail m-y-2\" />\n  </div>\n</div>\n";
 
 /***/ }),
 /* 123 */
 /***/ (function(module, exports) {
 
-module.exports = "<input type=\"radio\" class=\"sr-only\"\n  name=\"{{$ctrl.name}}\"\n  ng-value=\"$ctrl.ngValue || $ctrl.value\"\n  ng-model=\"$ctrl.ngModel\"\n  ng-disabled=\"$ctrl.ngDisabled\"\n  ng-change=\"$ctrl.hiddenInputChange()\"\n  tabindex=\"-1\" />\n<button type=\"button\" class=\"tw-radio-button\" tw-focusable\n  ng-click=\"$ctrl.buttonClick($event)\"\n  ng-focus=\"$ctrl.buttonFocus()\"\n  ng-blur=\"$ctrl.buttonBlur()\"\n  ng-disabled=\"$ctrl.ngDisabled\"\n  ng-class=\"{checked: $ctrl.checked}\"\n  aria-pressed=\"{{$ctrl.checked}}\">\n  <span class=\"tw-radio-check\"></span>\n</button>\n";
+module.exports = "<fieldset ng-form=\"twFieldset\">\n  <legend ng-if=\"$ctrl.title\">{{ $ctrl.title }}</legend>\n  <p class=\"text-max-width\" ng-if=\"$ctrl.description\">{{ $ctrl.description }}</p>\n  <div class=\"row row-equal-height\">\n    <div ng-repeat=\"(key, field) in $ctrl.fields track by $index\" class=\"col-xs-12\" ng-hide=\"field.hidden\"\n      ng-class=\"{\n        'col-sm-4': !$ctrl.narrow  && field.width === 'sm',\n        'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),\n        'col-sm-12': $ctrl.narrow || field.width === 'lg' || !field.maxlength || field.maxlength > 10\n      }\">\n\n      <tw-field\n        name=\"{{ key }}\"\n        model=\"$ctrl.model[key]\"\n        field=\"field\"\n        locale=\"$ctrl.locale\"\n        upload-options=\"$ctrl.uploadOptions\"\n        error-message=\"$ctrl.errorMessages[key]\"\n        warning-message=\"$ctrl.warningMessages[key]\"\n        on-change=\"$ctrl.fieldChange(value, key, field)\"\n        on-focus=\"$ctrl.fieldFocus(key, field)\"\n        on-blur=\"$ctrl.fieldBlur(key, field)\"\n        class=\"btn-block\">  <!-- Remove btn-block after boostrap update -->\n      </tw-field>\n\n    </div>\n  </div>\n</fieldset>\n";
 
 /***/ }),
 /* 124 */
 /***/ (function(module, exports) {
 
-module.exports = "<tw-tabs\n  ng-if=\"$ctrl.requirements.length > 1\"\n  tabs=\"$ctrl.requirements\"\n  active=\"$ctrl.model.type\">\n</tw-tabs>\n<div class=\"tab-content\" ng-form=\"twForm\">\n  <div ng-repeat=\"requirementType in $ctrl.requirements\"\n    ng-if=\"$ctrl.model.type == requirementType.type\"\n    class=\"tab-pane active\"\n    id=\"{{requirementType.type}}\">\n    <p>{{requirementType.description}}</p>\n    <tw-fieldset\n      fields=\"requirementType.fields\"\n      model=\"$ctrl.model\"\n      upload-options=\"$ctrl.uploadOptions\"\n      locale=\"{{$ctrl.locale}}\"\n      on-refresh-requirements=\"$ctrl.onRefreshRequirements()\"\n      validation-messages=\"$ctrl.validationMessages\"\n      error-messages=\"$ctrl.errorMessages\">\n    </tw-fieldset>\n  </div>\n</div>\n";
+module.exports = "<input type=\"radio\" class=\"sr-only\"\n  name=\"{{$ctrl.name}}\"\n  ng-value=\"$ctrl.ngValue || $ctrl.value\"\n  ng-model=\"$ctrl.ngModel\"\n  ng-disabled=\"$ctrl.ngDisabled\"\n  ng-change=\"$ctrl.hiddenInputChange()\"\n  tabindex=\"-1\" />\n<button type=\"button\" class=\"tw-radio-button\" tw-focusable\n  ng-click=\"$ctrl.buttonClick($event)\"\n  ng-focus=\"$ctrl.buttonFocus()\"\n  ng-blur=\"$ctrl.buttonBlur()\"\n  ng-disabled=\"$ctrl.ngDisabled\"\n  ng-class=\"{checked: $ctrl.checked}\"\n  aria-pressed=\"{{$ctrl.checked}}\">\n  <span class=\"tw-radio-check\"></span>\n</button>\n";
 
 /***/ }),
 /* 125 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"btn-group btn-block tw-select\"\n  ng-class=\"{\n    dropdown: !$ctrl.dropdownUp,\n    dropup: $ctrl.dropdownUp\n  }\" aria-hidden=\"false\">\n\n  <button type=\"button\" class=\"btn btn-input dropdown-toggle\"\n    ng-class=\"{\n      'btn-input-inverse': $ctrl.inverse,\n      'btn-addon': $ctrl.inverse,\n      'btn-sm': $ctrl.size === 'sm',\n      'btn-lg': $ctrl.size === 'lg'\n    }\"\n    data-toggle=\"dropdown\" aria-expanded=\"false\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-focus=\"$ctrl.buttonFocus()\"\n    tw-focusable>\n\n    <span class=\"tw-select-selected\" ng-if=\"$ctrl.selected\">\n      <span class=\"circle circle-inverse pull-xs-left circle-sm\"\n        ng-if=\"$ctrl.selected && $ctrl.selected.icon && $ctrl.selected.secondary\">\n        <span class=\"icon {{$ctrl.selected.icon}}\"></span>\n      </span>\n\n      <span class=\"circle circle-inverse pull-xs-left\"\n        ng-class=\"$ctrl.circleClasses($ctrl.hideCircle)\"\n        ng-if=\"($ctrl.selected.circleText || $ctrl.selected.circleImage || $ctrl.selected.circleIcon)\">\n        <span ng-if=\"$ctrl.selected.circleText\">{{$ctrl.selected.circleText}}</span>\n        <img alt=\"{{$ctrl.selected.label}}\"\n          ng-if=\"$ctrl.selected.circleImage\"\n          src=\"data:image/png;base64,\n            iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=\"\n          ng-src=\"{{$ctrl.selected.circleImage}}\" />\n        <span ng-if=\"$ctrl.selected.circleIcon\" class=\"icon {{$ctrl.selected.circleIcon}}\"></span>\n      </span>\n\n      <span class=\"text-ellipsis\">\n        <span class=\"currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}}\"\n          ng-if=\"$ctrl.selected && $ctrl.selected.currency\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideCurrency)\"\n        ></span>\n        <span class=\"icon {{$ctrl.selected.icon}}\"\n          ng-if=\"$ctrl.selected && $ctrl.selected.icon && !$ctrl.selected.secondary\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideIcon)\"\n        ></span>\n        <span class=\"tw-select-label\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideLabel)\">\n          {{$ctrl.selected.label}}\n        </span>\n        <span\n          ng-if=\"$ctrl.selected.note\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideNote)\"\n          class=\"tw-select-note small m-l-1\">\n          {{$ctrl.selected.note}}\n        </span>\n\n        <span\n          ng-if=\"$ctrl.selected.secondary\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideSecondary)\"\n          class=\"tw-select-secondary small secondary text-ellipsis\">\n          {{$ctrl.selected.secondary}}\n        </span>\n      </span>\n    </span>\n\n    <span class=\"form-control-placeholder\" ng-if=\"!$ctrl.selected\">{{$ctrl.placeholder}}</span>\n    <span class=\"caret\"></span>\n  </button>\n  <ul class=\"dropdown-menu\" role=\"menu\"\n    ng-class=\"{\n      'dropdown-menu-xs-right': $ctrl.dropdownRight === 'xs',\n      'dropdown-menu-sm-right': $ctrl.dropdownRight === 'sm',\n      'dropdown-menu-md-right': $ctrl.dropdownRight === 'md',\n      'dropdown-menu-lg-right': $ctrl.dropdownRight === 'lg',\n      'dropdown-menu-xl-right': $ctrl.dropdownRight === 'xl',\n      'dropdown-menu-sm': $ctrl.dropdownWidth === 'sm',\n      'dropdown-menu-md': $ctrl.dropdownWidth === 'md',\n      'dropdown-menu-lg': $ctrl.dropdownWidth === 'lg'\n    }\">\n\n    <li ng-if=\"$ctrl.filter\">\n      <a href=\"\" class=\"tw-select-filter-link p-a-0\" tabindex=\"-1\"\n        ng-focus=\"$ctrl.focusOnFilterInput()\">\n        <div class=\"input-group\">\n          <span class=\"input-group-addon\"><span class=\"icon icon-search\"></span> </span>\n          <input type=\"text\"\n            class=\"form-control tw-select-filter\"\n            placeholder=\"{{$ctrl.filter}}\"\n            ng-model=\"$ctrl.filterString\"\n            ng-change=\"$ctrl.filterChange()\"\n            ng-keydown=\"$ctrl.filterKeydown($event)\" />\n        </div>\n      </a>\n    </li>\n\n    <li ng-class=\"{active: !$ctrl.selected}\"\n      ng-if=\"$ctrl.placeholder && !$ctrl.ngRequired && !$ctrl.filter\">\n      <a href=\"\" tabindex=\"-1\"\n        ng-click=\"$ctrl.placeholderClick()\"\n        ng-focus=\"$ctrl.placeholderFocus()\"\n        class=\"tw-select-placeholder\" tw-focusable>\n        {{$ctrl.placeholder}}\n      </a>\n    </li>\n\n    <li ng-if=\"($ctrl.placeholder && !$ctrl.ngRequired) || $ctrl.filter\" class=\"divider\"></li>\n\n    <li\n      ng-repeat=\"option in $ctrl.filteredOptions\"\n      ng-class=\"{\n        'active': $ctrl.ngModel === option.value,\n        'disabled': option.disabled,\n        'dropdown-header': option.header,\n        'tw-select-option': !option.header && !option.disabled\n      }\">\n      <span ng-if=\"option.header\" class=\"text-ellipsis\">{{option.header}}</span>\n      <a href=\"\"\n        ng-if=\"!option.header\"\n        ng-click=\"$ctrl.optionClick(option, $event)\"\n        ng-focus=\"$ctrl.optionFocus(option)\"\n        ng-class=\"{'tw-select-option-link': !option.disabled}\"\n        index=\"{{$index}}\"\n        tabindex=\"-1\"\n        tw-focusable >\n        <div ng-if=\"option.icon && option.secondary\"\n          class=\"circle circle-inverse pull-xs-left circle-sm\">\n          <span class=\"icon {{option.icon}}\"></span>\n        </div>\n        <span ng-if=\"option.icon && !option.secondary\"\n          class=\"icon {{option.icon}} pull-xs-left\" >\n        </span> <span ng-if=\"option.currency\"\n          class=\"currency-flag currency-flag-{{option.currency | lowercase}} pull-xs-left\" >\n        </span> <span class=\"circle circle-inverse pull-xs-left\"\n          ng-class=\"{\n            'circle-sm': option.secondary,\n            'circle-xs': !option.secondary\n          }\"\n          ng-if=\"option.circleText || option.circleImage || option.circleIcon\">\n          <span class=\"tw-select-circle-text\"\n            ng-if=\"option.circleText\">{{option.circleText}}</span>\n          <img alt=\"{{option.label}}\"\n            ng-if=\"option.circleImage\"\n            src=\"data:image/png;base64,\n              iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=\"\n            ng-src=\"{{option.circleImage}}\" />\n          <span ng-if=\"option.circleIcon\" class=\"icon {{option.circleIcon}}\"></span>\n        </span>{{option.label}}<span\n          ng-if=\"option.note\" class=\"tw-select-note small m-l-1\">{{option.note}}</span><span\n          ng-if=\"option.secondary\"\n          class=\"tw-select-secondary small text-ellipsis\">{{option.secondary}}</span>\n      </a>\n    </li>\n\n    <li ng-if=\"$ctrl.hasTranscluded\" class=\"divider\"></li>\n\n    <li ng-transclude ng-if=\"$ctrl.hasTranscluded\" class=\"tw-select-transcluded\"></li>\n  </ul>\n</div>\n<input type=\"hidden\" class=\"tw-select-hidden\"\n  name=\"{{$ctrl.name}}\"\n  value=\"{{$ctrl.ngModel}}\"\n  ng-disabled=\"$ctrl.ngDisabled\" />\n";
+module.exports = "<tw-tabs\n  ng-if=\"$ctrl.requirements.length > 1\"\n  tabs=\"$ctrl.requirements\"\n  active=\"$ctrl.model.type\">\n</tw-tabs>\n<div class=\"tab-content\" ng-form=\"twForm\">\n  <div ng-repeat=\"requirementType in $ctrl.requirements\"\n    ng-if=\"$ctrl.model.type == requirementType.type\"\n    class=\"tab-pane active\"\n    id=\"{{requirementType.type}}\">\n    <p>{{requirementType.description}}</p>\n    <tw-fieldset\n      fields=\"requirementType.fields\"\n      model=\"$ctrl.model\"\n      upload-options=\"$ctrl.uploadOptions\"\n      locale=\"{{$ctrl.locale}}\"\n      on-refresh-requirements=\"$ctrl.onRefreshRequirements()\"\n      validation-messages=\"$ctrl.validationMessages\"\n      error-messages=\"$ctrl.errorMessages\">\n    </tw-fieldset>\n  </div>\n</div>\n";
 
 /***/ }),
 /* 126 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <tw-select\n    name=\"phoneNumberPrefix\"\n    class=\"col-xs-5\"\n    ng-model=\"$ctrl.prefix\"\n    ng-change=\"$ctrl.updatePrefix($ctrl.prefix)\"\n    options=\"$ctrl.prefixes\"\n    filter=\"{{ $ctrl.searchPlaceholder }}\"\n    dropdown-width=\"md\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    hide-note=\"true\"\n  ></tw-select>\n  <div class=\"col-xs-7\">\n    <input type=\"tel\" tw-validation\n      name=\"phoneNumber\"\n      class=\"form-control\"\n      ng-model=\"$ctrl.localNumber\"\n      ng-change=\"$ctrl.updateLocalNumber($ctrl.localNumber)\"\n      ng-pattern=\"/^[0-9\\\\s.-]*$/\"\n      ng-minlength=\"4\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\" />\n      <div ng-transclude class=\"error-messages\"></div>\n  </div>\n</div>\n";
+module.exports = "<div class=\"btn-group btn-block tw-select\"\n  ng-class=\"{\n    dropdown: !$ctrl.dropdownUp,\n    dropup: $ctrl.dropdownUp\n  }\" aria-hidden=\"false\">\n\n  <button type=\"button\" class=\"btn btn-input dropdown-toggle\"\n    ng-class=\"{\n      'btn-input-inverse': $ctrl.inverse,\n      'btn-addon': $ctrl.inverse,\n      'btn-sm': $ctrl.size === 'sm',\n      'btn-lg': $ctrl.size === 'lg'\n    }\"\n    data-toggle=\"dropdown\" aria-expanded=\"false\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-focus=\"$ctrl.buttonFocus()\"\n    tw-focusable>\n\n    <span class=\"tw-select-selected\" ng-if=\"$ctrl.selected\">\n      <span class=\"circle circle-inverse pull-xs-left circle-sm\"\n        ng-if=\"$ctrl.selected && $ctrl.selected.icon && $ctrl.selected.secondary\">\n        <span class=\"icon {{$ctrl.selected.icon}}\"></span>\n      </span>\n\n      <span class=\"circle circle-inverse pull-xs-left\"\n        ng-class=\"$ctrl.circleClasses($ctrl.hideCircle)\"\n        ng-if=\"($ctrl.selected.circleText || $ctrl.selected.circleImage || $ctrl.selected.circleIcon)\">\n        <span ng-if=\"$ctrl.selected.circleText\">{{$ctrl.selected.circleText}}</span>\n        <img alt=\"{{$ctrl.selected.label}}\"\n          ng-if=\"$ctrl.selected.circleImage\"\n          src=\"data:image/png;base64,\n            iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=\"\n          ng-src=\"{{$ctrl.selected.circleImage}}\" />\n        <span ng-if=\"$ctrl.selected.circleIcon\" class=\"icon {{$ctrl.selected.circleIcon}}\"></span>\n      </span>\n\n      <span class=\"text-ellipsis\">\n        <span class=\"currency-flag currency-flag-{{$ctrl.selected.currency | lowercase}}\"\n          ng-if=\"$ctrl.selected && $ctrl.selected.currency\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideCurrency)\"\n        ></span>\n        <span class=\"icon {{$ctrl.selected.icon}}\"\n          ng-if=\"$ctrl.selected && $ctrl.selected.icon && !$ctrl.selected.secondary\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideIcon)\"\n        ></span>\n        <span class=\"tw-select-label\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideLabel)\">\n          {{$ctrl.selected.label}}\n        </span>\n        <span\n          ng-if=\"$ctrl.selected.note\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideNote)\"\n          class=\"tw-select-note small m-l-1\">\n          {{$ctrl.selected.note}}\n        </span>\n\n        <span\n          ng-if=\"$ctrl.selected.secondary\"\n          ng-class=\"$ctrl.responsiveClasses($ctrl.hideSecondary)\"\n          class=\"tw-select-secondary small secondary text-ellipsis\">\n          {{$ctrl.selected.secondary}}\n        </span>\n      </span>\n    </span>\n\n    <span class=\"form-control-placeholder\" ng-if=\"!$ctrl.selected\">{{$ctrl.placeholder}}</span>\n    <span class=\"caret\"></span>\n  </button>\n  <ul class=\"dropdown-menu\" role=\"menu\"\n    ng-class=\"{\n      'dropdown-menu-xs-right': $ctrl.dropdownRight === 'xs',\n      'dropdown-menu-sm-right': $ctrl.dropdownRight === 'sm',\n      'dropdown-menu-md-right': $ctrl.dropdownRight === 'md',\n      'dropdown-menu-lg-right': $ctrl.dropdownRight === 'lg',\n      'dropdown-menu-xl-right': $ctrl.dropdownRight === 'xl',\n      'dropdown-menu-sm': $ctrl.dropdownWidth === 'sm',\n      'dropdown-menu-md': $ctrl.dropdownWidth === 'md',\n      'dropdown-menu-lg': $ctrl.dropdownWidth === 'lg'\n    }\">\n\n    <li ng-if=\"$ctrl.filter\">\n      <a href=\"\" class=\"tw-select-filter-link p-a-0\" tabindex=\"-1\"\n        ng-focus=\"$ctrl.focusOnFilterInput()\">\n        <div class=\"input-group\">\n          <span class=\"input-group-addon\"><span class=\"icon icon-search\"></span> </span>\n          <input type=\"text\"\n            class=\"form-control tw-select-filter\"\n            placeholder=\"{{$ctrl.filter}}\"\n            ng-model=\"$ctrl.filterString\"\n            ng-change=\"$ctrl.filterChange()\"\n            ng-keydown=\"$ctrl.filterKeydown($event)\" />\n        </div>\n      </a>\n    </li>\n\n    <li ng-class=\"{active: !$ctrl.selected}\"\n      ng-if=\"$ctrl.placeholder && !$ctrl.ngRequired && !$ctrl.filter\">\n      <a href=\"\" tabindex=\"-1\"\n        ng-click=\"$ctrl.placeholderClick()\"\n        ng-focus=\"$ctrl.placeholderFocus()\"\n        class=\"tw-select-placeholder\" tw-focusable>\n        {{$ctrl.placeholder}}\n      </a>\n    </li>\n\n    <li ng-if=\"($ctrl.placeholder && !$ctrl.ngRequired) || $ctrl.filter\" class=\"divider\"></li>\n\n    <li\n      ng-repeat=\"option in $ctrl.filteredOptions\"\n      ng-class=\"{\n        'active': $ctrl.ngModel === option.value,\n        'disabled': option.disabled,\n        'dropdown-header': option.header,\n        'tw-select-option': !option.header && !option.disabled\n      }\">\n      <span ng-if=\"option.header\" class=\"text-ellipsis\">{{option.header}}</span>\n      <a href=\"\"\n        ng-if=\"!option.header\"\n        ng-click=\"$ctrl.optionClick(option, $event)\"\n        ng-focus=\"$ctrl.optionFocus(option)\"\n        ng-class=\"{'tw-select-option-link': !option.disabled}\"\n        index=\"{{$index}}\"\n        tabindex=\"-1\"\n        tw-focusable >\n        <div ng-if=\"option.icon && option.secondary\"\n          class=\"circle circle-inverse pull-xs-left circle-sm\">\n          <span class=\"icon {{option.icon}}\"></span>\n        </div>\n        <span ng-if=\"option.icon && !option.secondary\"\n          class=\"icon {{option.icon}} pull-xs-left\" >\n        </span> <span ng-if=\"option.currency\"\n          class=\"currency-flag currency-flag-{{option.currency | lowercase}} pull-xs-left\" >\n        </span> <span class=\"circle circle-inverse pull-xs-left\"\n          ng-class=\"{\n            'circle-sm': option.secondary,\n            'circle-xs': !option.secondary\n          }\"\n          ng-if=\"option.circleText || option.circleImage || option.circleIcon\">\n          <span class=\"tw-select-circle-text\"\n            ng-if=\"option.circleText\">{{option.circleText}}</span>\n          <img alt=\"{{option.label}}\"\n            ng-if=\"option.circleImage\"\n            src=\"data:image/png;base64,\n              iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=\"\n            ng-src=\"{{option.circleImage}}\" />\n          <span ng-if=\"option.circleIcon\" class=\"icon {{option.circleIcon}}\"></span>\n        </span>{{option.label}}<span\n          ng-if=\"option.note\" class=\"tw-select-note small m-l-1\">{{option.note}}</span><span\n          ng-if=\"option.secondary\"\n          class=\"tw-select-secondary small text-ellipsis\">{{option.secondary}}</span>\n      </a>\n    </li>\n\n    <li ng-if=\"$ctrl.hasTranscluded\" class=\"divider\"></li>\n\n    <li ng-transclude ng-if=\"$ctrl.hasTranscluded\" class=\"tw-select-transcluded\"></li>\n  </ul>\n</div>\n<input type=\"hidden\" class=\"tw-select-hidden\"\n  name=\"{{$ctrl.name}}\"\n  value=\"{{$ctrl.ngModel}}\"\n  ng-disabled=\"$ctrl.ngDisabled\" />\n";
 
 /***/ }),
 /* 127 */
@@ -8328,7 +8609,7 @@ module.exports = "<div class=\"text-center tw-upload-droppable-box\"\n  ng-class
 /* 128 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"droppable\" ng-class=\"{\n  'droppable-sm': $ctrl.size ==='sm',\n  'droppable-md': $ctrl.size ==='md' || !$ctrl.size,\n  'droppable-lg': $ctrl.size ==='lg',\n  'droppable-dropping': $ctrl.isDroppable,\n  'droppable-processing': !$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError),\n  'droppable-complete': $ctrl.isDone\n}\">\n  <div class=\"droppable-default-card\" aria-hidden=\"{{$ctrl.isDone}}\">\n    <div class=\"droppable-card-content\">\n      <div class=\"m-b-2\">\n        <img\n          ng-show=\"$ctrl.helpImage\"\n          ng-src=\"{{$ctrl.helpImage}}\"\n          alt=\"{{$ctrl.label}}\"\n          class=\"thumbnail text-xs-center\" />\n        <span ng-show=\"!$ctrl.helpImage\" class=\"icon icon-{{$ctrl.viewIcon}} icon-xxl\"></span>\n      </div>\n      <h4 class=\"m-b-1\" ng-if=\"$ctrl.label || $ctrl.description\">\n        {{$ctrl.label || $ctrl.description}}\n      </h4>\n      <p class=\"m-b-2\">{{$ctrl.placeholder || $ctrl.instructions}}</p>\n      <label class=\"btn btn-primary\"  ng-class=\"{'disabled': $ctrl.ngDisabled}\"> {{$ctrl.buttonText}}\n        <input tw-file-input\n          type=\"file\"\n          accept=\"{{$ctrl.accept}}\"\n          class=\"tw-droppable-input hidden\"\n          ng-disabled=\"$ctrl.ngDisabled\"\n          name=\"file-upload\"\n          on-user-input=\"$ctrl.onManualUpload()\"\n          ng-model=\"$ctrl.inputFile\" />\n        <!-- ng-change=\"$ctrl.onManualUpload()\" -->\n      </label>\n    </div>\n  </div>\n  <div class=\"droppable-processing-card droppable-card\"\n    aria-hidden=\"{{$ctrl.isDone}}\">\n    <div class=\"droppable-card-content\">\n      <h4 class=\"m-b-2\">\n        <span ng-if=\"$ctrl.isProcessing && $ctrl.processingText\">{{$ctrl.processingText}}</span>\n        <span ng-if=\"$ctrl.isSuccess && $ctrl.successText\">{{$ctrl.successText}}</span>\n        <span ng-if=\"$ctrl.isError && $ctrl.failureText\">{{$ctrl.failureText}}</span>\n      </h4>\n      <tw-process size=\"sm\" state=\"$ctrl.processingState\"\n        ng-if=\"($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)\"></tw-process>\n    </div>\n  </div>\n  <div class=\"droppable-complete-card droppable-card\"\n    aria-hidden=\"{{!$ctrl.isDone}}\">\n    <div class=\"droppable-card-content\">\n      <div ng-if=\"!$ctrl.hasTranscluded && !$ctrl.isError\">\n        <h4 class=\"m-b-2\" ng-if=\"$ctrl.label\">\n          {{$ctrl.label}}\n        </h4>\n        <img\n          ng-if=\"$ctrl.isImage\"\n          src=\"data:image/png;base64,\n            iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=\"\n          ng-src=\"{{$ctrl.image}}\"\n          alt=\"OK\"\n          class=\"thumbnail m-b-3\" />\n        <span class=\"icon icon-pdf icon-xxl\" ng-if=\"!$ctrl.isImage\"></span>\n        <p class=\"text-ellipsis m-b-2\">{{$ctrl.fileName}}</p>\n      </div>\n      <div ng-if=\"!$ctrl.hasTranscluded && $ctrl.isError\">\n        <h4 class=\"m-b-2\" ng-if=\"$ctrl.isTooLarge\">{{$ctrl.tooLargeMessage}}</h4>\n        <h4 class=\"m-b-2\" ng-if=\"$ctrl.isWrongType\">{{$ctrl.wrongTypeText}}</h4>\n        <h4 class=\"m-b-2\" ng-if=\"!$ctrl.isTooLarge && $ctrl.errorMessage\">{{$ctrl.errorMessage}}</h4>\n        <span class=\"icon icon-alert icon-xxl text-danger m-b-1\"></span>\n      </div>\n      <div ng-if=\"$ctrl.hasTranscluded\" ng-transclude></div>\n      <p ng-if=\"$ctrl.cancelText\" class=\"m-t-2 m-b-0\">\n        <a href=\"\" ng-click=\"$ctrl.clear()\">{{$ctrl.cancelText}}</a>\n      </p>\n    </div>\n  </div>\n  <div class=\"droppable-dropping-card droppable-card\">\n    <div class=\"droppable-card-content\">\n      <h4 class=\"m-b-2\">Drop file to start upload</h4>\n      <div class=\"circle circle-sm\">\n        <span class=\"icon icon-add\"></span>\n      </div>\n      <p class=\"m-t-2 m-b-0\"></p>\n    </div>\n  </div>\n</div>\n";
+module.exports = "<div class=\"droppable\" ng-class=\"{\n  'droppable-sm': $ctrl.size ==='sm',\n  'droppable-md': $ctrl.size ==='md' || !$ctrl.size,\n  'droppable-lg': $ctrl.size ==='lg',\n  'droppable-dropping': $ctrl.isDroppable,\n  'droppable-processing': !$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError),\n  'droppable-complete': $ctrl.isDone\n}\">\n  <div class=\"droppable-default-card\" aria-hidden=\"{{$ctrl.isDone}}\">\n    <div class=\"droppable-card-content\">\n      <div class=\"m-b-2\">\n        <img\n          ng-show=\"$ctrl.helpImage\"\n          ng-src=\"{{$ctrl.helpImage}}\"\n          alt=\"{{$ctrl.label}}\"\n          class=\"thumbnail text-xs-center\" />\n        <span ng-show=\"!$ctrl.helpImage\" class=\"icon icon-{{$ctrl.viewIcon}} icon-xxl\"></span>\n      </div>\n      <h4 class=\"m-b-1\" ng-if=\"$ctrl.label || $ctrl.description\">\n        {{$ctrl.label || $ctrl.description}}\n      </h4>\n      <p class=\"m-b-2\">{{$ctrl.placeholder || $ctrl.instructions}}</p>\n      <label class=\"btn btn-primary\" ng-class=\"{'disabled': $ctrl.ngDisabled}\">\n        <span ng-if=\"$ctrl.buttonText\" ng-bind=\"$ctrl.buttonText\"></span>\n        <span ng-if=\"!$ctrl.buttonText\" class=\"icon icon-upload m-r-0\"></span>\n        <input tw-file-input\n          type=\"file\"\n          accept=\"{{$ctrl.accept}}\"\n          class=\"tw-droppable-input hidden\"\n          ng-disabled=\"$ctrl.ngDisabled\"\n          name=\"file-upload\"\n          on-user-input=\"$ctrl.onManualUpload()\"\n          ng-model=\"$ctrl.inputFile\" />\n        <!-- ng-change=\"$ctrl.onManualUpload()\" -->\n      </label>\n    </div>\n  </div>\n  <div class=\"droppable-processing-card droppable-card\"\n    aria-hidden=\"{{$ctrl.isDone}}\">\n    <div class=\"droppable-card-content\">\n      <h4 class=\"m-b-2\">\n        <span ng-if=\"$ctrl.isProcessing && $ctrl.processingText\">{{$ctrl.processingText}}</span>\n        <span ng-if=\"$ctrl.isSuccess && $ctrl.successText\">{{$ctrl.successText}}</span>\n        <span ng-if=\"$ctrl.isError && $ctrl.failureText\">{{$ctrl.failureText}}</span>\n      </h4>\n      <tw-process size=\"sm\" state=\"$ctrl.processingState\"\n        ng-if=\"($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)\"></tw-process>\n    </div>\n  </div>\n  <div class=\"droppable-complete-card droppable-card\"\n    aria-hidden=\"{{!$ctrl.isDone}}\">\n    <div class=\"droppable-card-content\">\n      <div ng-if=\"!$ctrl.hasTranscluded && !$ctrl.isError\">\n        <h4 class=\"m-b-2\" ng-if=\"$ctrl.label\">\n          {{$ctrl.label}}\n        </h4>\n        <img\n          ng-if=\"$ctrl.isImage\"\n          src=\"data:image/png;base64,\n            iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=\"\n          ng-src=\"{{$ctrl.image}}\"\n          alt=\"OK\"\n          class=\"thumbnail m-b-3\" />\n        <span class=\"icon icon-pdf icon-xxl\" ng-if=\"!$ctrl.isImage\"></span>\n        <p class=\"text-ellipsis m-b-2\">{{$ctrl.fileName}}</p>\n      </div>\n      <div ng-if=\"!$ctrl.hasTranscluded && $ctrl.isError\">\n        <h4 class=\"m-b-2\" ng-if=\"$ctrl.isTooLarge\">{{$ctrl.tooLargeMessage}}</h4>\n        <h4 class=\"m-b-2\" ng-if=\"$ctrl.isWrongType\">{{$ctrl.wrongTypeText}}</h4>\n        <h4 class=\"m-b-2\" ng-if=\"!$ctrl.isTooLarge && $ctrl.errorMessage\">{{$ctrl.errorMessage}}</h4>\n        <span class=\"icon icon-alert icon-xxl text-danger m-b-1\"></span>\n      </div>\n      <div ng-if=\"$ctrl.hasTranscluded\" ng-transclude></div>\n      <p ng-if=\"$ctrl.cancelText\" class=\"m-t-2 m-b-0\">\n        <a href=\"\" ng-click=\"$ctrl.clear()\">{{$ctrl.cancelText}}</a>\n      </p>\n    </div>\n  </div>\n  <div class=\"droppable-dropping-card droppable-card\">\n    <div class=\"droppable-card-content\">\n      <h4 class=\"m-b-2\">Drop file to start upload</h4>\n      <div class=\"circle circle-sm\">\n        <span class=\"icon icon-add\"></span>\n      </div>\n      <p class=\"m-t-2 m-b-0\"></p>\n    </div>\n  </div>\n</div>\n";
 
 /***/ }),
 /* 129 */
@@ -8359,6 +8640,184 @@ module.exports = "<span class=\"process\"\n  ng-class=\"{\n    'process-success'
 /***/ (function(module, exports) {
 
 module.exports = "<ul ng-if=\"$ctrl.tabs.length > 0\"\n  class=\"nav nav-tabs m-b-3\">\n  <li\n    ng-repeat=\"tab in $ctrl.tabs track by $index\"\n    ng-class=\"{\n      'active': $ctrl.active === tab.type\n    }\">\n    <a href=\"\" ng-click=\"$ctrl.switchTab(tab.type)\">\n      {{tab.label}}\n    </a>\n  </li>\n</ul>\n";
+
+/***/ }),
+/* 134 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _telephoneComponent = __webpack_require__(135);
+
+var _telephoneComponent2 = _interopRequireDefault(_telephoneComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.styleguide.forms.telephone', []).component('twTelephone', _telephoneComponent2.default).name;
+
+/***/ }),
+/* 135 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _telephoneController = __webpack_require__(136);
+
+var _telephoneController2 = _interopRequireDefault(_telephoneController);
+
+var _telephone = __webpack_require__(137);
+
+var _telephone2 = _interopRequireDefault(_telephone);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var TelephoneControl = {
+  controller: _telephoneController2.default,
+  template: _telephone2.default,
+  bindings: {
+    ngModel: '<',
+    ngRequired: '<',
+    ngDisabled: '<',
+    ngChange: '&',
+    countries: '<',
+    searchPlaceholder: '@'
+  },
+  transclude: true
+};
+
+exports.default = TelephoneControl;
+
+/***/ }),
+/* 136 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var TelephoneController = function () {
+  function TelephoneController() {
+    _classCallCheck(this, TelephoneController);
+
+    this.prefixes = [];
+  }
+
+  _createClass(TelephoneController, [{
+    key: '$onChanges',
+    value: function $onChanges(changes) {
+      if (changes.countries && changes.countries.currentValue) {
+        this.formatCountriesToPrefixes();
+        this.explodeNumberModel(this.ngModel);
+      }
+
+      if (changes.ngModel && changes.ngModel.currentValue) {
+        if (validNumber(this.ngModel)) {
+          this.explodeNumberModel(this.ngModel);
+        }
+      }
+    }
+  }, {
+    key: 'sendNewNumberToCallback',
+    value: function sendNewNumberToCallback(newNumber) {
+      this.ngChange({ newNumber: newNumber });
+    }
+  }, {
+    key: 'explodeNumberModel',
+    value: function explodeNumberModel(number) {
+      this.prefix = findPrefixByNumber(number, this.countries);
+      if (this.prefix) {
+        this.localNumber = number.substring(this.prefix.callingCode.length + 1);
+      } else {
+        this.setDefaultPrefix();
+      }
+    }
+  }, {
+    key: 'updatePrefix',
+    value: function updatePrefix(prefix) {
+      this.ngModel = buildCompleteNumber(prefix.callingCode, this.localNumber);
+      this.sendNewNumberToCallback(this.ngModel);
+    }
+  }, {
+    key: 'updateLocalNumber',
+    value: function updateLocalNumber(localNumber) {
+      this.ngModel = buildCompleteNumber(this.prefix.callingCode, localNumber);
+      this.sendNewNumberToCallback(this.ngModel);
+    }
+  }, {
+    key: 'setDefaultPrefix',
+    value: function setDefaultPrefix() {
+      this.prefix = findPrefixByNumber('+44', this.countries);
+      this.sendNewNumberToCallback(this.ngModel);
+    }
+  }, {
+    key: 'formatCountriesToPrefixes',
+    value: function formatCountriesToPrefixes() {
+      var _this = this;
+
+      this.prefixes = [];
+      this.countries.forEach(function (country) {
+        _this.prefixes.push({
+          value: country,
+          label: '+' + country.callingCode,
+          note: country.name
+        });
+      });
+    }
+  }]);
+
+  return TelephoneController;
+}();
+
+function validNumber(number) {
+  return typeof number === 'string' && number.length > 4 && number.substring(0, 1) === '+';
+}
+
+function buildCompleteNumber(prefix, localNumber) {
+  if (localNumber) {
+    return '+' + prefix + localNumber;
+  }
+  return '+' + prefix;
+}
+
+function findPrefixByNumber(number, countries) {
+  if (countries && countries.length && number && number.length > 2) {
+    return countries.filter(function (country) {
+      return number.substring(1).indexOf(country.callingCode) === 0;
+    })[0];
+  }
+  return undefined;
+}
+
+TelephoneController.$inject = [];
+
+exports.default = TelephoneController;
+
+/***/ }),
+/* 137 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"row\">\n  <tw-select\n    name=\"phoneNumberPrefix\"\n    class=\"col-xs-5\"\n    ng-model=\"$ctrl.prefix\"\n    ng-change=\"$ctrl.updatePrefix($ctrl.prefix)\"\n    options=\"$ctrl.prefixes\"\n    filter=\"{{ $ctrl.searchPlaceholder }}\"\n    dropdown-width=\"md\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    hide-note=\"true\"\n  ></tw-select>\n  <div class=\"col-xs-7\">\n    <input type=\"tel\" tw-validation\n      name=\"phoneNumber\"\n      class=\"form-control\"\n      ng-model=\"$ctrl.localNumber\"\n      ng-change=\"$ctrl.updateLocalNumber($ctrl.localNumber)\"\n      ng-pattern=\"/^[0-9\\\\s.-]*$/\"\n      ng-minlength=\"4\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\" />\n      <div ng-transclude class=\"error-messages\"></div>\n  </div>\n</div>\n";
 
 /***/ })
 /******/ ]);

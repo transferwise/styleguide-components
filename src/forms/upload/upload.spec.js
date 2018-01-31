@@ -4,6 +4,7 @@ describe('Upload', function() {
   var $compile,
     $rootScope,
     $scope,
+    $timeout,
     isolateScope,
     directiveElement;
 
@@ -17,6 +18,7 @@ describe('Upload', function() {
     $rootScope = $injector.get('$rootScope');
     $compile = $injector.get('$compile');
     $scope = $rootScope.$new();
+    $timeout = $injector.get('$timeout');
   }));
 
   describe('transclusion', function() {
@@ -36,6 +38,28 @@ describe('Upload', function() {
     it('should render transcluded content', function() {
       var transcluded = directiveElement.find('.transcluded-content');
       expect(transcluded.length).toBe(1);
+    });
+  });
+
+  describe('Failure state', function() {
+    beforeEach(function() {
+      var template = " \
+        <tw-upload \
+          too-large-message='File is too large' \
+          max-size='1'> \
+        </tw-upload>";
+      directiveElement = getCompiledDirectiveElement($scope, template);
+    });
+    it('when a big file is sent', function() {
+      var fakeDropEvent = new CustomEvent('drop'); // file drop can be mocked
+      fakeDropEvent.dataTransfer = { files : [{ size: 2 }] };
+      directiveElement[0].dispatchEvent(fakeDropEvent);
+
+      // after 4.1s the failure flow shall be done
+      $timeout.flush(4100);
+      // and complete-card is visible
+      var completeCard = directiveElement.find('.droppable-complete-card[aria-hidden="false"]');
+      expect(completeCard.text().trim()).toBe('File is too large');
     });
   });
 

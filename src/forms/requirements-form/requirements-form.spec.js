@@ -102,7 +102,7 @@ describe('RequirementsForm', function() {
             expect(fieldElement.length).toBe(1);
 
             var tooltipElement = fieldElement.find('.alert-focus');
-            if (ibanField.group[0].tooltip) {
+            if (ibanField.tooltip) {
               expect(tooltipElement.length).toBe(1);
             } else {
               expect(tooltipElement.length).toBe(0);
@@ -117,6 +117,7 @@ describe('RequirementsForm', function() {
     beforeEach(function() {
       $scope.model = {
         type: 'sort_code',
+        legalType: 'PRIVATE',
         sortCode: '101010'
       }
       $scope.requirements = getMultipleRequirements();
@@ -126,27 +127,15 @@ describe('RequirementsForm', function() {
       }
       directiveElement = getCompiledDirectiveElement();
     });
-    it('should show error state on the field associated with supplied error key', function() {
-      var sortFormGroup = directiveElement.find('.tw-form-group-sortCode');
-      expect(sortFormGroup.hasClass('has-error')).toBe(true);
-    });
-    it('should not show error state on other fields', function() {
-      expect(directiveElement.find('.has-error').length).toBe(1);
-    });
-    it('should show supplied error message on the correct field', function() {
-      var errorBlock =
-        directiveElement.find('.tw-form-group-sortCode .error-provided');
-      expect(errorBlock.text().trim()).toBe($scope.errorMessages.sortCode);
-    });
-    it('should not show provided errors on other fields', function() {
-      expect(directiveElement.find('.error-provided').length).toBe(1);
-    });
+
     it('should set isValid false if not all fields are valid', function() {
       expect($scope.isValid).toBe(false);
     });
     it('should set isValid true when all fields are valid', function() {
-      var accountNumberInput = directiveElement.find('.tw-form-group-accountNumber input');
-      accountNumberInput.val('12345677').trigger('input');
+      var accountNumberInput = directiveElement.find('.tw-field-accountNumber input')[0];
+      accountNumberInput.value = '12345678';
+      accountNumberInput.dispatchEvent(new Event('input'));
+
       expect($scope.isValid).toBe(true);
     });
   });
@@ -183,84 +172,59 @@ describe('RequirementsForm', function() {
         "fields": [
           {
             "name": "Legal type",
-            "group": [
+            "key": "legalType",
+            "type": "select",
+            "required": true,
+            "values": [
               {
-                "key": "legalType",
-                "type": "select",
-                "refreshRequirementsOnChange": false,
-                "required": true,
-                "displayFormat": null,
-                "example": "",
-                "minLength": null,
-                "maxLength": null,
-                "validationRegexp": null,
-                "validationAsync": null,
-                "valuesAllowed": [
-                  {
-                    "key": "PRIVATE",
-                    "name": "Private"
-                  },
-                  {
-                    "key": "BUSINESS",
-                    "name": "Business"
-                  }
-                ]
+                "value": "PRIVATE",
+                "label": "Private"
+              },
+              {
+                "value": "BUSINESS",
+                "label": "Business"
               }
             ]
           },
           {
             "name": "UK Sort code",
-            "group": [
-              {
-                "key": "sortCode",
-                "type": "text",
-                "refreshRequirementsOnChange": false,
-                "required": true,
-                "displayFormat": "**-**-**",
-                "example": "40-30-20",
-                "minLength": 6,
-                "maxLength": 8,
-                "validationRegexp": null,
-                "validationAsync": {
-                  "url": "https://api.transferwise.com/v1/validators/sort-code",
-                  "params": [
-                    {
-                      "key": "sortCode",
-                      "parameterName": "sortCode",
-                      "required": true
-                    }
-                  ]
-                },
-                "valuesAllowed": null
-              }
-            ]
+            "key": "sortCode",
+            "type": "text",
+            "required": true,
+            "displayFormat": "**-**-**",
+            "example": "40-30-20",
+            "minLength": 6,
+            "maxLength": 8,
+            "validationAsync": {
+              "url": "https://api.transferwise.com/v1/validators/sort-code",
+              "params": [
+                {
+                  "key": "sortCode",
+                  "parameterName": "sortCode",
+                  "required": true
+                }
+              ]
+            }
           },
           {
             "name": "Account number",
-            "group": [
-              {
-                "key": "accountNumber",
-                "type": "text",
-                "refreshRequirementsOnChange": false,
-                "required": true,
-                "displayFormat": null,
-                "example": "12345678",
-                "minLength": 8,
-                "maxLength": 8,
-                "validationRegexp": "[0-9]{8}",
-                "validationAsync": {
-                  "url": "https://api.transferwise.com/v1/validators/sort-code-account-number",
-                  "params": [
-                    {
-                      "key": "accountNumber",
-                      "parameterName": "accountNumber",
-                      "required": true
-                    }
-                  ]
-                },
-                "valuesAllowed": null
-              }
-            ]
+            "key": "accountNumber",
+            "type": "text",
+            "required": true,
+            "example": "12345678",
+            "minLength": 8,
+            "maxLength": 8,
+            "validationRegexp": "^[0-9]{8}$",
+            "validationAsync": {
+              "url": "https://api.transferwise.com/v1/validators/sort-code-account-number",
+              "params": [
+                {
+                  "key": "accountNumber",
+                  "parameterName": "accountNumber",
+                  "required": true
+                }
+              ]
+            }
           }
         ]
       },
@@ -270,93 +234,64 @@ describe('RequirementsForm', function() {
         "fields": [
           {
             "name": "Legal type",
-            "group": [
+            "key": "legalType",
+            "type": "select",
+            "required": true,
+            "values": [
               {
-                "key": "legalType",
-                "type": "select",
-                "refreshRequirementsOnChange": false,
-                "required": true,
-                "displayFormat": null,
-                "example": "",
-                "minLength": null,
-                "maxLength": null,
-                "validationRegexp": null,
-                "validationAsync": null,
-                "valuesAllowed": [
-                  {
-                    "key": "PRIVATE",
-                    "name": "Private"
-                  },
-                  {
-                    "key": "BUSINESS",
-                    "name": "Business"
-                  }
-                ],
-                "tooltip": "I am a nice tooltip that was created by fingers pressing buttons"
+                "value": "PRIVATE",
+                "label": "Private"
+              },
+              {
+                "value": "BUSINESS",
+                "label": "Business"
               }
-            ]
+            ],
+            "tooltip": "I am a nice tooltip that was created by fingers pressing buttons"
           },
           {
             "name": "IBAN",
-            "group": [
-              {
-                "key": "IBAN",
-                "type": "text",
-                "refreshRequirementsOnChange": false,
-                "required": true,
-                "displayFormat": "**** **** **** **** **** **** **** ****",
-                "example": "GB89370400440532013000",
-                "minLength": 2,
-                "maxLength": null,
-                "validationRegexp": null,
-                "validationAsync": {
-                  "url": "https://api.transferwise.com/v1/validators/iban",
-                  "params": [
-                    {
-                      "key": "iban",
-                      "parameterName": "iban",
-                      "required": true
-                    }
-                  ]
-                },
-                "valuesAllowed": null
-              }
-            ]
+            "key": "IBAN",
+            "type": "text",
+            "required": true,
+            "displayFormat": "**** **** **** **** **** **** **** ****",
+            "example": "GB89370400440532013000",
+            "minLength": 2,
+            "validationAsync": {
+              "url": "https://api.transferwise.com/v1/validators/iban",
+              "params": [
+                {
+                  "key": "iban",
+                  "parameterName": "iban",
+                  "required": true
+                }
+              ]
+            }
           },
           {
             "name": "Bank code (BIC/SWIFT)",
-            "group": [
-              {
-                "key": "BIC",
-                "type": "text",
-                "refreshRequirementsOnChange": false,
-                "required": false,
-                "displayFormat": null,
-                "example": "ABCDDE22 (Optional)",
-                "minLength": null,
-                "maxLength": null,
-                "validationRegexp": "[A-Z]",
-                "validationAsync": {
-                  "url": "https://api.transferwise.com/v1/validators/bic",
-                  "params": [
-                    {
-                      "key": "iban",
-                      "parameterName": "iban",
-                      "required": true
-                    },
-                    {
-                      "key": "bic",
-                      "parameterName": "bic",
-                      "required": true
-                    }
-                  ]
+            "key": "BIC",
+            "type": "text",
+            "example": "ABCDDE22 (Optional)",
+            "validationRegexp": "^[A-Z]{6}[A-Z,0-9]{2}([A-Z,0-9]{3})?$",
+            "validationAsync": {
+              "url": "https://api.transferwise.com/v1/validators/bic",
+              "params": [
+                {
+                  "key": "iban",
+                  "parameterName": "iban",
+                  "required": true
                 },
-                "valuesAllowed": null
-              }
-            ]
+                {
+                  "key": "bic",
+                  "parameterName": "bic",
+                  "required": true
+                }
+              ]
+            }
           }
         ]
       }
-   ];
+    ];
   }
 });

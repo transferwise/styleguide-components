@@ -60,10 +60,6 @@ describe('Date', function() {
       it('should set year control to empty', function () {
         expect(element.find(YEAR_SELECTOR).val()).toBe('');
       });
-      it('should return an updated date as an object', function() {
-        setDateUsingControls(element, '2000', '0', '1');
-        expect($scope.ngModel).toEqual(getUTCDate(2000, 0, 1));
-      });
       it('should populate $ctrl.months based on $ctrl.locale if supported', function () {
         if (isIntlSupportedForLocale('en')) {
           expectDateMonthsToBeLocalized(element, 'en');
@@ -74,9 +70,16 @@ describe('Date', function() {
           expectDateMonthsToBeDefault(element);
         }
       });
+      describe('and date is entered', function () {
+        it('should bind the date as an object', function() {
+          setDateUsingControls(element, '2000', '0', '1');
+          expect($scope.ngModel).toEqual(getUTCDate(2000, 0, 1));
+        });
+      });
     });
-    describe('when date model input $scope is passed', function () {
-      describe('as valid short ISO8601 string', function () {
+
+    describe('when a date is supplied via $scope', function () {
+      describe('as a valid short ISO8601 string', function () {
         beforeEach(function () {
           $scope.ngModel = '1990-08-21';
           element = getCompiledDirectiveElement($scope);
@@ -95,7 +98,7 @@ describe('Date', function() {
           //expect($scope.ngModel).toBe('2000-01-01');
         });
       });
-      describe('as valid Date instance', function () {
+      describe('as a valid Date instance', function () {
         var dateModel;
         beforeEach(function () {
           dateModel = getUTCDate(1990, 7, 21);
@@ -113,10 +116,10 @@ describe('Date', function() {
         it('should return an updated date as an object', function() {
           setDateUsingControls(element, '2000', '0', '1');
           expect(typeof $scope.ngModel).toBe('object');
-          //expect($scope.ngModel).toEqual(new Date(2000, 0, 1));
+          expect($scope.ngModel).toEqual(getUTCDate(2000, 0, 1));
         })
       });
-      describe('as valid long ISO8601 string', function () {
+      describe('as a valid long ISO8601 string', function () {
         var dateString;
         beforeEach(function () {
           dateString = '1990-02-28T00:00:00.000Z';
@@ -134,10 +137,10 @@ describe('Date', function() {
         it('should return an updated date as a string', function() {
           setDateUsingControls(element, '2000', '0', '1');
           expect(typeof $scope.ngModel).toBe('string');
-          //expect($scope.ngModel).toEqual('2000-01-01');
+          expect($scope.ngModel).toEqual('2000-01-01');
         })
       });
-      describe('as invalid ISO8601 string', function () {
+      describe('as an invalid ISO8601 string', function () {
         it('should throw error', function () {
           expect(function () {
             $scope.ngModel = 'invalid'
@@ -147,7 +150,7 @@ describe('Date', function() {
           // TODO Is this test desired behaviour?
         });
       });
-      describe('as invalid Date instance', function () {
+      describe('as an invalid Date instance', function () {
         it('should throw error', function () {
           expect(function () {
             $scope.ngModel = new Date('invalid');

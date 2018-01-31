@@ -68,20 +68,20 @@ class UploadController {
 
     if (!isSizeValid(file, this.maxSize)) {
       this.isTooLarge = true;
-      this.asyncFailure({
+      asyncFailure({
         status: 413,
         statusText: 'Request Entity Too Large'
-      });
+      }, this);
       return;
     }
 
     /*
     if (!isTypeValid(file, this.accept)) {
       this.isWrongType = true;
-      this.asyncFailure({
+      asyncFailure({
         status: 415,
         statusText: 'Unsupported Media Type'
-      });
+      }, this);
       return;
     }
     */
@@ -113,8 +113,8 @@ class UploadController {
 
   onDragEnter() {
     this.dragCounter++;
-    if (this.dragCounter >= 1) {
-      this.isDroppable = true && !this.ngDisabled;
+    if (this.dragCounter >= 1 && !this.ngDisabled) {
+      this.isDroppable = true;
     }
   }
   onDragLeave() {

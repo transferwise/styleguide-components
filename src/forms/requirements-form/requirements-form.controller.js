@@ -12,6 +12,7 @@ class RequirementsFormController {
       this.RequirementsFormService.prepRequirements(this.requirements);
     }
 
+    // TODO move watches to $onChanges
     $scope.$watch('$ctrl.requirements', (newRequirements, oldRequirements) => {
       if (!angular.equals(newRequirements, oldRequirements)) {
         this.RequirementsFormService.prepRequirements(this.requirements);

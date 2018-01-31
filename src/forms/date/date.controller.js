@@ -32,6 +32,7 @@ class DateController {
 
     this.addValidators($ngModel);
     this.addWatchers($scope, $ngModel);
+    addFocusHandlers($element);
     addBlurHandlers($element, $ngModel);
   }
 
@@ -251,6 +252,21 @@ function extendMonthsWithIds(monthNames) {
       value: index,
       label: monthName
     };
+  });
+}
+
+// TODO behaviour of focus/blur could be improved to prevent multiple fires
+function addFocusHandlers($element) {
+  const element = $element[0];
+  const dayInput = element.querySelector('input[name=day]');
+  const yearInput = element.querySelector('input[name=year]');
+
+  dayInput.addEventListener('focus', () => {
+    element.dispatchEvent(new CustomEvent('focus'));
+  });
+
+  yearInput.addEventListener('focus', () => {
+    element.dispatchEvent(new CustomEvent('focus'));
   });
 }
 

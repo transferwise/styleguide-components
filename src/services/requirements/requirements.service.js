@@ -1,52 +1,141 @@
 import angular from 'angular';
 
-function RequirementsService() {
-  this.prepRequirements = (types) => {
-    types.forEach((type) => {
-      this.prepFields(type.fields);
+function RequirementsService($http) {
+  this.prepRequirements = (alternatives) => {
+    alternatives.forEach((alternative) => {
+      this.prepFields(alternative.fields);
     });
   };
 
   this.prepFields = (fields, model, validationMessages) => {
     if (!fields) {
-      return;
+      return {};
     }
-    fields.forEach((field) => {
-      if (field.group) {
-        field.group.forEach((fieldSection) => {
-          if (fieldSection.refreshRequirementsOnChange) {
-            field.refreshRequirementsOnChange = true;
-          }
-          this.prepRegExp(fieldSection);
-          this.prepValuesAsync(fieldSection, model);
-          this.prepValuesAllowed(fieldSection);
-          this.prepValidationMessages(fieldSection, validationMessages);
-        });
 
-        if (field.group.length) {
-          field.key = field.key || field.group[0].key;
-          field.type = field.type || field.group[0].type;
+    let preparedFields;
+    if (fields instanceof Array) {
+      preparedFields = {};
+      fields.forEach((field) => {
+        // If the field still has groups, we need to flatten to get the key
+        if (field.group) {
+          flattenGroup(field);
         }
-      } else {
-        this.prepRegExp(field);
-        this.prepValuesAsync(field, model);
-        this.prepValuesAllowed(field);
-        this.prepValidationMessages(field, validationMessages);
-      }
+        preparedFields[field.key] = copyOf(field);
+      });
+    } else {
+      preparedFields = copyOf(fields);
+    }
+
+    Object.keys(preparedFields).forEach((key) => {
+      preparedFields[key] = this.prepField(preparedFields[key], model, validationMessages);
     });
+
+    return preparedFields;
   };
 
-  this.prepRegExp = (field) => {
+  this.prepField = (field, model, validationMessages) => {
+    const preparedField = copyOf(field);
+
+    flattenGroup(preparedField);
+
+    this.prepLegacyProps(preparedField);
+
+    this.prepType(preparedField);
+    this.prepPattern(preparedField);
+    this.prepValuesAsync(preparedField, model);
+    this.prepValues(preparedField);
+    this.prepValidationMessages(preparedField, validationMessages);
+
+    return preparedField;
+  };
+
+
+  this.prepType = (field) => {
+    switch (field.type) {
+      case 'text':
+        field.type = 'string';
+        break;
+      case 'date':
+        field.type = 'string';
+        field.format = 'date';
+        break;
+      case 'password':
+        field.type = 'string';
+        field.control = 'password';
+        break;
+      case 'checkbox':
+        field.type = 'boolean';
+        break;
+      case 'select':
+        field.control = 'select';
+        delete field.type;
+        break;
+      case 'radio':
+        field.control = 'radio';
+        delete field.type;
+        break;
+      case 'upload':
+        field.type = 'string';
+        field.format = 'base64url';
+        break;
+      default:
+    }
+
+    if (!field.control) {
+      field.control = this.getControlType(field);
+    }
+  };
+
+  this.prepLegacyProps = (field) => {
+    delete field.key;
+
+    if (field.name) {
+      field.title = field.name;
+      delete field.name;
+    }
+
     if (field.validationRegexp) {
+      field.pattern = field.validationRegexp;
+      delete field.validationRegexp;
+    }
+
+    if (field.min) {
+      field.minimum = field.min;
+      delete field.min;
+    }
+
+    if (field.max) {
+      field.maximum = field.max;
+      delete field.max;
+    }
+
+    if (field.example && !field.placeholder) {
+      field.placeholder = field.example;
+      delete field.example;
+    }
+
+    if (field.tooltip && !field.helpText) {
+      field.helpText = field.tooltip;
+      delete field.tooltip;
+    }
+
+    if (field.valuesAllowed && !field.values) {
+      field.values = field.valuesAllowed;
+      delete field.valuesAllowed;
+    }
+  };
+
+  this.prepPattern = (field) => {
+    if (field.pattern) {
       try {
-        field.validationRegexp = new RegExp(field.validationRegexp);
+        RegExp(field.pattern);
       } catch (ex) {
         // eslint-disable-next-line no-console
         console.warn('API regexp is invalid');
-        field.validationRegexp = false;
+        delete field.pattern;
       }
     } else {
-      field.validationRegexp = false;
+      delete field.pattern;
     }
   };
 
@@ -54,6 +143,7 @@ function RequirementsService() {
     if (!field.valuesAsync) {
       return;
     }
+
     let postData = {};
     if (field.valuesAsync.params &&
       field.valuesAsync.params.length) {
@@ -66,19 +156,24 @@ function RequirementsService() {
   };
 
   this.fetchValuesAsync = (field, postData) =>
-    this.$http.post(field.valuesAsync.url, postData)
-      .then((response) => {
-        field.valuesAllowed = response.data;
-        this.prepValuesAllowed(field);
-      });
+    $http({
+      method: field.valuesAsync.method || 'GET',
+      url: field.valuesAsync.url,
+      data: postData || {}
+    }).then((response) => {
+      field.values = response.data;
+      this.prepValues(field);
+    });
 
-  this.prepValuesAllowed = (field) => {
-    if (!angular.isArray(field.valuesAllowed)) {
+  this.prepValues = (field) => {
+    if (!angular.isArray(field.values)) {
       return;
     }
-    field.valuesAllowed.forEach((valueAllowed) => {
-      valueAllowed.value = valueAllowed.value || valueAllowed.key;
-      valueAllowed.label = valueAllowed.label || valueAllowed.name;
+    field.values.forEach((option) => {
+      option.value = option.value || option.key;
+      option.label = option.label || option.name;
+      delete option.key;
+      delete option.name;
     });
   };
 
@@ -98,7 +193,101 @@ function RequirementsService() {
     field.validationMessages = field.validationMessages ?
       field.validationMessages :
       validationMessages;
+
+    if (!field.validationMessages) {
+      delete field.validationMessages;
+      return;
+    }
+
+    if (field.validationMessages.minimum) {
+      field.validationMessages.min = field.validationMessages.minimum;
+      delete field.validationMessages.minimum;
+    }
+    if (field.validationMessages.maximum) {
+      field.validationMessages.max = field.validationMessages.maximum;
+      delete field.validationMessages.maximum;
+    }
   };
+
+  this.getControlType = getControlType;
 }
+
+
+function getControlType(field) {
+  if (field.control) {
+    return field.control.toLowerCase();
+  }
+  if (field.hidden) {
+    return 'hidden';
+  }
+  if (field.valuesAsync) {
+    return 'select';
+  }
+  if (field.values && field.values.length) {
+    return getSelectionType(field);
+  }
+
+  switch (field.type) {
+    case 'string':
+      return getControlForStringFormat(field.format);
+    case 'number':
+    case 'integer':
+      return 'number';
+    case 'boolean':
+      return 'checkbox';
+    default:
+      return 'text';
+  }
+}
+
+function getControlForStringFormat(format) {
+  switch (format) {
+    case 'date':
+      return 'date';
+    case 'base64url':
+      return 'file';
+    case 'password':
+      return 'password';
+    case 'uri':
+      return 'text'; // 'url'; - not implemented
+    case 'email':
+      return 'text'; // 'email'; - not implemented
+    case 'phone':
+      return 'text'; // 'tel'; - not implemented
+    default:
+      return 'text';
+  }
+}
+
+function getSelectionType(field) {
+  if (field.control) {
+    return field.control;
+  } else if (field.type === 'select') {
+    return 'select';
+  } else if (field.type === 'radio') {
+    return 'radio';
+  }
+
+  const values = field.enum || field.values;
+  if (values) {
+    return values.length > 3 ? 'select' : 'radio';
+  }
+  return 'select';
+}
+
+function flattenGroup(field) {
+  if (field.group && field.group[0]) {
+    angular.extend(field, field.group[0]);
+    delete field.group;
+  }
+}
+
+function copyOf(obj) {
+  // Object.assign is nicer, but lacks ie support
+  return JSON.parse(JSON.stringify(obj));
+}
+
+
+RequirementsService.$inject = ['$http'];
 
 export default RequirementsService;

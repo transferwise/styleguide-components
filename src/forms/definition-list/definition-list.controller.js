@@ -1,19 +1,20 @@
 import angular from 'angular';
 
 class DefinitionListController {
-  constructor($scope, TwRequirementsService) {
-    this.$scope = $scope;
+  constructor(TwRequirementsService) {
     this.RequirementsService = TwRequirementsService;
   }
 
-  $onInit() {
-    this.RequirementsService.prepFields(this.fields, this.model);
-
-    this.$scope.$watch('$ctrl.fields', (newValue, oldValue) => {
-      if (!angular.equals(newValue, oldValue)) {
-        this.RequirementsService.prepFields(this.fields, this.model);
+  $onChanges(changes) {
+    const fieldsChanged = changes.initialFields;
+    if (fieldsChanged) {
+      if (!angular.equals(fieldsChanged.currentValue, fieldsChanged.previousValue)) {
+        this.fields = this.RequirementsService.prepFields(
+          fieldsChanged.currentValue,
+          this.model
+        );
       }
-    });
+    }
   }
 
   // eslint-disable-next-line
@@ -33,7 +34,6 @@ class DefinitionListController {
 }
 
 DefinitionListController.$inject = [
-  '$scope',
   'TwRequirementsService'
 ];
 

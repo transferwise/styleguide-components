@@ -43,9 +43,6 @@
       <button type="submit" class="btn btn-primary">
         Submit form
       </button>
-      <button type="button" class="btn btn-default" ng-click="$ctrl.addError()">
-        Add a server error
-      </button>
     </div>
 
     <h5>Configuration</h5>
@@ -64,8 +61,7 @@
     maxlength: 'The value is too long',
     min: 'The value is too low',
     max: 'The value is too high'
-  }"<span ng-if="$ctrl.errorMessages">
-  error-messages="{{$ctrl.errorMessages | json}}"</span>
+  }"
   is-valid='{{$ctrl.isValid}}'&gt;&lt;/tw-requirements-form&gt;</pre>
   </div>
 </form>
