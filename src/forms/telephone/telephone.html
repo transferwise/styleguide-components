@@ -3,8 +3,8 @@
     name="phoneNumberPrefix"
     class="col-xs-5"
     ng-model="$ctrl.prefix"
-    ng-change="$ctrl.updatePrefix($ctrl.prefix)"
-    options="$ctrl.prefixes"
+    ng-change="$ctrl.onPrefixChange($ctrl.prefix)"
+    options="$ctrl.callingCodes"
     filter="{{ $ctrl.searchPlaceholder }}"
     dropdown-width="md"
     ng-required="$ctrl.ngRequired"
@@ -14,13 +14,15 @@
   <div class="col-xs-7">
     <input type="tel" tw-validation
       name="phoneNumber"
+      placeholder="{{ $ctrl.placeholder }}"
       class="form-control"
-      ng-model="$ctrl.localNumber"
-      ng-change="$ctrl.updateLocalNumber($ctrl.localNumber)"
-      ng-pattern="/^[0-9\\s.-]*$/"
+      ng-model="$ctrl.suffix"
+      ng-change="$ctrl.onSuffixChange($ctrl.suffix)"
+      ng-pattern="$ctrl.permittedCharacters"
       ng-minlength="4"
       ng-required="$ctrl.ngRequired"
-      ng-disabled="$ctrl.ngDisabled" />
-      <div ng-transclude class="error-messages"></div>
+      ng-disabled="$ctrl.ngDisabled"
+      tw-text-format="{{ $ctrl.format }}" />
+    <div ng-transclude class="error-messages"></div>
   </div>
 </div>

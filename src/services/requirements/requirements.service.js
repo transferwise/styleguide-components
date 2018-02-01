@@ -78,6 +78,10 @@ function RequirementsService($http) {
         field.type = 'string';
         field.format = 'base64url';
         break;
+      case 'tel':
+        field.type = 'string';
+        field.format = 'phone';
+        break;
       default:
     }
 
@@ -253,7 +257,7 @@ function getControlForStringFormat(format) {
     case 'email':
       return 'text'; // 'email'; - not implemented
     case 'phone':
-      return 'text'; // 'tel'; - not implemented
+      return 'tel';
     default:
       return 'text';
   }

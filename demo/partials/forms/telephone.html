@@ -8,33 +8,39 @@
       <label class="control-label" for="date">
         Example phone number control
       </label>
-      <tw-telephone name="telephone"
+      <tw-telephone
+        name="telephone"
+        placeholder="{{ $ctrl.placeholder }}"
         ng-model="$ctrl.model"
         ng-required="$ctrl.telephone.required"
         ng-disabled="$ctrl.telephone.disabled"
         ng-change="$ctrl.updateModel(newNumber)"
+        locale="{{ $ctrl.locale }}"
         countries="$ctrl.telephone.countries"
         search-placeholder="Prefix"
-        tw-validation
       >
         <div class="error-required">Required</div>
         <div class="error-pattern">Invalid characters</div>
         <div class="error-minlength">Too short</div>
       </tw-telephone>
+      <!--
+      <div class="error-messages">
+        <div class="error-required">Required</div>
+        <div class="error-pattern">Invalid characters</div>
+        <div class="error-minlength">Too short</div>
+      </div>
+      -->
+
       <docs-status-messages></docs-status-messages>
     </div>
     <h5>Configuration</h5>
 <pre>&lt;tw-telephone
-  ng-model="{{$ctrl.model}}"
-  ng-required="{{$ctrl.telephone.required}}"
-  ng-disabled="{{$ctrl.telephone.disabled}}"
+  ng-model="{{ $ctrl.model }}"
+  ng-required="{{ $ctrl.telephone.required }}"
+  ng-disabled="{{ $ctrl.telephone.disabled }}"
   ng-change="$ctrl.updateModel(newNumber)"
-  countries="{[
-    { callingCode: '1', iso2Code: 'US', iso3Code: 'usa', name: 'United States of America' },
-    { callingCode: '44', iso2Code: 'GG', iso3Code: 'ggy', name: 'Guernsey' },
-    { callingCode: '44', iso2Code: 'GB', iso3Code: 'gbr', name: 'United Kingdom' },
-    { callingCode: '33', iso2Code: 'FR', iso3Code: 'fra', name: 'France' }
-  ]},"
+  locale="{{ $ctrl.locale }}"
+  placeholder="{{ $ctrl.placeholder }}"
   search-placeholder="Prefix"
   tw-validation /&gt;</pre>
   </div>
@@ -64,6 +70,22 @@
             Is the control disabled?
           </label>
         </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          Placeholder
+        </label>
+        <input class="form-control"
+          ng-model="$ctrl.placeholder" />
+      </div>
+      <div class="form-group" ng-init="$ctrl.locale = 'en-GB';">
+        <label class="control-label">
+          Locale
+        </label>
+        <tw-select
+          options="$ctrl.locales"
+          ng-model="$ctrl.locale"
+        ></tw-select>
       </div>
       <div class="form-group">
         <label class="control-label">

@@ -366,7 +366,8 @@ angular.module('tw.styleguide.docs', [])
           { value: 'radio', label: 'Radio' },
           { value: 'checkbox', label: 'Checkbox' },
           { value: 'upload', label: 'Upload' },
-          { value: 'date', label: 'Date' }
+          { value: 'date', label: 'Date' },
+          { value: 'tel', label: 'Telephone' }
         ]
       };
       this.log = function (message) { console.log(message); };
@@ -375,7 +376,8 @@ angular.module('tw.styleguide.docs', [])
   })
   .component('twTelephoneDocs', {
     bindings: {
-      model: '='
+      model: '=',
+      locales: '<'
     },
     controller: function() {
       this.updateModel = function(newNumber) {
@@ -626,7 +628,8 @@ angular.module('tw.styleguide.docs', [])
         'date': '2000-01-01T00:00:00.000Z',
         'checkbox': true,
         'radio': '2',
-        'password': 'qwerty'
+        'password': 'qwerty',
+        'telephone': "+441234567890"
       };
 
       this.refresh = function() {
@@ -708,6 +711,13 @@ angular.module('tw.styleguide.docs', [])
               'name': 'Two'
             }
           ]
+        },
+        {
+          'name': 'Telephone',
+          'key': 'telephone',
+          'type': 'tel',
+          'placeholder': 'Enter...',
+          'width': 'md'
         },
         {
           'name': 'File',

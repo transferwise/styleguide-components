@@ -90,6 +90,22 @@
     ></tw-date>
   </div>
 
+  <div ng-switch-when="tel">
+    <tw-telephone
+      name="{{ $ctrl.name }}"
+      placeholder="{{ $ctrl.placeholder }}"
+      ng-model="$ctrl.internalModel"
+      ng-model-options="{ allowInvalid: true }"
+      ng-required="$ctrl.ngRequired"
+      ng-disabled="$ctrl.ngDisabled"
+      ng-change="$ctrl.change($ctrl.internalModel)"
+      ng-focus="$ctrl.focus()"
+      ng-blur="$ctrl.blur()"
+      locale="{{ $ctrl.locale }}"
+      search-placeholder=" "
+    ></tw-telephone>
+  </div>
+
   <input ng-switch-when="number"
     name="{{$ctrl.name}}"
     type="number"
