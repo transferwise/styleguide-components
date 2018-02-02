@@ -1,13 +1,11 @@
 'use strict';
 
-fdescribe('Telephone', function() {
+describe('Telephone', function() {
   var $compile, $scope, $timeout, element, select, input;
 
   var PREFIX_SELECTOR = 'input[name=phoneNumberPrefix]';
   var PREFIX_SELECT_SELECTOR = 'tw-select[name=phoneNumberPrefix]';
   var NUMBER_SELECTOR = 'input[name=phoneNumber]';
-
-  var ngChangeSpy = jasmine.createSpy('ngChange');
 
   beforeEach(function() {
     module('tw.styleguide.forms');
@@ -17,8 +15,11 @@ fdescribe('Telephone', function() {
       $compile = $injector.get('$compile');
       $timeout = $injector.get('$timeout');
       $scope = $rootScope.$new();
-      $scope.ngChange = ngChangeSpy;
     });
+
+    $scope.ngChange = jasmine.createSpy('ngChange');
+    $scope.ngFocus = jasmine.createSpy('ngFocus');
+    $scope.ngBlur = jasmine.createSpy('ngBlur');
   });
 
   describe('init', function() {
@@ -40,7 +41,7 @@ fdescribe('Telephone', function() {
       });
     });
 
-    describe('when phone number model input $scope is passed', function() {
+    describe('when a valid model is passed', function() {
       beforeEach(function() {
         $scope.ngModel = '+44123456789';
         element = getCompiledDirectiveElement($scope);
@@ -49,14 +50,27 @@ fdescribe('Telephone', function() {
       });
       it('should set control values correctly', function() {
         expect(getSelectValue(select)).toEqual("+44");
-        expect(input.value).toBe('123456789'); // Format is **** *** ***
+        expect(input.value).toBe('123456789');
       });
       it('should leave number model as it was defined', function() {
         expect($scope.ngModel).toBe('+44123456789');
       });
       it('should return an updated number as a string', function() {
         setNumberUsingControls(select, input, "+33", '09876543');
-        expect(ngChangeSpy).toHaveBeenCalledWith('+3309876543');
+        expect($scope.ngChange).toHaveBeenCalledWith('+3309876543');
+      });
+    });
+
+    describe('when a model is passed that could match more than one prefix', function() {
+      beforeEach(function() {
+        $scope.ngModel = '+1868123456789';
+        element = getCompiledDirectiveElement($scope);
+        input = element.querySelector(NUMBER_SELECTOR);
+        select = element.querySelector(PREFIX_SELECT_SELECTOR);
+      });
+      it('should match the longest prefix', function() {
+        expect(getSelectValue(select)).toEqual("+1868");
+        expect(input.value).toBe('123456789');
       });
     });
 
@@ -102,6 +116,39 @@ fdescribe('Telephone', function() {
         expect(element.querySelector(NUMBER_SELECTOR).hasAttribute('disabled')).toBe(false);
       });
     });
+
+    describe('when a locale is supplied', function() {
+      describe('along with a value', function() {
+        it('should use the prefix of the supplied value', function() {
+          $scope.ngModel = '+12345678';
+          $scope.locale = 'es-ES';
+          element = getCompiledDirectiveElement($scope);
+          select = element.querySelector(PREFIX_SELECTOR);
+
+          expect(getSelectValue(select)).toBe("+1");
+        });
+      });
+      describe('without a value', function() {
+        it('should default the prefix to the local country', function() {
+          $scope.ngModel = null;
+          $scope.locale = 'es-ES';
+          element = getCompiledDirectiveElement($scope);
+          select = element.querySelector(PREFIX_SELECTOR);
+
+          expect(getSelectValue(select)).toBe("+34");
+        });
+      });
+      describe('with an incorrect value', function() {
+        it('should default to +44 (UK)', function() {
+          $scope.ngModel = null;
+          $scope.locale = 'xx-XX';
+          element = getCompiledDirectiveElement($scope);
+          select = element.querySelector(PREFIX_SELECTOR);
+
+          expect(getSelectValue(select)).toBe("+44");
+        });
+      });
+    });
   });
 
   describe('onChanges watchers', function() {
@@ -112,33 +159,39 @@ fdescribe('Telephone', function() {
         select = element.querySelector(PREFIX_SELECTOR);
         input = element.querySelector(NUMBER_SELECTOR);
       });
-      it('should re-explode model correctly if new model is valid', function() {
-        $scope.ngModel = '+33987654321';
-        $scope.$digest();
+      describe('when a valid string', function() {
+        it('should re-explode model correctly', function() {
+          $scope.ngModel = '+33987654321';
+          $scope.$digest();
 
-        expect(getSelectValue(select)).toEqual("+33");
-        expect(input.value).toBe('987654321');
+          expect(getSelectValue(select)).toEqual("+33");
+          expect(input.value).toBe('987654321');
+        });
       });
-      it('should not re-explode model if new model is not a string', function() {
-        $scope.ngModel = 1234;
-        $scope.$digest();
+      describe('when not a string', function() {
+        it('should not re-explode model', function() {
+          $scope.ngModel = 1234;
+          $scope.$digest();
 
-        expect(getSelectValue(select)).toEqual("+44");
-        expect(input.value).toBe('123456789');
+          expect(getSelectValue(select)).toEqual("+44");
+          expect(input.value).toBe('123456789');
+        });
       });
-      it('should not re-explode model if new model is not starting with a +', function() {
-        $scope.ngModel = '12345';
-        $scope.$digest();
+      describe('when an invalid string', function() {
+        // TODO should this be more permissive for bad old data?
+        it('should not re-explode model', function() {
+          $scope.ngModel = '12345';
+          $scope.$digest();
 
-        expect(getSelectValue(select)).toEqual("+44");
-        expect(input.value).toBe('123456789');
-      });
-      it('should not re-explode model if new model is shorter than 4', function() {
-        $scope.ngModel = '1234';
-        $scope.$digest();
+          expect(getSelectValue(select)).toEqual("+44");
+          expect(input.value).toBe('123456789');
 
-        expect(getSelectValue(select)).toEqual("+44");
-        expect(input.value).toBe('123456789');
+          $scope.ngModel = '+123';
+          $scope.$digest();
+
+          expect(getSelectValue(select)).toEqual("+44");
+          expect(input.value).toBe('123456789');
+        });
       });
     });
 
@@ -194,61 +247,116 @@ fdescribe('Telephone', function() {
       input = element.querySelector(NUMBER_SELECTOR);
     });
 
-    describe('with prefix select', function() {
-      it('should update prefix and ngModel', function() {
-        setSelectValue(select, "+33");
-        expect(ngChangeSpy).toHaveBeenCalledWith('+33123456789');
+    describe('with the select', function() {
+      describe('when changed', function() {
+        beforeEach(function() {
+          setSelectValue(select, "+33");
+        })
+        it('should update the model', function() {
+          expect($scope.ngModel).toBe('+33123456789');
+        });
+        it('should trigger the change handler', function() {
+          expect($scope.ngChange).toHaveBeenCalledWith('+33123456789');
+        });
+        it('should update pristine status', function() {
+          expect(select.classList).not.toContain('ng-pristine');
+          expect(select.classList).toContain('ng-dirty');
+        });
       });
-      it('should update touched status on blur', function() {
-        select.dispatchEvent(new CustomEvent('blur'));
-        expect(select.classList).toContain('ng-touched');
+
+      describe('when focussed', function() {
+        beforeEach(function() {
+          dispatchEvent(select, 'focus');
+        });
+        it('should trigger the focus handler', function() {
+          expect($scope.ngFocus).toHaveBeenCalledWith();
+        });
       });
-      it('should update pristine status on change', function() {
-        setSelectValue(select, "+1");
-        expect(select.classList).not.toContain('ng-pristine');
-        expect(select.classList).toContain('ng-dirty');
+
+      describe('when blurred', function() {
+        beforeEach(function() {
+          dispatchEvent(select, 'blur');
+        });
+        it('should trigger the blur handler', function() {
+          expect($scope.ngBlur).toHaveBeenCalledWith();
+        });
+        it('should update touched status', function() {
+          expect(select.classList).toContain('ng-touched');
+        });
       });
     });
 
-    describe('with localNumber input', function() {
-      it('should update localNumber and ngModel', function() {
-        input.value = '987654321'
-        dispatchEvent(input, 'input');
-        expect(ngChangeSpy).toHaveBeenCalledWith('+44987654321');
+    describe('with the input', function() {
+      describe('when changed', function() {
+        beforeEach(function() {
+          setInputValue(input, '987654321');
+        })
+        it('should update the model', function() {
+          expect($scope.ngModel).toBe('+44987654321');
+        });
+        it('should trigger the change handler', function() {
+          expect($scope.ngChange).toHaveBeenCalledWith('+44987654321');
+        });
+        it('should update pristine status on change', function() {
+          expect(input.classList).not.toContain('ng-pristine');
+          expect(input.classList).toContain('ng-dirty');
+        });
       });
-      it('should update touched status on blur', function() {
-        dispatchEvent(input, 'blur');
-        expect(input.classList).toContain('ng-touched');
+
+      describe('when focussed', function() {
+        beforeEach(function() {
+          dispatchEvent(input, 'focus');
+        });
+        it('should trigger the focus handler', function() {
+          expect($scope.ngFocus).toHaveBeenCalledWith();
+        });
       });
-      it('should update pristine status on change', function() {
-        input.value = '987654321';
-        dispatchEvent(input, 'input');
-        expect(input.classList).not.toContain('ng-pristine');
-        expect(input.classList).toContain('ng-dirty');
+
+      describe('when blurred', function() {
+        beforeEach(function() {
+          dispatchEvent(input, 'blur');
+        });
+        it('should trigger the blur handler', function() {
+          expect($scope.ngBlur).toHaveBeenCalledWith();
+        });
+        it('should update touched status', function() {
+          expect(input.classList).toContain('ng-touched');
+        });
       });
-      it('should ignore localNumber part of the model when invalid', function() {
-        input.value = 'abc';
-        dispatchEvent(input, 'input');
-        expect(ngChangeSpy).toHaveBeenCalledWith('+44');
+
+      describe('when invalid', function() {
+        beforeEach(function() {
+          setInputValue(input, 'abc');
+        });
+        it('should null the model', function() {
+          expect($scope.ngModel).toBe(null);
+        });
+        it('should call the change handler', function() {
+          expect($scope.ngChange).toHaveBeenCalledWith(null);
+        });
+        it('should leave the prefix as is', function() {
+          expect(getSelectValue(select)).toBe('+44');
+        });
       });
     });
   });
 
   function setNumberUsingControls(select, input, prefix, number) {
     try {
-      angular.element(select).controller('ngModel').$setViewValue(prefix);
-      input.value = number;
-      dispatchEvent(input, 'input');
+      setSelectValue(select, prefix);
+      setInputValue(input, number);
     } catch(ex) {
       console.log(ex.message);
     }
   }
 
+  function setInputValue(input, value) {
+    input.value = value;
+    dispatchEvent(input, 'input');
+  }
+
   function setSelectValue(select, value) {
     angular.element(select).controller('ngModel').$setViewValue(value);
-    //select.click();
-    //var dropdownLinks = element.querySelector('.dropdown-menu a');
-    //dropdownLinks[index].dispatchEvent(new CustomEvent('click'));
     $timeout.flush();
   }
 
@@ -270,7 +378,7 @@ fdescribe('Telephone', function() {
           ng-change='ngChange(newNumber)' \
           ng-focus='ngFocus()' \
           ng-blur='ngBlur()' \
-          locale='locale' \
+          locale='{{ locale }}' \
         ></tw-telephone>";
     }
 

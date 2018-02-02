@@ -5246,17 +5246,21 @@ function buildCompleteNumber(prefix, suffix) {
   if (suffix) {
     return '' + prefix + suffix;
   }
-  return '' + prefix;
+  return null;
 }
 
 function findCountryByPrefix(number, countries) {
   if (countries && countries.length && number && number.length > 1) {
     // Find longest matching prefix
-    return countries.filter(function (country) {
+    var matchingCodes = countries.filter(function (country) {
       return number.indexOf(country.phone) === 0;
-    }).reduce(function (a, b) {
-      return a.phone.length > b.phone.length ? a : b;
     });
+
+    if (matchingCodes && matchingCodes.length) {
+      return matchingCodes.reduce(function (a, b) {
+        return a.phone.length > b.phone.length ? a : b;
+      });
+    }
   }
   return undefined;
 }
@@ -5264,11 +5268,15 @@ function findCountryByPrefix(number, countries) {
 function findCountryByCode(code, countries) {
   if (countries && countries.length && code && code.length === 2) {
     // Find longest matching prefix
-    return countries.filter(function (country) {
+    var matchingCodes = countries.filter(function (country) {
       return code === country.iso2;
-    }).reduce(function (a, b) {
-      return a.phone.length > b.phone.length ? a : b;
     });
+
+    if (matchingCodes && matchingCodes.length) {
+      return matchingCodes.reduce(function (a, b) {
+        return a.phone.length > b.phone.length ? a : b;
+      });
+    }
   }
   return undefined;
 }

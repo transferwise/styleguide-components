@@ -91,15 +91,18 @@ function buildCompleteNumber(prefix, suffix) {
   if (suffix) {
     return `${prefix}${suffix}`;
   }
-  return `${prefix}`;
+  return null;
 }
 
 function findCountryByPrefix(number, countries) {
   if (countries && countries.length && number && number.length > 1) {
     // Find longest matching prefix
-    return countries
-      .filter(country => number.indexOf(country.phone) === 0)
-      .reduce((a, b) => (a.phone.length > b.phone.length ? a : b));
+    const matchingCodes = countries
+      .filter(country => number.indexOf(country.phone) === 0);
+
+    if (matchingCodes && matchingCodes.length) {
+      return matchingCodes.reduce((a, b) => (a.phone.length > b.phone.length ? a : b));
+    }
   }
   return undefined;
 }
@@ -107,9 +110,12 @@ function findCountryByPrefix(number, countries) {
 function findCountryByCode(code, countries) {
   if (countries && countries.length && code && code.length === 2) {
     // Find longest matching prefix
-    return countries
-      .filter(country => code === country.iso2)
-      .reduce((a, b) => (a.phone.length > b.phone.length ? a : b));
+    const matchingCodes = countries
+      .filter(country => code === country.iso2);
+
+    if (matchingCodes && matchingCodes.length) {
+      return matchingCodes.reduce((a, b) => (a.phone.length > b.phone.length ? a : b));
+    }
   }
   return undefined;
 }
