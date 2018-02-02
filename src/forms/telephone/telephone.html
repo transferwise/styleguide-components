@@ -1,16 +1,19 @@
 <div class="row">
-  <tw-select
-    name="phoneNumberPrefix"
-    class="col-xs-5"
-    ng-model="$ctrl.prefix"
-    ng-change="$ctrl.onPrefixChange($ctrl.prefix)"
-    options="$ctrl.callingCodes"
-    filter="{{ $ctrl.searchPlaceholder }}"
-    dropdown-width="md"
-    ng-required="$ctrl.ngRequired"
-    ng-disabled="$ctrl.ngDisabled"
-    hide-note="true"
-  ></tw-select>
+  <div class="col-xs-5">
+    <tw-select
+      name="phoneNumberPrefix"
+      options="$ctrl.callingCodes"
+      ng-model="$ctrl.prefix"
+      ng-change="$ctrl.onPrefixChange($ctrl.prefix)"
+      ng-required="$ctrl.ngRequired"
+      ng-disabled="$ctrl.ngDisabled"
+      ng-focus="$ctrl.onFocus()"
+      ng-blur="$ctrl.onBlur()"
+      filter="{{ $ctrl.searchPlaceholder }}"
+      dropdown-width="md"
+      hide-note="true"
+    ></tw-select>
+  </div>
   <div class="col-xs-7">
     <input type="tel" tw-validation
       name="phoneNumber"
@@ -22,6 +25,8 @@
       ng-minlength="4"
       ng-required="$ctrl.ngRequired"
       ng-disabled="$ctrl.ngDisabled"
+      ng-focus="$ctrl.onFocus()"
+      ng-blur="$ctrl.onBlur()"
       tw-text-format="{{ $ctrl.format }}" />
     <div ng-transclude class="error-messages"></div>
   </div>

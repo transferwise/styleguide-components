@@ -68,6 +68,13 @@ class TelephoneController {
       this.prefix = '+44';
     }
   }
+
+  onFocus() {
+    this.$element[0].dispatchEvent(new CustomEvent('focus'));
+  }
+  onBlur() {
+    this.$element[0].dispatchEvent(new CustomEvent('blur'));
+  }
 }
 
 function validNumber(number) {

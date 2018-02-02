@@ -39,6 +39,11 @@ angular.module('tw.styleguide.docs', [])
       format: "date",
       title: "Date control"
     };
+    this.phoneBasic = {
+      type: "string",
+      format: "phone",
+      title: "Phone control"
+    };
     this.uploadBasic = {
       type: "string",
       format: "base64url",

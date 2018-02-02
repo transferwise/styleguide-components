@@ -5219,6 +5219,16 @@ var TelephoneController = function () {
         this.prefix = '+44';
       }
     }
+  }, {
+    key: 'onFocus',
+    value: function onFocus() {
+      this.$element[0].dispatchEvent(new CustomEvent('focus'));
+    }
+  }, {
+    key: 'onBlur',
+    value: function onBlur() {
+      this.$element[0].dispatchEvent(new CustomEvent('blur'));
+    }
   }]);
 
   return TelephoneController;
@@ -8846,7 +8856,7 @@ module.exports = "<div class=\"btn-group btn-block tw-select\"\n  ng-class=\"{\n
 /* 130 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <tw-select\n    name=\"phoneNumberPrefix\"\n    class=\"col-xs-5\"\n    ng-model=\"$ctrl.prefix\"\n    ng-change=\"$ctrl.onPrefixChange($ctrl.prefix)\"\n    options=\"$ctrl.callingCodes\"\n    filter=\"{{ $ctrl.searchPlaceholder }}\"\n    dropdown-width=\"md\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    hide-note=\"true\"\n  ></tw-select>\n  <div class=\"col-xs-7\">\n    <input type=\"tel\" tw-validation\n      name=\"phoneNumber\"\n      placeholder=\"{{ $ctrl.placeholder }}\"\n      class=\"form-control\"\n      ng-model=\"$ctrl.suffix\"\n      ng-change=\"$ctrl.onSuffixChange($ctrl.suffix)\"\n      ng-pattern=\"$ctrl.permittedCharacters\"\n      ng-minlength=\"4\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      tw-text-format=\"{{ $ctrl.format }}\" />\n    <div ng-transclude class=\"error-messages\"></div>\n  </div>\n</div>\n";
+module.exports = "<div class=\"row\">\n  <div class=\"col-xs-5\">\n    <tw-select\n      name=\"phoneNumberPrefix\"\n      options=\"$ctrl.callingCodes\"\n      ng-model=\"$ctrl.prefix\"\n      ng-change=\"$ctrl.onPrefixChange($ctrl.prefix)\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-focus=\"$ctrl.onFocus()\"\n      ng-blur=\"$ctrl.onBlur()\"\n      filter=\"{{ $ctrl.searchPlaceholder }}\"\n      dropdown-width=\"md\"\n      hide-note=\"true\"\n    ></tw-select>\n  </div>\n  <div class=\"col-xs-7\">\n    <input type=\"tel\" tw-validation\n      name=\"phoneNumber\"\n      placeholder=\"{{ $ctrl.placeholder }}\"\n      class=\"form-control\"\n      ng-model=\"$ctrl.suffix\"\n      ng-change=\"$ctrl.onSuffixChange($ctrl.suffix)\"\n      ng-pattern=\"$ctrl.permittedCharacters\"\n      ng-minlength=\"4\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-focus=\"$ctrl.onFocus()\"\n      ng-blur=\"$ctrl.onBlur()\"\n      tw-text-format=\"{{ $ctrl.format }}\" />\n    <div ng-transclude class=\"error-messages\"></div>\n  </div>\n</div>\n";
 
 /***/ }),
 /* 131 */
