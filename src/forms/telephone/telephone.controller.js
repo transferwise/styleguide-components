@@ -6,17 +6,17 @@ class TelephoneController {
     this.$element = $element;
     this.$timeout = $timeout;
     this.LocaleService = LocaleService;
+    this.countries = countryList;
   }
 
   $onInit() {
-    this.countries = countryList;
     this.callingCodes = codesToOptions(countryList);
     this.permittedCharacters = /^[0-9\s.-]*$/;
 
     // Once loaded add a parser to remove special characters
     this.$timeout(() => {
       const suffixModelController = this.$element.find('input[type=tel]').controller('ngModel');
-      suffixModelController.$parsers.unshift(viewValue => viewValue.replace(/[\s\.-]/g, ''));
+      suffixModelController.$parsers.unshift(viewValue => viewValue.replace(/[\s.-]/g, ''));
     });
   }
 
@@ -44,6 +44,10 @@ class TelephoneController {
   }
 
   onPrefixChange(prefix) {
+    const country = findCountryByPrefix(prefix, this.countries);
+    if (country) {
+      this.format = country.phoneFormat || '';
+    }
     this.onValueChange(prefix, this.suffix);
   }
 
@@ -91,15 +95,21 @@ function buildCompleteNumber(prefix, suffix) {
 }
 
 function findCountryByPrefix(number, countries) {
-  if (countries && countries.length && number && number.length > 2) {
-    return countries.filter(country => number.indexOf(country.phone) === 0)[0];
+  if (countries && countries.length && number && number.length > 1) {
+    // Find longest matching prefix
+    return countries
+      .filter(country => number.indexOf(country.phone) === 0)
+      .reduce((a, b) => (a.phone.length > b.phone.length ? a : b));
   }
   return undefined;
 }
 
 function findCountryByCode(code, countries) {
   if (countries && countries.length && code && code.length === 2) {
-    return countries.filter(country => code === country.iso2)[0];
+    // Find longest matching prefix
+    return countries
+      .filter(country => code === country.iso2)
+      .reduce((a, b) => (a.phone.length > b.phone.length ? a : b));
   }
   return undefined;
 }
