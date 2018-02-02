@@ -15,14 +15,14 @@ class TelephoneController {
 
     // Once loaded add a parser to remove special characters
     this.$timeout(() => {
-      const suffixModelController = this.$element.find('input[type=tel]').controller('ngModel');
-      suffixModelController.$parsers.unshift(viewValue => viewValue.replace(/[\s.-]/g, ''));
+      this.suffixModelController = this.$element.find('input[type=tel]').controller('ngModel');
+      this.suffixModelController.$parsers.unshift(viewValue => viewValue.replace(/[\s.-]/g, ''));
     });
   }
 
   $onChanges(changes) {
     if (changes.ngModel) {
-      if (changes.ngModel.currentValue && validNumber(this.ngModel)) {
+      if (changes.ngModel.currentValue && isValidPhoneNumber(this.ngModel)) {
         this.explodeNumberModel(this.ngModel);
       }
     }
@@ -56,9 +56,16 @@ class TelephoneController {
   }
 
   onValueChange(prefix, suffix) {
-    const combined = buildCompleteNumber(prefix, suffix);
+    let combined;
+    // TODO make this work based on validity in case we change to allowInvalid
+    if (suffix) {
+      combined = `${prefix}${suffix}`;
+    } else {
+      combined = null;
+    }
+
     this.$ngModel.$setViewValue(combined);
-    this.ngChange({ newNumber: combined });
+    this.ngChange({ number: combined });
   }
 
   setDefaultPrefix() {
@@ -81,24 +88,16 @@ class TelephoneController {
   }
 }
 
-function validNumber(number) {
-  return typeof number === 'string'
-    && number.length > 4
-    && number.substring(0, 1) === '+';
-}
-
-function buildCompleteNumber(prefix, suffix) {
-  if (suffix) {
-    return `${prefix}${suffix}`;
-  }
-  return null;
+function isValidPhoneNumber(phoneNumber) {
+  return typeof phoneNumber === 'string'
+    && phoneNumber.length > 4
+    && phoneNumber.substring(0, 1) === '+';
 }
 
 function findCountryByPrefix(number, countries) {
   if (countries && countries.length && number && number.length > 1) {
     // Find longest matching prefix
-    const matchingCodes = countries
-      .filter(country => number.indexOf(country.phone) === 0);
+    const matchingCodes = countries.filter(country => number.indexOf(country.phone) === 0);
 
     if (matchingCodes && matchingCodes.length) {
       return matchingCodes.reduce((a, b) => (a.phone.length > b.phone.length ? a : b));
@@ -110,8 +109,7 @@ function findCountryByPrefix(number, countries) {
 function findCountryByCode(code, countries) {
   if (countries && countries.length && code && code.length === 2) {
     // Find longest matching prefix
-    const matchingCodes = countries
-      .filter(country => code === country.iso2);
+    const matchingCodes = countries.filter(country => code === country.iso2);
 
     if (matchingCodes && matchingCodes.length) {
       return matchingCodes.reduce((a, b) => (a.phone.length > b.phone.length ? a : b));

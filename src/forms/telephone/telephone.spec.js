@@ -303,6 +303,15 @@ describe('Telephone', function() {
         });
       });
 
+      describe('when changed to a value with special characters', function() {
+        beforeEach(function() {
+          setInputValue(input, '1-23 456.789');
+        });
+        it('should strip the special characters from the model', function() {
+          expect($scope.ngModel).toBe('+44123456789');
+        });
+      });
+
       describe('when focussed', function() {
         beforeEach(function() {
           dispatchEvent(input, 'focus');
@@ -375,7 +384,7 @@ describe('Telephone', function() {
           ng-model='ngModel' \
           ng-required='ngRequired' \
           ng-disabled='ngDisabled' \
-          ng-change='ngChange(newNumber)' \
+          ng-change='ngChange(number)' \
           ng-focus='ngFocus()' \
           ng-blur='ngBlur()' \
           locale='{{ locale }}' \

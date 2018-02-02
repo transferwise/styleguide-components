@@ -5158,8 +5158,8 @@ var TelephoneController = function () {
 
       // Once loaded add a parser to remove special characters
       this.$timeout(function () {
-        var suffixModelController = _this.$element.find('input[type=tel]').controller('ngModel');
-        suffixModelController.$parsers.unshift(function (viewValue) {
+        _this.suffixModelController = _this.$element.find('input[type=tel]').controller('ngModel');
+        _this.suffixModelController.$parsers.unshift(function (viewValue) {
           return viewValue.replace(/[\s.-]/g, '');
         });
       });
@@ -5168,7 +5168,7 @@ var TelephoneController = function () {
     key: '$onChanges',
     value: function $onChanges(changes) {
       if (changes.ngModel) {
-        if (changes.ngModel.currentValue && validNumber(this.ngModel)) {
+        if (changes.ngModel.currentValue && isValidPhoneNumber(this.ngModel)) {
           this.explodeNumberModel(this.ngModel);
         }
       }
@@ -5206,9 +5206,16 @@ var TelephoneController = function () {
   }, {
     key: 'onValueChange',
     value: function onValueChange(prefix, suffix) {
-      var combined = buildCompleteNumber(prefix, suffix);
+      var combined = void 0;
+      // TODO make this work based on validity in case we change to allowInvalid
+      if (suffix) {
+        combined = '' + prefix + suffix;
+      } else {
+        combined = null;
+      }
+
       this.$ngModel.$setViewValue(combined);
-      this.ngChange({ newNumber: combined });
+      this.ngChange({ number: combined });
     }
   }, {
     key: 'setDefaultPrefix',
@@ -5238,15 +5245,8 @@ var TelephoneController = function () {
   return TelephoneController;
 }();
 
-function validNumber(number) {
-  return typeof number === 'string' && number.length > 4 && number.substring(0, 1) === '+';
-}
-
-function buildCompleteNumber(prefix, suffix) {
-  if (suffix) {
-    return '' + prefix + suffix;
-  }
-  return null;
+function isValidPhoneNumber(phoneNumber) {
+  return typeof phoneNumber === 'string' && phoneNumber.length > 4 && phoneNumber.substring(0, 1) === '+';
 }
 
 function findCountryByPrefix(number, countries) {
