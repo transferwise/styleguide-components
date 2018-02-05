@@ -361,13 +361,17 @@ var _definitionList = __webpack_require__(57);
 
 var _definitionList2 = _interopRequireDefault(_definitionList);
 
+var _telephone = __webpack_require__(134);
+
+var _telephone2 = _interopRequireDefault(_telephone);
+
 var _uploadDroppable = __webpack_require__(76);
 
 var _uploadDroppable2 = _interopRequireDefault(_uploadDroppable);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.forms', [_checkbox2.default, _radio2.default, _select2.default, _upload2.default, _date2.default, _dateLookup2.default, _currencyInput2.default, _amountCurrencySelect2.default, _dynamicFormControl2.default, _field2.default, _fieldset2.default, _requirementsForm2.default, _focusable2.default, _definitionList2.default, _uploadDroppable2.default]).name;
+exports.default = _angular2.default.module('tw.styleguide.forms', [_checkbox2.default, _radio2.default, _select2.default, _upload2.default, _date2.default, _dateLookup2.default, _currencyInput2.default, _amountCurrencySelect2.default, _dynamicFormControl2.default, _field2.default, _fieldset2.default, _requirementsForm2.default, _focusable2.default, _definitionList2.default, _telephone2.default, _uploadDroppable2.default]).name;
 
 // Deprecated
 
@@ -8636,6 +8640,184 @@ module.exports = "<span class=\"process\"\n  ng-class=\"{\n    'process-success'
 /***/ (function(module, exports) {
 
 module.exports = "<ul ng-if=\"$ctrl.tabs.length > 0\"\n  class=\"nav nav-tabs m-b-3\">\n  <li\n    ng-repeat=\"tab in $ctrl.tabs track by $index\"\n    ng-class=\"{\n      'active': $ctrl.active === tab.type\n    }\">\n    <a href=\"\" ng-click=\"$ctrl.switchTab(tab.type)\">\n      {{tab.label}}\n    </a>\n  </li>\n</ul>\n";
+
+/***/ }),
+/* 134 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _telephoneComponent = __webpack_require__(135);
+
+var _telephoneComponent2 = _interopRequireDefault(_telephoneComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.styleguide.forms.telephone', []).component('twTelephone', _telephoneComponent2.default).name;
+
+/***/ }),
+/* 135 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _telephoneController = __webpack_require__(136);
+
+var _telephoneController2 = _interopRequireDefault(_telephoneController);
+
+var _telephone = __webpack_require__(137);
+
+var _telephone2 = _interopRequireDefault(_telephone);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var TelephoneControl = {
+  controller: _telephoneController2.default,
+  template: _telephone2.default,
+  bindings: {
+    ngModel: '<',
+    ngRequired: '<',
+    ngDisabled: '<',
+    ngChange: '&',
+    countries: '<',
+    searchPlaceholder: '@'
+  },
+  transclude: true
+};
+
+exports.default = TelephoneControl;
+
+/***/ }),
+/* 136 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var TelephoneController = function () {
+  function TelephoneController() {
+    _classCallCheck(this, TelephoneController);
+
+    this.prefixes = [];
+  }
+
+  _createClass(TelephoneController, [{
+    key: '$onChanges',
+    value: function $onChanges(changes) {
+      if (changes.countries && changes.countries.currentValue) {
+        this.formatCountriesToPrefixes();
+        this.explodeNumberModel(this.ngModel);
+      }
+
+      if (changes.ngModel && changes.ngModel.currentValue) {
+        if (validNumber(this.ngModel)) {
+          this.explodeNumberModel(this.ngModel);
+        }
+      }
+    }
+  }, {
+    key: 'sendNewNumberToCallback',
+    value: function sendNewNumberToCallback(newNumber) {
+      this.ngChange({ newNumber: newNumber });
+    }
+  }, {
+    key: 'explodeNumberModel',
+    value: function explodeNumberModel(number) {
+      this.prefix = findPrefixByNumber(number, this.countries);
+      if (this.prefix) {
+        this.localNumber = number.substring(this.prefix.callingCode.length + 1);
+      } else {
+        this.setDefaultPrefix();
+      }
+    }
+  }, {
+    key: 'updatePrefix',
+    value: function updatePrefix(prefix) {
+      this.ngModel = buildCompleteNumber(prefix.callingCode, this.localNumber);
+      this.sendNewNumberToCallback(this.ngModel);
+    }
+  }, {
+    key: 'updateLocalNumber',
+    value: function updateLocalNumber(localNumber) {
+      this.ngModel = buildCompleteNumber(this.prefix.callingCode, localNumber);
+      this.sendNewNumberToCallback(this.ngModel);
+    }
+  }, {
+    key: 'setDefaultPrefix',
+    value: function setDefaultPrefix() {
+      this.prefix = findPrefixByNumber('+44', this.countries);
+      this.sendNewNumberToCallback(this.ngModel);
+    }
+  }, {
+    key: 'formatCountriesToPrefixes',
+    value: function formatCountriesToPrefixes() {
+      var _this = this;
+
+      this.prefixes = [];
+      this.countries.forEach(function (country) {
+        _this.prefixes.push({
+          value: country,
+          label: '+' + country.callingCode,
+          note: country.name
+        });
+      });
+    }
+  }]);
+
+  return TelephoneController;
+}();
+
+function validNumber(number) {
+  return typeof number === 'string' && number.length > 4 && number.substring(0, 1) === '+';
+}
+
+function buildCompleteNumber(prefix, localNumber) {
+  if (localNumber) {
+    return '+' + prefix + localNumber;
+  }
+  return '+' + prefix;
+}
+
+function findPrefixByNumber(number, countries) {
+  if (countries && countries.length && number && number.length > 2) {
+    return countries.filter(function (country) {
+      return number.substring(1).indexOf(country.callingCode) === 0;
+    })[0];
+  }
+  return undefined;
+}
+
+TelephoneController.$inject = [];
+
+exports.default = TelephoneController;
+
+/***/ }),
+/* 137 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"row\">\n  <tw-select\n    name=\"phoneNumberPrefix\"\n    class=\"col-xs-5\"\n    ng-model=\"$ctrl.prefix\"\n    ng-change=\"$ctrl.updatePrefix($ctrl.prefix)\"\n    options=\"$ctrl.prefixes\"\n    filter=\"{{ $ctrl.searchPlaceholder }}\"\n    dropdown-width=\"md\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    hide-note=\"true\"\n  ></tw-select>\n  <div class=\"col-xs-7\">\n    <input type=\"tel\" tw-validation\n      name=\"phoneNumber\"\n      class=\"form-control\"\n      ng-model=\"$ctrl.localNumber\"\n      ng-change=\"$ctrl.updateLocalNumber($ctrl.localNumber)\"\n      ng-pattern=\"/^[0-9\\\\s.-]*$/\"\n      ng-minlength=\"4\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\" />\n      <div ng-transclude class=\"error-messages\"></div>\n  </div>\n</div>\n";
 
 /***/ })
 /******/ ]);
