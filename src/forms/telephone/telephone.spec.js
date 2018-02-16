@@ -55,9 +55,9 @@ describe('Telephone', function() {
       it('should leave number model as it was defined', function() {
         expect($scope.ngModel).toBe('+44123456789');
       });
-      it('should return an updated number as a string', function() {
+      it('should trigger the change handler', function() {
         setNumberUsingControls(select, input, "+33", '09876543');
-        expect($scope.ngChange).toHaveBeenCalledWith('+3309876543');
+        expect($scope.ngChange).toHaveBeenCalledWith(undefined);
       });
     });
 
@@ -256,7 +256,7 @@ describe('Telephone', function() {
           expect($scope.ngModel).toBe('+33123456789');
         });
         it('should trigger the change handler', function() {
-          expect($scope.ngChange).toHaveBeenCalledWith('+33123456789');
+          expect($scope.ngChange).toHaveBeenCalledWith(undefined);
         });
         it('should update pristine status', function() {
           expect(select.classList).not.toContain('ng-pristine');
@@ -295,7 +295,7 @@ describe('Telephone', function() {
           expect($scope.ngModel).toBe('+44987654321');
         });
         it('should trigger the change handler', function() {
-          expect($scope.ngChange).toHaveBeenCalledWith('+44987654321');
+          expect($scope.ngChange).toHaveBeenCalledWith(undefined);
         });
         it('should update pristine status on change', function() {
           expect(input.classList).not.toContain('ng-pristine');
@@ -341,7 +341,7 @@ describe('Telephone', function() {
           expect($scope.ngModel).toBe(null);
         });
         it('should call the change handler', function() {
-          expect($scope.ngChange).toHaveBeenCalledWith(null);
+          expect($scope.ngChange).toHaveBeenCalledWith(undefined);
         });
         it('should leave the prefix as is', function() {
           expect(getSelectValue(select)).toBe('+44');
