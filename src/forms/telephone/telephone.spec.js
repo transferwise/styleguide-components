@@ -74,6 +74,21 @@ describe('Telephone', function() {
       });
     });
 
+    describe('when a model is passed with no matching prefix', function() {
+      beforeEach(function() {
+        $scope.ngModel = '+999123456789';
+        element = getCompiledDirectiveElement($scope);
+        input = element.querySelector(NUMBER_SELECTOR);
+        select = element.querySelector(PREFIX_SELECT_SELECTOR);
+      });
+      it('should empty the select', function() {
+        expect(getSelectValue(select)).toEqual("");
+      });
+      it('should put the whole value in the input without the plus', function() {
+        expect(input.value).toBe('999123456789');
+      });
+    });
+
     describe('when ngRequired input $scope is passed', function() {
       it('should be $invalid when model is null', function() {
         $scope.ngModel = null;

@@ -38,10 +38,16 @@ class TelephoneController {
 
   explodeNumberModel(number) {
     const country = findCountryByPrefix(number, this.countries);
-    if (country && isValidPhoneNumber(number)) {
-      this.prefix = country.phone;
-      this.suffix = number.substring(country.phone.length);
-      this.format = country.phoneFormat || '';
+    if (isValidPhoneNumber(number)) {
+      if (country) {
+        this.prefix = country.phone;
+        this.suffix = number.substring(country.phone.length);
+        this.format = country.phoneFormat || '';
+      } else {
+        this.prefix = '';
+        this.suffix = number.substring(1);
+        this.format = '';
+      }
     } else {
       this.setDefaultPrefix();
     }
@@ -67,7 +73,7 @@ class TelephoneController {
     let combined;
     // TODO safer to rely on validity in case we change to allowInvalid
     if (suffix) {
-      combined = `${prefix}${suffix}`;
+      combined = (prefix || '+') + suffix;
     } else {
       combined = null;
     }

@@ -5184,10 +5184,16 @@ var TelephoneController = function () {
     key: 'explodeNumberModel',
     value: function explodeNumberModel(number) {
       var country = findCountryByPrefix(number, this.countries);
-      if (country && isValidPhoneNumber(number)) {
-        this.prefix = country.phone;
-        this.suffix = number.substring(country.phone.length);
-        this.format = country.phoneFormat || '';
+      if (isValidPhoneNumber(number)) {
+        if (country) {
+          this.prefix = country.phone;
+          this.suffix = number.substring(country.phone.length);
+          this.format = country.phoneFormat || '';
+        } else {
+          this.prefix = '';
+          this.suffix = number.substring(1);
+          this.format = '';
+        }
       } else {
         this.setDefaultPrefix();
       }
@@ -5214,7 +5220,7 @@ var TelephoneController = function () {
       var combined = void 0;
       // TODO safer to rely on validity in case we change to allowInvalid
       if (suffix) {
-        combined = '' + prefix + suffix;
+        combined = (prefix || '+') + suffix;
       } else {
         combined = null;
       }
@@ -8878,7 +8884,7 @@ module.exports = "<div class=\"btn-group btn-block tw-select\"\n  ng-class=\"{\n
 /* 130 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-xs-5\">\n    <tw-select\n      name=\"phoneNumberPrefix\"\n      options=\"$ctrl.callingCodes\"\n      ng-model=\"$ctrl.prefix\"\n      ng-change=\"$ctrl.onPrefixChange($ctrl.prefix)\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-focus=\"$ctrl.onFocus()\"\n      ng-blur=\"$ctrl.onBlur()\"\n      filter=\"{{ $ctrl.searchPlaceholder }}\"\n      dropdown-width=\"md\"\n      hide-note=\"true\"\n    ></tw-select>\n  </div>\n  <div class=\"col-xs-7\">\n    <input type=\"tel\" tw-validation\n      name=\"phoneNumber\"\n      placeholder=\"{{ $ctrl.placeholder }}\"\n      class=\"form-control\"\n      ng-model=\"$ctrl.suffix\"\n      ng-change=\"$ctrl.onSuffixChange()\"\n      ng-pattern=\"$ctrl.charactersPermitted\"\n      ng-minlength=\"4\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-focus=\"$ctrl.onFocus()\"\n      ng-blur=\"$ctrl.onBlur()\" />\n    <div ng-transclude class=\"error-messages\"></div>\n  </div>\n</div>\n";
+module.exports = "<div class=\"row\">\n  <div class=\"col-xs-5\">\n    <tw-select\n      name=\"phoneNumberPrefix\"\n      options=\"$ctrl.callingCodes\"\n      ng-model=\"$ctrl.prefix\"\n      ng-change=\"$ctrl.onPrefixChange($ctrl.prefix)\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-focus=\"$ctrl.onFocus()\"\n      ng-blur=\"$ctrl.onBlur()\"\n      placeholder=\"+\"\n      filter=\"{{ $ctrl.searchPlaceholder }}\"\n      dropdown-width=\"md\"\n      hide-note=\"true\"\n    ></tw-select>\n  </div>\n  <div class=\"col-xs-7\">\n    <input type=\"tel\" tw-validation\n      name=\"phoneNumber\"\n      placeholder=\"{{ $ctrl.placeholder }}\"\n      class=\"form-control\"\n      ng-model=\"$ctrl.suffix\"\n      ng-change=\"$ctrl.onSuffixChange()\"\n      ng-pattern=\"$ctrl.charactersPermitted\"\n      ng-minlength=\"4\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-focus=\"$ctrl.onFocus()\"\n      ng-blur=\"$ctrl.onBlur()\" />\n    <div ng-transclude class=\"error-messages\"></div>\n  </div>\n</div>\n";
 
 /***/ }),
 /* 131 */
