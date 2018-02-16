@@ -303,7 +303,7 @@ describe('Telephone', function() {
         });
       });
 
-      fdescribe('when changed to a value with special characters', function() {
+      describe('when changed to a value with special characters', function() {
         beforeEach(function() {
           setInputValue(input, '9-87 654.321');
         });
