@@ -53,17 +53,6 @@ describe('Field', function() {
       });
     });
 
-    describe('and password format', function() {
-      beforeEach(function() {
-        $scope.options = { type: "string", control: "password" };
-        element = getCompiledDirectiveElement();
-      });
-
-      it('should render a password control', function() {
-        expect(element.querySelector('input[type=password]')).toBeTruthy();
-      });
-    });
-
     describe('and base64url format', function() {
       beforeEach(function() {
         $scope.options = { type: "string", format: "base64url" };
@@ -75,6 +64,28 @@ describe('Field', function() {
       });
       it('should not render a visible label', function() {
         expect(element.querySelector('.control-label')).toBeFalsy();
+      });
+    });
+
+    describe('and password control override', function() {
+      beforeEach(function() {
+        $scope.options = { type: "string", control: "password" };
+        element = getCompiledDirectiveElement();
+      });
+
+      it('should render a password control', function() {
+        expect(element.querySelector('input[type=password]')).toBeTruthy();
+      });
+    });
+
+    describe('and telephone control override', function() {
+      beforeEach(function() {
+        $scope.options = { type: "string", control: "tel" };
+        element = getCompiledDirectiveElement();
+      });
+
+      it('should render a telephone control', function() {
+        expect(element.querySelector('tw-telephone')).toBeTruthy();
       });
     });
   });

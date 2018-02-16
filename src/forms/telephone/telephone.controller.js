@@ -9,6 +9,16 @@ class TelephoneController {
   }
 
   $onInit() {
+    this.callingCodes = codesToOptions(countryList);
+
+    this.charactersPermitted = /^[0-9\s.-]*$/;
+    this.charactersToRemove = /[\s.-]/g;
+
+    if (this.ngModel) {
+      // Trigger once on load manually
+      this.explodeNumberModel(this.ngModel);
+    }
+
     this.$ngModel = this.$element.controller('ngModel');
 
     // Use formatters pipeline to split values passed in
@@ -16,11 +26,6 @@ class TelephoneController {
       this.explodeNumberModel(modelValue);
       return modelValue;
     });
-
-    this.callingCodes = codesToOptions(countryList);
-
-    this.charactersPermitted = /^[0-9\s.-]*$/;
-    this.charactersToRemove = /[\s.-]/g;
 
     // Once loaded add a parser to remove special characters from suffix
     this.$timeout(() => {

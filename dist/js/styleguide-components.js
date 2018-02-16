@@ -5152,6 +5152,16 @@ var TelephoneController = function () {
     value: function $onInit() {
       var _this = this;
 
+      this.callingCodes = codesToOptions(_countries2.default);
+
+      this.charactersPermitted = /^[0-9\s.-]*$/;
+      this.charactersToRemove = /[\s.-]/g;
+
+      if (this.ngModel) {
+        // Trigger once on load manually
+        this.explodeNumberModel(this.ngModel);
+      }
+
       this.$ngModel = this.$element.controller('ngModel');
 
       // Use formatters pipeline to split values passed in
@@ -5159,11 +5169,6 @@ var TelephoneController = function () {
         _this.explodeNumberModel(modelValue);
         return modelValue;
       });
-
-      this.callingCodes = codesToOptions(_countries2.default);
-
-      this.charactersPermitted = /^[0-9\s.-]*$/;
-      this.charactersToRemove = /[\s.-]/g;
 
       // Once loaded add a parser to remove special characters from suffix
       this.$timeout(function () {
