@@ -5103,7 +5103,7 @@ var TelephoneControl = {
   controller: _telephoneController2.default,
   template: _telephone2.default,
   bindings: {
-    ngModel: '<',
+    ngModel: '=',
     ngRequired: '<',
     ngDisabled: '<',
     ngChange: '&',
@@ -5141,7 +5141,6 @@ var TelephoneController = function () {
   function TelephoneController($element, $timeout, LocaleService) {
     _classCallCheck(this, TelephoneController);
 
-    this.$ngModel = $element.controller('ngModel');
     this.$element = $element;
     this.$timeout = $timeout;
     this.LocaleService = LocaleService;
@@ -5153,26 +5152,30 @@ var TelephoneController = function () {
     value: function $onInit() {
       var _this = this;
 
-      this.callingCodes = codesToOptions(_countries2.default);
-      this.permittedCharacters = /^[0-9\s.-]*$/;
+      this.$ngModel = this.$element.controller('ngModel');
 
-      // Once loaded add a parser to remove special characters
+      // Use formatters pipeline to split values passed in
+      this.$ngModel.$formatters.unshift(function (modelValue) {
+        _this.explodeNumberModel(modelValue);
+        return modelValue;
+      });
+
+      this.callingCodes = codesToOptions(_countries2.default);
+
+      this.charactersPermitted = /^[0-9\s.-]*$/;
+      this.charactersToRemove = /[\s.-]/g;
+
+      // Once loaded add a parser to remove special characters from suffix
       this.$timeout(function () {
         _this.suffixModelController = _this.$element.find('input[type=tel]').controller('ngModel');
         _this.suffixModelController.$parsers.unshift(function (viewValue) {
-          return viewValue.replace(/[\s.-]/g, '');
+          return viewValue.replace(_this.charactersToRemove, '');
         });
       });
     }
   }, {
     key: '$onChanges',
     value: function $onChanges(changes) {
-      if (changes.ngModel) {
-        if (changes.ngModel.currentValue && isValidPhoneNumber(this.ngModel)) {
-          this.explodeNumberModel(this.ngModel);
-        }
-      }
-
       if (changes.locale && !this.ngModel) {
         this.setDefaultPrefix();
       }
@@ -5181,7 +5184,7 @@ var TelephoneController = function () {
     key: 'explodeNumberModel',
     value: function explodeNumberModel(number) {
       var country = findCountryByPrefix(number, this.countries);
-      if (country) {
+      if (country && isValidPhoneNumber(number)) {
         this.prefix = country.phone;
         this.suffix = number.substring(country.phone.length);
         this.format = country.phoneFormat || '';
@@ -5200,14 +5203,16 @@ var TelephoneController = function () {
     }
   }, {
     key: 'onSuffixChange',
-    value: function onSuffixChange(suffix) {
-      this.onValueChange(this.prefix, suffix);
+    value: function onSuffixChange() {
+      this.onValueChange(this.prefix,
+      // This shouldn't be necessary as $parser did it already, but otherwise test fails...
+      this.suffix && this.suffix.replace(this.charactersToRemove, ''));
     }
   }, {
     key: 'onValueChange',
     value: function onValueChange(prefix, suffix) {
       var combined = void 0;
-      // TODO make this work based on validity in case we change to allowInvalid
+      // TODO safer to rely on validity in case we change to allowInvalid
       if (suffix) {
         combined = '' + prefix + suffix;
       } else {
@@ -5215,7 +5220,6 @@ var TelephoneController = function () {
       }
 
       this.$ngModel.$setViewValue(combined);
-      this.ngChange({ number: combined });
     }
   }, {
     key: 'setDefaultPrefix',
@@ -8874,7 +8878,7 @@ module.exports = "<div class=\"btn-group btn-block tw-select\"\n  ng-class=\"{\n
 /* 130 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-xs-5\">\n    <tw-select\n      name=\"phoneNumberPrefix\"\n      options=\"$ctrl.callingCodes\"\n      ng-model=\"$ctrl.prefix\"\n      ng-change=\"$ctrl.onPrefixChange($ctrl.prefix)\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-focus=\"$ctrl.onFocus()\"\n      ng-blur=\"$ctrl.onBlur()\"\n      filter=\"{{ $ctrl.searchPlaceholder }}\"\n      dropdown-width=\"md\"\n      hide-note=\"true\"\n    ></tw-select>\n  </div>\n  <div class=\"col-xs-7\">\n    <input type=\"tel\" tw-validation\n      name=\"phoneNumber\"\n      placeholder=\"{{ $ctrl.placeholder }}\"\n      class=\"form-control\"\n      ng-model=\"$ctrl.suffix\"\n      ng-change=\"$ctrl.onSuffixChange($ctrl.suffix)\"\n      ng-pattern=\"$ctrl.permittedCharacters\"\n      ng-minlength=\"4\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-focus=\"$ctrl.onFocus()\"\n      ng-blur=\"$ctrl.onBlur()\" />\n    <div ng-transclude class=\"error-messages\"></div>\n  </div>\n</div>\n";
+module.exports = "<div class=\"row\">\n  <div class=\"col-xs-5\">\n    <tw-select\n      name=\"phoneNumberPrefix\"\n      options=\"$ctrl.callingCodes\"\n      ng-model=\"$ctrl.prefix\"\n      ng-change=\"$ctrl.onPrefixChange($ctrl.prefix)\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-focus=\"$ctrl.onFocus()\"\n      ng-blur=\"$ctrl.onBlur()\"\n      filter=\"{{ $ctrl.searchPlaceholder }}\"\n      dropdown-width=\"md\"\n      hide-note=\"true\"\n    ></tw-select>\n  </div>\n  <div class=\"col-xs-7\">\n    <input type=\"tel\" tw-validation\n      name=\"phoneNumber\"\n      placeholder=\"{{ $ctrl.placeholder }}\"\n      class=\"form-control\"\n      ng-model=\"$ctrl.suffix\"\n      ng-change=\"$ctrl.onSuffixChange()\"\n      ng-pattern=\"$ctrl.charactersPermitted\"\n      ng-minlength=\"4\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-focus=\"$ctrl.onFocus()\"\n      ng-blur=\"$ctrl.onBlur()\" />\n    <div ng-transclude class=\"error-messages\"></div>\n  </div>\n</div>\n";
 
 /***/ }),
 /* 131 */

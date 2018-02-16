@@ -5,18 +5,15 @@
 <div class="row m-b-3">
   <div class="col-md-6">
     <div class="form-group">
-      <label class="control-label" for="date">
+      <label class="control-label" for="telephone">
         Example phone number control
       </label>
       <tw-telephone
         name="telephone"
-        placeholder="{{ $ctrl.placeholder }}"
         ng-model="$ctrl.model"
-        ng-required="$ctrl.telephone.required"
-        ng-disabled="$ctrl.telephone.disabled"
-        ng-change="$ctrl.updateModel(newNumber)"
+        ng-change="$ctrl.log($ctrl.model)"
         locale="{{ $ctrl.locale }}"
-        countries="$ctrl.telephone.countries"
+        placeholder="{{ $ctrl.placeholder }}"
         search-placeholder="Prefix"
       >
         <div class="error-required">Required</div>
@@ -24,6 +21,10 @@
         <div class="error-minlength">Too short</div>
       </tw-telephone>
       <!--
+
+      ng-required="$ctrl.telephone.required"
+      ng-disabled="$ctrl.telephone.disabled"
+
       <div class="error-messages">
         <div class="error-required">Required</div>
         <div class="error-pattern">Invalid characters</div>
@@ -38,7 +39,7 @@
   ng-model="{{ $ctrl.model }}"
   ng-required="{{ $ctrl.telephone.required }}"
   ng-disabled="{{ $ctrl.telephone.disabled }}"
-  ng-change="$ctrl.updateModel(newNumber)"
+  ng-change="$ctrl.log($ctrl.model)"
   locale="{{ $ctrl.locale }}"
   placeholder="{{ $ctrl.placeholder }}"
   search-placeholder="Prefix"

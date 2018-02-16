@@ -2,7 +2,6 @@ import countryList from './countries.json';
 
 class TelephoneController {
   constructor($element, $timeout, LocaleService) {
-    this.$ngModel = $element.controller('ngModel');
     this.$element = $element;
     this.$timeout = $timeout;
     this.LocaleService = LocaleService;
@@ -10,23 +9,28 @@ class TelephoneController {
   }
 
   $onInit() {
-    this.callingCodes = codesToOptions(countryList);
-    this.permittedCharacters = /^[0-9\s.-]*$/;
+    this.$ngModel = this.$element.controller('ngModel');
 
-    // Once loaded add a parser to remove special characters
+    // Use formatters pipeline to split values passed in
+    this.$ngModel.$formatters.unshift((modelValue) => {
+      this.explodeNumberModel(modelValue);
+      return modelValue;
+    });
+
+    this.callingCodes = codesToOptions(countryList);
+
+    this.charactersPermitted = /^[0-9\s.-]*$/;
+    this.charactersToRemove = /[\s.-]/g;
+
+    // Once loaded add a parser to remove special characters from suffix
     this.$timeout(() => {
-      this.suffixModelController = this.$element.find('input[type=tel]').controller('ngModel');
-      this.suffixModelController.$parsers.unshift(viewValue => viewValue.replace(/[\s.-]/g, ''));
+      this.suffixModelController =
+        this.$element.find('input[type=tel]').controller('ngModel');
+      this.suffixModelController.$parsers.unshift(viewValue => viewValue.replace(this.charactersToRemove, ''));
     });
   }
 
   $onChanges(changes) {
-    if (changes.ngModel) {
-      if (changes.ngModel.currentValue && isValidPhoneNumber(this.ngModel)) {
-        this.explodeNumberModel(this.ngModel);
-      }
-    }
-
     if (changes.locale && !this.ngModel) {
       this.setDefaultPrefix();
     }
@@ -34,7 +38,7 @@ class TelephoneController {
 
   explodeNumberModel(number) {
     const country = findCountryByPrefix(number, this.countries);
-    if (country) {
+    if (country && isValidPhoneNumber(number)) {
       this.prefix = country.phone;
       this.suffix = number.substring(country.phone.length);
       this.format = country.phoneFormat || '';
@@ -51,13 +55,17 @@ class TelephoneController {
     this.onValueChange(prefix, this.suffix);
   }
 
-  onSuffixChange(suffix) {
-    this.onValueChange(this.prefix, suffix);
+  onSuffixChange() {
+    this.onValueChange(
+      this.prefix,
+      // This shouldn't be necessary as $parser did it already, but otherwise test fails...
+      this.suffix && this.suffix.replace(this.charactersToRemove, '')
+    );
   }
 
   onValueChange(prefix, suffix) {
     let combined;
-    // TODO make this work based on validity in case we change to allowInvalid
+    // TODO safer to rely on validity in case we change to allowInvalid
     if (suffix) {
       combined = `${prefix}${suffix}`;
     } else {
@@ -65,7 +73,6 @@ class TelephoneController {
     }
 
     this.$ngModel.$setViewValue(combined);
-    this.ngChange({ number: combined });
   }
 
   setDefaultPrefix() {

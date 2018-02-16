@@ -5,7 +5,7 @@ const TelephoneControl = {
   controller,
   template,
   bindings: {
-    ngModel: '<',
+    ngModel: '=',
     ngRequired: '<',
     ngDisabled: '<',
     ngChange: '&',

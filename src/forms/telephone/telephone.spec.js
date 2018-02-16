@@ -303,12 +303,12 @@ describe('Telephone', function() {
         });
       });
 
-      describe('when changed to a value with special characters', function() {
+      fdescribe('when changed to a value with special characters', function() {
         beforeEach(function() {
-          setInputValue(input, '1-23 456.789');
+          setInputValue(input, '9-87 654.321');
         });
         it('should strip the special characters from the model', function() {
-          expect($scope.ngModel).toBe('+44123456789');
+          expect($scope.ngModel).toBe('+44987654321');
         });
       });
 

@@ -380,9 +380,6 @@ angular.module('tw.styleguide.docs', [])
       locales: '<'
     },
     controller: function() {
-      this.updateModel = function(newNumber) {
-        this.model = newNumber;
-      };
       this.telephone = {
         countries: [
           { callingCode: '1', iso2Code: 'US', iso3Code: 'usa', name: 'United States of America' },
@@ -392,7 +389,7 @@ angular.module('tw.styleguide.docs', [])
         ],
         required: true
       };
-      this.log = function (message) { console.log(message); };
+      this.log = function (message) { console.log('Telephone changed to ' + message); };
     },
     templateUrl: 'partials/forms/telephone.html'
   })
