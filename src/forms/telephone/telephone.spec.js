@@ -210,27 +210,6 @@ describe('Telephone', function() {
       });
     });
 
-    describe('ngRequired', function() {
-      beforeEach(function() {
-        $scope.ngModel = null;
-        $scope.ngRequired = true;
-        element = getCompiledDirectiveElement($scope);
-        select = element.querySelector(PREFIX_SELECT_SELECTOR);
-        input = element.querySelector(NUMBER_SELECTOR);
-      });
-      it('should require controls', function() {
-        expect(select.hasAttribute('required')).toBe(true);
-        expect(input.hasAttribute('required')).toBe(true);
-      });
-      it('should not require controls on change', function() {
-        $scope.ngRequired = false;
-        $scope.$digest();
-
-        expect(select.hasAttribute('required')).toBe(false);
-        expect(input.hasAttribute('required')).toBe(false);
-      });
-    });
-
     describe('ngDisabled', function() {
       beforeEach(function() {
         $scope.ngModel = null;
@@ -352,8 +331,8 @@ describe('Telephone', function() {
         beforeEach(function() {
           setInputValue(input, 'abc');
         });
-        it('should null the model', function() {
-          expect($scope.ngModel).toBe(null);
+        it('should return an undefined model', function() {
+          expect($scope.ngModel).toBeUndefined();
         });
         it('should call the change handler', function() {
           expect($scope.ngChange).toHaveBeenCalledWith(undefined);

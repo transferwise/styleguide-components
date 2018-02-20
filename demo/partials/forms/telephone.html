@@ -1,5 +1,11 @@
 <h4 id="telephone">TW Telephone</h4>
-<p>One way data binding via ng-model, with TODO</p>
+<p>A control for inputting telephone numbers.  While the control allows common
+  special characters (spaces, periods, hyphens), these are stripped from the
+  resulting model, which always begins with a '+' and contains the numerals
+  without ornamentation e.g. +1234567890.</p>
+<p>When prefilled with an existing value, the select box will choose the longest
+  matching prefix.  For example, '+1684123456' will select '+1684' (American Samoa),
+  not '+1' (United States).</p>
 <hr/>
 <form>
 <div class="row m-b-3">
@@ -12,33 +18,25 @@
         name="telephone"
         ng-model="$ctrl.model"
         ng-change="$ctrl.log($ctrl.model)"
+        ng-required="$ctrl.telephone.required"
+        ng-disabled="$ctrl.telephone.disabled"
         locale="{{ $ctrl.locale }}"
         placeholder="{{ $ctrl.placeholder }}"
-        search-placeholder="Prefix"
-      >
-        <div class="error-required">Required</div>
-        <div class="error-pattern">Invalid characters</div>
-        <div class="error-minlength">Too short</div>
+        search-placeholder="Prefix">
       </tw-telephone>
-      <!--
-
-      ng-required="$ctrl.telephone.required"
-      ng-disabled="$ctrl.telephone.disabled"
-
       <div class="error-messages">
         <div class="error-required">Required</div>
         <div class="error-pattern">Invalid characters</div>
         <div class="error-minlength">Too short</div>
       </div>
-      -->
 
       <docs-status-messages></docs-status-messages>
     </div>
     <h5>Configuration</h5>
 <pre>&lt;tw-telephone
-  ng-model="{{ $ctrl.model }}"
-  ng-required="{{ $ctrl.telephone.required }}"
-  ng-disabled="{{ $ctrl.telephone.disabled }}"
+  ng-model="{{ $ctrl.model }}"<span ng-if="$ctrl.telephone.required">
+  ng-required="{{ $ctrl.telephone.required }}"</span><span ng-if="$ctrl.telephone.disabled">
+  ng-disabled="{{ $ctrl.telephone.disabled }}"</span>
   ng-change="$ctrl.log($ctrl.model)"
   locale="{{ $ctrl.locale }}"
   placeholder="{{ $ctrl.placeholder }}"

@@ -1,18 +1,25 @@
 import countryList from './countries.json';
 
 class TelephoneController {
-  constructor($element, $timeout, LocaleService) {
+  constructor($element, $timeout, LocaleService, DomService) {
     this.$element = $element;
     this.$timeout = $timeout;
     this.LocaleService = LocaleService;
+    this.DomService = DomService;
     this.countries = countryList;
   }
 
   $onInit() {
     this.callingCodes = codesToOptions(countryList);
 
+    this.formGroup = this.DomService.getClosestParentByClassName(
+      this.$element[0],
+      'form-group'
+    );
+
     this.charactersPermitted = /^[0-9\s.-]*$/;
     this.charactersToRemove = /[\s.-]/g;
+    this.modelPattern = /^\+[0-9]*$/;
 
     if (this.ngModel) {
       // Trigger once on load manually
@@ -26,6 +33,9 @@ class TelephoneController {
       this.explodeNumberModel(modelValue);
       return modelValue;
     });
+
+    this.$ngModel.$validators.pattern = viewValue => this.modelPattern.test(viewValue);
+    this.$ngModel.$validators.minlength = viewValue => viewValue && viewValue.length > 6;
 
     // Once loaded add a parser to remove special characters from suffix
     this.$timeout(() => {
@@ -84,6 +94,8 @@ class TelephoneController {
     }
 
     this.$ngModel.$setViewValue(combined);
+
+    this.validate();
   }
 
   setDefaultPrefix() {
@@ -102,7 +114,19 @@ class TelephoneController {
     this.$element[0].dispatchEvent(new CustomEvent('focus'));
   }
   onBlur() {
+    this.$ngModel.$setTouched();
     this.$element[0].dispatchEvent(new CustomEvent('blur'));
+    this.validate();
+  }
+
+  validate() {
+    if (this.formGroup) {
+      if (this.$ngModel.$invalid && this.$ngModel.$touched) {
+        this.formGroup.classList.add('has-error');
+      } else {
+        this.formGroup.classList.remove('has-error');
+      }
+    }
   }
 }
 
@@ -170,7 +194,8 @@ function codesToOptions(countries) {
 TelephoneController.$inject = [
   '$element',
   '$timeout',
-  'TwLocaleService'
+  'TwLocaleService',
+  'TwDomService'
 ];
 
 export default TelephoneController;

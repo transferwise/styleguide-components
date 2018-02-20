@@ -3806,6 +3806,17 @@ var FieldController = function () {
     value: function sizeOf(obj) {
       return obj ? Object.keys(obj).length : 0;
     }
+
+    // eslint-disable-next-line
+
+  }, {
+    key: 'isFeedbackDetached',
+    value: function isFeedbackDetached(controlType) {
+      if (controlType === 'date' || controlType === 'file' || controlType === 'radio' || controlType === 'tel') {
+        return true;
+      }
+      return false;
+    }
   }]);
 
   return FieldController;
@@ -5138,12 +5149,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var TelephoneController = function () {
-  function TelephoneController($element, $timeout, LocaleService) {
+  function TelephoneController($element, $timeout, LocaleService, DomService) {
     _classCallCheck(this, TelephoneController);
 
     this.$element = $element;
     this.$timeout = $timeout;
     this.LocaleService = LocaleService;
+    this.DomService = DomService;
     this.countries = _countries2.default;
   }
 
@@ -5154,8 +5166,11 @@ var TelephoneController = function () {
 
       this.callingCodes = codesToOptions(_countries2.default);
 
+      this.formGroup = this.DomService.getClosestParentByClassName(this.$element[0], 'form-group');
+
       this.charactersPermitted = /^[0-9\s.-]*$/;
       this.charactersToRemove = /[\s.-]/g;
+      this.modelPattern = /^\+[0-9]*$/;
 
       if (this.ngModel) {
         // Trigger once on load manually
@@ -5169,6 +5184,13 @@ var TelephoneController = function () {
         _this.explodeNumberModel(modelValue);
         return modelValue;
       });
+
+      this.$ngModel.$validators.pattern = function (viewValue) {
+        return _this.modelPattern.test(viewValue);
+      };
+      this.$ngModel.$validators.minlength = function (viewValue) {
+        return viewValue && viewValue.length > 6;
+      };
 
       // Once loaded add a parser to remove special characters from suffix
       this.$timeout(function () {
@@ -5231,6 +5253,8 @@ var TelephoneController = function () {
       }
 
       this.$ngModel.$setViewValue(combined);
+
+      this.validate();
     }
   }, {
     key: 'setDefaultPrefix',
@@ -5253,7 +5277,20 @@ var TelephoneController = function () {
   }, {
     key: 'onBlur',
     value: function onBlur() {
+      this.$ngModel.$setTouched();
       this.$element[0].dispatchEvent(new CustomEvent('blur'));
+      this.validate();
+    }
+  }, {
+    key: 'validate',
+    value: function validate() {
+      if (this.formGroup) {
+        if (this.$ngModel.$invalid && this.$ngModel.$touched) {
+          this.formGroup.classList.add('has-error');
+        } else {
+          this.formGroup.classList.remove('has-error');
+        }
+      }
     }
   }]);
 
@@ -5329,7 +5366,7 @@ function codesToOptions(countries) {
   });
 }
 
-TelephoneController.$inject = ['$element', '$timeout', 'TwLocaleService'];
+TelephoneController.$inject = ['$element', '$timeout', 'TwLocaleService', 'TwDomService'];
 
 exports.default = TelephoneController;
 
@@ -8735,7 +8772,7 @@ function FormValidation(TwDomService) {
         var checkboxContainer = void 0;
         var radioContainer = void 0;
 
-        var controls = form.querySelectorAll('[tw-validation].ng-invalid');
+        var controls = form.querySelectorAll('[tw-validation].ng-invalid, ' + 'tw-telephone.ng-invalid-required, ' + 'tw-telephone.ng-invalid-pattern');
 
         // Shouldn't be necessary, but PhantomJS was complaining
         if (!controls.forEach) {
@@ -8859,7 +8896,7 @@ module.exports = "<div ng-switch=\"$ctrl.type\">\n  <div ng-switch-when=\"radio\
 /* 125 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"form-group tw-field-{{ $ctrl.name }}\"\n  ng-class=\"{\n    'has-error': $ctrl.field.errorMessage || $ctrl.errorMessage,\n    'has-warning': $ctrl.field.warningMessage || $ctrl.warningMessage,\n    'hidden': $ctrl.field.hidden\n  }\">\n  <label class=\"control-label\"\n    ng-if=\"$ctrl.control !== 'file'\">\n    {{$ctrl.field.title}}\n  </label>\n  <tw-form-control\n    name=\"{{ $ctrl.field.key }}\"\n    label=\"{{ $ctrl.field.title }}\"\n    type=\"{{ $ctrl.control | lowercase }}\"\n    placeholder=\"{{ $ctrl.field.placeholder }}\"\n    help-text=\"{{ $ctrl.field.helpText }}\"\n    help-image=\"{{ $ctrl.field.helpImage }}\"\n    locale=\"{{ $ctrl.locale }}\"\n    upload-accept=\"{{ $ctrl.field.accept }}\"\n    upload-icon=\"{{ $ctrl.field.icon }}\"\n    upload-too-large-message=\"{{ $ctrl.field.tooLargeMessage }}\"\n    options=\"$ctrl.field.values\"\n    upload-options=\"$ctrl.field.uploadOptions\"\n    ng-model=\"$ctrl.model\"\n    ng-focus=\"$ctrl.onFocus()\"\n    ng-blur=\"$ctrl.onBlur()\"\n    ng-change=\"$ctrl.onChange($ctrl.model)\"\n    ng-required=\"$ctrl.field.required\"\n    ng-disabled=\"$ctrl.field.disabled\"\n    tw-minlength=\"$ctrl.field.minlength || $ctrl.field.minLength\"\n    tw-maxlength=\"$ctrl.field.maxlength || $ctrl.field.maxLength\"\n    ng-min=\"$ctrl.field.minimum\"\n    ng-max=\"$ctrl.field.maximum\"\n    ng-pattern=\"$ctrl.field.pattern\"\n    text-format=\"$ctrl.field.displayFormat\"\n    tw-validation\n  ></tw-form-control>\n  <div class=\"alert alert-danger error-messages\"\n    ng-if=\"$ctrl.sizeOf($ctrl.field.validationMessages) > 0 || $ctrl.errorMessage\"\n    ng-class=\"{\n      'alert-detach': $ctrl.control === 'date'  ||\n                      $ctrl.control === 'file' ||\n                      $ctrl.control === 'radio'\n    }\">\n    <div ng-repeat=\"(validationType, validationMessage) in $ctrl.field.validationMessages track by $index\"\n      class=\"error-{{ validationType | lowercase }}\">\n      {{validationMessage}}\n    </div>\n    <div class=\"error-provided\" ng-if=\"$ctrl.errorMessage\">\n      {{ $ctrl.errorMessage }}\n    </div>\n  </div>\n  <div class=\"alert alert-warning\"\n    ng-if=\"$ctrl.warningMessage\"\n    ng-class=\"{\n      'alert-detach': $ctrl.control === 'date'  ||\n                      $ctrl.control === 'file' ||\n                      $ctrl.control === 'radio'\n    }\">\n    {{ $ctrl.warningMessage }}\n  </div>\n  <div ng-if=\"$ctrl.field.helpText || $ctrl.field.helpList || $ctrl.field.helpImage\"\n    class=\"alert alert-focus\"\n    ng-class=\"{\n      'alert-detach': $ctrl.control === 'date' ||\n                      $ctrl.control === 'file' ||\n                      $ctrl.control === 'radio'\n    }\">\n    <span ng-if=\"$ctrl.field.helpText\">\n      {{ $ctrl.field.helpText }}\n    </span>\n    <ul ng-if=\"$ctrl.field.helpList\" class=\"list-unstyled\">\n      <li ng-repeat=\"helpMessage in $ctrl.field.helpList\">{{ helpMessage }}</li>\n    </ul>\n    <img\n      ng-if=\"$ctrl.field.helpImage && $ctrl.control !== 'file'\"\n      ng-src=\"{{$ctrl.field.helpImage}}\"\n      alt=\"{{$ctrl.field.title}}\"\n      class=\"thumbnail m-y-2\" />\n  </div>\n</div>\n";
+module.exports = "<div class=\"form-group tw-field-{{ $ctrl.name }}\"\n  ng-class=\"{\n    'has-error': $ctrl.field.errorMessage || $ctrl.errorMessage,\n    'has-warning': $ctrl.field.warningMessage || $ctrl.warningMessage,\n    'hidden': $ctrl.field.hidden\n  }\">\n  <label class=\"control-label\"\n    ng-if=\"$ctrl.control !== 'file'\">\n    {{$ctrl.field.title}}\n  </label>\n  <tw-form-control\n    name=\"{{ $ctrl.field.key }}\"\n    label=\"{{ $ctrl.field.title }}\"\n    type=\"{{ $ctrl.control | lowercase }}\"\n    placeholder=\"{{ $ctrl.field.placeholder }}\"\n    help-text=\"{{ $ctrl.field.helpText }}\"\n    help-image=\"{{ $ctrl.field.helpImage }}\"\n    locale=\"{{ $ctrl.locale }}\"\n    upload-accept=\"{{ $ctrl.field.accept }}\"\n    upload-icon=\"{{ $ctrl.field.icon }}\"\n    upload-too-large-message=\"{{ $ctrl.field.tooLargeMessage }}\"\n    options=\"$ctrl.field.values\"\n    upload-options=\"$ctrl.field.uploadOptions\"\n    ng-model=\"$ctrl.model\"\n    ng-focus=\"$ctrl.onFocus()\"\n    ng-blur=\"$ctrl.onBlur()\"\n    ng-change=\"$ctrl.onChange($ctrl.model)\"\n    ng-required=\"$ctrl.field.required\"\n    ng-disabled=\"$ctrl.field.disabled\"\n    tw-minlength=\"$ctrl.field.minlength || $ctrl.field.minLength\"\n    tw-maxlength=\"$ctrl.field.maxlength || $ctrl.field.maxLength\"\n    ng-min=\"$ctrl.field.minimum\"\n    ng-max=\"$ctrl.field.maximum\"\n    ng-pattern=\"$ctrl.field.pattern\"\n    text-format=\"$ctrl.field.displayFormat\"\n    tw-validation\n  ></tw-form-control>\n\n  <div class=\"alert alert-danger error-messages\"\n    ng-if=\"$ctrl.sizeOf($ctrl.field.validationMessages) > 0 || $ctrl.errorMessage\"\n    ng-class=\"{\n      'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)\n    }\">\n    <div ng-repeat=\"(validationType, validationMessage) in $ctrl.field.validationMessages track by $index\"\n      class=\"error-{{ validationType | lowercase }}\">\n      {{validationMessage}}\n    </div>\n    <div class=\"error-provided\" ng-if=\"$ctrl.errorMessage\">\n      {{ $ctrl.errorMessage }}\n    </div>\n  </div>\n\n  <div class=\"alert alert-warning\"\n    ng-if=\"$ctrl.warningMessage\"\n    ng-class=\"{\n      'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)\n    }\">\n    {{ $ctrl.warningMessage }}\n  </div>\n  \n  <div ng-if=\"$ctrl.field.helpText || $ctrl.field.helpList || $ctrl.field.helpImage\"\n    class=\"alert alert-focus\"\n    ng-class=\"{\n      'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)\n    }\">\n    <span ng-if=\"$ctrl.field.helpText\">\n      {{ $ctrl.field.helpText }}\n    </span>\n    <ul ng-if=\"$ctrl.field.helpList\" class=\"list-unstyled\">\n      <li ng-repeat=\"helpMessage in $ctrl.field.helpList\">{{ helpMessage }}</li>\n    </ul>\n    <img\n      ng-if=\"$ctrl.field.helpImage && $ctrl.control !== 'file'\"\n      ng-src=\"{{$ctrl.field.helpImage}}\"\n      alt=\"{{$ctrl.field.title}}\"\n      class=\"thumbnail m-y-2\" />\n  </div>\n</div>\n";
 
 /***/ }),
 /* 126 */
@@ -8889,7 +8926,7 @@ module.exports = "<div class=\"btn-group btn-block tw-select\"\n  ng-class=\"{\n
 /* 130 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-xs-5\">\n    <tw-select\n      name=\"phoneNumberPrefix\"\n      options=\"$ctrl.callingCodes\"\n      ng-model=\"$ctrl.prefix\"\n      ng-change=\"$ctrl.onPrefixChange($ctrl.prefix)\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-focus=\"$ctrl.onFocus()\"\n      ng-blur=\"$ctrl.onBlur()\"\n      placeholder=\"+\"\n      filter=\"{{ $ctrl.searchPlaceholder }}\"\n      dropdown-width=\"md\"\n      hide-note=\"true\"\n    ></tw-select>\n  </div>\n  <div class=\"col-xs-7\">\n    <input type=\"tel\" tw-validation\n      name=\"phoneNumber\"\n      placeholder=\"{{ $ctrl.placeholder }}\"\n      class=\"form-control\"\n      ng-model=\"$ctrl.suffix\"\n      ng-change=\"$ctrl.onSuffixChange()\"\n      ng-pattern=\"$ctrl.charactersPermitted\"\n      ng-minlength=\"4\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-focus=\"$ctrl.onFocus()\"\n      ng-blur=\"$ctrl.onBlur()\" />\n    <div ng-transclude class=\"error-messages\"></div>\n  </div>\n</div>\n";
+module.exports = "<div class=\"row\">\n  <div class=\"col-xs-5\">\n    <tw-select\n      name=\"phoneNumberPrefix\"\n      options=\"$ctrl.callingCodes\"\n      ng-model=\"$ctrl.prefix\"\n      ng-change=\"$ctrl.onPrefixChange($ctrl.prefix)\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-focus=\"$ctrl.onFocus()\"\n      ng-blur=\"$ctrl.onBlur()\"\n      placeholder=\"+\"\n      filter=\"{{ $ctrl.searchPlaceholder }}\"\n      dropdown-width=\"md\"\n      hide-note=\"true\"\n    ></tw-select>\n  </div>\n  <div class=\"col-xs-7\">\n    <input type=\"tel\"\n      name=\"phoneNumber\"\n      placeholder=\"{{ $ctrl.placeholder }}\"\n      class=\"form-control\"\n      ng-model=\"$ctrl.suffix\"\n      ng-model-options=\"{ allowInvalid: true }\"\n      ng-change=\"$ctrl.onSuffixChange()\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-focus=\"$ctrl.onFocus()\"\n      ng-blur=\"$ctrl.onBlur()\" />\n    <div ng-transclude class=\"error-messages\"></div>\n  </div>\n</div>\n<!--\nng-pattern=\"$ctrl.charactersPermitted\"\nng-minlength=\"4\"\n-->\n";
 
 /***/ }),
 /* 131 */

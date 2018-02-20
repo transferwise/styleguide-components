@@ -41,6 +41,17 @@ class FieldController {
   sizeOf(obj) {
     return obj ? Object.keys(obj).length : 0;
   }
+
+  // eslint-disable-next-line
+  isFeedbackDetached(controlType) {
+    if (controlType === 'date' ||
+        controlType === 'file' ||
+        controlType === 'radio' ||
+        controlType === 'tel') {
+      return true;
+    }
+    return false;
+  }
 }
 
 function copyJSON(obj) {

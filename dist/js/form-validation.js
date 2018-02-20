@@ -1455,7 +1455,7 @@ function FormValidation(TwDomService) {
         var checkboxContainer = void 0;
         var radioContainer = void 0;
 
-        var controls = form.querySelectorAll('[tw-validation].ng-invalid');
+        var controls = form.querySelectorAll('[tw-validation].ng-invalid, ' + 'tw-telephone.ng-invalid-required, ' + 'tw-telephone.ng-invalid-pattern');
 
         // Shouldn't be necessary, but PhantomJS was complaining
         if (!controls.forEach) {

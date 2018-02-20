@@ -35,12 +35,11 @@
     text-format="$ctrl.field.displayFormat"
     tw-validation
   ></tw-form-control>
+
   <div class="alert alert-danger error-messages"
     ng-if="$ctrl.sizeOf($ctrl.field.validationMessages) > 0 || $ctrl.errorMessage"
     ng-class="{
-      'alert-detach': $ctrl.control === 'date'  ||
-                      $ctrl.control === 'file' ||
-                      $ctrl.control === 'radio'
+      'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)
     }">
     <div ng-repeat="(validationType, validationMessage) in $ctrl.field.validationMessages track by $index"
       class="error-{{ validationType | lowercase }}">
@@ -50,21 +49,19 @@
       {{ $ctrl.errorMessage }}
     </div>
   </div>
+
   <div class="alert alert-warning"
     ng-if="$ctrl.warningMessage"
     ng-class="{
-      'alert-detach': $ctrl.control === 'date'  ||
-                      $ctrl.control === 'file' ||
-                      $ctrl.control === 'radio'
+      'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)
     }">
     {{ $ctrl.warningMessage }}
   </div>
+  
   <div ng-if="$ctrl.field.helpText || $ctrl.field.helpList || $ctrl.field.helpImage"
     class="alert alert-focus"
     ng-class="{
-      'alert-detach': $ctrl.control === 'date' ||
-                      $ctrl.control === 'file' ||
-                      $ctrl.control === 'radio'
+      'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)
     }">
     <span ng-if="$ctrl.field.helpText">
       {{ $ctrl.field.helpText }}
