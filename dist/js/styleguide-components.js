@@ -5245,7 +5245,7 @@ var TelephoneController = function () {
     key: 'onValueChange',
     value: function onValueChange(prefix, suffix) {
       var combined = void 0;
-      // TODO safer to rely on validity in case we change to allowInvalid
+
       if (suffix) {
         combined = (prefix || '+') + suffix;
       } else {

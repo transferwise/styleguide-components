@@ -86,7 +86,7 @@ class TelephoneController {
 
   onValueChange(prefix, suffix) {
     let combined;
-    // TODO safer to rely on validity in case we change to allowInvalid
+
     if (suffix) {
       combined = (prefix || '+') + suffix;
     } else {
