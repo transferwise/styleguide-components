@@ -1,4 +1,4 @@
-fdescribe('FormControl', function() {
+describe('FormControl', function() {
   var $compile,
     $rootScope,
     $scope,
