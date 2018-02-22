@@ -366,12 +366,32 @@ angular.module('tw.styleguide.docs', [])
           { value: 'radio', label: 'Radio' },
           { value: 'checkbox', label: 'Checkbox' },
           { value: 'upload', label: 'Upload' },
-          { value: 'date', label: 'Date' }
+          { value: 'date', label: 'Date' },
+          { value: 'tel', label: 'Telephone' }
         ]
       };
       this.log = function (message) { console.log(message); };
     },
     templateUrl: 'partials/forms/form-control.html'
+  })
+  .component('twTelephoneDocs', {
+    bindings: {
+      model: '=',
+      locales: '<'
+    },
+    controller: function() {
+      this.telephone = {
+        countries: [
+          { callingCode: '1', iso2Code: 'US', iso3Code: 'usa', name: 'United States of America' },
+          { callingCode: '44', iso2Code: 'GG', iso3Code: 'ggy', name: 'Guernsey' },
+          { callingCode: '44', iso2Code: 'GB', iso3Code: 'gbr', name: 'United Kingdom' },
+          { callingCode: '33', iso2Code: 'FR', iso3Code: 'fra', name: 'France' }
+        ],
+        required: true
+      };
+      this.log = function (message) { console.log('Telephone changed to ' + message); };
+    },
+    templateUrl: 'partials/forms/telephone.html'
   })
   .component('twRequirementsFormDocs', {
     controller: ['$scope', '$http', function ($scope, $http) {
@@ -605,7 +625,8 @@ angular.module('tw.styleguide.docs', [])
         'date': '2000-01-01T00:00:00.000Z',
         'checkbox': true,
         'radio': '2',
-        'password': 'qwerty'
+        'password': 'qwerty',
+        'telephone': "+441234567890"
       };
 
       this.refresh = function() {
@@ -687,6 +708,13 @@ angular.module('tw.styleguide.docs', [])
               'name': 'Two'
             }
           ]
+        },
+        {
+          'name': 'Telephone',
+          'key': 'telephone',
+          'type': 'tel',
+          'placeholder': 'Enter...',
+          'width': 'md'
         },
         {
           'name': 'File',

@@ -39,6 +39,11 @@ angular.module('tw.styleguide.docs', [])
       format: "date",
       title: "Date control"
     };
+    this.phoneBasic = {
+      type: "string",
+      format: "phone",
+      title: "Phone control"
+    };
     this.uploadBasic = {
       type: "string",
       format: "base64url",
@@ -86,6 +91,11 @@ angular.module('tw.styleguide.docs', [])
       title: "Password override",
       placeholder: "Choose password..."
     };
+    this.telephoneOverride = {
+      type: "string",
+      control: "tel",
+      title: "Telephone override"
+    };
     this.selectOverride = {
       type: "string",
       title: "Select override",
@@ -98,6 +108,7 @@ angular.module('tw.styleguide.docs', [])
     };
 
     this.override = {
+      telephone: "+441234567890",
       password: "qwerty",
       select: "1"
     };
