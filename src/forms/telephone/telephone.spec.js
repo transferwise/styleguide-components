@@ -55,10 +55,6 @@ describe('Telephone', function() {
       it('should leave number model as it was defined', function() {
         expect($scope.ngModel).toBe('+44123456789');
       });
-      it('should trigger the change handler', function() {
-        setNumberUsingControls(select, input, "+33", '09876543');
-        expect($scope.ngChange).toHaveBeenCalledWith(undefined);
-      });
     });
 
     describe('when a model is passed that could match more than one prefix', function() {
@@ -343,15 +339,6 @@ describe('Telephone', function() {
       });
     });
   });
-
-  function setNumberUsingControls(select, input, prefix, number) {
-    try {
-      setSelectValue(select, prefix);
-      setInputValue(input, number);
-    } catch(ex) {
-      console.log(ex.message);
-    }
-  }
 
   function setInputValue(input, value) {
     input.value = value;
