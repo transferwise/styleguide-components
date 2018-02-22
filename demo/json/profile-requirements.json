@@ -53,6 +53,18 @@
         ]
       },
       {
+        "name": "Telephone",
+        "width": "md",
+        "group": [
+          {
+            "key": "phone",
+            "type": "string",
+            "format": "phone",
+            "required": true
+          }
+        ]
+      },
+      {
         "name": "Address 1",
         "group": [
           {

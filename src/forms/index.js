@@ -14,6 +14,7 @@ import Fieldset from './fieldset/';
 import RequirementsForm from './requirements-form/';
 import Focusable from './focusable/';
 import DefinitionList from './definition-list/';
+import Telephone from './telephone/';
 
 // Deprecated
 import UploadDroppable from './upload-droppable/';
@@ -33,6 +34,6 @@ export default angular.module('tw.styleguide.forms', [
   RequirementsForm,
   Focusable,
   DefinitionList,
-
+  Telephone,
   UploadDroppable
 ]).name;

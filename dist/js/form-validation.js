@@ -963,6 +963,10 @@ function LocaleService() {
     return _this.regex.test(testLocale);
   };
 
+  this.getCountryFromLocale = function (locale) {
+    return _this.isValid(locale) && locale.slice(3, 5);
+  };
+
   function changeCountryToUpperCase(lowerCaseLocale) {
     return lowerCaseLocale.slice(0, 3) + lowerCaseLocale.slice(3, 5).toUpperCase();
   }
@@ -1088,6 +1092,10 @@ function RequirementsService($http) {
       case 'upload':
         field.type = 'string';
         field.format = 'base64url';
+        break;
+      case 'tel':
+        field.type = 'string';
+        field.format = 'phone';
         break;
       default:
     }
@@ -1264,7 +1272,7 @@ function getControlForStringFormat(format) {
     case 'email':
       return 'text'; // 'email'; - not implemented
     case 'phone':
-      return 'text'; // 'tel'; - not implemented
+      return 'tel';
     default:
       return 'text';
   }
@@ -1447,7 +1455,7 @@ function FormValidation(TwDomService) {
         var checkboxContainer = void 0;
         var radioContainer = void 0;
 
-        var controls = form.querySelectorAll('[tw-validation].ng-invalid');
+        var controls = form.querySelectorAll('[tw-validation].ng-invalid, ' + 'tw-telephone.ng-invalid-required, ' + 'tw-telephone.ng-invalid-pattern');
 
         // Shouldn't be necessary, but PhantomJS was complaining
         if (!controls.forEach) {

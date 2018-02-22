@@ -1,0 +1,99 @@
+<h4 id="telephone">TW Telephone</h4>
+<p>A control for inputting telephone numbers.  While the control allows common
+  special characters (spaces, periods, hyphens), these are stripped from the
+  resulting model, which always begins with a '+' and contains the numerals
+  without ornamentation e.g. +1234567890.</p>
+<p>When prefilled with an existing value, the select box will choose the longest
+  matching prefix.  For example, '+1684123456' will select '+1684' (American Samoa),
+  not '+1' (United States).</p>
+<hr/>
+<form>
+<div class="row m-b-3">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label class="control-label" for="telephone">
+        Example phone number control
+      </label>
+      <tw-telephone
+        name="telephone"
+        ng-model="$ctrl.model"
+        ng-change="$ctrl.log($ctrl.model)"
+        ng-required="$ctrl.telephone.required"
+        ng-disabled="$ctrl.telephone.disabled"
+        locale="{{ $ctrl.locale }}"
+        placeholder="{{ $ctrl.placeholder }}"
+        search-placeholder="Prefix">
+      </tw-telephone>
+      <div class="error-messages">
+        <div class="error-required">Required</div>
+        <div class="error-pattern">Invalid characters</div>
+        <div class="error-minlength">Too short</div>
+      </div>
+
+      <docs-status-messages></docs-status-messages>
+    </div>
+    <h5>Configuration</h5>
+<pre>&lt;tw-telephone
+  ng-model="{{ $ctrl.model }}"<span ng-if="$ctrl.telephone.required">
+  ng-required="{{ $ctrl.telephone.required }}"</span><span ng-if="$ctrl.telephone.disabled">
+  ng-disabled="{{ $ctrl.telephone.disabled }}"</span>
+  ng-change="$ctrl.log($ctrl.model)"
+  locale="{{ $ctrl.locale }}"
+  placeholder="{{ $ctrl.placeholder }}"
+  search-placeholder="Prefix"
+  tw-validation /&gt;</pre>
+  </div>
+  <div class="col-md-6">
+    <div class="well">
+      <h5 class="page-header">
+        Edit configuration
+      </h5>
+      <div class="form-group">
+        <label class="control-label">
+          Required?
+        </label>
+        <div class="checkbox">
+          <label>
+            <tw-checkbox ng-model="$ctrl.telephone.required" />
+            Is the control required?
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          Disabled?
+        </label>
+        <div class="checkbox">
+          <label>
+            <tw-checkbox ng-model="$ctrl.telephone.disabled" />
+            Is the control disabled?
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          Placeholder
+        </label>
+        <input class="form-control"
+          ng-model="$ctrl.placeholder" />
+      </div>
+      <div class="form-group" ng-init="$ctrl.locale = 'en-GB';">
+        <label class="control-label">
+          Locale
+        </label>
+        <tw-select
+          options="$ctrl.locales"
+          ng-model="$ctrl.locale"
+        ></tw-select>
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          Model passed
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.model" />
+      </div>
+      <input type="submit" class="btn btn-primary btn-block" value="Submit form" />
+    </div>
+  </div>
+</div>
+</form>

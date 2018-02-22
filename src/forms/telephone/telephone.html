@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-xs-5">
+    <tw-select
+      name="phoneNumberPrefix"
+      options="$ctrl.callingCodes"
+      ng-model="$ctrl.prefix"
+      ng-change="$ctrl.onPrefixChange($ctrl.prefix)"
+      ng-disabled="$ctrl.ngDisabled"
+      ng-focus="$ctrl.onFocus()"
+      ng-blur="$ctrl.onBlur()"
+      placeholder="+"
+      filter="{{ $ctrl.searchPlaceholder }}"
+      dropdown-width="md"
+      hide-note="true"
+    ></tw-select>
+  </div>
+  <div class="col-xs-7">
+    <input type="tel"
+      name="phoneNumber"
+      placeholder="{{ $ctrl.placeholder }}"
+      class="form-control"
+      ng-model="$ctrl.suffix"
+      ng-model-options="{ allowInvalid: true }"
+      ng-change="$ctrl.onSuffixChange()"
+      ng-disabled="$ctrl.ngDisabled"
+      ng-focus="$ctrl.onFocus()"
+      ng-blur="$ctrl.onBlur()" />
+    <div ng-transclude class="error-messages"></div>
+  </div>
+</div>

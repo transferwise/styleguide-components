@@ -25,6 +25,8 @@ function LocaleService() {
 
   this.isValid = testLocale => this.regex.test(testLocale);
 
+  this.getCountryFromLocale = locale => this.isValid(locale) && locale.slice(3, 5);
+
   function changeCountryToUpperCase(lowerCaseLocale) {
     return lowerCaseLocale.slice(0, 3) + lowerCaseLocale.slice(3, 5).toUpperCase();
   }

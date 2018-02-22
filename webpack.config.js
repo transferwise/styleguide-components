@@ -1,6 +1,5 @@
 const path = require('path');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 // Inlines templates
 const htmlLoader = {
@@ -55,7 +54,7 @@ const webpackModule = {
 };
 
 const webpackExternals = [{
-  'angular': 'angular',
+  angular: 'angular',
   'angular-mocks': 'angular-mocks'
 }];
 
@@ -82,7 +81,8 @@ module.exports = [{
   },
   externals: webpackExternals,
   module: webpackModule
-},{
+},
+{
   entry: {
     'dist/js/styleguide-components': './src/index.js',
     'dist/js/styleguide-components.min': './src/index.js',
