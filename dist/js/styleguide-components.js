@@ -5168,7 +5168,6 @@ var TelephoneController = function () {
 
       this.formGroup = this.DomService.getClosestParentByClassName(this.$element[0], 'form-group');
 
-      this.charactersPermitted = /^[0-9\s.-]*$/;
       this.charactersToRemove = /[\s.-]/g;
       this.modelPattern = /^\+[0-9]*$/;
 

@@ -17,7 +17,6 @@ class TelephoneController {
       'form-group'
     );
 
-    this.charactersPermitted = /^[0-9\s.-]*$/;
     this.charactersToRemove = /[\s.-]/g;
     this.modelPattern = /^\+[0-9]*$/;
 
