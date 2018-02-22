@@ -142,6 +142,22 @@
     ng-minlength="$ctrl.ngMinlength"
     ng-maxlength="$ctrl.ngMaxlength" />
 
+  <textarea ng-switch-when="textarea"
+    name="{{$ctrl.name}}"
+    class="form-control"
+    placeholder="{{$ctrl.placeholder}}"
+    ng-model="$ctrl.internalModel"
+    ng-model-options="{ allowInvalid: true }"
+    ng-required="$ctrl.ngRequired"
+    ng-pattern="$ctrl.ngPattern"
+    ng-minlength="$ctrl.ngMinlength"
+    ng-maxlength="$ctrl.ngMaxlength"
+    ng-change="$ctrl.change($ctrl.internalModel)"
+    ng-focus="$ctrl.focus()"
+    ng-blur="$ctrl.blur()"
+    ng-disabled="$ctrl.ngDisabled"
+  ></textarea>
+
   <input ng-switch-default
     name="{{$ctrl.name}}"
     type="text"

@@ -367,7 +367,8 @@ angular.module('tw.styleguide.docs', [])
           { value: 'checkbox', label: 'Checkbox' },
           { value: 'upload', label: 'Upload' },
           { value: 'date', label: 'Date' },
-          { value: 'tel', label: 'Telephone' }
+          { value: 'tel', label: 'Telephone' },
+          { value: 'textarea', label: 'Textarea' }
         ]
       };
       this.log = function (message) { console.log(message); };
@@ -717,12 +718,19 @@ angular.module('tw.styleguide.docs', [])
           'width': 'md'
         },
         {
+          'name': 'Textarea',
+          'key': 'textarea',
+          'type': 'textarea',
+          'width': 'md',
+          'refreshRequirementsOnChange': true
+        },
+        {
           'name': 'File',
           'key': 'file',
           'type': 'upload',
           'width': 'md',
           'refreshRequirementsOnChange': true
-        },
+        }
       ];
     }
   })

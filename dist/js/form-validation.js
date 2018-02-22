@@ -1097,6 +1097,10 @@ function RequirementsService($http) {
         field.type = 'string';
         field.format = 'phone';
         break;
+      case 'textarea':
+        field.type = 'string';
+        field.control = 'textarea';
+        break;
       default:
     }
 
