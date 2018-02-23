@@ -36,46 +36,21 @@ npm run dev
 
 In order to release a new version, here are the steps necessary:
 
-1. **Build your files and commit them**
-
-    Simply running `npm build` will build them, your changes will appear in `/dist`,
-    you should commit both source and distribution files.  This will also set up
-    a watch to reprocess files as you save them.
-
-2. **Run the tests**
-
-    `npm test`
-
-3. **Bump the version in `package.json`**
+1. **Bump the version in `package.json` and add description of the change in `CHANGELOG.md`**
 
     Use semver: http://semver.org
 
-4. **Make a pull request**
+2. **Make a pull request**
 
+    Tests will be run automatically.
     You will need a review from a member of the @transferwise/frontend-guild.
 
-5. **Squash WIP commits and merge**
+3. **Squash WIP commits and merge**
 
     Delete your branch after merging.
 
-6. **Send out a new release**
+4. **Build and release are made automatically on merge**
 
-    Go to https://github.com/transferwise/styleguide-components/releases/new, write a good title and description, ask someone what they think and then release 🚀
-
-7. **Update the documentation**
-
-    To update the version hosted on http://transferwise.github.io/styleguide-components/, run the following inside the styleguide-components directory:
-    If this is your first time:
-    ```
-        git clone git@github.com:transferwise/styleguide-components.git gh-pages
-        cd gh-pages
-        git checkout gh-pages
-    ```
-    Then, for every update: (checking that you are on the branch `gh-pages`)
-    ```
-        grunt (in the root of styleguide-components)
-        cd gh-pages
-        git add .
-        git commit -m "Update docs"
-        git push origin gh-pages
-    ```
+    CircleCI will:
+     - Build the project and publish it to github and npm
+     - Update the documentation available on http://transferwise.github.io/styleguide-components/

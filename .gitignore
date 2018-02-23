@@ -5,11 +5,12 @@
 /build/
 /demo/fonts/
 /demo/lib/
+/dist/
 npm-debug.log
 .env
 .DS_Store
 newrelic_agent.log
-
+yarn.lock
 .idea/
 *.iml
 .gradle/
