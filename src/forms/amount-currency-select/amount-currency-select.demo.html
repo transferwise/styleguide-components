@@ -86,11 +86,14 @@
   ng-change="$ctrl.log('amount input value changed:' + $ctrl.model)"
   currencies="{{ $ctrl.currencySelect }}"
   currency="'{{ $ctrl.currency | uppercase }}'"
-  on-currency-change="$ctrl.log('currency input value changed:' + $ctrl.currency)"<span ng-if="$ctrl.amountCurrencySelect.placeholder">
+  on-currency-change="$ctrl.log('currency input value changed:' + $ctrl.currency)"<span
+    ng-if="$ctrl.amountCurrencySelect.placeholder">
   placeholder="{{ $ctrl.amountCurrencySelect.placeholder }}"</span>
   custom-action-label="{{ $ctrl.amountCurrencySelect.customActionLabel }}"
-  on-custom-action="$ctrl.log('Custom Action Called')"<span ng-if="$ctrl.amountCurrencySelect.currencyFilterPlaceholder">
-  currency-filter-placeholder="{{ $ctrl.amountCurrencySelect.currencyFilterPlaceholder }}"</span><span ng-if="$ctrl.amountCurrencySelect.size !== 'md'">
+  on-custom-action="$ctrl.log('Custom Action Called')"<span
+    ng-if="$ctrl.amountCurrencySelect.currencyFilterPlaceholder">
+  currency-filter-placeholder="{{ $ctrl.amountCurrencySelect.currencyFilterPlaceholder }}"</span><span
+    ng-if="$ctrl.amountCurrencySelect.size !== 'md'">
   size="{{ $ctrl.amountCurrencySelect.size }}"</span><span ng-if="$ctrl.amountCurrencySelect.showLock">
   show-lock="{{$ctrl.amountCurrencySelect.showLock}}"
   locked="{{ $ctrl.amountCurrencySelect.locked }}"

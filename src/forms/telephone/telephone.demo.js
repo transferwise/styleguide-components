@@ -26,7 +26,9 @@ export default angular
         ],
         required: true
       };
-      this.log = function (message) { console.log(`Telephone changed to ${message}`); };
+      this.log = (message) => {
+        console.log(`Telephone changed to ${message}`); // eslint-disable-line
+      };
     },
     template
   }).name;

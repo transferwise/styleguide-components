@@ -29,7 +29,7 @@
           State
         </label>
         <tw-select ng-model="$ctrl.state"
-          options="[{value: null, label: 'Processing'},{value: -1, label: 'Failed'},{value: 0, label: 'Hidden'},{value: 1, label: 'Success'}]">
+          options="$ctrl.processingStates">
         </tw-select>
       </div>
       <div class="form-group" ng-init="$ctrl.size = 'xl'">
@@ -39,7 +39,7 @@
         <tw-select
           ng-required="true"
           ng-model="$ctrl.size"
-          options="[{value: 'xs', label: 'Extra small'},{value: 'sm', label: 'Small'},{value: 'xl', label: 'Extra large'}]">
+          options="$ctrl.sizes">
         </tw-select>
       </div>
     </div>

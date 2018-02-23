@@ -1,6 +1,6 @@
 import angular from 'angular';
-import FormControl from '../dynamic-form-control/';
-import Field from './field.component.js';
+import FormControl from '../form-control/';
+import Field from './field.component';
 import RequirementsService from '../../services/requirements/';
 
 export default angular

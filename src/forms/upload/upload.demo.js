@@ -11,25 +11,25 @@ export default angular
     controller() {
       const $ctrl = this;
 
-      this.onStart = function () {
-        console.log('File upload starting');
+      this.onStart = () => {
+        this.log('File upload starting');
       };
-      this.onSuccess = function () {
-        console.log('File upload complete');
+      this.onSuccess = () => {
+        this.log('File upload complete');
       };
-      this.onFailure = function (error) {
-        console.log('File upload failure');
+      this.onFailure = (error) => {
+        this.log('File upload failure');
         if (error.status === 404) {
           $ctrl.errorMessage = 'Bad URL';
         } else {
           $ctrl.errorMessage = 'Unknown error';
         }
       };
-      this.onCancel = function () {
-        console.log('File upload cancelled');
+      this.onCancel = () => {
+        this.log('File upload cancelled');
       };
 
-      this.makeFancy = function () {
+      this.makeFancy = () => {
         $ctrl.label = 'Front of your ID document';
         $ctrl.processingText = 'Processing...';
         $ctrl.successText = 'Upload complete!';
@@ -44,7 +44,21 @@ export default angular
         { value: 'audio/*', label: 'Audio (audio/*)' }
       ];
 
-      this.log = function (message) { console.log(message); };
+      this.sizes = [
+        { value: 'sm', label: 'Small' },
+        { value: 'md', label: 'Medium' },
+        { value: 'lg', label: 'Large' }
+      ];
+
+      this.icons = [
+        { value: 'upload', label: 'Upload' },
+        { value: 'id', label: 'ID' },
+        { value: 'pdf', label: 'PDF' }
+      ];
+
+      this.log = (message) => {
+        console.log(message); // eslint-disable-line
+      };
     },
     template
   }).name;

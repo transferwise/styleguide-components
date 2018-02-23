@@ -4,7 +4,7 @@ import template from './requirements-form.demo.html';
 export default angular
   .module('tw.styleguide.demo.forms.requirements-form', [])
   .component('twRequirementsFormDocs', {
-    controller: ['$scope', '$http', function ($scope, $http) {
+    controller: ['$scope', '$http', ($scope, $http) => {
       const $ctrl = this;
       $ctrl.types = [
         { value: 'account', label: 'Account' },
@@ -21,8 +21,8 @@ export default angular
 
       $ctrl.model.firstName = '01010101010';
 
-      $ctrl.onRefreshRequirements = function () {
-        console.log('on refresh requirements');
+      $ctrl.onRefreshRequirements = () => {
+        console.log('on refresh requirements'); // eslint-disable-line
       };
 
       $scope.$watch('$ctrl.type', (newVal) => {

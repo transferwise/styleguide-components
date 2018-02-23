@@ -19,17 +19,25 @@ export default angular
     },
     controller() {
       this.isValid = false;
-      this.onFieldFocus = function (key, field) {
-        this.onFieldFocusHandler && this.onFieldFocusHandler({ key, field });
+      this.onFieldFocus = (key, field) => {
+        if (this.onFieldFocusHandler) {
+          this.onFieldFocusHandler({ key, field });
+        }
       };
-      this.onFieldBlur = function (key, field) {
-        this.onFieldBlurHandler && this.onFieldBlurHandler({ key, field });
+      this.onFieldBlur = (key, field) => {
+        if (this.onFieldBlurHandler) {
+          this.onFieldBlurHandler({ key, field });
+        }
       };
-      this.onFieldChange = function (value, key, field) {
-        this.onFieldChangeHandler && this.onFieldChangeHandler({ value, key, field });
+      this.onFieldChange = (value, key, field) => {
+        if (this.onFieldChangeHandler) {
+          this.onFieldChangeHandler({ value, key, field });
+        }
       };
-      this.onModelChange = function (model) {
-        this.onModelChangeHandler && this.onModelChangeHandler({ model });
+      this.onModelChange = (model) => {
+        if (this.onModelChangeHandler) {
+          this.onModelChangeHandler({ model });
+        }
       };
     },
     template: `
@@ -65,14 +73,14 @@ export default angular
   }).name;
 
 function fieldsetDocsController() {
-  this.onFieldChange = function (value, key) {
-    console.log(`change: ${key} to ${value}`);
+  this.onFieldChange = (value, key) => {
+    this.log(`change: ${key} to ${value}`);
   };
-  this.refresh = function () {
-    console.log('onRefreshRequirements');
+  this.refresh = () => {
+    this.log('onRefreshRequirements');
   };
-  this.log = function (message) {
-    console.log(message);
+  this.log = (message) => {
+    console.log(message); // eslint-disable-line
   };
 
   this.fieldsetBasic = {

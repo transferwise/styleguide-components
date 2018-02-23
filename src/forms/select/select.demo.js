@@ -139,7 +139,9 @@ export default angular
         { value: 'lg', label: 'Large button' }
       ];
 
-      this.log = function (message) { console.log(message); };
+      this.log = (message) => {
+        console.log(message); // eslint-disable-line
+      };
     },
     template
   }).name;

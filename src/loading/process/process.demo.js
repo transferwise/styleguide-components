@@ -5,7 +5,21 @@ export default angular
   .module('tw.styleguide.demo.loading.process', [])
   .component('twProcessDocs', {
     controller() {
-      this.log = function (message) { console.log(message); };
+      this.log = (message) => {
+        console.log(message); // eslint-disable-line
+      };
+      this.processingStates = [
+        { value: null, label: 'Processing' },
+        { value: -1, label: 'Failed' },
+        { value: 0, label: 'Hidden' },
+        { value: 1, label: 'Success' }
+      ];
+
+      this.sizes = [
+        { value: 'xs', label: 'Extra small' },
+        { value: 'sm', label: 'Small' },
+        { value: 'xl', label: 'Extra large' }
+      ];
     },
     template
   }).name;

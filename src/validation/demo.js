@@ -14,7 +14,9 @@ export default angular.module('tw.styleguide.demo.validation', [])
         { value: 2, label: 'Two' },
         { value: 3, label: 'Three' }
       ];
-      this.log = function (msg) { console.log(msg); };
+      this.log = (message) => {
+        console.log(message); // eslint-disable-line
+      };
     },
     template
   }).name;

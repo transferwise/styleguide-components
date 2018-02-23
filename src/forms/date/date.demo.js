@@ -11,7 +11,9 @@ export default angular
     },
     controller() {
       this.date = { required: true };
-      this.log = function (message) { console.log(message); };
+      this.log = (message) => {
+        console.log(message); // eslint-disable-line
+      };
     },
     template
   }).name;

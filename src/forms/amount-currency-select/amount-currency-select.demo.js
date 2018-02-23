@@ -39,7 +39,9 @@ export default angular
         lockTooltipContent: 'some content'
       };
 
-      this.log = function (message) { console.log(message); };
+      this.log = (message) => {
+        console.log(message); // eslint-disable-line
+      };
     },
     template
   }).name;

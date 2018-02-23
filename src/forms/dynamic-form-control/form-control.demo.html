@@ -58,21 +58,17 @@
 
     <h5>Configuration</h5>
 <pre>&lt;tw-form-control
-  type="{{$ctrl.dynamic.type}}"<span
-    ng-if="$ctrl.dynamic.type !== 'radio' && $ctrl.dynamic.type !== 'date'">
-  placeholder="{{$ctrl.dynamic.placeholder}}"</span><span
-    ng-if="$ctrl.dynamic.type === 'radio' || $ctrl.dynamic.type === 'select'">
+  type="{{$ctrl.dynamic.type}}"<span ng-if="$ctrl.dynamic.type !== 'radio' && $ctrl.dynamic.type !== 'date'">
+  placeholder="{{$ctrl.dynamic.placeholder}}"</span><span ng-if="$ctrl.dynamic.type === 'radio' || $ctrl.dynamic.type === 'select'">
   options="{{$ctrl.dynamic.options}}"</span><span ng-if="$ctrl.dynamic.type === 'date'">
   locale="{{$ctrl.dynamic.locale}}"</span>
   ng-model="{{$ctrl.model}}"<span ng-if="$ctrl.dynamic.required">
   ng-required="{{$ctrl.dynamic.required}}"</span><span ng-if="$ctrl.dynamic.disabled">
-  ng-disabled="{{$ctrl.dynamic.disabled}}"</span><span ng-if="$ctrl.dynamic.type === 'text'"><span
-    ng-if="$ctrl.dynamic.minlength">
+  ng-disabled="{{$ctrl.dynamic.disabled}}"</span><span ng-if="$ctrl.dynamic.type === 'text'"><span ng-if="$ctrl.dynamic.minlength">
   ng-minlength="{{$ctrl.dynamic.minlength}}"</span><span ng-if="$ctrl.dynamic.maxlength">
   ng-maxlength="{{$ctrl.dynamic.maxlength}}"</span><span ng-if="$ctrl.dynamic.pattern">
-  ng-pattern="{{$ctrl.dynamic.pattern}}"</span></span><span
-    ng-if="$ctrl.dynamic.type === 'number' || $ctrl.dynamic.type === 'date'"><span
-    ng-if="$ctrl.dynamic.min">
+  ng-pattern="{{$ctrl.dynamic.pattern}}"</span><span
+    ng-if="$ctrl.dynamic.type === 'number' || $ctrl.dynamic.type === 'date'"><span ng-if="$ctrl.dynamic.min">
   ng-min="{{$ctrl.dynamic.min}}"</span><span ng-if="$ctrl.dynamic.max">
   ng-max="{{$ctrl.dynamic.max}}"</span></span>
   ng-change='...'

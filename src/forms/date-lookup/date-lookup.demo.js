@@ -10,7 +10,15 @@ export default angular
       sizes: '<'
     },
     controller() {
-      this.log = function (message) { console.log(message); };
+      this.log = (message) => {
+        console.log(message); // eslint-disable-line
+      };
+
+      this.sizes = [
+        { value: 'sm', label: 'Small' },
+        { value: '', label: 'Medium' },
+        { value: 'lg', label: 'Large' }
+      ];
     },
     template
   }).name;

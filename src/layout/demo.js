@@ -1,7 +1,7 @@
 import angular from 'angular';
 
-import Affix from './affix/affix.demo.js';
-import Cards from './cards/cards.demo.js';
+import Affix from './affix/affix.demo';
+import Cards from './cards/cards.demo';
 
 export default angular.module('tw.styleguide.demo.layout', [
   Affix,

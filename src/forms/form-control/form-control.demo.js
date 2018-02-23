@@ -29,22 +29,22 @@ export default angular
           { value: 'tel', label: 'Telephone' }
         ]
       };
-      this.log = function (message) { console.log(message); };
+      this.log = (message) => {
+        console.log(message); // eslint-disable-line
+      };
     },
     template
   })
-  .directive('validateRegexp', ['$q', function ($q) {
-    return {
-      require: 'ngModel',
-      link(scope, element, attrs, ngModel) {
-        ngModel.$asyncValidators.async = function () { // (modelValue, viewValue) {
-          try {
-            // const reg = new RegExp(viewValue);
-            return $q.when(true);
-          } catch (error) {
-            return $q.reject(false);
-          }
-        };
-      }
-    };
-  }]).name;
+  .directive('validateRegexp', ['$q', $q => ({
+    require: 'ngModel',
+    link(scope, element, attrs, ngModel) {
+      ngModel.$asyncValidators.async = () => { // (modelValue, viewValue) {
+        try {
+          // const reg = new RegExp(viewValue);
+          return $q.when(true);
+        } catch (error) {
+          return $q.reject(false);
+        }
+      };
+    }
+  })]).name;

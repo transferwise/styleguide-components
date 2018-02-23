@@ -19,14 +19,20 @@ export default angular
       onChangeHandler: '&?onChange'
     },
     controller() {
-      this.onFocus = function () {
-        this.onFocusHandler && this.onFocusHandler();
+      this.onFocus = () => {
+        if (this.onFocusHandler) {
+          this.onFocusHandler();
+        }
       };
-      this.onBlur = function () {
-        this.onBlurHandler && this.onBlurHandler();
+      this.onBlur = () => {
+        if (this.onBlurHandler) {
+          this.onBlurHandler();
+        }
       };
-      this.onChange = function (newValue) {
-        this.onChangeHandler && this.onChangeHandler({ value: newValue });
+      this.onChange = (newValue) => {
+        if (this.onChangeHandler) {
+          this.onChangeHandler({ value: newValue });
+        }
       };
     },
     template: `
@@ -60,8 +66,8 @@ export default angular
 
 
 function fieldDocsController() {
-  this.log = function (message) {
-    console.log(message);
+  this.log = (message) => {
+    console.log(message); // eslint-disable-line
   };
 
   // Basic types

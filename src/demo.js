@@ -14,11 +14,13 @@ const module = angular.module('tw.styleguide.demo', [
   Help
 ]);
 
-module.config(['$compileProvider', function ($compileProvider) {
+module.config(['$compileProvider', ($compileProvider) => {
   $compileProvider.debugInfoEnabled(false);
 }])
-  .controller('PageController', function () {
-    this.log = function (message) { console.log(message); };
+  .controller('PageController', () => {
+    this.log = (message) => {
+      console.log(message); // eslint-disable-line
+    };
 
     this.model = {
       components: {}

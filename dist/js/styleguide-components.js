@@ -166,7 +166,7 @@ var _currency = __webpack_require__(2);
 
 var _currency2 = _interopRequireDefault(_currency);
 
-var _locale = __webpack_require__(22);
+var _locale = __webpack_require__(21);
 
 var _locale2 = _interopRequireDefault(_locale);
 
@@ -270,11 +270,11 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _textFormat = __webpack_require__(36);
+var _textFormat = __webpack_require__(35);
 
 var _textFormat2 = _interopRequireDefault(_textFormat);
 
-var _dateFormat = __webpack_require__(33);
+var _dateFormat = __webpack_require__(32);
 
 var _dateFormat2 = _interopRequireDefault(_dateFormat);
 
@@ -282,7 +282,7 @@ var _numberFormat = __webpack_require__(12);
 
 var _numberFormat2 = _interopRequireDefault(_numberFormat);
 
-var _currencyFormat = __webpack_require__(30);
+var _currencyFormat = __webpack_require__(29);
 
 var _currencyFormat2 = _interopRequireDefault(_currencyFormat);
 
@@ -309,7 +309,7 @@ var _checkbox = __webpack_require__(13);
 
 var _checkbox2 = _interopRequireDefault(_checkbox);
 
-var _radio = __webpack_require__(19);
+var _radio = __webpack_require__(18);
 
 var _radio2 = _interopRequireDefault(_radio);
 
@@ -317,7 +317,7 @@ var _select = __webpack_require__(5);
 
 var _select2 = _interopRequireDefault(_select);
 
-var _upload = __webpack_require__(20);
+var _upload = __webpack_require__(19);
 
 var _upload2 = _interopRequireDefault(_upload);
 
@@ -325,27 +325,27 @@ var _date = __webpack_require__(14);
 
 var _date2 = _interopRequireDefault(_date);
 
-var _dateLookup = __webpack_require__(52);
+var _dateLookup = __webpack_require__(51);
 
 var _dateLookup2 = _interopRequireDefault(_dateLookup);
 
-var _currencyInput = __webpack_require__(49);
+var _currencyInput = __webpack_require__(48);
 
 var _currencyInput2 = _interopRequireDefault(_currencyInput);
 
-var _amountCurrencySelect = __webpack_require__(44);
+var _amountCurrencySelect = __webpack_require__(43);
 
 var _amountCurrencySelect2 = _interopRequireDefault(_amountCurrencySelect);
 
-var _formControl = __webpack_require__(159);
+var _formControl = __webpack_require__(66);
 
 var _formControl2 = _interopRequireDefault(_formControl);
 
-var _field = __webpack_require__(16);
+var _field = __webpack_require__(15);
 
 var _field2 = _interopRequireDefault(_field);
 
-var _fieldset = __webpack_require__(17);
+var _fieldset = __webpack_require__(16);
 
 var _fieldset2 = _interopRequireDefault(_fieldset);
 
@@ -353,11 +353,11 @@ var _requirementsForm = __webpack_require__(69);
 
 var _requirementsForm2 = _interopRequireDefault(_requirementsForm);
 
-var _focusable = __webpack_require__(66);
+var _focusable = __webpack_require__(63);
 
 var _focusable2 = _interopRequireDefault(_focusable);
 
-var _definitionList = __webpack_require__(57);
+var _definitionList = __webpack_require__(56);
 
 var _definitionList2 = _interopRequireDefault(_definitionList);
 
@@ -448,15 +448,15 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _numberFormat = __webpack_require__(34);
+var _numberFormat = __webpack_require__(33);
 
 var _numberFormat2 = _interopRequireDefault(_numberFormat);
 
-var _numberFormat3 = __webpack_require__(35);
+var _numberFormat3 = __webpack_require__(34);
 
 var _numberFormat4 = _interopRequireDefault(_numberFormat3);
 
-var _locale = __webpack_require__(22);
+var _locale = __webpack_require__(21);
 
 var _locale2 = _interopRequireDefault(_locale);
 
@@ -479,7 +479,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _checkboxComponent = __webpack_require__(45);
+var _checkboxComponent = __webpack_require__(44);
 
 var _checkboxComponent2 = _interopRequireDefault(_checkboxComponent);
 
@@ -506,7 +506,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _dateComponent = __webpack_require__(53);
+var _dateComponent = __webpack_require__(52);
 
 var _dateComponent2 = _interopRequireDefault(_dateComponent);
 
@@ -533,34 +533,21 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _select = __webpack_require__(5);
+var _formControl = __webpack_require__(66);
 
-var _select2 = _interopRequireDefault(_select);
+var _formControl2 = _interopRequireDefault(_formControl);
 
-var _radio = __webpack_require__(19);
+var _field = __webpack_require__(57);
 
-var _radio2 = _interopRequireDefault(_radio);
+var _field2 = _interopRequireDefault(_field);
 
-var _checkbox = __webpack_require__(13);
+var _requirements = __webpack_require__(7);
 
-var _checkbox2 = _interopRequireDefault(_checkbox);
-
-var _date = __webpack_require__(14);
-
-var _date2 = _interopRequireDefault(_date);
-
-var _upload = __webpack_require__(20);
-
-var _upload2 = _interopRequireDefault(_upload);
-
-var _formControlComponent = __webpack_require__(58);
-
-var _formControlComponent2 = _interopRequireDefault(_formControlComponent);
+var _requirements2 = _interopRequireDefault(_requirements);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.forms.form-control', [_select2.default, _radio2.default, _checkbox2.default, _date2.default, _upload2.default]).component('twFormControl', _formControlComponent2.default).component('twDynamicFormControl', _formControlComponent2.default) // Deprecated
-.name;
+exports.default = _angular2.default.module('tw.styleguide.forms.field', [_formControl2.default, _requirements2.default]).component('twField', _field2.default).name;
 
 /***/ }),
 /* 16 */
@@ -577,42 +564,11 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _dynamicFormControl = __webpack_require__(15);
-
-var _dynamicFormControl2 = _interopRequireDefault(_dynamicFormControl);
-
-var _fieldComponent = __webpack_require__(60);
-
-var _fieldComponent2 = _interopRequireDefault(_fieldComponent);
-
-var _requirements = __webpack_require__(7);
-
-var _requirements2 = _interopRequireDefault(_requirements);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _angular2.default.module('tw.styleguide.forms.field', [_dynamicFormControl2.default, _requirements2.default]).component('twField', _fieldComponent2.default).name;
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _angular = __webpack_require__(0);
-
-var _angular2 = _interopRequireDefault(_angular);
-
-var _field = __webpack_require__(16);
+var _field = __webpack_require__(15);
 
 var _field2 = _interopRequireDefault(_field);
 
-var _fieldsetComponent = __webpack_require__(62);
+var _fieldsetComponent = __webpack_require__(59);
 
 var _fieldsetComponent2 = _interopRequireDefault(_fieldsetComponent);
 
@@ -625,7 +581,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.forms.fieldset', [_field2.default, _requirements2.default]).component('twFieldset', _fieldsetComponent2.default).name;
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -658,7 +614,7 @@ FocusableController.$inject = ['$element', 'TwDomService'];
 exports.default = FocusableController;
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -685,7 +641,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.forms.radio', [_dom2.default]).component('twRadio', _radioComponent2.default).name;
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -712,7 +668,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.forms.upload', []).directive('twFileInput', _fileInputDirective2.default).component('twUpload', _uploadComponent2.default).name;
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -735,7 +691,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.navigation.tabs', []).component('twTabs', _tabsComponent2.default).name;
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -758,7 +714,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.services.locale', []).service('TwLocaleService', _localeService2.default).name;
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -791,7 +747,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.form-components', [_forms2.default, _loading2.default, _services2.default]).name; /* This module is deprecated, but in use in several places */
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -822,7 +778,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.form-validation', [_validation2.default, _services2.default]).name;
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -849,7 +805,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.help', [_popOver2.default, _toolTip2.default]).name;
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -876,7 +832,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.layout', [_affix2.default, _cards2.default]).name;
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -890,7 +846,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _tabs = __webpack_require__(21);
+var _tabs = __webpack_require__(20);
 
 var _tabs2 = _interopRequireDefault(_tabs);
 
@@ -899,7 +855,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.navigation', [_tabs2.default]).name;
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -927,7 +883,7 @@ var CurrencyFormat = {
 exports.default = CurrencyFormat;
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -960,7 +916,7 @@ CurrencyFormatFilter.$inject = ['$filter', 'TwCurrencyService', 'twNumberFormatF
 exports.default = CurrencyFormatFilter;
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -974,11 +930,11 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _currencyFormat = __webpack_require__(28);
+var _currencyFormat = __webpack_require__(27);
 
 var _currencyFormat2 = _interopRequireDefault(_currencyFormat);
 
-var _currencyFormat3 = __webpack_require__(29);
+var _currencyFormat3 = __webpack_require__(28);
 
 var _currencyFormat4 = _interopRequireDefault(_currencyFormat3);
 
@@ -995,7 +951,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.formatting.currency', [_currency2.default, _numberFormat2.default]).component('twCurrencyFormat', _currencyFormat2.default).filter('twCurrencyFormat', _currencyFormat4.default).name;
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1023,7 +979,7 @@ var DateDisplay = {
 exports.default = DateDisplay;
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1062,7 +1018,7 @@ DateFormatFilter.$inject = ['TwDateService'];
 exports.default = DateFormatFilter;
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1076,11 +1032,11 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _dateFormat = __webpack_require__(31);
+var _dateFormat = __webpack_require__(30);
 
 var _dateFormat2 = _interopRequireDefault(_dateFormat);
 
-var _dateFormat3 = __webpack_require__(32);
+var _dateFormat3 = __webpack_require__(31);
 
 var _dateFormat4 = _interopRequireDefault(_dateFormat3);
 
@@ -1089,7 +1045,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.formatting.date', []).component('twDateFormat', _dateFormat2.default).filter('twDateFormat', _dateFormat4.default).name;
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1117,7 +1073,7 @@ var NumberDisplay = {
 exports.default = NumberDisplay;
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1165,7 +1121,7 @@ NumberFormatFilter.$inject = ['TwLocaleService'];
 exports.default = NumberFormatFilter;
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1179,19 +1135,19 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _undoStackService = __webpack_require__(41);
+var _undoStackService = __webpack_require__(40);
 
 var _undoStackService2 = _interopRequireDefault(_undoStackService);
 
-var _textFormatService = __webpack_require__(40);
+var _textFormatService = __webpack_require__(39);
 
 var _textFormatService2 = _interopRequireDefault(_textFormatService);
 
-var _textFormatDirective = __webpack_require__(38);
+var _textFormatDirective = __webpack_require__(37);
 
 var _textFormatDirective2 = _interopRequireDefault(_textFormatDirective);
 
-var _textFormatFilter = __webpack_require__(39);
+var _textFormatFilter = __webpack_require__(38);
 
 var _textFormatFilter2 = _interopRequireDefault(_textFormatFilter);
 
@@ -1200,7 +1156,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.formatting.text-format', []).service('TwUndoStackFactory', _undoStackService2.default).service('TwTextFormatService', _textFormatService2.default).directive('twTextFormat', _textFormatDirective2.default).filter('twTextFormat', _textFormatFilter2.default).name;
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1619,7 +1575,7 @@ TextFormatController.$inject = ['$element', '$timeout', '$scope', 'TwTextFormatS
 exports.default = TextFormatController;
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1629,7 +1585,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _textFormatController = __webpack_require__(37);
+var _textFormatController = __webpack_require__(36);
 
 var _textFormatController2 = _interopRequireDefault(_textFormatController);
 
@@ -1652,7 +1608,7 @@ function TextFormat() {
 exports.default = TextFormat;
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1679,7 +1635,7 @@ TextFormatFilter.$inject = ['TwTextFormatService'];
 exports.default = TextFormatFilter;
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1797,7 +1753,7 @@ function TextFormatService() {
 exports.default = TextFormatService;
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1854,7 +1810,7 @@ function UndoStack() {
 exports.default = UndoStackFactory;
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1864,7 +1820,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _amountCurrencySelectController = __webpack_require__(43);
+var _amountCurrencySelectController = __webpack_require__(42);
 
 var _amountCurrencySelectController2 = _interopRequireDefault(_amountCurrencySelectController);
 
@@ -1914,7 +1870,7 @@ var AmountCurrencySelect = {
 exports.default = AmountCurrencySelect;
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2025,7 +1981,7 @@ AmountCurrencySelectController.$inject = ['$element', '$scope', '$timeout', 'TwC
 exports.default = AmountCurrencySelectController;
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2043,7 +1999,7 @@ var _select = __webpack_require__(5);
 
 var _select2 = _interopRequireDefault(_select);
 
-var _amountCurrencySelectComponent = __webpack_require__(42);
+var _amountCurrencySelectComponent = __webpack_require__(41);
 
 var _amountCurrencySelectComponent2 = _interopRequireDefault(_amountCurrencySelectComponent);
 
@@ -2056,7 +2012,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.forms.amount-currency-select', [_select2.default, _currency2.default]).component('twAmountCurrencySelect', _amountCurrencySelectComponent2.default).name;
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2066,7 +2022,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _checkboxController = __webpack_require__(46);
+var _checkboxController = __webpack_require__(45);
 
 var _checkboxController2 = _interopRequireDefault(_checkboxController);
 
@@ -2095,7 +2051,7 @@ var Checkbox = {
 exports.default = Checkbox;
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2280,7 +2236,7 @@ CheckboxController.$inject = ['$scope', '$element', 'TwDomService'];
 exports.default = CheckboxController;
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2290,7 +2246,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _currencyInputController = __webpack_require__(48);
+var _currencyInputController = __webpack_require__(47);
 
 var _currencyInputController2 = _interopRequireDefault(_currencyInputController);
 
@@ -2327,7 +2283,7 @@ var CurrencyInput = {
 exports.default = CurrencyInput;
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2417,7 +2373,7 @@ CurrencyInputController.$inject = ['$element', '$scope', '$timeout', 'TwCurrency
 exports.default = CurrencyInputController;
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2431,7 +2387,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _currencyInputComponent = __webpack_require__(47);
+var _currencyInputComponent = __webpack_require__(46);
 
 var _currencyInputComponent2 = _interopRequireDefault(_currencyInputComponent);
 
@@ -2444,7 +2400,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.forms.currency-input', [_currency2.default]).component('twCurrencyInput', _currencyInputComponent2.default).name;
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2454,7 +2410,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _dateLookupController = __webpack_require__(51);
+var _dateLookupController = __webpack_require__(50);
 
 var _dateLookupController2 = _interopRequireDefault(_dateLookupController);
 
@@ -2488,7 +2444,7 @@ var DateLookup = {
 exports.default = DateLookup;
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2986,7 +2942,7 @@ DateLookupController.$inject = ['$element', '$scope', '$timeout', 'TwDateService
 exports.default = DateLookupController;
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3000,7 +2956,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _dateLookupComponent = __webpack_require__(50);
+var _dateLookupComponent = __webpack_require__(49);
 
 var _dateLookupComponent2 = _interopRequireDefault(_dateLookupComponent);
 
@@ -3017,7 +2973,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.forms.date-lookup', [_date2.default, _dom2.default]).component('twDateLookup', _dateLookupComponent2.default).name;
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3027,7 +2983,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _dateController = __webpack_require__(54);
+var _dateController = __webpack_require__(53);
 
 var _dateController2 = _interopRequireDefault(_dateController);
 
@@ -3062,7 +3018,7 @@ var DateControl = {
 exports.default = DateControl;
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3386,7 +3342,7 @@ DateController.$inject = ['$element', '$log', '$scope', 'TwDateService'];
 exports.default = DateController;
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3396,7 +3352,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _definitionListController = __webpack_require__(56);
+var _definitionListController = __webpack_require__(55);
 
 var _definitionListController2 = _interopRequireDefault(_definitionListController);
 
@@ -3421,7 +3377,7 @@ var DefinitionList = {
 exports.default = DefinitionList;
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3489,7 +3445,7 @@ DefinitionListController.$inject = ['TwRequirementsService'];
 exports.default = DefinitionListController;
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3503,7 +3459,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _definitionListComponent = __webpack_require__(55);
+var _definitionListComponent = __webpack_require__(54);
 
 var _definitionListComponent2 = _interopRequireDefault(_definitionListComponent);
 
@@ -3516,6 +3472,46 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.requirements.definition-list', [_formatting2.default]).component('twDefinitionList', _definitionListComponent2.default).name;
 
 /***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _fieldController = __webpack_require__(58);
+
+var _fieldController2 = _interopRequireDefault(_fieldController);
+
+var _field = __webpack_require__(124);
+
+var _field2 = _interopRequireDefault(_field);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Field = {
+  controller: _fieldController2.default,
+  template: _field2.default,
+  bindings: {
+    name: '@',
+    model: '=',
+    initialField: '<field',
+    uploadOptions: '<',
+    locale: '@',
+    changeHandler: '&?onChange',
+    focusHandler: '&?onFocus',
+    blurHandler: '&?onBlur',
+    errorMessage: '<',
+    warningMessage: '<'
+  }
+};
+
+exports.default = Field;
+
+/***/ }),
 /* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3526,11 +3522,354 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _formControlController = __webpack_require__(59);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var FieldController = function () {
+  function FieldController(RequirementsService) {
+    _classCallCheck(this, FieldController);
+
+    this.RequirementsService = RequirementsService;
+  }
+
+  _createClass(FieldController, [{
+    key: '$onChanges',
+    value: function $onChanges(changes) {
+      if (changes.initialField) {
+        this.field = copyJSON(this.initialField);
+        this.control = this.field.control ? this.field.control : this.RequirementsService.getControlType(changes.initialField.currentValue);
+
+        // TODO we should probably do this at fieldset level, so the model is available
+        if (this.field.valuesAsync) {
+          this.RequirementsService.prepValuesAsync(this.field, {});
+        }
+      }
+    }
+  }, {
+    key: 'onFocus',
+    value: function onFocus() {
+      if (this.focusHandler) {
+        this.focusHandler();
+      }
+    }
+  }, {
+    key: 'onBlur',
+    value: function onBlur() {
+      if (this.blurHandler) {
+        this.blurHandler();
+      }
+    }
+  }, {
+    key: 'onChange',
+    value: function onChange(newValue) {
+      if (this.changeHandler) {
+        this.changeHandler({ value: newValue });
+      }
+      if (this.errorMessage) {
+        delete this.errorMessage;
+      }
+    }
+
+    // eslint-disable-next-line
+
+  }, {
+    key: 'sizeOf',
+    value: function sizeOf(obj) {
+      return obj ? Object.keys(obj).length : 0;
+    }
+
+    // eslint-disable-next-line
+
+  }, {
+    key: 'isFeedbackDetached',
+    value: function isFeedbackDetached(controlType) {
+      if (controlType === 'date' || controlType === 'file' || controlType === 'radio' || controlType === 'tel') {
+        return true;
+      }
+      return false;
+    }
+  }]);
+
+  return FieldController;
+}();
+
+function copyJSON(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
+
+FieldController.$inject = ['TwRequirementsService'];
+
+exports.default = FieldController;
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _fieldsetController = __webpack_require__(60);
+
+var _fieldsetController2 = _interopRequireDefault(_fieldsetController);
+
+var _fieldset = __webpack_require__(125);
+
+var _fieldset2 = _interopRequireDefault(_fieldset);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Fieldset = {
+  controller: _fieldsetController2.default,
+  template: _fieldset2.default,
+  bindings: {
+    model: '=',
+    initialFields: '<fields',
+    uploadOptions: '<',
+    locale: '@',
+    title: '@',
+    description: '@',
+    onModelChange: '&?',
+    onRefreshRequirements: '&?',
+    onFieldFocus: '&?',
+    onFieldBlur: '&?',
+    onFieldChange: '&?',
+    validationMessages: '<',
+    errorMessages: '<',
+    isValid: '=?',
+    narrow: '<'
+  }
+};
+
+exports.default = Fieldset;
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var FieldsetController = function () {
+  function FieldsetController(TwRequirementsService, $scope, $timeout) {
+    _classCallCheck(this, FieldsetController);
+
+    this.RequirementsService = TwRequirementsService;
+    this.$scope = $scope;
+    this.$timeout = $timeout;
+  }
+
+  _createClass(FieldsetController, [{
+    key: '$onInit',
+    value: function $onInit() {
+      var _this = this;
+
+      if (!this.model) {
+        this.model = {};
+      }
+
+      if (!this.validationMessages) {
+        this.validationMessages = {
+          required: 'Required',
+          pattern: 'Incorrect format',
+          minimum: 'The value is too low',
+          maximum: 'The value is too high',
+          minlength: 'The value is too short',
+          maxlength: 'The value is too long'
+        };
+      }
+
+      this.$scope.$watch('twFieldset.$valid', function (validity) {
+        _this.isValid = validity;
+      });
+
+      // TODO can we add asyncvalidator here? - prob not
+    }
+  }, {
+    key: '$onChanges',
+    value: function $onChanges(changes) {
+      var fieldsChanged = changes.initialFields;
+      if (fieldsChanged) {
+        if (!_angular2.default.equals(fieldsChanged.currentValue, fieldsChanged.previousValue)) {
+          this.fields = this.RequirementsService.prepFields(fieldsChanged.currentValue, this.model, this.validationMessages);
+        }
+      }
+    }
+  }, {
+    key: 'fieldFocus',
+    value: function fieldFocus(key, field) {
+      if (this.onFieldFocus) {
+        this.onFieldFocus({ key: key, field: field });
+      }
+    }
+  }, {
+    key: 'fieldBlur',
+    value: function fieldBlur(key, field) {
+      if (this.onFieldBlur) {
+        this.onFieldBlur({ key: key, field: field });
+      }
+      if (field.refreshRequirementsOnChange && this.onRefreshRequirements) {
+        this.onRefreshRequirements();
+      }
+    }
+  }, {
+    key: 'fieldChange',
+    value: function fieldChange(value, key, field) {
+      var _this2 = this;
+
+      if (typeof value === 'undefined') {
+        delete this.model[key];
+      }
+      if (this.onFieldChange) {
+        this.onFieldChange({ value: value, key: key, field: field });
+      }
+
+      if (controlRefreshesOnChange(field.control) && field.refreshRequirementsOnChange && this.onRefreshRequirements) {
+        this.onRefreshRequirements();
+      }
+
+      // We remove custom error messages on change, as they're no longer relevant
+      if (this.errorMessages && this.errorMessages[key]) {
+        delete this.errorMessages[key];
+      }
+
+      // Delay so model can update
+      this.$timeout(function () {
+        if (_this2.onModelChange) {
+          _this2.onModelChange({ model: _this2.model });
+        }
+      });
+    }
+  }]);
+
+  return FieldsetController;
+}();
+
+function controlRefreshesOnChange(control) {
+  return control === 'select' || control === 'checkbox' || control === 'radio' || control === 'date' || control === 'upload';
+}
+
+FieldsetController.$inject = ['TwRequirementsService', '$scope', '$timeout'];
+
+exports.default = FieldsetController;
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _focusableController = __webpack_require__(17);
+
+var _focusableController2 = _interopRequireDefault(_focusableController);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Focusable() {
+  return {
+    restrict: 'A',
+    controller: _focusableController2.default
+  };
+}
+
+exports.default = Focusable;
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _focusableController = __webpack_require__(17);
+
+var _focusableController2 = _interopRequireDefault(_focusableController);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function FormControlFocus() {
+  return {
+    restrict: 'C',
+    controller: _focusableController2.default
+  };
+} // This directive provide backwards compatibility
+// It should no longer be necessary when browsers support :focus-within
+exports.default = FormControlFocus;
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _focusableDirective = __webpack_require__(61);
+
+var _focusableDirective2 = _interopRequireDefault(_focusableDirective);
+
+var _formControlDirective = __webpack_require__(62);
+
+var _formControlDirective2 = _interopRequireDefault(_formControlDirective);
+
+var _dom = __webpack_require__(1);
+
+var _dom2 = _interopRequireDefault(_dom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.styleguide.forms.focusable', [_dom2.default]).directive('twFocusable', _focusableDirective2.default).directive('formControl', _formControlDirective2.default).name;
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _formControlController = __webpack_require__(65);
 
 var _formControlController2 = _interopRequireDefault(_formControlController);
 
-var _formControl = __webpack_require__(124);
+var _formControl = __webpack_require__(126);
 
 var _formControl2 = _interopRequireDefault(_formControl);
 
@@ -3575,7 +3914,7 @@ var FormControl = {
 exports.default = FormControl;
 
 /***/ }),
-/* 59 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3700,358 +4039,6 @@ FormControlController.$inject = ['$element'];
 exports.default = FormControlController;
 
 /***/ }),
-/* 60 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _fieldController = __webpack_require__(61);
-
-var _fieldController2 = _interopRequireDefault(_fieldController);
-
-var _field = __webpack_require__(125);
-
-var _field2 = _interopRequireDefault(_field);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Field = {
-  controller: _fieldController2.default,
-  template: _field2.default,
-  bindings: {
-    name: '@',
-    model: '=',
-    initialField: '<field',
-    uploadOptions: '<',
-    locale: '@',
-    changeHandler: '&?onChange',
-    focusHandler: '&?onFocus',
-    blurHandler: '&?onBlur',
-    errorMessage: '<',
-    warningMessage: '<'
-  }
-};
-
-exports.default = Field;
-
-/***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var FieldController = function () {
-  function FieldController(RequirementsService) {
-    _classCallCheck(this, FieldController);
-
-    this.RequirementsService = RequirementsService;
-  }
-
-  _createClass(FieldController, [{
-    key: '$onChanges',
-    value: function $onChanges(changes) {
-      if (changes.initialField) {
-        this.field = copyJSON(this.initialField);
-        this.control = this.field.control ? this.field.control : this.RequirementsService.getControlType(changes.initialField.currentValue);
-
-        // TODO we should probably do this at fieldset level, so the model is available
-        if (this.field.valuesAsync) {
-          this.RequirementsService.prepValuesAsync(this.field, {});
-        }
-      }
-    }
-  }, {
-    key: 'onFocus',
-    value: function onFocus() {
-      if (this.focusHandler) {
-        this.focusHandler();
-      }
-    }
-  }, {
-    key: 'onBlur',
-    value: function onBlur() {
-      if (this.blurHandler) {
-        this.blurHandler();
-      }
-    }
-  }, {
-    key: 'onChange',
-    value: function onChange(newValue) {
-      if (this.changeHandler) {
-        this.changeHandler({ value: newValue });
-      }
-      if (this.errorMessage) {
-        delete this.errorMessage;
-      }
-    }
-
-    // eslint-disable-next-line
-
-  }, {
-    key: 'sizeOf',
-    value: function sizeOf(obj) {
-      return obj ? Object.keys(obj).length : 0;
-    }
-
-    // eslint-disable-next-line
-
-  }, {
-    key: 'isFeedbackDetached',
-    value: function isFeedbackDetached(controlType) {
-      if (controlType === 'date' || controlType === 'file' || controlType === 'radio' || controlType === 'tel') {
-        return true;
-      }
-      return false;
-    }
-  }]);
-
-  return FieldController;
-}();
-
-function copyJSON(obj) {
-  return JSON.parse(JSON.stringify(obj));
-}
-
-FieldController.$inject = ['TwRequirementsService'];
-
-exports.default = FieldController;
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _fieldsetController = __webpack_require__(63);
-
-var _fieldsetController2 = _interopRequireDefault(_fieldsetController);
-
-var _fieldset = __webpack_require__(126);
-
-var _fieldset2 = _interopRequireDefault(_fieldset);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Fieldset = {
-  controller: _fieldsetController2.default,
-  template: _fieldset2.default,
-  bindings: {
-    model: '=',
-    initialFields: '<fields',
-    uploadOptions: '<',
-    locale: '@',
-    title: '@',
-    description: '@',
-    onModelChange: '&?',
-    onRefreshRequirements: '&?',
-    onFieldFocus: '&?',
-    onFieldBlur: '&?',
-    onFieldChange: '&?',
-    validationMessages: '<',
-    errorMessages: '<',
-    isValid: '=?',
-    narrow: '<'
-  }
-};
-
-exports.default = Fieldset;
-
-/***/ }),
-/* 63 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _angular = __webpack_require__(0);
-
-var _angular2 = _interopRequireDefault(_angular);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var FieldsetController = function () {
-  function FieldsetController(TwRequirementsService, $scope, $timeout) {
-    _classCallCheck(this, FieldsetController);
-
-    this.RequirementsService = TwRequirementsService;
-    this.$scope = $scope;
-    this.$timeout = $timeout;
-  }
-
-  _createClass(FieldsetController, [{
-    key: '$onInit',
-    value: function $onInit() {
-      var _this = this;
-
-      if (!this.model) {
-        this.model = {};
-      }
-
-      if (!this.validationMessages) {
-        this.validationMessages = {
-          required: 'Required',
-          pattern: 'Incorrect format',
-          minimum: 'The value is too low',
-          maximum: 'The value is too high',
-          minlength: 'The value is too short',
-          maxlength: 'The value is too long'
-        };
-      }
-
-      this.$scope.$watch('twFieldset.$valid', function (validity) {
-        _this.isValid = validity;
-      });
-
-      // TODO can we add asyncvalidator here? - prob not
-    }
-  }, {
-    key: '$onChanges',
-    value: function $onChanges(changes) {
-      var fieldsChanged = changes.initialFields;
-      if (fieldsChanged) {
-        if (!_angular2.default.equals(fieldsChanged.currentValue, fieldsChanged.previousValue)) {
-          this.fields = this.RequirementsService.prepFields(fieldsChanged.currentValue, this.model, this.validationMessages);
-        }
-      }
-    }
-  }, {
-    key: 'fieldFocus',
-    value: function fieldFocus(key, field) {
-      if (this.onFieldFocus) {
-        this.onFieldFocus({ key: key, field: field });
-      }
-    }
-  }, {
-    key: 'fieldBlur',
-    value: function fieldBlur(key, field) {
-      if (this.onFieldBlur) {
-        this.onFieldBlur({ key: key, field: field });
-      }
-      if (field.refreshRequirementsOnChange && this.onRefreshRequirements) {
-        this.onRefreshRequirements();
-      }
-    }
-  }, {
-    key: 'fieldChange',
-    value: function fieldChange(value, key, field) {
-      var _this2 = this;
-
-      if (typeof value === 'undefined') {
-        delete this.model[key];
-      }
-      if (this.onFieldChange) {
-        this.onFieldChange({ value: value, key: key, field: field });
-      }
-
-      if (controlRefreshesOnChange(field.control) && field.refreshRequirementsOnChange && this.onRefreshRequirements) {
-        this.onRefreshRequirements();
-      }
-
-      // We remove custom error messages on change, as they're no longer relevant
-      if (this.errorMessages && this.errorMessages[key]) {
-        delete this.errorMessages[key];
-      }
-
-      // Delay so model can update
-      this.$timeout(function () {
-        if (_this2.onModelChange) {
-          _this2.onModelChange({ model: _this2.model });
-        }
-      });
-    }
-  }]);
-
-  return FieldsetController;
-}();
-
-function controlRefreshesOnChange(control) {
-  return control === 'select' || control === 'checkbox' || control === 'radio' || control === 'date' || control === 'upload';
-}
-
-FieldsetController.$inject = ['TwRequirementsService', '$scope', '$timeout'];
-
-exports.default = FieldsetController;
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _focusableController = __webpack_require__(18);
-
-var _focusableController2 = _interopRequireDefault(_focusableController);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function Focusable() {
-  return {
-    restrict: 'A',
-    controller: _focusableController2.default
-  };
-}
-
-exports.default = Focusable;
-
-/***/ }),
-/* 65 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _focusableController = __webpack_require__(18);
-
-var _focusableController2 = _interopRequireDefault(_focusableController);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function FormControlFocus() {
-  return {
-    restrict: 'C',
-    controller: _focusableController2.default
-  };
-} // This directive provide backwards compatibility
-// It should no longer be necessary when browsers support :focus-within
-exports.default = FormControlFocus;
-
-/***/ }),
 /* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4066,21 +4053,34 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _focusableDirective = __webpack_require__(64);
+var _select = __webpack_require__(5);
 
-var _focusableDirective2 = _interopRequireDefault(_focusableDirective);
+var _select2 = _interopRequireDefault(_select);
 
-var _formControlDirective = __webpack_require__(65);
+var _radio = __webpack_require__(18);
 
-var _formControlDirective2 = _interopRequireDefault(_formControlDirective);
+var _radio2 = _interopRequireDefault(_radio);
 
-var _dom = __webpack_require__(1);
+var _checkbox = __webpack_require__(13);
 
-var _dom2 = _interopRequireDefault(_dom);
+var _checkbox2 = _interopRequireDefault(_checkbox);
+
+var _date = __webpack_require__(14);
+
+var _date2 = _interopRequireDefault(_date);
+
+var _upload = __webpack_require__(19);
+
+var _upload2 = _interopRequireDefault(_upload);
+
+var _formControlComponent = __webpack_require__(64);
+
+var _formControlComponent2 = _interopRequireDefault(_formControlComponent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.forms.focusable', [_dom2.default]).directive('twFocusable', _focusableDirective2.default).directive('formControl', _formControlDirective2.default).name;
+exports.default = _angular2.default.module('tw.styleguide.forms.form-control', [_select2.default, _radio2.default, _checkbox2.default, _date2.default, _upload2.default]).component('twFormControl', _formControlComponent2.default).component('twDynamicFormControl', _formControlComponent2.default) // Deprecated
+.name;
 
 /***/ }),
 /* 67 */
@@ -4255,11 +4255,11 @@ var _requirementsFormComponent = __webpack_require__(70);
 
 var _requirementsFormComponent2 = _interopRequireDefault(_requirementsFormComponent);
 
-var _tabs = __webpack_require__(21);
+var _tabs = __webpack_require__(20);
 
 var _tabs2 = _interopRequireDefault(_tabs);
 
-var _fieldset = __webpack_require__(17);
+var _fieldset = __webpack_require__(16);
 
 var _fieldset2 = _interopRequireDefault(_fieldset);
 
@@ -7050,11 +7050,11 @@ var _services = __webpack_require__(4);
 
 var _services2 = _interopRequireDefault(_services);
 
-var _help = __webpack_require__(25);
+var _help = __webpack_require__(24);
 
 var _help2 = _interopRequireDefault(_help);
 
-var _layout = __webpack_require__(26);
+var _layout = __webpack_require__(25);
 
 var _layout2 = _interopRequireDefault(_layout);
 
@@ -7062,15 +7062,15 @@ var _loading = __webpack_require__(10);
 
 var _loading2 = _interopRequireDefault(_loading);
 
-var _navigation = __webpack_require__(27);
+var _navigation = __webpack_require__(26);
 
 var _navigation2 = _interopRequireDefault(_navigation);
 
-var _formComponents = __webpack_require__(23);
+var _formComponents = __webpack_require__(22);
 
 var _formComponents2 = _interopRequireDefault(_formComponents);
 
-var _formValidation = __webpack_require__(24);
+var _formValidation = __webpack_require__(23);
 
 var _formValidation2 = _interopRequireDefault(_formValidation);
 
@@ -8890,19 +8890,19 @@ module.exports = "<div class=\"m-t-1\">\n  <h4\n    ng-if=\"$ctrl.title\"\n    n
 /* 124 */
 /***/ (function(module, exports) {
 
-module.exports = "<div ng-switch=\"$ctrl.type\">\n  <div ng-switch-when=\"radio\"\n    class=\"radio\"\n    ng-class=\"{disabled: $ctrl.ngDisabled}\"\n    ng-repeat=\"option in $ctrl.options\">\n    <label>\n      <tw-radio\n        name=\"{{$ctrl.name}}\"\n        ng-value=\"option.value\"\n        ng-model=\"$ctrl.internalModel\"\n        ng-required=\"$ctrl.ngRequired\"\n        ng-disabled=\"$ctrl.ngDisabled\"\n        ng-change=\"$ctrl.change(option.value)\"\n        ng-click=\"$ctrl.change(option.value)\"\n        ng-focus=\"$ctrl.focus()\"\n        ng-blur=\"$ctrl.blur()\"\n      ></tw-radio>\n      {{option.label}}\n    </label>\n  </div>\n\n  <div ng-switch-when=\"checkbox\"\n    class=\"checkbox\"\n    ng-class=\"{disabled: $ctrl.ngDisabled}\">\n    <label>\n      <tw-checkbox\n        name=\"{{$ctrl.name}}\"\n        ng-model=\"$ctrl.internalModel\"\n        ng-required=\"$ctrl.ngRequired\"\n        ng-disabled=\"$ctrl.ngDisabled\"\n        ng-change=\"$ctrl.change($ctrl.internalModel)\"\n        ng-click=\"$ctrl.change()\"\n        ng-focus=\"$ctrl.focus()\"\n        ng-blur=\"$ctrl.blur()\"\n      ></tw-checkbox>\n      {{$ctrl.placeholder}}\n    </label>\n  </div>\n\n  <div ng-switch-when=\"select\">\n    <tw-select\n      name=\"{{$ctrl.name}}\"\n      options=\"$ctrl.options\"\n      placeholder=\"{{$ctrl.placeholder}}\"\n      ng-model=\"$ctrl.internalModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change($ctrl.internalModel)\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n    ></tw-select>\n  </div>\n\n  <div ng-switch-when=\"file|upload\" ng-switch-when-separator=\"|\">\n    <tw-upload\n      name=\"{{$ctrl.name}}\"\n      label=\"{{$ctrl.label}}\"\n      icon=\"{{$ctrl.uploadIcon}}\"\n      help-image=\"{{$ctrl.helpImage}}\"\n      placeholder=\"{{$ctrl.placeholder}}\"\n      accept=\"{{$ctrl.uploadAccept}}\"\n      complete-text=\"{{$ctrl.label}}\"\n      button-text=\"{{$ctrl.uploadOptions.buttonText}}\"\n      cancel-text=\"{{$ctrl.uploadOptions.cancelText}}\"\n      too-large-message=\"{{$ctrl.uploadTooLargeMessage}}\"\n      max-size=\"$ctrl.ngMax\"\n      ng-model=\"$ctrl.internalModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change($ctrl.internalModel)\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n    ></tw-upload>\n  </div>\n\n  <div ng-switch-when=\"date|date-time\" ng-switch-when-separator=\"|\">\n    <tw-date\n      name=\"{{$ctrl.name}}\"\n      locale=\"{{$ctrl.locale}}\"\n      ng-min=\"$ctrl.ngMin\"\n      ng-max=\"$ctrl.ngMax\"\n      ng-model=\"$ctrl.internalModel\"\n      ng-model-options=\"{ allowInvalid: true }\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change($ctrl.internalModel)\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n      model-type=\"string\"\n    ></tw-date>\n  </div>\n\n  <div ng-switch-when=\"tel\">\n    <tw-telephone\n      name=\"{{ $ctrl.name }}\"\n      placeholder=\"{{ $ctrl.placeholder }}\"\n      ng-model=\"$ctrl.internalModel\"\n      ng-model-options=\"{ allowInvalid: true }\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change($ctrl.internalModel)\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n      locale=\"{{ $ctrl.locale }}\"\n      search-placeholder=\" \"\n    ></tw-telephone>\n  </div>\n\n  <input ng-switch-when=\"number\"\n    name=\"{{$ctrl.name}}\"\n    type=\"number\"\n    step=\"{{$ctrl.step}}\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.internalModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-change=\"$ctrl.change($ctrl.internalModel)\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-min=\"$ctrl.ngMin\"\n    ng-max=\"$ctrl.ngMax\" />\n\n  <input ng-switch-when=\"hidden\"\n    name=\"{{$ctrl.name}}\"\n    type=\"hidden\"\n    ng-model=\"$ctrl.ngModel\"/>\n\n  <input ng-switch-when=\"password\"\n    name=\"{{$ctrl.name}}\"\n    type=\"password\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.internalModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-change=\"$ctrl.change($ctrl.internalModel)\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-minlength=\"$ctrl.ngMinlength\"\n    ng-maxlength=\"$ctrl.ngMaxlength\" />\n\n  <input ng-switch-default\n    name=\"{{$ctrl.name}}\"\n    type=\"text\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.internalModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-pattern=\"$ctrl.ngPattern\"\n    ng-minlength=\"$ctrl.ngMinlength\"\n    ng-maxlength=\"$ctrl.ngMaxlength\"\n    ng-change=\"$ctrl.change($ctrl.internalModel)\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    tw-text-format=\"{{ $ctrl.textFormat }}\" />\n\n</div>\n";
+module.exports = "<div class=\"form-group tw-field-{{ $ctrl.name }}\"\n  ng-class=\"{\n    'has-error': $ctrl.field.errorMessage || $ctrl.errorMessage,\n    'has-warning': $ctrl.field.warningMessage || $ctrl.warningMessage,\n    'hidden': $ctrl.field.hidden\n  }\">\n  <label class=\"control-label\"\n    ng-if=\"$ctrl.control !== 'file'\">\n    {{$ctrl.field.title}}\n  </label>\n  <tw-form-control\n    name=\"{{ $ctrl.field.key }}\"\n    label=\"{{ $ctrl.field.title }}\"\n    type=\"{{ $ctrl.control | lowercase }}\"\n    placeholder=\"{{ $ctrl.field.placeholder }}\"\n    help-text=\"{{ $ctrl.field.helpText }}\"\n    help-image=\"{{ $ctrl.field.helpImage }}\"\n    locale=\"{{ $ctrl.locale }}\"\n    upload-accept=\"{{ $ctrl.field.accept }}\"\n    upload-icon=\"{{ $ctrl.field.icon }}\"\n    upload-too-large-message=\"{{ $ctrl.field.tooLargeMessage }}\"\n    options=\"$ctrl.field.values\"\n    upload-options=\"$ctrl.field.uploadOptions\"\n    ng-model=\"$ctrl.model\"\n    ng-focus=\"$ctrl.onFocus()\"\n    ng-blur=\"$ctrl.onBlur()\"\n    ng-change=\"$ctrl.onChange($ctrl.model)\"\n    ng-required=\"$ctrl.field.required\"\n    ng-disabled=\"$ctrl.field.disabled\"\n    tw-minlength=\"$ctrl.field.minlength || $ctrl.field.minLength\"\n    tw-maxlength=\"$ctrl.field.maxlength || $ctrl.field.maxLength\"\n    ng-min=\"$ctrl.field.minimum\"\n    ng-max=\"$ctrl.field.maximum\"\n    ng-pattern=\"$ctrl.field.pattern\"\n    text-format=\"$ctrl.field.displayFormat\"\n    tw-validation\n  ></tw-form-control>\n\n  <div class=\"alert alert-danger error-messages\"\n    ng-if=\"$ctrl.sizeOf($ctrl.field.validationMessages) > 0 || $ctrl.errorMessage\"\n    ng-class=\"{\n      'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)\n    }\">\n    <div ng-repeat=\"(validationType, validationMessage) in $ctrl.field.validationMessages track by $index\"\n      class=\"error-{{ validationType | lowercase }}\">\n      {{validationMessage}}\n    </div>\n    <div class=\"error-provided\" ng-if=\"$ctrl.errorMessage\">\n      {{ $ctrl.errorMessage }}\n    </div>\n  </div>\n\n  <div class=\"alert alert-warning\"\n    ng-if=\"$ctrl.warningMessage\"\n    ng-class=\"{\n      'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)\n    }\">\n    {{ $ctrl.warningMessage }}\n  </div>\n  \n  <div ng-if=\"$ctrl.field.helpText || $ctrl.field.helpList || $ctrl.field.helpImage\"\n    class=\"alert alert-focus\"\n    ng-class=\"{\n      'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)\n    }\">\n    <span ng-if=\"$ctrl.field.helpText\">\n      {{ $ctrl.field.helpText }}\n    </span>\n    <ul ng-if=\"$ctrl.field.helpList\" class=\"list-unstyled\">\n      <li ng-repeat=\"helpMessage in $ctrl.field.helpList\">{{ helpMessage }}</li>\n    </ul>\n    <img\n      ng-if=\"$ctrl.field.helpImage && $ctrl.control !== 'file'\"\n      ng-src=\"{{$ctrl.field.helpImage}}\"\n      alt=\"{{$ctrl.field.title}}\"\n      class=\"thumbnail m-y-2\" />\n  </div>\n</div>\n";
 
 /***/ }),
 /* 125 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"form-group tw-field-{{ $ctrl.name }}\"\n  ng-class=\"{\n    'has-error': $ctrl.field.errorMessage || $ctrl.errorMessage,\n    'has-warning': $ctrl.field.warningMessage || $ctrl.warningMessage,\n    'hidden': $ctrl.field.hidden\n  }\">\n  <label class=\"control-label\"\n    ng-if=\"$ctrl.control !== 'file'\">\n    {{$ctrl.field.title}}\n  </label>\n  <tw-form-control\n    name=\"{{ $ctrl.field.key }}\"\n    label=\"{{ $ctrl.field.title }}\"\n    type=\"{{ $ctrl.control | lowercase }}\"\n    placeholder=\"{{ $ctrl.field.placeholder }}\"\n    help-text=\"{{ $ctrl.field.helpText }}\"\n    help-image=\"{{ $ctrl.field.helpImage }}\"\n    locale=\"{{ $ctrl.locale }}\"\n    upload-accept=\"{{ $ctrl.field.accept }}\"\n    upload-icon=\"{{ $ctrl.field.icon }}\"\n    upload-too-large-message=\"{{ $ctrl.field.tooLargeMessage }}\"\n    options=\"$ctrl.field.values\"\n    upload-options=\"$ctrl.field.uploadOptions\"\n    ng-model=\"$ctrl.model\"\n    ng-focus=\"$ctrl.onFocus()\"\n    ng-blur=\"$ctrl.onBlur()\"\n    ng-change=\"$ctrl.onChange($ctrl.model)\"\n    ng-required=\"$ctrl.field.required\"\n    ng-disabled=\"$ctrl.field.disabled\"\n    tw-minlength=\"$ctrl.field.minlength || $ctrl.field.minLength\"\n    tw-maxlength=\"$ctrl.field.maxlength || $ctrl.field.maxLength\"\n    ng-min=\"$ctrl.field.minimum\"\n    ng-max=\"$ctrl.field.maximum\"\n    ng-pattern=\"$ctrl.field.pattern\"\n    text-format=\"$ctrl.field.displayFormat\"\n    tw-validation\n  ></tw-form-control>\n\n  <div class=\"alert alert-danger error-messages\"\n    ng-if=\"$ctrl.sizeOf($ctrl.field.validationMessages) > 0 || $ctrl.errorMessage\"\n    ng-class=\"{\n      'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)\n    }\">\n    <div ng-repeat=\"(validationType, validationMessage) in $ctrl.field.validationMessages track by $index\"\n      class=\"error-{{ validationType | lowercase }}\">\n      {{validationMessage}}\n    </div>\n    <div class=\"error-provided\" ng-if=\"$ctrl.errorMessage\">\n      {{ $ctrl.errorMessage }}\n    </div>\n  </div>\n\n  <div class=\"alert alert-warning\"\n    ng-if=\"$ctrl.warningMessage\"\n    ng-class=\"{\n      'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)\n    }\">\n    {{ $ctrl.warningMessage }}\n  </div>\n  \n  <div ng-if=\"$ctrl.field.helpText || $ctrl.field.helpList || $ctrl.field.helpImage\"\n    class=\"alert alert-focus\"\n    ng-class=\"{\n      'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)\n    }\">\n    <span ng-if=\"$ctrl.field.helpText\">\n      {{ $ctrl.field.helpText }}\n    </span>\n    <ul ng-if=\"$ctrl.field.helpList\" class=\"list-unstyled\">\n      <li ng-repeat=\"helpMessage in $ctrl.field.helpList\">{{ helpMessage }}</li>\n    </ul>\n    <img\n      ng-if=\"$ctrl.field.helpImage && $ctrl.control !== 'file'\"\n      ng-src=\"{{$ctrl.field.helpImage}}\"\n      alt=\"{{$ctrl.field.title}}\"\n      class=\"thumbnail m-y-2\" />\n  </div>\n</div>\n";
+module.exports = "<fieldset ng-form=\"twFieldset\">\n  <legend ng-if=\"$ctrl.title\">{{ $ctrl.title }}</legend>\n  <p class=\"text-max-width\" ng-if=\"$ctrl.description\">{{ $ctrl.description }}</p>\n  <div class=\"row row-equal-height\">\n    <div ng-repeat=\"(key, field) in $ctrl.fields track by $index\" class=\"col-xs-12\" ng-hide=\"field.hidden\"\n      ng-class=\"{\n        'col-sm-4': !$ctrl.narrow  && field.width === 'sm',\n        'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),\n        'col-sm-12': $ctrl.narrow || field.width === 'lg' || !field.maxlength || field.maxlength > 10\n      }\">\n\n      <tw-field\n        name=\"{{ key }}\"\n        model=\"$ctrl.model[key]\"\n        field=\"field\"\n        locale=\"$ctrl.locale\"\n        upload-options=\"$ctrl.uploadOptions\"\n        error-message=\"$ctrl.errorMessages[key]\"\n        warning-message=\"$ctrl.warningMessages[key]\"\n        on-change=\"$ctrl.fieldChange(value, key, field)\"\n        on-focus=\"$ctrl.fieldFocus(key, field)\"\n        on-blur=\"$ctrl.fieldBlur(key, field)\"\n        class=\"btn-block\">  <!-- Remove btn-block after boostrap update -->\n      </tw-field>\n\n    </div>\n  </div>\n</fieldset>\n";
 
 /***/ }),
 /* 126 */
 /***/ (function(module, exports) {
 
-module.exports = "<fieldset ng-form=\"twFieldset\">\n  <legend ng-if=\"$ctrl.title\">{{ $ctrl.title }}</legend>\n  <p class=\"text-max-width\" ng-if=\"$ctrl.description\">{{ $ctrl.description }}</p>\n  <div class=\"row row-equal-height\">\n    <div ng-repeat=\"(key, field) in $ctrl.fields track by $index\" class=\"col-xs-12\" ng-hide=\"field.hidden\"\n      ng-class=\"{\n        'col-sm-4': !$ctrl.narrow  && field.width === 'sm',\n        'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),\n        'col-sm-12': $ctrl.narrow || field.width === 'lg' || !field.maxlength || field.maxlength > 10\n      }\">\n\n      <tw-field\n        name=\"{{ key }}\"\n        model=\"$ctrl.model[key]\"\n        field=\"field\"\n        locale=\"$ctrl.locale\"\n        upload-options=\"$ctrl.uploadOptions\"\n        error-message=\"$ctrl.errorMessages[key]\"\n        warning-message=\"$ctrl.warningMessages[key]\"\n        on-change=\"$ctrl.fieldChange(value, key, field)\"\n        on-focus=\"$ctrl.fieldFocus(key, field)\"\n        on-blur=\"$ctrl.fieldBlur(key, field)\"\n        class=\"btn-block\">  <!-- Remove btn-block after boostrap update -->\n      </tw-field>\n\n    </div>\n  </div>\n</fieldset>\n";
+module.exports = "<div ng-switch=\"$ctrl.type\">\n  <div ng-switch-when=\"radio\"\n    class=\"radio\"\n    ng-class=\"{disabled: $ctrl.ngDisabled}\"\n    ng-repeat=\"option in $ctrl.options\">\n    <label>\n      <tw-radio\n        name=\"{{$ctrl.name}}\"\n        ng-value=\"option.value\"\n        ng-model=\"$ctrl.internalModel\"\n        ng-required=\"$ctrl.ngRequired\"\n        ng-disabled=\"$ctrl.ngDisabled\"\n        ng-change=\"$ctrl.change(option.value)\"\n        ng-click=\"$ctrl.change(option.value)\"\n        ng-focus=\"$ctrl.focus()\"\n        ng-blur=\"$ctrl.blur()\"\n      ></tw-radio>\n      {{option.label}}\n    </label>\n  </div>\n\n  <div ng-switch-when=\"checkbox\"\n    class=\"checkbox\"\n    ng-class=\"{disabled: $ctrl.ngDisabled}\">\n    <label>\n      <tw-checkbox\n        name=\"{{$ctrl.name}}\"\n        ng-model=\"$ctrl.internalModel\"\n        ng-required=\"$ctrl.ngRequired\"\n        ng-disabled=\"$ctrl.ngDisabled\"\n        ng-change=\"$ctrl.change($ctrl.internalModel)\"\n        ng-click=\"$ctrl.change()\"\n        ng-focus=\"$ctrl.focus()\"\n        ng-blur=\"$ctrl.blur()\"\n      ></tw-checkbox>\n      {{$ctrl.placeholder}}\n    </label>\n  </div>\n\n  <div ng-switch-when=\"select\">\n    <tw-select\n      name=\"{{$ctrl.name}}\"\n      options=\"$ctrl.options\"\n      placeholder=\"{{$ctrl.placeholder}}\"\n      ng-model=\"$ctrl.internalModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change($ctrl.internalModel)\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n    ></tw-select>\n  </div>\n\n  <div ng-switch-when=\"file|upload\" ng-switch-when-separator=\"|\">\n    <tw-upload\n      name=\"{{$ctrl.name}}\"\n      label=\"{{$ctrl.label}}\"\n      icon=\"{{$ctrl.uploadIcon}}\"\n      help-image=\"{{$ctrl.helpImage}}\"\n      placeholder=\"{{$ctrl.placeholder}}\"\n      accept=\"{{$ctrl.uploadAccept}}\"\n      complete-text=\"{{$ctrl.label}}\"\n      button-text=\"{{$ctrl.uploadOptions.buttonText}}\"\n      cancel-text=\"{{$ctrl.uploadOptions.cancelText}}\"\n      too-large-message=\"{{$ctrl.uploadTooLargeMessage}}\"\n      max-size=\"$ctrl.ngMax\"\n      ng-model=\"$ctrl.internalModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change($ctrl.internalModel)\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n    ></tw-upload>\n  </div>\n\n  <div ng-switch-when=\"date|date-time\" ng-switch-when-separator=\"|\">\n    <tw-date\n      name=\"{{$ctrl.name}}\"\n      locale=\"{{$ctrl.locale}}\"\n      ng-min=\"$ctrl.ngMin\"\n      ng-max=\"$ctrl.ngMax\"\n      ng-model=\"$ctrl.internalModel\"\n      ng-model-options=\"{ allowInvalid: true }\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change($ctrl.internalModel)\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n      model-type=\"string\"\n    ></tw-date>\n  </div>\n\n  <div ng-switch-when=\"tel\">\n    <tw-telephone\n      name=\"{{ $ctrl.name }}\"\n      placeholder=\"{{ $ctrl.placeholder }}\"\n      ng-model=\"$ctrl.internalModel\"\n      ng-model-options=\"{ allowInvalid: true }\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change($ctrl.internalModel)\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n      locale=\"{{ $ctrl.locale }}\"\n      search-placeholder=\" \"\n    ></tw-telephone>\n  </div>\n\n  <input ng-switch-when=\"number\"\n    name=\"{{$ctrl.name}}\"\n    type=\"number\"\n    step=\"{{$ctrl.step}}\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.internalModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-change=\"$ctrl.change($ctrl.internalModel)\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-min=\"$ctrl.ngMin\"\n    ng-max=\"$ctrl.ngMax\" />\n\n  <input ng-switch-when=\"hidden\"\n    name=\"{{$ctrl.name}}\"\n    type=\"hidden\"\n    ng-model=\"$ctrl.ngModel\"/>\n\n  <input ng-switch-when=\"password\"\n    name=\"{{$ctrl.name}}\"\n    type=\"password\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.internalModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-change=\"$ctrl.change($ctrl.internalModel)\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-minlength=\"$ctrl.ngMinlength\"\n    ng-maxlength=\"$ctrl.ngMaxlength\" />\n\n  <input ng-switch-default\n    name=\"{{$ctrl.name}}\"\n    type=\"text\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.internalModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-pattern=\"$ctrl.ngPattern\"\n    ng-minlength=\"$ctrl.ngMinlength\"\n    ng-maxlength=\"$ctrl.ngMaxlength\"\n    ng-change=\"$ctrl.change($ctrl.internalModel)\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    tw-text-format=\"{{ $ctrl.textFormat }}\" />\n\n</div>\n";
 
 /***/ }),
 /* 127 */
@@ -8975,258 +8975,6 @@ module.exports = "<ul ng-if=\"$ctrl.tabs.length > 0\"\n  class=\"nav nav-tabs m-
 /***/ (function(module, exports) {
 
 module.exports = [{"name":"Afghanistan","iso2":"AF","iso3":"AFG","phone":"+93"},{"name":"Åland Islands","iso2":"AX","iso3":"ALA","phone":"+358"},{"name":"Albania","iso2":"AL","iso3":"ALB","phone":"+355"},{"name":"Algeria","iso2":"DZ","iso3":"DZA","phone":"+213"},{"name":"American Samoa","iso2":"AS","iso3":"ASM","phone":"+1684"},{"name":"Andorra","iso2":"AD","iso3":"AND","phone":"+376"},{"name":"Angola","iso2":"AO","iso3":"AGO","phone":"+244"},{"name":"Anguilla","iso2":"AI","iso3":"AIA","phone":"+1264"},{"name":"Antarctica","iso2":"AQ","iso3":"ATA","phone":"+672"},{"name":"Antigua","iso2":"AG","iso3":"ATG","phone":"+1268"},{"name":"Argentina","iso2":"AR","iso3":"ARG","phone":"+54"},{"name":"Armenia","iso2":"AM","iso3":"ARM","phone":"+374"},{"name":"Aruba","iso2":"AW","iso3":"ABW","phone":"+297"},{"name":"Ascension Island","iso2":"SH","iso3":"SHN","phone":"+247"},{"name":"Australia","iso2":"AU","iso3":"AUS","phone":"+61"},{"name":"Australian External Territories","iso2":"AU","iso3":"AUS","phone":"+672"},{"name":"Austria","iso2":"AT","iso3":"AUT","phone":"+43"},{"name":"Azerbaijan","iso2":"AZ","iso3":"AZE","phone":"+994"},{"name":"Bahamas","iso2":"BS","iso3":"BHS","phone":"+1242"},{"name":"Bahrain","iso2":"BH","iso3":"BHR","phone":"+973"},{"name":"Bangladesh","iso2":"BD","iso3":"BGD","phone":"+880"},{"name":"Barbados","iso2":"BB","iso3":"BRB","phone":"+1246"},{"name":"Belarus","iso2":"BY","iso3":"BLR","phone":"+375"},{"name":"Belgium","iso2":"BE","iso3":"BEL","phone":"+32"},{"name":"Belize","iso2":"BZ","iso3":"BLZ","phone":"+501"},{"name":"Benin","iso2":"BJ","iso3":"BEN","phone":"+229"},{"name":"Bermuda","iso2":"BM","iso3":"BMU","phone":"+1441"},{"name":"Bhutan","iso2":"BT","iso3":"BTN","phone":"+975"},{"name":"Bolivia","iso2":"BO","iso3":"BOL","phone":"+591"},{"name":"Bonaire, Sint Eustatius and Saba","iso2":"BQ","iso3":"BES","phone":"+599"},{"name":"Bosnia and Herzegovina","iso2":"BA","iso3":"BIH","phone":"+387"},{"name":"Botswana","iso2":"BW","iso3":"BWA","phone":"+267"},{"name":"Brazil","iso2":"BR","iso3":"BRA","phone":"+55"},{"name":"British Virgin Islands","iso2":"VG","iso3":"VGB","phone":"+1284"},{"name":"Brunei","iso2":"BN","iso3":"BRN","phone":"+673"},{"name":"Bulgaria","iso2":"BG","iso3":"BGR","phone":"+359"},{"name":"Burkina Faso","iso2":"BF","iso3":"BFA","phone":"+226"},{"name":"Burundi","iso2":"BI","iso3":"BDI","phone":"+257"},{"name":"Cambodia","iso2":"KH","iso3":"KHM","phone":"+855"},{"name":"Cameroon","iso2":"CM","iso3":"CMR","phone":"+237"},{"name":"Canada","iso2":"CA","iso3":"CAN","phone":"+1"},{"name":"Cape Verde","iso2":"CV","iso3":"CPV","phone":"+238"},{"name":"Cayman Islands","iso2":"KY","iso3":"CYM","phone":"+1345"},{"name":"Central African Republic","iso2":"CF","iso3":"CAF","phone":"+236"},{"name":"Chad","iso2":"TD","iso3":"TCD","phone":"+235"},{"name":"Chile","iso2":"CL","iso3":"CHL","phone":"+56"},{"name":"China","iso2":"CN","iso3":"CHN","phone":"+86"},{"name":"Christmas Island","iso2":"CX","iso3":"CXR","phone":"+61"},{"name":"Cocos (Keeling) Islands","iso2":"CC","iso3":"CCK","phone":"+61"},{"name":"Colombia","iso2":"CO","iso3":"COL","phone":"+57"},{"name":"Comoros","iso2":"KM","iso3":"COM","phone":"+269"},{"name":"Congo","iso2":"CG","iso3":"COG","phone":"+242"},{"name":"Cook Islands","iso2":"CK","iso3":"COK","phone":"+682"},{"name":"Costa Rica","iso2":"CR","iso3":"CRI","phone":"+506"},{"name":"Croatia","iso2":"HR","iso3":"HRV","phone":"+385"},{"name":"Cuba","iso2":"CU","iso3":"CUB","phone":"+53"},{"name":"Curaçao","iso2":"CW","iso3":"CUW","phone":"+599"},{"name":"Cyprus","iso2":"CY","iso3":"CYP","phone":"+357"},{"name":"Czech Republic","iso2":"CZ","iso3":"CZE","phone":"+420"},{"name":"Democratic Republic of the Congo","iso2":"CD","iso3":"COD","phone":"+243"},{"name":"Denmark","iso2":"DK","iso3":"DNK","phone":"+45"},{"name":"Diego Garcia","iso2":"IO","iso3":"IOT","phone":"+246"},{"name":"Djibouti","iso2":"DJ","iso3":"DJI","phone":"+253"},{"name":"Dominica","iso2":"DM","iso3":"DMA","phone":"+1767"},{"name":"Dominican Republic","iso2":"DO","iso3":"DOM","phone":"+1809"},{"name":"East Timor","iso2":"TL","iso3":"TLS","phone":"+670"},{"name":"Ecuador","iso2":"EC","iso3":"ECU","phone":"+593"},{"name":"Egypt","iso2":"EG","iso3":"EGY","phone":"+20"},{"name":"El Salvador","iso2":"SV","iso3":"SLV","phone":"+503"},{"name":"Equatorial Guinea","iso2":"GQ","iso3":"GNQ","phone":"+240"},{"name":"Eritrea","iso2":"ER","iso3":"ERI","phone":"+291"},{"name":"Estonia","iso2":"EE","iso3":"EST","phone":"+372"},{"name":"Ethiopia","iso2":"ET","iso3":"ETH","phone":"+251"},{"name":"Falkland Islands","iso2":"FK","iso3":"FLK","phone":"+500"},{"name":"Faroe Islands","iso2":"FO","iso3":"FRO","phone":"+298"},{"name":"Fiji","iso2":"FJ","iso3":"FJI","phone":"+679"},{"name":"Finland","iso2":"FI","iso3":"FIN","phone":"+358"},{"name":"France","iso2":"FR","iso3":"FRA","phone":"+33"},{"name":"French Guiana","iso2":"GF","iso3":"GUF","phone":"+594"},{"name":"French Polynesia","iso2":"PF","iso3":"PYF","phone":"+689"},{"name":"French Southern Territories","iso2":"TF","iso3":"ATF","phone":"+262"},{"name":"Gabon","iso2":"GA","iso3":"GAB","phone":"+241"},{"name":"Gambia","iso2":"GM","iso3":"GMB","phone":"+220"},{"name":"Georgia","iso2":"GE","iso3":"GEO","phone":"+995"},{"name":"Germany","iso2":"DE","iso3":"DEU","phone":"+49"},{"name":"Ghana","iso2":"GH","iso3":"GHA","phone":"+233"},{"name":"Gibraltar","iso2":"GI","iso3":"GIB","phone":"+350"},{"name":"Greece","iso2":"GR","iso3":"GRC","phone":"+30"},{"name":"Greenland","iso2":"GL","iso3":"GRL","phone":"+299"},{"name":"Grenada","iso2":"GD","iso3":"GRD","phone":"+1473"},{"name":"Guadeloupe","iso2":"GP","iso3":"GLP","phone":"+596"},{"name":"Guadeloupe","iso2":"GP","iso3":"GLP","phone":"+590"},{"name":"Guam","iso2":"GU","iso3":"GUM","phone":"+1671"},{"name":"Guatemala","iso2":"GT","iso3":"GTM","phone":"+502"},{"name":"Guernsey","iso2":"GG","iso3":"GGY","phone":"+44","phoneFormat":"**** *** ***"},{"name":"Guinea","iso2":"GN","iso3":"GIN","phone":"+224"},{"name":"Guinea-Bissau","iso2":"GW","iso3":"GNB","phone":"+245"},{"name":"Guyana","iso2":"GY","iso3":"GUY","phone":"+592"},{"name":"Haiti","iso2":"HT","iso3":"HTI","phone":"+509"},{"name":"Holy See","iso2":"VA","iso3":"VAT","phone":"+379"},{"name":"Honduras","iso2":"HN","iso3":"HND","phone":"+504"},{"name":"Hong Kong","iso2":"HK","iso3":"HKG","phone":"+852"},{"name":"Hungary","iso2":"HU","iso3":"HUN","phone":"+36"},{"name":"Iceland","iso2":"IS","iso3":"ISL","phone":"+354"},{"name":"India","iso2":"IN","iso3":"IND","phone":"+91"},{"name":"Indonesia","iso2":"ID","iso3":"IDN","phone":"+62"},{"name":"Iran","iso2":"IR","iso3":"IRN","phone":"+98"},{"name":"Iraq","iso2":"IQ","iso3":"IRQ","phone":"+964"},{"name":"Ireland","iso2":"IE","iso3":"IRL","phone":"+353"},{"name":"Isle of Man","iso2":"IM","iso3":"IMN","phone":"+44"},{"name":"Israel","iso2":"IL","iso3":"ISR","phone":"+972"},{"name":"Italy","iso2":"IT","iso3":"ITA","phone":"+39"},{"name":"Ivory Coast","iso2":"CI","iso3":"CIV","phone":"+225"},{"name":"Jamaica","iso2":"JM","iso3":"JAM","phone":"+1876"},{"name":"Japan","iso2":"JP","iso3":"JPN","phone":"+81"},{"name":"Jersey","iso2":"JE","iso3":"JEY","phone":"+44"},{"name":"Jordan","iso2":"JO","iso3":"JOR","phone":"+962"},{"name":"Kazakhstan","iso2":"KZ","iso3":"KAZ","phone":"+7"},{"name":"Kenya","iso2":"KE","iso3":"KEN","phone":"+254"},{"name":"Kiribati","iso2":"KI","iso3":"KIR","phone":"+686"},{"name":"Kosovo","iso2":"XK","iso3":"RKS","phone":"+383"},{"name":"Kuwait","iso2":"KW","iso3":"KWT","phone":"+965"},{"name":"Kyrgyzstan","iso2":"KG","iso3":"KGZ","phone":"+996"},{"name":"Laos","iso2":"LA","iso3":"LAO","phone":"+856"},{"name":"Latvia","iso2":"LV","iso3":"LVA","phone":"+371"},{"name":"Lebanon","iso2":"LB","iso3":"LBN","phone":"+961"},{"name":"Lesotho","iso2":"LS","iso3":"LSO","phone":"+266"},{"name":"Liberia","iso2":"LR","iso3":"LBR","phone":"+231"},{"name":"Libya","iso2":"LY","iso3":"LBY","phone":"+218"},{"name":"Liechtenstein","iso2":"LI","iso3":"LIE","phone":"+423"},{"name":"Lithuania","iso2":"LT","iso3":"LTU","phone":"+370"},{"name":"Luxembourg","iso2":"LU","iso3":"LUX","phone":"+352"},{"name":"Macau","iso2":"MO","iso3":"MAC","phone":"+853"},{"name":"Macedonia","iso2":"MK","iso3":"MKD","phone":"+389"},{"name":"Madagascar","iso2":"MG","iso3":"MDG","phone":"+261"},{"name":"Malawi","iso2":"MW","iso3":"MWI","phone":"+265"},{"name":"Malaysia","iso2":"MY","iso3":"MYS","phone":"+60"},{"name":"Maldives","iso2":"MV","iso3":"MDV","phone":"+960"},{"name":"Mali","iso2":"ML","iso3":"MLI","phone":"+223"},{"name":"Malta","iso2":"MT","iso3":"MLT","phone":"+356"},{"name":"Marshall Islands","iso2":"MH","iso3":"MHL","phone":"+692"},{"name":"Martinique","iso2":"MQ","iso3":"MTQ","phone":"+596"},{"name":"Mauritania","iso2":"MR","iso3":"MRT","phone":"+222"},{"name":"Mauritius","iso2":"MU","iso3":"MUS","phone":"+230"},{"name":"Mayotte","iso2":"YT","iso3":"MYT","phone":"+262"},{"name":"Mexico","iso2":"MX","iso3":"MEX","phone":"+52"},{"name":"Micronesia","iso2":"FM","iso3":"FSM","phone":"+691"},{"name":"Moldova","iso2":"MD","iso3":"MDA","phone":"+373"},{"name":"Monaco","iso2":"MC","iso3":"MCO","phone":"+377"},{"name":"Mongolia","iso2":"MN","iso3":"MNG","phone":"+976"},{"name":"Montenegro","iso2":"ME","iso3":"MNE","phone":"+382"},{"name":"Montserrat","iso2":"MS","iso3":"MSR","phone":"+1664"},{"name":"Morocco","iso2":"MA","iso3":"MAR","phone":"+212"},{"name":"Mozambique","iso2":"MZ","iso3":"MOZ","phone":"+258"},{"name":"Myanmar","iso2":"MM","iso3":"MMR","phone":"+95"},{"name":"Namibia","iso2":"NA","iso3":"NAM","phone":"+264"},{"name":"Nauru","iso2":"NR","iso3":"NRU","phone":"+674"},{"name":"Nepal","iso2":"NP","iso3":"NPL","phone":"+977"},{"name":"Netherlands","iso2":"NL","iso3":"NLD","phone":"+31"},{"name":"Netherlands Antilles","iso2":"AN","iso3":"ANT","phone":"+599"},{"name":"New Caledonia","iso2":"NC","iso3":"NCL","phone":"+687"},{"name":"New Zealand","iso2":"NZ","iso3":"NZL","phone":"+64"},{"name":"Nicaragua","iso2":"NI","iso3":"NIC","phone":"+505"},{"name":"Niger","iso2":"NE","iso3":"NER","phone":"+227"},{"name":"Nigeria","iso2":"NG","iso3":"NGA","phone":"+234"},{"name":"Niue","iso2":"NU","iso3":"NIU","phone":"+683"},{"name":"Norfolk Island","iso2":"NF","iso3":"NFK","phone":"+672"},{"name":"North Korea","iso2":"KP","iso3":"PRK","phone":"+850"},{"name":"Northern Mariana Islands","iso2":"MP","iso3":"MNP","phone":"+1670"},{"name":"Norway","iso2":"NO","iso3":"NOR","phone":"+47"},{"name":"Oman","iso2":"OM","iso3":"OMN","phone":"+968"},{"name":"Pakistan","iso2":"PK","iso3":"PAK","phone":"+92"},{"name":"Palau","iso2":"PW","iso3":"PLW","phone":"+680"},{"name":"Palestine","iso2":"PS","iso3":"PSE","phone":"+970"},{"name":"Panama","iso2":"PA","iso3":"PAN","phone":"+507"},{"name":"Papua New Guinea","iso2":"PG","iso3":"PNG","phone":"+675"},{"name":"Paraguay","iso2":"PY","iso3":"PRY","phone":"+595"},{"name":"Peru","iso2":"PE","iso3":"PER","phone":"+51"},{"name":"Philippines","iso2":"PH","iso3":"PHL","phone":"+63"},{"name":"Pitcairn","iso2":"PN","iso3":"PCN","phone":"+64"},{"name":"Poland","iso2":"PL","iso3":"POL","phone":"+48"},{"name":"Portugal","iso2":"PT","iso3":"PRT","phone":"+351"},{"name":"Puerto Rico","iso2":"PR","iso3":"PRI","phone":"+1939"},{"name":"Qatar","iso2":"QA","iso3":"QAT","phone":"+974"},{"name":"Reunion Island","iso2":"RE","iso3":"REU","phone":"+262"},{"name":"Romania","iso2":"RO","iso3":"ROU","phone":"+40"},{"name":"Russia","iso2":"RU","iso3":"RUS","phone":"+7"},{"name":"Rwanda","iso2":"RW","iso3":"RWA","phone":"+250"},{"name":"Saint Barthélemy","iso2":"BL","iso3":"BLM","phone":"+590"},{"name":"Saint Helena","iso2":"SH","iso3":"SHN","phone":"+290"},{"name":"Saint Kitts and Nevis","iso2":"KN","iso3":"KNA","phone":"+1869"},{"name":"Saint Lucia","iso2":"LC","iso3":"LCA","phone":"+1758"},{"name":"Saint Martin (French part)","iso2":"MF","iso3":"MAF","phone":"+590"},{"name":"Saint Pierre and Miquelon","iso2":"PM","iso3":"SPM","phone":"+508"},{"name":"Saint Vincent and the Grenadines","iso2":"VC","iso3":"VCT","phone":"+1784"},{"name":"San Marino","iso2":"SM","iso3":"SMR","phone":"+378"},{"name":"Sao Tome and Principe","iso2":"ST","iso3":"STP","phone":"+239"},{"name":"Saudi Arabia","iso2":"SA","iso3":"SAU","phone":"+966"},{"name":"Senegal","iso2":"SN","iso3":"SEN","phone":"+221"},{"name":"Serbia","iso2":"RS","iso3":"SRB","phone":"+381"},{"name":"Seychelles","iso2":"SC","iso3":"SYC","phone":"+248"},{"name":"Sierra Leone","iso2":"SL","iso3":"SLE","phone":"+232"},{"name":"Singapore","iso2":"SG","iso3":"SGP","phone":"+65"},{"name":"Sint Maarten","iso2":"SX","iso3":"SXM","phone":"+1721"},{"name":"Slovakia","iso2":"SK","iso3":"SVK","phone":"+421"},{"name":"Slovenia","iso2":"SI","iso3":"SVN","phone":"+386"},{"name":"Solomon Islands","iso2":"SB","iso3":"SLB","phone":"+677"},{"name":"Somalia","iso2":"SO","iso3":"SOM","phone":"+252"},{"name":"South Africa","iso2":"ZA","iso3":"ZAF","phone":"+27"},{"name":"South Georgia and the South Sandwich Islands","iso2":"GS","iso3":"SGS","phone":"+500"},{"name":"South Korea","iso2":"KR","iso3":"KOR","phone":"+82"},{"name":"South Sudan","iso2":"SS","iso3":"SSD","phone":"+2011"},{"name":"Spain","iso2":"ES","iso3":"ESP","phone":"+34"},{"name":"Sri Lanka","iso2":"LK","iso3":"LKA","phone":"+94"},{"name":"Sudan","iso2":"SD","iso3":"SDN","phone":"+249"},{"name":"Suriname","iso2":"SR","iso3":"SUR","phone":"+597"},{"name":"Svalbard and Jan Mayen","iso2":"SJ","iso3":"SJM","phone":"+47"},{"name":"Swaziland","iso2":"SZ","iso3":"SWZ","phone":"+268"},{"name":"Sweden","iso2":"SE","iso3":"SWE","phone":"+46"},{"name":"Switzerland","iso2":"CH","iso3":"CHE","phone":"+41"},{"name":"Syria","iso2":"SY","iso3":"SYR","phone":"+963"},{"name":"Taiwan","iso2":"TW","iso3":"TWN","phone":"+886"},{"name":"Tajikistan","iso2":"TJ","iso3":"TJK","phone":"+992"},{"name":"Tanzania","iso2":"TZ","iso3":"TZA","phone":"+255"},{"name":"Thailand","iso2":"TH","iso3":"THA","phone":"+66"},{"name":"Togo","iso2":"TG","iso3":"TGO","phone":"+228"},{"name":"Tokelau","iso2":"TK","iso3":"TKL","phone":"+690"},{"name":"Tonga","iso2":"TO","iso3":"TON","phone":"+676"},{"name":"Trinidad and Tobago","iso2":"TT","iso3":"TTO","phone":"+1868"},{"name":"Tunisia","iso2":"TN","iso3":"TUN","phone":"+216"},{"name":"Turkey","iso2":"TR","iso3":"TUR","phone":"+90"},{"name":"Turkmenistan","iso2":"TM","iso3":"TKM","phone":"+993"},{"name":"Turks and Caicos","iso2":"TC","iso3":"TCA","phone":"+1649"},{"name":"Tuvalu","iso2":"TV","iso3":"TUV","phone":"+688"},{"name":"Uganda","iso2":"UG","iso3":"UGA","phone":"+256"},{"name":"Ukraine","iso2":"UA","iso3":"UKR","phone":"+380"},{"name":"United Arab Emirates","iso2":"AE","iso3":"ARE","phone":"+971"},{"name":"United Kingdom","iso2":"GB","iso3":"GBR","phone":"+44","phoneFormat":"**** *** ***"},{"name":"United States Minor Outlying Islands","iso2":"UM","iso3":"UMI","phone":"+1"},{"name":"United States of America","iso2":"US","iso3":"USA","phone":"+1"},{"name":"Uruguay","iso2":"UY","iso3":"URY","phone":"+598"},{"name":"Uzbekistan","iso2":"UZ","iso3":"UZB","phone":"+998"},{"name":"Vanuatu","iso2":"VU","iso3":"VUT","phone":"+678"},{"name":"Venezuela","iso2":"VE","iso3":"VEN","phone":"+58"},{"name":"Vietnam","iso2":"VN","iso3":"VNM","phone":"+84"},{"name":"Virgin Islands (U.S.)","iso2":"VI","iso3":"VIR","phone":"+1340"},{"name":"Wallis and Futuna","iso2":"WF","iso3":"WLF","phone":"+681"},{"name":"Western Sahara","iso2":"EH","iso3":"ESH","phone":"+212"},{"name":"Western Samoa","iso2":"WS","iso3":"WSM","phone":"+685"},{"name":"Yemen","iso2":"YE","iso3":"YEM","phone":"+967"},{"name":"Zambia","iso2":"ZM","iso3":"ZMB","phone":"+260"},{"name":"Zimbabwe","iso2":"ZW","iso3":"ZWE","phone":"+263"}]
-
-/***/ }),
-/* 139 */,
-/* 140 */,
-/* 141 */,
-/* 142 */,
-/* 143 */,
-/* 144 */,
-/* 145 */,
-/* 146 */,
-/* 147 */,
-/* 148 */,
-/* 149 */,
-/* 150 */,
-/* 151 */,
-/* 152 */,
-/* 153 */,
-/* 154 */,
-/* 155 */,
-/* 156 */,
-/* 157 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _formControlController = __webpack_require__(158);
-
-var _formControlController2 = _interopRequireDefault(_formControlController);
-
-var _formControl = __webpack_require__(160);
-
-var _formControl2 = _interopRequireDefault(_formControl);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var FormControl = {
-  controller: _formControlController2.default,
-  template: _formControl2.default,
-  require: {
-    $ngModel: 'ngModel'
-  },
-  bindings: {
-    type: '@',
-    name: '@',
-    id: '@',
-    label: '@',
-    placeholder: '@',
-    helpText: '@',
-    step: '@',
-    locale: '@',
-    uploadAccept: '@',
-    uploadIcon: '@',
-    uploadTooLargeMessage: '@',
-    helpImage: '@',
-    options: '<',
-    ngModel: '=',
-    ngChange: '&',
-    ngRequired: '<',
-    ngDisabled: '<',
-    // ngMinlength/ngMaxlength have default behaviour that cannot be overridden
-    ngMinlength: '<twMinlength',
-    ngMaxlength: '<twMaxlength',
-    ngMin: '<',
-    ngMax: '<',
-    ngPattern: '<',
-    uploadOptions: '<',
-    textFormat: '<',
-    validationAsync: '<'
-  }
-};
-
-exports.default = FormControl;
-
-/***/ }),
-/* 158 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var FormControlController = function () {
-  function FormControlController($element) {
-    _classCallCheck(this, FormControlController);
-
-    this.$element = $element;
-    this.element = $element[0];
-  }
-
-  _createClass(FormControlController, [{
-    key: '$onInit',
-    value: function $onInit() {
-      this.$ngModel = this.$element.controller('ngModel');
-      this.addValidators();
-    }
-  }, {
-    key: 'change',
-    value: function change() {
-      this.$ngModel.$setDirty();
-
-      // Pass internal value through our validators
-      this.$ngModel.$setViewValue(this.internalModel);
-    }
-  }, {
-    key: 'focus',
-    value: function focus() {
-      this.element.dispatchEvent(new CustomEvent('focus'));
-    }
-  }, {
-    key: 'blur',
-    value: function blur() {
-      this.$ngModel.$setTouched();
-      this.element.dispatchEvent(new CustomEvent('blur'));
-    }
-  }, {
-    key: 'addValidators',
-    value: function addValidators() {
-      var _this = this;
-
-      var $ngModel = this.$ngModel;
-
-      $ngModel.$validators.required = function (modelValue, viewValue) {
-        var value = modelValue || viewValue;
-        return !value || !_this.ngRequired;
-      };
-
-      $ngModel.$validators.minlength = function (modelValue, viewValue) {
-        var value = modelValue || viewValue;
-        if (_this.type !== 'text' || !_this.ngMinlength) {
-          return true;
-        }
-        return !value || value.length >= _this.ngMinlength;
-      };
-
-      $ngModel.$validators.maxlength = function (modelValue, viewValue) {
-        var value = modelValue || viewValue;
-        if (_this.type !== 'text' || !_this.ngMaxlength) {
-          return true;
-        }
-        return !value || value.length <= _this.ngMaxlength;
-      };
-
-      // Min and max do not work on custom elements, add manual validators
-      $ngModel.$validators.min = function (modelValue, viewValue) {
-        var value = modelValue || viewValue;
-        if (typeof _this.ngMin === 'undefined') {
-          return true;
-        }
-        if (typeof value === 'number' && typeof _this.ngMin === 'number') {
-          return value >= _this.ngMin;
-        }
-        if (_this.type === 'date' && typeof value === 'string' && typeof _this.ngMin === 'string') {
-          return value >= _this.ngMin;
-        }
-        if (_this.type === 'date' && value instanceof Date && _this.ngMin instanceof Date) {
-          return value >= _this.ngMin;
-        }
-        return true;
-      };
-
-      $ngModel.$validators.max = function (modelValue, viewValue) {
-        var value = modelValue || viewValue;
-        if (typeof _this.ngMax === 'undefined') {
-          return true;
-        }
-        if (typeof value === 'number' && typeof _this.ngMax === 'number') {
-          return value <= _this.ngMax;
-        }
-        if (_this.type === 'date' && typeof value === 'string' && typeof _this.ngMax === 'string') {
-          return value <= _this.ngMax;
-        }
-        if (_this.type === 'date' && value instanceof Date && _this.ngMax instanceof Date) {
-          return value <= _this.ngMax;
-        }
-        return true;
-      };
-
-      $ngModel.$formatters.push(function (modelValue) {
-        _this.internalModel = modelValue;
-        return modelValue;
-      });
-    }
-  }]);
-
-  return FormControlController;
-}();
-
-FormControlController.$inject = ['$element'];
-
-exports.default = FormControlController;
-
-/***/ }),
-/* 159 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _angular = __webpack_require__(0);
-
-var _angular2 = _interopRequireDefault(_angular);
-
-var _select = __webpack_require__(5);
-
-var _select2 = _interopRequireDefault(_select);
-
-var _radio = __webpack_require__(19);
-
-var _radio2 = _interopRequireDefault(_radio);
-
-var _checkbox = __webpack_require__(13);
-
-var _checkbox2 = _interopRequireDefault(_checkbox);
-
-var _date = __webpack_require__(14);
-
-var _date2 = _interopRequireDefault(_date);
-
-var _upload = __webpack_require__(20);
-
-var _upload2 = _interopRequireDefault(_upload);
-
-var _formControlComponent = __webpack_require__(157);
-
-var _formControlComponent2 = _interopRequireDefault(_formControlComponent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _angular2.default.module('tw.styleguide.forms.form-control', [_select2.default, _radio2.default, _checkbox2.default, _date2.default, _upload2.default]).component('twFormControl', _formControlComponent2.default).component('twDynamicFormControl', _formControlComponent2.default) // Deprecated
-.name;
-
-/***/ }),
-/* 160 */
-/***/ (function(module, exports) {
-
-module.exports = "<div ng-switch=\"$ctrl.type\">\n  <div ng-switch-when=\"radio\"\n    class=\"radio\"\n    ng-class=\"{disabled: $ctrl.ngDisabled}\"\n    ng-repeat=\"option in $ctrl.options\">\n    <label>\n      <tw-radio\n        name=\"{{$ctrl.name}}\"\n        ng-value=\"option.value\"\n        ng-model=\"$ctrl.internalModel\"\n        ng-required=\"$ctrl.ngRequired\"\n        ng-disabled=\"$ctrl.ngDisabled\"\n        ng-change=\"$ctrl.change(option.value)\"\n        ng-click=\"$ctrl.change(option.value)\"\n        ng-focus=\"$ctrl.focus()\"\n        ng-blur=\"$ctrl.blur()\"\n      ></tw-radio>\n      {{option.label}}\n    </label>\n  </div>\n\n  <div ng-switch-when=\"checkbox\"\n    class=\"checkbox\"\n    ng-class=\"{disabled: $ctrl.ngDisabled}\">\n    <label>\n      <tw-checkbox\n        name=\"{{$ctrl.name}}\"\n        ng-model=\"$ctrl.internalModel\"\n        ng-required=\"$ctrl.ngRequired\"\n        ng-disabled=\"$ctrl.ngDisabled\"\n        ng-change=\"$ctrl.change($ctrl.internalModel)\"\n        ng-click=\"$ctrl.change()\"\n        ng-focus=\"$ctrl.focus()\"\n        ng-blur=\"$ctrl.blur()\"\n      ></tw-checkbox>\n      {{$ctrl.placeholder}}\n    </label>\n  </div>\n\n  <div ng-switch-when=\"select\">\n    <tw-select\n      name=\"{{$ctrl.name}}\"\n      options=\"$ctrl.options\"\n      placeholder=\"{{$ctrl.placeholder}}\"\n      ng-model=\"$ctrl.internalModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change($ctrl.internalModel)\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n    ></tw-select>\n  </div>\n\n  <div ng-switch-when=\"file|upload\" ng-switch-when-separator=\"|\">\n    <tw-upload\n      name=\"{{$ctrl.name}}\"\n      label=\"{{$ctrl.label}}\"\n      icon=\"{{$ctrl.uploadIcon}}\"\n      help-image=\"{{$ctrl.helpImage}}\"\n      placeholder=\"{{$ctrl.placeholder}}\"\n      accept=\"{{$ctrl.uploadAccept}}\"\n      complete-text=\"{{$ctrl.label}}\"\n      button-text=\"{{$ctrl.uploadOptions.buttonText}}\"\n      cancel-text=\"{{$ctrl.uploadOptions.cancelText}}\"\n      too-large-message=\"{{$ctrl.uploadTooLargeMessage}}\"\n      max-size=\"$ctrl.ngMax\"\n      ng-model=\"$ctrl.internalModel\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change($ctrl.internalModel)\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n    ></tw-upload>\n  </div>\n\n  <div ng-switch-when=\"date|date-time\" ng-switch-when-separator=\"|\">\n    <tw-date\n      name=\"{{$ctrl.name}}\"\n      locale=\"{{$ctrl.locale}}\"\n      ng-min=\"$ctrl.ngMin\"\n      ng-max=\"$ctrl.ngMax\"\n      ng-model=\"$ctrl.internalModel\"\n      ng-model-options=\"{ allowInvalid: true }\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change($ctrl.internalModel)\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n      model-type=\"string\"\n    ></tw-date>\n  </div>\n\n  <div ng-switch-when=\"tel\">\n    <tw-telephone\n      name=\"{{ $ctrl.name }}\"\n      placeholder=\"{{ $ctrl.placeholder }}\"\n      ng-model=\"$ctrl.internalModel\"\n      ng-model-options=\"{ allowInvalid: true }\"\n      ng-required=\"$ctrl.ngRequired\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-change=\"$ctrl.change($ctrl.internalModel)\"\n      ng-focus=\"$ctrl.focus()\"\n      ng-blur=\"$ctrl.blur()\"\n      locale=\"{{ $ctrl.locale }}\"\n      search-placeholder=\" \"\n    ></tw-telephone>\n  </div>\n\n  <input ng-switch-when=\"number\"\n    name=\"{{$ctrl.name}}\"\n    type=\"number\"\n    step=\"{{$ctrl.step}}\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.internalModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-change=\"$ctrl.change($ctrl.internalModel)\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-min=\"$ctrl.ngMin\"\n    ng-max=\"$ctrl.ngMax\" />\n\n  <input ng-switch-when=\"hidden\"\n    name=\"{{$ctrl.name}}\"\n    type=\"hidden\"\n    ng-model=\"$ctrl.ngModel\"/>\n\n  <input ng-switch-when=\"password\"\n    name=\"{{$ctrl.name}}\"\n    type=\"password\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.internalModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    ng-change=\"$ctrl.change($ctrl.internalModel)\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-minlength=\"$ctrl.ngMinlength\"\n    ng-maxlength=\"$ctrl.ngMaxlength\" />\n\n  <input ng-switch-default\n    name=\"{{$ctrl.name}}\"\n    type=\"text\"\n    class=\"form-control\"\n    placeholder=\"{{$ctrl.placeholder}}\"\n    ng-model=\"$ctrl.internalModel\"\n    ng-model-options=\"{ allowInvalid: true }\"\n    ng-required=\"$ctrl.ngRequired\"\n    ng-pattern=\"$ctrl.ngPattern\"\n    ng-minlength=\"$ctrl.ngMinlength\"\n    ng-maxlength=\"$ctrl.ngMaxlength\"\n    ng-change=\"$ctrl.change($ctrl.internalModel)\"\n    ng-focus=\"$ctrl.focus()\"\n    ng-blur=\"$ctrl.blur()\"\n    ng-disabled=\"$ctrl.ngDisabled\"\n    tw-text-format=\"{{ $ctrl.textFormat }}\" />\n\n</div>\n";
 
 /***/ })
 /******/ ]);

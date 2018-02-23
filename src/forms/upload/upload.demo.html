@@ -136,7 +136,9 @@
     <div class="well">
       <h5 class="page-header">
         Edit configuration
-        <button type="button" class="btn btn-sm btn-default pull-xs-right" ng-click="$ctrl.makeFancy()">Make fancy</button>
+        <button type="button"
+          class="btn btn-sm btn-default pull-xs-right"
+          ng-click="$ctrl.makeFancy()">Make fancy</button>
       </h5>
       <div class="form-group" ng-init="$ctrl.name = 'file'">
         <label class="control-label">
@@ -151,7 +153,8 @@
         </label>
         <input type="text" class="form-control" ng-model="$ctrl.label" />
       </div>
-      <div class="form-group" ng-init="$ctrl.placeholder = 'Drag and drop a file less than 1MB'">
+      <div class="form-group"
+        ng-init="$ctrl.placeholder = 'Drag and drop a file less than 1MB'">
         <label class="control-label">
           Placeholder text
         </label>
@@ -178,7 +181,7 @@
         <tw-select
           placeholder="Default icon"
           ng-model="$ctrl.icon"
-          options="[{value: 'upload', label: 'Upload'},{value: 'id', label: 'ID'},{value: 'pdf', label: 'PDF'}]"></tw-select>
+          options="$ctrl.icons"></tw-select>
       </div>
 
       <div class="form-group">
@@ -204,13 +207,19 @@
         <span class="control-label">Toggles</span>
         <div class="checkbox">
           <label>
-            <tw-checkbox ng-model="$ctrl.httpOptions" ng-true-value="{url: 'partials/image-upload.json'}" ng-false-value="false" />
+            <tw-checkbox
+              ng-model="$ctrl.httpOptions"
+              ng-true-value="{url: 'partials/image-upload.json'}"
+              ng-false-value="false" />
             POST immmediately?
           </label>
         </div>
         <div class="checkbox">
           <label>
-            <tw-checkbox ng-model="$ctrl.httpOptions" ng-true-value="{url: '404'}" ng-false-value="false" />
+            <tw-checkbox
+              ng-model="$ctrl.httpOptions"
+              ng-true-value="{url: '404'}"
+              ng-false-value="false" />
             Post to a 404 for testing?
           </label>
         </div>
@@ -236,7 +245,7 @@
           placeholder="Size"
           ng-required="true"
           ng-model="$ctrl.size"
-          options="[{value: 'sm', label: 'Small'},{value: 'md', label: 'Medium'},{value: 'lg', label: 'Large'}]"></tw-select>
+          options="$ctrl.sizes"></tw-select>
       </div>
 
       <div class="form-group" ng-init="$ctrl.accept = 'image/*'">
@@ -272,7 +281,10 @@
         <label class="control-label">
           Error message
         </label>
-        <input type="text" class="form-control" ng-model="$ctrl.errorMessage" placeholder="Populate using on-failure..." />
+        <input type="text" 
+          class="form-control"
+          ng-model="$ctrl.errorMessage"
+          placeholder="Populate using on-failure..." />
       </div>
     </div>
   </div>

@@ -29,7 +29,7 @@ export default angular
         nextMonth: new Date(now.getTime() + (30 * 24 * 60 * 60 * 1000)),
         nextYear: new Date(now.getTime() + (365 * 24 * 60 * 60 * 1000))
       };
-      this.timeChange = function () {
+      this.timeChange = () => {
         if (!this.time) {
           return;
         }
@@ -41,7 +41,7 @@ export default angular
           this.model.setMinutes(this.minutes);
         }
       };
-      this.dateChange = function () {
+      this.dateChange = () => {
         this.model.setHours(this.hours);
         this.model.setMinutes(this.minutes);
       };

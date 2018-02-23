@@ -1,5 +1,4 @@
-<h4 id="cards">Cards</h4>
-<br>
+<h4 id="cards" class="page-header">Cards</h4>
 <div class="row">
   <div class="col-md-8">
     <p>These are cards that have information about an activity and
@@ -165,7 +164,7 @@
     <tw-card state="warning">
       <card-icon>
         <img class="hidden-xs" height="50" alt="tw sample photo"
-          src="https://static1.squarespace.com/static/58775efdd482e90f8535f34f/t/58d97b69ebbd1a5c0c1d9473/1498213976117/?format=750w">
+          ng-src="$ctrl.imageUrl" />
         <span class="visible-xs icon icon-md icon-profile"></span>
       </card-icon>
       <collapsed>
@@ -221,9 +220,9 @@
       </expanded>
     </tw-card>
 </tw-cards>
-<br>
+<br />
 <h5>Inactive Cards</h5>
-<br>
+<br />
 <tw-cards inactive="true">
     <tw-card state="none" show-form="true">
       <card-icon>V</card-icon>
