@@ -13,6 +13,7 @@ import CurrencyInput from './currency-input/currency-input.demo.js';
 import AmountCurrencySelect from './amount-currency-select/amount-currency-select.demo.js';
 
 import FormControl from './form-control/form-control.demo.js';
+import Field from './field/field.demo.js';
 import Fieldset from './fieldset/fieldset.demo.js';
 import RequirementsForm from './requirements-form/requirements-form.demo.js';
 import DefinitionList from './definition-list/definition-list.demo.js';
@@ -30,6 +31,7 @@ export default angular.module('tw.styleguide.demo.forms', [
   CurrencyInput,
   AmountCurrencySelect,
   FormControl,
+  Field,
   Fieldset,
   RequirementsForm,
   DefinitionList,

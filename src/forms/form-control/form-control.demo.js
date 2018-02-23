@@ -32,4 +32,19 @@ export default angular
       this.log = function (message) { console.log(message); };
     },
     template
-  }).name;
+  })
+  .directive('validateRegexp', ['$q', function ($q) {
+    return {
+      require: 'ngModel',
+      link(scope, element, attrs, ngModel) {
+        ngModel.$asyncValidators.async = function () { // (modelValue, viewValue) {
+          try {
+            // const reg = new RegExp(viewValue);
+            return $q.when(true);
+          } catch (error) {
+            return $q.reject(false);
+          }
+        };
+      }
+    };
+  }]).name;

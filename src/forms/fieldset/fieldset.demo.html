@@ -1,39 +1,102 @@
-
-<h4 id="fieldset">TW Fieldset</h4>
-<p>
-  <code>tw-fieldset</code> is a component that allows us to build a simple
-  form dynamically.  The values of the form controls are mapped to the supplied
-  model object. <code>tw-fieldset</code> is a companion to
-  <code><a href="#definition-list">tw-definition-list</a></code> which can be
-  used to display the generated model.
-</p>
-<tw-fieldset
-  legend="Fieldset"
-  fields="$ctrl.fields"
-  model="$ctrl.model"
-  locale="en-GB"
-  upload-options="{buttonText: 'Choose file'}"
-  on-refresh-requirements="$ctrl.refresh()"
-  on-model-change="$ctrl.onModelChange(model)">
-</tw-fieldset>
-
+<h2 id="fieldsets" class="page-header">
+  Fieldsets
+  <a href="#fieldsets" class="pull-xs-right">
+    <span class="glyphicon glyphicon-link"></span>
+  </a>
+</h2>
 <div class="row">
   <div class="col-md-6">
-    <h5>Configuration</h5>
+    <p>Fieldsets represent a collection of fields.  A fieldset can
+      optionally include a title and/or a description.</p>
+    <p>Fieldsets provide a 2-way bound model that is updated as the user
+      interacts.  There is also a 2-way bound 'is-valid' property, that
+      can be useful for enabling/disabling submit buttons.</p>
+  </div>
+  <div class="col-md-6">
+    <h5>Component API</h5>
 <pre>
 &lt;tw-fieldset
-  legend="Fieldset"
-  fields="$ctrl.fields"
-  model="$ctrl.model"
-  locale="en-GB"
-  on-refresh-requirements="$ctrl.myFunction()"&gt;
+title="<span ng-non-bindable>{{ fieldset.title }}</span>"
+description="<span ng-non-bindable>{{ fieldset.description }}</span>"
+fields="fieldset.fields"&gt;
+locale="en-GB"
+model="{...}"
+is-valid="..."
+on-model-change="modelHandler(model)"
+on-field-focus="focusHandler(key, field)"
+on-field-blur="blurHandler(key, field)"
+on-field-change="changeHandler(value, key, field)"&gt;
 &lt;/tw-fieldset&gt;
 </pre>
   </div>
-  <div class="col-md-6">
-    <div class="well">
-      <h6>Model</h6>
-      <pre class="m-b-0">{{$ctrl.model | json}}</pre>
-    </div>
-  </div>
 </div>
+
+<h4 id="fieldset-basic" class="page-header">
+  Basic example
+  <a href="#fieldset-basic" class="pull-xs-right">
+    <span class="glyphicon glyphicon-link"></span>
+  </a>
+</h4>
+<fieldset-example
+  requirements="$ctrl.fieldsetBasic"
+  model="$ctrl.fieldsetBasicModel">
+</fieldset-example>
+
+<h4 id="fieldset-title" class="page-header">
+  Title &amp; description
+  <a href="#fieldset-title" class="pull-xs-right">
+    <span class="glyphicon glyphicon-link"></span>
+  </a>
+</h4>
+<fieldset-example
+  requirements="$ctrl.fieldsetOptions"
+  model="$ctrl.fieldsetOptionsModel">
+</fieldset-example>
+
+<h4 id="fieldset-events" class="page-header">
+  Events
+  <a href="#fieldset-events" class="pull-xs-right">
+    <span class="glyphicon glyphicon-link"></span>
+  </a>
+</h4>
+<fieldset-example
+  requirements="$ctrl.fieldsetBasic"
+  model="$ctrl.fieldsetBasicModel"
+  on-model-change="$ctrl.log(model)"
+  on-field-focus="$ctrl.log('focus: ' + key)"
+  on-field-blur="$ctrl.log('blur: ' + key)"
+  on-field-change="$ctrl.onFieldChange(value, key, field)">
+</fieldset-example>
+
+<h4 id="fieldset-layout" class="page-header">
+  Layout
+  <a href="#fieldset-layout" class="pull-xs-right">
+    <span class="glyphicon glyphicon-link"></span>
+  </a>
+</h4>
+<fieldset-example
+  requirements="$ctrl.fieldsetLayout"
+  model="$ctrl.fieldsetLayoutModel">
+</fieldset-example>
+
+<h4 id="fieldset-full" class="page-header">
+  All field types
+  <a href="#fieldset-full" class="pull-xs-right">
+    <span class="glyphicon glyphicon-link"></span>
+  </a>
+</h4>
+
+<fieldset-example
+  requirements="$ctrl.fieldsetFull"
+  model="$ctrl.fieldsetFullModel"
+  on-model-change="$ctrl.log(model)"
+  on-field-focus="$ctrl.log('focus: ' + key)"
+  on-field-blur="$ctrl.log('blur: ' + key)"
+  on-field-change="$ctrl.onFieldChange(value, key, field)"
+  on-refresh-requirements="$ctrl.refresh()">
+</fieldset-example>
+
+<tw-definition-list-docs
+  model="$ctrl.fieldsetFullModel"
+  fields="$ctrl.fieldsetFull.fields">
+</tw-definition-list-docs>

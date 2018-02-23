@@ -17,9 +17,6 @@ const module = angular.module('tw.styleguide.demo', [
 module.config(['$compileProvider', function ($compileProvider) {
   $compileProvider.debugInfoEnabled(false);
 }])
-  .component('docsNavigation', {
-    templateUrl: 'partials/navigation.html'
-  })
   .controller('PageController', function () {
     this.log = function (message) { console.log(message); };
 
@@ -40,21 +37,59 @@ module.config(['$compileProvider', function ($compileProvider) {
       { value: 'xx-XX', label: 'Unknown locale' }
     ];
   })
-  .directive('validateRegexp', ['$q', function ($q) {
-    return {
-      require: 'ngModel',
-      link(scope, element, attrs, ngModel) {
-        ngModel.$asyncValidators.async = function () { // (modelValue, viewValue) {
-          try {
-            // const reg = new RegExp(viewValue);
-            return $q.when(true);
-          } catch (error) {
-            return $q.reject(false);
-          }
-        };
-      }
-    };
-  }])
+  .component('docsNavigation', {
+    template: `
+    <h4>Jump to:</h4>
+
+    <h5>Form Styling &amp; Validation:</h5>
+    <ul class="list-unstyled">
+      <li><a href="index.html#focusable">Focusable</a></li>
+      <li><a href="index.html#pop-over">Pop over</a></li>
+      <li><a href="index.html#tool-tip">Tool tip</a></li>
+      <li><a href="index.html#validation">Validation</a></li>
+    </ul>
+
+    <h5>Form components:</h5>
+    <ul class="list-unstyled">
+      <li><a href="index.html#amount-currency-select">Amount currency select</a></li>
+      <li><a href="index.html#checkbox">Checkbox</a></li>
+      <li><a href="index.html#currency-input">Currency input</a></li>
+      <li><a href="index.html#date">Date</a></li>
+      <li><a href="index.html#date-lookup">Date lookup</a></li>
+      <li><a href="index.html#form-control">Form control</a></li>
+      <li><a href="index.html#radio">Radio</a></li>
+      <li><a href="index.html#select">Select</a></li>
+      <li><a href="index.html#telephone">Telephone</a></li>
+      <li><a href="index.html#upload">Upload</a></li>
+    </ul>
+
+    <h5>Requirements:</h5>
+    <ul class="list-unstyled">
+      <li><a href="requirements.html#field">Field</a></li>
+      <li><a href="requirements.html#fieldset">Fieldset</a></li>
+      <li><a href="index.html#requirements-form">Form</a></li>
+      <li><a href="requirements.html#definition-list">Definition list</a></li>
+    </ul>
+
+    <h5>Formatting:</h5>
+    <ul class="list-unstyled">
+      <li><a href="index.html#currency-format">Currency format</a></li>
+      <li><a href="index.html#date-format">Date format</a></li>
+      <li><a href="index.html#number-format">Number format</a></li>
+      <li><a href="index.html#text-format">Text format</a></li>
+    </ul>
+
+    <h5>Layout components:</h5>
+    <ul class="list-unstyled">
+      <li><a href="index.html#cards">Cards</a></li>
+    </ul>
+
+    <h5>Other components:</h5>
+    <ul class="list-unstyled">
+      <li><a href="index.html#process">Process</a></li>
+      <li><a href="index.html#loader">Loader</a></li>
+    </ul>`
+  })
   .directive('docsErrorMessages', () => ({
     replace: true,
     template: `
