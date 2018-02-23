@@ -1,4 +1,4 @@
-angular.module('tw.styleguide.docs', [])
+angular.module('tw.styleguide.demo', [])
   .config(['$compileProvider', function ($compileProvider) {
     $compileProvider.debugInfoEnabled(false);
   }])
