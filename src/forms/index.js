@@ -8,7 +8,7 @@ import DateControl from './date/';
 import DateLookup from './date-lookup/';
 import CurrencyInput from './currency-input/';
 import AmountCurrencySelect from './amount-currency-select/';
-import FormControl from './dynamic-form-control/';
+import FormControl from './form-control/';
 import Field from './field/';
 import Fieldset from './fieldset/';
 import RequirementsForm from './requirements-form/';
