@@ -7,4 +7,4 @@ import Cards from './cards/cards.demo';
 export default angular.module('tw.styleguide.demo.layout', [
   Affix,
   Cards
-]).component('layoutComponents', { template }).name;
+]).component('layoutDocs', { template }).name;

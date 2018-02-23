@@ -11,7 +11,7 @@ export default angular.module('tw.styleguide.demo.formatting', [
   DateFormat,
   NumberFormat,
   CurrencyFormat
-]).component('formattingComponents', {
+]).component('formattingDocs', {
   bindings: {
     model: '=',
     locales: '<'

@@ -36,7 +36,7 @@ export default angular.module('tw.styleguide.demo.forms', [
   RequirementsForm,
   DefinitionList,
   Focusable
-]).component('formComponents', {
+]).component('formDocs', {
   bindings: {
     model: '=',
     locales: '<'

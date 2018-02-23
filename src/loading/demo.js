@@ -7,4 +7,4 @@ import Loader from './loader/loader.demo.js';
 export default angular.module('tw.styleguide.demo.loading', [
   Process,
   Loader
-]).component('loadingComponents', { template }).name;
+]).component('loadingDocs', { template }).name;

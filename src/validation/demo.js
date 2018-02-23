@@ -2,7 +2,7 @@ import angular from 'angular';
 import template from './demo.html';
 
 export default angular.module('tw.styleguide.demo.validation', [])
-  .component('twValidationDocs', {
+  .component('validationDocs', {
     bindings: {
       model: '='
     },
