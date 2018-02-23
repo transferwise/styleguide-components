@@ -14,14 +14,8 @@ const module = angular.module('tw.styleguide.demo', [
   Help
 ]);
 
-module.config(['$compileProvider', ($compileProvider) => {
-  $compileProvider.debugInfoEnabled(false);
-}])
-  .controller('PageController', () => {
-    this.log = (message) => {
-      console.log(message); // eslint-disable-line
-    };
-
+class PageController {
+  constructor() {
     this.model = {
       components: {}
     };
@@ -38,7 +32,17 @@ module.config(['$compileProvider', ($compileProvider) => {
       { value: 'en-IN', label: 'English Indian' },
       { value: 'xx-XX', label: 'Unknown locale' }
     ];
-  })
+  }
+
+  log(message) { // eslint-disable-line
+    console.log(message); // eslint-disable-line
+  }
+}
+
+module.config(['$compileProvider', ($compileProvider) => {
+  $compileProvider.debugInfoEnabled(false);
+}])
+  .controller('PageController', PageController)
   .component('docsNavigation', {
     template: `
     <h4>Jump to:</h4>

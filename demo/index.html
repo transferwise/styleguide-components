@@ -26,70 +26,46 @@
 <body ng-app="my-app" class="bg-default">
   <div class="container" ng-controller="PageController as vm">
     <div class="row m-t-3">
-      <div class="col-lg-9">
-        <div class="panel">
-          <div class="panel-heading">
-            <h2 class="panel-title">Form Styling &amp; Validation</h2>
-          </div>
-          <div class="panel-body">
-            <tw-affix-docs></tw-affix-docs>
-            <tw-pop-over-docs></tw-pop-over-docs>
-            <tw-tool-tip-docs></tw-tool-tip-docs>
-            <tw-focusable-docs></tw-focusable-docs>
-            <tw-validation-docs model="vm.model"></tw-validation-docs>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3">
-        <div data-spy="affix" data-offset-top="0">
+
+      <div class="col-lg-3 col-lg-push-9">
+        <nav data-spy="affix" data-offset-top="0">
           <docs-navigation></docs-navigation>
 
           <h5>Data Model</h5>
           <pre>{{vm.model | json}}</pre>
-        </div>
+        </nav>
       </div>
-    </div>
 
-    <div class="row m-t-3">
-      <div class="col-lg-9">
+      <div class="col-lg-9 col-lg-pull-3">
+
+        <layout-components
+          class="m-t-3">
+        </layout-components>
+
+        <help-components
+          class="m-t-3">
+        </help-components>
+
+        <tw-validation-docs
+          model="vm.model">
+        </tw-validation-docs>
+
         <form-components
           model="vm.model"
           locales="vm.locales"
           sizes="vm.sizes">
         </form-components>
-      </div>
-    </div>
 
-    <div class="row m-t-3">
-      <div class="col-lg-9">
         <formatting-components
           model="vm.model"
-          locales="vm.locales">
+          locales="vm.locales"
+          class="m-t-3">
         </formatting-components>
-      </div>
-    </div>
 
-    <div class="row m-t-3">
-      <div class="col-lg-9">
-        <div class="panel-heading">
-          <h3 class="panel-title">Layout components</h3>
-        </div>
-        <div class="panel-body">
-          <tw-cards-docs></tw-cards-docs>
-        </div>
-      </div>
-    </div>
-    <div class="row m-t-3">
-      <div class="col-lg-9">
-        <div class="panel">
-          <div class="panel-heading">
-            <h2 class="panel-title">Other components</h2>
-          </div>
-          <div class="panel-body">
-            <tw-process-docs></tw-process-docs>
-            <tw-loader-docs></tw-loader-docs>
-          </div>
-        </div>
+        <loading-components
+          class="m-t-3">
+        </loading-components>
+
       </div>
     </div>
   </div>
