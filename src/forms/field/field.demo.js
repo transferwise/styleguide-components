@@ -156,6 +156,11 @@ function fieldDocsController() {
     control: 'tel',
     title: 'Telephone override'
   };
+  this.textareaOverride = {
+    type: 'string',
+    control: 'textarea',
+    title: 'Textarea override'
+  };
   this.selectOverride = {
     type: 'string',
     title: 'Select override',
@@ -168,6 +173,7 @@ function fieldDocsController() {
   };
 
   this.override = {
+    textarea: 'Lorem Ipsum',
     telephone: '+441234567890',
     password: 'qwerty',
     select: '1'

@@ -219,6 +219,12 @@ function fieldsetDocsController() {
         width: 'md',
         refreshRequirementsOnChange: true
       },
+      textarea: {
+        title: 'Textarea',
+        type: 'string',
+        control: 'textarea',
+        refreshRequirementsOnChange: true
+      },
       file: {
         title: 'File',
         type: 'string',
