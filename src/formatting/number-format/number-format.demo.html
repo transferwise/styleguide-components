@@ -1,0 +1,69 @@
+<h4 id="number-format">Number Format</h4>
+<p>
+  <code>twNumberFormat</code> provides a component and a filter for formatting
+  numbers based on a given locale. You can also supply a precision if you want
+  a specific number of decimals.  If precision is not supplied it will simply
+  display any decimals the number value already has.
+</p>
+<p class="text-danger">
+  Internally this uses Number.prototype.getLocaleString, which is not yet
+  supported in Safari.
+</p>
+<div class="row m-b-3">
+  <div class="col-md-6">
+    <dl>
+      <dt>Component</dt>
+      <dd>
+        <tw-number-format
+          amount="$ctrl.number"
+          precision="$ctrl.precision"
+          locale="$ctrl.locale">
+        </tw-number-format>
+      </dd>
+    </dl>
+<pre>
+&lt;tw-number-format
+  amount="{{ $ctrl.number }}"
+  precision="{{ $ctrl.precision }}"
+  locale="{{ $ctrl.locale }}"&gt;
+&lt;/tw-number-format&gt;
+</pre>
+    <h5>Number format filter</h5>
+    <p> We also provide a <code>twNumberFormat</code> filter.</p>
+    <dl>
+      <dt>Filter</dt>
+      <dd>{{ $ctrl.number | twNumberFormat : $ctrl.precision : $ctrl.locale}}</dd>
+
+    </dl>
+<pre>
+<code ng-non-bindable>{{</code>{{ $ctrl.number }} | twNumberFormat : {{ $ctrl.precision }} : "{{ $ctrl.locale }}"<code ng-non-bindable>}}</code>
+</pre>
+  </div>
+  <div class="col-md-6">
+    <div class="well">
+      <h5 class="page-header">Edit configuration</h5>
+
+      <div class="form-group">
+        <label class="control-label">
+          Number
+        </label>
+        <input type="number" class="form-control" ng-model="$ctrl.number" />
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          Locale
+        </label>
+        <tw-select
+          options="$ctrl.locales"
+          ng-model="$ctrl.locale">
+        </tw-select>
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          Precision
+        </label>
+        <input type="number" class="form-control" ng-model="$ctrl.precision"  />
+      </div>
+    </div>
+  </div>
+</div>

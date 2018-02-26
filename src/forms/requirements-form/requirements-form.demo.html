@@ -1,0 +1,67 @@
+<h4 id="requirements-form">Requirements form</h4>
+<p>The requirements form uses the dynamic form control to build a fully featured form.
+  It accepts a model object which it permutes based on a set of requirements.
+  The requirements object should match that returned by the TransferWise API</p>
+
+<form novalidate>
+  <div class="well">
+    <h5 class="page-header">
+      Edit configuration
+    </h5>
+
+    <div class="form-group">
+      <label class="control-label">
+        Example form
+      </label>
+      <tw-select
+        options="$ctrl.types"
+        ng-model="$ctrl.type">
+      </tw-select>
+    </div>
+  </div>
+  <div class="m-b-3">
+    <tw-requirements-form
+      requirements="$ctrl.requirements"
+      model="$ctrl.model"
+      on-refresh-requirements="$ctrl.onRefreshRequirements()"
+      upload-options="{
+        buttonText: 'Choose file...',
+        cancelText: 'Choose a different file?'
+      }"
+      validation-messages="{
+        required: 'Required',
+        pattern: 'Incorrect format',
+        minlength: 'The value is too short',
+        maxlength: 'The value is too long',
+        min: 'The value is too low',
+        max: 'The value is too high'
+      }"
+      error-messages="$ctrl.errorMessages"
+      is-valid="$ctrl.isValid"></tw-requirements-form>
+    <hr />
+    <div class="btn-toolbar m-b-panel">
+      <button type="submit" class="btn btn-primary">
+        Submit form
+      </button>
+    </div>
+
+    <h5>Configuration</h5>
+<pre>&lt;tw-requirements-form
+  requirements="$ctrl.requirements"
+  model="{{$ctrl.model | json}}"
+  on-refresh-requirements="$ctrl.onRefreshRequirements()"
+  upload-options="{
+    buttonText: 'Choose file...',
+    cancelText: 'Choose a different file'
+  }"
+  validation-messagess="{
+    required: 'Required',
+    pattern: 'Incorrect format',
+    minlength: 'The value is too short',
+    maxlength: 'The value is too long',
+    min: 'The value is too low',
+    max: 'The value is too high'
+  }"
+  is-valid='{{$ctrl.isValid}}'&gt;&lt;/tw-requirements-form&gt;</pre>
+  </div>
+</form>

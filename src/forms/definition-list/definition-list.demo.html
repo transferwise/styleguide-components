@@ -1,0 +1,29 @@
+<h2 id="definition-list" class="page-header">
+  Definition List
+  <a href="#definition-list" class="pull-xs-right">
+    <span class="glyphicon glyphicon-link"></span>
+  </a>
+</h2>
+<p>
+  <code>tw-definition-list</code> is a companion to
+  <code><a href="#fieldset">tw-fieldset</a></code>,
+  it shares the same interface, and same dynamic requirements format, allowing
+  us to display the data model we generated using a fieldset.
+</p>
+<tw-definition-list
+  legend="Definition List"
+  fields="$ctrl.fields"
+  model="$ctrl.model"
+  locale="en-GB"
+  on-refresh-requirements="$ctrl.refresh()">
+</tw-definition-list>
+
+<h5>Configuration</h5>
+<pre>
+&lt;tw-definition-list
+  legend="Definition List"
+  fields="$ctrl.fields"
+  model="$ctrl.model"
+  locale="en-GB"&gt;
+&lt;/tw-definition-list&gt;
+</pre>

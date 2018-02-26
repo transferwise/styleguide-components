@@ -1,0 +1,47 @@
+
+<h4 id="process">Process</h4>
+<p>A component for conveying that a process is occuring, and for
+  communicating a successful or unsuccessful result.</p>
+<div class="row m-b-3">
+  <div class="col-md-6">
+    <div class="m-y-3">
+      <tw-process
+        state="$ctrl.state"
+        size="{{$ctrl.size}}"
+        on-stop="$ctrl.log('stopped')">
+      </tw-process>
+    </div>
+<pre>
+&lt;tw-process
+  state='{{$ctrl.state}}'
+  size='{{$ctrl.size}}'
+  on-stop='$ctrl.log('stopped')'&gt;
+&lt;/tw-process&gt;
+</pre>
+  </div>
+  <div class="col-md-6">
+    <div class="well">
+      <h5 class="page-header">
+        Edit configuration
+      </h5>
+      <div class="form-group" ng-init="$ctrl.state = null">
+        <label class="control-label">
+          State
+        </label>
+        <tw-select ng-model="$ctrl.state"
+          options="$ctrl.processingStates">
+        </tw-select>
+      </div>
+      <div class="form-group" ng-init="$ctrl.size = 'xl'">
+        <label class="control-label">
+          Size?
+        </label>
+        <tw-select
+          ng-required="true"
+          ng-model="$ctrl.size"
+          options="$ctrl.sizes">
+        </tw-select>
+      </div>
+    </div>
+  </div>
+</div>

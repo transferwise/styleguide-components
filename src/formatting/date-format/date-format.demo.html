@@ -1,0 +1,204 @@
+<h4 id="date-format">Date Format</h4>
+<p>
+  <code>twDateFormat</code> is a component for presenting dates.  It makes smart
+  decisions about how to present the date based on how far the date is from the
+  current date and time.  It uses the supplied locale to change the presentation
+  to the common local format. The component uses a tooltip to show the full
+  date on hover.
+</p>
+<ul>
+  <li>Dates within 48 hours of now display the weekday name and time.</li>
+  <li>Dates within 8 days show the weekday name and day of the month.</li>
+  <li>Dates within the current year show the day of the month and the month name.</li>
+  <li>Dates from other years show the day of the month, the month name and the year.</li>
+</ul>
+<p>
+  Dates can be supplied either as a date object or as any string that can be
+  interpreted by the Javascript Date object constructor.  We use locale specific
+  date functions.  Therefore, if you supply a date in UTC, it may shift to another
+  day if the browser is in another time zone.  If you're presenting something
+  like a date of birth, the safest approach is to pass a string '2000-01-01'
+  which will be interpreted in the local timezone.
+</p>
+<div class="row m-b-3">
+  <div class="col-md-6">
+    <h5>Date format component</h5>
+    <h3 class="m-b-3">
+      <tw-date-format
+        date="$ctrl.model"
+        locale="$ctrl.locale"
+        format="$ctrl.format">
+      </tw-date-format>
+    </h3>
+<pre>
+&lt;tw-date-format
+  date='{{ $ctrl.model }}'
+  locale="'{{ $ctrl.locale }}'"<span ng-if="$ctrl.format">
+  format="'{{ $ctrl.format }}'"</span>&gt;
+&lt;/tw-date-format&gt;
+</pre>
+    <h5>Date format filter</h5>
+    <p>
+      We also provide a <code>twDateFormat</code> filter to format dates. In most
+      situations it is preferable to use the component to take advantage of the
+      tooltips.
+    </p>
+    <h3 class="m-b-3">
+      {{ $ctrl.model | twDateFormat : $ctrl.locale : $ctrl.format }}
+    </h3>
+<pre>
+<code ng-non-bindable>{{</code>
+  {{ $ctrl.model }} |
+  twDateFormat : "{{ $ctrl.locale }}" <span ng-if="$ctrl.format">: {{ $ctrl.format }} </span>
+<code ng-non-bindable>}}</code>
+</pre>
+  </div>
+  <div class="col-md-6">
+    <div class="well">
+      <h5 class="page-header">Edit configuration</h5>
+      <div class="form-group">
+        <label class="control-label">
+          Date
+        </label>
+        <tw-date-lookup
+          placeholder="Choose date..."
+          ng-model="$ctrl.model"
+          ng-change="$ctrl.dateChange()">
+        </tw-date-lookup>
+      </div>
+      <div class="form-group" ng-init="$ctrl.time = '1200'">
+        <label class="control-label">
+          Time
+        </label>
+        <input class="form-control"
+          ng-model="$ctrl.time"
+          tw-text-format="**:**"
+          ng-minlength="4"
+          ng-maxlength="4"
+          ng-change="$ctrl.timeChange()"
+          tw-validation />
+      </div>
+      <div class="form-group" ng-init="$ctrl.locale = 'en-GB';">
+        <label class="control-label">
+          Locale
+        </label>
+        <tw-select
+          options="$ctrl.locales"
+          ng-model="$ctrl.locale">
+        </tw-select>
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          Format
+        </label>
+        <tw-select
+          options="$ctrl.formats"
+          ng-model="$ctrl.format">
+        </tw-select>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <h5>Examples</h5>
+  <dl>
+    <dt>Now</dt>
+    <dd>
+      <tw-date-format
+        date="$ctrl.dates.now"
+        locale="$ctrl.locale"
+        format="$ctrl.format">
+      </tw-date-format>
+    </dd>
+  </dl>
+  <div class="row">
+    <div class="col-md-6">
+      <dl>
+        <dt>An hour ago</dt>
+        <dd>
+          <tw-date-format
+            date="$ctrl.dates.lastHour"
+            locale="$ctrl.locale"
+            format="$ctrl.format">
+          </tw-date-format>
+        </dd>
+        <dt>A day ago</dt>
+        <dd>
+          <tw-date-format
+            date="$ctrl.dates.lastDay"
+            locale="$ctrl.locale"
+            format="$ctrl.format">
+          </tw-date-format>
+        </dd>
+        <dt>A week ago</dt>
+        <dd>
+          <tw-date-format
+            date="$ctrl.dates.lastWeek"
+            locale="$ctrl.locale"
+            format="$ctrl.format">
+          </tw-date-format>
+        </dd>
+        <dt>A month ago</dt>
+        <dd>
+          <tw-date-format
+            date="$ctrl.dates.lastMonth"
+            locale="$ctrl.locale"
+            format="$ctrl.format">
+          </tw-date-format>
+        </dd>
+        <dt>A year ago</dt>
+        <dd>
+          <tw-date-format
+            date="$ctrl.dates.lastYear"
+            locale="$ctrl.locale"
+            format="$ctrl.format">
+          </tw-date-format>
+        </dd>
+      </dl>
+    </div>
+    <div class="col-md-6">
+      <dl>
+        <dt>In an hour</dt>
+        <dd>
+          <tw-date-format
+            date="$ctrl.dates.nextHour"
+            locale="$ctrl.locale"
+            format="$ctrl.format">
+          </tw-date-format>
+        </dd>
+        <dt>In a day</dt>
+        <dd>
+          <tw-date-format
+            date="$ctrl.dates.nextDay"
+            locale="$ctrl.locale"
+            format="$ctrl.format">
+          </tw-date-format>
+        </dd>
+        <dt>In a week</dt>
+        <dd>
+          <tw-date-format
+            date="$ctrl.dates.nextWeek"
+            locale="$ctrl.locale"
+            format="$ctrl.format">
+          </tw-date-format>
+        </dd>
+        <dt>In a month</dt>
+        <dd>
+          <tw-date-format
+            date="$ctrl.dates.nextMonth"
+            locale="$ctrl.locale"
+            format="$ctrl.format">
+          </tw-date-format>
+        </dd>
+        <dt>In a year</dt>
+        <dd>
+          <tw-date-format
+            date="$ctrl.dates.nextYear"
+            locale="$ctrl.locale"
+            format="$ctrl.format">
+          </tw-date-format>
+        </dd>
+      </dl>
+    </div>
+  </div>
+</div>
