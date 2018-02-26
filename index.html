@@ -11,9 +11,9 @@
   <script src="lib/bootstrap.min.js"></script>
   <script src="lib/styleguide-components.js"></script>
 
-  <script src="js/index.js"></script>
+  <script src="lib/demo.js"></script>
   <script>
-  angular.module('my-app', ['tw.styleguide-components', 'tw.styleguide.docs']);
+  angular.module('my-app', ['tw.styleguide-components', 'tw.styleguide.demo']);
   </script>
 
   <link type="text/css" rel="stylesheet" href="lib/bootstrap.css" />
@@ -26,78 +26,46 @@
 <body ng-app="my-app" class="bg-default">
   <div class="container" ng-controller="PageController as vm">
     <div class="row m-t-3">
-      <div class="col-lg-9">
-        <div class="panel">
-          <div class="panel-heading">
-            <h2 class="panel-title">Form Styling &amp; Validation</h2>
-          </div>
-          <div class="panel-body">
-            <tw-affix-docs></tw-affix-docs>
-            <tw-pop-over-docs></tw-pop-over-docs>
-            <tw-tool-tip-docs></tw-tool-tip-docs>
-            <tw-focusable-docs></tw-focusable-docs>
-            <tw-validation-docs model="vm.model"></tw-validation-docs>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3">
-        <div data-spy="affix" data-offset-top="0">
+
+      <div class="col-lg-3 col-lg-push-9">
+        <nav data-spy="affix" data-offset-top="0">
           <docs-navigation></docs-navigation>
 
           <h5>Data Model</h5>
           <pre>{{vm.model | json}}</pre>
-        </div>
+        </nav>
       </div>
-    </div>
 
-    <div class="row m-t-3">
-      <div class="col-lg-9">
-        <form-components
+      <div class="col-lg-9 col-lg-pull-3">
+
+        <layout-docs
+          class="m-t-3">
+        </layout-docs>
+
+        <help-docs
+          class="m-t-3">
+        </help-docs>
+
+        <validation-docs
+          model="vm.model">
+        </validation-docs>
+
+        <form-docs
           model="vm.model"
           locales="vm.locales"
           sizes="vm.sizes">
-        </form-components>
-      </div>
-    </div>
+        </form-docs>
 
-    <div class="row m-t-3">
-      <div class="col-lg-9">
-        <formatting-components
+        <formatting-docs
           model="vm.model"
-          locales="vm.locales">
-        </formatting-components>
-      </div>
-    </div>
+          locales="vm.locales"
+          class="m-t-3">
+        </formatting-docs>
 
-    <div class="row m-t-3">
-      <div class="col-lg-9">
-        <div class="panel-heading">
-          <h3 class="panel-title">Layout components</h3>
-        </div>
-        <div class="panel-body">
-          <tw-cards-docs></tw-cards-docs>
-        </div>
-      </div>
-    </div>
-    <div class="row m-t-3">
-      <div class="col-lg-9">
-        <div class="panel">
-          <div class="panel-heading">
-            <h2 class="panel-title">Other components</h2>
-          </div>
-          <div class="panel-body">
-            <tw-process-docs></tw-process-docs>
-            <h4 id="loader">TW Loader</h4>
-            <p>A directive to add the HTML necessary for our
-              loading indicator.  Simply use:</p>
-<pre>
-&lt;tw-loader /&gt;
-</pre>
-            <div class="m-y-3 text-xs-center">
-              <tw-loader />
-            </div>
-          </div>
-        </div>
+        <loading-docs
+          class="m-t-3">
+        </loading-docs>
+
       </div>
     </div>
   </div>
