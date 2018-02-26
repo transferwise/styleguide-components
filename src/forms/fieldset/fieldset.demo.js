@@ -227,8 +227,7 @@ function fieldsetDocsController() {
       },
       file: {
         title: 'File',
-        type: 'string',
-        format: 'base64url',
+        type: 'UPLOAD',
         refreshRequirementsOnChange: true
       }
     }
