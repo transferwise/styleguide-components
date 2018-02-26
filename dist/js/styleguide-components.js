@@ -166,7 +166,7 @@ var _currency = __webpack_require__(2);
 
 var _currency2 = _interopRequireDefault(_currency);
 
-var _locale = __webpack_require__(22);
+var _locale = __webpack_require__(7);
 
 var _locale2 = _interopRequireDefault(_locale);
 
@@ -174,7 +174,7 @@ var _dom = __webpack_require__(1);
 
 var _dom2 = _interopRequireDefault(_dom);
 
-var _requirements = __webpack_require__(7);
+var _requirements = __webpack_require__(8);
 
 var _requirements2 = _interopRequireDefault(_requirements);
 
@@ -247,6 +247,29 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
+var _localeService = __webpack_require__(108);
+
+var _localeService2 = _interopRequireDefault(_localeService);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.styleguide.services.locale', []).service('TwLocaleService', _localeService2.default).name;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
 var _requirementsService = __webpack_require__(109);
 
 var _requirementsService2 = _interopRequireDefault(_requirementsService);
@@ -256,7 +279,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.services.requirements', []).service('TwRequirementsService', _requirementsService2.default).name;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -278,7 +301,7 @@ var _dateFormat = __webpack_require__(33);
 
 var _dateFormat2 = _interopRequireDefault(_dateFormat);
 
-var _numberFormat = __webpack_require__(12);
+var _numberFormat = __webpack_require__(13);
 
 var _numberFormat2 = _interopRequireDefault(_numberFormat);
 
@@ -291,7 +314,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.formatting', [_textFormat2.default, _dateFormat2.default, _numberFormat2.default, _currencyFormat2.default]).name;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -305,11 +328,11 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _checkbox = __webpack_require__(13);
+var _checkbox = __webpack_require__(14);
 
 var _checkbox2 = _interopRequireDefault(_checkbox);
 
-var _radio = __webpack_require__(19);
+var _radio = __webpack_require__(20);
 
 var _radio2 = _interopRequireDefault(_radio);
 
@@ -317,11 +340,11 @@ var _select = __webpack_require__(5);
 
 var _select2 = _interopRequireDefault(_select);
 
-var _upload = __webpack_require__(20);
+var _upload = __webpack_require__(21);
 
 var _upload2 = _interopRequireDefault(_upload);
 
-var _date = __webpack_require__(14);
+var _date = __webpack_require__(15);
 
 var _date2 = _interopRequireDefault(_date);
 
@@ -337,15 +360,15 @@ var _amountCurrencySelect = __webpack_require__(44);
 
 var _amountCurrencySelect2 = _interopRequireDefault(_amountCurrencySelect);
 
-var _dynamicFormControl = __webpack_require__(15);
+var _dynamicFormControl = __webpack_require__(16);
 
 var _dynamicFormControl2 = _interopRequireDefault(_dynamicFormControl);
 
-var _field = __webpack_require__(16);
+var _field = __webpack_require__(17);
 
 var _field2 = _interopRequireDefault(_field);
 
-var _fieldset = __webpack_require__(17);
+var _fieldset = __webpack_require__(18);
 
 var _fieldset2 = _interopRequireDefault(_fieldset);
 
@@ -376,7 +399,7 @@ exports.default = _angular2.default.module('tw.styleguide.forms', [_checkbox2.de
 // Deprecated
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -403,7 +426,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.loading', [_loader2.default, _process2.default]).name;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -434,7 +457,7 @@ exports.default = _angular2.default.module('tw.styleguide.validation', [_formVal
 ]).name;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -456,7 +479,7 @@ var _numberFormat3 = __webpack_require__(35);
 
 var _numberFormat4 = _interopRequireDefault(_numberFormat3);
 
-var _locale = __webpack_require__(22);
+var _locale = __webpack_require__(7);
 
 var _locale2 = _interopRequireDefault(_locale);
 
@@ -465,7 +488,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.formatting.number', [_locale2.default]).component('twNumberFormat', _numberFormat2.default).filter('twNumberFormat', _numberFormat4.default).name;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -492,7 +515,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.forms.checkbox', [_dom2.default]).component('twCheckbox', _checkboxComponent2.default).name;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -519,7 +542,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.forms.date', [_date2.default]).component('twDate', _dateComponent2.default).name;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -537,19 +560,19 @@ var _select = __webpack_require__(5);
 
 var _select2 = _interopRequireDefault(_select);
 
-var _radio = __webpack_require__(19);
+var _radio = __webpack_require__(20);
 
 var _radio2 = _interopRequireDefault(_radio);
 
-var _checkbox = __webpack_require__(13);
+var _checkbox = __webpack_require__(14);
 
 var _checkbox2 = _interopRequireDefault(_checkbox);
 
-var _date = __webpack_require__(14);
+var _date = __webpack_require__(15);
 
 var _date2 = _interopRequireDefault(_date);
 
-var _upload = __webpack_require__(20);
+var _upload = __webpack_require__(21);
 
 var _upload2 = _interopRequireDefault(_upload);
 
@@ -561,37 +584,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = _angular2.default.module('tw.styleguide.forms.form-control', [_select2.default, _radio2.default, _checkbox2.default, _date2.default, _upload2.default]).component('twFormControl', _formControlComponent2.default).component('twDynamicFormControl', _formControlComponent2.default) // Deprecated
 .name;
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _angular = __webpack_require__(0);
-
-var _angular2 = _interopRequireDefault(_angular);
-
-var _dynamicFormControl = __webpack_require__(15);
-
-var _dynamicFormControl2 = _interopRequireDefault(_dynamicFormControl);
-
-var _fieldComponent = __webpack_require__(60);
-
-var _fieldComponent2 = _interopRequireDefault(_fieldComponent);
-
-var _requirements = __webpack_require__(7);
-
-var _requirements2 = _interopRequireDefault(_requirements);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _angular2.default.module('tw.styleguide.forms.field', [_dynamicFormControl2.default, _requirements2.default]).component('twField', _fieldComponent2.default).name;
 
 /***/ }),
 /* 17 */
@@ -608,7 +600,38 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _field = __webpack_require__(16);
+var _dynamicFormControl = __webpack_require__(16);
+
+var _dynamicFormControl2 = _interopRequireDefault(_dynamicFormControl);
+
+var _fieldComponent = __webpack_require__(60);
+
+var _fieldComponent2 = _interopRequireDefault(_fieldComponent);
+
+var _requirements = __webpack_require__(8);
+
+var _requirements2 = _interopRequireDefault(_requirements);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _angular2.default.module('tw.styleguide.forms.field', [_dynamicFormControl2.default, _requirements2.default]).component('twField', _fieldComponent2.default).name;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = __webpack_require__(0);
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _field = __webpack_require__(17);
 
 var _field2 = _interopRequireDefault(_field);
 
@@ -616,7 +639,7 @@ var _fieldsetComponent = __webpack_require__(62);
 
 var _fieldsetComponent2 = _interopRequireDefault(_fieldsetComponent);
 
-var _requirements = __webpack_require__(7);
+var _requirements = __webpack_require__(8);
 
 var _requirements2 = _interopRequireDefault(_requirements);
 
@@ -625,7 +648,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.forms.fieldset', [_field2.default, _requirements2.default]).component('twFieldset', _fieldsetComponent2.default).name;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -658,7 +681,7 @@ FocusableController.$inject = ['$element', 'TwDomService'];
 exports.default = FocusableController;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -685,7 +708,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.forms.radio', [_dom2.default]).component('twRadio', _radioComponent2.default).name;
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -712,7 +735,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.forms.upload', []).directive('twFileInput', _fileInputDirective2.default).component('twUpload', _uploadComponent2.default).name;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -735,29 +758,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _angular2.default.module('tw.styleguide.navigation.tabs', []).component('twTabs', _tabsComponent2.default).name;
 
 /***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _angular = __webpack_require__(0);
-
-var _angular2 = _interopRequireDefault(_angular);
-
-var _localeService = __webpack_require__(108);
-
-var _localeService2 = _interopRequireDefault(_localeService);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _angular2.default.module('tw.styleguide.services.locale', []).service('TwLocaleService', _localeService2.default).name;
-
-/***/ }),
 /* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -774,11 +774,11 @@ var _angular2 = _interopRequireDefault(_angular);
 
 __webpack_require__(3);
 
-var _forms = __webpack_require__(9);
+var _forms = __webpack_require__(10);
 
 var _forms2 = _interopRequireDefault(_forms);
 
-var _loading = __webpack_require__(10);
+var _loading = __webpack_require__(11);
 
 var _loading2 = _interopRequireDefault(_loading);
 
@@ -807,7 +807,7 @@ var _angular2 = _interopRequireDefault(_angular);
 
 __webpack_require__(3);
 
-var _validation = __webpack_require__(11);
+var _validation = __webpack_require__(12);
 
 var _validation2 = _interopRequireDefault(_validation);
 
@@ -890,7 +890,7 @@ var _angular = __webpack_require__(0);
 
 var _angular2 = _interopRequireDefault(_angular);
 
-var _tabs = __webpack_require__(21);
+var _tabs = __webpack_require__(22);
 
 var _tabs2 = _interopRequireDefault(_tabs);
 
@@ -986,7 +986,7 @@ var _currency = __webpack_require__(2);
 
 var _currency2 = _interopRequireDefault(_currency);
 
-var _numberFormat = __webpack_require__(12);
+var _numberFormat = __webpack_require__(13);
 
 var _numberFormat2 = _interopRequireDefault(_numberFormat);
 
@@ -3507,7 +3507,7 @@ var _definitionListComponent = __webpack_require__(55);
 
 var _definitionListComponent2 = _interopRequireDefault(_definitionListComponent);
 
-var _formatting = __webpack_require__(8);
+var _formatting = __webpack_require__(9);
 
 var _formatting2 = _interopRequireDefault(_formatting);
 
@@ -4010,7 +4010,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _focusableController = __webpack_require__(18);
+var _focusableController = __webpack_require__(19);
 
 var _focusableController2 = _interopRequireDefault(_focusableController);
 
@@ -4036,7 +4036,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _focusableController = __webpack_require__(18);
+var _focusableController = __webpack_require__(19);
 
 var _focusableController2 = _interopRequireDefault(_focusableController);
 
@@ -4255,11 +4255,11 @@ var _requirementsFormComponent = __webpack_require__(70);
 
 var _requirementsFormComponent2 = _interopRequireDefault(_requirementsFormComponent);
 
-var _tabs = __webpack_require__(21);
+var _tabs = __webpack_require__(22);
 
 var _tabs2 = _interopRequireDefault(_tabs);
 
-var _fieldset = __webpack_require__(17);
+var _fieldset = __webpack_require__(18);
 
 var _fieldset2 = _interopRequireDefault(_fieldset);
 
@@ -5085,9 +5085,17 @@ var _telephoneComponent = __webpack_require__(76);
 
 var _telephoneComponent2 = _interopRequireDefault(_telephoneComponent);
 
+var _dom = __webpack_require__(1);
+
+var _dom2 = _interopRequireDefault(_dom);
+
+var _locale = __webpack_require__(7);
+
+var _locale2 = _interopRequireDefault(_locale);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _angular2.default.module('tw.styleguide.forms.telephone', []).component('twTelephone', _telephoneComponent2.default).name;
+exports.default = _angular2.default.module('tw.styleguide.forms.telephone', [_dom2.default, _locale2.default]).component('twTelephone', _telephoneComponent2.default).name;
 
 /***/ }),
 /* 76 */
@@ -7034,15 +7042,15 @@ var _angular2 = _interopRequireDefault(_angular);
 
 __webpack_require__(3);
 
-var _forms = __webpack_require__(9);
+var _forms = __webpack_require__(10);
 
 var _forms2 = _interopRequireDefault(_forms);
 
-var _validation = __webpack_require__(11);
+var _validation = __webpack_require__(12);
 
 var _validation2 = _interopRequireDefault(_validation);
 
-var _formatting = __webpack_require__(8);
+var _formatting = __webpack_require__(9);
 
 var _formatting2 = _interopRequireDefault(_formatting);
 
@@ -7058,7 +7066,7 @@ var _layout = __webpack_require__(26);
 
 var _layout2 = _interopRequireDefault(_layout);
 
-var _loading = __webpack_require__(10);
+var _loading = __webpack_require__(11);
 
 var _loading2 = _interopRequireDefault(_loading);
 
@@ -8930,7 +8938,7 @@ module.exports = "<div class=\"btn-group btn-block tw-select\"\n  ng-class=\"{\n
 /* 130 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-xs-5\">\n    <tw-select\n      name=\"phoneNumberPrefix\"\n      options=\"$ctrl.callingCodes\"\n      ng-model=\"$ctrl.prefix\"\n      ng-change=\"$ctrl.onPrefixChange($ctrl.prefix)\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-focus=\"$ctrl.onFocus()\"\n      ng-blur=\"$ctrl.onBlur()\"\n      placeholder=\"+\"\n      filter=\"{{ $ctrl.searchPlaceholder }}\"\n      dropdown-width=\"md\"\n      hide-note=\"true\"\n    ></tw-select>\n  </div>\n  <div class=\"col-xs-7\">\n    <input type=\"tel\"\n      name=\"phoneNumber\"\n      placeholder=\"{{ $ctrl.placeholder }}\"\n      class=\"form-control\"\n      ng-model=\"$ctrl.suffix\"\n      ng-model-options=\"{ allowInvalid: true }\"\n      ng-change=\"$ctrl.onSuffixChange()\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-focus=\"$ctrl.onFocus()\"\n      ng-blur=\"$ctrl.onBlur()\" />\n    <div ng-transclude class=\"error-messages\"></div>\n  </div>\n</div>\n";
+module.exports = "<div class=\"row\">\n  <div class=\"col-xs-5\">\n    <tw-select\n      name=\"phoneNumberPrefix\"\n      options=\"$ctrl.callingCodes\"\n      ng-model=\"$ctrl.prefix\"\n      ng-change=\"$ctrl.onPrefixChange($ctrl.prefix)\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-focus=\"$ctrl.onFocus()\"\n      ng-blur=\"$ctrl.onBlur()\"\n      placeholder=\"+\"\n      filter=\"{{ $ctrl.searchPlaceholder }}\"\n      dropdown-width=\"md\"\n      hide-note=\"true\"\n    ></tw-select>\n  </div>\n  <div class=\"col-xs-7\">\n    <input type=\"tel\"\n      name=\"phoneNumber\"\n      placeholder=\"{{ $ctrl.placeholder }}\"\n      class=\"form-control\"\n      ng-model=\"$ctrl.suffix\"\n      ng-model-options=\"{ allowInvalid: true }\"\n      ng-change=\"$ctrl.onSuffixChange()\"\n      ng-disabled=\"$ctrl.ngDisabled\"\n      ng-focus=\"$ctrl.onFocus()\"\n      ng-blur=\"$ctrl.onBlur()\" />\n  </div>\n</div>\n";
 
 /***/ }),
 /* 131 */
