@@ -1,0 +1,117 @@
+<h4 id="date-lookup">Tw Date Lookup</h4>
+<p>The date lookup is useful for selecting dates that are relatively recent, and
+  can be used in a pair for date ranges.</p>
+<p>If your date is likely to be further in the past (e.g. Date of birth), use
+  twDate instead.</p>
+<div class="row m-b-5">
+  <div class="col-sm-6">
+    <div class="form-group">
+      <label class="control-label">
+        Example date lookup
+      </label>
+      <tw-date-lookup
+        ng-model="$ctrl.model"
+        ng-required="$ctrl.dateLookup.required"
+        ng-disabled="$ctrl.dateLookup.disabled"
+        ng-min="$ctrl.dateLookup.min"
+        ng-max="$ctrl.dateLookup.max"
+        short-date="$ctrl.dateLookup.shortDate"
+        ng-change="$ctrl.log('date lookup change: ' + $ctrl.model)"
+        ng-focus="$ctrl.log('date lookup focus')"
+        ng-blur="$ctrl.log('date lookup blur')"
+        placeholder="{{$ctrl.dateLookup.placeholder}}"
+        locale="{{$ctrl.dateLookup.locale}}"
+        size="{{$ctrl.dateLookup.size}}"
+        label="{{$ctrl.dateLookup.label}}"
+        tw-validation></tw-date-lookup>
+    </div>
+    <h5>Configuration</h5>
+    <pre>
+&lt;tw-date-lookup
+  placeholder="{{$ctrl.dateLookup.placeholder}}"
+  locale="{{$ctrl.dateLookup.locale}}"
+  ng-model={{$ctrl.model}}<span ng-if="$ctrl.dateLookup.required">
+  ng-required="{{$ctrl.dateLookup.required}}"</span><span ng-if="$ctrl.dateLookup.disabled">
+  ng-disabled="{{$ctrl.dateLookup.disabled}}"</span><span ng-if="$ctrl.dateLookup.min">
+  ng-min={{$ctrl.dateLookup.min}}</span><span ng-if="$ctrl.dateLookup.max">
+  ng-max={{$ctrl.dateLookup.max}}</span><span ng-if="$ctrl.dateLookup.shortDate">
+  short-date="{{$ctrl.dateLookup.shortDate}}"</span>
+  ng-change="..."
+  ng-focus="..."
+  ng-blur="..."<span ng-if="$ctrl.dateLookup.size">
+  size={{$ctrl.dateLookup.size}}</span>&gt;
+&lt;/tw-date-lookup&gt;
+    </pre>
+  </div>
+  <div class="col-sm-6">
+    <div class="well">
+      <h5 class="page-header">Edit configuration</h5>
+      <div class="form-group"
+        ng-init="$ctrl.dateLookup.placeholder = 'Choose date...'">
+        <label class="control-label">Placeholder</label>
+        <input type="text"
+          class="form-control"
+          ng-model="$ctrl.dateLookup.placeholder" />
+      </div>
+      <div class="form-group"
+        ng-init="$ctrl.dateLookup.locale = 'en-GB'">
+        <label class="control-label">Locale</label>
+        <tw-select
+          options="$ctrl.locales"
+          ng-model="$ctrl.dateLookup.locale"></tw-select>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Min Date</label>
+        <tw-date-lookup
+          ng-model="$ctrl.dateLookup.min"
+          ng-max="$ctrl.dateLookup.max"
+          placeholder="Choose min date..."
+          locale="{{$ctrl.dateLookup.locale}}"></tw-date-lookup>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Max Date</label>
+        <tw-date-lookup
+          ng-model="$ctrl.dateLookup.max"
+          ng-min="$ctrl.dateLookup.min"
+          placeholder="Choose max date..."
+          locale="{{$ctrl.dateLookup.locale}}"></tw-date-lookup>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Size</label>
+        <tw-select
+          placeholder="Size..."
+          ng-model="$ctrl.dateLookup.size"
+          options="$ctrl.sizes"></tw-select>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Inline label</label>
+        <input type="text"
+          class="form-control"
+          ng-model="$ctrl.dateLookup.label" />
+      </div>
+      <div class="form-group">
+        <div class="checkbox">
+          <label>
+            <tw-checkbox
+              ng-model="$ctrl.dateLookup.shortDate"></tw-checkbox>
+            Short Date?
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <tw-checkbox
+              ng-model="$ctrl.dateLookup.disabled"></tw-checkbox>
+            Disabled?
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <tw-checkbox
+              ng-model="$ctrl.dateLookup.required"></tw-checkbox>
+            Required?
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
