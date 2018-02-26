@@ -1066,7 +1066,9 @@ function RequirementsService($http) {
   };
 
   this.prepType = function (field) {
-    switch (field.type) {
+    var type = field.type && field.type.toLowerCase && field.type.toLowerCase();
+
+    switch (type) {
       case 'text':
         field.type = 'string';
         break;

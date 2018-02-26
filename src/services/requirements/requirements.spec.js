@@ -33,6 +33,7 @@ describe('Requirements Service', function() {
         typePassword: { type: "password" },
         typeCheckbox: { type: "checkbox" },
         typeUpload: { type: "upload" },
+        typeUPLOAD: { type: "UPLOAD" },
         typeSelect: { type: "select", values: [] },
         typeRadio: { type: "radio", values: [], control: "select" }
       };
@@ -43,6 +44,7 @@ describe('Requirements Service', function() {
         typePassword: { type: "string", control: "password" },
         typeCheckbox: { type: "boolean", control: "checkbox" },
         typeUpload: { type: "string", format: "base64url", control: "file" },
+        typeUPLOAD: { type: "string", format: "base64url", control: "file" },
         typeSelect: { values: [], control: "select" },
         typeRadio: { values: [], control: "radio" }
       };
