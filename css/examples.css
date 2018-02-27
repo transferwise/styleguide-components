@@ -46,3 +46,7 @@ ng-transclude.error-messages,
     position: relative !important;
   }
 }
+pre {
+  font-size: 11px;
+  line-height: 16px;
+}
