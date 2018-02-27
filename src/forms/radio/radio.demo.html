@@ -17,7 +17,7 @@
             ng-click="$ctrl.log('radio 1 click')"
             ng-change="$ctrl.log('radio 1 change')"
             ng-blur="$ctrl.log('radio 1 blur')"
-            ng-focus="$ctrl.log('radio 1 focus')" />
+            ng-focus="$ctrl.log('radio 1 focus')"></tw-radio>
           Option 1
         </label>
       </div>
@@ -31,7 +31,7 @@
             ng-click="$ctrl.log('radio 2 click')"
             ng-change="$ctrl.log('radio 2 change')"
             ng-blur="$ctrl.log('radio 2 blur')"
-            ng-focus="$ctrl.log('radio 2 focus')" />
+            ng-focus="$ctrl.log('radio 2 focus')"></tw-radio>
           Option 2
         </label>
       </div>
@@ -47,7 +47,7 @@
   ng-change="..."
   ng-focus="..."
   ng-blur="..."
-  tw-validation /&gt;</pre>
+  tw-validation&gt;&lt;/tw-radio&gt;</pre>
   </div>
   <div class="col-md-6">
     <div class="well">
@@ -60,7 +60,7 @@
         </label>
         <div class="checkbox">
           <label>
-            <tw-checkbox ng-model="$ctrl.radio.required" />
+            <tw-checkbox ng-model="$ctrl.radio.required"></tw-checkbox>
             Is the control required?
           </label>
         </div>
@@ -71,7 +71,7 @@
         </label>
         <div class="checkbox">
           <label>
-            <tw-checkbox ng-model="$ctrl.radio.disabled" />
+            <tw-checkbox ng-model="$ctrl.radio.disabled"></tw-checkbox>>
             Is the control disabled?
           </label>
         </div>
@@ -82,7 +82,7 @@
         </label>
         <div class="checkbox">
           <label>
-            <tw-checkbox ng-model="$ctrl.radio.useNgValue" />
+            <tw-checkbox ng-model="$ctrl.radio.useNgValue"></tw-checkbox>
             Uses ngValue
           </label>
         </div>

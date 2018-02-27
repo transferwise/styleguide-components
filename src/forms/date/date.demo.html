@@ -46,7 +46,7 @@
         </label>
         <div class="checkbox">
           <label>
-            <tw-checkbox ng-model="$ctrl.date.required" />
+            <tw-checkbox ng-model="$ctrl.date.required"></tw-checkbox>
             Is the control required?
           </label>
         </div>
@@ -57,7 +57,7 @@
         </label>
         <div class="checkbox">
           <label>
-            <tw-checkbox ng-model="$ctrl.date.disabled" />
+            <tw-checkbox ng-model="$ctrl.date.disabled"></tw-checkbox>
             Is the control disabled?
           </label>
         </div>
@@ -69,7 +69,8 @@
         <tw-select
           options="$ctrl.locales"
           ng-model="$ctrl.date.locale"
-          ng-init="$ctrl.date.locale = 'en-GB'" />
+          ng-init="$ctrl.date.locale = 'en-GB'">
+        </tw-select>
       </div>
       <input type="submit" class="btn btn-primary btn-block" value="Submit form" />
     </div>

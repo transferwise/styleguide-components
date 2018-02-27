@@ -181,7 +181,8 @@
         <tw-select
           placeholder="Default icon"
           ng-model="$ctrl.icon"
-          options="$ctrl.icons"></tw-select>
+          options="$ctrl.icons">
+        </tw-select>
       </div>
 
       <div class="form-group">
@@ -210,7 +211,8 @@
             <tw-checkbox
               ng-model="$ctrl.httpOptions"
               ng-true-value="{url: 'partials/image-upload.json'}"
-              ng-false-value="false" />
+              ng-false-value="false">
+            </tw-checkbox>
             POST immmediately?
           </label>
         </div>
@@ -219,19 +221,20 @@
             <tw-checkbox
               ng-model="$ctrl.httpOptions"
               ng-true-value="{url: '404'}"
-              ng-false-value="false" />
+              ng-false-value="false">
+            </tw-checkbox>
             Post to a 404 for testing?
           </label>
         </div>
         <div class="checkbox">
           <label>
-            <tw-checkbox ng-model="$ctrl.showNgModel" />
+            <tw-checkbox ng-model="$ctrl.showNgModel"></tw-checkbox>
             Bind to ngModel?
           </label>
         </div>
         <div class="checkbox">
           <label>
-            <tw-checkbox ng-model="$ctrl.customComplete" />
+            <tw-checkbox ng-model="$ctrl.customComplete"></tw-checkbox>
             Custom complete screen?
           </label>
         </div>
@@ -255,7 +258,8 @@
         <tw-select
           placeholder="Any file type"
           ng-model="$ctrl.accept"
-          options="$ctrl.acceptOptions"></tw-select>
+          options="$ctrl.acceptOptions">
+        </tw-select>
       </div>
       <!--
       <div class="form-group" ng-init="$ctrl.wrongTypeMessage = 'The file must be an image'">
