@@ -15,7 +15,8 @@
       <label class="control-label" for="mySelect">
         Example select
       </label>
-      <tw-select tw-validation ng-if="!$ctrl.select.extraLink"
+      <tw-select tw-validation
+        ng-if="!$ctrl.select.extraLink"
         name="mySelect"
         placeholder="{{$ctrl.select.empty}}"
         ng-model="$ctrl.model"
@@ -38,7 +39,8 @@
         hide-circle="{{$ctrl.select.hideCircle}}"
         hide-label="{{$ctrl.select.hideLabel}}">
       </tw-select>
-      <tw-select tw-validation ng-if="$ctrl.select.extraLink"
+      <tw-select tw-validation
+        ng-if="$ctrl.select.extraLink"
         name="mySelect"
         placeholder="{{$ctrl.select.empty}}"
         ng-model="$ctrl.model"
@@ -74,7 +76,8 @@
 
     <div class="form-inline m-b-3 visible-xs-inline-block visible-sm-inline-block
       visible-md-inline-block visible-lg-inline-block visible-xl-inline-block">
-      <tw-select tw-validation ng-if="!$ctrl.select.extraLink"
+      <tw-select tw-validation
+        ng-if="!$ctrl.select.extraLink"
         name="mySelect"
         placeholder="{{$ctrl.select.empty}}"
         ng-model="$ctrl.model"
@@ -97,7 +100,8 @@
         hide-circle="{{$ctrl.select.hideCircle}}"
         hide-label="{{$ctrl.select.hideLabel}}">
       </tw-select>
-      <tw-select tw-validation ng-if="$ctrl.select.extraLink"
+      <tw-select tw-validation
+        ng-if="$ctrl.select.extraLink"
         name="mySelect"
         placeholder="{{$ctrl.select.empty}}"
         ng-model="$ctrl.model"
@@ -163,7 +167,7 @@
         </label>
         <div class="checkbox">
           <label>
-            <tw-checkbox ng-model="$ctrl.select.required" />
+            <tw-checkbox ng-model="$ctrl.select.required"></tw-checkbox>
             Is the control required?
           </label>
         </div>
@@ -174,7 +178,7 @@
         </label>
         <div class="checkbox">
           <label>
-            <tw-checkbox ng-model="$ctrl.select.disabled" />
+            <tw-checkbox ng-model="$ctrl.select.disabled"></tw-checkbox>
             Is the control disabled?
           </label>
         </div>
@@ -190,7 +194,7 @@
         <label class="control-label">
           Options type
         </label>
-        <tw-select options="$ctrl.select.types" ng-model="$ctrl.select.type" />
+        <tw-select options="$ctrl.select.types" ng-model="$ctrl.select.type"></tw-select>
       </div>
       <div class="form-group">
         <label class="control-label">
@@ -201,7 +205,7 @@
             <tw-checkbox
               ng-model="$ctrl.select.showFilter"
               ng-true-value="'Search...'"
-              ng-false-value="false" />
+              ng-false-value="false"></tw-checkbox>
             Allow user to filter list?
           </label>
         </div>
@@ -212,7 +216,7 @@
         </label>
         <div class="checkbox">
           <label>
-            <tw-checkbox ng-model="$ctrl.select.extraLink" />
+            <tw-checkbox ng-model="$ctrl.select.extraLink"></tw-checkbox>
             Option with custom action?
           </label>
         </div>
@@ -223,13 +227,13 @@
         </label>
         <div class="checkbox">
           <label>
-            <tw-checkbox ng-model="$ctrl.select.inverse" />
+            <tw-checkbox ng-model="$ctrl.select.inverse"></tw-checkbox>
             Invert the colours?
           </label>
         </div>
         <div class="checkbox">
           <label>
-            <tw-checkbox ng-model="$ctrl.select.dropdownUp" />
+            <tw-checkbox ng-model="$ctrl.select.dropdownUp"></tw-checkbox>
             Make the dropdown open upward
           </label>
         </div>
@@ -238,19 +242,22 @@
         <tw-select
           placeholder="Button size..."
           ng-model="$ctrl.select.size"
-          options="$ctrl.buttonSizes"></tw-select>
+          options="$ctrl.buttonSizes">
+        </tw-select>
       </div>
       <div class="form-group m-b-2">
         <tw-select
           placeholder="Dropdown width..."
           ng-model="$ctrl.select.dropdownWidth"
-          options="$ctrl.dropdownSizes"></tw-select>
+          options="$ctrl.dropdownSizes">
+        </tw-select>
       </div>
       <div class="form-group m-b-2">
         <tw-select
           placeholder="Dropdown on right..."
           ng-model="$ctrl.select.dropdownRight"
-          options="$ctrl.gridSizes"></tw-select>
+          options="$ctrl.gridSizes">
+        </tw-select>
       </div>
 
       <div class="form-group">
@@ -258,42 +265,48 @@
         <tw-select
           placeholder="Choose breakpoint"
           ng-model="$ctrl.select.hideCircle"
-          options="$ctrl.hideOptions"></tw-select>
+          options="$ctrl.hideOptions">
+        </tw-select>
       </div>
       <div class="form-group">
         <label>Hide selected note?</label>
         <tw-select
           placeholder="Choose breakpoint"
           ng-model="$ctrl.select.hideNote"
-          options="$ctrl.hideOptions"></tw-select>
+          options="$ctrl.hideOptions">
+        </tw-select>
       </div>
       <div class="form-group">
         <label class="control-label">Hide selected secondary text?</label>
         <tw-select
           placeholder="Choose breakpoint"
           ng-model="$ctrl.select.hideSecondary"
-          options="$ctrl.hideOptions"></tw-select>
+          options="$ctrl.hideOptions">
+        </tw-select>
       </div>
       <div class="form-group">
         <label class="control-label">Hide selected currency flag?</label>
         <tw-select
           placeholder="Choose breakpoint"
           ng-model="$ctrl.select.hideCurrency"
-          options="$ctrl.hideOptions"></tw-select>
+          options="$ctrl.hideOptions">
+        </tw-select>
       </div>
       <div class="form-group">
         <label class="control-label">Hide selected icon?</label>
         <tw-select
           placeholder="Choose breakpoint"
           ng-model="$ctrl.select.hideIcon"
-          options="$ctrl.hideOptions"></tw-select>
+          options="$ctrl.hideOptions">
+        </tw-select>
       </div>
       <div class="form-group">
         <label class="control-label">Hide selected label?</label>
         <tw-select
           placeholder="Choose breakpoint"
           ng-model="$ctrl.select.hideLabel"
-          options="$ctrl.hideOptions"></tw-select>
+          options="$ctrl.hideOptions">
+        </tw-select>
       </div>
       <input type="submit" class="btn btn-primary btn-block" value="Submit form" />
     </div>

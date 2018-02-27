@@ -2,58 +2,58 @@
 <p>Two way data binding via ng-model</p>
 
 <form>
-<div class="row m-b-3">
+  <div class="row m-b-3">
     <div class="col-md-6">
-        <div class="form-group">
-            <label class="control-label">
-                How much?
-            </label>
-            <tw-currency-input
-                tw-validation
-                currency="$ctrl.currencyInput.currency"
-                placeholder="{{ $ctrl.currencyInput.placeholder }}"
-                ng-model="$ctrl.model"
-                ng-change="$ctrl.log('currency input value:' + $ctrl.model)"
-                ng-required="$ctrl.currencyInput.required"
-                ng-disabled="$ctrl.currencyInput.disabled"
-                ng-min="$ctrl.currencyInput.min"
-                ng-max="$ctrl.currencyInput.max"
-                size="{{ $ctrl.currencyInput.size }}"
-                locked="$ctrl.currencyInput.locked">
-            </tw-currency-input>
-            <div class="error-messages">
-                <div class="error-required">Required</div>
-                <div class="error-min">Must be higher</div>
-                <div class="error-max">Must be lower</div>
-            </div>
-            <docs-status-messages></docs-status-messages>
+      <div class="form-group">
+        <label class="control-label">
+            How much?
+        </label>
+        <tw-currency-input
+          tw-validation
+          currency="$ctrl.currencyInput.currency"
+          placeholder="{{ $ctrl.currencyInput.placeholder }}"
+          ng-model="$ctrl.model"
+          ng-change="$ctrl.log('currency input value:' + $ctrl.model)"
+          ng-required="$ctrl.currencyInput.required"
+          ng-disabled="$ctrl.currencyInput.disabled"
+          ng-min="$ctrl.currencyInput.min"
+          ng-max="$ctrl.currencyInput.max"
+          size="{{ $ctrl.currencyInput.size }}"
+          locked="$ctrl.currencyInput.locked">
+        </tw-currency-input>
+        <div class="error-messages">
+          <div class="error-required">Required</div>
+          <div class="error-min">Must be higher</div>
+          <div class="error-max">Must be lower</div>
         </div>
-        <div class="form-group form-group-lg">
-            <label class="control-label">
-                How much?
-            </label>
-            <tw-currency-input
-                tw-validation
-                currency="$ctrl.currencyInput.currency"
-                placeholder="{{ $ctrl.currencyInput.placeholder }}"
-                ng-model="$ctrl.model"
-                ng-change="$ctrl.log('currency input value:' + $ctrl.model)"
-                ng-required="$ctrl.currencyInput.required"
-                ng-disabled="$ctrl.currencyInput.disabled"
-                ng-min="$ctrl.currencyInput.min"
-                ng-max="$ctrl.currencyInput.max"
-                size="lg"
-                locked="$ctrl.currencyInput.locked"
-                on-locked-change="$ctrl.log('locked change:' + $ctrl.currencyInput.locked)">
-                <addon ng-if="$ctrl.currencyInput.addon">@</addon>
-            </tw-currency-input>
-            <div class="error-messages">
-                <div class="error-required">Required</div>
-                <div class="error-min">Must be higher</div>
-                <div class="error-max">Must be lower</div>
-            </div>
+        <docs-status-messages></docs-status-messages>
+      </div>
+      <div class="form-group form-group-lg">
+        <label class="control-label">
+            How much?
+        </label>
+        <tw-currency-input
+          tw-validation
+          currency="$ctrl.currencyInput.currency"
+          placeholder="{{ $ctrl.currencyInput.placeholder }}"
+          ng-model="$ctrl.model"
+          ng-change="$ctrl.log('currency input value:' + $ctrl.model)"
+          ng-required="$ctrl.currencyInput.required"
+          ng-disabled="$ctrl.currencyInput.disabled"
+          ng-min="$ctrl.currencyInput.min"
+          ng-max="$ctrl.currencyInput.max"
+          size="lg"
+          locked="$ctrl.currencyInput.locked"
+          on-locked-change="$ctrl.log('locked change:' + $ctrl.currencyInput.locked)">
+          <addon ng-if="$ctrl.currencyInput.addon">@</addon>
+        </tw-currency-input>
+        <div class="error-messages">
+          <div class="error-required">Required</div>
+          <div class="error-min">Must be higher</div>
+          <div class="error-max">Must be lower</div>
         </div>
-        <h5>Configuration</h5>
+      </div>
+      <h5>Configuration</h5>
 <pre>&lt;tw-currency-input
   tw-validation
   ng-model="{{$ctrl.model}}"
@@ -67,81 +67,88 @@
 &lt;/tw-currency-input&gt;</pre>
     </div>
     <div class="col-md-6">
-        <div class="well">
-            <h5 class="page-header">
-                Edit configuration
-            </h5>
-            <div class="form-group">
-                <label class="control-label">
-                    Toggles
-                </label>
-                <div class="checkbox">
-                    <label>
-                        <tw-checkbox ng-model="$ctrl.currencyInput.required"
-                            ng-init="$ctrl.currencyInput.required = false" />
-                        Is the control required?
-                    </label>
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <tw-checkbox ng-model="$ctrl.currencyInput.disabled"
-                            ng-init="$ctrl.currencyInput.disabled = false" />
-                        Is the control disabled?
-                    </label>
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <tw-checkbox ng-model="$ctrl.currencyInput.addon" />
-                        Has addon?
-                    </label>
-                </div>
+      <div class="well">
+          <h5 class="page-header">
+              Edit configuration
+          </h5>
+          <div class="form-group">
+            <label class="control-label">
+              Toggles
+            </label>
+            <div class="checkbox">
+              <label>
+                <tw-checkbox
+                  ng-model="$ctrl.currencyInput.required"
+                  ng-init="$ctrl.currencyInput.required = false">
+                </tw-checkbox>
+                Is the control required?
+              </label>
             </div>
-            <div class="form-group">
-                <label class="control-label">
-                    Currency
-                </label>
-                <input type="text"
-                    class="form-control"
-                    ng-model="$ctrl.currencyInput.currency"
-                    ng-init="$ctrl.currencyInput.currency = 'EUR'" />
+            <div class="checkbox">
+              <label>
+                <tw-checkbox
+                  ng-model="$ctrl.currencyInput.disabled"
+                  ng-init="$ctrl.currencyInput.disabled = false">
+                </tw-checkbox>
+                Is the control disabled?
+              </label>
             </div>
-            <div class="form-group">
-                <label class="control-label">
-                    Placeholder
-                </label>
-                <input type="text"
-                    class="form-control"
-                    ng-model="$ctrl.currencyInput.placeholder" />
-            </div>
-            <div class="form-group">
-                <label class="control-label">
-                    Min amount
-                </label>
-                <input type="number"
-                    class="form-control"
-                    ng-model="$ctrl.currencyInput.min"
-                    ng-init="$ctrl.currencyInput.min = 10"
-                    tw-validation />
-            </div>
-            <div class="form-group">
-                <label class="control-label">
-                    Max amount
-                </label>
-                <input type="number"
-                    class="form-control"
-                    ng-model="$ctrl.currencyInput.max"
-                    ng-init="$ctrl.currencyInput.max = 100"
-                    tw-validation />
-            </div>
-            <div class="form-group" ng-init="$ctrl.currencyInput.size = 'md'">
-                <label class="control-label">
-                    Size
-                </label>
-                <tw-select
-                    ng-model="$ctrl.currencyInput.size"
-                    options="$ctrl.sizes" />
+            <div class="checkbox">
+              <label>
+                <tw-checkbox
+                  ng-model="$ctrl.currencyInput.addon">
+                </tw-checkbox>
+                Has addon?
+              </label>
             </div>
         </div>
+        <div class="form-group">
+          <label class="control-label">
+            Currency
+          </label>
+          <input type="text"
+            class="form-control"
+            ng-model="$ctrl.currencyInput.currency"
+            ng-init="$ctrl.currencyInput.currency = 'EUR'" />
+        </div>
+        <div class="form-group">
+          <label class="control-label">
+            Placeholder
+          </label>
+          <input type="text"
+            class="form-control"
+            ng-model="$ctrl.currencyInput.placeholder" />
+        </div>
+        <div class="form-group">
+          <label class="control-label">
+            Min amount
+          </label>
+          <input type="number"
+            class="form-control"
+            ng-model="$ctrl.currencyInput.min"
+            ng-init="$ctrl.currencyInput.min = 10"
+            tw-validation />
+        </div>
+        <div class="form-group">
+          <label class="control-label">
+            Max amount
+          </label>
+          <input type="number"
+            class="form-control"
+            ng-model="$ctrl.currencyInput.max"
+            ng-init="$ctrl.currencyInput.max = 100"
+            tw-validation />
+        </div>
+        <div class="form-group" ng-init="$ctrl.currencyInput.size = 'md'">
+          <label class="control-label">
+            Size
+          </label>
+          <tw-select
+            ng-model="$ctrl.currencyInput.size"
+            options="$ctrl.sizes">
+          </tw-select>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 </form>
