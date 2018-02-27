@@ -1,6 +1,6 @@
 {
   "name": "@transferwise/styleguide-components",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "TransfeWise AngularJS 1.x Styleguide Components",
   "license": "MIT",
   "scripts": {
@@ -24,7 +24,7 @@
     "copy:demo": "mkdir demo/lib; npm run copy:jquery; npm run copy:angular; npm run copy:bootstrap; npm run copy:bootstrap; npm run copy:flags;",
     "copy:ghpages": "cp -R demo/ gh-pages",
     "webpack": "webpack --watch",
-    "copy-files-to-dist": "mkdir dist && cp circle.yml dist/ && cp package.json dist/ && cp CHANGELOG.md dist/",
+    "copy-files-to-dist": "mkdir -p dist && cp circle.yml dist/ && cp package.json dist/ && cp CHANGELOG.md dist/",
     "deploy": "git-directory-deploy --directory dist --branch release --username CircleCI --email circleci@transferwise.com",
     "deploy:demo": "git-directory-deploy --directory demo --branch gh-pages --message 'Update docs'"
   },

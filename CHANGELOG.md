@@ -1,3 +1,7 @@
+# v3.0.1
+## Fix copy files to dist command
+Add -p option to mkdir in the copy files to dist command
+
 # v3.0.0
 ## Update build system
 After this, the build won't need to be done manually.
