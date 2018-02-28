@@ -1,3 +1,6 @@
+# v3.0.2
+## Bump version number
+
 # v3.0.1
 ## Fix copy files to dist command
 Add -p option to mkdir in the copy files to dist command
