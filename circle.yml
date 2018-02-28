@@ -4,6 +4,10 @@ machine:
   node:
     version: 8.9.4
 
+dependencies:
+  pre:
+    - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+
 test:
   override:
     - if [[ $CIRCLE_BRANCH != "releases" ]] ; then npm test ; fi
