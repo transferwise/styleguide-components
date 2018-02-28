@@ -25,7 +25,7 @@
     "copy:ghpages": "cp -R demo/ gh-pages",
     "webpack": "webpack --watch",
     "copy-files-to-dist": "mkdir -p dist && cp circle.yml dist/ && cp package.json dist/ && cp CHANGELOG.md dist/",
-    "deploy": "git-directory-deploy --directory dist --branch release --username CircleCI --email circleci@transferwise.com",
+    "deploy": "git-directory-deploy --directory dist --branch releases --username CircleCI --email circleci@transferwise.com",
     "deploy:demo": "git-directory-deploy --directory demo --branch gh-pages --message 'Update docs'"
   },
   "repository": {
