@@ -26,7 +26,8 @@
     "webpack": "webpack --watch",
     "copy-files-to-dist": "mkdir -p dist && cp circle.yml dist/ && cp package.json dist/ && cp CHANGELOG.md dist/",
     "deploy": "git-directory-deploy --directory dist --branch releases --username CircleCI --email circleci@transferwise.com",
-    "deploy:demo": "git-directory-deploy --directory demo --branch gh-pages --message 'Update docs'"
+    "deploy:demo": "git-directory-deploy --directory demo --branch gh-pages --message 'Update docs'",
+    "release-to-github": "release-to-github-with-changelog --branch=releases"
   },
   "repository": {
     "type": "git",
