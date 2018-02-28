@@ -4,6 +4,9 @@ machine:
   node:
     version: 8.9.4
 
+test:
+  override:
+    - if [[ $CIRCLE_BRANCH != "releases" ]] ; then npm test ; fi
 
 deployment:
  master:
