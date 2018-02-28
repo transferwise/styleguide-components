@@ -1,3 +1,6 @@
+# v3.0.3
+## Fix automatic deploy of demo
+
 # v3.0.2
 ## Bump version number
 
