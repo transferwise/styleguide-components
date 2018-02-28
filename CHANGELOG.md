@@ -1,3 +1,8 @@
+# v3.0.4
+## Improve CI pipeline
+ - Copy README to dist folder
+ - Fix issue with deployment of demo
+
 # v3.0.3
 ## Fix automatic deploy of demo
 

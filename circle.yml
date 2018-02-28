@@ -19,15 +19,14 @@ deployment:
      - npm run copy-files-to-dist
      - npm run build
      - npm run deploy
-     - git clone git@github.com:transferwise/styleguide-components.git gh-pages
-     - npm run copy:ghpages
-     - cd gh-pages
-     - git checkout gh-pages
-     - git add .
-     - git commit -m "Update docs"
-     - git push origin gh-pages
+     - npm run deploy:demo
  releases:
    branch: releases
    commands:
      - npm run release-to-github
      - npm publish --access=public
+
+general:
+  branches:
+    ignore:
+      - gh-pages

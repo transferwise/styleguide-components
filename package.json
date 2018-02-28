@@ -1,6 +1,6 @@
 {
   "name": "@transferwise/styleguide-components",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "TransfeWise AngularJS 1.x Styleguide Components",
   "license": "MIT",
   "scripts": {
@@ -10,7 +10,7 @@
     "prestart": "npm install",
     "start": "npm run less && webpack --watch;",
     "dev": "npm run copy:demo && live-server --port=1666 --open=demo/index.html",
-    "build": "npm run less && webpack -p;",
+    "build": "npm run less && webpack -p && npm run copy:demo;",
     "htmllint": "htmllint src/**/*.html; htmllint src/**/**/*.html; htmllint demo/**/*.html; exit 0",
     "jshint": "jshint src/**/*.js --exclude-path .jshintignore; exit 0",
     "eslint": "eslint src; exit 0",
@@ -22,11 +22,10 @@
     "copy:flags": "cp node_modules/currency-flags/dist/currency-flags.css demo/lib/",
     "copy:fonts": "mkdir demo/fonts; cp node_modules/bootstrap/fonts/*.* demo/fonts; cp node_modules/transferwise-iconfont/fonts/*.* demo/fonts",
     "copy:demo": "mkdir demo/lib; npm run copy:jquery; npm run copy:angular; npm run copy:bootstrap; npm run copy:bootstrap; npm run copy:flags;",
-    "copy:ghpages": "cp -R demo/ gh-pages",
     "webpack": "webpack --watch",
     "copy-files-to-dist": "mkdir -p dist && cp circle.yml package.json CHANGELOG.md README.md dist/",
     "deploy": "git-directory-deploy --directory dist --branch releases --username CircleCI --email circleci@transferwise.com",
-    "deploy:demo": "git-directory-deploy --directory demo --branch gh-pages --message 'Update docs'",
+    "deploy:demo": "gh-pages -d demo",
     "release-to-github": "release-to-github-with-changelog --branch=releases"
   },
   "repository": {
@@ -59,6 +58,7 @@
     "eslint-loader": "^1.9.0",
     "eslint-plugin-import": "^2.7.0",
     "git-directory-deploy": "^1.5.1",
+    "gh-pages": "^1.1.0",
     "html-loader": "^0.5.1",
     "htmllint": "^0.6.0",
     "htmllint-cli": "0.0.6",
