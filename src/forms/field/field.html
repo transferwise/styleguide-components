@@ -9,7 +9,7 @@
     {{$ctrl.field.title}}
   </label>
   <tw-form-control
-    name="{{ $ctrl.field.key }}"
+    name="{{ $ctrl.name }}"
     label="{{ $ctrl.field.title }}"
     type="{{ $ctrl.control | lowercase }}"
     placeholder="{{ $ctrl.field.placeholder }}"
@@ -57,7 +57,7 @@
     }">
     {{ $ctrl.warningMessage }}
   </div>
-  
+
   <div ng-if="$ctrl.field.helpText || $ctrl.field.helpList || $ctrl.field.helpImage"
     class="alert alert-focus"
     ng-class="{
