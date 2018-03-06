@@ -1,3 +1,7 @@
+# v3.0.5
+## Fix tw-form-control name
+ - Pass tw-field name to tw-form-control instead of deleted field.key
+
 # v3.0.4
 ## Improve CI pipeline
  - Copy README to dist folder
