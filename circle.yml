@@ -16,6 +16,8 @@ deployment:
  master:
    branch: master
    commands:
+     - git config --global user.email "circleci@transferwise.com"
+     - git config --global user.name "tw-circleci"
      - npm run copy-files-to-dist
      - npm run build
      - npm run deploy
