@@ -1,3 +1,6 @@
+# v3.0.7
+## Copy fonts to the demo folder and branch
+
 # v3.0.6
 ## Configure circle-ci identity on github
  - This will prevent failures here and there on deployment after merge to master
