@@ -1,6 +1,6 @@
 {
   "name": "@transferwise/styleguide-components",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "description": "TransfeWise AngularJS 1.x Styleguide Components",
   "license": "MIT",
   "scripts": {
@@ -21,7 +21,7 @@
     "copy:bootstrap": "cp node_modules/bootstrap/dist/js/bootstrap.min.js demo/lib/; cp node_modules/bootstrap/dist/css/bootstrap.css demo/lib/",
     "copy:flags": "cp node_modules/currency-flags/dist/currency-flags.css demo/lib/",
     "copy:fonts": "mkdir demo/fonts; cp node_modules/bootstrap/fonts/*.* demo/fonts; cp node_modules/transferwise-iconfont/fonts/*.* demo/fonts",
-    "copy:demo": "mkdir demo/lib; npm run copy:jquery; npm run copy:angular; npm run copy:bootstrap; npm run copy:bootstrap; npm run copy:flags;",
+    "copy:demo": "mkdir demo/lib; npm run copy:jquery; npm run copy:angular; npm run copy:bootstrap; npm run copy:fonts; npm run copy:flags;",
     "webpack": "webpack --watch",
     "copy-files-to-dist": "mkdir -p dist && cp circle.yml package.json CHANGELOG.md README.md dist/",
     "deploy": "git-directory-deploy --directory dist --branch releases --username CircleCI --email circleci@transferwise.com",
