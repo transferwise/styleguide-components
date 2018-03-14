@@ -20,6 +20,8 @@ import DefinitionList from './definition-list/definition-list.demo.js';
 
 import Focusable from './focusable/focusable.demo.js';
 
+import SelectSmb86 from './select/select-smb-86.demo.js';
+
 export default angular.module('tw.styleguide.demo.forms', [
   Checkbox,
   Radio,
@@ -35,7 +37,8 @@ export default angular.module('tw.styleguide.demo.forms', [
   Fieldset,
   RequirementsForm,
   DefinitionList,
-  Focusable
+  Focusable,
+  SelectSmb86
 ]).component('formDocs', {
   bindings: {
     model: '=',

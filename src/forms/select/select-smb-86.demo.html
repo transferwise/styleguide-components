@@ -1,0 +1,25 @@
+<h4 id="select">Select</h4>
+<p>
+  Try to navigate between routes and see if the selected value clears
+</p>
+
+<form>
+  <div class="row m-b-3" ng-init="$ctrl.select.type = 'currencies'">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label class="control-label" for="mySelect">
+          Example select
+        </label>
+        <div class="form-group m-b-2">
+          <tw-select
+            placeholder="Button size..."
+						filter="Button"
+						dropdown-width="md"
+            options="$ctrl.select.buttonSizes"
+            ng-model="$ctrl.select.size">
+          </tw-select>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

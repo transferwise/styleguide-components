@@ -17,11 +17,12 @@
     "lint": "npm run htmllint && npm run jshint && npm run eslint",
     "less": "lessc demo/**/*.less demo/css/examples.css",
     "copy:jquery": "cp node_modules/jquery/dist/jquery.min.js demo/lib/",
+    "copy:ui-router": "cp node_modules/@uirouter/angularjs/release/angular-ui-router.js demo/lib/",
     "copy:angular": "cp node_modules/angular/angular.min.js demo/lib/",
     "copy:bootstrap": "cp node_modules/bootstrap/dist/js/bootstrap.min.js demo/lib/; cp node_modules/bootstrap/dist/css/bootstrap.css demo/lib/",
     "copy:flags": "cp node_modules/currency-flags/dist/currency-flags.css demo/lib/",
     "copy:fonts": "mkdir demo/fonts; cp node_modules/bootstrap/fonts/*.* demo/fonts; cp node_modules/transferwise-iconfont/fonts/*.* demo/fonts",
-    "copy:demo": "mkdir demo/lib; npm run copy:jquery; npm run copy:angular; npm run copy:bootstrap; npm run copy:fonts; npm run copy:flags;",
+    "copy:demo": "mkdir demo/lib; npm run copy:jquery; npm run copy:angular; npm run copy:bootstrap; npm run copy:fonts; npm run copy:flags; npm run copy:ui-router;",
     "webpack": "webpack --watch",
     "copy-files-to-dist": "mkdir -p dist && cp circle.yml package.json CHANGELOG.md README.md dist/",
     "deploy": "git-directory-deploy --directory dist --branch releases --username CircleCI --email circleci@transferwise.com",
@@ -42,6 +43,7 @@
   },
   "homepage": "https://github.com/transferwise/styleguide-components",
   "dependencies": {
+    "@uirouter/angularjs": "^1.0.15",
     "angular": "^1.5.0",
     "jquery": "^3.2.1"
   },
