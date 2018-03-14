@@ -1,5 +1,9 @@
+// import { $http } from 'ngimport';
+
 class DateController {
   constructor($element, $log, $scope, TwDateService) {
+    // console.log($http);
+
     const $ngModel = $element.controller('ngModel');
 
     this.DateService = TwDateService;

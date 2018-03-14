@@ -1,4 +1,5 @@
 import angular from 'angular';
+import 'ngimport'; // eslint-disable-line
 
 import './polyfill';
 
@@ -18,6 +19,7 @@ import OldFormComponentModule from './form-components.js';
 import OldFormValidationModule from './form-validation.js';
 
 export default angular.module('tw.styleguide-components', [
+  'bcherny/ngimport',
   Forms,
   Validation,
   Formatting,

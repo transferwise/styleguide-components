@@ -55,7 +55,9 @@ const webpackModule = {
 
 const webpackExternals = [{
   angular: 'angular',
-  'angular-mocks': 'angular-mocks'
+  'angular-mocks': 'angular-mocks',
+  react: 'react',
+  'react-dom': 'react-dom'
 }];
 
 const webpackPlugins = [
@@ -73,6 +75,12 @@ const webpackPlugins = [
   })
 ];
 
+const reactExternals = [{
+  angular: 'angular',
+  'angular-mocks': 'angular-mocks',
+  react: 'react'
+}];
+
 module.exports = [{
   entry: './src/form-validation.js',
   output: {
@@ -88,6 +96,18 @@ module.exports = [{
     'dist/js/styleguide-components.min': './src/index.js',
     'demo/lib/styleguide-components': './src/index.js',
     'demo/lib/demo': './src/demo.js'
+  },
+  output: {
+    path: path.join(__dirname, ''),
+    filename: '[name].js'
+  },
+  externals: webpackExternals,
+  module: webpackModule,
+  plugins: webpackPlugins
+},
+{
+  entry: {
+    'demo/lib/react-components': './src/react.js'
   },
   output: {
     path: path.join(__dirname, ''),
