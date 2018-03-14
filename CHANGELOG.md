@@ -1,3 +1,6 @@
+# v3.1.0
+## Add on-expand and on-collapse callbacks to tw-card
+
 # v3.0.7
 ## Copy fonts to the demo folder and branch
 
