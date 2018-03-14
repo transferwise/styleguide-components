@@ -8,6 +8,24 @@ class CardController {
     this.getCard = TwCardsService.getCard;
     this.getLength = TwCardsService.getLength;
   }
+
+  isExpanded() {
+    return this.open;
+  }
+  collapse() {
+    this.open = false;
+
+    if (this.onCollapse) {
+      this.onCollapse();
+    }
+  }
+  expand() {
+    this.open = true;
+
+    if (this.onExpand) {
+      this.onExpand();
+    }
+  }
 }
 
 CardController.$inject = [

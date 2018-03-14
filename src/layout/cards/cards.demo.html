@@ -4,29 +4,31 @@
     <p>These are cards that have information about an activity and
       provide more detail when they're expanded. Things to know about
       expandable cards: </p>
+
+    <p>The tw-cards container has one (optional) attribute
+    <code>inactive</code> (boolean), that provides for the cards with the
+    less prominent apparearance featured below.</p>
+    <p>Each <code>tw-card</code> belongs in a <code>tw-cards</code> container.
+      They take up to four attributes.</p>
     <ul>
-      <li>The tw-cards container has one (optional) attribute
-      <code>inactive</code> (boolean), that provides for the cards with the
-      less prominent apparearance featured below.</li>
-      <li>Each <code>tw-card</code> belongs in a <code>tw-cards</code> container.
-        They take up to four attributes.
-        <ul>
-          <li><code>state</code> - bootstrap state for the colour of the card</li>
-          <li><code>open</code> - (optional) boolean to mark a card for pre-expansion.
-          Only the first card in any <code>tw-cards</code> container with this attribute will
-          be expanded</li>
-          <li><code>disabled</code> - (optional) boolean for greyed out text on a card for
-          something like a cancelled transfer</li>
-        </ul>
-      </li>
-      <li>Each tw-card expects the following elements
-        <ul>
-          <li><code>card-icon</code> - circle for the card's icon</li>
-          <li><code>collapsed</code> - the content for the collapsed card</li>
-          <li><code>expanded</code> - the content for the expanded card</li>
-          <li><code>card-form</code> - (optional) the content for a form (like repeat transfer)</li>
-        </ul>
-      </li>
+      <li><code>state</code> - bootstrap state for the colour of the card</li>
+      <li><code>open</code> - (optional) boolean to mark a card for pre-expansion.
+      Only the first card in any <code>tw-cards</code> container with this attribute will
+      be expanded</li>
+      <li><code>disabled</code> - (optional) boolean for greyed out text on a card for
+      something like a cancelled transfer</li>
+    </ul>
+    <p>Each tw-card provides transclusion slots the following elements</p>
+    <ul>
+      <li><code>card-icon</code> - circle for the card's icon</li>
+      <li><code>collapsed</code> - the content for the collapsed card</li>
+      <li><code>expanded</code> - the content for the expanded card</li>
+      <li><code>card-form</code> - (optional) the content for a form (like repeat transfer)</li>
+    </ul>
+    <p>tw-card exposes two life-cycle events:</p>
+    <ul class="m-b-3">
+      <li><code>on-expand</code> - fired each time the card expands.</li>
+      <li><code>on-collapse</code> - fired each time the card collapses.</li>
     </ul>
   </div>
   <div class="col-md-4">
@@ -35,7 +37,9 @@
 &lt;tw-cards&gt;
     &lt;tw-card
         state="danger"
-        open="false"&gt;
+        open="false"
+        on-expand="..."
+        on-collapse="..."&gt;
         &lt;card-icon&gt;
         &lt;/card-icon&gt;
         &lt;collapsed&gt;
@@ -52,7 +56,10 @@
 
 <div class="well">
   <tw-cards>
-    <tw-card state="danger">
+    <tw-card
+      state="danger"
+      on-expand="$ctrl.log('expand 1')"
+      on-collapse="$ctrl.log('collapse 1')">
       <card-icon>
         <span class="icon icon-request icon-md"></span>
       </card-icon>
@@ -107,7 +114,10 @@
         </expand-example>
       </expanded>
     </tw-card>
-    <tw-card state="info" >
+    <tw-card
+      state="info"
+      on-expand="$ctrl.log('expand 2')"
+      on-collapse="$ctrl.log('collapse 2')">
       <card-icon>
         <span class="icon icon-md icon-transfer"></span>
       </card-icon>
@@ -161,7 +171,10 @@
         </expanded-example>
       </expanded>
     </tw-card>
-    <tw-card state="warning">
+    <tw-card
+      state="warning"
+      on-expand="$ctrl.log('expand 3')"
+      on-collapse="$ctrl.log('collapse 3')">
       <card-icon>
         <img class="hidden-xs" height="50" alt="tw sample photo"
           ng-src="{{ $ctrl.imageUrl }}" />
@@ -224,7 +237,11 @@
 <h5>Inactive Cards</h5>
 <br />
 <tw-cards inactive="true">
-    <tw-card state="none" show-form="true">
+    <tw-card
+      state="none"
+      show-form="true"
+      on-expand="$ctrl.log('expand 4')"
+      on-collapse="$ctrl.log('collapse 4')">
       <card-icon>V</card-icon>
       <collapsed>
         <collapse-example>
@@ -295,7 +312,11 @@
         <form-example></form-example>
       </card-form>
     </tw-card>
-    <tw-card state="none" show-form="true">
+    <tw-card
+      state="none"
+      show-form="true"
+      on-expand="$ctrl.log('expand 5')"
+      on-collapse="$ctrl.log('collapse 5')">
       <card-icon>W</card-icon>
       <collapsed>
         <collapse-example>
@@ -366,7 +387,11 @@
         <form-example></form-example>
       </card-form>
     </tw-card>
-    <tw-card state="none" disabled="true">
+    <tw-card
+      state="none"
+      disabled="true"
+      on-expand="$ctrl.log('expand 6')"
+      on-collapse="$ctrl.log('collapse 6')">
       <card-icon>X</card-icon>
       <collapsed>
         <collapse-example>

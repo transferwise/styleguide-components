@@ -5,14 +5,18 @@ function TwCardsService() {
 
   this.toggle = (index) => {
     if (expandedIndex !== -1 && expandedIndex !== index) {
-      cards[expandedIndex].open = false;
+      if (cards[expandedIndex].isExpanded()) {
+        cards[expandedIndex].collapse();
+      }
       expandedIndex = -1;
     }
-    if (cards[index].open) {
-      cards[index].open = false;
+
+    const card = cards[index];
+    if (card.isExpanded()) {
+      card.collapse();
     } else {
       expandedIndex = index;
-      cards[index].open = true;
+      card.expand();
     }
   };
 

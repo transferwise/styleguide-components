@@ -18,7 +18,9 @@ function Card() {
       showForm: '<?',
       open: '<?',
       disabled: '<?',
-      inactive: '<'
+      inactive: '<',
+      onExpand: '&',
+      onCollapse: '&'
     },
     transclude: {
       collapsedCard: 'collapsed',
@@ -31,22 +33,22 @@ function Card() {
   };
 }
 
-function CardLink($scope, $element, $attrs, $ctrl) {
-  const cardController = $scope.$ctrl;
+function CardLink($scope) {
+  const $ctrl = $scope.$ctrl;
 
-  cardController.addCard(cardController);
-  cardController.index = cardController.getLength() - 1;
-  cardController.inactive = $ctrl.cardContainerController.inactive;
+  $ctrl.addCard($ctrl);
+  $ctrl.index = $ctrl.getLength() - 1;
+  $ctrl.inactive = $ctrl.cardContainerController.inactive;
 
-  if (cardController.open === true &&
-    cardController.getExpandedIndex() === -1) { // only takes first pre-expanded card
-    cardController.updateExpandedIndex(cardController.index);
+  if ($ctrl.open === true &&
+    $ctrl.getExpandedIndex() === -1) { // only takes first pre-expanded card
+    $ctrl.updateExpandedIndex($ctrl.index);
   } else {
-    cardController.open = false;
+    $ctrl.open = false;
   }
 
-  if (cardController.disabled == null) {
-    cardController.disabled = false;
+  if ($ctrl.disabled == null) {
+    $ctrl.disabled = false;
   }
 }
 
