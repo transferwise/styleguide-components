@@ -24,9 +24,8 @@ const foo = angular
        * Uncomment the assignment line and cooment
        * the one on the next method to play around.
        */
-      selectSvc.immediateResolve().then(data => {
-        // this.select = data;
-      });
+      selectSvc.immediateResolve();
+      // .then(() => { this.select = data; });
 
       /* ===================================================
        * Updates from here do not reproduce the error, since
@@ -35,15 +34,15 @@ const foo = angular
        * which would be the case for promises taking longer
        * than 16 ms to fulfil.
       */
-      selectSvc.delayedResolve().then(data => {
+      selectSvc.delayedResolve().then((data) => {
         this.select = data;
       });
     },
     template,
   });
 
-foo.service('selectSvc', function($q) {
-  var self = this;
+foo.service('selectSvc', function ($q) {
+  const self = this;
   self.size = 'md';
 
   self.buttonSizes = [
@@ -53,7 +52,7 @@ foo.service('selectSvc', function($q) {
   ];
 
   function immediateResolve() {
-    return $q(resolve => {
+    return $q((resolve) => {
       resolve({
         size: self.size,
         buttonSizes: self.buttonSizes,
@@ -62,13 +61,12 @@ foo.service('selectSvc', function($q) {
   }
 
   function delayedResolve() {
-    return $q(resolve => {
-      setTimeout(_ =>
+    return $q((resolve) => {
+      setTimeout(() =>
         resolve({
           size: self.size,
           buttonSizes: self.buttonSizes,
-        }),
-      );
+        }));
     });
   }
 
