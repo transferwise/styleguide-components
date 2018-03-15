@@ -238,8 +238,13 @@ function addWatchers($ctrl, $scope, $ngModel, $element) {
     modelChange(newValue, oldValue, $ctrl);
   });
 
+  /*
+   * Trigger watch if options value changed or values
+   * are the same but the filteredOptions is empty.
+  */
   $scope.$watch('$ctrl.options', (newValue, oldValue) => {
-    if (newValue !== oldValue) {
+    if (newValue !== oldValue
+      || (newValue && !$ctrl.filteredOptions.length)) {
       preSelectModelValue($ngModel, $ctrl);
       setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl);
 
