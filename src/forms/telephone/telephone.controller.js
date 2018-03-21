@@ -40,7 +40,10 @@ class TelephoneController {
     this.$timeout(() => {
       this.suffixModelController =
         this.$element.find('input[type=tel]').controller('ngModel');
-      this.suffixModelController.$parsers.unshift(viewValue => viewValue.replace(this.charactersToRemove, ''));
+      if (this.suffixModelController && this.suffixModelController.$parsers) {
+        this.suffixModelController.$parsers
+          .unshift(viewValue => viewValue.replace(this.charactersToRemove, ''));
+      }
     });
   }
 
