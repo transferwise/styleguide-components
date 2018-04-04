@@ -1,3 +1,6 @@
+# v3.1.1
+## Make tw-telephone safer if we get any DOM errors
+
 # v3.1.0
 ## Add on-expand and on-collapse callbacks to tw-card
 
