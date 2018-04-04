@@ -63,7 +63,7 @@ class SelectController {
   onOptionsChange(newValue, oldValue) {
     if (newValue !== oldValue) {
       preSelectModelValue(this.$ngModel, this);
-      setDefaultIfRequired(this.$ngModel, this, this.$element, this);
+      setDefaultIfRequired(this.$ngModel, this, this.$element, this.$attrs);
 
       this.filteredOptions = this.getFilteredOptions();
     }
@@ -169,6 +169,7 @@ class SelectController {
       filterInput.focus();
     }
   }
+
   filterChange() {
     this.filteredOptions = this.getFilteredOptions();
     const selectedOption = findSelected(this.filteredOptions, this.selected);
@@ -182,8 +183,8 @@ class SelectController {
   // Keydown as keypress did not work in chrome/safari
   filterKeydown(event) {
     const characterCode = event.which || event.charCode || event.keyCode;
-    const activeOption = this.element.getElementsByClassName('active')[0];
-    const activeLink = activeOption ? activeOption.getElementsByTagName('a')[0] : false;
+    const activeOption = this.element.querySelector('.active');
+    const activeLink = activeOption ? activeOption.querySelector('a') : false;
     const optionLinks = this.element.getElementsByClassName('tw-select-option-link');
 
     if (characterCode === keys.down) {
@@ -348,7 +349,9 @@ function escapeRegExp(str) {
 function preSelectModelValue($ngModel, $ctrl) {
   if (isValidModel($ctrl.ngModel)) {
     const option = findOptionFromValue($ctrl.options, $ctrl.ngModel);
-    selectOption($ngModel, $ctrl, option);
+    if (option) {
+      selectOption($ngModel, $ctrl, option);
+    }
   }
 }
 
