@@ -1,3 +1,8 @@
+# v3.1.2
+## Addresses a bug where twSelect would not initialise selected value correctly
+This only occurred when navigating between routes using ui-router. Solved by
+updating to use one way binding for options and $onChanges over $scope.watch.
+
 # v3.1.1
 ## Make tw-telephone safer if we get any DOM errors
 
