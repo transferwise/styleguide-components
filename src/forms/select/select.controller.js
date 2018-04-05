@@ -1,9 +1,8 @@
 import angular from 'angular';
 
 class SelectController {
-  constructor($element, $scope, $transclude, $timeout, $attrs, TwDomService) {
+  constructor($element, $transclude, $timeout, $attrs, TwDomService) {
     this.$ngModel = $element.controller('ngModel');
-    this.$scope = $scope;
     this.$element = $element;
     this.$attrs = $attrs;
     this.$timeout = $timeout;
@@ -20,7 +19,6 @@ class SelectController {
     preSelectModelValue(this.$ngModel, this);
     setDefaultIfRequired(this.$ngModel, this, this.$element, this.$attrs);
 
-    addWatchers(this, this.$scope, this.$ngModel, this.$element);
     addEventHandlers(this, this.$element, this.$ngModel, this.options, this.$timeout);
 
     checkForTranscludedContent(this.$transclude, this);
@@ -29,6 +27,46 @@ class SelectController {
 
     this.filterString = '';
     this.filteredOptions = this.getFilteredOptions();
+  }
+
+  $onChanges(changes) {
+    if (changes.options) {
+      this.onOptionsChange(
+        changes.options.currentValue,
+        changes.options.previousValue
+      );
+    }
+    if (changes.ngModel) {
+      this.onModelChange(
+        changes.options.currentValue,
+        changes.options.previousValue
+      );
+    }
+  }
+
+  onModelChange(newValue, oldValue) {
+    if (newValue === oldValue) {
+      return;
+    }
+    if (newValue || oldValue) {
+      this.$ngModel.$setDirty();
+    }
+
+    const option = findOptionFromValue(this.options, newValue);
+    if (option) {
+      this.selected = option;
+    } else {
+      this.selected = null;
+    }
+  }
+
+  onOptionsChange(newValue, oldValue) {
+    if (newValue !== oldValue) {
+      preSelectModelValue(this.$ngModel, this);
+      setDefaultIfRequired(this.$ngModel, this, this.$element, this.$attrs);
+
+      this.filteredOptions = this.getFilteredOptions();
+    }
   }
 
   circleClasses(responsiveOption) {
@@ -131,6 +169,7 @@ class SelectController {
       filterInput.focus();
     }
   }
+
   filterChange() {
     this.filteredOptions = this.getFilteredOptions();
     const selectedOption = findSelected(this.filteredOptions, this.selected);
@@ -144,8 +183,8 @@ class SelectController {
   // Keydown as keypress did not work in chrome/safari
   filterKeydown(event) {
     const characterCode = event.which || event.charCode || event.keyCode;
-    const activeOption = this.element.getElementsByClassName('active')[0];
-    const activeLink = activeOption ? activeOption.getElementsByTagName('a')[0] : false;
+    const activeOption = this.element.querySelector('.active');
+    const activeLink = activeOption ? activeOption.querySelector('a') : false;
     const optionLinks = this.element.getElementsByClassName('tw-select-option-link');
 
     if (characterCode === keys.down) {
@@ -226,26 +265,6 @@ function secondaryMatches(option, search) {
 }
 function searchableMatches(option, search) {
   return option.searchable && option.searchable.toLowerCase().search(search) >= 0;
-}
-
-
-function addWatchers($ctrl, $scope, $ngModel, $element) {
-  $scope.$watch('$ctrl.ngModel', (newValue, oldValue) => {
-    if ((newValue || oldValue) && newValue !== oldValue) {
-      $ngModel.$setDirty();
-    }
-
-    modelChange(newValue, oldValue, $ctrl);
-  });
-
-  $scope.$watch('$ctrl.options', (newValue, oldValue) => {
-    if (newValue !== oldValue) {
-      preSelectModelValue($ngModel, $ctrl);
-      setDefaultIfRequired($ngModel, $ctrl, $element, $ctrl);
-
-      $ctrl.filteredOptions = $ctrl.getFilteredOptions();
-    }
-  });
 }
 
 function addEventHandlers($ctrl, $element, $ngModel, options, $timeout) {
@@ -330,20 +349,9 @@ function escapeRegExp(str) {
 function preSelectModelValue($ngModel, $ctrl) {
   if (isValidModel($ctrl.ngModel)) {
     const option = findOptionFromValue($ctrl.options, $ctrl.ngModel);
-    selectOption($ngModel, $ctrl, option);
-  }
-}
-
-function modelChange(newVal, oldVal, $ctrl) {
-  if (newVal === oldVal) {
-    return;
-  }
-
-  const option = findOptionFromValue($ctrl.options, newVal);
-  if (option) {
-    $ctrl.selected = option;
-  } else {
-    $ctrl.selected = null;
+    if (option) {
+      selectOption($ngModel, $ctrl, option);
+    }
   }
 }
 
@@ -475,7 +483,6 @@ const keys = {
 
 SelectController.$inject = [
   '$element',
-  '$scope',
   '$transclude',
   '$timeout',
   '$attrs',
