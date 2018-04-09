@@ -1,0 +1,71 @@
+<h4 id="submit">Submit</h4>
+<p>A submit buttons for forms, providing feedback to the customer.</p>
+
+<div class="row m-b-3">
+  <div class="col-md-6">
+    <form ng-submit="$ctrl.onSubmit()" class="m-b-3">
+      <div class="form-group m-b-2" ng-init="$ctrl.shouldSucceed = true;">
+        <label class="control-label" for="telephone">
+          Should submit succeed?
+        </label>
+        <div class="radio">
+          <label>
+            <tw-radio ng-model="$ctrl.shouldSucceed" ng-value="true"></tw-radio>
+            Yes
+          </label>
+        </div>
+        <div class="radio m-t-2">
+          <label>
+            <tw-radio ng-model="$ctrl.shouldSucceed" ng-value="false"></tw-radio>
+            No
+          </label>
+        </div>
+      </div>
+      <tw-submit
+        label="$ctrl.label"
+        promise="$ctrl.promise"
+        on-submit="$ctrl.log('submit')"
+        on-success="$ctrl.log('success')"
+        on-failure="$ctrl.log('failure')"
+        ng-disabled="$ctrl.disabled">
+      </tw-submit>
+    </form>
+    <h5>Configuration</h5>
+<pre>
+&lt;form ng-submit="$ctrl.promise = $http.post(...)"&gt;
+  &lt;div class="form-group"&gt;...&lt;/div&gt;
+  &lt;tw-submit
+    label="{{ $ctrl.label }}"
+    promise="$ctrl.promise"
+    on-submit="$ctrl.log('submit')"
+    on-success="$ctrl.log('success')"
+    on-failure="$ctrl.log('failure')"<span ng-if="$ctrl.disabled">
+    ng-disabled="{{ $ctrl.disabled }}"</span>&gt;
+  &lt;/tw-submit&gt;
+&lt;/form&gt;</pre>
+  </div>
+  <div class="col-md-6">
+    <div class="well">
+      <h5 class="page-header">
+        Edit configuration
+      </h5>
+      <div class="form-group" ng-init="$ctrl.label = 'Submit';">
+        <label class="control-label">
+          Label
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.label" />
+      </div>
+      <div class="form-group m-b-0">
+        <label class="control-label">
+          Disabled?
+        </label>
+        <div class="checkbox">
+          <label>
+            <tw-checkbox ng-model="$ctrl.disabled"></tw-checkbox>
+            Is the control disabled?
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

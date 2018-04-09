@@ -1,0 +1,15 @@
+<button
+  class="btn btn-block"
+  ng-class="{
+    'btn-danger': $ctrl.colour === 'red',
+    'btn-primary': $ctrl.colour === 'blue'
+  }"
+  ng-disabled="$ctrl.isButtonDisabled || $ctrl.ngDisabled">
+  <tw-process
+    ng-if="$ctrl.isSpinnerVisible"
+    state="$ctrl.state"
+    size="xs"
+    on-stop="$ctrl.animationDone()">
+  </tw-process>
+  {{ $ctrl.label }}
+</button>

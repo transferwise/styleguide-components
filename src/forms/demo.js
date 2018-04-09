@@ -8,6 +8,7 @@ import Upload from './upload/upload.demo.js';
 import Date from './date/date.demo.js';
 import DateLookup from './date-lookup/date-lookup.demo.js';
 import Telephone from './telephone/telephone.demo.js';
+import Submit from './submit/submit.demo.js';
 
 import CurrencyInput from './currency-input/currency-input.demo.js';
 import AmountCurrencySelect from './amount-currency-select/amount-currency-select.demo.js';
@@ -35,7 +36,8 @@ export default angular.module('tw.styleguide.demo.forms', [
   Fieldset,
   RequirementsForm,
   DefinitionList,
-  Focusable
+  Focusable,
+  Submit
 ]).component('formDocs', {
   bindings: {
     model: '=',

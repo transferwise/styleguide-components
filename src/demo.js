@@ -62,6 +62,7 @@ module.config(['$compileProvider', ($compileProvider) => {
       <li><a href="index.html#form-control">Form control</a></li>
       <li><a href="index.html#radio">Radio</a></li>
       <li><a href="index.html#select">Select</a></li>
+      <li><a href="index.html#submit">Submit</a></li>
       <li><a href="index.html#telephone">Telephone</a></li>
       <li><a href="index.html#upload">Upload</a></li>
       <li><a href="index.html#validation">Validation</a></li>
