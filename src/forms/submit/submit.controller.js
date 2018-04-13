@@ -9,6 +9,7 @@ class SubmitController {
   $onInit() {
     this.state = 0;
     this.colour = 'blue';
+    this.animationDelay = 1500;
 
     this.form = this.dom.getClosestParentByTagName(this.element, 'form');
 
@@ -46,7 +47,7 @@ class SubmitController {
       if (this.successCallback) {
         this.successCallback();
       }
-    }, 1500);
+    }, this.animationDelay);
     return response;
   }
 
@@ -57,7 +58,7 @@ class SubmitController {
       this.isButtonDisabled = false;
 
       this.failureCallback();
-    }, 1500);
+    }, this.animationDelay);
     return error;
   }
 }

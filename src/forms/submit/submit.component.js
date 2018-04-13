@@ -6,7 +6,6 @@ const Submit = {
   template,
   bindings: {
     label: '<',
-    state: '<',
     promise: '<',
     submitCallback: '&onSubmit',
     successCallback: '&onSuccess',
