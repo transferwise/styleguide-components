@@ -59,6 +59,10 @@ class SubmitController {
 
       this.failureCallback();
     }, this.animationDelay);
+
+    this.$timeout(() => {
+      this.colour = 'blue';
+    }, 3 * this.animationDelay);
     return error;
   }
 }
