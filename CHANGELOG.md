@@ -1,3 +1,7 @@
+# v3.2.0
+## Add a submit button component
+Provides loading indication and success/failure feedback using twProcess.
+
 # v3.1.2
 ## Addresses a bug where twSelect would not initialise selected value correctly
 This only occurred when navigating between routes using ui-router. Solved by
