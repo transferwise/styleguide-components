@@ -1,3 +1,5 @@
+<div class="dropdown-backdrop">hey</div>
+
 <div class="btn-group btn-block tw-select"
   ng-class="{
     dropdown: !$ctrl.dropdownUp,
@@ -66,6 +68,7 @@
     <span class="form-control-placeholder" ng-if="!$ctrl.selected">{{$ctrl.placeholder}}</span>
     <span class="caret"></span>
   </button>
+
   <ul class="dropdown-menu" role="menu"
     ng-class="{
       'dropdown-menu-xs-right': $ctrl.dropdownRight === 'xs',
@@ -75,7 +78,8 @@
       'dropdown-menu-xl-right': $ctrl.dropdownRight === 'xl',
       'dropdown-menu-sm': $ctrl.dropdownWidth === 'sm',
       'dropdown-menu-md': $ctrl.dropdownWidth === 'md',
-      'dropdown-menu-lg': $ctrl.dropdownWidth === 'lg'
+      'dropdown-menu-lg': $ctrl.dropdownWidth === 'lg',
+      'dropdown-menu-native': $ctrl.dropdownShowNative
     }">
 
     <li ng-if="$ctrl.filter">
