@@ -39,6 +39,12 @@ class UploadController {
     this.addDragHandlers($scope, $element);
   }
 
+  $onChanges(changes) {
+    if (changes.ngModel) {
+      this.reset();
+    }
+  }
+
   onManualUpload() {
     const element = this.$element[0];
     const uploadInput = element.querySelector('.tw-droppable-input');
