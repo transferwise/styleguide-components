@@ -1,3 +1,6 @@
+# v3.2.1
+## Add text-word-break to definition list elements to stop overflowing over other elements
+
 # v3.2.0
 ## Add a submit button component
 Provides loading indication and success/failure feedback using twProcess.
