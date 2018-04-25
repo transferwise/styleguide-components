@@ -13,7 +13,7 @@
 
     <dl ng-if="!field.group">
       <dt ng-bind="field.title"></dt>
-      <dd ng-switch="field.control">
+      <dd ng-switch="field.control" class="text-word-break">
         <span ng-switch-when="select|radio" ng-switch-when-separator="|">
           {{ $ctrl.getValueLabel(field.values, $ctrl.model[key]) }}
         </span>
@@ -40,7 +40,7 @@
     <!-- Start old 'nested group' style -->
     <dl ng-if="field.group">
       <dt ng-bind="field.title"></dt>
-      <dd>
+      <dd class="text-word-break">
         <span ng-repeat="fieldSection in field.group">
           <span ng-switch="fieldSection.control">
             <span ng-switch-when="select|radio" ng-switch-when-separator="|">
