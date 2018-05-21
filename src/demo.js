@@ -86,7 +86,9 @@ module.config(['$compileProvider', ($compileProvider) => {
 
     <h5>Layout</h5>
     <ul class="list-unstyled">
+      <li><a href="index.html#affix">Affix</a></li>
       <li><a href="index.html#cards">Cards</a></li>
+      <li><a href="index.html#icons">Icons</a></li>
     </ul>
 
     <h5>Loading</h5>

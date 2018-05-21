@@ -1,3 +1,6 @@
+# v3.3.0
+## Add TransferWise icons component
+
 # v3.2.1
 ## Add text-word-break to definition list elements to stop overflowing over other elements
 
