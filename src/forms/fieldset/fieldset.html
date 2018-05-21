@@ -5,7 +5,7 @@
     <div
       ng-repeat="(key, field) in $ctrl.fields track by $index" class="col-xs-12"
       ng-hide="field.hidden"
-      ng-if="$ctrl.showIf(field, $ctrl.model)"
+      ng-if="$ctrl.shouldShowField(field, $ctrl.model) && !$ctrl.shouldHideField(field, $ctrl.model)"
       ng-class="{
         'col-sm-4': !$ctrl.narrow  && field.width === 'sm',
         'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),

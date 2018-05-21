@@ -86,16 +86,33 @@ class FieldsetController {
     });
   }
 
-  showIf(field, model) {
+  shouldShowField(field, model) {
     if (!field.showIf) {
       return true;
     }
-    let visible = true;
-    Object.keys(field.showIf).forEach((key) => {
-      visible = visible && (model[key] === field.showIf[key]);
-    });
-    return visible;
+    return modelSatisfiesVisibilityRequirements(field.showIf, model);
   }
+
+  shouldHideField(field, model) {
+    if (!field.hideIf) {
+      return false;
+    }
+    return modelSatisfiesVisibilityRequirements(field.hideIf, model);
+  }
+}
+
+function modelSatisfiesVisibilityRequirements(requirements, model) {
+  let satisfies = true;
+  Object.keys(requirements).forEach((key) => {
+    if (Array.isArray(requirements[key])) {
+      // If we have an array of values, see if the model value is present
+      satisfies = satisfies && (requirements[key].indexOf(model[key]) >= 0);
+    } else {
+      // Otherwise, check if the model matches the supplied value
+      satisfies = satisfies && (requirements[key] === model[key]);
+    }
+  });
+  return satisfies;
 }
 
 function controlRefreshesOnChange(control) {

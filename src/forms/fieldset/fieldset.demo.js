@@ -175,16 +175,26 @@ function fieldsetDocsController() {
           { value: 'other', label: 'Other' }
         ]
       },
-      numberProperty: {
-        type: 'string',
-        title: 'Choose number',
+      booleanProperty: {
+        type: 'boolean',
+        title: 'Is it 42?',
+        placeholder: 'Yes',
         showIf: {
           selectProperty: 'other'
+        }
+      },
+      textProperty: {
+        type: 'string',
+        title: 'Why?',
+        showIf: {
+          selectProperty: [1, 2]
         }
       }
     }
   };
-  this.fieldsetShowSelectModel = {};
+  this.fieldsetShowSelectModel = {
+    selectProperty: 1
+  };
 
   this.fieldsetShowComplex = {
     fields: {
@@ -210,6 +220,14 @@ function fieldsetDocsController() {
         showIf: {
           checkboxProperty: true,
           selectProperty: 'other'
+        }
+      },
+      booleanProperty: {
+        type: 'boolean',
+        title: 'Is it 42?',
+        placeholder: 'Yes',
+        hideIf: {
+          checkboxProperty: true,
         }
       }
     }
