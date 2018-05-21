@@ -85,6 +85,17 @@ class FieldsetController {
       }
     });
   }
+
+  showIf(field, model) {
+    if (!field.showIf) {
+      return true;
+    }
+    let visible = true;
+    Object.keys(field.showIf).forEach((key) => {
+      visible = visible && (model[key] === field.showIf[key]);
+    });
+    return visible;
+  }
 }
 
 function controlRefreshesOnChange(control) {

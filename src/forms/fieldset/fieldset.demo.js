@@ -144,6 +144,78 @@ function fieldsetDocsController() {
   };
   this.fieldsetLayoutModel = {};
 
+  this.fieldsetShowSimple = {
+    fields: {
+      checkboxProperty: {
+        type: 'boolean',
+        title: 'Custom?',
+        placeholder: 'Click for custom value'
+      },
+      textProperty: {
+        type: 'string',
+        title: 'Now enter value',
+        showIf: {
+          checkboxProperty: true
+        }
+      }
+    }
+  };
+  this.fieldsetShowSimpleModel = {};
+
+  this.fieldsetShowSelect = {
+    fields: {
+      selectProperty: {
+        type: 'boolean',
+        control: 'select',
+        title: 'What is you favourite number?',
+        required: true,
+        values: [
+          { value: 1, label: 'One' },
+          { value: 2, label: 'Two' },
+          { value: 'other', label: 'Other' }
+        ]
+      },
+      numberProperty: {
+        type: 'string',
+        title: 'Choose number',
+        showIf: {
+          selectProperty: 'other'
+        }
+      }
+    }
+  };
+  this.fieldsetShowSelectModel = {};
+
+  this.fieldsetShowComplex = {
+    fields: {
+      checkboxProperty: {
+        type: 'boolean',
+        title: 'Custom?',
+        placeholder: 'Click for custom value'
+      },
+      selectProperty: {
+        type: 'boolean',
+        control: 'select',
+        title: 'What is you favourite number?',
+        required: true,
+        values: [
+          { value: 1, label: 'One' },
+          { value: 2, label: 'Two' },
+          { value: 'other', label: 'Other' }
+        ]
+      },
+      numberProperty: {
+        type: 'string',
+        title: 'Choose number',
+        showIf: {
+          checkboxProperty: true,
+          selectProperty: 'other'
+        }
+      }
+    }
+  };
+  this.fieldsetShowComplexModel = {};
+
   this.fieldsetFull = {
     fields: {
       text: {
