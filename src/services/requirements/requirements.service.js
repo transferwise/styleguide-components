@@ -69,7 +69,9 @@ function RequirementsService($http) {
         field.type = 'boolean';
         break;
       case 'select':
-        field.control = 'select';
+        if (!field.control) {
+          field.control = 'select';
+        }
         delete field.type;
         break;
       case 'radio':

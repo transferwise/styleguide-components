@@ -35,7 +35,8 @@ describe('Requirements Service', function() {
         typeUpload: { type: "upload" },
         typeUPLOAD: { type: "UPLOAD" },
         typeSelect: { type: "select", values: [] },
-        typeRadio: { type: "radio", values: [], control: "select" }
+        typeRadio: { type: "radio", values: [], control: "select" },
+        typeSelectWithRadioControl: { type: "select", values: [], control: "radio" },
       };
 
       var current = {
@@ -46,7 +47,8 @@ describe('Requirements Service', function() {
         typeUpload: { type: "string", format: "base64url", control: "file" },
         typeUPLOAD: { type: "string", format: "base64url", control: "file" },
         typeSelect: { values: [], control: "select" },
-        typeRadio: { values: [], control: "radio" }
+        typeRadio: { values: [], control: "radio" },
+        typeSelectWithRadioControl: { values: [], control: "radio" },
       };
 
       expect(service.prepFields(legacy)).toEqual(current);
