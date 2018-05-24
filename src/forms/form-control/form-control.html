@@ -16,7 +16,7 @@
         ng-blur="$ctrl.blur()"
       ></tw-radio>
       {{option.label}}
-      <small ng-show="option.secondary">{{option.secondary}}</small>
+      <small ng-if="option.secondary">{{option.secondary}}</small>
     </label>
   </div>
 

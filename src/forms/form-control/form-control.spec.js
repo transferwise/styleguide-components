@@ -180,7 +180,7 @@ describe('FormControl', function() {
     it('should use secondary label correctly', function() {
       var radios = element.querySelectorAll('.radio');
       expect(radios[1].classList).toContain('radio-lg');
-      var smallLabel = element.querySelectorAll('small')[1];
+      var smallLabel = radios[1].querySelector('small');
       expect(smallLabel.innerText.trim()).toContain('Secondary label');
     });
 
