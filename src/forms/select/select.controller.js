@@ -38,8 +38,8 @@ class SelectController {
     }
     if (changes.ngModel) {
       this.onModelChange(
-        changes.options.currentValue,
-        changes.options.previousValue
+        changes.ngModel.currentValue,
+        changes.ngModel.previousValue
       );
     }
   }

@@ -7,7 +7,7 @@ const Select = {
   require: 'ngModel',
   transclude: true,
   bindings: {
-    ngModel: '=',
+    ngModel: '<',
     ngRequired: '<',
     ngDisabled: '<',
     options: '<',
