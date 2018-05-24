@@ -1,7 +1,7 @@
 <div ng-switch="$ctrl.type">
   <div ng-switch-when="radio"
     class="radio"
-    ng-class="{disabled: $ctrl.ngDisabled}"
+    ng-class="{disabled: $ctrl.ngDisabled, 'radio-lg': option.secondary}"
     ng-repeat="option in $ctrl.options">
     <label>
       <tw-radio
@@ -16,6 +16,7 @@
         ng-blur="$ctrl.blur()"
       ></tw-radio>
       {{option.label}}
+      <small ng-show="option.secondary">{{option.secondary}}</small>
     </label>
   </div>
 

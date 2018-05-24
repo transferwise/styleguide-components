@@ -163,7 +163,7 @@ describe('FormControl', function() {
       $scope.model = null;
       $scope.options = [
         {value: 1, label: 'One'},
-        {value: 2, label: 'Two'}
+        {value: 2, label: 'Two', secondary: 'Secondary label'}
       ];
       $scope.required = true;
       element = compileTemplate(template);
@@ -176,6 +176,12 @@ describe('FormControl', function() {
     it('should use the options correctly for the label', function() {
       var label = element.querySelector('label');
       expect(label.innerText.trim()).toContain('One');
+    });
+    it('should use secondary label correctly', function() {
+      var radios = element.querySelectorAll('.radio');
+      expect(radios[1].classList).toContain('radio-lg');
+      var smallLabel = element.querySelectorAll('small')[1];
+      expect(smallLabel.innerText.trim()).toContain('Secondary label');
     });
 
     testFocusHandler(function() {
