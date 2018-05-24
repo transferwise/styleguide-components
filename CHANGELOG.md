@@ -1,3 +1,6 @@
+# v3.2.4
+## Fixed tw-select to update selected value based on model change
+
 # v3.2.3
 ## Added support of secondary label for tw-field if control: "radio"
 
