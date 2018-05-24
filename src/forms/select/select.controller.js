@@ -10,10 +10,21 @@ class SelectController {
     this.dom = TwDomService;
 
     this.element = $element[0];
-    console.log(this.ngModel);
     $scope.$watch('$ctrl.ngModel', (newValue, oldValue) => {
-      this.onModelChange();
-    });
+      if (newValue === oldValue) {
+        return;
+      }
+      if (newValue || oldValue) {
+        this.$ngModel.$setDirty();
+      }
+
+      const option = findOptionFromValue(this.options, newValue);
+      if (option) {
+        this.selected = option;
+      } else {
+        this.selected = null;
+      }
+    }, true);
   }
 
   $onInit() {
@@ -39,29 +50,6 @@ class SelectController {
         changes.options.currentValue,
         changes.options.previousValue
       );
-    }
-    if (changes.ngModel) {
-      this.onModelChange(
-        changes.ngModel.currentValue,
-        changes.ngModel.previousValue
-      );
-    }
-  }
-
-  onModelChange(newValue, oldValue) {
-    console.log('onModelChange() got called.');
-    if (newValue === oldValue) {
-      return;
-    }
-    if (newValue || oldValue) {
-      this.$ngModel.$setDirty();
-    }
-
-    const option = findOptionFromValue(this.options, newValue);
-    if (option) {
-      this.selected = option;
-    } else {
-      this.selected = null;
     }
   }
 

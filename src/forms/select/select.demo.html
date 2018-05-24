@@ -66,24 +66,6 @@
           Custom action
         </a>
       </tw-select>
-      <div>{{$ctrl.testValue}}</div>
-      <tw-select
-        name="mySelect"
-        options="[
-        {'value': 0,
-        'label': 'Zero'
-        },
-        {
-        'value': 1,
-        'label': 'One'
-        }]"
-        ng-model="$ctrl.testValue">
-      </tw-select>
-
-      <button type="button" class="btn btn-primary btn-block" ng-click="$ctrl.click()">Change model value to 1.
-    </button>
-      <button type="button" class="btn btn-primary btn-block" ng-click="$ctrl.click2()">Print model value to console.
-      </button>
 
       <div class="error-messages">
         <div class="error-required">Required</div>
