@@ -8,6 +8,13 @@ export default angular
       model: '='
     },
     controller() {
+      this.testValue = 0;
+      this.click = () => {
+        this.testValue = 1;
+      };
+      this.click2 = () => {
+        console.log(this.testValue);
+      };
       this.select = {
         required: true,
         empty: 'Select an option...',

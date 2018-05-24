@@ -1,7 +1,7 @@
 import angular from 'angular';
 
 class SelectController {
-  constructor($element, $transclude, $timeout, $attrs, TwDomService) {
+  constructor($element, $transclude, $timeout, $attrs, TwDomService, $scope) {
     this.$ngModel = $element.controller('ngModel');
     this.$element = $element;
     this.$attrs = $attrs;
@@ -10,6 +10,7 @@ class SelectController {
     this.dom = TwDomService;
 
     this.element = $element[0];
+    $scope.$watch(this.$ngModel, this.onModelChange);
   }
 
   $onInit() {
@@ -45,6 +46,7 @@ class SelectController {
   }
 
   onModelChange(newValue, oldValue) {
+    console.log('onModelChange() got called.');
     if (newValue === oldValue) {
       return;
     }
@@ -486,7 +488,8 @@ SelectController.$inject = [
   '$transclude',
   '$timeout',
   '$attrs',
-  'TwDomService'
+  'TwDomService',
+  '$scope'
 ];
 
 export default SelectController;
