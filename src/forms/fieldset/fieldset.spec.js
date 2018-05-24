@@ -98,6 +98,54 @@ describe('Fieldset', function() {
     });
   });
 
+  describe('when fields are shown only when the model has the correct values', function() {
+    beforeEach(function() {
+      $scope.fields = getRequirementsWithVisibilityDependencies();
+      element = getCompiledDirectiveElement();
+    });
+
+    it('should not show fields that do not meet their visibility requirments', function() {
+      expect(element.querySelector('.tw-field-simpleShow')).toBeFalsy();
+      expect(element.querySelector('.tw-field-doubleShow')).toBeFalsy();
+    });
+    it('should show fields that meet simple visibility requirments', function() {
+      element.querySelector('.tw-field-toggle button').dispatchEvent(new CustomEvent('click'));
+
+      var simpleShow = element.querySelector('.tw-field-simpleShow');
+      expect(simpleShow).toBeTruthy();
+    });
+    it('should show fields that meet complex visibility requirments', function() {
+      element.querySelector('.tw-field-toggle button').dispatchEvent(new CustomEvent('click'));
+      element.querySelector('.tw-field-simpleShow button').dispatchEvent(new CustomEvent('click'));
+
+      var doubleShow = element.querySelector('.tw-field-doubleShow');
+      expect(doubleShow).toBeTruthy();
+    });
+  });
+
+  fdescribe('when fields are hidden when the model has the correct values', function() {
+    beforeEach(function() {
+      $scope.fields = getRequirementsWithVisibilityDependencies();
+      element = getCompiledDirectiveElement();
+    });
+
+    it('should not hide fields that do not meet their visibility requirments', function() {
+      expect(element.querySelector('.tw-field-simpleHide')).toBeTruthy();
+      expect(element.querySelector('.tw-field-doubleHide')).toBeTruthy();
+    });
+    fit('should hide fields that meet simple visibility requirments', function() {
+      element.querySelector('.tw-field-toggle input').dispatchEvent(new CustomEvent('click'));
+      console.log(element.querySelector('.tw-field-simpleHide'));
+      expect(element.querySelector('.tw-field-simpleHide')).toBeFalsy();
+    });
+    it('should hide fields that meet complex visibility requirments', function() {
+      element.querySelector('.tw-field-toggle input').dispatchEvent(new CustomEvent('click'));
+      element.querySelector('.tw-field-simpleShow button').dispatchEvent(new CustomEvent('click'));
+
+      expect(element.querySelector('.tw-field-doubleShow')).toBeFalsy();
+    });
+  });
+
   describe('when given fields with custom widths', function() {
     beforeEach(function() {
       $scope.fields = getRequirementWithHiddenAndMdSmFields();
@@ -162,28 +210,66 @@ describe('Fieldset', function() {
   }
 
   function getRequirementWithHiddenAndMdSmFields() {
-    return [hiddenField, smField, mdField];
+    return {
+      iban: hiddenField,
+      colsm4: smField,
+      colsm6: mdField
+    };
+  }
+
+  function getRequirementsWithVisibilityDependencies() {
+    return {
+      toggle: {
+        type: 'boolean'
+      },
+      simpleShow: {
+        type: 'boolean',
+        showIf: {
+          toggle: true
+        }
+      },
+      doubleShow: {
+        type: 'boolean',
+        showIf: {
+          toggle: true,
+          simpleShow: true
+        }
+      },
+      simpleHide: {
+        type: 'boolean',
+        hideIf: {
+          toggle: true
+        }
+      },
+      doubleHide: {
+        type: 'boolean',
+        hideIf: {
+          toggle: true,
+          simpleShow: true
+        }
+      }
+    };
   }
 
   var hiddenField = {
-    "name": "HIDDEN",
-    "hidden": true,
-    "key": "iban",
-    "type": "hidden"
+    name: "HIDDEN",
+    hidden: true,
+    key: "iban",
+    type: "hidden"
   };
 
   var smField = {
-    "name": "COL-SM-4",
-    "width": "sm",
-    "key": "colsm4",
-    "type": "text"
+    name: "COL-SM-4",
+    width: "sm",
+    key: "colsm4",
+    type: "text"
   };
 
   var mdField = {
-    "name": "COL-SM-6",
-    "width": "md",
-    "key": "colsm6",
-    "type": "text"
-  }
+    name: "COL-SM-6",
+    width: "md",
+    key: "colsm6",
+    type: "text"
+  };
 
 });

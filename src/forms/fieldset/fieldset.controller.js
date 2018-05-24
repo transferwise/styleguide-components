@@ -86,14 +86,14 @@ class FieldsetController {
     });
   }
 
-  shouldShowField(field, model) {
+  shouldShowField(field, model) { // eslint-disable-line
     if (!field.showIf) {
       return true;
     }
     return modelSatisfiesVisibilityRequirements(field.showIf, model);
   }
 
-  shouldHideField(field, model) {
+  shouldHideField(field, model) { // eslint-disable-line
     if (!field.hideIf) {
       return false;
     }

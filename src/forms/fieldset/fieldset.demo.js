@@ -200,13 +200,16 @@ function fieldsetDocsController() {
     fields: {
       checkboxProperty: {
         type: 'boolean',
-        title: 'Custom?',
-        placeholder: 'Click for custom value'
+        title: 'Numbers or letters?',
+        placeholder: 'Numbers'
       },
       selectProperty: {
         type: 'boolean',
         control: 'select',
-        title: 'What is you favourite number?',
+        title: 'What\'s you favourite number?',
+        showIf: {
+          checkboxProperty: true
+        },
         required: true,
         values: [
           { value: 1, label: 'One' },
@@ -214,20 +217,20 @@ function fieldsetDocsController() {
           { value: 'other', label: 'Other' }
         ]
       },
-      numberProperty: {
+      stringProperty: {
         type: 'string',
-        title: 'Choose number',
-        showIf: {
-          checkboxProperty: true,
-          selectProperty: 'other'
+        title: 'What\'s your favourite letter?',
+        hideIf: {
+          checkboxProperty: true
         }
       },
       booleanProperty: {
         type: 'boolean',
         title: 'Is it 42?',
         placeholder: 'Yes',
-        hideIf: {
+        showIf: {
           checkboxProperty: true,
+          selectProperty: 'other'
         }
       }
     }
