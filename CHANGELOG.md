@@ -1,3 +1,6 @@
+# v3.2.3
+## Added support of secondary label for tw-field if control: "radio"
+
 # v3.2.2
 ## Requirement service use predefined control if present for select type 
 
