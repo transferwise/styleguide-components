@@ -3,7 +3,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
-const devMode = process.env.NODE_ENV !== 'production';
+const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Inlines templates
 const htmlLoader = {
@@ -42,7 +42,7 @@ const htmllintLoader = {
 
 const lessLoader = {
   test: /\.less$/,
-  use: [devMode ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
+  use: [isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
 };
 
 // Packages our code and processes using babel

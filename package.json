@@ -43,7 +43,7 @@
   },
   "homepage": "https://github.com/transferwise/styleguide-components",
   "dependencies": {
-    "angular": "^1.7.0",
+    "angular": "~1.5.0",
     "jquery": "^3.3.1"
   },
   "devDependencies": {
@@ -67,7 +67,6 @@
     "htmllint": "^0.6.0",
     "htmllint-cli": "0.0.6",
     "htmllint-loader": "^1.3.8",
-    "install-peers": "^1.0.2",
     "jasmine-core": "^2.99.1",
     "jshint": "^2.9.5",
     "jshint-loader": "^0.8.4",
