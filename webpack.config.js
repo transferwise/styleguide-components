@@ -1,9 +1,6 @@
 const path = require('path');
 
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-
-const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Inlines templates
 const htmlLoader = {
@@ -42,7 +39,17 @@ const htmllintLoader = {
 
 const lessLoader = {
   test: /\.less$/,
-  use: [isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
+  use: [
+    {
+      loader: 'style-loader', // creates style nodes from JS strings
+    },
+    {
+      loader: 'css-loader', // translates CSS into CommonJS
+    },
+    {
+      loader: 'less-loader', // compiles Less to CSS
+    },
+  ],
 };
 
 // Packages our code and processes using babel
