@@ -9,6 +9,7 @@ import Services from './services/';
 
 import Help from './help/';
 import Layout from './layout/';
+import Graphics from './graphics/';
 import Loading from './loading/';
 import Navigation from './navigation/';
 
@@ -24,6 +25,7 @@ export default angular.module('tw.styleguide-components', [
   Services,
   Help,
   Layout,
+  Graphics,
   Loading,
   Navigation,
   OldFormComponentModule,
