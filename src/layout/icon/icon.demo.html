@@ -7,33 +7,33 @@
       <a href="https://transferwise.github.io/icons/" target="_blank">here</a>.
     </p>
 
-    <tw-icon
-      name="bank"
-      size="sm"
-    ></tw-icon>
-    <tw-icon
-      name="bank"
-      size="md"
-    ></tw-icon>
-    <tw-icon
-      name="bank"
-      size="lg"
-    ></tw-icon>
-    <tw-icon
-      name="bank"
-      size="xl"
-    ></tw-icon>
-    <tw-icon
-      name="bank"
-      size="xxl"
-    ></tw-icon>
+    <div class="row">
+      <div class="col-md-5">
+        <tw-select
+          ng-model="$ctrl.name"
+          ng-required="true"
+          options="$ctrl.nameSelect"
+        ></tw-select>
+      </div>
+      <div class="col-md-offset-1 col-md-2">
+        <tw-icon name="{{ $ctrl.name }}" size="{{ $ctrl.size }}"></tw-icon>
+      </div>
+      <div class="col-md-3">
+        <tw-select
+          ng-model="$ctrl.size"
+          ng-required="true"
+          options="$ctrl.sizeSelect"
+        ></tw-select>
+      </div>
+    </div>
+
   </div>
   <div class="col-md-4">
     <h5>Example</h5>
       <pre>
       &lt;tw-icon&gt;
-        name="bank"
-        size="sm"
+        name="{{ $ctrl.name }}"
+        size="{{ $ctrl.size }}"
       &lt;/tw-cards&gt;
       </pre>
   </div>

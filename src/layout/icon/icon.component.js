@@ -2,6 +2,8 @@ import { svgIconSprite } from '@transferwise/icons';
 
 import template from './icon.html';
 
+const CONTAINER_CLASS = 'svg-icon-sprite-container';
+
 class Controller {
   $onInit() {
     this.document = document;
@@ -16,13 +18,13 @@ class Controller {
   }
 
   spriteIsOnPage() {
-    return !!this.document.querySelector('.svg-icon-sprite-container');
+    return !!this.document.querySelector(`.${CONTAINER_CLASS}`);
   }
 
   appendSpriteToPage() {
     const div = this.document.createElement('div');
     div.style.display = 'none';
-    div.classList.add('svg-icon-sprite-container');
+    div.classList.add(CONTAINER_CLASS);
 
     div.innerHTML = svgIconSprite;
 
