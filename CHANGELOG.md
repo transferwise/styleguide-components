@@ -1,3 +1,6 @@
+# v3.3.0
+## Add TransferWise icon component
+
 # v3.2.3
 ## Added support of secondary label for tw-field if control: "radio"
 

@@ -82,7 +82,7 @@ const webpackExternals = [
   {
     angular: 'angular',
     'angular-mocks': 'angular-mocks',
-    '@transferwise/icons': '@transferwise/icons',
+    '@transferwise/icons': '"@transferwise/icons"'
   },
 ];
 
@@ -100,6 +100,17 @@ module.exports = [
     entry: {
       'dist/js/styleguide-components': './src/index.js',
       'dist/js/styleguide-components.min': './src/index.js',
+    },
+    output: {
+      path: path.join(__dirname, ''),
+      filename: '[name].js',
+    },
+    externals: webpackExternals,
+    module: webpackModule,
+    plugins: webpackPlugins,
+  },
+  {
+    entry: {
       'demo/lib/styleguide-components': './src/index.js',
       'demo/lib/demo': './src/demo.js',
     },
@@ -107,7 +118,12 @@ module.exports = [
       path: path.join(__dirname, ''),
       filename: '[name].js',
     },
-    externals: webpackExternals,
+    externals: [
+      {
+        angular: 'angular',
+        'angular-mocks': 'angular-mocks'
+      },
+    ],
     module: webpackModule,
     plugins: webpackPlugins,
   },
