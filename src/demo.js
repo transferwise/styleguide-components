@@ -3,6 +3,7 @@ import Formatting from './formatting/demo.js';
 import Validation from './validation/demo.js';
 import Loading from './loading/demo.js';
 import Layout from './layout/demo.js';
+import Graphics from './graphics/demo.js';
 import Help from './help/demo.js';
 
 const module = angular.module('tw.styleguide.demo', [
@@ -11,6 +12,7 @@ const module = angular.module('tw.styleguide.demo', [
   Validation,
   Loading,
   Layout,
+  Graphics,
   Help
 ]);
 
@@ -86,7 +88,13 @@ module.config(['$compileProvider', ($compileProvider) => {
 
     <h5>Layout</h5>
     <ul class="list-unstyled">
+      <li><a href="index.html#affix">Affix</a></li>
       <li><a href="index.html#cards">Cards</a></li>
+    </ul>
+
+    <h5>Graphics</h5>
+    <ul class="list-unstyled">
+      <li><a href="index.html#icons">Icons</a></li>
     </ul>
 
     <h5>Loading</h5>
