@@ -58,7 +58,6 @@ class SelectController {
     if (newValue !== oldValue) {
       preSelectModelValue(this.$ngModel, this);
       setDefaultIfRequired(this.$ngModel, this, this.$element, this.$attrs);
-
       this.filteredOptions = this.getFilteredOptions();
     }
   }
