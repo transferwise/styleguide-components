@@ -10,7 +10,7 @@ class SelectController {
     this.dom = TwDomService;
 
     this.element = $element[0];
-    $scope.$watch('$ctrl.ngModel', (newValue, oldValue) => this.onModelChange(newValue, oldValue), true);
+    $scope.$watch('$ctrl.ngModel', (newValue, oldValue) => this.onModelChange(newValue, oldValue));
   }
 
   $onInit() {
