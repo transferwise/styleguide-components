@@ -1,3 +1,6 @@
+# v3.2.5
+## Fixed card form background colour
+
 # v3.2.4
 ## Fixed tw-select to update selected value based on model change
 
@@ -5,7 +8,7 @@
 ## Added support of secondary label for tw-field if control: "radio"
 
 # v3.2.2
-## Requirement service use predefined control if present for select type 
+## Requirement service use predefined control if present for select type
 
 # v3.2.1
 ## Add text-word-break to definition list elements to stop overflowing over other elements
