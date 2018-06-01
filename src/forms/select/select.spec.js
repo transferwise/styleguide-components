@@ -76,6 +76,19 @@ describe('Select', function() {
         it('should set the value of hidden control', function() {
           expect(component.find(SELECT_SELECTOR).val()).toBe('2');
         });
+        describe('when ngModel changes', function() {
+          beforeEach(function() {
+            $scope.ngModel = '3';
+            $scope.$digest();
+          });
+          it('should show new model as selected', function () {
+            expect(component.find(SELECT_SELECTOR).val()).toBe('3');
+          });
+          it('should update the selected text', function() {
+            var selectedTextElement = component.find(SELECTED_LABEL_SELECTOR)[0];
+            expect($(selectedTextElement).text().trim()).toBe('Three');
+          });
+        });
       });
       describe('as empty string', function() {
         beforeEach(function() {

@@ -1,7 +1,7 @@
 import angular from 'angular';
 
 class SelectController {
-  constructor($element, $transclude, $timeout, $attrs, TwDomService) {
+  constructor($element, $transclude, $timeout, $attrs, TwDomService, $scope) {
     this.$ngModel = $element.controller('ngModel');
     this.$element = $element;
     this.$attrs = $attrs;
@@ -10,6 +10,7 @@ class SelectController {
     this.dom = TwDomService;
 
     this.element = $element[0];
+    $scope.$watch('$ctrl.ngModel', (newValue, oldValue) => this.onModelChange(newValue, oldValue));
   }
 
   $onInit() {
@@ -36,12 +37,6 @@ class SelectController {
         changes.options.previousValue
       );
     }
-    if (changes.ngModel) {
-      this.onModelChange(
-        changes.options.currentValue,
-        changes.options.previousValue
-      );
-    }
   }
 
   onModelChange(newValue, oldValue) {
@@ -51,7 +46,6 @@ class SelectController {
     if (newValue || oldValue) {
       this.$ngModel.$setDirty();
     }
-
     const option = findOptionFromValue(this.options, newValue);
     if (option) {
       this.selected = option;
@@ -64,7 +58,6 @@ class SelectController {
     if (newValue !== oldValue) {
       preSelectModelValue(this.$ngModel, this);
       setDefaultIfRequired(this.$ngModel, this, this.$element, this.$attrs);
-
       this.filteredOptions = this.getFilteredOptions();
     }
   }
@@ -486,7 +479,8 @@ SelectController.$inject = [
   '$transclude',
   '$timeout',
   '$attrs',
-  'TwDomService'
+  'TwDomService',
+  '$scope'
 ];
 
 export default SelectController;
