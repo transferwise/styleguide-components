@@ -16,6 +16,7 @@ import Focusable from './focusable/';
 import DefinitionList from './definition-list/';
 import Telephone from './telephone/';
 import Submit from './submit/';
+import DecisionList from './decision-list/';
 
 // Deprecated
 import UploadDroppable from './upload-droppable/';
@@ -37,5 +38,6 @@ export default angular.module('tw.styleguide.forms', [
   DefinitionList,
   Telephone,
   Submit,
+  DecisionList,
   UploadDroppable
 ]).name;

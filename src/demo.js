@@ -74,6 +74,7 @@ module.config(['$compileProvider', ($compileProvider) => {
       <li><a href="requirements.html#fieldset">Fieldset</a></li>
       <li><a href="index.html#requirements-form">Form</a></li>
       <li><a href="requirements.html#definition-list">Definition list</a></li>
+      <li><a href="index.html#decision-list">Decision list</a></li>
     </ul>
 
     <h5>Formatting</h5>

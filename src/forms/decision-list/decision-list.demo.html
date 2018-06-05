@@ -1,0 +1,29 @@
+<h3 id="decision-list">Decision list</h3>
+
+<div class="row">
+  <div class="col-md-6">
+    <tw-decision-list
+      type="$ctrl.oneOf"
+      options="$ctrl.options">
+    </tw-decision-list>
+  </div>
+  <div class="col-md-6">
+<pre>{
+  oneOf: {{ $ctrl.options | json }}
+}</pre>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <tw-decision-list
+      type="$ctrl.anyOf"
+      options="$ctrl.options">
+    </tw-decision-list>
+  </div>
+  <div class="col-md-6">
+<pre>{
+  anyOf: {{ $ctrl.options | json }}
+}</pre>
+  </div>
+</div>

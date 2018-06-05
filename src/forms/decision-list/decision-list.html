@@ -1,0 +1,23 @@
+<ul class="list-unstyled">
+  <li ng-repeat="option in $ctrl.options track by $index">
+    <label class="media decision">
+      <div class="media-left">
+        <div class="circle circle-sm circle-inverse">{{ option.title.slice(0, 2) }}</div>
+      </div>
+      <div class="media-body">
+        <h5>{{ option.title }}</h5>
+        <p ng-if="option.description">{{ option.description }}</p>
+      </div>
+      <div class="media-right">
+        <tw-checkbox
+          ng-if="$ctrl.type === 'anyOf'"
+          ng-model="$ctrl.check[$index]">
+         </tw-checkbox>
+        <tw-radio
+          ng-if="$ctrl.type === 'oneOf'"
+          ng-model="$ctrl.radio"
+          ng-value="$index"></tw-radio>
+      </div>
+    </label>
+  </li>
+</ul>
