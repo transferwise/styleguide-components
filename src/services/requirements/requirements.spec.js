@@ -117,5 +117,33 @@ describe('Requirements Service', function() {
 
       expect(service.prepFields(legacy)).toEqual(current);
     });
+
+    it('should populate model with hidden fields', function() {
+      var legacy = [
+        {
+          key: "propName",
+          value: 123,
+          hidden: true
+        },
+        {
+          key: "propName2",
+          value: 124,
+          control: "hidden"
+        },
+        {
+          key: "propName3",
+          value: 125,
+          hidden: true
+        }
+      ];
+
+      var model = {"propName3": 111};
+      service.prepFields(legacy, model);
+      expect(model.propName).toEqual(123);
+      expect(model.propName2).toEqual(124);
+      expect(model.propName3).toEqual(111);
+
+    });
+
   });
 });

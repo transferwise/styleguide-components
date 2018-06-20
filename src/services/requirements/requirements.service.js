@@ -27,13 +27,13 @@ function RequirementsService($http) {
     }
 
     Object.keys(preparedFields).forEach((key) => {
-      preparedFields[key] = this.prepField(preparedFields[key], model, validationMessages);
+      preparedFields[key] = this.prepField(preparedFields[key], key, model, validationMessages);
     });
 
     return preparedFields;
   };
 
-  this.prepField = (field, model, validationMessages) => {
+  this.prepField = (field, key, model, validationMessages) => {
     const preparedField = copyOf(field);
 
     flattenGroup(preparedField);
@@ -44,6 +44,7 @@ function RequirementsService($http) {
     this.prepPattern(preparedField);
     this.prepValuesAsync(preparedField, model);
     this.prepValues(preparedField);
+    this.prepHiddenValue(preparedField, key, model);
     this.prepValidationMessages(preparedField, validationMessages);
 
     return preparedField;
@@ -176,6 +177,12 @@ function RequirementsService($http) {
       field.values = response.data;
       this.prepValues(field);
     });
+
+  this.prepHiddenValue = (field, key, model) => {
+    if ((field.hidden || field.control === 'hidden') && model && typeof model[key] === 'undefined') {
+      model[key] = field.value;
+    }
+  };
 
   this.prepValues = (field) => {
     if (!angular.isArray(field.values)) {

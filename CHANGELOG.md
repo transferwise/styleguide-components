@@ -1,3 +1,6 @@
+# v3.2.5
+## Requirement service use hidden fields to pre-fill model
+
 # v3.2.4
 ## Fixed tw-select to update selected value based on model change
 
