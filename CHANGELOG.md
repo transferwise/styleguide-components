@@ -1,3 +1,6 @@
+# v3.2.5
+## Fixed tw-select behavior when no match for filter and enter key pressed
+
 # v3.2.4
 ## Fixed tw-select to update selected value based on model change
 

@@ -580,6 +580,16 @@ describe('Select', function() {
       triggerKeyCode(filterInput, SPECIAL_KEYS.down);
       expect(component.find('.custom-action')[0] === document.activeElement).toBe(true);
     });
+    it('should prevent default if no matching option and return key pressed', function() {
+      $filterInput.val('a').trigger('change');
+      var selectedElements = component[0].querySelector('.active');
+      expect(selectedElements).toBe(null);
+
+      triggerKeyCode(filterInput, SPECIAL_KEYS.return);
+
+      var optionOne = OPTIONS[1];
+      expect($scope.ngModel).toBe(optionOne.value);
+    });
 
     it('should filter the list if characters entered', function() {
       $filterInput.val("One").trigger('change');
@@ -1099,30 +1109,12 @@ describe('Select', function() {
     target.dispatchEvent(keyEventByCode('keyup', charCode, target));
   }
 
-  function keypress(letter, target) {
-    return keyEventByCode("keypress", letter.charCodeAt(0), target);
-  }
-
-  function keydownCode(charCode, target) {
-    return keyEventByCode("keydown", charCode, target);
-  }
-
   function keyEventByCode(eventName, charCode, target) {
     var event = document.createEvent('Event');
     event.initEvent(eventName);
     event.keyCode = charCode;
     event.which = charCode;
     return event;
-  }
-
-  function jEventByCode(eventName, charCode, target) {
-    return {
-      type: eventName,
-      key: String.fromCharCode(charCode),
-      keyCode: charCode,
-      which: charCode,
-      target: target
-    };
   }
 
   function checkVisible(el) {
