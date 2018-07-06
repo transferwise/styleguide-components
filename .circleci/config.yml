@@ -1,0 +1,67 @@
+version: 2
+
+jobs:
+  test:
+    working_directory: ~/styleguide-components
+    docker:
+      - image: circleci/node:8.11-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - npm-build-{{ checksum "package.json" }}
+            - npm-build
+      - run:
+          name: Setup npm token
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run:
+          name: Install dependencies
+          command: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: npm-build-{{ checksum "package.json" }}
+      - run:
+          name: Run tests
+          command: npm test
+      - store_test_results:
+          path: out/test-results/unit
+      - persist_to_workspace:
+          root: .
+          paths:
+            - '*'
+  release:
+    working_directory: ~/styleguide-components
+    docker:
+      - image: circleci/node:8.11-browsers
+    steps:
+      - attach_workspace:
+          at: ~/styleguide-components
+      - run:
+          name: Release latest version to production
+          command: |
+            git config --global user.email "circleci@transferwise.com"
+            git config --global user.name "tw-circleci"
+            npm run copy-files-to-dist
+            npm run build
+            npm run deploy
+            npm run deploy:demo
+
+workflows:
+  version: 2
+  build_and_publish:
+    jobs:
+      - test:
+          context: org-global
+          filters:
+            branches:
+              ignore:
+                - gh-pages
+      - release:
+          context: org-global
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
