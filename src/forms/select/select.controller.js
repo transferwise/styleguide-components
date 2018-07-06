@@ -187,8 +187,10 @@ class SelectController {
       this.moveUpOneOption(activeOption, activeLink, optionLinks);
       event.preventDefault(); // Prevent cursor jumping in input
     } else if (characterCode === keys.return) {
-      activeOption.click();
-      this.button.focus();
+      if (activeOption) {
+        activeOption.click();
+        this.button.focus();
+      }
       event.preventDefault(); // Prevent form action as input active
     }
     return true;
