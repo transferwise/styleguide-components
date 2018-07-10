@@ -24,8 +24,6 @@ jobs:
       - run:
           name: Run tests
           command: npm test
-      - store_test_results:
-          path: out/test-results/unit
       - persist_to_workspace:
           root: .
           paths:
@@ -37,6 +35,9 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/styleguide-components
+      - run:
+          name: Setup npm token
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
       - run:
           name: Release latest version to production
           command: |
@@ -61,6 +62,7 @@ workflows:
             branches:
               ignore:
                 - gh-pages
+                - releases
       - release:
           context: org-global
           requires:

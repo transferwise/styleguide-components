@@ -1,3 +1,6 @@
+# v3.2.6
+## Bump version to fix npm release
+
 # v3.2.5
 ## Fixed tw-select behavior when no match for filter and enter key pressed
 
