@@ -40,6 +40,8 @@ jobs:
       - run:
           name: Release latest version to production
           command: |
+            mkdir ~/.ssh
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
             git config --global user.email "circleci@transferwise.com"
             git config --global user.name "tw-circleci"
             npm run copy-files-to-dist
