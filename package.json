@@ -1,6 +1,6 @@
 {
   "name": "@transferwise/styleguide-components",
-  "version": "3.2.6",
+  "version": "3.2.7",
   "description": "TransfeWise AngularJS 1.x Styleguide Components",
   "license": "MIT",
   "scripts": {
@@ -79,7 +79,7 @@
     "karma-safari-launcher": "^1.0.0",
     "less": "^2.7.2",
     "live-server": "^1.1.0",
-    "phantomjs-prebuilt": "^2.1.5",
+    "phantomjs-prebuilt": "^2.1.16",
     "release-to-github-with-changelog": "^1.1.5",
     "transferwise-iconfont": "git+ssh://git@github.com/transferwise/iconfont.git",
     "uglify-js": "^3.1.3",

@@ -1,26 +1,21 @@
 version: 2
 
+defaults: &defaults
+  working_directory: ~/styleguide-components
+  docker:
+    - image: circleci/node:10.6-browsers
+
 jobs:
   test:
-    working_directory: ~/styleguide-components
-    docker:
-      - image: circleci/node:8.11-browsers
+    <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - npm-build-{{ checksum "package.json" }}
-            - npm-build
       - run:
           name: Setup npm token
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN_READ" >> ~/.npmrc
       - run:
           name: Install dependencies
-          command: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: npm-build-{{ checksum "package.json" }}
+          command: npm ci
       - run:
           name: Run tests
           command: npm test
@@ -29,22 +24,23 @@ jobs:
           paths:
             - '*'
   release:
-    working_directory: ~/styleguide-components
-    docker:
-      - image: circleci/node:8.11-browsers
+    <<: *defaults
     steps:
       - attach_workspace:
           at: ~/styleguide-components
       - run:
           name: Setup npm token
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN_PUBLISH" >> ~/.npmrc
       - run:
-          name: Release latest version to production
+          name: Config github
           command: |
             mkdir ~/.ssh
             ssh-keyscan github.com >> ~/.ssh/known_hosts
             git config --global user.email "circleci@transferwise.com"
             git config --global user.name "tw-circleci"
+      - run:
+          name: Release latest version to production
+          command: |
             npm run copy-files-to-dist
             npm run build
             npm run deploy
@@ -57,14 +53,13 @@ workflows:
   build_and_publish:
     jobs:
       - test:
-          context: org-global
           filters:
             branches:
               ignore:
                 - gh-pages
                 - releases
       - release:
-          context: org-global
+          context: frontend-publish
           requires:
             - test
           filters:
