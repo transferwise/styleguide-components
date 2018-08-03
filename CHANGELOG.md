@@ -1,3 +1,6 @@
+# v3.2.7
+## Update circle ci config
+
 # v3.2.6
 ## Bump version to fix npm release
 
