@@ -23,19 +23,6 @@ const jshintLoader = {
   loader: 'jshint-loader'
 };
 
-// Runs htmllint before packaging
-const htmllintLoader = {
-  enforce: 'pre',
-  test: /\.html$/,
-  exclude: [/node_modules/],
-  loader: 'htmllint-loader',
-  query: {
-    config: '.htmllintrc',
-    failOnError: true,
-    failOnWarning: false,
-  }
-};
-
 // Packages our code and processes using babel
 const babelLoader = {
   test: /\.js$/,
@@ -48,7 +35,6 @@ const webpackModule = {
     htmlLoader,
     // jshintLoader,
     eslintLoader,
-    htmllintLoader,
     babelLoader
   ]
 };
