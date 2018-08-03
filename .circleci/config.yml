@@ -17,6 +17,9 @@ jobs:
           name: Install dependencies
           command: npm ci
       - run:
+          name: Lint checks
+          command: npm run lint
+      - run:
           name: Run tests
           command: npm test
       - persist_to_workspace:
