@@ -1,0 +1,109 @@
+[
+  {
+    "type": "aba",
+    "title": "US based account",
+    "fields": [
+      {
+        "key": "name",
+        "type": "string",
+        "title": "Recipient name",
+        "placeholder": "Name of the person who owns the account..."
+      },
+      {
+        "key": "abartn",
+        "type": "string",
+        "title": "ACH routing number",
+        "placeholder": "Enter routing number...",
+        "validationRegexp": "\\d{9}"
+      },{
+        "key": "accountNumber",
+        "type": "string",
+        "title": "Account number",
+        "placeholder": "Enter account number...",
+        "validationRegexp": "\\d{4,17}"
+      },{
+        "key": "accountType",
+        "type": "string",
+        "control": "radio",
+        "title": "Account type",
+        "placeholder": "Enter account number...",
+        "values": [{
+          "value": "checking",
+          "label": "Checking"
+        },{
+          "value": "credit",
+          "label": "Credit"
+        }]
+      },{
+        "key": "address",
+        "type": "object",
+        "title": "Address details",
+        "fields": [
+          {
+            "key": "address1",
+            "type": "string",
+            "title": "Address 1",
+            "placeholder": "First line of address..."
+          },{
+            "key": "city",
+            "type": "string",
+            "title": "City",
+            "placeholder": "City of residence..."
+          },{
+            "key": "state",
+            "type": "string",
+            "control": "select",
+            "title": "State",
+            "placeholder": "State of residence...",
+            "values": [{
+              "value": "CA",
+              "label": "California"
+            }]
+          },{
+            "key": "zip",
+            "type": "string",
+            "title": "Zip code",
+            "placeholder": "5 digit zip code..."
+          }
+        ]
+      }
+    ]
+  },{
+    "type": "global-usd",
+    "title": "International USD Account",
+    "description": "Sending USD may internationally may incur extra fees.  We'll update your fees once we know the destination of the money.",
+    "fields": [
+      {
+        "key": "name",
+        "type": "string",
+        "title": "Recipient name",
+        "placeholder": "Name of the person who owns the account..."
+      },
+      {
+        "key": "country",
+        "type": "string",
+        "control": "select",
+        "title": "Country",
+        "placeholder": "Where are you sending the money...",
+        "refreshRequirementsOnChange": true,
+        "values": [{
+          "value": "GB",
+          "label": "United Kingdom"
+        },{
+          "value": "HK",
+          "label": "Hong Kong"
+        }]
+      },{
+        "key": "swiftCode",
+        "type": "string",
+        "title": "SWIFT Code",
+        "placeholder": "8 digit code beginning with the country code"
+      },{
+        "key": "iban",
+        "type": "string",
+        "title": "IBAN",
+        "placeholder": "Long code between 18 and 20 characters"
+      }
+    ]
+  }
+]
