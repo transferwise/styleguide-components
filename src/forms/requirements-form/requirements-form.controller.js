@@ -44,27 +44,6 @@ class RequirementsFormController {
     // TODO can we add asyncvalidator here? - prob not
   }
 
-  /**
-   * Perform the refreshRequirementsOnChange check on blur
-   */
-  // eslint-disable-next-line class-methods-use-this
-  onBlur(field) {
-    if (!field.refreshRequirementsOnChange) {
-      // eslint-disable-next-line no-useless-return
-      return;
-    }
-    // TODO disabled the form while we refresh requirements?
-
-    /*
-    if (false && this.onRefreshRequirements) {
-      // Should post the current model back to the requirements end
-      // point and update the requirements.
-      // TODO Can we handle this internally?
-      this.onRefreshRequirements();
-    }
-    */
-  }
-
   switchTab(newType, oldType) {
     const oldRequirementType = this.RequirementsFormService.findRequirementByType(
       oldType,
@@ -74,6 +53,8 @@ class RequirementsFormController {
       newType,
       this.requirements
     );
+
+    console.log(newRequirementType);
 
     if (!oldRequirementType || !newRequirementType) {
       if (!this.model) {
@@ -87,6 +68,10 @@ class RequirementsFormController {
       oldRequirementType,
       newRequirementType
     );
+  }
+
+  onFieldsetRefreshRequirements() {
+    this.onRefreshRequirements && this.onRefreshRequirements();
   }
 }
 

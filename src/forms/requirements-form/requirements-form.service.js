@@ -1,5 +1,5 @@
 
-function RequirementsFormService() {
+function RequirementsFormService(RequirementsService) {
   this.cleanRequirementsModel = (model, oldRequirements, newRequirements) => {
     const oldFieldNames = getFieldNamesFromRequirement(oldRequirements);
     const newFieldNames = getFieldNamesFromRequirement(newRequirements);
@@ -39,6 +39,7 @@ function RequirementsFormService() {
 
   this.prepRequirements = (types) => {
     types.forEach((type) => {
+      RequirementsService.prepLegacyAlternatives(type);
       prepType(type);
     });
   };
@@ -71,5 +72,7 @@ function RequirementsFormService() {
     return '';
   }
 }
+
+RequirementsFormService.$inject = ['TwRequirementsService'];
 
 export default RequirementsFormService;

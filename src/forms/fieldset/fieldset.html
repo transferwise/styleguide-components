@@ -2,7 +2,10 @@
   <legend ng-if="$ctrl.title">{{ $ctrl.title }}</legend>
   <p class="text-max-width" ng-if="$ctrl.description">{{ $ctrl.description }}</p>
   <div class="row row-equal-height">
-    <div ng-repeat="(key, field) in $ctrl.fields track by $index" class="col-xs-12" ng-hide="field.hidden"
+    <div
+      class="col-xs-12"
+      ng-hide="field.hidden"
+      ng-repeat="(key, field) in $ctrl.fields track by $index"
       ng-class="{
         'col-sm-4': !$ctrl.narrow  && field.width === 'sm',
         'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),
@@ -10,6 +13,7 @@
       }">
 
       <tw-field
+        ng-if="field.type !== 'object'"
         name="{{ key }}"
         model="$ctrl.model[key]"
         field="field"
@@ -23,6 +27,16 @@
         class="btn-block">  <!-- Remove btn-block after boostrap update -->
       </tw-field>
 
+       <!-- TODO remove style tag -->
+      <tw-fieldset
+        style="width: 100%"
+        ng-if="field.type === 'object'"
+        model="$ctrl.model[key]"
+        fields="field.fields"
+        locale="{{ $ctrl.locale }}"
+        title="{{ field.title }}"
+        description="{{ field.description }}">
+      </tw-fieldset>
     </div>
   </div>
 </fieldset>

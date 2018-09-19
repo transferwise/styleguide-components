@@ -11,8 +11,17 @@ class RequirementsDocsController {
       { value: 'verification', label: 'Verification' },
       { value: 'pay-in', label: 'Pay in' },
       { value: 'transfer', label: 'Transfer' },
-      { value: 'ach-login', label: 'ACH Bank login' }
+      { value: 'ach-login', label: 'ACH Bank login' },
+      { value: 'old-recipient', label: 'Old format recipients' },
+      { value: 'gbp-recipient', label: 'GBP recipient' },
+      { value: 'list-type', label: 'All webapp recipients' },
+      { value: 'restgw-sortcode', label: 'RESTGW sortcode recipient' },
+      { value: 'restgw-aba', label: 'RESTGW US recipient' },
+      { value: 'restgw-jpy', label: 'RESTGW Japan recipient' },
+      { value: 'restgw-vnd', label: 'RESTGW Vietnam recipient' },
+      { value: 'global-usd', label: 'Global USD' }
     ];
+
     $ctrl.type = 'profile';
 
     $ctrl.onRefreshRequirements = () => {

@@ -117,5 +117,132 @@ describe('Requirements Service', function() {
 
       expect(service.prepFields(legacy)).toEqual(current);
     });
+
+    fdescribe('when given requirements with fieldGroups', function() {
+      var result;
+      beforeEach(function() {
+        result = service.prepFieldGroups(requirementsWithFieldGroups);
+      });
+
+      it('should flatten them to a fields', function() {
+        //console.log(result.fields);
+        console.log(result.fields[0]);
+        console.log(result.fields[1]);
+        console.log(result.fields[2]);
+        expect(result.fields.length).toBe(3);
+      });
+    });
   });
 });
+
+var requirementsWithFieldGroups = {
+  "type": "IBAN",
+  "title": "IBAN",
+  "specialCreateTreatment": false,
+  "allowedReceiverTypes": [
+    "PRIVATE",
+    "BUSINESS"
+  ],
+  "nameTooltip": "",
+  "fieldGroups": [
+    {
+      "fields": [
+        {
+          "name": "receiverType",
+          "minLength": null,
+          "validationRegexp": null,
+          "presentationPattern": null,
+          "displayFormat": null,
+          "rules": [],
+          "valuesResource": null,
+          "valuesAllowed": [
+            {
+              "title": "PRIVATE",
+              "code": "PRIVATE"
+            },
+            {
+              "title": "BUSINESS",
+              "code": "BUSINESS"
+            }
+          ],
+          "valuesTop": null,
+          "title": "Recipient type",
+          "forceShowOnMobile": false,
+          "required": false,
+          "type": "SELECT",
+          "maxLength": null,
+          "autocomplete": false,
+          "example": "",
+          "valuesTopHeader": null,
+          "keyboardType": "TEXT"
+        }
+      ],
+      "name": "receiverType",
+      "title": "Recipient type",
+      "tooltip": "",
+      "imageTooltip": "",
+      "info": null,
+      "presentationPattern": "*"
+    },
+    {
+      "fields": [
+        {
+          "name": "IBAN",
+          "minLength": 2,
+          "validationRegexp": null,
+          "presentationPattern": null,
+          "displayFormat": "**** **** **** **** **** **** **** ****",
+          "rules": [],
+          "valuesResource": null,
+          "valuesAllowed": null,
+          "valuesTop": null,
+          "title": "IBAN",
+          "forceShowOnMobile": false,
+          "required": true,
+          "type": "TEXT",
+          "maxLength": null,
+          "autocomplete": false,
+          "example": "AF89370400440532013000",
+          "valuesTopHeader": null,
+          "keyboardType": "TEXT"
+        }
+      ],
+      "name": "IBAN",
+      "title": "IBAN",
+      "tooltip": "IBANs are long account numbers used by banks for cross-border transfers. Each country structures this number differently, but it always starts with a 2 digit country code (e.g. DE for Germany).",
+      "imageTooltip": "",
+      "info": null,
+      "presentationPattern": "*"
+    },
+    {
+      "fields": [
+        {
+          "name": "BIC",
+          "minLength": null,
+          "validationRegexp": "(?i)[A-Z]{6}[A-Z\\d]{2}([A-Z\\d]{3})?",
+          "presentationPattern": null,
+          "displayFormat": null,
+          "rules": [],
+          "valuesResource": null,
+          "valuesAllowed": null,
+          "valuesTop": null,
+          "title": "Bank code (BIC/SWIFT)",
+          "forceShowOnMobile": false,
+          "required": false,
+          "type": "TEXT",
+          "maxLength": null,
+          "autocomplete": false,
+          "example": "ABCDDE22 (Optional)",
+          "valuesTopHeader": null,
+          "keyboardType": "TEXT"
+        }
+      ],
+      "name": "BIC",
+      "title": "Bank code (BIC/SWIFT)",
+      "tooltip": "The BIC (SWIFT code) is used to identify a bank when making cross-border money transfers. It’s 8-11 characters long and often includes part of the bank’s name.",
+      "imageTooltip": "",
+      "info": null,
+      "presentationPattern": "*"
+    }
+  ]
+};

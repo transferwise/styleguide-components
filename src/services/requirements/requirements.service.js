@@ -3,9 +3,42 @@ import angular from 'angular';
 function RequirementsService($http) {
   this.prepRequirements = (alternatives) => {
     alternatives.forEach((alternative) => {
+      this.prepFieldGroups(alternative);
+      this.prepLegacyAlternatives(alternative);
       this.prepFields(alternative.fields);
     });
   };
+
+  /**
+   * In an older format we had an extra fieldGroup level, here we flatten that out
+   * So the inner arrays of fields within the different field groups are flattened
+   * to a single array, which is returned.
+   */
+  this.prepFieldGroups = fieldGroups => fieldGroups.reduce(
+    (fields, fieldGroup) => {
+      // If there was a tooltip at fieldGroup level move it to first field.
+      if (fieldGroup.tooltip && fieldGroup.fields.length && !fieldGroup.fields[0].helpText) {
+        fieldGroup.fields[0].helpText = fieldGroup.tooltip;
+      }
+
+      if (fieldGroup.info && fieldGroup.fields.length && !fieldGroup.fields[0].helpText) {
+        fieldGroup.fields[0].helpText = fieldGroup.info;
+      }
+
+      // If there are two parts of this group, render side by side
+      if (fieldGroup.fields.length === 2) {
+        fieldGroup.fields.forEach((field) => {
+          field.width = 'md';
+        });
+      }
+      if (fieldGroup.fields.length === 3) {
+        fieldGroup.fields[0].width = 'md';
+        fieldGroup.fields[1].width = 'md';
+      }
+      return fields.concat(fieldGroup.fields);
+    },
+    []
+  );
 
   this.prepFields = (fields, model, validationMessages) => {
     if (!fields) {
@@ -19,6 +52,9 @@ function RequirementsService($http) {
         // If the field still has groups, we need to flatten to get the key
         if (field.group) {
           flattenGroup(field);
+        }
+        if (!field.key && field.name) {
+          field.key = field.name;
         }
         preparedFields[field.key] = copyOf(field);
       });
@@ -36,6 +72,7 @@ function RequirementsService($http) {
   this.prepField = (field, model, validationMessages) => {
     const preparedField = copyOf(field);
 
+    // also doing this above, presumably unnecessary?
     flattenGroup(preparedField);
 
     this.prepLegacyProps(preparedField);
@@ -98,10 +135,26 @@ function RequirementsService($http) {
     }
   };
 
+  this.prepLegacyAlternatives = (alternative) => {
+    if (!alternative.label && alternative.title) {
+      alternative.label = alternative.title;
+    }
+    if (!alternative.type && alternative.name) {
+      alternative.type = alternative.name;
+    }
+    if (!alternative.description && alternative.tooltip) {
+      alternative.description = alternative.tooltip;
+    }
+    if (alternative.fieldGroups && !alternative.fields) {
+      alternative.fields = this.prepFieldGroups(alternative.fieldGroups);
+      delete alternative.fieldGroups;
+    }
+  };
+
   this.prepLegacyProps = (field) => {
     delete field.key;
 
-    if (field.name) {
+    if (field.name && !field.title) {
       field.title = field.name;
       delete field.name;
     }
@@ -132,10 +185,33 @@ function RequirementsService($http) {
     }
 
     if (field.valuesAllowed && !field.values) {
-      field.values = field.valuesAllowed;
+      field.values = this.prepLegacyValuesAllowed(field.valuesAllowed);
       delete field.valuesAllowed;
+
+      // In some legacy arrays the first value is actually a placeholder...
+      if (field.values[0] &&
+          !field.values[0].value &&
+          field.values[0].label &&
+          !field.placeholder) {
+        field.placeholder = field.values[0].label;
+        field.values = field.values.slice(1);
+      }
     }
   };
+
+  // Refactor this as also have prepValues which is very similar, map to values first, then run...
+  this.prepLegacyValuesAllowed = valuesAllowed => valuesAllowed.map((valueAllowed) => {
+    if (valueAllowed.title && !valueAllowed.label) {
+      valueAllowed.label = valueAllowed.title;
+      delete valueAllowed.title;
+    }
+    if (valueAllowed.code && !valueAllowed.value) {
+      valueAllowed.value = valueAllowed.code;
+      delete valueAllowed.code;
+    }
+
+    return valueAllowed;
+  });
 
   this.prepPattern = (field) => {
     if (field.pattern) {
