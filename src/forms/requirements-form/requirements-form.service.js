@@ -38,22 +38,19 @@ function RequirementsFormService(RequirementsService) {
   };
 
   this.prepRequirements = (types) => {
-    types.forEach((type) => {
-      RequirementsService.prepLegacyAlternatives(type);
+    const preppedRequirements = RequirementsService.prepRequirements(types);
+    preppedRequirements.forEach((type) => {
       prepType(type);
     });
+    return preppedRequirements;
   };
 
   function getFieldNamesFromRequirement(modelRequirement) {
     if (!modelRequirement.fields) {
       return [];
     }
-    const names = modelRequirement.fields.map((field) => {
-      if (field.group) {
-        return field.group.map(fieldSection => fieldSection.key);
-      }
-      return field.key;
-    });
+
+    const names = Object.keys(modelRequirement.fields);
 
     return Array.prototype.concat.apply([], names);
   }

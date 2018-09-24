@@ -54,7 +54,7 @@ describe('Requirements Service', function() {
       expect(service.prepFields(legacy)).toEqual(current);
     });
 
-    it('should convert old values to new', function() {
+    it('should convert old valuesAllowed to new values', function() {
       var legacy = {
         typeSelect: { type: "select", valuesAllowed: [{ key: 1, name: "One"}] }
       };
@@ -95,41 +95,85 @@ describe('Requirements Service', function() {
       expect(service.prepFields(legacy)).toEqual(current);
     });
 
-    it('should convert nested group to flat', function() {
-      var legacy = [{
-        name: "whatever",
-        group: [{
-          key: "grouped",
-          type: "text"
-        },{
-          key: "ignored",
-          type: "number"
-        }]
-      }];
+    describe('when fields contain groups of nested fields', function() {
+      var legacy;
+      beforeEach(function() {
+        legacy = [{
+          name: "whatever",
+          group: [{
+            key: "first",
+            type: "text"
+          },{
+            name: "override",
+            key: "second",
+            type: "number"
+          }]
+        }];
+      });
 
-      var current = {
-        grouped:  {
-          title: "whatever",
-          type: "string",
-          control: "text"
-        }
-      };
-
-      expect(service.prepFields(legacy)).toEqual(current);
+      it('should flatten out the nested fields', function() {
+        var prepped = service.prepFields(legacy);
+        expect(prepped).toEqual({
+          first:  {
+            title: "whatever",
+            type: "string",
+            control: "text",
+            width: "md"
+          },
+          second:  {
+            title: "override",
+            type: "number",
+            control: "number",
+            width: "md"
+          }
+        });
+      });
     });
 
-    fdescribe('when given requirements with fieldGroups', function() {
+    describe('when fields have keys containing periods for nesting', function() {
+      var legacy;
+      beforeEach(function() {
+        legacy = [{
+          key: "nested.first",
+          type: "string"
+        },{
+          key: "nested.second",
+          type: "string"
+        },{
+          key: "parent",
+          type: "number"
+        }];
+      });
+
+      it('should convert those fields into nested specs', function() {
+        expect(service.prepFields(legacy)).toEqual({
+          nested: {
+            type: "object",
+            fields: {
+              first: {
+                type: "string"
+              },
+              second: {
+                type: "string"
+              }
+            }
+          },
+          parent:  {
+            type: "number",
+            control: "number"
+          }
+        });
+      });
+    });
+
+    describe('when given requirements with fieldGroups', function() {
       var result;
       beforeEach(function() {
-        result = service.prepFieldGroups(requirementsWithFieldGroups);
+        result = service.prepFields(requirementsWithFieldGroups.fieldGroups);
       });
 
       it('should flatten them to a fields', function() {
-        //console.log(result.fields);
-        console.log(result.fields[0]);
-        console.log(result.fields[1]);
-        console.log(result.fields[2]);
-        expect(result.fields.length).toBe(3);
+        expect(Object.keys(result).length).toBe(3);
       });
     });
   });

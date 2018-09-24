@@ -3,64 +3,24 @@ import angular from 'angular';
 function RequirementsService($http) {
   this.prepRequirements = (alternatives) => {
     alternatives.forEach((alternative) => {
-      this.prepFieldGroups(alternative);
       this.prepLegacyAlternatives(alternative);
-      this.prepFields(alternative.fields);
+
+      alternative.fields = this.prepFields(alternative.fields);
     });
+
+    return alternatives;
   };
-
-  /**
-   * In an older format we had an extra fieldGroup level, here we flatten that out
-   * So the inner arrays of fields within the different field groups are flattened
-   * to a single array, which is returned.
-   */
-  this.prepFieldGroups = fieldGroups => fieldGroups.reduce(
-    (fields, fieldGroup) => {
-      // If there was a tooltip at fieldGroup level move it to first field.
-      if (fieldGroup.tooltip && fieldGroup.fields.length && !fieldGroup.fields[0].helpText) {
-        fieldGroup.fields[0].helpText = fieldGroup.tooltip;
-      }
-
-      if (fieldGroup.info && fieldGroup.fields.length && !fieldGroup.fields[0].helpText) {
-        fieldGroup.fields[0].helpText = fieldGroup.info;
-      }
-
-      // If there are two parts of this group, render side by side
-      if (fieldGroup.fields.length === 2) {
-        fieldGroup.fields.forEach((field) => {
-          field.width = 'md';
-        });
-      }
-      if (fieldGroup.fields.length === 3) {
-        fieldGroup.fields[0].width = 'md';
-        fieldGroup.fields[1].width = 'md';
-      }
-      return fields.concat(fieldGroup.fields);
-    },
-    []
-  );
 
   this.prepFields = (fields, model, validationMessages) => {
     if (!fields) {
       return {};
     }
 
-    let preparedFields;
-    if (fields instanceof Array) {
-      preparedFields = {};
-      fields.forEach((field) => {
-        // If the field still has groups, we need to flatten to get the key
-        if (field.group) {
-          flattenGroup(field);
-        }
-        if (!field.key && field.name) {
-          field.key = field.name;
-        }
-        preparedFields[field.key] = copyOf(field);
-      });
-    } else {
-      preparedFields = copyOf(fields);
-    }
+    let preparedFields = copyOf(fields);
+
+    preparedFields = flattenFieldsWithGroups(preparedFields); // TODO rewrite to expect objects
+    preparedFields = transformFieldArrayToMap(preparedFields); // TODO do this first
+    preparedFields = transformNestedKeysToNestedSpecs(preparedFields);
 
     Object.keys(preparedFields).forEach((key) => {
       preparedFields[key] = this.prepField(preparedFields[key], model, validationMessages);
@@ -72,11 +32,7 @@ function RequirementsService($http) {
   this.prepField = (field, model, validationMessages) => {
     const preparedField = copyOf(field);
 
-    // also doing this above, presumably unnecessary?
-    flattenGroup(preparedField);
-
     this.prepLegacyProps(preparedField);
-
     this.prepType(preparedField);
     this.prepPattern(preparedField);
     this.prepValuesAsync(preparedField, model);
@@ -86,6 +42,115 @@ function RequirementsService($http) {
     return preparedField;
   };
 
+  /**
+   * In an older format we had an extra fieldGroup level, here we flatten that out
+   * So the inner arrays of fields within the different field groups are flattened
+   * to a single array, which is returned.
+   */
+  function flattenFieldsWithGroups(fields) {
+    if (fields instanceof Array) {
+      let flattenedFields = [];
+      fields.forEach((field) => {
+        // If we've been given a group with nested fields, break them out.
+        if (field.fields) {
+          flattenedFields = flattenedFields.concat(flattenFieldWithGroup(field, field.fields));
+        } else if (field.group) {
+          flattenedFields = flattenedFields.concat(flattenFieldWithGroup(field, field.group));
+        } else {
+          // Otherwise it's a regular field, just add it.
+          flattenedFields.push(field);
+        }
+      });
+      return flattenedFields;
+    }
+    return fields;
+  }
+
+  function flattenFieldWithGroup(field, subFields) {
+    // If first field doesn't have a label, use the one from the group
+    if (field.name && subFields.length && !subFields[0].name) {
+      subFields[0].name = field.name;
+    }
+
+    if (field.width && subFields.length && !subFields[0].width) {
+      subFields[0].width = field.width;
+    }
+
+    // If there was a tooltip at fieldGroup level move it to first field.
+    if (field.tooltip && subFields.length && !subFields[0].helpText) {
+      subFields[0].helpText = field.tooltip;
+    }
+
+    if (field.info && subFields.length && !subFields[0].helpText) {
+      subFields[0].helpText = field.info;
+    }
+
+    // If there are two parts of this group, render side by side
+    if (subFields.length === 2) {
+      subFields.forEach((nestedField) => {
+        nestedField.width = 'md';
+      });
+    }
+
+    // If there are three parts, render first two side by side
+    if (subFields.length === 3) {
+      subFields[0].width = 'md';
+      subFields[1].width = 'md';
+    }
+
+    return subFields;
+  }
+
+  /*
+   * Some older requirements return an array of fields, where it should be a map
+   * from the property name to the spec.  This converts arrays to maps.
+   */
+  function transformFieldArrayToMap(fields) {
+    if (fields instanceof Array) {
+      const fieldMap = {};
+      fields.forEach((field) => {
+        const key = field.key || field.name;
+        delete field.key;
+
+        fieldMap[key] = copyOf(field);
+      });
+      return fieldMap;
+    }
+    return fields;
+  }
+
+  /*
+   * Some older format return keys like 'address.city', expecting the value of
+   * city to be nested inside an address object.  This function creates a spec of
+   * type 'object', and nests such fields inside of it.  Whe nwe render we pass
+   * this object spec to a nested fieldset.
+   */
+  function transformNestedKeysToNestedSpecs(fieldMap) {
+    if (fieldMap instanceof Array) {
+      throw new Error('Expecting a map of fields, not an array');
+    }
+
+    const nestedFields = {};
+    Object.keys(fieldMap).forEach((key) => {
+      if (key.indexOf('.') > 0) {
+        // If the key contains a period we need to nest the fields in another object
+        const pathSections = key.split('.');
+        const nestedKey = pathSections[0];
+
+        // If this sub object doesn't exist yet, create it
+        if (!nestedFields[nestedKey]) {
+          nestedFields[nestedKey] = {
+            type: 'object',
+            fields: {}
+          };
+        }
+        nestedFields[nestedKey].fields[pathSections[1]] = fieldMap[key];
+      } else {
+        nestedFields[key] = fieldMap[key];
+      }
+    });
+    return nestedFields;
+  }
 
   this.prepType = (field) => {
     const type = field.type && field.type.toLowerCase && field.type.toLowerCase();
@@ -130,7 +195,7 @@ function RequirementsService($http) {
       default:
     }
 
-    if (!field.control) {
+    if (!field.control && field.type !== 'object') {
       field.control = this.getControlType(field);
     }
   };
@@ -146,14 +211,12 @@ function RequirementsService($http) {
       alternative.description = alternative.tooltip;
     }
     if (alternative.fieldGroups && !alternative.fields) {
-      alternative.fields = this.prepFieldGroups(alternative.fieldGroups);
+      alternative.fields = flattenFieldsWithGroups(alternative.fieldGroups);
       delete alternative.fieldGroups;
     }
   };
 
   this.prepLegacyProps = (field) => {
-    delete field.key;
-
     if (field.name && !field.title) {
       field.title = field.name;
       delete field.name;
@@ -200,7 +263,9 @@ function RequirementsService($http) {
   };
 
   // Refactor this as also have prepValues which is very similar, map to values first, then run...
-  this.prepLegacyValuesAllowed = valuesAllowed => valuesAllowed.map((valueAllowed) => {
+  this.prepLegacyValuesAllowed = valuesAllowed => valuesAllowed.map(preValueAllowed);
+
+  function preValueAllowed(valueAllowed) {
     if (valueAllowed.title && !valueAllowed.label) {
       valueAllowed.label = valueAllowed.title;
       delete valueAllowed.title;
@@ -211,7 +276,7 @@ function RequirementsService($http) {
     }
 
     return valueAllowed;
-  });
+  }
 
   this.prepPattern = (field) => {
     if (field.pattern) {
@@ -361,13 +426,6 @@ function getSelectionType(field) {
     return values.length > 3 ? 'select' : 'radio';
   }
   return 'select';
-}
-
-function flattenGroup(field) {
-  if (field.group && field.group[0]) {
-    angular.extend(field, field.group[0]);
-    delete field.group;
-  }
 }
 
 function copyOf(obj) {

@@ -15,7 +15,7 @@ class RequirementsFormController {
     // TODO move watches to $onChanges
     $scope.$watch('$ctrl.requirements', (newRequirements, oldRequirements) => {
       if (!angular.equals(newRequirements, oldRequirements)) {
-        this.RequirementsFormService.prepRequirements(this.requirements);
+        this.requirements = this.RequirementsFormService.prepRequirements(this.requirements);
 
         const oldType = this.model.type;
         const newType =
@@ -54,8 +54,6 @@ class RequirementsFormController {
       this.requirements
     );
 
-    console.log(newRequirementType);
-
     if (!oldRequirementType || !newRequirementType) {
       if (!this.model) {
         this.model = {};
@@ -71,7 +69,9 @@ class RequirementsFormController {
   }
 
   onFieldsetRefreshRequirements() {
-    this.onRefreshRequirements && this.onRefreshRequirements();
+    if (this.onRefreshRequirements) {
+      this.onRefreshRequirements();
+    }
   }
 }
 

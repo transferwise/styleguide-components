@@ -14,13 +14,15 @@
         "type": "string",
         "title": "ACH routing number",
         "placeholder": "Enter routing number...",
-        "validationRegexp": "\\d{9}"
+        "validationRegexp": "\\d{9}",
+        "width": "md"
       },{
         "key": "accountNumber",
         "type": "string",
         "title": "Account number",
         "placeholder": "Enter account number...",
-        "validationRegexp": "\\d{4,17}"
+        "validationRegexp": "\\d{4,17}",
+        "width": "md"
       },{
         "key": "accountType",
         "type": "string",
@@ -58,12 +60,14 @@
             "values": [{
               "value": "CA",
               "label": "California"
-            }]
+            }],
+            "width": "md"
           },{
             "key": "zip",
             "type": "string",
             "title": "Zip code",
-            "placeholder": "5 digit zip code..."
+            "placeholder": "5 digit zip code...",
+            "width": "md"
           }
         ]
       }
@@ -97,12 +101,14 @@
         "key": "swiftCode",
         "type": "string",
         "title": "SWIFT Code",
-        "placeholder": "8 digit code beginning with the country code"
+        "placeholder": "8 digit code...",
+        "width": "md"
       },{
         "key": "iban",
         "type": "string",
         "title": "IBAN",
-        "placeholder": "Long code between 18 and 20 characters"
+        "placeholder": "Long code between 18 and 20 characters",
+        "width": "md"
       }
     ]
   }
