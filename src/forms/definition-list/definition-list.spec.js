@@ -7,6 +7,7 @@ describe('Definition list', function() {
     $element,
     element,
     term,
+    listItem,
     definition;
 
   beforeEach(module('tw.styleguide-components'));
@@ -22,6 +23,7 @@ describe('Definition list', function() {
 
     $element = getCompiledDirectiveElement();
     element = $element[0];
+    listItem = element.getElementsByTagName('dl')[0];
     term = element.getElementsByTagName('dt')[0];
     definition = element.getElementsByTagName('dd')[0];
   }));
@@ -334,6 +336,91 @@ describe('Definition list', function() {
         expect(definition.textContent.trim()).toBe('****');
       });
     });
+
+    describe('when given a justified layout', function() {
+      beforeEach(function() {
+        $scope.layout = 'justified';
+        $scope.model = {
+          key: 'ABCD'
+        };
+        $scope.fields = {
+          key: {
+            title: 'Text label',
+            type: 'text',
+            displayFormat: '** - **'
+          }
+        };
+        setupVars();
+      });
+      it('should not have an element with col-sm-6 class', function() {
+        var rowElements = $element.find('.col-sm-6');
+        expect(rowElements.length).toBe(0);
+      });
+      it('should not have an element with row-equal-height class', function() {
+        var rowElements = $element.find('.row-equal-height');
+        expect(rowElements.length).toBe(0);
+      });
+      it('should add a dl-horizontal-item class to the dl element', function() {
+        expect(listItem.classList.contains('dl-horizontal-item')).toBe(true);
+      });
+    });
+
+    describe('when given a horizontal layout', function() {
+      beforeEach(function() {
+        $scope.layout = 'horizontal';
+        $scope.model = {
+          key: 'ABCD'
+        };
+        $scope.fields = {
+          key: {
+            title: 'Text label',
+            type: 'text',
+            displayFormat: '** - **'
+          }
+        };
+        setupVars();
+      });
+      it('should not have an element with col-sm-6 class', function() {
+        var rowElements = $element.find('.col-sm-6');
+        expect(rowElements.length).toBe(0);
+      });
+      it('should not have an element with row-equal-height class', function() {
+        var rowElements = $element.find('.row-equal-height');
+        expect(rowElements.length).toBe(0);
+      });
+      it('should add a dl-horizontal class to the dl element', function() {
+        expect(listItem.classList.contains('dl-horizontal')).toBe(true);
+      });
+    });
+
+    describe('when given a vertical layout', function() {
+      beforeEach(function() {
+        $scope.layout = 'vertical';
+        $scope.model = {
+          key: 'ABCD'
+        };
+        $scope.fields = {
+          key: {
+            title: 'Text label',
+            type: 'text',
+            displayFormat: '** - **'
+          }
+        };
+        setupVars();
+      });
+      it('should have an element with col-sm-6 class', function() {
+        var rowElements = $element.find('.col-sm-6');
+        expect(rowElements.length).toBe(1);
+      });
+      it('should have an element with row-equal-height class', function() {
+        var rowElements = $element.find('.row-equal-height');
+        expect(rowElements.length).toBe(1);
+      });
+      it('should not add a dl-horizontal-item nor dl-horizontal class to the dl element', function() {
+        expect(listItem.classList.contains('dl-horizontal-item')).toBe(false);
+        expect(listItem.classList.contains('dl-horizontal')).toBe(false);
+      });
+    });
   });
 
   function setupVars() {
@@ -341,11 +428,13 @@ describe('Definition list', function() {
     element = $element[0];
     term = element.getElementsByTagName('dt')[0];
     definition = element.getElementsByTagName('dd')[0];
+    listItem = element.getElementsByTagName('dl')[0];
   }
 
   function getCompiledDirectiveElement() {
     var template = " \
       <tw-definition-list \
+        layout='layout' \
         model='model' \
         fields='fields' \
         locale='locale'> \
