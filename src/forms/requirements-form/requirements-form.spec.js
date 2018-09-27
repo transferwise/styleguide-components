@@ -36,14 +36,9 @@ describe('RequirementsForm', function() {
         expect(navTabs.length).toBe($scope.requirements.length);
       });
 
-      it('should use label as tab name if there is one', function() {
+      it('should use label as tab name', function() {
         var tab = navTabs.eq(0);
         expect(tab.text().trim()).toBe($scope.requirements[0].label);
-      });
-      it('should use (formatted) type name as tab name if there no label', function() {
-        var tab = navTabs.eq(0);
-        tab = navTabs.eq(1);
-        expect(tab.text().trim()).toBe('Iban with underscores');
       });
 
       it('adds an active class to a tab if the model type matches the requirement type', function() {
@@ -62,12 +57,12 @@ describe('RequirementsForm', function() {
       var activePane, ibanFields, formGroups;
 
       beforeEach(function() {
-          activePane = directiveElement.find('.tab-content .tab-pane.active');
-          ibanFields = $scope.requirements[1].fields;
+        activePane = directiveElement.find('.tab-content .tab-pane.active');
+        ibanFields = $scope.requirements[1].fields;
       });
 
       it('has an active pane', function() {
-          expect(activePane.length).toBe(1);
+        expect(activePane.length).toBe(1);
       });
 
       it('has a description paragraph', function() {

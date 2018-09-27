@@ -37,13 +37,7 @@ function RequirementsFormService(RequirementsService) {
     return false;
   };
 
-  this.prepRequirements = (types) => {
-    const preppedRequirements = RequirementsService.prepRequirements(types);
-    preppedRequirements.forEach((type) => {
-      prepType(type);
-    });
-    return preppedRequirements;
-  };
+  this.prepRequirements = types => RequirementsService.prepRequirements(types);
 
   function getFieldNamesFromRequirement(modelRequirement) {
     if (!modelRequirement.fields) {
@@ -53,20 +47,6 @@ function RequirementsFormService(RequirementsService) {
     const names = Object.keys(modelRequirement.fields);
 
     return Array.prototype.concat.apply([], names);
-  }
-
-  function prepType(type) {
-    if (!type.label) {
-      type.label = getTabName(type.type);
-    }
-  }
-
-  function getTabName(tabType) {
-    if (tabType && tabType.length > 0) {
-      const tabNameWithSpaces = tabType.toLowerCase().split('_').join(' '); // String.replace method only replaces first instance
-      return tabNameWithSpaces.charAt(0).toUpperCase() + tabNameWithSpaces.slice(1);
-    }
-    return '';
   }
 }
 

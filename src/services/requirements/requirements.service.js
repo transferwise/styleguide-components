@@ -2,13 +2,15 @@ import angular from 'angular';
 
 function RequirementsService($http) {
   this.prepRequirements = (alternatives) => {
-    alternatives.forEach((alternative) => {
+    const preppedAlternatives = copyOf(alternatives);
+
+    preppedAlternatives.forEach((alternative) => {
       this.prepLegacyAlternatives(alternative);
 
       alternative.fields = this.prepFields(alternative.fields);
     });
 
-    return alternatives;
+    return preppedAlternatives;
   };
 
   this.prepFields = (fields, model, validationMessages) => {
@@ -203,6 +205,9 @@ function RequirementsService($http) {
   this.prepLegacyAlternatives = (alternative) => {
     if (!alternative.label && alternative.title) {
       alternative.label = alternative.title;
+    }
+    if (!alternative.label) {
+      alternative.label = getNameFromType(alternative.type);
     }
     if (!alternative.type && alternative.name) {
       alternative.type = alternative.name;
@@ -431,6 +436,17 @@ function getSelectionType(field) {
 function copyOf(obj) {
   // Object.assign is nicer, but lacks ie support
   return JSON.parse(JSON.stringify(obj));
+}
+
+/**
+ * Some older requirments formats do not include a label for alternatives
+ */
+function getNameFromType(tabType) {
+  if (tabType && tabType.length > 0) {
+    const tabNameWithSpaces = tabType.toLowerCase().split('_').join(' '); // String.replace method only replaces first instance
+    return tabNameWithSpaces.charAt(0).toUpperCase() + tabNameWithSpaces.slice(1);
+  }
+  return '';
 }
 
 
