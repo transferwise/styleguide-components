@@ -10,7 +10,7 @@ const DefinitionList = {
     locale: '@',
     title: '@',
     narrow: '<',
-    layout: '<'
+    layout: '@'
   }
 };
 
