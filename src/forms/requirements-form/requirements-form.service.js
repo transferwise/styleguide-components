@@ -37,7 +37,18 @@ function RequirementsFormService(RequirementsService) {
     return false;
   };
 
-  this.prepRequirements = types => RequirementsService.prepRequirements(types);
+  /**
+   * This function supplies backwards compatibility, we can now just use
+   * RequirementsService.prepRequirements(requirements), which returns an updated
+   * COPY of the requirements.  This method has a legacy consumer expecting
+   * updates by REFERENCE.
+   */
+  this.prepRequirements = (types) => {
+    types.forEach((type) => {
+      RequirementsService.prepLegacyAlternatives(type);
+      type.fields = RequirementsService.prepFields(type.fields);
+    });
+  };
 
   function getFieldNamesFromRequirement(modelRequirement) {
     if (!modelRequirement.fields) {

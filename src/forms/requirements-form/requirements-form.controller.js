@@ -1,21 +1,18 @@
 import angular from 'angular';
 
 class RequirementsFormController {
-  constructor($scope, TwRequirementsFormService) {
+  constructor($scope, TwRequirementsFormService, RequirementsService) {
     this.RequirementsFormService = TwRequirementsFormService;
+    this.RequirementsService = RequirementsService;
 
     if (!this.model) {
       this.model = {};
     }
 
-    if (this.requirements) {
-      this.RequirementsFormService.prepRequirements(this.requirements);
-    }
-
     // TODO move watches to $onChanges
     $scope.$watch('$ctrl.requirements', (newRequirements, oldRequirements) => {
       if (!angular.equals(newRequirements, oldRequirements)) {
-        this.requirements = this.RequirementsFormService.prepRequirements(this.requirements);
+        this.requirements = this.RequirementsService.prepRequirements(this.requirements);
 
         const oldType = this.model.type;
         const newType =
@@ -77,7 +74,8 @@ class RequirementsFormController {
 
 RequirementsFormController.$inject = [
   '$scope',
-  'TwRequirementsFormService'
+  'TwRequirementsFormService',
+  'TwRequirementsService'
 ];
 
 export default RequirementsFormController;
