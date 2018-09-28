@@ -3,6 +3,8 @@ import angular from 'angular';
 class DefinitionListController {
   constructor(TwRequirementsService) {
     this.RequirementsService = TwRequirementsService;
+
+    this.layout = this.layout || 'vertical';
   }
 
   $onChanges(changes) {

@@ -9,7 +9,8 @@ const DefinitionList = {
     initialFields: '<fields',
     locale: '@',
     title: '@',
-    narrow: '<'
+    narrow: '<',
+    layout: '@'
   }
 };
 

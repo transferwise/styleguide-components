@@ -10,6 +10,10 @@
   it shares the same interface, and same dynamic requirements format, allowing
   us to display the data model we generated using a fieldset.
 </p>
+<p>You can also specify the layout, which defaults to <code>vertical</code></p>
+<h4 class="page-header">
+  Vertical layout
+</h4>
 <tw-definition-list
   legend="Definition List"
   fields="$ctrl.fields"
@@ -18,12 +22,57 @@
   on-refresh-requirements="$ctrl.refresh()">
 </tw-definition-list>
 
-<h5>Configuration</h5>
 <pre>
 &lt;tw-definition-list
   legend="Definition List"
   fields="$ctrl.fields"
   model="$ctrl.model"
+  locale="en-GB"&gt;
+&lt;/tw-definition-list&gt;
+</pre>
+
+<h4 class="page-header">
+  Justified layout
+</h4>
+
+<tw-definition-list
+  legend="Definition List"
+  fields="$ctrl.fields"
+  model="$ctrl.model"
+  locale="en-GB"
+  layout="justified"
+  on-refresh-requirements="$ctrl.refresh()">
+</tw-definition-list>
+
+<pre>
+&lt;tw-definition-list
+  legend="Definition List"
+  fields="$ctrl.fields"
+  model="$ctrl.model"
+  layout="justified"
+  locale="en-GB"&gt;
+&lt;/tw-definition-list&gt;
+</pre>
+
+<h4 class="page-header">
+  Horizontal layout
+</h4>
+
+<tw-definition-list
+  legend="Definition List"
+  fields="$ctrl.fields"
+  model="$ctrl.model"
+  locale="en-GB"
+  layout="horizontal"
+  on-refresh-requirements="$ctrl.refresh()">
+</tw-definition-list>
+
+<pre>
+&lt;tw-definition-list
+  legend="Definition List"
+  fields="$ctrl.fields"
+  model="$ctrl.model"
+  layout="horizontal"
   locale="en-GB"&gt;
 &lt;/tw-definition-list&gt;
 </pre>
