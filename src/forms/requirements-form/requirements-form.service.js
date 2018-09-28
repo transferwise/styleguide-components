@@ -1,5 +1,5 @@
 
-function RequirementsFormService() {
+function RequirementsFormService(RequirementsService) {
   this.cleanRequirementsModel = (model, oldRequirements, newRequirements) => {
     const oldFieldNames = getFieldNamesFromRequirement(oldRequirements);
     const newFieldNames = getFieldNamesFromRequirement(newRequirements);
@@ -37,9 +37,16 @@ function RequirementsFormService() {
     return false;
   };
 
+  /**
+   * This function supplies backwards compatibility, we can now just use
+   * RequirementsService.prepRequirements(requirements), which returns an updated
+   * COPY of the requirements.  This method has a legacy consumer expecting
+   * updates by REFERENCE.
+   */
   this.prepRequirements = (types) => {
     types.forEach((type) => {
-      prepType(type);
+      RequirementsService.prepLegacyAlternatives(type);
+      type.fields = RequirementsService.prepFields(type.fields);
     });
   };
 
@@ -47,29 +54,13 @@ function RequirementsFormService() {
     if (!modelRequirement.fields) {
       return [];
     }
-    const names = modelRequirement.fields.map((field) => {
-      if (field.group) {
-        return field.group.map(fieldSection => fieldSection.key);
-      }
-      return field.key;
-    });
+
+    const names = Object.keys(modelRequirement.fields);
 
     return Array.prototype.concat.apply([], names);
   }
-
-  function prepType(type) {
-    if (!type.label) {
-      type.label = getTabName(type.type);
-    }
-  }
-
-  function getTabName(tabType) {
-    if (tabType && tabType.length > 0) {
-      const tabNameWithSpaces = tabType.toLowerCase().split('_').join(' '); // String.replace method only replaces first instance
-      return tabNameWithSpaces.charAt(0).toUpperCase() + tabNameWithSpaces.slice(1);
-    }
-    return '';
-  }
 }
+
+RequirementsFormService.$inject = ['TwRequirementsService'];
 
 export default RequirementsFormService;

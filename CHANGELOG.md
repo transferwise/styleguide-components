@@ -1,3 +1,9 @@
+# v3.3.0
+## Add support for nested model in dynamic forms.
+Use twFieldset recursively to allow models with nested objects to be created.
+
+Enhance backwards compatibility for older requirements formats.
+
 # v3.2.7
 ## Update circle ci config
 
@@ -14,7 +20,7 @@
 ## Added support of secondary label for tw-field if control: "radio"
 
 # v3.2.2
-## Requirement service use predefined control if present for select type 
+## Requirement service use predefined control if present for select type
 
 # v3.2.1
 ## Add text-word-break to definition list elements to stop overflowing over other elements

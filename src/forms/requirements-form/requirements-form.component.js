@@ -9,7 +9,7 @@ const RequirementsForm = {
     requirements: '<',
     uploadOptions: '<',
     locale: '@',
-    onRefreshRequirements: '&',
+    onRefreshRequirements: '&?',
     validationMessages: '<',
     errorMessages: '<',
     isValid: '=?'

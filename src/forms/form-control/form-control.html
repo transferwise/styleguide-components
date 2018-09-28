@@ -42,6 +42,7 @@
     <tw-select
       name="{{$ctrl.name}}"
       options="$ctrl.options"
+      filter="{{ $ctrl.options.length > 9 ? ' ' : '' }}"
       placeholder="{{$ctrl.placeholder}}"
       ng-model="$ctrl.internalModel"
       ng-required="$ctrl.ngRequired"

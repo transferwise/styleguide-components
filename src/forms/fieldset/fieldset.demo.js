@@ -104,6 +104,33 @@ function fieldsetDocsController() {
     numberProperty: 123
   };
 
+  this.fieldsetNested = {
+    fields: {
+      stringProperty: {
+        type: 'string',
+        title: 'String label',
+        placeholder: 'Please enter text'
+      },
+      nestedObject: {
+        type: 'object',
+        title: 'Nested object',
+        fields: {
+          numberProperty: {
+            type: 'number',
+            title: 'Number label',
+            placeholder: 'Please enter number'
+          }
+        }
+      }
+    }
+  };
+  this.fieldsetNestedModel = {
+    stringProperty: 'Example',
+    nestedObject: {
+      numberProperty: 123
+    }
+  };
+
   this.fieldsetOptions = {
     title: 'Fieldset legend',
     description: 'Optional fieldset description, with more information about the content.',
