@@ -1,3 +1,7 @@
+# v3.3.1
+## Remove the insertion of the close button from the popover service and move it to the template of the promotions
+The responsability of the close button is now part of the templates passed to the popover service.
+
 # v3.3.0
 ## Add support for nested model in dynamic forms.
 Use twFieldset recursively to allow models with nested objects to be created.
