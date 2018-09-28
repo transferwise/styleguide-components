@@ -434,7 +434,7 @@ describe('Definition list', function() {
   function getCompiledDirectiveElement() {
     var template = " \
       <tw-definition-list \
-        layout='layout' \
+        layout='{{ layout }}' \
         model='model' \
         fields='fields' \
         locale='locale'> \
