@@ -59,7 +59,7 @@
         function init() {
           $scope.$watch('$ctrl.requirements', function(newValue, oldValue) {
             if (!angular.equals(newValue, oldValue)) {
-              TwRequirementsService.prepRequirements($ctrl.requirements);
+              $ctrl.requirements = TwRequirementsService.prepRequirements($ctrl.requirements);
               if ($ctrl.requirements.length) {
                 $ctrl.activeType = $ctrl.requirements[0].type;
               }
