@@ -68,6 +68,19 @@ on-field-change="changeHandler(value, key, field)"&gt;
   on-field-change="$ctrl.onFieldChange(value, key, field)">
 </fieldset-example>
 
+<h4 id="fieldset-nested" class="page-header">
+  Nested objects
+  <a href="#fieldset-nested" class="pull-xs-right">
+    <span class="glyphicon glyphicon-link"></span>
+  </a>
+</h4>
+<p>We can create models with nested objects using <strong>type: "object"</strong>,
+  this should contain another set of fields to be bound to the nested key.</p>
+<fieldset-example
+  requirements="$ctrl.fieldsetNested"
+  model="$ctrl.fieldsetNestedModel">
+</fieldset-example>
+
 <h4 id="fieldset-layout" class="page-header">
   Layout
   <a href="#fieldset-layout" class="pull-xs-right">

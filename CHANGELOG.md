@@ -1,6 +1,16 @@
-# v3.2.8
+# v3.3.2
 ## Add a new layout property to tw-definition-list
 Allows you to show a definition list in a justified, horizontal, vertical (default) layout
+
+# v3.3.1
+## Remove the insertion of the close button from the popover service and move it to the template of the promotions
+The responsability of the close button is now part of the templates passed to the popover service.
+
+# v3.3.0
+## Add support for nested model in dynamic forms.
+Use twFieldset recursively to allow models with nested objects to be created.
+
+Enhance backwards compatibility for older requirements formats.
 
 # v3.2.7
 ## Update circle ci config
@@ -18,7 +28,7 @@ Allows you to show a definition list in a justified, horizontal, vertical (defau
 ## Added support of secondary label for tw-field if control: "radio"
 
 # v3.2.2
-## Requirement service use predefined control if present for select type 
+## Requirement service use predefined control if present for select type
 
 # v3.2.1
 ## Add text-word-break to definition list elements to stop overflowing over other elements

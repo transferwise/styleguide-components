@@ -368,11 +368,6 @@ function PopoverService($rootScope) {
       const isPopoverVisible = popover && !popover.classList.contains('scale-down');
 
       if (isModalModeEnabled) {
-        if (!popover.querySelector('.popover-close')) {
-          popover
-            .insertAdjacentHTML('afterbegin', "<button class='popover-close'>&times;</button>");
-        }
-
         removeClass(popover, 'animate');
       } else {
         addClass(popover, 'animate');
@@ -688,17 +683,8 @@ function PopoverService($rootScope) {
   function getPopoverContent(popoverOptions) {
     const popoverTemplate = getGivenPopoverTemplate(popoverOptions) || getPopoverTemplate();
     const shouldRenderHTML = getObjectProperty('contentHtml', popoverOptions);
-    const modalModeEnabled = getModalMode(popoverOptions);
 
     const popoverContainer = angular.element(popoverTemplate)[0];
-
-    /**
-     * Insert the close button only when in modal mode
-     */
-    if (modalModeEnabled) {
-      popoverContainer
-        .insertAdjacentHTML('afterbegin', "<button class='popover-close'>&times;</button>");
-    }
 
     /**
      * For the 'title' and 'content' elements, we get their container elements
