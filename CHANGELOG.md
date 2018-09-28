@@ -1,3 +1,7 @@
+# v3.2.8
+## Add a new layout property to tw-definition-list
+Allows you to show a definition list in a justified, horizontal, vertical (default) layout
+
 # v3.2.7
 ## Update circle ci config
 
