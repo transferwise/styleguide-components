@@ -34,6 +34,7 @@
     ng-pattern="$ctrl.field.pattern"
     text-format="$ctrl.field.displayFormat"
     tw-validation
+    ng-model-options="{ debounce: 300 }"
   ></tw-form-control>
 
   <div class="alert alert-danger error-messages"

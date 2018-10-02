@@ -53,10 +53,6 @@ class FieldsetController {
     if (this.onFieldBlur) {
       this.onFieldBlur({ key, field });
     }
-    if (field.refreshRequirementsOnChange &&
-      this.onRefreshRequirements) {
-      this.onRefreshRequirements();
-    }
   }
 
   fieldChange(value, key, field) {
@@ -65,12 +61,6 @@ class FieldsetController {
     }
     if (this.onFieldChange) {
       this.onFieldChange({ value, key, field });
-    }
-
-    if (controlRefreshesOnChange(field.control) &&
-      field.refreshRequirementsOnChange &&
-      this.onRefreshRequirements) {
-      this.onRefreshRequirements();
     }
 
     // We remove custom error messages on change, as they're no longer relevant
@@ -83,16 +73,12 @@ class FieldsetController {
       if (this.onModelChange) {
         this.onModelChange({ model: this.model });
       }
+
+      if (field.refreshRequirementsOnChange && this.onRefreshRequirements) {
+        this.onRefreshRequirements();
+      }
     });
   }
-}
-
-function controlRefreshesOnChange(control) {
-  return control === 'select' ||
-    control === 'checkbox' ||
-    control === 'radio' ||
-    control === 'date' ||
-    control === 'upload';
 }
 
 FieldsetController.$inject = [
