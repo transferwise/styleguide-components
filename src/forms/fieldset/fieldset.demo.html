@@ -18,7 +18,7 @@
 &lt;tw-fieldset
 title="<span ng-non-bindable>{{ fieldset.title }}</span>"
 description="<span ng-non-bindable>{{ fieldset.description }}</span>"
-fields="fieldset.fields"&gt;
+fields="fieldset.properties"&gt;
 locale="en-GB"
 model="{...}"
 is-valid="..."
@@ -74,8 +74,8 @@ on-field-change="changeHandler(value, key, field)"&gt;
     <span class="glyphicon glyphicon-link"></span>
   </a>
 </h4>
-<p>We can create models with nested objects using <strong>type: "object"</strong>,
-  this should contain another set of fields to be bound to the nested key.</p>
+<p>We can create models with nested objects by supplying type:object and a
+  nested JSON schema, with it's own set of properties.</p>
 <fieldset-example
   requirements="$ctrl.fieldsetNested"
   model="$ctrl.fieldsetNestedModel">
@@ -111,5 +111,5 @@ on-field-change="changeHandler(value, key, field)"&gt;
 
 <tw-definition-list-docs
   model="$ctrl.fieldsetFullModel"
-  fields="$ctrl.fieldsetFull.fields">
+  fields="$ctrl.fieldsetFull.properties">
 </tw-definition-list-docs>

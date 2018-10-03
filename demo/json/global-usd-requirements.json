@@ -2,7 +2,7 @@
   {
     "type": "aba",
     "title": "US based account",
-    "fields": [
+    "properties": [
       {
         "key": "name",
         "type": "string",
@@ -40,7 +40,7 @@
         "key": "address",
         "type": "object",
         "title": "Address details",
-        "fields": [
+        "properties": [
           {
             "key": "address1",
             "type": "string",
@@ -76,7 +76,7 @@
     "type": "global-usd",
     "title": "International USD Account",
     "description": "Sending USD may internationally may incur extra fees.  We'll update your fees once we know the destination of the money.",
-    "fields": [
+    "properties": [
       {
         "key": "name",
         "type": "string",

@@ -47,7 +47,7 @@ export default angular
           title="{{ $ctrl.requirements.title }}"
           description="{{ $ctrl.requirements.description }}"
           model="$ctrl.model"
-          fields="$ctrl.requirements.fields"
+          fields="$ctrl.requirements.properties"
           is-valid="$ctrl.isValid"
           on-model-change="$ctrl.onModelChange(model)"
           on-field-focus="$ctrl.onFieldFocus(key, field)"
@@ -67,7 +67,7 @@ export default angular
   on-field-blur="(key, field) => { console.log('blur: ' + key); }"</span><span ng-if="$ctrl.onFieldChangeHandler">
   on-field-change="(value, key, field) => { console.log('changed: '+ key + ' to ' + value); }"</span>
   model="{{ $ctrl.model | json }}"
-  fields="<div class="m-l-2">{{ $ctrl.requirements.fields | json }}"&gt;</div>&lt;/tw-fieldset&gt;</pre>
+  fields="<div class="m-l-2">{{ $ctrl.requirements.properties | json }}"&gt;</div>&lt;/tw-fieldset&gt;</pre>
       </div>
     </div>`
   }).name;
@@ -84,7 +84,7 @@ function fieldsetDocsController() {
   };
 
   this.fieldsetBasic = {
-    fields: {
+    properties: {
       stringProperty: {
         type: 'string',
         title: 'String label',
@@ -95,17 +95,18 @@ function fieldsetDocsController() {
         title: 'Number label',
         placeholder: 'Please enter number',
         required: true,
-        min: 5
+        min: 5,
+        default: 123
       }
     }
   };
   this.fieldsetBasicModel = {
     stringProperty: 'Example',
-    numberProperty: 123
+    numberProperty: 321
   };
 
   this.fieldsetNested = {
-    fields: {
+    properties: {
       stringProperty: {
         type: 'string',
         title: 'String label',
@@ -114,7 +115,7 @@ function fieldsetDocsController() {
       nestedObject: {
         type: 'object',
         title: 'Nested object',
-        fields: {
+        properties: {
           numberProperty: {
             type: 'number',
             title: 'Number label',
@@ -134,7 +135,7 @@ function fieldsetDocsController() {
   this.fieldsetOptions = {
     title: 'Fieldset legend',
     description: 'Optional fieldset description, with more information about the content.',
-    fields: {
+    properties: {
       keyName: {
         type: 'text',
         title: 'Control label',
@@ -147,7 +148,7 @@ function fieldsetDocsController() {
   };
 
   this.fieldsetLayout = {
-    fields: {
+    properties: {
       stringProperty: {
         type: 'string',
         title: 'String label',
@@ -172,7 +173,7 @@ function fieldsetDocsController() {
   this.fieldsetLayoutModel = {};
 
   this.fieldsetFull = {
-    fields: {
+    properties: {
       text: {
         title: 'Text',
         type: 'text',
