@@ -179,7 +179,7 @@ describe('Field', function() {
     });
 
     it('should render the default value in the control', function() {
-      expect(element.querySelector('input').value).toBe('default dalue');
+      expect(element.querySelector('input').value).toBe('default value');
     });
   });
 
