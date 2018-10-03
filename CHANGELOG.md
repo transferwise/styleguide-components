@@ -1,3 +1,6 @@
+# v3.4.0
+## Add support for default values in dynamic fields.
+
 # v3.3.0
 ## Add support for nested model in dynamic forms.
 Use twFieldset recursively to allow models with nested objects to be created.
