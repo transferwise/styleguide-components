@@ -5,13 +5,13 @@
     class="page-header p-t-3">
   </h4>
 </div>
-<div class="row row-equal-height">
-  <div class="col-xs-12"
-    ng-class="{'col-sm-6': !$ctrl.narrow}"
+<div ng-class="{'row row-equal-height': $ctrl.layout === 'vertical'}">
+  <div ng-class="{'col-xs-12 col-sm-6': !$ctrl.narrow && $ctrl.layout === 'vertical'}"
     ng-repeat="(key, field) in $ctrl.fields track by $index"
     ng-if="$ctrl.model[key]">
 
-    <dl ng-if="!field.group">
+    <dl ng-if="!field.group"
+      ng-class="{'dl-horizontal-item': $ctrl.layout === 'justified', 'dl-horizontal': $ctrl.layout === 'horizontal'}">
       <dt ng-bind="field.title"></dt>
       <dd ng-switch="field.control" class="text-word-break">
         <span ng-switch-when="select|radio" ng-switch-when-separator="|">
@@ -38,7 +38,8 @@
     </dl>
 
     <!-- Start old 'nested group' style -->
-    <dl ng-if="field.group">
+    <dl ng-if="field.group"
+      ng-class="{'dl-horizontal-item': $ctrl.layout === 'justified', 'dl-horizontal': $ctrl.layout === 'horizontal'}">
       <dt ng-bind="field.title"></dt>
       <dd class="text-word-break">
         <span ng-repeat="fieldSection in field.group">

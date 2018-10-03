@@ -1,6 +1,14 @@
 # v3.4.0
 ## Add support for default values in dynamic fields.
 
+# v3.3.2
+## Add a new layout property to tw-definition-list
+Allows you to show a definition list in a justified, horizontal, vertical (default) layout
+
+# v3.3.1
+## Remove the insertion of the close button from the popover service and move it to the template of the promotions
+The responsability of the close button is now part of the templates passed to the popover service.
+
 # v3.3.0
 ## Add support for nested model in dynamic forms.
 Use twFieldset recursively to allow models with nested objects to be created.
