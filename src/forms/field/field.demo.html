@@ -151,6 +151,29 @@ on-change="changeHandler(value)"&gt;
   model="$ctrl.override.telephone">
 </field-example>
 
+<h4 id="defaults" class="page-header">
+  Default values
+  <a href="#defaults" class="pull-xs-right">
+    <span class="glyphicon glyphicon-link"></span>
+  </a>
+</h4>
+<div class="row">
+  <div class="col-md-6">
+    <p>
+      Some fields may have default values. supply a <code>default: 'value'</code>
+      to have this value automatically pre-bound to the model.
+    </p>
+  </div>
+  <div class="col-md-6">
+    <p>If the model already has it value, it will not be overriden</p>
+  </div>
+</div>
+<field-example
+  name="defaultValue"
+  field="$ctrl.defaultValue"
+  model="$ctrl.defualtValueModel">
+</field-example>
+
 <h4 id="async" class="page-header">
   Async values
   <a href="#async" class="pull-xs-right">

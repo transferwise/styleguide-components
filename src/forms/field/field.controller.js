@@ -13,6 +13,10 @@ class FieldController {
       if (this.field.valuesAsync) {
         this.RequirementsService.prepValuesAsync(this.field, {});
       }
+
+      if (this.field.default && !this.model) {
+        this.model = this.field.default;
+      }
     }
   }
 

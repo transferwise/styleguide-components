@@ -258,6 +258,11 @@ function RequirementsService($http) {
       field.values = this.prepLegacyValues(field.values);
     }
 
+    if (field.value && !field.default) {
+      field.default = field.value;
+      delete field.value;
+    }
+
     if (field.values) {
       // In some legacy arrays the first value is a placeholder, extract it.
       if (field.values &&
