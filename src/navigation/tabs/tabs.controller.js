@@ -1,6 +1,6 @@
 class TabsController {
   constructor() {
-    if (!this.active && this.tabs.length) {
+    if (!this.active && this.tabs && this.tabs.length) {
       this.active = this.tabs[0].type;
     }
   }

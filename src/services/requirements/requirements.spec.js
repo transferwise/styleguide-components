@@ -149,7 +149,7 @@ describe('Requirements Service', function() {
         expect(service.prepFields(legacy)).toEqual({
           nested: {
             type: "object",
-            fields: {
+            properties: {
               first: {
                 type: "string"
               },

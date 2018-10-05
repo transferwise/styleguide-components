@@ -35,7 +35,7 @@ class RequirementsFormController {
     });
 
     $scope.$watch('twForm.$valid', (validity) => {
-      this.isValid = validity;
+      this.isValid = !!validity;
     });
 
     // TODO can we add asyncvalidator here? - prob not

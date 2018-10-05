@@ -5,7 +5,7 @@ function RequirementsService($http) {
     preppedAlternatives.forEach((alternative) => {
       this.prepLegacyAlternatives(alternative);
 
-      alternative.fields = this.prepFields(alternative.fields);
+      alternative.properties = this.prepFields(alternative.properties || alternative.fields);
     });
 
     return preppedAlternatives;
@@ -140,10 +140,10 @@ function RequirementsService($http) {
         if (!nestedFields[nestedKey]) {
           nestedFields[nestedKey] = {
             type: 'object',
-            fields: {}
+            properties: {}
           };
         }
-        nestedFields[nestedKey].fields[pathSections[1]] = fieldMap[key];
+        nestedFields[nestedKey].properties[pathSections[1]] = fieldMap[key];
       } else {
         nestedFields[key] = fieldMap[key];
       }
