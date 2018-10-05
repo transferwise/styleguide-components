@@ -4,7 +4,7 @@ describe('RequirementsForm', function() {
   var $compile,
     $rootScope,
     $scope,
-    directiveElement;
+    component;
 
   beforeEach(module('tw.styleguide.forms'));
   beforeEach(module('tw.styleguide.navigation'));
@@ -20,34 +20,34 @@ describe('RequirementsForm', function() {
     beforeEach(function() {
       $scope.model = getMultipleRequirementsModel();
       $scope.requirements = getMultipleRequirements();
-      directiveElement = getCompiledDirectiveElement();
+      component = getComponent($scope);
     });
 
     describe('in tab navigation', function() {
       var navWrapper, navTabs;
 
       beforeEach(function() {
-        navWrapper = directiveElement.find('.nav.nav-tabs');
-        navTabs = navWrapper.find('li');
+        navWrapper = component.querySelector('.nav.nav-tabs');
+        navTabs = navWrapper.querySelectorAll('li');
       });
 
       it('shows a tab for every requirement', function() {
-        expect(navWrapper.length).toBe(1);
+        expect(navWrapper).toBeTruthy();
         expect(navTabs.length).toBe($scope.requirements.length);
       });
 
       it('should use label as tab name', function() {
-        var tab = navTabs.eq(0);
-        expect(tab.text().trim()).toBe($scope.requirements[0].label);
+        var tab = navTabs[0];
+        expect(tab.innerText.trim()).toBe($scope.requirements[0].label);
       });
 
       it('adds an active class to a tab if the model type matches the requirement type', function() {
         for (var i = 0; i < $scope.requirements.length; i++) {
-          var tab = navTabs.eq(i);
+          var tab = navTabs[i];
           if ($scope.model.type === $scope.requirements[i].type) {
-            expect(tab.hasClass('active')).toBe(true);
+            expect(tab.classList).toContain('active');
           } else {
-            expect(tab.hasClass('active')).toBe(false);
+            expect(tab.classList).not.toContain('active');
           }
         }
       });
@@ -57,85 +57,60 @@ describe('RequirementsForm', function() {
       var activePane, ibanFields, formGroups;
 
       beforeEach(function() {
-        activePane = directiveElement.find('.tab-content .tab-pane.active');
-        ibanFields = $scope.requirements[1].fields;
+        activePane = component.querySelector('.tab-content .tab-pane.active');
+        ibanFields = $scope.requirements[1].properties;
       });
 
       it('has an active pane', function() {
-        expect(activePane.length).toBe(1);
+        expect(activePane).toBeTruthy();
       });
 
       it('has a description paragraph', function() {
-        var paragraph = activePane.find('p');
-        expect(paragraph.text().trim()).toBe($scope.requirements[1].description);
+        var paragraph = activePane.querySelector('p');
+        expect(paragraph.innerText.trim()).toBe($scope.requirements[1].description);
       });
 
-      describe('for form groups', function() {
-        beforeEach(function() {
-          formGroups = activePane.find('.form-group');
-        });
-
-        it('shows one for every requirement field', function() {
-          expect(formGroups.length).toBe(ibanFields.length);
-        });
-
-        it ('shows labels in each group from requirements', function() {
-          for (var i = 0; i < ibanFields.length; i++) {
-            var ibanField = ibanFields[i];
-            var fieldElement = formGroups.eq(i);
-            expect(fieldElement.length).toBe(1);
-
-            var fieldLabel = fieldElement.find('label');
-            expect(fieldLabel.text().trim()).toBe(ibanField.name);
-          }
-        });
-
-        it('shows a tooltip if the field has it', function() {
-          for (var i = 0; i < ibanFields.length; i++) {
-            var ibanField = ibanFields[i];
-            var fieldElement = formGroups.eq(i);
-            expect(fieldElement.length).toBe(1);
-
-            var tooltipElement = fieldElement.find('.alert-focus');
-            if (ibanField.tooltip) {
-              expect(tooltipElement.length).toBe(1);
-            } else {
-              expect(tooltipElement.length).toBe(0);
-            }
-          }
-        });
+      it('has a tw-fieldset for the fields', function() {
+        var fieldset = activePane.querySelector('tw-fieldset');
+        expect(fieldset).toBeTruthy();
       });
     });
   });
 
-  describe('validation', function() {
+  describe('when the model is valid', function() {
     beforeEach(function() {
       $scope.model = {
         type: 'sort_code',
         legalType: 'PRIVATE',
-        sortCode: '101010'
+        sortCode: '101010',
+        accountNumber: '12345678'
       }
       $scope.requirements = getMultipleRequirements();
       $scope.isValid = null;
-      $scope.errorMessages = {
-        sortCode: "Sort code not found"
-      }
-      directiveElement = getCompiledDirectiveElement();
+      component = getComponent($scope);
     });
 
-    it('should set isValid false if not all fields are valid', function() {
-      expect($scope.isValid).toBe(false);
-    });
-    it('should set isValid true when all fields are valid', function() {
-      var accountNumberInput = directiveElement.find('.tw-field-accountNumber input')[0];
-      accountNumberInput.value = '12345678';
-      accountNumberInput.dispatchEvent(new Event('input'));
-
+    it('should set isValid true', function() {
       expect($scope.isValid).toBe(true);
     });
   });
+  describe('when the model is invalid', function() {
+    beforeEach(function() {
+      $scope.model = {
+        type: 'sort_code',
+        legalType: 'PRIVATE'
+      }
+      $scope.requirements = getMultipleRequirements();
+      $scope.isValid = null;
+      component = getComponent($scope);
+    });
 
-  function getCompiledDirectiveElement() {
+    it('should set isValid false', function() {
+      expect($scope.isValid).toBe(false);
+    });
+  });
+
+  function getComponent($scope) {
     var template = " \
       <tw-requirements-form \
         model='model' \
@@ -147,7 +122,7 @@ describe('RequirementsForm', function() {
     var compiledElement = $compile(template)($scope);
 
     $scope.$digest();
-    return compiledElement;
+    return compiledElement[0];
   }
 
   function getMultipleRequirementsModel() {
@@ -164,11 +139,10 @@ describe('RequirementsForm', function() {
       {
         "type": "sort_code",
         "label": "Use sort code",
-        "fields": [
-          {
-            "name": "Legal type",
-            "key": "legalType",
-            "type": "select",
+        "properties": {
+          "legalType": {
+            "title": "Legal type",
+            "type": "string",
             "required": true,
             "values": [
               {
@@ -181,13 +155,12 @@ describe('RequirementsForm', function() {
               }
             ]
           },
-          {
-            "name": "UK Sort code",
-            "key": "sortCode",
-            "type": "text",
+          "sortCode": {
+            "title": "UK Sort code",
+            "type": "string",
             "required": true,
             "displayFormat": "**-**-**",
-            "example": "40-30-20",
+            "placeholder": "40-30-20",
             "minLength": 6,
             "maxLength": 8,
             "validationAsync": {
@@ -201,12 +174,11 @@ describe('RequirementsForm', function() {
               ]
             }
           },
-          {
-            "name": "Account number",
-            "key": "accountNumber",
-            "type": "text",
+          "accountNumber": {
+            "title": "Account number",
+            "type": "string",
             "required": true,
-            "example": "12345678",
+            "placeholder": "12345678",
             "minLength": 8,
             "maxLength": 8,
             "validationRegexp": "^[0-9]{8}$",
@@ -221,16 +193,15 @@ describe('RequirementsForm', function() {
               ]
             }
           }
-        ]
+        }
       },
       {
         "type": "iban_With_unDerscOres",
         "description": "IBAN description",
-        "fields": [
-          {
-            "name": "Legal type",
-            "key": "legalType",
-            "type": "select",
+        "properties": {
+          "legalType": {
+            "title": "Legal type",
+            "type": "string",
             "required": true,
             "values": [
               {
@@ -242,15 +213,14 @@ describe('RequirementsForm', function() {
                 "label": "Business"
               }
             ],
-            "tooltip": "I am a nice tooltip that was created by fingers pressing buttons"
+            "helpText": "I am a nice tooltip that was created by fingers pressing buttons"
           },
-          {
-            "name": "IBAN",
-            "key": "IBAN",
+          "IBAN": {
+            "title": "IBAN",
             "type": "text",
             "required": true,
             "displayFormat": "**** **** **** **** **** **** **** ****",
-            "example": "GB89370400440532013000",
+            "placeholder": "GB89370400440532013000",
             "minLength": 2,
             "validationAsync": {
               "url": "https://api.transferwise.com/v1/validators/iban",
@@ -263,11 +233,10 @@ describe('RequirementsForm', function() {
               ]
             }
           },
-          {
-            "name": "Bank code (BIC/SWIFT)",
-            "key": "BIC",
-            "type": "text",
-            "example": "ABCDDE22 (Optional)",
+          "BIC": {
+            "title": "Bank code (BIC/SWIFT)",
+            "type": "string",
+            "placeholder": "ABCDDE22 (Optional)",
             "validationRegexp": "^[A-Z]{6}[A-Z,0-9]{2}([A-Z,0-9]{3})?$",
             "validationAsync": {
               "url": "https://api.transferwise.com/v1/validators/bic",
@@ -285,7 +254,7 @@ describe('RequirementsForm', function() {
               ]
             }
           }
-        ]
+        }
       }
     ];
   }
