@@ -3,6 +3,10 @@
 This change brings us more into line with JSON schema. Backwards compatibility
 is maintained for alternatives with a fields collection.
 
+# v3.4.0
+## Add support for default values in dynamic fields.
+
+
 # v3.3.2
 ## Add a new layout property to tw-definition-list
 Allows you to show a definition list in a justified, horizontal, vertical (default) layout
