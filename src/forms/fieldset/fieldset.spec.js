@@ -52,19 +52,6 @@ describe('Fieldset', function() {
     });
   });
 
-  describe('when a field has refreshRequirementsOnChange: true', function() {
-    beforeEach(function() {
-      $scope.fields = getFields();
-      element = getCompiledDirectiveElement();
-      var formControl = element.querySelector('.form-control');
-      formControl.dispatchEvent(new Event('blur'));
-    });
-
-    it('should trigger the handler on field blur', function() {
-      expect($scope.onRefreshRequirements).toHaveBeenCalled()
-    });
-  });
-
   describe('when given validation messages', function() {
     beforeEach(function() {
       $scope.fields = getFields();

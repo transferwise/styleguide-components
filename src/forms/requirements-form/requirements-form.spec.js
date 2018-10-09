@@ -4,7 +4,8 @@ describe('RequirementsForm', function() {
   var $compile,
     $rootScope,
     $scope,
-    directiveElement;
+    directiveElement,
+    $timeout;
 
   beforeEach(module('tw.styleguide.forms'));
   beforeEach(module('tw.styleguide.navigation'));
@@ -13,6 +14,7 @@ describe('RequirementsForm', function() {
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');
     $compile = $injector.get('$compile');
+    $timeout = $injector.get('$timeout');
     $scope = $rootScope.$new();
   }));
 
@@ -130,6 +132,7 @@ describe('RequirementsForm', function() {
       var accountNumberInput = directiveElement.find('.tw-field-accountNumber input')[0];
       accountNumberInput.value = '12345678';
       accountNumberInput.dispatchEvent(new Event('input'));
+      $timeout.flush();
 
       expect($scope.isValid).toBe(true);
     });
