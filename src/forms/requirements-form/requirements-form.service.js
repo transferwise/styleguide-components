@@ -46,16 +46,17 @@ function RequirementsFormService(RequirementsService) {
   this.prepRequirements = (types) => {
     types.forEach((type) => {
       RequirementsService.prepLegacyAlternatives(type);
-      type.fields = RequirementsService.prepFields(type.fields);
+      type.properties = RequirementsService.prepFields(type.properties);
+      type.fields = type.properties; // Backwards compatibility
     });
   };
 
   function getFieldNamesFromRequirement(modelRequirement) {
-    if (!modelRequirement.fields) {
+    if (!modelRequirement.properties) {
       return [];
     }
 
-    const names = Object.keys(modelRequirement.fields);
+    const names = Object.keys(modelRequirement.properties);
 
     return Array.prototype.concat.apply([], names);
   }

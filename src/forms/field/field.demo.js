@@ -179,6 +179,12 @@ function fieldDocsController() {
     select: '1'
   };
 
+  this.defaultValue = {
+    type: 'string',
+    default: 'Default value'
+  };
+  this.defualtValueModel = null;
+
   // Values Async
   this.valuesAsync = {
     type: 'number',

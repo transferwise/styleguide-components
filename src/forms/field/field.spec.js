@@ -169,8 +169,31 @@ describe('Field', function() {
       element = getCompiledDirectiveElement();
     });
 
-    it('should render that value in the control', function() {
+    it('should render the model value in the control', function() {
       expect(element.querySelector('input').value).toBe('supplied value');
+    });
+  });
+
+  describe('when the model is not set and there is a default value', function() {
+    beforeEach(function() {
+      $scope.options = { type: "string", default: "default value" };
+      element = getCompiledDirectiveElement();
+    });
+
+    it('should render the default value in the control', function() {
+      expect(element.querySelector('input').value).toBe('default value');
+    });
+  });
+
+  describe('when there is a model value and a default value', function() {
+    beforeEach(function() {
+      $scope.options = { type: "string", default: "default value" };
+      $scope.model = 'model value';
+      element = getCompiledDirectiveElement();
+    });
+
+    it('should render the model value in the control', function() {
+      expect(element.querySelector('input').value).toBe('model value');
     });
   });
 
