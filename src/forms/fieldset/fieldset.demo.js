@@ -11,7 +11,9 @@ export default angular
     bindings: {
       model: '=',
       requirements: '<',
-      onRefreshRequirements: '&?',
+      errorMessages: '<',
+      warningMessages: '<',
+      onRefreshHandler: '&?onRefreshRequirements',
       onModelChangeHandler: '&?onModelChange',
       onFieldFocusHandler: '&?onFieldFocus',
       onFieldBlurHandler: '&?onFieldBlur',
@@ -39,6 +41,11 @@ export default angular
           this.onModelChangeHandler({ model });
         }
       };
+      this.onRefreshRequirements = () => {
+        if (this.onRefreshHandler) {
+          this.onRefreshHandler();
+        }
+      };
     },
     template: `
     <div class="row">
@@ -54,7 +61,9 @@ export default angular
           on-field-blur="$ctrl.onFieldBlur(key, field)"
           on-field-change="$ctrl.onFieldChange(value, key, field)"
           on-refresh-requirements="$ctrl.onRefreshRequirements()"
-          upload-options="{buttonText: 'Choose file'}">
+          upload-options="{buttonText: 'Choose file'}"
+          error-messages="$ctrl.errorMessages"
+          warning-messages="$ctrl.warningMessages">
         </tw-fieldset>
       </div>
       <div class="col-md-6 p-t-3">
@@ -65,7 +74,9 @@ export default angular
   on-model-change="(model) => { console.log(model); }"</span><span ng-if="$ctrl.onFieldFocusHandler">
   on-field-focus="(key, field) => { console.log('focus: ' + key); }"</span><span ng-if="$ctrl.onFieldBlurHandler">
   on-field-blur="(key, field) => { console.log('blur: ' + key); }"</span><span ng-if="$ctrl.onFieldChangeHandler">
-  on-field-change="(value, key, field) => { console.log('changed: '+ key + ' to ' + value); }"</span>
+  on-field-change="(value, key, field) => { console.log('changed: '+ key + ' to ' + value); }"</span><span ng-if="$ctrl.errorMessages">
+  error-messages="{{ $ctrl.errorMessages | json }}"</span><span ng-if="$ctrl.warningMessages">
+  warning-messages="{{ $ctrl.warningMessages | json }}"</span>
   model="{{ $ctrl.model | json }}"
   fields="<div class="m-l-2">{{ $ctrl.requirements.properties | json }}"&gt;</div>&lt;/tw-fieldset&gt;</pre>
       </div>
@@ -119,7 +130,8 @@ function fieldsetDocsController() {
           numberProperty: {
             type: 'number',
             title: 'Number label',
-            placeholder: 'Please enter number'
+            placeholder: 'Please enter number',
+            refreshRequirementsOnChange: true
           }
         }
       }
@@ -129,6 +141,15 @@ function fieldsetDocsController() {
     stringProperty: 'Example',
     nestedObject: {
       numberProperty: 123
+    }
+  };
+
+  this.fieldsetErrors = {
+    stringProperty: 'Something is wrong with this',
+  };
+  this.fieldsetWarnings = {
+    nestedObject: {
+      numberProperty: 'Make sure this is your favourite number'
     }
   };
 
@@ -171,6 +192,7 @@ function fieldsetDocsController() {
     }
   };
   this.fieldsetLayoutModel = {};
+
 
   this.fieldsetFull = {
     properties: {

@@ -18,6 +18,7 @@ const Fieldset = {
     onFieldChange: '&?',
     validationMessages: '<',
     errorMessages: '<',
+    warningMessages: '<',
     isValid: '=?',
     narrow: '<'
   }

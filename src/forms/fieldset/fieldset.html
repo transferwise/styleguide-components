@@ -19,8 +19,10 @@
         field="field"
         locale="$ctrl.locale"
         upload-options="$ctrl.uploadOptions"
-        error-message="$ctrl.errorMessages[key]"
+
         warning-message="$ctrl.warningMessages[key]"
+        error-message="$ctrl.errorMessages[key]"
+
         on-change="$ctrl.fieldChange(value, key, field)"
         on-focus="$ctrl.fieldFocus(key, field)"
         on-blur="$ctrl.fieldBlur(key, field)"
@@ -35,6 +37,16 @@
         locale="{{ $ctrl.locale }}"
         title="{{ field.title }}"
         description="{{ field.description }}"
+        upload-options="$ctrl.uploadOptions"
+
+        warning-messages="$ctrl.warningMessages[key]"
+        error-messages="$ctrl.errorMessages[key]"
+
+        on-refresh-requirements="$ctrl.refreshRequirements()"
+        on-field-change="$ctrl.fieldChange(value, key, field)"
+        on-field-focus="$ctrl.fieldFocus(key, field)"
+        on-field-blur="$ctrl.fieldBlur(key, field)"
+
         class="btn-block"> <!-- Remove btn-block after boostrap update -->
       </tw-fieldset>
     </div>
