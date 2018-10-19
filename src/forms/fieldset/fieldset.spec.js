@@ -117,6 +117,52 @@ describe('Fieldset', function() {
     });
   });
 
+  describe('when given a field representing a nested object', function() {
+    beforeEach(function() {
+      $scope.fields = [nestedObjectField];
+      $scope.errorMessages = {
+        nested: {
+          textInput: 'Nested error'
+        }
+      }
+      element = getCompiledDirectiveElement();
+    });
+
+    it('should contain a nested fieldset', function() {
+      expect(element.querySelector('tw-fieldset')).toBeTruthy();
+    });
+    it('should show the nested fields', function() {
+      expect(element.querySelector('input[name=textInput]')).toBeTruthy();
+    });
+    it('should render nested error messages', function() {
+      var formGroup = element.querySelector('.tw-field-textInput');
+      var errorMessages = formGroup.querySelector('.error-messages');
+      expect(formGroup.classList).toContain('has-error');
+      expect(errorMessages.innerText).toContain('Nested error');
+    });
+
+    describe('and text is entered', function() {
+      beforeEach(function() {
+        var nestedInput = element.querySelector('input[name=textInput]');
+        nestedInput.value = 'something';
+        nestedInput.dispatchEvent(new Event('input'));
+      });
+      it('should create a nested model', function() {
+        expect($scope.model).toEqual({
+          nested: {
+            textInput: 'something'
+          }
+        });
+      });
+      it('should clear the error message', function() {
+        var formGroup = element.querySelector('.tw-field-textInput');
+        var errorMessages = formGroup.querySelector('.error-messages');
+        expect(formGroup.classList).not.toContain('has-error');
+        expect(errorMessages).toBeFalsy();
+      });
+    });
+  });
+
   function getCompiledDirectiveElement() {
     var template = " \
       <tw-fieldset \
@@ -124,6 +170,7 @@ describe('Fieldset', function() {
         fields='fields' \
         validation-messages='validationMessages' \
         error-messages='errorMessages' \
+        warning-messages='warningMessages' \
         on-refresh-requirements='onRefreshRequirements()' \
         is-valid='isValid'> \
       </tw-fieldset>";
@@ -185,5 +232,16 @@ describe('Fieldset', function() {
     "key": "colsm6",
     "type": "text"
   }
+
+  var nestedObjectField = {
+    type: "object",
+    key: "nested",
+    properties: {
+      textInput: {
+        type: "string",
+        title: "Text input"
+      }
+    }
+  };
 
 });

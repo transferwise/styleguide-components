@@ -85,6 +85,12 @@ class FieldsetController {
       }
     });
   }
+
+  refreshRequirements() {
+    if (this.onRefreshRequirements) {
+      this.onRefreshRequirements();
+    }
+  }
 }
 
 function controlRefreshesOnChange(control) {
