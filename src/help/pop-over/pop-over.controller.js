@@ -1,103 +1,96 @@
 class PopOverController {
   constructor($element, PopoverService) {
-    this.element = $element[0];
-    this.popoverService = PopoverService;
+    const unwrappedEl = $element[0];
 
-    this.registerEventListeners = this.registerEventListeners.bind(this);
     this.showPopover = (event) => {
       event.preventDefault();
-      return this.popoverService.showPopover(
-        this.element,
-        getElementOptions(this.element)
-      );
+      return PopoverService.showPopover(getPopoverOptions(unwrappedEl));
     };
-  }
 
-  $onInit() {
-    this.element.setAttribute('tabindex', '0');
-    this.element.setAttribute('role', 'button');
-    this.element.setAttribute('data-toggle', 'popover');
+    this.hidePopover = (event) => {
+      event.preventDefault();
+      return PopoverService.hidePopover(getPopoverOptions(unwrappedEl));
+    };
 
-    this.unregisterEventListeners = this.registerEventListeners(getTriggeringEvent(this.element));
+    this.registerEventListeners = this.registerEventListeners.bind(this);
+    this.unregisterEventListeners = this.registerEventListeners(getPopoverOptions(unwrappedEl));
   }
 
   $onDestroy() {
     this.unregisterEventListeners();
   }
 
-  registerEventListeners(triggeringEvent) {
-    if (triggeringEvent === 'hover') {
-      this.element.addEventListener('mouseover', this.showPopover);
-      this.element.addEventListener('mouseout', this.popoverService.hidePopover);
+  registerEventListeners(config) {
+    const {
+      element: { node },
+      popover: {
+        options: { trigger }
+      }
+    } = config;
+
+    if (trigger === 'hover') {
+      node.addEventListener('mouseover', this.showPopover);
+      node.addEventListener('mouseout', this.hidePopover);
     } else {
-      this.element.addEventListener('click', this.showPopover);
+      node.addEventListener('click', this.showPopover);
     }
 
-    return function unregisterListeners() {
-      if (triggeringEvent === 'hover') {
-        this.element.removeEventListener('mouseover', this.showPopover);
-        this.element.removeEventListener('mouseout', this.popoverService.hidePopover);
+    // eslint-disable-next-line func-names
+    return function () {
+      if (trigger === 'hover') {
+        node.removeEventListener('mouseover', this.showPopover);
+        node.removeEventListener('mouseout', this.hidePopover);
       } else {
-        this.element.removeEventListener('click', this.showPopover);
+        node.removeEventListener('click', this.showPopover);
       }
     };
   }
 }
 
-/**
- * [getTriggeringEvent Get the triggering event that was passed to this
- *                     directive via data attributes, i.e. as a value
- *                     ['click' | 'hover'] in the data-trigger attribute]
- * @return {String}   [Triggering event]
- */
-function getTriggeringEvent(element) {
-  const popoverOptions = getElementOptions(element);
-
-  return popoverOptions && popoverOptions.trigger;
-}
-
-/**
- * [getElementOptions             Extract all the values passed through data
- *                                attributes to the popover directive]
- * @param  {HTMLElement} element [Element for which we want to extract the values
- *                                from predefined data attributes]
- * @return {Object}              [Map of data attributes and their values]
- */
-function getElementOptions(element) {
-  let options = {
-    trigger: 'click',
-    placement: 'right'
+function getPopoverOptions(element) {
+  const config = {
+    content: {
+      title: '',
+      content: ''
+    },
+    options: {
+      placement: 'right',
+      trigger: 'click'
+    },
+    customOptions: {
+      spacing: 0
+    }
   };
 
-  const dataAttributes = [
-    'placement',
-    'title',
-    'content',
-    'trigger',
-    'template',
-    'image',
-    'container'
-  ];
+  const dataAttributes = ['title', 'content', 'image'];
+  const optionAttributes = ['trigger', 'template', 'container', 'placement'];
 
-  options = dataAttributes.reduce((accumulatedOptions, dataAttr) => {
-    if (element.dataset[dataAttr]) {
-      accumulatedOptions[dataAttr] = element.dataset[dataAttr];
+  dataAttributes.forEach((attr) => {
+    if (element.dataset[attr]) {
+      config.content[attr] = element.dataset[attr];
     }
-    return accumulatedOptions;
-  }, options);
+  });
 
-  /**
-   * Special cases
-   */
+  optionAttributes.forEach((attr) => {
+    if (element.dataset[attr]) {
+      config.options[attr] = element.dataset[attr];
+    }
+  });
+
   if (element.dataset.originalTitle) {
-    options.title = element.dataset.originalTitle;
+    config.content.title = element.dataset.originalTitle;
   }
 
   if (element.dataset.contentHtml) {
-    options.contentHtml = element.dataset.contentHtml === 'true';
+    config.options.contentHtml = element.dataset.contentHtml === 'true';
   }
 
-  return options;
+  return {
+    element: {
+      node: element
+    },
+    popover: config
+  };
 }
 
 PopOverController.$inject = ['$element', 'twPopOverService'];
