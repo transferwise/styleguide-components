@@ -1,3 +1,7 @@
+# v3.4.2
+## Add support for nested error messages inside nested fieldsets
+This should have been there from the start.  Nested fieldsets now trigger onRefreshRequirements. Also adds support for warning messages, and fixes a small initialisation bug on tw-checkbox.
+
 # v3.4.1
 ## Switch dynamic forms to expect model properties in 'properties' not 'fields'.
 This change brings us more into line with JSON schema. Backwards compatibility
