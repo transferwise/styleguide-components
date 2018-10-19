@@ -4,13 +4,15 @@ describe('Fieldset', function() {
   var $compile,
       $rootScope,
       $scope,
-      element;
+      element,
+      $timeout;
 
   beforeEach(module('tw.styleguide-components'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');
     $compile = $injector.get('$compile');
+    $timeout = $injector.get('$timeout');
     $scope = $rootScope.$new();
     $scope.onRefreshRequirements = function () {}
     spyOn($scope, 'onRefreshRequirements');
@@ -49,6 +51,20 @@ describe('Fieldset', function() {
     it('should show the supplied error message', function() {
       var errorBlock = element.querySelector('.tw-field-sortCode .error-provided');
       expect(errorBlock.innerText.trim()).toBe($scope.errorMessages.sortCode);
+    });
+  });
+
+  describe('when a field has refreshRequirementsOnChange: true', function() {
+    beforeEach(function() {
+      $scope.fields = getFields();
+      element = getCompiledDirectiveElement();
+      var formControl = element.querySelector('.form-control');
+      formControl.value = 'example';
+      formControl.dispatchEvent(new Event('input'));
+      $timeout.flush();
+    });
+    it('should trigger the handler on field change', function() {
+      expect($scope.onRefreshRequirements).toHaveBeenCalled();
     });
   });
 
