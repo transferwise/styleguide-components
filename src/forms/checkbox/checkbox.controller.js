@@ -6,7 +6,6 @@ class CheckboxController {
     this.dom = TwDomService;
     this.$element = $element;
     this.element = $element[0];
-    this.checked = this.isChecked();
 
     this.addLabelHandler();
     this.addWatchers($scope, $element, $ngModel);
@@ -20,6 +19,10 @@ class CheckboxController {
       this.checkboxContainer ?
         this.checkboxContainer.getElementsByTagName('label')[0] :
         false;
+  }
+
+  $onInit() {
+    this.checked = this.isChecked();
   }
 
   isChecked() {

@@ -78,7 +78,12 @@ on-field-change="changeHandler(value, key, field)"&gt;
   nested JSON schema, with it's own set of properties.</p>
 <fieldset-example
   requirements="$ctrl.fieldsetNested"
-  model="$ctrl.fieldsetNestedModel">
+  model="$ctrl.fieldsetNestedModel"
+  on-model-change="$ctrl.log(model)"
+  on-field-focus="$ctrl.log('focus: ' + key)"
+  on-field-blur="$ctrl.log('blur: ' + key)"
+  on-field-change="$ctrl.onFieldChange(value, key, field)"
+  on-refresh-requirements="$ctrl.refresh()">
 </fieldset-example>
 
 <h4 id="fieldset-layout" class="page-header">
@@ -90,6 +95,23 @@ on-field-change="changeHandler(value, key, field)"&gt;
 <fieldset-example
   requirements="$ctrl.fieldsetLayout"
   model="$ctrl.fieldsetLayoutModel">
+</fieldset-example>
+
+<h4 id="fieldset-errors" class="page-header">
+  Errors and warnings
+  <a href="#fieldset-errors" class="pull-xs-right">
+    <span class="glyphicon glyphicon-link"></span>
+  </a>
+</h4>
+<p>We can trigger error messages or warnings by passing in messages for specific fields.</p>
+<p>For flat models this is a simple object map from the key to the message.
+  If using <a href="fieldset-nested">nested objects</a> the messages should be
+  supplied in a nested format matching the model.</p>
+<fieldset-example
+  requirements="$ctrl.fieldsetNested"
+  model="$ctrl.fieldsetNestedModel"
+  error-messages="$ctrl.fieldsetErrors"
+  warning-messages="$ctrl.fieldsetWarnings">
 </fieldset-example>
 
 <h4 id="fieldset-full" class="page-header">
