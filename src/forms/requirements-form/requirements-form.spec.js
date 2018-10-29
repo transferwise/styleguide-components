@@ -4,6 +4,7 @@ describe('RequirementsForm', function() {
   var $compile,
     $rootScope,
     $scope,
+    $timeout,
     component;
 
   beforeEach(module('tw.styleguide.forms'));
@@ -13,6 +14,7 @@ describe('RequirementsForm', function() {
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');
     $compile = $injector.get('$compile');
+    $timeout = $injector.get('$timeout');
     $scope = $rootScope.$new();
   }));
 

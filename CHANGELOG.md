@@ -1,3 +1,8 @@
+# v3.4.3
+## onRefreshRequirements triggering changes
+onRefreshRequirements is now triggered in onChange for all field types.
+For text fields the field events are debounced by 300ms to not send a request for every keystroke
+
 # v3.4.2
 ## Add support for nested error messages inside nested fieldsets
 This should have been there from the start.  Nested fieldsets now trigger onRefreshRequirements. Also adds support for warning messages, and fixes a small initialisation bug on tw-checkbox.

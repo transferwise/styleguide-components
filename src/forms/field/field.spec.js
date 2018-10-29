@@ -5,13 +5,15 @@ describe('Field', function() {
       $rootScope,
       $scope,
       element,
-      formGroup;
+      formGroup,
+      $timeout;
 
   beforeEach(module('tw.styleguide-components'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');
     $compile = $injector.get('$compile');
+    $timeout = $injector.get('$timeout');
     $scope = $rootScope.$new();
     $scope.model;
     $scope.onChange = jasmine.createSpy();
@@ -243,6 +245,7 @@ describe('Field', function() {
       element.querySelector('input').value = 'changed';
       element.querySelector('input').dispatchEvent(new Event('input'));
       formGroup = element.querySelector('.form-group');
+      $timeout.flush();
     });
 
     it('should update the model', function() {

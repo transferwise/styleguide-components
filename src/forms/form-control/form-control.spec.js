@@ -53,20 +53,24 @@ describe('FormControl', function() {
     testRequiredValidation(function() {
       input.value = 4;
       input.dispatchEvent(new Event('input'));
+      $timeout.flush();
     }, 4);
 
     testMinMaxValidation(function() {
       // setBelowMin
       input.value = 1;
       input.dispatchEvent(new Event('input'));
+      $timeout.flush();
     }, function() {
       // setAboveMax
       input.value = 6;
       input.dispatchEvent(new Event('input'));
+      $timeout.flush();
     }, function() {
       // setValid
       input.value = 4;
       input.dispatchEvent(new Event('input'));
+      $timeout.flush();
     }, 4);
   });
 
@@ -377,15 +381,18 @@ describe('FormControl', function() {
 
       testFocusHandler(function() {
         input.dispatchEvent(new Event('focus'));
+        $timeout.flush();
       });
 
       testChangeHandler(function() {
         input.value = valueToSet;
         input.dispatchEvent(new Event('input'));
+        $timeout.flush();
       }, valueToSet);
 
       testBlurHandler(function() {
         input.dispatchEvent(new Event('blur'));
+        $timeout.flush();
       });
     });
   }
@@ -414,25 +421,31 @@ describe('FormControl', function() {
       testRequiredValidation(function() {
         input.value = 'abcd';
         input.dispatchEvent(new Event('input'));
+        $timeout.flush();
       }, 'abcd');
 
       testLengthValidation(function() {
         input.value = 'abc';
         input.dispatchEvent(new Event('input'));
+        $timeout.flush();
       }, function() {
         input.value = 'abcdefg';
         input.dispatchEvent(new Event('input'));
+        $timeout.flush();
       }, function() {
         input.value = 'abcd';
         input.dispatchEvent(new Event('input'));
+        $timeout.flush();
       }, 'abcd');
 
       testPatternValidation(function() {
         input.value = '1';
         input.dispatchEvent(new Event('input'));
+        $timeout.flush();
       }, function() {
         input.value = 'abcd';
         input.dispatchEvent(new Event('input'));
+        $timeout.flush();
       }, 'abcd');
     });
   }

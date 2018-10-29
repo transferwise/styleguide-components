@@ -4,13 +4,15 @@ describe('Fieldset', function() {
   var $compile,
       $rootScope,
       $scope,
-      element;
+      element,
+      $timeout;
 
   beforeEach(module('tw.styleguide-components'));
 
   beforeEach(inject(function($injector) {
     $rootScope = $injector.get('$rootScope');
     $compile = $injector.get('$compile');
+    $timeout = $injector.get('$timeout');
     $scope = $rootScope.$new();
     $scope.onRefreshRequirements = function () {}
     spyOn($scope, 'onRefreshRequirements');
@@ -57,11 +59,12 @@ describe('Fieldset', function() {
       $scope.fields = getFields();
       element = getCompiledDirectiveElement();
       var formControl = element.querySelector('.form-control');
-      formControl.dispatchEvent(new Event('blur'));
+      formControl.value = 'example';
+      formControl.dispatchEvent(new Event('input'));
+      $timeout.flush();
     });
-
-    it('should trigger the handler on field blur', function() {
-      expect($scope.onRefreshRequirements).toHaveBeenCalled()
+    it('should trigger the handler on field change', function() {
+      expect($scope.onRefreshRequirements).toHaveBeenCalled();
     });
   });
 
@@ -146,6 +149,7 @@ describe('Fieldset', function() {
         var nestedInput = element.querySelector('input[name=textInput]');
         nestedInput.value = 'something';
         nestedInput.dispatchEvent(new Event('input'));
+        $timeout.flush();
       });
       it('should create a nested model', function() {
         expect($scope.model).toEqual({
