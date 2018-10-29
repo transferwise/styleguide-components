@@ -149,6 +149,7 @@ describe('Fieldset', function() {
         var nestedInput = element.querySelector('input[name=textInput]');
         nestedInput.value = 'something';
         nestedInput.dispatchEvent(new Event('input'));
+        $timeout.flush();
       });
       it('should create a nested model', function() {
         expect($scope.model).toEqual({
