@@ -1,3 +1,7 @@
+# v3.4.4
+## remove redundant upload switch case from form-control
+removed redundant switch case 'upload' from form-control component since it was never used
+
 # v3.4.3
 ## onRefreshRequirements triggering changes
 onRefreshRequirements is now triggered in onChange for all field types.

@@ -205,28 +205,6 @@ describe('FormControl', function() {
     }, 1);
   });
 
-  describe('type: upload - validation', function() {
-    beforeEach(function() {
-      $scope.model = null;
-      formGroup = compileTemplate(
-        "<div class='form-group'> \
-          <label class='control-label'></label> \
-          <tw-form-control type='upload' \
-            ng-model='model' \
-            ng-focus='onFocus()' \
-            ng-blur='onBlur()' \
-            ng-change='onChange(value)' \
-            required> \
-          </tw-form-control> \
-        </div>"
-      );
-      element = formGroup.querySelector('tw-form-control');
-    });
-    it('should render twUpload', function() {
-      expect(element.querySelector('tw-upload')).toBeTruthy();
-    });
-  });
-
   describe('type: date', function() {
     var dayInput, yearInput;
     beforeEach(function() {
