@@ -1,3 +1,7 @@
+# v3.5.1
+## remove redundant upload switch case from form-control
+removed redundant switch case 'upload' from form-control component since it was never used
+
 # v3.5.0
 ## Add new support to the pop over service for the new popover placements
 Changing the popover service API. Adding three new placements for the top, right, bottom and left initial placements.
