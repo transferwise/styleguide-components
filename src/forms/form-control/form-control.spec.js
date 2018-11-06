@@ -205,13 +205,13 @@ describe('FormControl', function() {
     }, 1);
   });
 
-  describe('type: upload - validation', function() {
+  describe('type: file - validation', function() {
     beforeEach(function() {
       $scope.model = null;
       formGroup = compileTemplate(
         "<div class='form-group'> \
           <label class='control-label'></label> \
-          <tw-form-control type='upload' \
+          <tw-form-control type='file' \
             ng-model='model' \
             ng-focus='onFocus()' \
             ng-blur='onBlur()' \
