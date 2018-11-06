@@ -1,6 +1,6 @@
-# v3.4.4
-## remove redundant upload switch case from form-control
-removed redundant switch case 'upload' from form-control component since it was never used
+# v3.5.0
+## Add new support to the pop over service for the new popover placements
+Changing the popover service API. Adding three new placements for the top, right, bottom and left initial placements.
 
 # v3.4.3
 ## onRefreshRequirements triggering changes
@@ -18,7 +18,6 @@ is maintained for alternatives with a fields collection.
 
 # v3.4.0
 ## Add support for default values in dynamic fields.
-
 
 # v3.3.2
 ## Add a new layout property to tw-definition-list
