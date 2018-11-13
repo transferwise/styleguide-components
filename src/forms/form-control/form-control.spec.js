@@ -32,6 +32,11 @@ describe('FormControl', function() {
   testTextControlValidation('password', 'input[type=password]');
   testTextControlValidation('textarea', 'textarea');
 
+  testHelpText('text', 'input');
+  testHelpText('number', 'input');
+  testHelpText('password', 'input');
+  testHelpText('textarea', 'textarea');
+
   describe('type: number - validation', function() {
     beforeEach(function() {
       $scope.model = null;
@@ -339,7 +344,6 @@ describe('FormControl', function() {
     });
   });
 
-
   function compileTemplate(template) {
     return compileElement(angular.element(template))[0];
   }
@@ -348,6 +352,41 @@ describe('FormControl', function() {
     var compiledElement = $compile(element)($scope);
     $scope.$digest();
     return compiledElement;
+  }
+
+  function testHelpText(controlType, controlSelector) {
+    var template = " \
+      <tw-form-control \
+        type='{{ controlType }}' \
+        ng-model='model' \
+        help-text='{{ helpText }}'> \
+      </tw-form-control>";
+
+    var control;
+
+    describe('when helpText is supplied to a ' + controlType + ' control', function() {
+      beforeEach(function() {
+        $scope.controlType = controlType;
+        $scope.model = null;
+        $scope.helpText = "Help!";
+        control = compileTemplate(template).querySelector(controlSelector);
+      });
+      it('should disable autocomplete', function() {
+        expect(control.getAttribute('autocomplete')).toBe('disabled');
+      });
+    });
+
+    describe('when helpText is not supplied to a ' + controlType + ' control', function() {
+      beforeEach(function() {
+        $scope.controlType = controlType;
+        $scope.model = null;
+        $scope.helpText = null;
+        control = compileTemplate(template).querySelector(controlSelector);
+      });
+      it('should enable autocomplete', function() {
+        expect(control.getAttribute('autocomplete')).toBe('on');
+      });
+    });
   }
 
   function testSimpleControl(controlType, selector, valueToSet) {
