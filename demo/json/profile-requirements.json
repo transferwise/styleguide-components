@@ -1,104 +1,69 @@
 [
   {
     "type": "profile",
-    "fields": [
-      {
-         "name": "First name",
-         "width": "md",
-         "group": [
-           {
-             "key": "firstName",
-             "type": "text",
-             "required": true,
-             "displayFormat": null,
-             "placeholder": "Enter your first name",
-             "example": null,
-             "minLength": 2,
-             "maxLength": null,
-             "validationRegexp": null,
-             "validationAsync": null,
-             "valuesAllowed": null,
-             "width": "md"
-          }
-        ]
+    "properties": {
+      "firstName": {
+        "name": "First name",
+        "width": "md",
+        "type": "text",
+        "required": true,
+        "displayFormat": null,
+        "placeholder": "Enter your first name",
+        "example": null,
+        "minLength": 2,
+        "maxLength": null,
+        "validationRegexp": null,
+        "validationAsync": null,
+        "valuesAllowed": null
       },
-      {
+      "lastName": {
         "name": "Last name",
         "width": "md",
-        "group": [
-          {
-            "key": "lastName",
-            "type": "text",
-            "required": true,
-            "displayFormat": null,
-            "placeholder": "Enter your family name",
-            "example": null,
-            "minLength": 2,
-            "maxLength": 10,
-            "validationRegexp": null,
-            "validationAsync": null,
-            "valuesAllowed": null
-          }
-        ]
+        "type": "text",
+        "required": true,
+        "displayFormat": null,
+        "placeholder": "Enter your family name",
+        "helpText": "Characters only",
+        "example": null,
+        "minLength": 2,
+        "maxLength": 10,
+        "validationRegexp": null,
+        "validationAsync": null,
+        "valuesAllowed": null
       },
-      {
+      "dateOfBirth": {
         "name": "Date of birth",
         "width": "md",
-        "group": [
-          {
-            "key": "dateOfBirth",
-            "type": "date",
-            "required": true
-          }
-        ]
+        "type": "date",
+        "required": true
       },
-      {
+      "phone": {
         "name": "Telephone",
         "width": "md",
-        "group": [
-          {
-            "key": "phone",
-            "type": "string",
-            "format": "phone",
-            "required": true
-          }
-        ]
+        "type": "string",
+        "format": "phone",
+        "required": true
       },
-      {
+      "address": {
         "name": "Address 1",
-        "group": [
-          {
-            "key": "address",
-            "placeholder": "Enter your house number and street",
-            "type": "text",
-            "required": true
-          }
-        ]
+        "placeholder": "Enter your house number and street",
+        "type": "text",
+        "required": true
       },
-      {
+      "city": {
         "name": "City",
         "width": "md",
-        "group": [
-          {
-            "key": "city",
-            "placeholder": "Enter city",
-            "type": "text",
-            "required": true
-          }
-        ]
+        "placeholder": "Enter city",
+        "type": "text",
+        "required": true
       },
-      {
+      "postcode": {
         "name": "Post code",
         "width": "md",
-        "group": [
-          {
-            "key": "postcode",
-            "placeholder": "Enter your postcode",
-            "type": "text",
-            "required": true
-          }
-        ]
+        "placeholder": "Enter your postcode",
+        "type": "text",
+        "required": true
       }
-    ]
+    }
   }
 ]
