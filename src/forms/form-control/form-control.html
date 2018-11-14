@@ -123,7 +123,7 @@
     ng-blur="$ctrl.blur()"
     ng-min="$ctrl.ngMin"
     ng-max="$ctrl.ngMax"
-    autocomplete="{{ $ctrl.helpText ? 'disabled' : 'on' }}" />
+    autocomplete="{{ $ctrl.getAutocompleteStatus() }}" />
 
   <input ng-switch-when="hidden"
     name="{{$ctrl.name}}"
@@ -144,7 +144,7 @@
     ng-blur="$ctrl.blur()"
     ng-minlength="$ctrl.ngMinlength"
     ng-maxlength="$ctrl.ngMaxlength"
-    autocomplete="{{ $ctrl.helpText ? 'disabled' : 'on' }}" />
+    autocomplete="{{ $ctrl.getAutocompleteStatus() }}" />
 
   <textarea ng-switch-when="textarea"
     name="{{$ctrl.name}}"
@@ -160,7 +160,7 @@
     ng-focus="$ctrl.focus()"
     ng-blur="$ctrl.blur()"
     ng-disabled="$ctrl.ngDisabled"
-    autocomplete="{{ $ctrl.helpText ? 'disabled' : 'on' }}"
+    autocomplete="{{ $ctrl.getAutocompleteStatus() }}"
   ></textarea>
 
   <input ng-switch-default
@@ -179,6 +179,6 @@
     ng-blur="$ctrl.blur()"
     ng-disabled="$ctrl.ngDisabled"
     tw-text-format="{{ $ctrl.textFormat }}"
-    autocomplete="{{ $ctrl.helpText ? 'disabled' : 'on' }}" />
+    autocomplete="{{ $ctrl.getAutocompleteStatus() }}" />
 
 </div>
