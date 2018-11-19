@@ -26,6 +26,15 @@ class FormControlController {
     this.element.dispatchEvent(new CustomEvent('blur'));
   }
 
+  /**
+   * autocomplete hides our form help so we need to disable it when help text
+   * is present. Chrome ignores autocomplete=off, the only way to disable it is
+   * to provide an 'invalid' value, for which 'disabled' serves.
+   */
+  getAutocompleteStatus() {
+    return this.helpText ? 'disabled' : 'on';
+  }
+
   addValidators() {
     const $ngModel = this.$ngModel;
 

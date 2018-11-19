@@ -1,3 +1,7 @@
+# v3.5.2
+## Disable browser autocomplete when we have helpText
+Autocomplete hides our help text which normally contains important information.
+
 # v3.5.1
 ## remove redundant upload switch case from form-control
 removed redundant switch case 'upload' from form-control component since it was never used
