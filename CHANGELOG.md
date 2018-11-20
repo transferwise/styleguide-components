@@ -1,6 +1,10 @@
+# v3.5.2
+## Fix issue when clicking on containing label of radio button
+On first click it failed to update the model, when the model was not already set.
+
 # v3.5.1
-## remove redundant upload switch case from form-control
-removed redundant switch case 'upload' from form-control component since it was never used
+## Remove redundant upload switch case from form-control
+Removed redundant switch case 'upload' from form-control component since it was never used.
 
 # v3.5.0
 ## Add new support to the pop over service for the new popover placements
