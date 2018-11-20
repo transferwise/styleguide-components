@@ -46,10 +46,8 @@ class RadioController {
 
   hiddenInputChange() {
     // This only fires on label click
-    // Normal change handler doesn't, so trigger manually
-    if (this.ngChange) {
-      this.ngChange();
-    }
+    // Setting view value will also trigger onChange
+    this.$ngModel.$setViewValue(this.ngValue || this.value);
   }
 
   addWatchers($scope, element) {
