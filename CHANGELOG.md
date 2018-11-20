@@ -1,6 +1,10 @@
-# v3.5.2
+# v3.5.3
 ## Fix issue when clicking on containing label of radio button
 On first click it failed to update the model, when the model was not already set.
+
+# v3.5.2
+## Disable browser autocomplete when we have helpText
+Autocomplete hides our help text which normally contains important information.
 
 # v3.5.1
 ## Remove redundant upload switch case from form-control
