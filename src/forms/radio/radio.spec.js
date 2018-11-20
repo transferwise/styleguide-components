@@ -4,17 +4,21 @@ describe('Radio', function() {
   var $compile,
     $rootScope,
     $scope,
-    $ngModel,
+    $ngModelController,
     templateElement,
-    directiveElement,
+    twRadios,
+    twRadioOne,
+    twRadioTwo,
     buttons,
     buttonOne,
-    buttonTwo;
+    buttonTwo,
+    labelOne,
+    labelTwo;
 
   var DIRECTIVE_SELECTOR = 'tw-radio';
   var BUTTON_SELECTOR = 'button';
   var INPUT_SELECTOR = 'input';
-  var LABEL_SELECTOR = '.checkbox label';
+  var LABEL_SELECTOR = '.radio label';
 
   beforeEach(module('tw.styleguide.forms'));
   beforeEach(module('tw.styleguide.validation'));
@@ -24,201 +28,240 @@ describe('Radio', function() {
     $rootScope = $injector.get('$rootScope');
     $compile = $injector.get('$compile');
     $scope = $rootScope.$new();
+
     $scope.ngModel = null;
     $scope.name = 'myCheckbox';
     $scope.ngRequired = true;
     $scope.ngDisabled = false;
-    $scope.ngFocus = function() { console.log("focus!!!!!!!!!!"); };
-    $scope.ngBlur = function() { console.log("blur!!!!!!!!!!"); };
+
+    $scope.ngChange = jasmine.createSpy('ngChange');
+    $scope.ngFocus = jasmine.createSpy('ngFocus');
+    $scope.ngBlur = jasmine.createSpy('ngBlur');
+
     templateElement = getCompiledTemplateElement($scope);
-    directiveElement = templateElement.find(DIRECTIVE_SELECTOR);
-    $ngModel = directiveElement.controller('ngModel');
-    buttons = directiveElement.find(BUTTON_SELECTOR);
-    buttonOne = $(buttons[0]);
-    buttonTwo = $(buttons[1]);
+    twRadios = templateElement.querySelectorAll(DIRECTIVE_SELECTOR);
+    twRadioOne = twRadios[0];
+    twRadioTwo = twRadios[1];
+
+    $ngModelController = angular.element(twRadioOne).controller('ngModel');
+
+    buttons = templateElement.querySelectorAll(BUTTON_SELECTOR);
+    buttonOne = twRadioOne.querySelector(BUTTON_SELECTOR);
+    buttonTwo = twRadioTwo.querySelector(BUTTON_SELECTOR);
+
+    var labels = templateElement.querySelectorAll(LABEL_SELECTOR);
+    labelOne = labels[0];
+    labelTwo = labels[1];
   }));
 
-  describe('init', function() {
-    it('should add radio replacement for each directive', function() {
+  describe('when initialised using value attributes', function() {
+    it('should add radio replacement for each component', function() {
       expect(buttons.length).toBe(2);
     });
     it('should name a hidden form control', function() {
-      var hiddenInput = directiveElement.find(INPUT_SELECTOR);
-      expect(hiddenInput.attr('name')).toBe('myCheckbox');
-      expect(hiddenInput.attr('value')).toBe('1');
+      var hiddenInput = twRadioOne.querySelector(INPUT_SELECTOR);
+      expect(hiddenInput.getAttribute('name')).toBe('myCheckbox');
+      expect(hiddenInput.value).toBe('1');
     });
     it('should not be checked when ngModel does not match value', function() {
-      // TODO Requires CSS!!!
-      //expect(buttons.find('.tw-radio-check').is(':visible')).toBe(false);
-      expect(buttonOne.hasClass('checked')).toBe(false);
+      expect(buttonOne.classList).not.toContain('checked');
     });
 
-    it('should already be checked when ngModel matches value', function() {
-      $scope.ngModel = '1';
-      templateElement = getCompiledTemplateElement($scope);
-      buttons = templateElement.find(BUTTON_SELECTOR);
-      buttonOne = $(buttons[0]);
-      // TODO Requires CSS!!!
-      //expect(templateElement.find('.tw-radio-check').is(':visible')).toBe(true);
-      expect(buttonOne.hasClass('checked')).toBe(true);
+    describe('when the model value is changed', function() {
+      beforeEach(function() {
+        $scope.ngModel = '1';
+        $scope.$apply();
+      })
+      it('should check the radio with matching value', function() {
+        expect(buttonOne.classList).toContain('checked');
+      });
     });
   });
-  describe('interactions', function() {
-    it('should select first radio when first button clicked', function() {
-      buttonOne.trigger('click');
+
+  describe('when the radio button is focussed', function() {
+    var parentLabel, parentFormGroup;
+    beforeEach(function() {
+      buttonOne.dispatchEvent(new Event('focus'));
+      parentFormGroup = $(twRadioOne).closest('.form-group')[0];
+    });
+
+    it('should style nearest parent form-group', function() {
+      expect(parentFormGroup.classList).toContain('focus');
+    });
+    it('should style nearest parent radio label', function() {
+      expect(labelOne.classList).toContain('focus');
+    });
+
+    // TODO cannot figure out why this doesn't work in tests (works in browser)
+    xit('should trigger ngFocus', function() {
+      expect($scope.ngFocus).toHaveBeenCalled();
+    });
+
+    describe('and then blurred', function() {
+      beforeEach(function() {
+        buttonOne.dispatchEvent(new Event('blur'));
+      });
+
+      it('should set ngModel.$touched', function() {
+        expect($ngModelController.$touched).toBe(true);
+      });
+
+      // TODO cannot figure out why this doesn't work in tests (works in browser)
+      xit('should trigger ngBlur', function() {
+        expect($scope.ngBlur).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('when the first radio button is clicked', function() {
+    beforeEach(function() {
+      buttonOne.dispatchEvent(new Event('click'));
+    });
+    it('should select the first radio', function() {
       expect($scope.ngModel).toBe('1');
-      expect(buttonOne.hasClass('checked')).toBe(true);
-      expect(buttonTwo.hasClass('checked')).toBe(false);
+      expect(buttonOne.classList).toContain('checked');
     });
-    // TODO test browsers do not propogate this in the same way?
-    xit('should change ngModel to value of this radio when surrounding label clicked', function() {
-      buttonOne.closest('label').trigger('click');
+    it('should not select the second radio', function() {
+      expect(buttonTwo.classList).not.toContain('checked');
+    });
+    it('should set ngModel.$dirty', function() {
+      expect($ngModelController.$dirty).toBe(true);
+    });
+
+    // TODO cannot figure out why this doesn't work in tests (works in browser)
+    xit('should trigger the ngChange handler', function() {
+      expect($scope.ngChange).toHaveBeenCalled();
+      expect($scope.ngChange.calls.count()).toBe(1);
+    });
+
+    describe('and then the second radio button is clicked', function() {
+      beforeEach(function() {
+        buttonTwo.dispatchEvent(new Event('click'));
+      });
+      it('should deselect the first radio', function() {
+        expect(buttonOne.classList).not.toContain('checked');
+      });
+      it('should select the second radio', function() {
+        expect($scope.ngModel).toBe('2');
+        expect(buttonTwo.classList).toContain('checked');
+      });
+
+      // TODO cannot figure out why this doesn't work in tests (works in browser)
+      xit('should trigger the ngChange handler again', function() {
+        expect($scope.ngChange).toHaveBeenCalled();
+        expect($scope.ngChange.calls.count()).toBe(2);
+      });
+    });
+  });
+
+  describe('when a surrounding label is clicked', function() {
+    beforeEach(function() {
+      $(buttonOne).closest('label')[0].dispatchEvent(new Event('click'));
+    });
+    it('should change ngModel to value of this radio', function() {
       expect($scope.ngModel).toBe('1');
     });
-    it('should select second radio when second radio subsequently clicked', function() {
-      buttonOne.trigger('click');
-      buttonTwo.trigger('click');
-      expect($scope.ngModel).toBe('2');
-      expect(buttonOne.hasClass('checked')).toBe(false);
-      expect(buttonTwo.hasClass('checked')).toBe(true);
-    });
-
-    it('should set ngModel.$dirty when button clicked', function() {
-      buttonOne.triggerHandler('click');
-      expect($ngModel.$dirty).toBe(true);
-    });
-
-    it('should set ngModel.$touched when blured', function() {
-      buttonOne.triggerHandler('blur')
-      expect($ngModel.$touched).toBe(true);
-    });
-
-    it('should style nearest ".radio label" when focussed', function() {
-      buttonOne.triggerHandler('focus');
-      expect(directiveElement.closest('.radio').find('label').hasClass('focus')).toBe(true);
-    });
-
-    it('should style nearest parent form-group when focussed', function() {
-      buttonOne[0].dispatchEvent(new CustomEvent('focus'));
-      expect(directiveElement.closest('.form-group').hasClass('focus')).toBe(true);
-    });
-
-    it('should style nearest parent radio label when focussed', function() {
-      buttonOne.triggerHandler('focus');
-      expect(directiveElement.closest('.radio').find('label').hasClass('focus')).toBe(true);
+    // TODO cannot figure out why this doesn't work in tests (works in browser)
+    xit('should trigger the ngChange handler', function() {
+      expect($scope.ngChange).toHaveBeenCalled();
+      expect($scope.ngChange.calls.count()).toBe(1);
     });
   });
-  describe('validation', function() {
-    it('should have ng-invalid when required and unchecked', function() {
-      expect(directiveElement.hasClass('ng-invalid')).toBe(true);
-      expect($ngModel.$invalid).toBe(true);
-    });
-    // TODO Not usre this should be invalid as not dirty, just touched
-    xit('should be invalid when required, blurred, and unchecked', function() {
-      var checkboxContainer = buttonOne.closest('.checkbox');
-      buttonOne.triggerHandler('focus');
-      buttonOne.triggerHandler('blur');
-      expect(checkboxContainer.hasClass('has-error')).toBe(true);
-    });
-  });
-  describe('when disabled', function() {
-    it('should not select first radio on click', function() {
+
+  describe('when clicking on a disabled radio', function() {
+    beforeEach(function() {
       $scope.ngDisabled = true;
       templateElement = getCompiledTemplateElement($scope);
-      buttonOne = $(templateElement.find('button')[0]);
-
-      buttonOne.trigger('click');
+      buttonOne = templateElement.querySelector('button');
+      buttonOne.dispatchEvent(new Event('click'));
+    })
+    it('should not be selected', function() {
       expect($scope.ngModel).toBe(null);
-      expect(buttonOne.hasClass('checked')).toBe(false);
+      expect(buttonOne.classList).not.toContain('checked');
     });
   });
 
+  describe('validation', function() {
+    it('should have ng-invalid when required, dirty and unchecked', function() {
+      expect(twRadioOne.classList).toContain('ng-invalid');
+      expect($ngModelController.$invalid).toBe(true);
+    });
+  });
 
   describe('ng-value', function() {
-    var labels, labelOne, labelTwo;
-
     beforeEach(function() {
       var template = " \
-      <label> \
+      <div> \
+        <label> \
           <tw-radio name='{{name}}' \
-              ng-model='ngModel' \
-              ng-value='ngValue1' /> \
-      </label> \
-      <label> \
+            ng-model='ngModel' \
+            ng-value='ngValue1' /> \
+        </label> \
+        <label> \
           <tw-radio name='{{name}}' \
-              ng-model='ngModel' \
-              ng-value='ngValue2' /> \
-      </label>";
+            ng-model='ngModel' \
+            ng-value='ngValue2' /> \
+        </label> \
+      </div>";
 
       $scope.ngValue1 = 99;
       $scope.ngValue2 = true;
       $scope.ngModel = null;
 
       templateElement = getCompiledTemplateElement($scope, template);
-      buttons = templateElement.find(BUTTON_SELECTOR);
-      buttonOne = $(buttons[0]);
-      buttonTwo = $(buttons[1]);
-      labels = templateElement.find('label');
-      labelOne = $(labels[0]);
-      labelTwo = $(labels[1]);
+      buttons = templateElement.querySelectorAll(BUTTON_SELECTOR);
+      buttonOne = buttons[0];
+      buttonTwo = buttons[1];
+      var labels = templateElement.querySelectorAll('label');
+      labelOne = labels[0];
+      labelTwo = labels[1];
     });
 
     it('should not set ngModel to ngValue until checked ', function() {
       expect($scope.ngModel).toBe(null);
     });
     it('should not check buttons when ngModel not set', function() {
-      expect(buttonOne.hasClass('checked')).toBe(false);
-      expect(buttonTwo.hasClass('checked')).toBe(false);
+      expect(buttonOne.classList).not.toContain('checked');
+      expect(buttonTwo.classList).not.toContain('checked');
     });
-    it('should set ngModel to the first ngValue if button clicked', function() {
-      buttonOne.trigger('click');
-      expect($scope.ngModel).toBe(99);
+    it('should have a hidden input with the supplied value', function() {
+      var hiddenInputOne = templateElement.querySelector(INPUT_SELECTOR);
+      expect(hiddenInputOne.value).toBe('99');
     });
-    // TODO this does not trigger chnage in the same way as real browsers
-    xit('should set ngModel to the first ngValue if label clicked', function() {
-      labelOne.trigger('click');
-      expect($scope.ngModel).toBe(99);
-    });
-    it('should check first button when first button clicked', function() {
-      buttonOne.trigger('click');
-      expect(buttonOne.hasClass('checked')).toBe(true);
-      expect(buttonTwo.hasClass('checked')).toBe(false);
-    });
-    it('should set ngModel to the second ngValue if checked', function() {
-      buttonTwo.trigger('click');
-      expect($scope.ngModel).toBe(true);
-    });
-    it('should check second button when second button clicked', function() {
-      buttonOne.trigger('click');
-      buttonTwo.trigger('click');
-      expect(buttonOne.hasClass('checked')).toBe(false);
-      expect(buttonTwo.hasClass('checked')).toBe(true);
-    });
-    it('should have a hidden input withe supplied value', function() {
-      var hiddenInputOne = $(templateElement.find(INPUT_SELECTOR)[0]);
-      expect(hiddenInputOne.attr('value')).toBe('99');
-    });
-  });
 
-  describe('ng-focus', function() {
-    xit('should be triggered when button focussed', function() {
-      spyOn($scope, 'ngFocus').and.callThrough();
-      templateElement = getCompiledTemplateElement($scope);
-      buttons = templateElement.find(BUTTON_SELECTOR);
-      buttonOne = $(buttons[0]);
-      buttonOne.triggerHandler('focus');
-      expect($scope.ngFocus).toHaveBeenCalled();
-    });
-  });
-  describe('ng-blur', function() {
-    xit('should be triggered when button blurred', function() {
-      spyOn($scope, 'ngBlur').and.callThrough();
-      templateElement = getCompiledTemplateElement($scope);
-      buttons = templateElement.find(BUTTON_SELECTOR);
-      buttonOne = $(buttons[0]);
+    describe('when first radio is clicked', function() {
+      beforeEach(function() {
+        buttonOne.dispatchEvent(new Event('click'));
+      });
+      it('should set ngModel to the first ngValue', function() {
+        expect($scope.ngModel).toBe(99);
+      });
+      it('should check first button', function() {
+        expect(buttonOne.classList).toContain('checked');
+        expect(buttonTwo.classList).not.toContain('checked');
+      });
 
-      buttonOne.triggerHandler('blur');
-      expect($scope.ngBlur).toHaveBeenCalled();
+      describe('then second radio is clicked', function() {
+        beforeEach(function() {
+          buttonTwo.dispatchEvent(new Event('click'));
+        });
+        it('should set ngModel to the second ngValue', function() {
+          expect($scope.ngModel).toBe(true);
+        });
+        it('should check second button', function() {
+          expect(buttonOne.classList).not.toContain('checked');
+          expect(buttonTwo.classList).toContain('checked');
+        });
+      });
+    });
+
+    describe('when first label is clicked', function() {
+      beforeEach(function() {
+        labelOne.dispatchEvent(new Event('click'));
+      });
+      it('should set ngModel to the first ngValue if label clicked', function() {
+        expect($scope.ngModel).toBe(99);
+      });
     });
   });
 
@@ -236,6 +279,7 @@ describe('Radio', function() {
                 ng-model='ngModel' \
                 ng-required='ngRequired' \
                 ng-disabled='ngDisabled' \
+                ng-change='ngChange' \
                 ng-focus='ngFocus' \
                 ng-blur='ngBlur' /> \
               Radio label 1 \
@@ -248,6 +292,7 @@ describe('Radio', function() {
                 ng-model='ngModel' \
                 ng-required='ngRequired' \
                 ng-disabled='ngDisabled' \
+                ng-change='ngChange' \
                 ng-focus='ngFocus' \
                 ng-blur='ngBlur' /> \
               Radio label 2 \
@@ -259,6 +304,6 @@ describe('Radio', function() {
     var compiledElement = $compile(element)($scope);
 
     $scope.$digest();
-    return compiledElement;
+    return compiledElement[0];
   }
 });
