@@ -677,7 +677,7 @@ describe('Select', function() {
         beforeEach(function() {
           triggerKeyCode(filterInput, SPECIAL_KEYS.down);
         });
-        it('it should move focus to custom action', function() {
+        it('should move focus to custom action', function() {
           expect(component.find('.custom-action')[0] === document.activeElement).toBe(true);
         });
       });
