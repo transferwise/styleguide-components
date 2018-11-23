@@ -78,7 +78,7 @@
       'dropdown-menu-lg': $ctrl.dropdownWidth === 'lg'
     }">
 
-    <li ng-if="$ctrl.filter">
+    <li ng-if="$ctrl.shouldShowSearch()">
       <a href="" class="tw-select-filter-link p-a-0" tabindex="-1"
         ng-focus="$ctrl.focusOnFilterInput()">
         <div class="input-group">
