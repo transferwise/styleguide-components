@@ -247,6 +247,12 @@ class SelectController {
       transcludedOption[0].getElementsByTagName('a')[0].focus();
     }
   }
+
+  shouldShowSearch() {
+    // For longer list auto-show search.
+    // We choose twelve as we don't need it for month selector
+    return this.filter || (this.options && this.options.length > 12);
+  }
 }
 
 function labelMatches(option, search) {
@@ -280,7 +286,7 @@ function addEventHandlers($ctrl, $element, $ngModel, options, $timeout) {
 
   const onButtonClick = () => {
     $timeout(() => {
-      if (element.getAttribute('filter')) {
+      if ($ctrl.shouldShowSearch()) {
         // If filter in use, focus on that
         const filterInput = element.getElementsByClassName('tw-select-filter')[0];
         filterInput.focus();

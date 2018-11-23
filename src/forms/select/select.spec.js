@@ -482,36 +482,78 @@ describe('Select', function() {
     });
   });
 
-  describe('transclusion', function() {
-      beforeEach(function() {
-        $scope.options = OPTIONS;
-        $scope.ngModel = '1';
-        var template = " \
-          <tw-select \
-            options='options' \
-            ng-model='ngModel'> \
-            <a class='transcluded-content'></a> \
-          </tw-select>";
-        component = getComponent($scope, template);
-      });
-      it('should render transcluded content in dropdown', function() {
-        var transcluded = component.find('.transcluded-content');
-        expect(transcluded.length).toBe(1);
-        expect(transcluded.parent().is('li')).toBe(true);
-      });
+  describe('when using transclusion to pass in a custom action', function() {
+    beforeEach(function() {
+      $scope.options = OPTIONS;
+      $scope.ngModel = '1';
+      var template = " \
+        <tw-select \
+          options='options' \
+          ng-model='ngModel'> \
+          <a class='transcluded-content'></a> \
+        </tw-select>";
+      component = getComponent($scope, template);
+    });
+    it('should render transcluded content in the dropdown', function() {
+      var transcluded = component.find('.transcluded-content');
+      expect(transcluded.length).toBe(1);
+      expect(transcluded.parent().is('li')).toBe(true);
+    });
   });
-  describe('filter not used', function() {
-    it('should be hidden if not specified in template', function() {
+
+  describe('when no filter attribute is supplied', function() {
+    it('should not be dispalyed in the template', function() {
       var filter = component.find(FILTER_INPUT_SELECTOR);
       expect(filter.length).toBe(0);
     });
   });
-  describe('filter', function() {
+
+  describe('when a long list of options is supplied (and no filter)', function() {
+    var filterInput;
+    beforeEach(function() {
+      $scope.options = OPTIONS_LONG;
+      $scope.ngModel = '1';
+      var template = " \
+        <tw-select \
+          options='options' \
+          ng-model='ngModel'> \
+        </tw-select>";
+      component = getComponent($scope, template);
+      filterInput = component.find(FILTER_INPUT_SELECTOR)[0];
+    });
+    it('should automatically show the search input', function() {
+      expect(filterInput).toBeTruthy();
+    });
+  });
+
+  describe('when a filter attribute is supplied', function() {
     var $filterInput,
       filterInput,
       $button,
       button;
 
+    beforeEach(function() {
+      $scope.options = OPTIONS;
+      $scope.ngModel = '1';
+      $scope.filter = 'Search';
+      var template = " \
+        <tw-select \
+          options='options' \
+          ng-model='ngModel' \
+          filter='{{filter}}'> \
+        </tw-select>";
+      component = getComponent($scope, template);
+      $filterInput = component.find(FILTER_INPUT_SELECTOR);
+    });
+
+    it('should render a search input in the dropdown', function() {
+      expect($filterInput.length).toBe(1);
+    });
+  });
+
+  describe('when using the search input', function() {
+    var filterInput, $filterInput,
+      button;
     beforeEach(function() {
       $scope.options = OPTIONS;
       $scope.ngModel = '1';
@@ -528,93 +570,138 @@ describe('Select', function() {
       component = getComponent($scope, template);
       $filterInput = component.find(FILTER_INPUT_SELECTOR);
       filterInput = $filterInput[0];
-      $button = component.find('.btn');
-      button = $button[0];
-    });
-    it('should render if non false value is passed', function() {
-      expect($filterInput.length).toBe(1);
-    });
+      button = component.find('.btn')[0];
 
-    it('should move to the next option when down arrow pressed', function() {
-      expect($scope.ngModel).toBe('1');
-      triggerKeyCode(filterInput, SPECIAL_KEYS.down);
-      expect($scope.ngModel).toBe('2');
-    });
-    it('should move to the previous option when up arrow pressed', function() {
-      $scope.ngModel = '3';
-      $scope.$digest();
-      triggerKeyCode(filterInput, SPECIAL_KEYS.up);
-      expect($scope.ngModel).toBe('2');
-    });
-
-    it('should move to the first option when down arrow pressed and nothing active', function() {
-      $scope.ngModel = '99';
-      $scope.$digest();
-      triggerKeyCode(filterInput, SPECIAL_KEYS.down);
-      expect($scope.ngModel).toBe(OPTIONS[0].value);
-    });
-    it('should move to the last option when up arrow pressed and nothing active', function() {
-      $scope.ngModel = '99';
-      $scope.$digest();
-      triggerKeyCode(filterInput, SPECIAL_KEYS.up);
-      expect($scope.ngModel).toBe(OPTIONS[OPTIONS.length - 1].value);
-    });
-
-    it('should retain focus when down arrow pressed', function() {
       $filterInput.focus();
-      triggerKeyCode(filterInput, SPECIAL_KEYS.down);
-      expect(filterInput === document.activeElement).toBe(true);
-    });
-    it('should retain focus when up arrow pressed', function() {
-      $filterInput.focus();
-      triggerKeyCode(filterInput, SPECIAL_KEYS.up);
-      expect(filterInput === document.activeElement).toBe(true);
-    });
-    it('should focus back on the button when return key pressed', function() {
-      triggerKeyCode(filterInput, SPECIAL_KEYS.return);
-      expect(button === document.activeElement).toBe(true);
-    });
-    it('should move focus to custom action if last option selected and down arrow pressed', function() {
-      $scope.ngModel = '3';
-      $scope.$digest();
-      triggerKeyCode(filterInput, SPECIAL_KEYS.down);
-      expect(component.find('.custom-action')[0] === document.activeElement).toBe(true);
-    });
-    it('should prevent default if no matching option and return key pressed', function() {
-      $filterInput.val('a').trigger('change');
-      var selectedElements = component[0].querySelector('.active');
-      expect(selectedElements).toBe(null);
-
-      triggerKeyCode(filterInput, SPECIAL_KEYS.return);
-
-      var optionOne = OPTIONS[1];
-      expect($scope.ngModel).toBe(optionOne.value);
     });
 
-    it('should filter the list if characters entered', function() {
-      $filterInput.val("One").trigger('change');
-      var options = component.find(LIST_ITEMS_SELECTOR);
-      expect(options.length).toBe(1);
-      expect(optionText(options[0])).toBe('One');
+    describe('when characters are entered', function() {
+      it('should filter the list', function() {
+        $filterInput.val("One").trigger('change');
+        var options = component.find(LIST_ITEMS_SELECTOR);
+        expect(options.length).toBe(1);
+        expect(optionText(options[0])).toBe('One');
+      });
+      it('should include options that match case insensitively', function() {
+        $filterInput.val("t").trigger('change');
+        var options = component.find(LIST_ITEMS_SELECTOR);
+        expect(options.length).toBe(2);
+        expect(optionText(options[0])).toBe('Two');
+        expect(optionText(options[1])).toBe('Three');
+      });
+      it('should include options that match on substrings', function() {
+        $filterInput.val("ne").trigger('change');
+        var options = component.find(LIST_ITEMS_SELECTOR);
+        expect(options.length).toBe(1);
+        expect(optionText(options[0])).toBe('One');
+      });
+      it('should change ngModel to first visible option if none selected', function() {
+        $filterInput.val("t").trigger('change');
+        var options = component.find(LIST_ITEMS_SELECTOR);
+        expect($scope.ngModel).toBe('2');
+        expect(optionText(options[0])).toBe('Two');
+      });
     });
-    it('should filter case insensitvely', function() {
-      $filterInput.val("t").trigger('change');
-      var options = component.find(LIST_ITEMS_SELECTOR);
-      expect(options.length).toBe(2);
-      expect(optionText(options[0])).toBe('Two');
-      expect(optionText(options[1])).toBe('Three');
+
+    describe('when an option is selected', function() {
+      beforeEach(function() {
+        $scope.ngModel = '2';
+        $scope.$digest();
+      });
+
+      describe('and the down arrow is pressed', function() {
+        beforeEach(function() {
+          triggerKeyCode(filterInput, SPECIAL_KEYS.down);
+        });
+        it('should select the next option', function() {
+          expect($scope.ngModel).toBe('3');
+        });
+        it('should retain focus', function() {
+          expect(filterInput === document.activeElement).toBe(true);
+        });
+      });
+
+      describe('and the up arrow is pressed', function() {
+        beforeEach(function() {
+          triggerKeyCode(filterInput, SPECIAL_KEYS.up);
+        });
+        it('should select the previous option', function() {
+          expect($scope.ngModel).toBe('1');
+        });
+        it('should retain focus', function() {
+          expect(filterInput === document.activeElement).toBe(true);
+        });
+      });
+
+      describe('and the return key is pressed', function() {
+        beforeEach(function() {
+          triggerKeyCode(filterInput, SPECIAL_KEYS.return);
+        });
+        it('should focus back on the select button', function() {
+          expect(button === document.activeElement).toBe(true);
+        });
+      });
     });
-    it('should filter on substrings', function() {
-      $filterInput.val("ne").trigger('change');
-      var options = component.find(LIST_ITEMS_SELECTOR);
-      expect(options.length).toBe(1);
-      expect(optionText(options[0])).toBe('One');
+
+    describe('when no option is selected', function() {
+      beforeEach(function() {
+        $scope.ngModel = '99';
+        $scope.$digest();
+      });
+
+      describe('and the down arrow is pressed', function() {
+        beforeEach(function() {
+          triggerKeyCode(filterInput, SPECIAL_KEYS.down);
+        });
+        it('should move to the first option ', function() {
+          expect($scope.ngModel).toBe(OPTIONS[0].value);
+        });
+      });
+
+      describe('and the up arrow is pressed', function() {
+        beforeEach(function() {
+          triggerKeyCode(filterInput, SPECIAL_KEYS.up);
+        });
+        it('should move to the last option  ', function() {
+          expect($scope.ngModel).toBe(OPTIONS[OPTIONS.length - 1].value);
+        });
+      });
     });
-    it('should change ngModel to first visible option if none selected', function() {
-      $filterInput.val("t").trigger('change');
-      var options = component.find(LIST_ITEMS_SELECTOR);
-      expect($scope.ngModel).toBe('2');
-      expect(optionText(options[0])).toBe('Two');
+
+    describe('when the last option is selected', function() {
+      beforeEach(function() {
+        $scope.ngModel = '3';
+        $scope.$digest();
+      });
+      describe('and the down arrow is pressed', function() {
+        beforeEach(function() {
+          triggerKeyCode(filterInput, SPECIAL_KEYS.down);
+        });
+        it('should move focus to custom action', function() {
+          expect(component.find('.custom-action')[0] === document.activeElement).toBe(true);
+        });
+      });
+    });
+
+    describe('when there are no matching search results', function() {
+      var selectedElements
+      beforeEach(function() {
+        $filterInput.val('a').trigger('change');
+      });
+      it('should not show any options', function() {
+        expect(component[0].querySelectorAll(LIST_ITEMS_SELECTOR).length).toBe(0);
+      });
+
+      describe('and the return key is pressed', function() {
+        beforeEach(function() {
+          triggerKeyCode(filterInput, SPECIAL_KEYS.return);
+        });
+
+        it('should prevent the default action', function() {
+          var optionOne = OPTIONS[1];
+          expect($scope.ngModel).toBe(optionOne.value);
+        });
+      });
     });
   });
 
@@ -1243,4 +1330,21 @@ describe('Select', function() {
     label: "Unrelated",
     searchable: "Searchable"
   }];
+
+  var OPTIONS_LONG = [
+    { value: '0',label: 'Zero' },
+    { value: '1', label: 'One' },
+    { value: '2', label: 'Two' },
+    { value: '3', label: 'Three'},
+    { value: '4', label: 'Four'},
+    { value: '5', label: 'Five'},
+    { value: '6', label: 'Six'},
+    { value: '7', label: 'Seven'},
+    { value: '8', label: 'Eight'},
+    { value: '9', label: 'Nine'},
+    { value: '10', label: 'Ten'},
+    { value: '11', label: 'Eleven'},
+    { value: '12', label: 'Twelve'},
+    { value: '13', label: 'Thirteen'}
+  ];
 });
