@@ -1,3 +1,7 @@
+# v3.5.4
+## Automatically show search box for long lists of values in twSelect
+If more than 12 values are supplied search box will be automatically disaplyed.
+
 # v3.5.3
 ## Fix issue when clicking on containing label of radio button
 On first click it failed to update the model, when the model was not already set.
