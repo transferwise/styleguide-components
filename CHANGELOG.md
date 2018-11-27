@@ -1,3 +1,7 @@
+# v3.5.5
+## Refactor tests for twTelephone
+Adopt given, when, then test structure.
+
 # v3.5.4
 ## Automatically show search box for long lists of values in twSelect
 If more than 12 values are supplied search box will be automatically disaplyed.
