@@ -90,11 +90,17 @@ class DateLookupController {
     this.updateCalendarDatePresentation();
   }
 
-  selectYear($event, year) {
-    $event.stopPropagation();
-    if (this.isYearDisabled(year)) {
-      return;
-    }
+  // selectYear($event, year) {
+  //   $event.stopPropagation();
+  //   if (this.isYearDisabled(year)) {
+  //     return;
+  //   }
+  //   this.year = year;
+  //   this.mode = 'month';
+  //   this.updateCalendarDatePresentation();
+  // }
+
+  selectYear(year) {
     this.year = year;
     this.mode = 'month';
     this.updateCalendarDatePresentation();
@@ -177,10 +183,10 @@ class DateLookupController {
     this.mode = 'year';
   }
 
-  setYearOffset($event, addtionalOffset) {
-    $event.stopPropagation();
-    this.yearOffset += addtionalOffset;
-  }
+  // setYearOffset($event, addtionalOffset) {
+  //   $event.stopPropagation();
+  //   this.yearOffset += addtionalOffset;
+  // }
 
   buttonFocus() {
     if (this.formGroup) {
@@ -434,10 +440,6 @@ class DateLookupController {
       newDate = this.DateService.addYears(date, years);
     }
     this.setModel(newDate);
-  }
-
-  calculateYear(row, column) {
-    return (this.year - (this.year % 20)) + row + column + this.yearOffset;
   }
 }
 
