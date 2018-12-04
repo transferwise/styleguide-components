@@ -6,7 +6,7 @@ const Tabs = {
   template,
   bindings: {
     tabs: '<',
-    active: '=',
+    active: '<',
     onChange: '&'
   }
 };

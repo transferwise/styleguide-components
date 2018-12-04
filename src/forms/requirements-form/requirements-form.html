@@ -1,6 +1,7 @@
 <tw-tabs
   ng-if="$ctrl.requirements.length > 1"
   tabs="$ctrl.requirements"
+  on-change="$ctrl.onTabChange(index)"
   active="$ctrl.activeIndex">
 </tw-tabs>
 <div class="tab-content" ng-form="twForm"

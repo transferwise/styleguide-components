@@ -5,10 +5,10 @@ class TabsController {
     }
   }
 
-  switchTab(tab) {
-    this.active = tab;
+  switchTab(index) {
+    this.active = index;
     if (this.onChange) {
-      this.onChange({ tab });
+      this.onChange({ index });
     }
   }
 }

@@ -105,6 +105,22 @@ describe('RequirementsForm', function() {
     it('should pass the requirements to the tabs', function() {
       expect(Tabs.bindings.tabs).toEqual(requirements);
     });
+
+    describe('when the active tab is changed', function() {
+      beforeEach(function() {
+        Tabs.bindings.onChange({index: 1});
+      })
+
+      it('should only retain model properties shared by both requirements', function() {
+        // sort_code is retained as it's a shared prop.  twField will chnage
+        // the value when it finds there is only one valid enum for this prop.
+        // In our test twField is mocked so this change doesn't happen.
+        expect($scope.model).toEqual({
+          type: 'sort_code',
+          shared: 'should stay on tab change'
+        });
+      });
+    });
   });
 
   describe('when the fieldset triggers onRefreshRequirements', function() {
@@ -157,15 +173,15 @@ describe('RequirementsForm', function() {
   function getSingleRequirementsModel() {
     return {
       type: "sort_code",
-      sortCode: "123456",
-      accountNumber: "12345678"
+      sortCode: "123456"
     };
   }
 
   function getMultipleRequirementsModel() {
     return {
-      type: "iban_With_unDerscOres",
-      IBAN: "ee1001010101010101"
+      type: "sort_code",
+      sortCode: "123456",
+      shared: 'should stay on tab change'
     }
   }
 
@@ -194,14 +210,9 @@ describe('RequirementsForm', function() {
             minLength: 6,
             maxLength: 8
           },
-          accountNumber: {
-            title: "Account number",
-            type: "string",
-            required: true,
-            placeholder: "12345678",
-            minLength: 8,
-            maxLength: 8,
-            validationRegexp: "^[0-9]{8}$"
+          shared: {
+            title: "Shared field",
+            type: "string"
           }
         }
       },
@@ -223,6 +234,10 @@ describe('RequirementsForm', function() {
             displayFormat: "**** **** **** **** **** **** **** ****",
             placeholder: "GB89370400440532013000",
             minLength: 2
+          },
+          shared: {
+            title: "Shared field",
+            type: "string"
           }
         }
       }

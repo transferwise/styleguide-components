@@ -1,18 +1,18 @@
 import angular from 'angular';
 
 class RequirementsFormController {
-  constructor($scope, TwRequirementsFormService, RequirementsService) {
-    this.RequirementsFormService = TwRequirementsFormService;
+  constructor(RequirementsService) {
     this.RequirementsService = RequirementsService;
 
     if (!this.model) {
       this.model = {};
     }
+  }
 
-    $scope.$watch(
-      '$ctrl.activeIndex',
-      (newVal, oldVal) => this.switchTab(newVal, oldVal)
-    );
+  $onInit() {
+    if (this.requirements && this.requirements.length > 0) {
+      this.activeIndex = 0;
+    }
   }
 
   $onChanges(changes) {
@@ -24,12 +24,17 @@ class RequirementsFormController {
     }
   }
 
+  onTabChange(index) {
+    this.switchTab(index, this.activeIndex);
+    this.activeIndex = index;
+  }
+
   switchTab(newIndex, oldIndex) {
-    if (!newIndex) {
+    if (newIndex === oldIndex) {
       return;
     }
 
-    this.RequirementsFormService.cleanRequirementsModel(
+    cleanRequirementsModel(
       this.model,
       this.requirements && this.requirements[oldIndex],
       this.requirements && this.requirements[newIndex]
@@ -62,7 +67,7 @@ class RequirementsFormController {
       this.activeIndex = 0;
     }
 
-    this.RequirementsFormService.cleanRequirementsModel(
+    cleanRequirementsModel(
       this.model,
       oldPrepared[this.activeIndex],
       newPrepared[this.activeIndex]
@@ -70,9 +75,34 @@ class RequirementsFormController {
   }
 }
 
+function cleanRequirementsModel(model, oldRequirements, newRequirements) {
+  if (!oldRequirements ||
+    !newRequirements ||
+    !oldRequirements.properties ||
+    !newRequirements.properties) {
+    return;
+  }
+
+  const oldFieldNames = getFieldNamesFromRequirement(oldRequirements);
+  const newFieldNames = getFieldNamesFromRequirement(newRequirements);
+
+  const obsoleteFieldNames =
+    oldFieldNames.filter(fieldName => newFieldNames.indexOf(fieldName) < 0);
+
+  obsoleteFieldNames.forEach((fieldName) => {
+    delete model[fieldName];
+  });
+}
+
+function getFieldNamesFromRequirement(modelRequirement) {
+  if (!modelRequirement || !modelRequirement.properties) {
+    return [];
+  }
+
+  return Object.keys(modelRequirement.properties) || [];
+}
+
 RequirementsFormController.$inject = [
-  '$scope',
-  'TwRequirementsFormService',
   'TwRequirementsService'
 ];
 
