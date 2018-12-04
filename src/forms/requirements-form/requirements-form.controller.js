@@ -9,11 +9,6 @@ class RequirementsFormController {
       this.model = {};
     }
 
-    // TODO this is actually in the fieldset, which is not very good
-    $scope.$watch('twForm.$valid', (validity) => {
-      this.isValid = !!validity;
-    });
-
     $scope.$watch(
       '$ctrl.activeIndex',
       (newVal, oldVal) => this.switchTab(newVal, oldVal)

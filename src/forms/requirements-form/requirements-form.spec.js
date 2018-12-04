@@ -157,7 +157,6 @@ describe('RequirementsForm', function() {
   function getSingleRequirementsModel() {
     return {
       type: "sort_code",
-      legalType: "PRIVATE",
       sortCode: "123456",
       accountNumber: "12345678"
     };
@@ -166,9 +165,7 @@ describe('RequirementsForm', function() {
   function getMultipleRequirementsModel() {
     return {
       type: "iban_With_unDerscOres",
-      legalType: "PRIVATE",
-      IBAN: "ee1001010101010101",
-      BIC: "3676543456"
+      IBAN: "ee1001010101010101"
     }
   }
 
@@ -188,21 +185,6 @@ describe('RequirementsForm', function() {
             enum: ["sort_code"],
             required: true
           },
-          legalType: {
-            title: "Legal type",
-            type: "string",
-            required: true,
-            values: [
-              {
-                value: "PRIVATE",
-                label: "Private"
-              },
-              {
-                value: "BUSINESS",
-                label: "Business"
-              }
-            ]
-          },
           sortCode: {
             title: "UK Sort code",
             type: "string",
@@ -210,17 +192,7 @@ describe('RequirementsForm', function() {
             displayFormat: "**-**-**",
             placeholder: "40-30-20",
             minLength: 6,
-            maxLength: 8,
-            validationAsync: {
-              url: "https://api.transferwise.com/v1/validators/sort-code",
-              params: [
-                {
-                  key: "sortCode",
-                  parameterName: "sortCode",
-                  required: true
-                }
-              ]
-            }
+            maxLength: 8
           },
           accountNumber: {
             title: "Account number",
@@ -229,17 +201,7 @@ describe('RequirementsForm', function() {
             placeholder: "12345678",
             minLength: 8,
             maxLength: 8,
-            validationRegexp: "^[0-9]{8}$",
-            validationAsync: {
-              url: "https://api.transferwise.com/v1/validators/sort-code-account-number",
-              params: [
-                {
-                  key: "accountNumber",
-                  parameterName: "accountNumber",
-                  required: true
-                }
-              ]
-            }
+            validationRegexp: "^[0-9]{8}$"
           }
         }
       },
@@ -254,60 +216,13 @@ describe('RequirementsForm', function() {
             required: true,
             hidden: true
           },
-          legalType: {
-            title: "Legal type",
-            type: "string",
-            required: true,
-            values: [
-              {
-                value: "PRIVATE",
-                label: "Private"
-              },
-              {
-                value: "BUSINESS",
-                label: "Business"
-              }
-            ],
-            helpText: "I am a nice tooltip that was created by fingers pressing buttons"
-          },
           IBAN: {
             title: "IBAN",
             type: "text",
             required: true,
             displayFormat: "**** **** **** **** **** **** **** ****",
             placeholder: "GB89370400440532013000",
-            minLength: 2,
-            validationAsync: {
-              url: "https://api.transferwise.com/v1/validators/iban",
-              params: [
-                {
-                  key: "iban",
-                  parameterName: "iban",
-                  required: true
-                }
-              ]
-            }
-          },
-          BIC: {
-            title: "Bank code (BIC/SWIFT)",
-            type: "string",
-            placeholder: "ABCDDE22 (Optional)",
-            validationRegexp: "^[A-Z]{6}[A-Z,0-9]{2}([A-Z,0-9]{3})?$",
-            validationAsync: {
-              url: "https://api.transferwise.com/v1/validators/bic",
-              params: [
-                {
-                  key: "iban",
-                  parameterName: "iban",
-                  required: true
-                },
-                {
-                  key: "bic",
-                  parameterName: "bic",
-                  required: true
-                }
-              ]
-            }
+            minLength: 2
           }
         }
       }
