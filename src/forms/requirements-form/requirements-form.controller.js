@@ -9,59 +9,35 @@ class RequirementsFormController {
       this.model = {};
     }
 
-    // TODO move watches to $onChanges
-    $scope.$watch('$ctrl.requirements', (newRequirements, oldRequirements) => {
-      if (!angular.equals(newRequirements, oldRequirements)) {
-        this.requirements = this.RequirementsService.prepRequirements(this.requirements);
-
-        const oldType = this.model.type;
-        const newType =
-          this.requirements.length ? this.requirements[0].type : null;
-
-        this.model.type = newType;
-
-        if (oldRequirements && newRequirements) {
-          this.RequirementsFormService.cleanModel(
-            this.model,
-            oldRequirements, oldType,
-            newRequirements, newType
-          );
-        }
-      }
-    });
-
-    $scope.$watch('$ctrl.model.type', (newType, oldType) => {
-      this.switchTab(newType, oldType);
-    });
-
+    // TODO this is actually in the fieldset, which is not very good
     $scope.$watch('twForm.$valid', (validity) => {
       this.isValid = !!validity;
     });
 
-    // TODO can we add asyncvalidator here? - prob not
+    $scope.$watch(
+      '$ctrl.activeIndex',
+      (newVal, oldVal) => this.switchTab(newVal, oldVal)
+    );
   }
 
-  switchTab(newType, oldType) {
-    const oldRequirementType = this.RequirementsFormService.findRequirementByType(
-      oldType,
-      this.requirements
-    );
-    const newRequirementType = this.RequirementsFormService.findRequirementByType(
-      newType,
-      this.requirements
-    );
+  $onChanges(changes) {
+    if (changes.requirements) {
+      this.onRequirementsChange(
+        changes.requirements.currentValue,
+        changes.requirements.previousValue
+      );
+    }
+  }
 
-    if (!oldRequirementType || !newRequirementType) {
-      if (!this.model) {
-        this.model = {};
-      }
-      this.model.type = newType;
+  switchTab(newIndex, oldIndex) {
+    if (!newIndex) {
+      return;
     }
 
     this.RequirementsFormService.cleanRequirementsModel(
       this.model,
-      oldRequirementType,
-      newRequirementType
+      this.requirements && this.requirements[oldIndex],
+      this.requirements && this.requirements[newIndex]
     );
   }
 
@@ -69,6 +45,33 @@ class RequirementsFormController {
     if (this.onRefreshRequirements) {
       this.onRefreshRequirements();
     }
+  }
+
+  onRequirementsChange(newRequirements, oldRequirements) {
+    if (angular.equals(newRequirements, oldRequirements)) {
+      return;
+    }
+
+    // We need to prepare the new AND old, because the the binding is not
+    // updated when we prepare, so the oldValue will not be prepped.
+    const newPrepared = this.RequirementsService.prepRequirements(newRequirements);
+    const oldPrepared = this.RequirementsService.prepRequirements(oldRequirements);
+
+    this.requirements = newPrepared;
+
+    // If activeIndex is invalid, correct it
+    if ((!this.activeIndex ||
+      (this.activeIndex && !this.requirements[this.activeIndex])) &&
+      this.requirements.length > 0
+    ) {
+      this.activeIndex = 0;
+    }
+
+    this.RequirementsFormService.cleanRequirementsModel(
+      this.model,
+      oldPrepared[this.activeIndex],
+      newPrepared[this.activeIndex]
+    );
   }
 }
 

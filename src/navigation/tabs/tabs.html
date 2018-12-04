@@ -3,10 +3,10 @@
   <li
     ng-repeat="tab in $ctrl.tabs track by $index"
     ng-class="{
-      'active': $ctrl.active === tab.type
+      'active': $ctrl.active === $index
     }">
-    <a href="" ng-click="$ctrl.switchTab(tab.type)">
-      {{tab.label}}
+    <a href="" ng-click="$ctrl.switchTab($index)">
+      {{ tab.title }}
     </a>
   </li>
 </ul>
