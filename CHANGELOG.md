@@ -1,3 +1,9 @@
+# v3.5.7
+## Remove special case handling for 'type' in dynamic forms.
+Use JSON schema to document is as a required field with a single enum value. Backwards compatibility is maintained.  
+
+Refactor twTabs interface so as not to rely on dynamic form structure, this is a breaking interface change but it is not in use outside of the twRequirementsForm.
+
 # v3.5.6
 ## Add additional CSS class in order to target the popover created by this service
 Target the popover created by this service in the DOM in order to reuse the element
