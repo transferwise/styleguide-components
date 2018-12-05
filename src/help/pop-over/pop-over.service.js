@@ -19,7 +19,7 @@ class PopOverService {
     const parent = getPopoverParent(config);
 
     if (!parent.contains(this.popover)) {
-      const existingPopover = parent.querySelector('.popover');
+      const existingPopover = parent.querySelector('.popover-service');
 
       if (existingPopover) {
         this.popover = existingPopover;
@@ -109,7 +109,7 @@ function getPopoverElement(config) {
   const popoverElement = angular.element(popoverTemplate)[0];
 
   const isPopoverModal = getModalCondition(config);
-  const cssClasses = ['popover', 'in', placement, 'scale-down'];
+  const cssClasses = ['popover', 'in', placement, 'scale-down', 'popover-service'];
 
   if (isPopoverModal) {
     cssClasses.push('popover-modal');

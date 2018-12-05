@@ -1,3 +1,7 @@
+# v3.5.6
+## Add additional CSS class in order to target the popover created by this service
+Target the popover created by this service in the DOM in order to reuse the element
+
 # v3.5.5
 ## Refactor tests for twTelephone
 Adopt given, when, then test structure.
