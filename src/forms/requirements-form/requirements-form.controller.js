@@ -58,6 +58,7 @@ class RequirementsFormController {
     const oldPrepared = this.RequirementsService.prepRequirements(oldRequirements);
 
     this.requirements = newPrepared;
+    this.tabs = this.requirements.map(requirement => requirement.title);
 
     // If activeIndex is invalid, correct it
     if ((!this.activeIndex ||
