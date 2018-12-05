@@ -102,8 +102,9 @@ describe('RequirementsForm', function() {
       expect(component.querySelector('tw-tabs')).toBeTruthy();
     });
 
-    it('should pass the requirements to the tabs', function() {
-      expect(Tabs.bindings.tabs).toEqual(requirements);
+    it('should pass the requirement titles to the tabs', function() {
+      var titles = requirements.map(function(requirement) { return requirement.title });
+      expect(Tabs.bindings.tabs).toEqual(titles);
     });
 
     describe('when the active tab is changed', function() {
