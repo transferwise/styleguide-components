@@ -277,8 +277,14 @@ function fieldsetDocsController() {
       },
       file: {
         title: 'File',
-        type: 'UPLOAD',
+        type: 'string',
+        format: 'base64url',
         refreshRequirementsOnChange: true
+      },
+      hidden: {
+        type: 'string',
+        hidden: true,
+        default: 'hidden-value'
       }
     }
   };

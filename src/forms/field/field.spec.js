@@ -197,6 +197,19 @@ describe('Field', function() {
     });
   });
 
+  describe('when the field is required and has only one enum value', function() {
+    beforeEach(function() {
+      $scope.options = { type: "string", enum: ['valid'], required: true };
+      $scope.model = 'invalid';
+      element = getCompiledDirectiveElement();
+    });
+
+    it('should set the model value to the enum', function() {
+      expect($scope.model).toBe('valid');
+      expect(element.querySelector('input').value).toBe('valid');
+    });
+  });
+
   describe('when given an error message', function() {
     beforeEach(function() {
       $scope.options = { type: "string" };

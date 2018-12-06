@@ -8,6 +8,7 @@
 
     "dist/js/styleguide-components.js",
 
+    "test-utils.js",
     "src/**/*.spec.js"
   ],
   "exclude": [],

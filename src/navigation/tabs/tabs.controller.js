@@ -1,14 +1,14 @@
 class TabsController {
   constructor() {
     if (!this.active && this.tabs && this.tabs.length) {
-      this.active = this.tabs[0].type;
+      this.active = 0;
     }
   }
 
-  switchTab(tab) {
-    this.active = tab;
+  switchTab(index) {
+    this.active = index;
     if (this.onChange) {
-      this.onChange({ tab });
+      this.onChange({ index });
     }
   }
 }

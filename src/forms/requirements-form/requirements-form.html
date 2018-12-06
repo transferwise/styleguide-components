@@ -1,22 +1,24 @@
 <tw-tabs
   ng-if="$ctrl.requirements.length > 1"
-  tabs="$ctrl.requirements"
-  active="$ctrl.model.type">
+  tabs="$ctrl.tabs"
+  on-change="$ctrl.onTabChange(index)"
+  active="$ctrl.activeIndex">
 </tw-tabs>
-<div class="tab-content" ng-form="twForm">
-  <div ng-repeat="requirementType in $ctrl.requirements"
-    ng-if="$ctrl.model.type == requirementType.type"
-    class="tab-pane active"
-    id="{{requirementType.type}}">
-    <p>{{requirementType.description}}</p>
+<div class="tab-content" ng-form="twForm"
+  ng-if="$ctrl.requirements.length > 0">
+  <div class="tab-pane active">
+    <p ng-if="$ctrl.requirements[$ctrl.activeIndex].description">
+      {{ $ctrl.requirements[$ctrl.activeIndex].description }}
+    </p>
     <tw-fieldset
-      fields="requirementType.properties"
+      fields="$ctrl.requirements[$ctrl.activeIndex].properties"
       model="$ctrl.model"
       upload-options="$ctrl.uploadOptions"
       locale="{{$ctrl.locale}}"
       on-refresh-requirements="$ctrl.onFieldsetRefreshRequirements()"
       validation-messages="$ctrl.validationMessages"
-      error-messages="$ctrl.errorMessages">
+      error-messages="$ctrl.errorMessages"
+      is-valid="$ctrl.isValid">
     </tw-fieldset>
   </div>
 </div>

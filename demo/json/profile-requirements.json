@@ -1,6 +1,6 @@
 [
   {
-    "type": "profile",
+    "type": "object",
     "properties": {
       "firstName": {
         "name": "First name",

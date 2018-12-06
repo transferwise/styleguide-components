@@ -1,67 +1,43 @@
 import angular from 'angular';
 
 class RequirementsFormController {
-  constructor($scope, TwRequirementsFormService, RequirementsService) {
-    this.RequirementsFormService = TwRequirementsFormService;
+  constructor(RequirementsService) {
     this.RequirementsService = RequirementsService;
 
     if (!this.model) {
       this.model = {};
     }
-
-    // TODO move watches to $onChanges
-    $scope.$watch('$ctrl.requirements', (newRequirements, oldRequirements) => {
-      if (!angular.equals(newRequirements, oldRequirements)) {
-        this.requirements = this.RequirementsService.prepRequirements(this.requirements);
-
-        const oldType = this.model.type;
-        const newType =
-          this.requirements.length ? this.requirements[0].type : null;
-
-        this.model.type = newType;
-
-        if (oldRequirements && newRequirements) {
-          this.RequirementsFormService.cleanModel(
-            this.model,
-            oldRequirements, oldType,
-            newRequirements, newType
-          );
-        }
-      }
-    });
-
-    $scope.$watch('$ctrl.model.type', (newType, oldType) => {
-      this.switchTab(newType, oldType);
-    });
-
-    $scope.$watch('twForm.$valid', (validity) => {
-      this.isValid = !!validity;
-    });
-
-    // TODO can we add asyncvalidator here? - prob not
   }
 
-  switchTab(newType, oldType) {
-    const oldRequirementType = this.RequirementsFormService.findRequirementByType(
-      oldType,
-      this.requirements
-    );
-    const newRequirementType = this.RequirementsFormService.findRequirementByType(
-      newType,
-      this.requirements
-    );
+  $onInit() {
+    if (this.requirements && this.requirements.length > 0) {
+      this.activeIndex = 0;
+    }
+  }
 
-    if (!oldRequirementType || !newRequirementType) {
-      if (!this.model) {
-        this.model = {};
-      }
-      this.model.type = newType;
+  $onChanges(changes) {
+    if (changes.requirements) {
+      this.onRequirementsChange(
+        changes.requirements.currentValue,
+        changes.requirements.previousValue
+      );
+    }
+  }
+
+  onTabChange(index) {
+    this.switchTab(index, this.activeIndex);
+    this.activeIndex = index;
+  }
+
+  switchTab(newIndex, oldIndex) {
+    if (newIndex === oldIndex) {
+      return;
     }
 
-    this.RequirementsFormService.cleanRequirementsModel(
+    cleanRequirementsModel(
       this.model,
-      oldRequirementType,
-      newRequirementType
+      this.requirements && this.requirements[oldIndex],
+      this.requirements && this.requirements[newIndex]
     );
   }
 
@@ -70,11 +46,64 @@ class RequirementsFormController {
       this.onRefreshRequirements();
     }
   }
+
+  onRequirementsChange(newRequirements, oldRequirements) {
+    if (angular.equals(newRequirements, oldRequirements)) {
+      return;
+    }
+
+    // We need to prepare the new AND old, because the the binding is not
+    // updated when we prepare, so the oldValue will not be prepped.
+    const newPrepared = this.RequirementsService.prepRequirements(newRequirements);
+    const oldPrepared = this.RequirementsService.prepRequirements(oldRequirements);
+
+    this.requirements = newPrepared;
+    this.tabs = this.requirements.map(requirement => requirement.title);
+
+    // If activeIndex is invalid, correct it
+    if ((!this.activeIndex ||
+      (this.activeIndex && !this.requirements[this.activeIndex])) &&
+      this.requirements.length > 0
+    ) {
+      this.activeIndex = 0;
+    }
+
+    cleanRequirementsModel(
+      this.model,
+      oldPrepared[this.activeIndex],
+      newPrepared[this.activeIndex]
+    );
+  }
+}
+
+function cleanRequirementsModel(model, oldRequirements, newRequirements) {
+  if (!oldRequirements ||
+    !newRequirements ||
+    !oldRequirements.properties ||
+    !newRequirements.properties) {
+    return;
+  }
+
+  const oldFieldNames = getFieldNamesFromRequirement(oldRequirements);
+  const newFieldNames = getFieldNamesFromRequirement(newRequirements);
+
+  const obsoleteFieldNames =
+    oldFieldNames.filter(fieldName => newFieldNames.indexOf(fieldName) < 0);
+
+  obsoleteFieldNames.forEach((fieldName) => {
+    delete model[fieldName];
+  });
+}
+
+function getFieldNamesFromRequirement(modelRequirement) {
+  if (!modelRequirement || !modelRequirement.properties) {
+    return [];
+  }
+
+  return Object.keys(modelRequirement.properties) || [];
 }
 
 RequirementsFormController.$inject = [
-  '$scope',
-  'TwRequirementsFormService',
   'TwRequirementsService'
 ];
 

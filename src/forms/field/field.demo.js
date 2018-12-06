@@ -321,6 +321,7 @@ function fieldDocsController() {
   };
   this.hiddenControl = {
     type: 'string',
+    default: 'hidden-value',
     hidden: true
   };
 }

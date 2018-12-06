@@ -8,7 +8,7 @@
 <div ng-class="{'row row-equal-height': $ctrl.layout === 'vertical'}">
   <div ng-class="{'col-xs-12 col-sm-6': !$ctrl.narrow && $ctrl.layout === 'vertical'}"
     ng-repeat="(key, field) in $ctrl.fields track by $index"
-    ng-if="$ctrl.model[key]">
+    ng-if="$ctrl.model[key] && !field.hidden">
 
     <dl ng-if="!field.group"
       ng-class="{'dl-horizontal-item': $ctrl.layout === 'justified', 'dl-horizontal': $ctrl.layout === 'horizontal'}">

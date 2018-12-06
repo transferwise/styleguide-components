@@ -5,11 +5,11 @@
     <div
       class="col-xs-12"
       ng-hide="field.hidden"
-      ng-repeat="(key, field) in $ctrl.fields track by $index"
+      ng-repeat="(key, field) in $ctrl.fields"
       ng-class="{
         'col-sm-4': !$ctrl.narrow  && field.width === 'sm',
-        'col-sm-6': !$ctrl.narrow  && (field.width === 'md' || field.maxlength && field.maxlength <= 10),
-        'col-sm-12': $ctrl.narrow || field.width === 'lg' || !field.maxlength || field.maxlength > 10
+        'col-sm-6': !$ctrl.narrow  && field.width === 'md',
+        'col-sm-12': $ctrl.narrow || field.width === 'lg'
       }">
 
       <tw-field

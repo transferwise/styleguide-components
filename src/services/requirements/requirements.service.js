@@ -1,11 +1,35 @@
 function RequirementsService($http) {
   this.prepRequirements = (alternatives) => {
+    if (!alternatives || !alternatives.length) {
+      return [];
+    }
+
     const preppedAlternatives = copyOf(alternatives);
 
     preppedAlternatives.forEach((alternative) => {
+      if (alternative.prepared) {
+        return;
+      }
+
       this.prepLegacyAlternatives(alternative);
 
       alternative.properties = this.prepFields(alternative.properties || alternative.fields);
+
+      // If we're still treating type as a special case, move it to a hidden value
+      if (alternative.type &&
+          alternative.type !== 'object' &&
+          !alternative.types) {
+        alternative.properties.type = {
+          type: 'string',
+          enum: [alternative.type],
+          required: true,
+          hidden: true
+        };
+
+        alternative.type = 'object';
+      }
+
+      alternative.prepared = true;
     });
 
     return preppedAlternatives;
@@ -200,11 +224,11 @@ function RequirementsService($http) {
   };
 
   this.prepLegacyAlternatives = (alternative) => {
-    if (!alternative.label && alternative.title) {
-      alternative.label = alternative.title;
+    if (!alternative.title && alternative.label) {
+      alternative.title = alternative.label;
     }
-    if (!alternative.label) {
-      alternative.label = getNameFromType(alternative.type);
+    if (!alternative.title) {
+      alternative.title = getNameFromType(alternative.type);
     }
     if (!alternative.type && alternative.name) {
       alternative.type = alternative.name;
