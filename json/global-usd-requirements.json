@@ -1,30 +1,34 @@
 [
   {
-    "type": "aba",
+    "type": "object",
     "title": "US based account",
-    "properties": [
-      {
-        "key": "name",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": ["aba"],
+        "required": true,
+        "hidden": true
+      },
+      "name": {
         "type": "string",
         "title": "Recipient name",
         "placeholder": "Name of the person who owns the account..."
       },
-      {
-        "key": "abartn",
+      "abartn": {
         "type": "string",
         "title": "ACH routing number",
         "placeholder": "Enter routing number...",
         "validationRegexp": "\\d{9}",
         "width": "md"
-      },{
-        "key": "accountNumber",
+      },
+      "accountNumber": {
         "type": "string",
         "title": "Account number",
         "placeholder": "Enter account number...",
         "validationRegexp": "\\d{4,17}",
         "width": "md"
-      },{
-        "key": "accountType",
+      },
+      "accountType": {
         "type": "string",
         "control": "radio",
         "title": "Account type",
@@ -36,8 +40,8 @@
           "value": "credit",
           "label": "Credit"
         }]
-      },{
-        "key": "address",
+      },
+      "address": {
         "type": "object",
         "title": "Address details",
         "properties": [
@@ -71,20 +75,24 @@
           }
         ]
       }
-    ]
+    }
   },{
-    "type": "global-usd",
+    "type": "object",
     "title": "International USD Account",
     "description": "Sending USD may internationally may incur extra fees.  We'll update your fees once we know the destination of the money.",
-    "properties": [
-      {
-        "key": "name",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": ["global-usd"],
+        "required": true,
+        "hidden": true
+      },
+      "name": {
         "type": "string",
         "title": "Recipient name",
         "placeholder": "Name of the person who owns the account..."
       },
-      {
-        "key": "country",
+      "country": {
         "type": "string",
         "control": "select",
         "title": "Country",
@@ -97,19 +105,19 @@
           "value": "HK",
           "label": "Hong Kong"
         }]
-      },{
-        "key": "swiftCode",
+      },
+      "swiftCode": {
         "type": "string",
         "title": "SWIFT Code",
         "placeholder": "8 digit code...",
         "width": "md"
-      },{
-        "key": "iban",
+      },
+      "iban": {
         "type": "string",
         "title": "IBAN",
         "placeholder": "Long code between 18 and 20 characters",
         "width": "md"
       }
-    ]
+    }
   }
 ]
