@@ -4,7 +4,6 @@ describe('Directive: TwCards', function() {
   var $compile,
     $rootScope,
     $scope,
-    isolateScope,
     directiveElement;
 
   beforeEach(module('tw.styleguide.layout'));
