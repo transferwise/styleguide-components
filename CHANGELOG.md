@@ -1,3 +1,7 @@
+# v3.5.9
+## Fixing chevron cards style
+We have been using button styles so hovering over chevrons presents a wrong behaviour. This version fixes it.
+
 # v3.5.8
 ## Adding chevron icons to cards.
 As part of making activity list cards more visible to customers, we are now adding chevrons to indicate the user that it's a clickable and expandable card item.
