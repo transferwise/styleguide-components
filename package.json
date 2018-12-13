@@ -1,6 +1,6 @@
 {
   "name": "@transferwise/styleguide-components",
-  "version": "3.5.7",
+  "version": "3.5.8",
   "description": "TransfeWise AngularJS 1.x Styleguide Components",
   "license": "MIT",
   "scripts": {
@@ -43,12 +43,12 @@
   },
   "homepage": "https://github.com/transferwise/styleguide-components",
   "dependencies": {
-    "angular": "^1.5.0",
+    "angular": "~1.5.0",
     "jquery": "^3.2.1"
   },
   "devDependencies": {
     "@uirouter/angularjs": "^1.0.15",
-    "angular-mocks": "^1.5.0",
+    "angular-mocks": "~1.5.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.2",

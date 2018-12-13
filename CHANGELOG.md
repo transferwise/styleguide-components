@@ -1,6 +1,10 @@
+# v3.5.8
+## Adding chevron icons to cards.
+As part of making activity list cards more visible to customers, we are now adding chevrons to indicate the user that it's a clickable and expandable card item.
+
 # v3.5.7
 ## Remove special case handling for 'type' in dynamic forms.
-Use JSON schema to document is as a required field with a single enum value. Backwards compatibility is maintained.  
+Use JSON schema to document is as a required field with a single enum value. Backwards compatibility is maintained.
 
 Refactor twTabs interface so as not to rely on dynamic form structure, this is a breaking interface change but it is not in use outside of the twRequirementsForm.
 
