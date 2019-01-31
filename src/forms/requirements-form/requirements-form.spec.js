@@ -41,6 +41,7 @@ describe('RequirementsForm', function() {
     $scope.errorMessages = { accountNumber: 'error' };
 
     $scope.onRefreshRequirements = jasmine.createSpy('onRefreshRequirements');
+    $scope.onModelChange = jasmine.createSpy('onModelChange');
 
     component = getComponent($scope);
   }));
@@ -133,7 +134,17 @@ describe('RequirementsForm', function() {
     });
   });
 
-  describe('when the fieldet is valid', function() {
+  describe('when the fieldset triggers onModelChange', function() {
+    beforeEach(function() {
+      Fieldset.bindings.onModelChange({model: {a:1}});
+    });
+    it('should trigger form onModelChange', function() {
+      expect($scope.onModelChange).toHaveBeenCalledWith({a:1});
+    });
+  });
+
+
+  describe('when the fieldset is valid', function() {
     beforeEach(function() {
       Fieldset.bindings.isValid = true;
       $scope.$apply();
@@ -143,6 +154,7 @@ describe('RequirementsForm', function() {
       expect($scope.isValid).toBe(true);
     });
   });
+
   describe('when the model is invalid', function() {
     beforeEach(function() {
       Fieldset.bindings.isValid = false;
@@ -159,6 +171,7 @@ describe('RequirementsForm', function() {
       <tw-requirements-form \
         model='model' \
         requirements='requirements' \
+        on-model-change='onModelChange' \
         on-refresh-requirements='onRefreshRequirements()' \
         validation-messages='validationMessages' \
         error-messages='errorMessages' \

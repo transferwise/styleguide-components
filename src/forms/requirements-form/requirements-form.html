@@ -13,6 +13,7 @@
     <tw-fieldset
       fields="$ctrl.requirements[$ctrl.activeIndex].properties"
       model="$ctrl.model"
+      on-model-change="$ctrl.onFieldsetModelChange(model)"
       upload-options="$ctrl.uploadOptions"
       locale="{{$ctrl.locale}}"
       on-refresh-requirements="$ctrl.onFieldsetRefreshRequirements()"

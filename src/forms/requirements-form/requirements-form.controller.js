@@ -46,6 +46,11 @@ class RequirementsFormController {
       this.onRefreshRequirements();
     }
   }
+  onFieldsetModelChange(model) {
+    if (this.onModelChange) {
+      this.onModelChange(model);
+    }
+  }
 
   onRequirementsChange(newRequirements, oldRequirements) {
     if (angular.equals(newRequirements, oldRequirements)) {
