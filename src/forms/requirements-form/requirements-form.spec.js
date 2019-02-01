@@ -136,10 +136,10 @@ describe('RequirementsForm', function() {
 
   describe('when the fieldset triggers onModelChange', function() {
     beforeEach(function() {
-      Fieldset.bindings.onModelChange({model: {a:1}});
+      Fieldset.bindings.onModelChange({a:1});
     });
     it('should trigger form onModelChange', function() {
-      expect($scope.onModelChange).toHaveBeenCalledWith({a:1});
+      expect($scope.onModelChange).toHaveBeenCalled();
     });
   });
 
@@ -171,7 +171,7 @@ describe('RequirementsForm', function() {
       <tw-requirements-form \
         model='model' \
         requirements='requirements' \
-        on-model-change='onModelChange' \
+        on-model-change='onModelChange()' \
         on-refresh-requirements='onRefreshRequirements()' \
         validation-messages='validationMessages' \
         error-messages='errorMessages' \
