@@ -6,7 +6,7 @@ const RequirementsForm = {
   template,
   bindings: {
     model: '=',
-    onModelChange: '<',
+    onModelChange: '&',
     requirements: '<',
     uploadOptions: '<',
     locale: '@',

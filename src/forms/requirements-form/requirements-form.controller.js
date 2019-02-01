@@ -48,7 +48,7 @@ class RequirementsFormController {
   }
   onFieldsetModelChange(model) {
     if (this.onModelChange) {
-      this.onModelChange(model);
+      this.onModelChange({ model });
     }
   }
 
