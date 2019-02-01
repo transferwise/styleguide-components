@@ -23,7 +23,7 @@
     <tw-requirements-form
       requirements="$ctrl.requirements"
       model="$ctrl.model"
-      on-model-change="$ctrl.logModel"
+      on-model-change="$ctrl.logModel(model)"
       on-refresh-requirements="$ctrl.onRefreshRequirements()"
       upload-options="{
         buttonText: 'Choose file...',
