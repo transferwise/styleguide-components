@@ -42,6 +42,10 @@ class RequirementsDocsController {
 
     this.model.firstName = '01010101010';
   }
+
+  logModel(model) { // eslint-disable-line
+    console.log(model); // eslint-disable-line
+  }
 }
 
 RequirementsDocsController.$inject = ['$scope', '$http'];
