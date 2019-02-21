@@ -1,4 +1,4 @@
-ARRAY SCHEMA
+
 <!--if (schema.items.type in ['string', 'number', 'integer', 'boolean']) {
   if (schema.values) {
     <label> schema.title </label>
@@ -9,12 +9,17 @@ ARRAY SCHEMA
 } else {
 -->
   <h3> {{ $ctrl.schema.title }} </tih3tle>
-  <div ng-repeat="$ctrl.model as (index, childModel)">
+  <div ng-repeat="(index, childModel) in $ctrl.model">
     <generic-schema
-      schema="schema.items"
+      schema="$ctrl.schema.items"
       model="childModel"
-      errors="errors[index]"
-      on-change="$ctrl.onModelChange(model)" />
-    <button> Remove </button>
+      errors="$ctrl.errors[index]"
+      on-change="$ctrl.onItemChange(index, model)">
+    </generic-schema>
+    <button class="btn btn-danger" ng-click="$ctrl.remove(index)">
+      Remove
+    </button>
   </div>
-  <button class="btn btn-default"> Add </button>
+  <button class="btn btn-default" ng-click="$ctrl.add()">
+    Add
+  </button>

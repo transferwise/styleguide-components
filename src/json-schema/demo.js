@@ -55,6 +55,22 @@ class controller {
           properties: {
             streetAddress: { title: 'Street address', type: 'string' }
           }
+        },
+        {
+          type: 'object',
+          title: 'Shareholders',
+          properties: {
+            shareholders: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  firstName: { type: 'string', title: 'First name' },
+                  lastName: { type: 'string', title: 'Last name' }
+                }
+              }
+            }
+          }
         }
       ]
     };
