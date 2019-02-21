@@ -6,8 +6,6 @@ class Controller {
   }
 
   onChildChange(model) {
-
-    console.log('allOf', model);
     angular.extend(this.model, model);
 
     if (this.onChange) {

@@ -6,8 +6,6 @@ class Controller {
   }
 
   onPropertyChange(property, model) {
-    //console.log(this.model, property, model);
-
     this.model[property] = model;
 
     if (this.onChange) {

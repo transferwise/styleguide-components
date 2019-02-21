@@ -10,7 +10,6 @@ class Controller {
   }
 
   onModelChange(model) {
-    console.log('oneOf', model);
     if (this.onChange) {
       this.onChange({ model });
     }
