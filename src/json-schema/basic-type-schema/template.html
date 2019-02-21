@@ -2,7 +2,8 @@
   name="{{ key }}"
   model="$ctrl.model"
   field="$ctrl.schema"
-  locale="$ctrl.locale"
+  locale="{{ $ctrl.locale }}"
   on-change="$ctrl.onModelChange(value)"
+  error-message="$ctrl.errors"
   class="btn-block"> <!-- Remove btn-block after boostrap update -->
 </tw-field>

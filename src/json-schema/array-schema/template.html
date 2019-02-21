@@ -8,17 +8,19 @@
   // Arrays of arbitrary basic types are not supported TODO
 } else {
 -->
-  <h3> {{ $ctrl.schema.title }} </tih3tle>
+  <h3> {{ $ctrl.schema.title }} </h3>
   <div ng-repeat="(index, childModel) in $ctrl.model">
     <generic-schema
       schema="$ctrl.schema.items"
       model="childModel"
       errors="$ctrl.errors[index]"
+      locale="$ctrl.locale"
       on-change="$ctrl.onItemChange(index, model)">
     </generic-schema>
     <button class="btn btn-danger" ng-click="$ctrl.remove(index)">
       Remove
     </button>
+    <hr />
   </div>
   <button class="btn btn-default" ng-click="$ctrl.add()">
     Add

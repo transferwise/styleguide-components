@@ -3,7 +3,11 @@ import template from './demo.html';
 
 class controller {
   $onInit() {
-    this.errors = {};
+    this.errors = {
+      currency: "This one is bad",
+      accountNumber: "Also this one",
+      streetAddress: "And this one could be better"
+    };
     this.schema = {
       allOf: [
         {
@@ -31,12 +35,14 @@ class controller {
                 sortCode: {
                   title: 'Sort code',
                   type: 'string',
-                  placeholder: '40-30-20'
+                  placeholder: '40-30-20',
+                  width: 'md'
                 },
                 accountNumber: {
                   title: 'Account number',
                   type: 'string',
-                  placeholder: '12345678'
+                  placeholder: '12345678',
+                  width: 'md'
                 }
               }
             },
@@ -52,12 +58,15 @@ class controller {
         {
           type: 'object',
           title: 'Address details',
+          width: 'md',
           properties: {
-            streetAddress: { title: 'Street address', type: 'string' }
+            streetAddress: { title: 'Street address', type: 'string' },
+            since: { title: 'When did you move in?', type: 'string', format: 'date' }
           }
         },
         {
           type: 'object',
+          width: 'md',
           title: 'Shareholders',
           properties: {
             shareholders: {
@@ -65,8 +74,16 @@ class controller {
               items: {
                 type: 'object',
                 properties: {
-                  firstName: { type: 'string', title: 'First name' },
-                  lastName: { type: 'string', title: 'Last name' }
+                  firstName: {
+                    type: 'string',
+                    title: 'First name',
+                    width: 'md'
+                  },
+                  lastName: {
+                    type: 'string',
+                    title: 'Last name',
+                    width: 'md'
+                  }
                 }
               }
             }

@@ -9,9 +9,14 @@
     <generic-schema
       schema="$ctrl.schema"
       errors="$ctrl.errors"
+      locale="'es-ES'"
       on-change="$ctrl.onModelChange(model)">
     </generic-schema>
 
-    <pre>{{ $ctrl.model | json }}</pre>
+    <pre>
+      {{ $ctrl.model | json }}
+
+      {{ $ctrl.errors | json }}
+    </pre>
   </div>
 </div>

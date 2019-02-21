@@ -7,6 +7,8 @@ const Component = {
   bindings: {
     schema: '<',
     model: '<',
+    errors: '<',
+    locale: '<',
     onChange: '&'
   }
 };

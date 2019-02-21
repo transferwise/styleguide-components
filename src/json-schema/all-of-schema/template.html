@@ -1,8 +1,17 @@
-<div ng-repeat="nestedSchema in $ctrl.schema.allOf ">
-  <generic-schema
-    schema="nestedSchema"
-    model="$ctrl.model"
-    errors="$ctrl.errors"
-    on-change="$ctrl.onChildChange(model)">
-  </generic-schema>
+<div class="row">
+  <div ng-repeat="nestedSchema in $ctrl.schema.allOf"
+    class="col-xs-12"
+    ng-class="{
+      'col-sm-4': !$ctrl.narrow  && nestedSchema.width === 'sm',
+      'col-sm-6': !$ctrl.narrow  && nestedSchema.width === 'md',
+      'col-sm-12': $ctrl.narrow || nestedSchema.width === 'lg'
+    }">
+    <generic-schema
+      schema="nestedSchema"
+      model="$ctrl.model"
+      errors="$ctrl.errors"
+      locale="$ctrl.locale"
+      on-change="$ctrl.onChildChange(model)">
+    </generic-schema>
+  </div>
 </div>
