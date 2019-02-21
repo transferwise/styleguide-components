@@ -1,0 +1,80 @@
+<one-of-schema
+  ng-if="$ctrl.schema.oneOf"
+  schema="$ctrl.schema"
+  errors="$ctrl.errors"
+  on-change="$ctrl.onModelChange(model)">
+</one-of-schema>
+
+<all-of-schema
+  ng-if="$ctrl.schema.allOf"
+  schema="$ctrl.schema"
+  errors="$ctrl.errors"
+  on-change="$ctrl.onModelChange(model)">
+</all-of-schema>
+
+<basic-type-schema
+  ng-if="$ctrl.schema.type && ($ctrl.schema.type !== 'object' && $ctrl.schema.type !== 'array')"
+  schema="$ctrl.schema"
+  errors="$ctrl.errors"
+  on-change="$ctrl.onModelChange(model)">
+</basic-type-schema>
+
+<object-schema
+  ng-if="$ctrl.schema.type === 'object'"
+  schema="$ctrl.schema"
+  errors="$ctrl.errors"
+  on-change="$ctrl.onModelChange(model)"
+  on-refresh="">
+</object-schema>
+
+<array-schema
+  ng-if="$ctrl.schema.type === 'array'"
+  schema="$ctrl.schema"
+  errors="$ctrl.errors"
+  on-change="$ctrl.onModelChange(model)">
+</array-schema>
+
+
+<!--
+<div ng-if="$ctrl.schema.type" ng-switch="$ctrl.schema.type">
+
+  <number-schema
+    ng-switch-when="number"
+    schema="$ctrl.schema"
+    errors="$ctrl.errors"
+    on-change="$ctrl.onChange"
+    on-refresh="">
+  </number-schema>
+
+  <boolean-schema
+    ng-switch-when="boolean"
+    schema="$ctrl.schema"
+    errors="$ctrl.errors"
+    on-change="$ctrl.onChange"
+    on-refresh="">
+  </boolean-schema>
+
+  <object-schema
+    ng-switch-when="object"
+    schema="$ctrl.schema"
+    errors="$ctrl.errors"
+    on-change="$ctrl.onChange"
+    on-refresh="">
+  </object-schema>
+
+  <array-schema
+    ng-switch-when="array"
+    schema="$ctrl.schema"
+    errors="$ctrl.errors"
+    on-change="$ctrl.onChange"
+    on-refresh="">
+  </array-schema>
+
+  <string-schema
+    ng-switch-else="array"
+    schema="$ctrl.schema"
+    errors="$ctrl.errors"
+    on-change="$ctrl.onChange"
+    on-refresh="">
+  </string-schema>
+</div>

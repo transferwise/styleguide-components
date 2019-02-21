@@ -4,6 +4,8 @@ import Validation from './validation/demo.js';
 import Loading from './loading/demo.js';
 import Layout from './layout/demo.js';
 import Help from './help/demo.js';
+import JsonSchema from './json-schema/demo.js';
+
 
 const module = angular.module('tw.styleguide.demo', [
   Forms,
@@ -11,7 +13,8 @@ const module = angular.module('tw.styleguide.demo', [
   Validation,
   Loading,
   Layout,
-  Help
+  Help,
+  JsonSchema
 ]);
 
 class PageController {

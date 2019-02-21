@@ -1,0 +1,15 @@
+<tw-tabs
+  tabs="$ctrl.tabs"
+  on-change="$ctrl.onTabChange(index)"
+  active="$ctrl.activeIndex">
+</tw-tabs>
+
+<div class="tab-content" ng-form="twForm">
+  <div class="tab-pane active">
+    <generic-schema
+      schema="$ctrl.schema.oneOf[$ctrl.activeIndex]"
+      model="$ctrl.model"
+      on-change="$ctrl.onModelChange(model)">
+    </generic-schema>
+  </div>
+</div>

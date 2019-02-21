@@ -1,0 +1,11 @@
+<fieldset>
+  <legend ng-if="$ctrl.schema.title"> {{ $ctrl.schema.title }}</legend>
+  <div ng-repeat="(property, nestedSchema) in $ctrl.schema.properties">
+    <generic-schema
+      schema="nestedSchema"
+      model="$ctrl.model[property]"
+      errors="$ctrl.errors[property]"
+      on-change="$ctrl.onPropertyChange(property, model)">
+    </generic-schema>
+  </div>
+</fieldset>

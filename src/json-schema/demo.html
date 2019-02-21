@@ -1,0 +1,17 @@
+<div class="panel">
+  <div class="panel-heading">
+    <div class="panel-title">
+      <h2>JSON schema dynamic forms</h2>
+    </div>
+  </div>
+  <div class="panel-body">
+
+    <generic-schema
+      schema="$ctrl.schema"
+      errors="$ctrl.errors"
+      on-change="$ctrl.onModelChange(model)">
+    </generic-schema>
+
+    <pre>{{ $ctrl.model | json }}</pre>
+  </div>
+</div>

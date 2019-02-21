@@ -1,0 +1,8 @@
+<div ng-repeat="nestedSchema in $ctrl.schema.allOf ">
+  <generic-schema
+    schema="nestedSchema"
+    model="$ctrl.model"
+    errors="$ctrl.errors"
+    on-change="$ctrl.onChildChange(model)">
+  </generic-schema>
+</div>

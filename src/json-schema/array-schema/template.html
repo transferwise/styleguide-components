@@ -1,0 +1,20 @@
+ARRAY SCHEMA
+<!--if (schema.items.type in ['string', 'number', 'integer', 'boolean']) {
+  if (schema.values) {
+    <label> schema.title </label>
+    <multi-select-input value="model" on-change="" /> TODO Document
+    <messaging type="schema.type" value="model" schema="schema" />
+  }
+  // Arrays of arbitrary basic types are not supported TODO
+} else {
+-->
+  <h3> {{ $ctrl.schema.title }} </tih3tle>
+  <div ng-repeat="$ctrl.model as (index, childModel)">
+    <generic-schema
+      schema="schema.items"
+      model="childModel"
+      errors="errors[index]"
+      on-change="$ctrl.onModelChange(model)" />
+    <button> Remove </button>
+  </div>
+  <button class="btn btn-default"> Add </button>
