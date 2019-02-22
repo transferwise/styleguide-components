@@ -1,0 +1,109 @@
+{
+  "allOf": [
+    {
+      "type": "object",
+      "title": "Create business",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Business name",
+          "width": "md"
+        },
+        "incorporationDate": {
+          "type": "string",
+          "title": "Date incorporated",
+          "format": "date",
+          "width": "md"
+        },
+        "industry": {
+          "title": "Industry",
+          "type": "string",
+          "values": [
+            {
+              "value": "technology",
+              "label": "Information technology"
+            },
+            {
+              "value": "finance",
+              "label": "Finance & banking"
+            }
+          ],
+          "control": "select",
+          "default": "technology",
+          "width": "md"
+        },
+        "contactNumber": {
+          "type": "string",
+          "format": "phone",
+          "title": "Contact number",
+          "width": "md"
+        }
+      }
+    },{
+      "oneOf": [{
+        "type": "object",
+        "title": "Private business",
+        "properties": {
+          "taxRegistered": {
+            "type": "boolean",
+            "title": "Is it tax registed?",
+            "placeholder": "Yes, registered"
+          },
+          "shareholders": {
+            "description": "Please list all shareholders with 25% or greater ownership",
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 4,
+            "items": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string",
+                  "title": "First name",
+                  "width": "md"
+                },
+                "lastName": {
+                  "type": "string",
+                  "title": "Last name",
+                  "width": "md"
+                }
+              }
+            }
+          }
+        }
+      },{
+        "type": "object",
+        "title": "Public business",
+        "properties": {
+          "registrationNumber": {
+            "type": "integer",
+            "title": "Registration number"
+          }
+        }
+      }]
+    },{
+      "type": "object",
+      "title": "Address details",
+      "properties": {
+        "streetAddress": {
+          "title": "Street address",
+          "type": "string"
+        },
+        "contact": {
+          "title": "Can we contact you at this address?",
+          "type": "bool",
+          "values": [
+            {
+              "value": true,
+              "label": "Yes"
+            },
+            {
+              "value": false,
+              "label": "No"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -8,20 +8,42 @@
   // Arrays of arbitrary basic types are not supported TODO
 } else {
 -->
-  <h3> {{ $ctrl.schema.title }} </h3>
+  <h4 class="page-header" ng-if="$ctrl.schema.title">
+    {{ $ctrl.schema.title }}
+  </h4>
+  <p ng-if="$ctrl.schema.description">
+    {{ $ctrl.schema.description }}
+  </p>
   <div ng-repeat="(index, childModel) in $ctrl.model">
-    <generic-schema
-      schema="$ctrl.schema.items"
-      model="childModel"
-      errors="$ctrl.errors[index]"
-      locale="$ctrl.locale"
-      on-change="$ctrl.onItemChange(index, model)">
-    </generic-schema>
-    <button class="btn btn-danger" ng-click="$ctrl.remove(index)">
+    <hr ng-if="index > 0" class="m-t-1 m-b-2" />
+    <div class="row">
+      <div class="col-xs-10">
+        <generic-schema
+          schema="$ctrl.schema.items"
+          model="childModel"
+          errors="$ctrl.errors[index]"
+          locale="$ctrl.locale"
+          on-change="$ctrl.onItemChange(index, model)">
+        </generic-schema>
+      </div>
+      <div class="col-xs-2">
+        <button class="btn btn-danger m-t-3"
+          ng-click="$ctrl.remove(index)"
+          ng-disabled="index < $ctrl.schema.minItems">
+          Remove
+        </button>
+      </div>
+    </div>
+    <!--
+    <button class="btn btn-danger"
+      ng-if="!$ctrl.schema.minItems || index >= $ctrl.schema.minItems"
+      ng-click="$ctrl.remove(index)">
       Remove
     </button>
-    <hr />
+  -->
   </div>
-  <button class="btn btn-default" ng-click="$ctrl.add()">
+  <button class="btn btn-default"
+    ng-disabled="$ctrl.schema.maxItems && $ctrl.model.length >= $ctrl.schema.maxItems"
+    ng-click="$ctrl.add()">
     Add
   </button>
