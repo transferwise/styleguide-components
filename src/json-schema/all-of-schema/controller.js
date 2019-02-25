@@ -5,7 +5,7 @@ class Controller {
     }
   }
 
-  onChildChange(model) {
+  onModelChange(model) {
     angular.extend(this.model, model);
 
     if (this.onChange) {

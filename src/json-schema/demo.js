@@ -18,6 +18,15 @@ class controller {
 
     this.errors = {};
     this.schema = schema;
+
+    this.model = {
+      name: 'Example',
+      taxRegistered: true,
+      shareholders: [{
+        firstName: 'jimbob'
+      }],
+      streetAddress: '22 Accacia Avenue'
+    };
   }
 
   onModelChange(model) {

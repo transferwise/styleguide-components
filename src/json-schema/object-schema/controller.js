@@ -5,7 +5,7 @@ class Controller {
     }
   }
 
-  onPropertyChange(property, model) {
+  onModelChange(model, property) {
     this.model[property] = model;
 
     if (this.onChange) {
@@ -13,7 +13,7 @@ class Controller {
     }
   }
 
-  onRefreshRequirements(property, model) {
+  onRefreshRequirements(model, property) {
     this.model[property] = model; // TODO doing this twice
 
     if (this.onRefresh) {

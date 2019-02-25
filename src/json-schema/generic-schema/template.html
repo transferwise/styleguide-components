@@ -1,5 +1,6 @@
 <one-of-schema
   ng-if="$ctrl.schema.oneOf"
+  model="$ctrl.model"
   schema="$ctrl.schema"
   errors="$ctrl.errors"
   locale="$ctrl.locale"
@@ -9,6 +10,7 @@
 
 <all-of-schema
   ng-if="$ctrl.schema.allOf"
+  model="$ctrl.model"
   schema="$ctrl.schema"
   errors="$ctrl.errors"
   locale="$ctrl.locale"
@@ -18,6 +20,7 @@
 
 <basic-type-schema
   ng-if="$ctrl.schema.type && ($ctrl.schema.type !== 'object' && $ctrl.schema.type !== 'array')"
+  model="$ctrl.model"
   schema="$ctrl.schema"
   errors="$ctrl.errors"
   locale="$ctrl.locale"
@@ -27,6 +30,7 @@
 
 <object-schema
   ng-if="$ctrl.schema.type === 'object'"
+  model="$ctrl.model"
   schema="$ctrl.schema"
   errors="$ctrl.errors"
   locale="$ctrl.locale"
@@ -37,6 +41,7 @@
 
 <array-schema
   ng-if="$ctrl.schema.type === 'array'"
+  model="$ctrl.model"
   schema="$ctrl.schema"
   errors="$ctrl.errors"
   locale="$ctrl.locale"

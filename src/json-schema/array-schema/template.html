@@ -17,31 +17,24 @@
   <div ng-repeat="(index, childModel) in $ctrl.model">
     <hr ng-if="index > 0" class="m-t-1 m-b-2" />
     <div class="row">
-      <div class="col-xs-10">
+      <div class="col-sm-9">
         <generic-schema
           schema="$ctrl.schema.items"
           model="childModel"
           errors="$ctrl.errors[index]"
           locale="$ctrl.locale"
-          on-change="$ctrl.onItemChange(index, model)"
-          on-refresh="$ctrl.onRefreshRequirements(index, model)">
+          on-change="$ctrl.onModelChange(model, index)"
+          on-refresh="$ctrl.onRefreshRequirements(model, index)">
         </generic-schema>
       </div>
-      <div class="col-xs-2">
-        <button class="btn btn-danger m-t-3"
+      <div class="col-sm-3">
+        <button class="btn btn-danger btn-block m-t-3"
           ng-click="$ctrl.remove(index)"
           ng-disabled="index < $ctrl.schema.minItems">
           Remove
         </button>
       </div>
     </div>
-    <!--
-    <button class="btn btn-danger"
-      ng-if="!$ctrl.schema.minItems || index >= $ctrl.schema.minItems"
-      ng-click="$ctrl.remove(index)">
-      Remove
-    </button>
-  -->
   </div>
   <button class="btn btn-default"
     ng-disabled="$ctrl.schema.maxItems && $ctrl.model.length >= $ctrl.schema.maxItems"

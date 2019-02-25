@@ -5,7 +5,7 @@ class Controller {
     }
   }
 
-  onItemChange(index, model) {
+  onModelChange(model, index) {
     this.model[index] = model;
     if (this.onChange) {
       this.onChange({ model: this.model });
@@ -13,7 +13,7 @@ class Controller {
   }
 
 
-  onRefreshRequirements(index, model) {
+  onRefreshRequirements(model, index) {
     this.model[index] = model; // TODO doing this twice...
     if (this.onRefresh) {
       this.onRefresh({ model: this.model });
