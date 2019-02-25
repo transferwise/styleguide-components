@@ -158,12 +158,6 @@ describe('Fieldset', function() {
           }
         });
       });
-      it('should clear the error message', function() {
-        var formGroup = element.querySelector('.tw-field-textInput');
-        var errorMessages = formGroup.querySelector('.error-messages');
-        expect(formGroup.classList).not.toContain('has-error');
-        expect(errorMessages).toBeFalsy();
-      });
     });
   });
 

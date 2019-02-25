@@ -225,7 +225,22 @@ describe('Field', function() {
     it('should render the message', function() {
       expect(element.querySelector('.error-provided').innerText.trim()).toBe('Custom error');
     });
+
+    describe('and the value is changed', function() {
+      beforeEach(function() {
+        var input = element.querySelector('input');
+        input.value = 'something';
+        input.dispatchEvent(new Event('input'));
+        $timeout.flush();
+      });
+      it('should remove the error message', function() {
+        var errorMessages = element.querySelector('.error-messages');
+        expect(formGroup.classList).not.toContain('has-error');
+        expect(errorMessages).toBeFalsy();
+      });
+    });
   });
+
   describe('when given hidden: true', function() {
     beforeEach(function() {
       $scope.options = { type: "string", hidden: true };
