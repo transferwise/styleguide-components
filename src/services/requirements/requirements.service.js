@@ -378,11 +378,11 @@ function RequirementsService($http) {
   };
 
   this.prepValidationMessages = (field) => {
-    if (field.validationMessages.minimum) {
+    if (field.validationMessages && field.validationMessages.minimum) {
       field.validationMessages.min = field.validationMessages.minimum;
       delete field.validationMessages.minimum;
     }
-    if (field.validationMessages.maximum) {
+    if (field.validationMessages && field.validationMessages.maximum) {
       field.validationMessages.max = field.validationMessages.maximum;
       delete field.validationMessages.maximum;
     }
@@ -394,12 +394,15 @@ function RequirementsService($http) {
     }
     if (field.helpText) {
       field.help.message = field.helpText;
+      delete field.helpText;
     }
     if (field.helpImage) {
       field.help.image = field.helpImage;
+      delete field.helpImage;
     }
     if (field.list) {
       field.help.list = field.helpList;
+      delete field.helpList;
     }
   };
 

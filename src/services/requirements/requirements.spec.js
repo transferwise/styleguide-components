@@ -85,7 +85,9 @@ describe('Requirements Service', function() {
           type: "string",
           control: "text",
           placeholder: "Example",
-          helpText: "Tool tip",
+          help: {
+            message: "Tool tip"
+          },
           minimum: 1,
           maximum: 2,
           pattern: "[A-Z]"
