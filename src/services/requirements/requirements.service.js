@@ -61,6 +61,7 @@ function RequirementsService($http) {
     this.prepPattern(preparedField);
     this.prepValuesAsync(preparedField, model);
     this.prepValidationMessages(preparedField, validationMessages);
+    this.prepHelp(preparedField);
 
     return preparedField;
   };
@@ -377,15 +378,6 @@ function RequirementsService($http) {
   };
 
   this.prepValidationMessages = (field, validationMessages) => {
-    field.validationMessages = field.validationMessages ?
-      field.validationMessages :
-      validationMessages;
-
-    if (!field.validationMessages) {
-      delete field.validationMessages;
-      return;
-    }
-
     if (field.validationMessages.minimum) {
       field.validationMessages.min = field.validationMessages.minimum;
       delete field.validationMessages.minimum;
@@ -393,6 +385,21 @@ function RequirementsService($http) {
     if (field.validationMessages.maximum) {
       field.validationMessages.max = field.validationMessages.maximum;
       delete field.validationMessages.maximum;
+    }
+  };
+
+  this.prepHelp = field => {
+    if (!field.help && (field.helpText ||  field.helpImage || field.helpList)) {
+      field.help = {};
+    }
+    if (field.helpText) {
+      field.help.message = field.helpText;
+    }
+    if (field.helpImage) {
+      field.help.image = field.helpImage;
+    }
+    if (field.list) {
+      field.help.list = field.helpList;
     }
   };
 
