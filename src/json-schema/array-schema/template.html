@@ -23,7 +23,8 @@
           model="childModel"
           errors="$ctrl.errors[index]"
           locale="$ctrl.locale"
-          on-change="$ctrl.onItemChange(index, model)">
+          on-change="$ctrl.onItemChange(index, model)"
+          on-refresh="$ctrl.onRefreshRequirements(index, model)">
         </generic-schema>
       </div>
       <div class="col-xs-2">

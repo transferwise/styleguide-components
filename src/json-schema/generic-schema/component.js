@@ -10,7 +10,8 @@ const Component = {
     errors: '<',
     locale: '<',
     hideTitle: '<',
-    onChange: '&'
+    onChange: '&',
+    onRefresh: '&'
   }
 };
 

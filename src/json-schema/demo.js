@@ -11,7 +11,7 @@ class controller {
       streetAddress: 'And this one could be better',
       shareholders: [{
         firstName: 'Will it...'
-      },{
+      }, {
         lastName: 'Wont it...'
       }]
     };
@@ -21,8 +21,12 @@ class controller {
   }
 
   onModelChange(model) {
-    console.log('outer', model);
+    console.log('outer', model); // eslint-disable-line
     this.model = model;
+  }
+
+  onRefreshRequirements(model) { // eslint-disable-line
+    console.log('refresh', model); // eslint-disable-line
   }
 }
 

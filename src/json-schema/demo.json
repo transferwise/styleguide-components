@@ -7,13 +7,19 @@
         "name": {
           "type": "string",
           "title": "Business name",
-          "width": "md"
+          "width": "md",
+          "required": true,
+          "minLength": 2,
+          "maxLength": 32,
+          "onRefreshRequirements": true
         },
         "incorporationDate": {
           "type": "string",
           "title": "Date incorporated",
           "format": "date",
-          "width": "md"
+          "width": "md",
+          "min": "1700-01-01",
+          "max": "2020-01-01"
         },
         "industry": {
           "title": "Industry",
@@ -36,7 +42,8 @@
           "type": "string",
           "format": "phone",
           "title": "Contact number",
-          "width": "md"
+          "width": "md",
+          "pattern": "^[0-9]{9,11}$"
         }
       }
     },{
@@ -47,7 +54,8 @@
           "taxRegistered": {
             "type": "boolean",
             "title": "Is it tax registed?",
-            "placeholder": "Yes, registered"
+            "placeholder": "Yes, registered",
+            "onRefreshRequirements": true
           },
           "shareholders": {
             "description": "Please list all shareholders with 25% or greater ownership",
@@ -92,6 +100,7 @@
         "contact": {
           "title": "Can we contact you at this address?",
           "type": "bool",
+          "default": true,
           "values": [
             {
               "value": true,
