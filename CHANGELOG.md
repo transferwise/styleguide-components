@@ -1,3 +1,8 @@
+# v3.6.1
+## Allow user to remove a chosen file from Upload form
+Previous behavior required `cancelText` to be passed into the
+upload component for the "cancel" link to render. This change provides a placeholder "X" icon when no `cancelText` is provided.
+
 # v3.6.0
 ## In requirements, help information is now nested, 'required' uses JSON schema approach.
 helpText, helpList & helpImage are now expected to be nested as
