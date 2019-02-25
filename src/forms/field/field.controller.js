@@ -28,8 +28,8 @@ class FieldController {
         this.model = this.field.default;
       }
 
-      if (this.validationMessages && !field.validationMessages) {
-        field.validationMessages = this.validationMessages;
+      if (this.validationMessages && !this.field.validationMessages) {
+        this.field.validationMessages = this.validationMessages;
       }
     }
   }

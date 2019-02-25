@@ -377,7 +377,7 @@ function RequirementsService($http) {
     return data;
   };
 
-  this.prepValidationMessages = (field, validationMessages) => {
+  this.prepValidationMessages = (field) => {
     if (field.validationMessages.minimum) {
       field.validationMessages.min = field.validationMessages.minimum;
       delete field.validationMessages.minimum;
@@ -388,8 +388,8 @@ function RequirementsService($http) {
     }
   };
 
-  this.prepHelp = field => {
-    if (!field.help && (field.helpText ||  field.helpImage || field.helpList)) {
+  this.prepHelp = (field) => {
+    if (!field.help && (field.helpText || field.helpImage || field.helpList)) {
       field.help = {};
     }
     if (field.helpText) {
