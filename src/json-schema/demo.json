@@ -3,6 +3,7 @@
     {
       "type": "object",
       "title": "Create business",
+      "required": ["name"],
       "properties": {
         "name": {
           "type": "string",

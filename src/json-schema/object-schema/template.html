@@ -14,6 +14,7 @@
         model="$ctrl.model[property]"
         errors="$ctrl.errors[property]"
         locale="$ctrl.locale"
+        required="$ctrl.isRequired(property)"
         on-change="$ctrl.onModelChange(model, property)"
         on-refresh="$ctrl.onRefreshRequirements(model, property)">
       </generic-schema>

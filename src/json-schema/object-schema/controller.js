@@ -20,6 +20,10 @@ class Controller {
       this.onRefresh({ model: this.model });
     }
   }
+
+  isRequired(property) {
+    return this.schema.required && this.schema.required.includes(property);
+  }
 }
 
 export default Controller;
