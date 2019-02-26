@@ -199,7 +199,8 @@ describe('Field', function() {
 
   describe('when the field is required and has only one enum value', function() {
     beforeEach(function() {
-      $scope.options = { type: "string", enum: ['valid'], required: true };
+      $scope.options = { type: "string", enum: ['valid'] };
+      $scope.required = true;
       $scope.model = 'invalid';
       element = getCompiledDirectiveElement();
     });
@@ -320,6 +321,7 @@ describe('Field', function() {
         name='keyName' \
         model='model' \
         field='options' \
+        required='required' \
         validation-messages='validationMessages' \
         error-message='errorMessage' \
         on-change='onChange()' \
