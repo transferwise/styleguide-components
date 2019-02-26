@@ -6,6 +6,7 @@ class FieldController {
   $onChanges(changes) {
     if (changes.initialField) {
       this.field = copyJSON(this.initialField);
+
       this.control = this.field.control ? this.field.control :
         this.RequirementsService.getControlType(changes.initialField.currentValue);
 
@@ -15,11 +16,16 @@ class FieldController {
       }
 
       // If the field is required, and only allows one value, set it to that
-      if (this.field.required && this.field.enum && this.field.enum.length === 1) {
+      if (this.required && this.field.enum && this.field.enum.length === 1) {
         this.model = this.field.enum[0];
       }
+
       if (this.field.default && !this.model) {
         this.model = this.field.default;
+      }
+
+      if (this.validationMessages && !this.field.validationMessages) {
+        this.field.validationMessages = this.validationMessages;
       }
     }
   }

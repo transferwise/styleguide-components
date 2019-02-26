@@ -8,13 +8,15 @@ const Field = {
     name: '@',
     model: '=',
     initialField: '<field',
-    uploadOptions: '<',
     locale: '@',
+    required: '<',
+    uploadOptions: '<',
     changeHandler: '&?onChange',
     focusHandler: '&?onFocus',
     blurHandler: '&?onBlur',
     errorMessage: '<',
-    warningMessage: '<'
+    warningMessage: '<',
+    validationMessages: '<'
   }
 };
 
