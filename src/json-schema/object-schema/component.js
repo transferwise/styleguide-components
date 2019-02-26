@@ -9,6 +9,7 @@ const Component = {
     model: '<',
     errors: '<',
     locale: '<',
+    translations: '<',
     hideTitle: '<',
     onChange: '&',
     onRefresh: '&'

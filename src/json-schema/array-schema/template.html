@@ -23,6 +23,7 @@
           model="childModel"
           errors="$ctrl.errors[index]"
           locale="$ctrl.locale"
+          translations="$ctrl.translations"
           on-change="$ctrl.onModelChange(model, index)"
           on-refresh="$ctrl.onRefreshRequirements(model, index)">
         </generic-schema>
@@ -31,7 +32,7 @@
         <button class="btn btn-danger btn-block m-t-3"
           ng-click="$ctrl.remove(index)"
           ng-disabled="index < $ctrl.schema.minItems">
-          Remove
+          {{ $ctrl.translations.array.remove }}
         </button>
       </div>
     </div>
@@ -39,5 +40,5 @@
   <button class="btn btn-default"
     ng-disabled="$ctrl.schema.maxItems && $ctrl.model.length >= $ctrl.schema.maxItems"
     ng-click="$ctrl.add()">
-    Add
+    {{ $ctrl.translations.array.add }}
   </button>

@@ -9,7 +9,6 @@
           "type": "string",
           "title": "Business name",
           "width": "md",
-          "required": true,
           "minLength": 2,
           "maxLength": 32,
           "onRefreshRequirements": true

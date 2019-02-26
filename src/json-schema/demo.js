@@ -27,6 +27,28 @@ class controller {
       }],
       streetAddress: '22 Accacia Avenue'
     };
+
+    this.translations = {
+      array: {
+        add: 'Add',
+        remove: 'Remove'
+      },
+      validation: {
+        required: 'Field is required',
+        minLength: 'Too short',
+        maxLength: 'Too long',
+        minimum: 'Too low',
+        maximum: 'Too high',
+        pattern: 'Invalid characters'
+      },
+      upload: {
+        choose: 'Choose file',
+        processing: 'Working...',
+        success: 'Success!',
+        failed: 'Upload failed',
+        cancel: 'Choose another file'
+      }
+    };
   }
 
   onModelChange(model) {
