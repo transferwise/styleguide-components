@@ -25,7 +25,7 @@
     ng-focus="$ctrl.onFocus()"
     ng-blur="$ctrl.onBlur()"
     ng-change="$ctrl.onChange($ctrl.model)"
-    ng-required="$ctrl.field.required"
+    ng-required="$ctrl.required"
     ng-disabled="$ctrl.field.disabled"
     tw-minlength="$ctrl.field.minlength || $ctrl.field.minLength"
     tw-maxlength="$ctrl.field.maxlength || $ctrl.field.maxLength"
@@ -58,21 +58,21 @@
     {{ $ctrl.warningMessage }}
   </div>
 
-  <div ng-if="$ctrl.field.helpText || $ctrl.field.helpList || $ctrl.field.helpImage"
+  <div ng-if="$ctrl.field.help"
     class="alert alert-focus"
     ng-class="{
       'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)
     }">
-    <span ng-if="$ctrl.field.helpText">
-      {{ $ctrl.field.helpText }}
+    <span ng-if="$ctrl.field.help.message">
+      {{ $ctrl.field.help.message }}
     </span>
-    <ul ng-if="$ctrl.field.helpList" class="list-unstyled">
-      <li ng-repeat="helpMessage in $ctrl.field.helpList">{{ helpMessage }}</li>
+    <ul ng-if="$ctrl.field.help.list" class="list-unstyled">
+      <li ng-repeat="helpMessage in $ctrl.field.help.list">{{ helpMessage }}</li>
     </ul>
     <img
-      ng-if="$ctrl.field.helpImage && $ctrl.control !== 'file'"
-      ng-src="{{$ctrl.field.helpImage}}"
-      alt="{{$ctrl.field.title}}"
+      ng-if="$ctrl.field.help.image && $ctrl.control !== 'file'"
+      ng-src="{{$ctrl.field.help.image}}"
+      alt="{{ $ctrl.field.title }}"
       class="thumbnail m-y-2" />
   </div>
 </div>

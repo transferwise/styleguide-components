@@ -12,6 +12,7 @@ export default angular
       name: '@',
       model: '=',
       field: '<',
+      required: '<',
       errorMessage: '<',
       warningMessage: '<',
       onFocusHandler: '&?onFocus',
@@ -42,6 +43,7 @@ export default angular
           name="$ctrl.name"
           model="$ctrl.model"
           field="$ctrl.field"
+          required="$ctrl.required"
           error-message="$ctrl.errorMessage"
           warning-message="$ctrl.warningMessage"
           on-focus="$ctrl.onFocus()"
@@ -52,7 +54,8 @@ export default angular
       <div class="col-md-6" ng-class="{'p-t-3': $ctrl.field.format !== 'base64url'}">
 <pre>&lt;tw-field
   name="{{ $ctrl.name }}"
-  model="{{ $ctrl.model }}"<span ng-if="$ctrl.errorMessage">
+  model="{{ $ctrl.model }}"<span ng-if="$ctrl.required">
+  required="{{ $ctrl.required }}"</span><span ng-if="$ctrl.errorMessage">
   error-message="'{{ $ctrl.errorMessage }}'"</span><span ng-if="$ctrl.warningMessage">
   warning-message="'{{ $ctrl.warningMessage }}'"</span><span ng-if="$ctrl.onFocusHandler">
   on-focus="console.log('focus')"</span><span ng-if="$ctrl.onBlurHandler">
@@ -203,7 +206,6 @@ function fieldDocsController() {
     type: 'string',
     title: 'String validation',
     placeholder: 'Please enter text',
-    required: true,
     pattern: '^[A-Z]*$',
     minLength: 4,
     maxLength: 6,
@@ -218,7 +220,6 @@ function fieldDocsController() {
     type: 'number',
     title: 'Number control',
     placeholder: 'Please enter number',
-    required: true,
     minimum: 10,
     maximum: 99,
     validationMessages: {
@@ -231,7 +232,6 @@ function fieldDocsController() {
     type: 'string',
     format: 'date',
     title: 'Date control',
-    required: true,
     minimum: '2000-01-01',
     maximum: '2020-01-01',
     validationMessages: {
@@ -267,23 +267,29 @@ function fieldDocsController() {
     type: 'string',
     title: 'Help text',
     placeholder: 'Please enter text',
-    helpText: 'Some helpful information'
+    help: {
+      message: 'Some helpful information'
+    }
   };
   this.helpList = {
     type: 'string',
     title: 'Help list',
     placeholder: 'Please enter number',
-    helpList: [
-      'Make sure of this',
-      'And this',
-      'And avoid this'
-    ]
+    help: {
+      list: [
+        'Make sure of this',
+        'And this',
+        'And avoid this'
+      ]
+    }
   };
   this.helpImage = {
     type: 'string',
     title: 'Help image',
     placeholder: 'Please enter number',
-    helpImage: 'images/captcha.png'
+    help: {
+      image: 'images/captcha.png'
+    }
   };
 
   // Presentation options

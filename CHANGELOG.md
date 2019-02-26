@@ -1,3 +1,40 @@
+# v3.6.0
+## In requirements, help information is now nested, 'required' uses JSON schema approach.
+helpText, helpList & helpImage are now expected to be nested as
+```
+help: {
+  message: "...",
+  list: [...],
+  image: "..."
+}
+```
+Required is now supplied as per JSON schema spec so as an array on the object
+
+```
+{
+  type: "object",
+  required: ["name"],
+  properties: {
+    name: { type: "string" }
+  }
+}
+```
+Not as a boolean within the property
+
+```
+{
+  type: "object",
+  properties: {
+    name: { type: "string", required: true }
+  }
+}
+```
+twField therefore adds a property 'required' as the data is no longer within the 'field' data.
+
+```
+<tw-field field="$ctrl.field" required="true"></tw-field>
+```
+
 # v3.5.10
 ## Add a callback for model changes on requirements form
 

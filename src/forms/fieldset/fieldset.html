@@ -22,6 +22,7 @@
 
         warning-message="$ctrl.warningMessages[key]"
         error-message="$ctrl.errorMessages[key]"
+        validation-messages="$ctrl.validationMessages"
 
         on-change="$ctrl.fieldChange(value, key, field)"
         on-focus="$ctrl.fieldFocus(key, field)"
@@ -41,6 +42,7 @@
 
         warning-messages="$ctrl.warningMessages[key]"
         error-messages="$ctrl.errorMessages[key]"
+        validation-messages="$ctrl.validationMessages"
 
         on-refresh-requirements="$ctrl.refreshRequirements()"
         on-field-change="$ctrl.fieldChange(value, key, field)"
