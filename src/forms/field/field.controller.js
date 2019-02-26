@@ -15,12 +15,8 @@ class FieldController {
         this.RequirementsService.prepValuesAsync(this.field, {});
       }
 
-      if (this.required && !this.field.required) {
-        this.field.required = true;
-      }
-
       // If the field is required, and only allows one value, set it to that
-      if (this.field.required && this.field.enum && this.field.enum.length === 1) {
+      if (this.required && this.field.enum && this.field.enum.length === 1) {
         this.model = this.field.enum[0];
       }
 
