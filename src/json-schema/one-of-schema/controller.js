@@ -20,6 +20,14 @@ class Controller {
       this.onRefresh({ model });
     }
   }
+
+  convertSchemasToValues(schemas) { // eslint-disable-line
+    return schemas.map((schema, index) => ({
+      value: index + 1,
+      label: schema.title,
+      secondary: schema.description
+    }));
+  }
 }
 
 export default Controller;

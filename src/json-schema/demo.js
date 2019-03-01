@@ -1,7 +1,8 @@
 import angular from 'angular';
 import template from './demo.html';
 
-import schema from './demo.json';
+// import schema from './demo.json';
+import schema from './recipient.json';
 
 class controller {
   $onInit() {
@@ -16,17 +17,29 @@ class controller {
       }]
     };
 
-    this.errors = {};
+    this.errors = {
+      shareholders: [
+        {},
+        {
+          lastName: 'Last name is required'
+        }
+      ]
+    };
     this.schema = schema;
 
     this.model = {
       name: 'Example',
       taxRegistered: true,
       shareholders: [{
-        firstName: 'jimbob'
+        firstName: 'Joe',
+        lastName: 'Blogs'
+      }, {
+        firstName: 'Joe'
       }],
       streetAddress: '22 Accacia Avenue'
     };
+
+    this.model = {};
 
     this.translations = {
       array: {

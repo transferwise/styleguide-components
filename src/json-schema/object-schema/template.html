@@ -1,5 +1,15 @@
 <fieldset>
-  <legend ng-if="$ctrl.schema.title && !$ctrl.hideTitle"> {{ $ctrl.schema.title }}</legend>
+  <legend ng-if="$ctrl.schema.title && !$ctrl.hideTitle">
+    {{ $ctrl.schema.title }}
+  </legend>
+  <p ng-if="$ctrl.schema.description">
+    {{ $ctrl.schema.description }}
+  </p>
+  <div ng-if="$ctrl.schema.help.warning"
+    class="alert alert-warning">
+    {{ $ctrl.schema.help.warning }}
+  </div>
+
   <div class="row">
     <div ng-repeat="(property, nestedSchema) in $ctrl.schema.properties"
       class="col-xs-12"

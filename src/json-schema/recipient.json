@@ -1,0 +1,87 @@
+{
+  "title": "Add recipient",
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "legalEntityType": {
+          "title": "Who are you sending to?",
+          "type": "string",
+          "values": [
+            {"value": "person", "label": "A person"},
+            {"value": "business", "label": "a business"}
+          ]
+        },
+        "email": {
+          "title": "What's their email address",
+          "type": "string",
+          "format": "email"
+        }
+      }
+    },
+    {
+      "title": "What details do you have?",
+      "oneOf": [{
+        "type": "object",
+        "title": "Local account details",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "title": "Full name of recipient"
+          },
+          "iban": {
+            "type": "string",
+            "title": "ABA"
+          },
+          "type": {
+            "enum": ["aba"],
+            "default": "iban",
+            "required": true
+          }
+        }
+      },{
+        "title": "An account outside the US",
+        "description": "If you're sending within the eurozone",
+        "oneOf": [{
+          "type": "object",
+          "title": "In the eurozone",
+          "properties": {
+            "iban": {
+              "type": "string",
+              "title": "IBAN"
+            },
+            "type": {
+              "enum": ["iban"],
+              "default": "iban",
+              "required": true
+            }
+          }
+        },{
+          "type": "object",
+          "title": "Outside of the eurozone",
+          "properties": {
+            "accountNumber": {
+              "type": "string",
+              "title": "Account number",
+              "width": "md"
+            },
+            "swift": {
+              "type": "string",
+              "title": "Swift code",
+              "width": "md"
+            },
+            "type": {
+              "enum": ["swift"],
+              "default": "iban",
+              "required": true
+            }
+          }
+        }]
+      },{
+        "type": "object",
+        "title": "I don't have their bank details",
+        "description": "No problem, we'll send your recipient an email to collect the money"
+      }]
+    }
+  ]
+}

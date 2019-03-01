@@ -1,20 +1,44 @@
-<tw-tabs
+<!--<tw-tabs
   tabs="$ctrl.tabs"
   on-change="$ctrl.onTabChange(index)"
   active="$ctrl.activeIndex">
 </tw-tabs>
 
-<div class="tab-content" ng-form="twForm">
-  <div class="tab-pane active">
-    <generic-schema
-      schema="$ctrl.schema.oneOf[$ctrl.activeIndex]"
-      model="$ctrl.model"
-      errors="$ctrl.errors"
-      locale="$ctrl.locale"
-      translations="$ctrl.translations"
-      on-change="$ctrl.onModelChange(model)"
-      on-refresh="$ctrl.onRefreshRequirements(model)"
-      hide-title="true">
-    </generic-schema>
+<h4 class="m-b-2" ng-if="$ctrl.schema.title">
+  {{ $ctrl.schema.title }}
+</h4>-->
+<label class="control-label" ng-if="$ctrl.schema.title">
+  {{ $ctrl.schema.title }}
+</label>
+<div class="form-group m-b-5">
+  <div class="radio"
+    ng-repeat="(index, schema) in $ctrl.schema.oneOf"
+    ng-class="{'radio-lg': schema.description}">
+    <label>
+      <tw-radio ng-model=$ctrl.activeIndex ng-value="(index + 1)"></tw-radio>
+      {{ schema.title }}
+      <p ng-if="schema.description" class="secondary m-b-0">
+        {{ schema.description }}
+      </p>
+    </label>
   </div>
+  <!--
+  <tw-select
+    ng-model="ctrl.activeIndex"
+    options="$ctrl.convertSchemasToValues($ctrl.schema.oneOf)">
+  </tw-select>
+  <pre>{{ $ctrl.convertSchemasToValues($ctrl.schema.oneOf) }}</pre>
+-->
 </div>
+
+<generic-schema
+  ng-if="$ctrl.schema.oneOf[$ctrl.activeIndex - 1]"
+  schema="$ctrl.schema.oneOf[$ctrl.activeIndex - 1]"
+  model="$ctrl.model"
+  errors="$ctrl.errors"
+  locale="$ctrl.locale"
+  translations="$ctrl.translations"
+  on-change="$ctrl.onModelChange(model)"
+  on-refresh="$ctrl.onRefreshRequirements(model)"
+  hide-title="true">
+</generic-schema>

@@ -1,13 +1,25 @@
-
-<!--if (schema.items.type in ['string', 'number', 'integer', 'boolean']) {
-  if (schema.values) {
-    <label> schema.title </label>
-    <multi-select-input value="model" on-change="" /> TODO Document
-    <messaging type="schema.type" value="model" schema="schema" />
-  }
-  // Arrays of arbitrary basic types are not supported TODO
-} else {
+<!--
+<div ng-if="$ctrl.isSimpleType($ctrl.schema.items.type)">
+  <div ng-if="$ctrl.schema.items.values" class="form-group">
+    <label class="control-label">
+      {{ $ctrl.schema.title }}
+    </label>
+    <div class="checkbox" ng-repeat="(index, option) in $ctrl.schema.items.values">
+      <label>
+        <tw-checkbox
+          ng-model="$ctrl.model[index]"
+          ng-value="option.value"
+          on-change="$ctrl.onModelChange($ctrl.model[index], index)">
+        </tw-checkbox>
+        {{ option.label }}
+      </label>
+    </div>
+  </div>
+  {{ $ctrl.model }}
+</div>
 -->
+
+<div ng-if="!$ctrl.isSimpleType($ctrl.schema.items.type)">
   <h4 class="page-header" ng-if="$ctrl.schema.title">
     {{ $ctrl.schema.title }}
   </h4>
@@ -42,3 +54,4 @@
     ng-click="$ctrl.add()">
     {{ $ctrl.translations.array.add }}
   </button>
+</div>

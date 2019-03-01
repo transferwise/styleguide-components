@@ -1,7 +1,13 @@
 class Controller {
   $onInit() {
+    this.simpleTypes = ['string', 'number', 'integer', 'boolean'];
+
     if (!Array.isArray(this.model)) {
-      this.model = [{}];
+      if (this.isSimpleType(this.schema.items.type)) {
+        this.model = [];
+      } else {
+        this.model = [{}];
+      }
     }
   }
 
@@ -28,6 +34,10 @@ class Controller {
 
   add() {
     this.model.push({});
+  }
+
+  isSimpleType(type) {
+    return this.simpleTypes.includes(type);
   }
 }
 
