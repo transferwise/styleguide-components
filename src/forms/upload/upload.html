@@ -71,8 +71,21 @@
         <span class="icon icon-alert icon-xxl text-danger m-b-1"></span>
       </div>
       <div ng-if="$ctrl.hasTranscluded" ng-transclude></div>
-      <p ng-if="$ctrl.cancelText" class="m-t-2 m-b-0">
-        <a href="" ng-click="$ctrl.clear()">{{$ctrl.cancelText}}</a>
+      <p class="m-t-2 m-b-0">
+        <a href="" ng-click="$ctrl.clear()">
+          <svg 
+            ng-if="!$ctrl.cancelText" 
+            viewBox="0 0 24 24" 
+            fill="#00b9ff"
+            xmlns="http://www.w3.org/2000/svg"
+            height="25">
+            <path d="M12 23a11 11 0 1 1 11-11 11 11 0 0 1-11 11zm0-21a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"></path>
+            <path
+              d="M16.85 7.85l-.71-.7L12 11.29 7.85 7.15l-.71.7L11.29 12l-4.15 4.15.71.7L12 12.71l4.14 4.14.71-.7L12.7 12l4.15-4.15z">
+            </path>
+          </svg>
+          {{$ctrl.cancelText}}
+        </a>
       </p>
     </div>
   </div>
