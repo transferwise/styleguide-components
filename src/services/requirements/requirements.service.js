@@ -406,9 +406,21 @@ function RequirementsService($http) {
     }
   };
 
+  this.getRequiredFields = getRequiredFields;
   this.getControlType = getControlType;
 }
 
+/**
+ * Older style format had required as a property of fields, in JSON schema it
+ * should be a separate array of propert names
+ */
+function getRequiredFields(fields) {
+  if (Array.isArray(fields)) {
+    throw new Error('Expected field map');
+  }
+  // Return array of keys that have required set
+  return Object.keys(fields).filter(property => fields[property].required);
+}
 
 function getControlType(field) {
   if (field.control) {

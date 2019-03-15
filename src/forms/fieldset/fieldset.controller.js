@@ -11,6 +11,9 @@ class FieldsetController {
     if (!this.model) {
       this.model = {};
     }
+    if (!this.requiredFields) {
+      this.requiredFields = [];
+    }
 
     if (!this.validationMessages) {
       this.validationMessages = {
@@ -39,6 +42,10 @@ class FieldsetController {
           this.model,
           this.validationMessages
         );
+
+        if (!this.requiredFields) {
+          this.requiredFields = this.RequirementsService.getRequiredFields(this.fields);
+        }
       }
     }
   }
@@ -84,6 +91,10 @@ class FieldsetController {
     if (this.onRefreshRequirements) {
       this.onRefreshRequirements();
     }
+  }
+
+  isRequired(key) {
+    return Array.isArray(this.requiredFields) && this.requiredFields.indexOf(key) >= 0;
   }
 }
 

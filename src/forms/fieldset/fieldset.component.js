@@ -7,6 +7,7 @@ const Fieldset = {
   bindings: {
     model: '=',
     initialFields: '<fields',
+    requiredFields: '<',
     uploadOptions: '<',
     locale: '@',
     title: '@',

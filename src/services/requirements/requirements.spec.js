@@ -179,6 +179,25 @@ describe('Requirements Service', function() {
       });
     });
   });
+
+  describe('when extracting the requiredFields from a map of fields', function() {
+    var result;
+    beforeEach(function() {
+      result = service.getRequiredFields({
+        one: {
+          type: "string"
+        },
+        two: {
+          type: "string",
+          required: true
+        }
+      });
+    });
+
+    it('should return the property names of the fields with required set', function() {
+      expect(result).toEqual(["two"]);
+    });
+  });
 });
 
 var requirementsWithFieldGroups = {
