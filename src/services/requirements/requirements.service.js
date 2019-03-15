@@ -412,7 +412,7 @@ function RequirementsService($http) {
 
 /**
  * Older style format had required as a property of fields, in JSON schema it
- * should be a separate array of propert names
+ * should be a separate array of property names
  */
 function getRequiredFields(fields) {
   if (Array.isArray(fields)) {

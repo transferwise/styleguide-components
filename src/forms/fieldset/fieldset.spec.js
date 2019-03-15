@@ -29,19 +29,20 @@ describe('Fieldset', function() {
   });
 
   describe('when some fields are required', function() {
+    var fields;
     beforeEach(function() {
       $scope.fields = getFields();
       $scope.requiredFields = ['sortCode'];
       element = getCompiledDirectiveElement();
+      fields = element.querySelectorAll('tw-field');
     });
 
-    it('should pass that to the fields', function() {
-      var fields = element.querySelectorAll('tw-field');
-
+    it('should pass required to the field that were required', function() {
       var sortCodeField = angular.element(fields[0]);
-      var ibanField = angular.element(fields[1]);
-
       expect(sortCodeField.controller('twField').required).toBe(true);
+    });
+    it('should not pass required to the fields that were not required', function() {
+      var ibanField = angular.element(fields[1]);
       expect(ibanField.controller('twField').required).toBe(false);
     });
   });

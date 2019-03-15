@@ -43,7 +43,7 @@ class FieldsetController {
           this.validationMessages
         );
 
-        if (!this.requiredFields) {
+        if (!this.requiredFields || !this.requiredFields.length) {
           this.requiredFields = this.RequirementsService.getRequiredFields(this.fields);
         }
       }

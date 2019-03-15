@@ -194,7 +194,7 @@ describe('Requirements Service', function() {
       });
     });
 
-    it('should return the property names of the fields with required set', function() {
+    it('should return an array containing the property names for the fields with required set', function() {
       expect(result).toEqual(["two"]);
     });
   });
