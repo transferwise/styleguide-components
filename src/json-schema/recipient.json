@@ -5,29 +5,29 @@
       "type": "object",
       "properties": {
         "legalEntityType": {
-          "title": "Who are you sending to?",
+          "title": "Recipient type",
           "type": "string",
           "values": [
             {"value": "person", "label": "A person"},
-            {"value": "business", "label": "a business"}
+            {"value": "business", "label": "A business"}
           ]
         },
         "email": {
-          "title": "What's their email address",
+          "title": "What's their email address?",
           "type": "string",
           "format": "email"
         }
       }
     },
     {
-      "title": "What details do you have?",
+      "title": "Where is your recipient based?",
       "oneOf": [{
         "type": "object",
-        "title": "Local account details",
+        "title": "In the US",
         "properties": {
           "fullName": {
             "type": "string",
-            "title": "Full name of recipient"
+            "title": "Recipient's full name"
           },
           "iban": {
             "type": "string",
@@ -40,47 +40,62 @@
           }
         }
       },{
-        "title": "An account outside the US",
-        "description": "If you're sending within the eurozone",
-        "oneOf": [{
+        "title": "Outside of the US",
+        "allOf": [{
           "type": "object",
-          "title": "In the eurozone",
           "properties": {
+            "bankCountry": {
+              "type": "string",
+              "control": "select",
+              "values": [
+                {"value": "GB", "label": "United Kingdom"},
+                {"value": "US", "label": "United States"}
+              ]
+            },
             "iban": {
               "type": "string",
               "title": "IBAN"
             },
-            "type": {
-              "enum": ["iban"],
-              "default": "iban",
-              "required": true
+            "name": {
+              "title": "Recipient's full name",
+              "type": "string"
             }
+          },
+          "help": {
+            "warning": "To send USD outside the US, we need to use the SWIFT network.  It's more expensive and slower, so it costs 3.20 USD extra, and the transfer might take a day os two longer.  Please also note that the intermediary banks and your recipient's bank might charge extra fees.  Learn more."
           }
         },{
           "type": "object",
-          "title": "Outside of the eurozone",
+          "title": "Address details",
           "properties": {
-            "accountNumber": {
+            "streetAddress": {
               "type": "string",
-              "title": "Account number",
-              "width": "md"
+              "title": "Street address"
             },
-            "swift": {
+            "city": {
               "type": "string",
               "title": "Swift code",
               "width": "md"
             },
-            "type": {
-              "enum": ["swift"],
-              "default": "iban",
-              "required": true
+            "postalCode": {
+              "type": "string",
+              "title": "Zip / Postal code",
+              "width": "md"
+            },
+            "country": {
+              "type": "string",
+              "control": "select",
+              "values": [
+                {"value": "GB", "label": "United Kingdom"},
+                {"value": "US", "label": "United States"}
+              ]
             }
           }
         }]
       },{
         "type": "object",
-        "title": "I don't have their bank details",
-        "description": "No problem, we'll send your recipient an email to collect the money"
+        "title": "Don't have their bank details?",
+        "description": "No problem, we can send them an email to collect the money"
       }]
     }
   ]

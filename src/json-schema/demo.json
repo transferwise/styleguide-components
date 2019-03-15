@@ -43,7 +43,25 @@
           "format": "phone",
           "title": "Contact number",
           "width": "md",
-          "pattern": "^[0-9]{9,11}$"
+          "pattern": "^[0-9]{9,11}$",
+          "help": {
+            "warning": "We'll send you a text to confirm this nunber"
+          }
+        },
+        "things": {
+          "type": "array",
+          "title": "Multi-select",
+          "width": "md",
+          "items": {
+            "type": "string",
+            "values": [{
+              "value": "1",
+              "label": "One"
+            },{
+              "value": "2",
+              "label": "Two"
+            }]
+          }
         }
       }
     },{

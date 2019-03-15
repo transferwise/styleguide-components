@@ -1,3 +1,14 @@
+<!--
+<h3 ng-if="$ctrl.schema.title" class="page-header">
+  {{ $ctrl.schema.title }}
+</h3>
+<p ng-if="$ctrl.schema.description">
+  {{ $ctrl.schema.description }}
+</p>
+<div ng-if="$ctrl.schema.help.warning" class="alert alert-warning">
+  {{ $ctrl.schema.help.warning }}
+</div>
+-->
 <div class="row">
   <div ng-repeat="nestedSchema in $ctrl.schema.allOf"
     class="col-xs-12"
