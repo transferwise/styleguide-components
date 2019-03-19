@@ -16,16 +16,17 @@
     <h5>Component API</h5>
 <pre>
 &lt;tw-fieldset
-title="<span ng-non-bindable>{{ fieldset.title }}</span>"
-description="<span ng-non-bindable>{{ fieldset.description }}</span>"
-fields="fieldset.properties"&gt;
-locale="en-GB"
-model="{...}"
-is-valid="..."
-on-model-change="modelHandler(model)"
-on-field-focus="focusHandler(key, field)"
-on-field-blur="blurHandler(key, field)"
-on-field-change="changeHandler(value, key, field)"&gt;
+  title="<span ng-non-bindable>{{ fieldset.title }}</span>"
+  description="<span ng-non-bindable>{{ fieldset.description }}</span>"
+  fields="fieldset.properties"&gt;
+  required-fields="fieldset.required"
+  locale="en-GB"
+  model="{...}"
+  is-valid="..."
+  on-model-change="modelHandler(model)"
+  on-field-focus="focusHandler(key, field)"
+  on-field-blur="blurHandler(key, field)"
+  on-field-change="changeHandler(value, key, field)"&gt;
 &lt;/tw-fieldset&gt;
 </pre>
   </div>
