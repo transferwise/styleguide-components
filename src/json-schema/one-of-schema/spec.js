@@ -1,4 +1,4 @@
-describe('Given an allOfSchema component', function() {
+describe('Given an oneOfSchema component', function() {
   var $scope,
     component,
     $compile,
@@ -19,7 +19,7 @@ describe('Given an allOfSchema component', function() {
 
   beforeEach(function() {
     var template = ' \
-      <all-of-schema \
+      <one-of-schema \
         schema="schema" \
         model="model" \
         errors="errors" \
@@ -27,7 +27,7 @@ describe('Given an allOfSchema component', function() {
         translations="translations" \
         on-change="onChange()" \
         on-refresh="onRefresh()" \
-      ></all-of-schema>';
+      ></one-of-schema>';
 
     $scope.onChange = jasmine.createSpy('onChange');
     $scope.onRefresh = jasmine.createSpy('onRefresh');
@@ -35,67 +35,53 @@ describe('Given an allOfSchema component', function() {
     component = getComponent($compile, $scope, template);
   });
 
-  describe('when given a single schema', function() {
+  describe('when given a multiple schemas', function() {
     beforeEach(function() {
       $scope.schema = {
-        allOf: [{
-          type: "string",
-          width: 'md'
+        oneOf: [{
+          type: "string"
+        },{
+          type: "number"
         }]
       };
+
+      $scope.errors = {a:"error"};
+      $scope.locale = 'es-ES';
+      $scope.translations = {};
+
       $scope.$apply();
     });
 
-    it('should pass it to a generic schema component', function() {
-      expect(genericSchema.bindings.schema).toEqual($scope.schema.allOf[0]);
+    it('should render one generic schema component', function() {
+      expect(component.querySelectorAll('generic-schema').length).toBe(1);
     });
 
-    describe('with a width', function() {
-      it('should render the generic-schema inside a column', function() {
-        var column = component.querySelector('.col-sm-6');
-        console.log(component); // eslint-disable-line
-        expect(column).toBeTruthy();
-        expect(column.querySelector('generic-schema')).toBeTruthy();
-      });
+    it('should pass the first schema to the generic-schema', function() {
+      expect(genericSchema.bindings.schema).toEqual($scope.schema.oneOf[0]);
     });
 
-    describe('with a model', function() {
+    it('should pass the model to the generic-schema', function() {
+      expect(genericSchema.bindings.model).toEqual($scope.model);
+    });
+
+    it('should pass errors to the nested generic schema component', function() {
+      expect(genericSchema.bindings.errors).toEqual($scope.errors);
+    });
+
+    it('should pass locale to the nested generic schema component', function() {
+      expect(genericSchema.bindings.locale).toEqual($scope.locale);
+    });
+
+    it('should pass translations to the nested generic schema component', function() {
+      expect(genericSchema.bindings.translations).toEqual($scope.translations);
+    });
+
+    describe('when another schema is selected', function() {
       beforeEach(function() {
-        $scope.model = {a: 1};
-        $scope.$apply();
-      });
-      it('should pass it to a generic schema component', function() {
-        expect(genericSchema.bindings.model).toEqual($scope.model);
-      });
-    });
 
-    describe('with error messages', function() {
-      beforeEach(function() {
-        $scope.errors = {a:"error"};
-        $scope.$apply();
       });
-      it('should pass it to a generic schema component', function() {
-        expect(genericSchema.bindings.errors).toEqual($scope.errors);
-      });
-    });
+      it('should ', function() {
 
-    describe('with a locale', function() {
-      beforeEach(function() {
-        $scope.locale = 'es-ES';
-        $scope.$apply();
-      });
-      it('should pass it to a generic schema component', function() {
-        expect(genericSchema.bindings.locale).toEqual($scope.locale);
-      });
-    });
-
-    describe('with translations', function() {
-      beforeEach(function() {
-        $scope.translations = {};
-        $scope.$apply();
-      });
-      it('should pass them to a generic schema component', function() {
-        expect(genericSchema.bindings.translations).toEqual($scope.translations);
       });
     });
 
@@ -125,23 +111,6 @@ describe('Given an allOfSchema component', function() {
       // it('should combine the changed model with the internal model', function() {
       //   expect($scope.onRefresh).toHaveBeenCalledWith({ a: 1, b: 2 });
       // });
-    });
-  });
-
-  describe('when given multiple schemas', function() {
-    beforeEach(function() {
-      $scope.schema = {
-        allOf: [{
-          type: "string"
-        },{
-          type: "number"
-        }]
-      };
-      $scope.$apply();
-    });
-    it('should render a generic-schema for each', function() {
-      var genericSchemas = component.querySelectorAll('generic-schema');
-      expect(genericSchemas.length).toBe(2);
     });
   });
 });

@@ -7,7 +7,7 @@ import GenericSchema from './generic-schema/';
 import ObjectSchema from './object-schema/';
 import OneOfSchema from './one-of-schema/';
 
-export default angular.module('tw.styleguide.json-schema', [
+export default angular.module('tw.json-schema', [
   AllOfSchema,
   ArraySchema,
   BasicTypeSchema,

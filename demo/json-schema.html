@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Styleguide Components - TransferWise</title>
+  <title>JSON Schema Components - TransferWise</title>
   <meta charset="UTF-8">
   <meta name="viewport"
     content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -10,10 +10,15 @@
   <script src="lib/angular.min.js"></script>
   <script src="lib/bootstrap.min.js"></script>
   <script src="lib/styleguide-components.js"></script>
+  <script src="lib/json-schema.js"></script>
 
   <script src="lib/demo.js"></script>
   <script>
-  angular.module('my-app', ['tw.styleguide-components', 'tw.styleguide.demo']);
+  angular.module('my-app', [
+    'tw.styleguide-components',
+    'tw.json-schema',
+    'tw.styleguide.demo'
+  ]);
   </script>
 
   <link type="text/css" rel="stylesheet" href="lib/bootstrap.css" />
@@ -38,33 +43,7 @@
 
       <div class="col-lg-9 col-lg-pull-3">
 
-        <layout-docs
-          class="m-t-3">
-        </layout-docs>
-
-        <help-docs
-          class="m-t-3">
-        </help-docs>
-
-        <validation-docs
-          model="vm.model">
-        </validation-docs>
-
-        <form-docs
-          model="vm.model"
-          locales="vm.locales"
-          sizes="vm.sizes">
-        </form-docs>
-
-        <formatting-docs
-          model="vm.model"
-          locales="vm.locales"
-          class="m-t-3">
-        </formatting-docs>
-
-        <loading-docs
-          class="m-t-3">
-        </loading-docs>
+        <json-schema-docs></json-schema-docs>
 
       </div>
     </div>

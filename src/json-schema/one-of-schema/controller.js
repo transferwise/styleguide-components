@@ -1,7 +1,6 @@
 class Controller {
   $onInit() {
-    this.tabs = this.schema.oneOf.map(schema => schema.title);
-    this.activeIndex = 0;
+    this.activeIndex = 1;
   }
 
   onTabChange(index) {

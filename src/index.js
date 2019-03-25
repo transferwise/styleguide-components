@@ -11,7 +11,6 @@ import Help from './help/';
 import Layout from './layout/';
 import Loading from './loading/';
 import Navigation from './navigation/';
-import JsonSchema from './json-schema/';
 
 // DEPRECATED This is required to support old usages of the sub modules when
 // importing the full JS library.
@@ -28,6 +27,5 @@ export default angular.module('tw.styleguide-components', [
   Loading,
   Navigation,
   OldFormComponentModule,
-  OldFormValidationModule,
-  JsonSchema
+  OldFormValidationModule
 ]).name;

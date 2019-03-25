@@ -16,7 +16,7 @@ class Controller {
   }
 
   getValidationMessages() {
-    return this.schema.validationMessages || this.translations.validation;
+    return this.schema.validationMessages || (this.translations && this.translations.validation);
   }
 }
 
