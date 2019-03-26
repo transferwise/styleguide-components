@@ -1,4 +1,4 @@
-describe('Given ', function() {
+describe('Given a component for rendering object schemas', function() {
   var $scope,
     component,
     $compile,
@@ -25,8 +25,8 @@ describe('Given ', function() {
         errors="errors" \
         locale="locale" \
         translations="translations" \
-        on-change="onChange()" \
-        on-refresh="onRefresh()" \
+        on-change="onChange(model)" \
+        on-refresh="onRefresh(model)" \
       ></object-schema>';
 
     $scope.onChange = jasmine.createSpy('onChange');
@@ -71,6 +71,25 @@ describe('Given ', function() {
     });
     it('should pass the translations to the generic-schema', function() {
       expect(genericSchema.bindings.translations).toEqual($scope.translations);
+    });
+
+    describe('when the child component triggers onChange', function() {
+      beforeEach(function() {
+        genericSchema.bindings.onChange({ model: "bar" });
+      });
+      it('should trigger the components onChange with the new value under the correct key', function() {
+        expect($scope.onChange.calls.count()).toBe(1);
+        expect($scope.onChange).toHaveBeenCalledWith({ foo: "bar" });
+      });
+    });
+    describe('when the child component triggers onRefresh', function() {
+      beforeEach(function() {
+        genericSchema.bindings.onRefresh({ model: "bar" });
+      });
+      it('should trigger the components onRefresh with the new value under the correct key', function() {
+        expect($scope.onRefresh.calls.count()).toBe(1);
+        expect($scope.onRefresh).toHaveBeenCalledWith({ foo: "bar" });
+      });
     });
   });
 

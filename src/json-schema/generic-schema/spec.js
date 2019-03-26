@@ -6,7 +6,8 @@ describe('Given ', function() {
     allOfSchema,
     objectSchema,
     arraySchema,
-    basicTypeSchema;
+    basicTypeSchema,
+    childComponent;
 
   beforeEach(module('tw.styleguide-components'));
   beforeEach(module('tw.json-schema'));
@@ -38,8 +39,8 @@ describe('Given ', function() {
         errors="errors" \
         locale="locale" \
         translations="translations" \
-        on-change="onChange()" \
-        on-refresh="onRefresh()" \
+        on-change="onChange(model)" \
+        on-refresh="onRefresh(model)" \
       ></generic-schema>';
 
     $scope.onChange = jasmine.createSpy('onChange');
@@ -56,18 +57,17 @@ describe('Given ', function() {
         }]
       };
       $scope.$apply();
+
+      childComponent = oneOfSchema;
     });
 
     it('should render a one-of-schema', function() {
       expect(component.querySelectorAll('one-of-schema').length).toBe(1);
     });
-    it('should pass through the supplied data', function() {
-      expect(oneOfSchema.bindings.schema).toEqual($scope.schema);
-      expect(oneOfSchema.bindings.model).toEqual($scope.model);
-      expect(oneOfSchema.bindings.errors).toEqual($scope.errors);
-      expect(oneOfSchema.bindings.locale).toEqual($scope.locale);
-      expect(oneOfSchema.bindings.translations).toEqual($scope.translations);
-    });
+
+    testBindingsArePassedToChild();
+    testOnChangePropogation();
+    testOnRefreshPropogation();
   });
 
   describe('when an allOf schema is supplied ', function() {
@@ -78,18 +78,17 @@ describe('Given ', function() {
         }]
       };
       $scope.$apply();
+
+      childComponent = allOfSchema;
     });
 
     it('should render an all-of-schema', function() {
       expect(component.querySelectorAll('all-of-schema').length).toBe(1);
     });
-    it('should pass through the supplied data', function() {
-      expect(allOfSchema.bindings.schema).toEqual($scope.schema);
-      expect(allOfSchema.bindings.model).toEqual($scope.model);
-      expect(allOfSchema.bindings.errors).toEqual($scope.errors);
-      expect(allOfSchema.bindings.locale).toEqual($scope.locale);
-      expect(allOfSchema.bindings.translations).toEqual($scope.translations);
-    });
+
+    testBindingsArePassedToChild();
+    testOnChangePropogation();
+    testOnRefreshPropogation();
   });
 
   describe('when an object schema is supplied ', function() {
@@ -99,18 +98,17 @@ describe('Given ', function() {
         properties: []
       };
       $scope.$apply();
+
+      childComponent = objectSchema;
     });
 
     it('should render an object-schema', function() {
       expect(component.querySelectorAll('object-schema').length).toBe(1);
     });
-    it('should pass through the supplied data', function() {
-      expect(objectSchema.bindings.schema).toEqual($scope.schema);
-      expect(objectSchema.bindings.model).toEqual($scope.model);
-      expect(objectSchema.bindings.errors).toEqual($scope.errors);
-      expect(objectSchema.bindings.locale).toEqual($scope.locale);
-      expect(objectSchema.bindings.translations).toEqual($scope.translations);
-    });
+
+    testBindingsArePassedToChild();
+    testOnChangePropogation();
+    testOnRefreshPropogation();
   });
 
   describe('when an array schema is supplied ', function() {
@@ -122,18 +120,17 @@ describe('Given ', function() {
         }
       };
       $scope.$apply();
+
+      childComponent = arraySchema;
     });
 
     it('should render an array-schema', function() {
       expect(component.querySelectorAll('array-schema').length).toBe(1);
     });
-    it('should pass through the supplied data', function() {
-      expect(arraySchema.bindings.schema).toEqual($scope.schema);
-      expect(arraySchema.bindings.model).toEqual($scope.model);
-      expect(arraySchema.bindings.errors).toEqual($scope.errors);
-      expect(arraySchema.bindings.locale).toEqual($scope.locale);
-      expect(arraySchema.bindings.translations).toEqual($scope.translations);
-    });
+
+    testBindingsArePassedToChild();
+    testOnChangePropogation();
+    testOnRefreshPropogation();
   });
 
   describe('when a basic type schema is supplied ', function() {
@@ -142,20 +139,54 @@ describe('Given ', function() {
         type: "string"
       };
       $scope.$apply();
+
+      childComponent = basicTypeSchema;
     });
 
     it('should render a basic-type-schema', function() {
       expect(component.querySelectorAll('basic-type-schema').length).toBe(1);
     });
-    it('should pass through the supplied data', function() {
-      expect(basicTypeSchema.bindings.schema).toEqual($scope.schema);
-      expect(basicTypeSchema.bindings.model).toEqual($scope.model);
-      expect(basicTypeSchema.bindings.errors).toEqual($scope.errors);
-      expect(basicTypeSchema.bindings.locale).toEqual($scope.locale);
-      expect(basicTypeSchema.bindings.translations).toEqual($scope.translations);
-    });
+
+    testBindingsArePassedToChild();
+    testOnChangePropogation();
+    testOnRefreshPropogation();
   });
+
+  function testBindingsArePassedToChild() {
+    it('should pass through the supplied data', function() {
+      expect(childComponent.bindings.schema).toEqual($scope.schema);
+      expect(childComponent.bindings.model).toEqual($scope.model);
+      expect(childComponent.bindings.errors).toEqual($scope.errors);
+      expect(childComponent.bindings.locale).toEqual($scope.locale);
+      expect(childComponent.bindings.translations).toEqual($scope.translations);
+    });
+  }
+
+  function testOnChangePropogation() {
+    describe('when the child component triggers onChange', function() {
+      beforeEach(function() {
+        childComponent.bindings.onChange({ model: { b: 2 } });
+      });
+      it('should trigger the components onChange with the model', function() {
+        expect($scope.onChange.calls.count()).toBe(1);
+        expect($scope.onChange).toHaveBeenCalledWith({ b: 2 });
+      });
+    });
+  }
+
+  function testOnRefreshPropogation() {
+    describe('when the child component triggers onRefreshRequirements', function() {
+      beforeEach(function() {
+        childComponent.bindings.onRefresh({ model: { b: 2 } });
+      });
+      it('should trigger the components onChange with the model', function() {
+        expect($scope.onRefresh.calls.count()).toBe(1);
+        expect($scope.onRefresh).toHaveBeenCalledWith({ b: 2 });
+      });
+    });
+  }
 });
+
 
 function getComponent($compile, $scope, template) {
   var compiledElement = $compile(template)($scope);

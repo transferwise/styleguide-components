@@ -1,4 +1,4 @@
-describe('Given an allOfSchema component', function() {
+describe('Given a component from rendering allOf schemas', function() {
   var $scope,
     component,
     $compile,
@@ -25,8 +25,8 @@ describe('Given an allOfSchema component', function() {
         errors="errors" \
         locale="locale" \
         translations="translations" \
-        on-change="onChange()" \
-        on-refresh="onRefresh()" \
+        on-change="onChange(model)" \
+        on-refresh="onRefresh(model)" \
       ></all-of-schema>';
 
     $scope.onChange = jasmine.createSpy('onChange');
@@ -107,9 +107,9 @@ describe('Given an allOfSchema component', function() {
       it('should trigger the components onChange once', function() {
         expect($scope.onChange.calls.count()).toBe(1);
       });
-      // it('should combine the changed model with the internal model', function() {
-      //   expect($scope.onChange).toHaveBeenCalledWith({ a: 1, b: 2 });
-      // });
+      it('should combine the changed model with the internal model', function() {
+        expect($scope.onChange).toHaveBeenCalledWith({ a: 1, b: 2 });
+      });
     });
 
     describe('when the generic schema triggers onRefreshRequirements', function() {
@@ -121,9 +121,9 @@ describe('Given an allOfSchema component', function() {
       it('should propogate that event to consumers', function() {
         expect($scope.onRefresh.calls.count()).toBe(1);
       });
-      // it('should combine the changed model with the internal model', function() {
-      //   expect($scope.onRefresh).toHaveBeenCalledWith({ a: 1, b: 2 });
-      // });
+      it('should combine the changed model with the internal model', function() {
+        expect($scope.onRefresh).toHaveBeenCalledWith({ a: 1, b: 2 });
+      });
     });
   });
 
