@@ -53,7 +53,6 @@ describe('Given an allOfSchema component', function() {
     describe('with a width', function() {
       it('should render the generic-schema inside a column', function() {
         var column = component.querySelector('.col-sm-6');
-        console.log(component); // eslint-disable-line
         expect(column).toBeTruthy();
         expect(column.querySelector('generic-schema')).toBeTruthy();
       });

@@ -1,4 +1,4 @@
-fdescribe('Given ', function() {
+describe('Given ', function() {
   var $scope,
     component,
     $compile,
