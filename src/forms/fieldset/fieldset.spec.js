@@ -28,6 +28,25 @@ describe('Fieldset', function() {
     });
   });
 
+  describe('when some fields are required', function() {
+    var fields;
+    beforeEach(function() {
+      $scope.fields = getFields();
+      $scope.requiredFields = ['sortCode'];
+      element = getCompiledDirectiveElement();
+      fields = element.querySelectorAll('tw-field');
+    });
+
+    it('should pass required to the field that were required', function() {
+      var sortCodeField = angular.element(fields[0]);
+      expect(sortCodeField.controller('twField').required).toBe(true);
+    });
+    it('should not pass required to the fields that were not required', function() {
+      var ibanField = angular.element(fields[1]);
+      expect(ibanField.controller('twField').required).toBe(false);
+    });
+  });
+
   describe('when given custom error messages', function() {
     beforeEach(function() {
       $scope.model = {
@@ -161,11 +180,34 @@ describe('Fieldset', function() {
     });
   });
 
+  describe('when fields in a legacy format are supplied', function() {
+    var fields;
+
+    beforeEach(function() {
+      $scope.fields = getLegacyFields();
+      element = getCompiledDirectiveElement();
+      fields = element.querySelectorAll('tw-field');
+    });
+
+    it('should show the correct number of fields', function() {
+      expect(fields.length).toBe(2);
+    });
+
+    it('should pass required to the correct fields', function() {
+      var sortCodeField = angular.element(fields[0]);
+      var ibanField = angular.element(fields[1]);
+
+      expect(sortCodeField.controller('twField').required).toBe(true);
+      expect(ibanField.controller('twField').required).toBe(false);
+    });
+  });
+
   function getCompiledDirectiveElement() {
     var template = " \
       <tw-fieldset \
         model='model' \
         fields='fields' \
+        required-fields='requiredFields' \
         validation-messages='validationMessages' \
         error-messages='errorMessages' \
         warning-messages='warningMessages' \
@@ -179,6 +221,30 @@ describe('Fieldset', function() {
   }
 
   function getFields() {
+    return {
+      "sortCode": {
+        "title": "UK Sort code",
+        "type": "string",
+        "refreshRequirementsOnChange": true,
+        "displayFormat": "**-**-**",
+        "minLength": 6,
+        "maxLength": 8,
+        "validationMessages": {
+          "required": "sortCode required"
+        }
+      },
+      "iban": {
+        "title": "IBAN",
+        "type": "string",
+        "refreshRequirementsOnChange": true,
+        "displayFormat": "**-**-**",
+        "minLength": 6,
+        "maxLength": 8,
+      }
+    };
+  }
+
+  function getLegacyFields() {
     return [
       {
         "name": "UK Sort code",
@@ -198,7 +264,6 @@ describe('Fieldset', function() {
         "key": "iban",
         "type": "string",
         "refreshRequirementsOnChange": true,
-        "required": true,
         "displayFormat": "**-**-**",
         "minLength": 6,
         "maxLength": 8,

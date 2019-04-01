@@ -55,6 +55,7 @@ export default angular
           description="{{ $ctrl.requirements.description }}"
           model="$ctrl.model"
           fields="$ctrl.requirements.properties"
+          required-fields="$ctrl.requiredFields"
           is-valid="$ctrl.isValid"
           on-model-change="$ctrl.onModelChange(model)"
           on-field-focus="$ctrl.onFieldFocus(key, field)"
@@ -77,7 +78,8 @@ export default angular
   on-field-change="(value, key, field) => { console.log('changed: '+ key + ' to ' + value); }"</span><span ng-if="$ctrl.errorMessages">
   error-messages="{{ $ctrl.errorMessages | json }}"</span><span ng-if="$ctrl.warningMessages">
   warning-messages="{{ $ctrl.warningMessages | json }}"</span>
-  model="{{ $ctrl.model | json }}"
+  model="{{ $ctrl.model | json }}"<span ng-if="$ctrl.requirements.required">
+  required-fields="{{ $ctrl.requirements.required | json }}"</span>
   fields="<div class="m-l-2">{{ $ctrl.requirements.properties | json }}"&gt;</div>&lt;/tw-fieldset&gt;</pre>
       </div>
     </div>`
@@ -105,7 +107,6 @@ function fieldsetDocsController() {
         type: 'number',
         title: 'Number label',
         placeholder: 'Please enter number',
-        required: true,
         min: 5,
         default: 123
       }
@@ -162,7 +163,8 @@ function fieldsetDocsController() {
         title: 'Control label',
         placeholder: 'Please enter text'
       }
-    }
+    },
+    required: ['keyName']
   };
   this.fieldsetOptionsModel = {
     keyName: 'Example'
@@ -186,8 +188,7 @@ function fieldsetDocsController() {
         type: 'number',
         title: 'Number label',
         placeholder: 'Please enter number',
-        width: 'sm',
-        required: true
+        width: 'sm'
       }
     }
   };
