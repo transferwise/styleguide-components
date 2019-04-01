@@ -7,7 +7,7 @@
     ng-class="{'radio-lg': schema.description}">
     <label>
       <tw-radio
-        ng-model=$ctrl.activeIndex
+        ng-model="$ctrl.activeIndex"
         ng-value="(index + 1)"
         ng-change="$ctrl.onSchemaChange(schema)"></tw-radio>
       {{ schema.title }}
