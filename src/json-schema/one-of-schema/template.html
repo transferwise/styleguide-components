@@ -6,20 +6,16 @@
     ng-repeat="(index, schema) in $ctrl.schema.oneOf"
     ng-class="{'radio-lg': schema.description}">
     <label>
-      <tw-radio ng-model=$ctrl.activeIndex ng-value="(index + 1)"></tw-radio>
+      <tw-radio
+        ng-model=$ctrl.activeIndex
+        ng-value="(index + 1)"
+        ng-change="$ctrl.onSchemaChange(schema)"></tw-radio>
       {{ schema.title }}
       <p ng-if="schema.description" class="secondary m-b-0">
         {{ schema.description }}
       </p>
     </label>
   </div>
-  <!--
-  <tw-select
-    ng-model="ctrl.activeIndex"
-    options="$ctrl.convertSchemasToValues($ctrl.schema.oneOf)">
-  </tw-select>
-  <pre>{{ $ctrl.convertSchemasToValues($ctrl.schema.oneOf) }}</pre>
--->
 </div>
 
 <generic-schema

@@ -1,11 +1,18 @@
 class Controller {
   $onInit() {
+    this.options = [];
     this.activeIndex = 1;
   }
 
-  onTabChange(index) {
-    this.model = {}; // TODO can do better
-    this.activeIndex = index;
+  onSchemaChange(newSchema) {
+    if (newSchema.properties) {
+      clearPropertiesNotInObjectSchema(this.model, newSchema);
+    } else {
+      // Tricky to clear model intelligently in this case, just reset it
+      this.model = {};
+    }
+
+    this.onModelChange(this.model);
   }
 
   onModelChange(model) {
@@ -19,14 +26,15 @@ class Controller {
       this.onRefresh({ model });
     }
   }
+}
 
-  convertSchemasToValues(schemas) { // eslint-disable-line
-    return schemas.map((schema, index) => ({
-      value: index + 1,
-      label: schema.title,
-      secondary: schema.description
-    }));
-  }
+function clearPropertiesNotInObjectSchema(model, objectSchema) {
+  const existingProps = Object.keys(model);
+  existingProps.forEach((existingProp) => {
+    if (!objectSchema.properties[existingProp]) {
+      delete model[existingProp];
+    }
+  });
 }
 
 export default Controller;

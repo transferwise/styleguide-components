@@ -1,23 +1,6 @@
-<!--
 <div ng-if="$ctrl.isSimpleType($ctrl.schema.items.type)">
-  <div ng-if="$ctrl.schema.items.values" class="form-group">
-    <label class="control-label">
-      {{ $ctrl.schema.title }}
-    </label>
-    <div class="checkbox" ng-repeat="(index, option) in $ctrl.schema.items.values">
-      <label>
-        <tw-checkbox
-          ng-model="$ctrl.model[index]"
-          ng-value="option.value"
-          on-change="$ctrl.onModelChange($ctrl.model[index], index)">
-        </tw-checkbox>
-        {{ option.label }}
-      </label>
-    </div>
-  </div>
-  {{ $ctrl.model }}
+  Unsupported
 </div>
--->
 
 <div ng-if="!$ctrl.isSimpleType($ctrl.schema.items.type)">
   <h4 class="page-header" ng-if="$ctrl.schema.title">

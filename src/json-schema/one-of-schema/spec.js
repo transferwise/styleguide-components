@@ -78,10 +78,11 @@ describe('Given an oneOfSchema component', function() {
 
     describe('when another schema is selected', function() {
       beforeEach(function() {
-
+        var radios = component.querySelectorAll('tw-radio button')
+        radios[1].dispatchEvent(new CustomEvent('click'));
       });
-      it('should ', function() {
-
+      it('should pass that schema to the nested generic schema', function() {
+        expect(genericSchema.bindings.schema).toBe($scope.schema.oneOf[1]);
       });
     });
 

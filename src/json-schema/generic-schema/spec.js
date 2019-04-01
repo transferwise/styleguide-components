@@ -187,7 +187,6 @@ describe('Given ', function() {
   }
 });
 
-
 function getComponent($compile, $scope, template) {
   var compiledElement = $compile(template)($scope);
   $scope.$digest();
