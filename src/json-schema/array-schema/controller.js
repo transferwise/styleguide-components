@@ -1,9 +1,9 @@
+const simpleTypes = ['string', 'number', 'integer', 'boolean'];
+
 class Controller {
   $onInit() {
-    this.simpleTypes = ['string', 'number', 'integer', 'boolean'];
-
     if (!Array.isArray(this.model)) {
-      if (this.isSimpleType(this.schema.items.type)) {
+      if (this.schema && this.schema.items && this.isSimpleType(this.schema.items.type)) {
         this.model = [];
       } else {
         this.model = [{}];
@@ -36,8 +36,8 @@ class Controller {
     this.model.push({});
   }
 
-  isSimpleType(type) {
-    return this.simpleTypes.includes(type);
+  isSimpleType(type) { // eslint-disable-line
+    return simpleTypes.indexOf(type) >= 0;
   }
 }
 
