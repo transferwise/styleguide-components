@@ -1,4 +1,4 @@
-fdescribe('Given a component for arrays of schemas', function() {
+describe('Given a component for arrays of schemas', function() {
   var $scope,
     component,
     $compile,
@@ -38,6 +38,8 @@ fdescribe('Given a component for arrays of schemas', function() {
   describe('when no model is supplied', function() {
     beforeEach(function() {
       $scope.schema = {
+        title: "Array of schemas",
+        description: "Description of schema",
         type: "array",
         items: {
           foo: {
@@ -65,6 +67,12 @@ fdescribe('Given a component for arrays of schemas', function() {
     });
     it('should pass the translations to the generic-schema', function() {
       expect(genericSchema.bindings.translations).toEqual($scope.translations);
+    });
+    it('should render the tile', function() {
+      expect(component.querySelector('.page-header').innerText.trim()).toEqual($scope.schema.title);
+    });
+    it('should render the description', function() {
+      expect(component.querySelector('p').innerText.trim()).toEqual($scope.schema.description);
     });
 
     describe('when the child component triggers onChange', function() {
@@ -97,17 +105,15 @@ fdescribe('Given a component for arrays of schemas', function() {
           }
         }
       };
-      $scope.model = [{
-        foo: "bar"
-      },
-      {
-        foo: "barbar"
-      }];
+      $scope.model = [
+        { foo: "bar" },
+        { foo: "barbar"}
+      ];
+
       $scope.errors = [
-      {},
-      {
-        foo: "error"
-      }];
+        {},
+        { foo: "error"}
+      ];
       $scope.$apply();
     });
     it('should render the appropriate number of generic-schema', function() {
