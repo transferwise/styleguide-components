@@ -3,6 +3,10 @@ import { validateSchema } from '../validation/validation.js';
 class Controller {
   $onInit() {
     this.key = Math.floor(100000000 * Math.random());
+
+    if (!this.model && this.schema.default) {
+      this.onModelChange(this.schema.default);
+    }
   }
 
   onModelChange(model) {

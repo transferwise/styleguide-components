@@ -68,7 +68,7 @@ describe('Given a component for arrays of schemas', function() {
     it('should pass the translations to the generic-schema', function() {
       expect(genericSchema.bindings.translations).toEqual($scope.translations);
     });
-    it('should render the tile', function() {
+    it('should render the title', function() {
       expect(component.querySelector('.page-header').innerText.trim()).toEqual($scope.schema.title);
     });
     it('should render the description', function() {

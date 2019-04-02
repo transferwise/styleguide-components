@@ -31,9 +31,9 @@ describe('Given a component for rendering basic type schemas', function() {
       ></basic-type-schema>';
 
     $scope.schema = {
-      type: "string"
+      type: "string",
+      default: "initial"
     };
-    $scope.model = "hello world";
     $scope.required = true;
     $scope.errors = "error";
     $scope.locale = "en-GB";
@@ -52,9 +52,6 @@ describe('Given a component for rendering basic type schemas', function() {
     it('should pass the schema to twField', function() {
       expect(twField.bindings.initialField).toEqual($scope.schema);
     });
-    it('should pass the model to twField', function() {
-      expect(twField.bindings.model).toEqual($scope.model);
-    });
     it('should pass the error message to twField', function() {
       expect(twField.bindings.errorMessage).toEqual($scope.errors);
     });
@@ -62,8 +59,29 @@ describe('Given a component for rendering basic type schemas', function() {
       expect(twField.bindings.locale).toEqual($scope.locale);
     });
 
+    describe('when there is no model and a default', function() {
+      it('should call the onChange handler with the default ', function() {
+        expect($scope.onChange).toHaveBeenCalledWith($scope.schema.default);
+      });
+      it('should not call the onRefresh handler', function() {
+        expect($scope.onRefresh).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('when there is a model ', function() {
+      beforeEach(function() {
+        $scope.model = "hello world";
+        $scope.$apply();
+      });
+      it('should pass it to twField', function() {
+        expect(twField.bindings.model).toEqual($scope.model);
+      });
+    });
+
     describe('when twField triggers onChange and refreshRequirementsOnChange=false', function() {
       beforeEach(function() {
+        $scope.onChange = jasmine.createSpy('onChange');
+        $scope.$apply();
         twField.bindings.changeHandler({ value: "foo" });
       });
       it('should trigger the components onChange with the new value', function() {

@@ -38,6 +38,8 @@ describe('Given a component from rendering allOf schemas', function() {
   describe('when given a single schema', function() {
     beforeEach(function() {
       $scope.schema = {
+        title: "All of the following",
+        description: "Description of stuff",
         allOf: [{
           type: "string",
           width: 'md'
@@ -48,6 +50,13 @@ describe('Given a component from rendering allOf schemas', function() {
 
     it('should pass it to a generic schema component', function() {
       expect(genericSchema.bindings.schema).toEqual($scope.schema.allOf[0]);
+    });
+
+    it('should render the title', function() {
+      expect(component.querySelector('.page-header').innerText.trim()).toEqual($scope.schema.title);
+    });
+    it('should render the description', function() {
+      expect(component.querySelector('p').innerText.trim()).toEqual($scope.schema.description);
     });
 
     describe('with a width', function() {

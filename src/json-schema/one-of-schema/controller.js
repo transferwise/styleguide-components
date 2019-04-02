@@ -6,13 +6,11 @@ class Controller {
 
   onSchemaChange(newSchema) {
     if (newSchema.properties) {
-      clearPropertiesNotInObjectSchema(this.model, newSchema);
+      this.onModelChange(getModelWithOnlyCurrentProps(this.model, newSchema.properties));
     } else {
       // Tricky to clear model intelligently in this case, just reset it
-      this.model = {};
+      this.onModelChange({});
     }
-
-    this.onModelChange(this.model);
   }
 
   onModelChange(model) {
@@ -28,13 +26,17 @@ class Controller {
   }
 }
 
-function clearPropertiesNotInObjectSchema(model, objectSchema) {
-  const existingProps = Object.keys(model);
-  existingProps.forEach((existingProp) => {
-    if (!objectSchema.properties[existingProp]) {
-      delete model[existingProp];
+function getModelWithOnlyCurrentProps(model, properties) {
+  const newModel = {};
+  const propsInNewSchema = Object.keys(properties);
+
+  propsInNewSchema.forEach((prop) => {
+    if (typeof model[prop] !== 'undefined') {
+      newModel[prop] = model[prop];
     }
   });
+
+  return newModel;
 }
 
 export default Controller;

@@ -152,6 +152,19 @@ describe('Given ', function() {
     testOnRefreshPropogation();
   });
 
+  describe('when an enum schema is supplied with just one value ', function() {
+    beforeEach(function() {
+      $scope.schema = {
+        enum: ["default"]
+      };
+      $scope.$apply();
+    });
+
+    it('should call onChange with the enum value', function() {
+      expect($scope.onChange).toHaveBeenCalledWith("default");
+    });
+  });
+
   function testBindingsArePassedToChild() {
     it('should pass through the supplied data', function() {
       expect(childComponent.bindings.schema).toEqual($scope.schema);

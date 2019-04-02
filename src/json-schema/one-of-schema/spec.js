@@ -39,9 +39,22 @@ describe('Given an oneOfSchema component', function() {
     beforeEach(function() {
       $scope.schema = {
         oneOf: [{
-          type: "string"
+          type: "object",
+          properties: {
+            a: {
+              type: "number"
+            },
+            b: {
+              type: "number"
+            }
+          }
         },{
-          type: "number"
+          type: "object",
+          properties: {
+            a: {
+              type: "number"
+            }
+          }
         }]
       };
 
@@ -78,12 +91,17 @@ describe('Given an oneOfSchema component', function() {
 
     describe('when another schema is selected', function() {
       beforeEach(function() {
+        $scope.model = { a: 1, b: 2 };
+        $scope.$apply();
         var radios = component.querySelectorAll('tw-radio button')
         radios[1].dispatchEvent(new CustomEvent('click'));
       });
       it('should pass that schema to the nested generic schema', function() {
         expect(genericSchema.bindings.schema).toBe($scope.schema.oneOf[1]);
       });
+      it('should trigger onChange with only the properties in the new schema', function() {
+        expect($scope.onChange).toHaveBeenCalledWith({ a: 1 });
+      })
     });
 
     describe('when the generic schema triggers an onChange event', function() {
