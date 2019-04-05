@@ -5,11 +5,8 @@ class Controller {
     if (changes.schema || changes.model) {
       // We keep each model separately, and combine them for broadcast, this gives
       // better control over cleaning up the model as we deal with values that are
-      // removed
-      this.models = [];
-      if (this.schema && this.schema.allOf) {
-        this.models = splitModel(this.model, this.schema.allOf);
-      }
+      // removed.
+      this.models = splitModel(this.model, this.schema ? this.schema.allOf : []);
     }
   }
 
