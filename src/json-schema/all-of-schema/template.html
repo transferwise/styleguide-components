@@ -8,7 +8,7 @@
   {{ $ctrl.schema.help.warning }}
 </div>
 <div class="row">
-  <div ng-repeat="nestedSchema in $ctrl.schema.allOf"
+  <div ng-repeat="(index, nestedSchema) in $ctrl.schema.allOf"
     class="col-xs-12"
     ng-class="{
       'col-sm-4': !$ctrl.narrow  && nestedSchema.width === 'sm',
@@ -17,12 +17,12 @@
     }">
     <generic-schema
       schema="nestedSchema"
-      model="$ctrl.model"
+      model="$ctrl.models[index]"
       errors="$ctrl.errors"
       locale="$ctrl.locale"
       translations="$ctrl.translations"
-      on-change="$ctrl.onModelChange(model)"
-      on-refresh="$ctrl.onRefreshRequirements(model)">
+      on-change="$ctrl.onModelChange(model, index)"
+      on-refresh="$ctrl.onRefreshRequirements(model, index)">
     </generic-schema>
   </div>
 </div>
