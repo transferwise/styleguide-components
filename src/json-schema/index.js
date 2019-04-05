@@ -6,6 +6,7 @@ import BasicTypeSchema from './basic-type-schema/';
 import GenericSchema from './generic-schema/';
 import ObjectSchema from './object-schema/';
 import OneOfSchema from './one-of-schema/';
+import Utils from './utils/';
 
 export default angular.module('tw.json-schema', [
   AllOfSchema,
@@ -13,5 +14,6 @@ export default angular.module('tw.json-schema', [
   BasicTypeSchema,
   GenericSchema,
   ObjectSchema,
-  OneOfSchema
+  OneOfSchema,
+  Utils
 ]).name;

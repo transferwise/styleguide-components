@@ -3,8 +3,9 @@ function validateSchema(value, schema) {
     case 'string':
       return validateString(value, schema);
     case 'number':
-    case 'integer':
       return validateNumber(value, schema);
+    case 'integer':
+      return validateInteger(value, schema);
     case 'boolean':
       return validateBoolean(value, schema);
     case 'array':
@@ -17,18 +18,22 @@ function validateSchema(value, schema) {
 }
 
 function validateString(value, schema) {
+  if (typeof value !== 'string') {
+    return ['type'];
+  }
+
   const failures = [];
   if (schema.required && validateRequired(value)) {
     failures.push('required');
-  }
-  if (schema.pattern && validatePattern(value, schema.pattern)) {
-    failures.push('pattern');
   }
   if (schema.minLength && validateMinLength(value, schema.minLength)) {
     failures.push('minLength');
   }
   if (schema.maxLength && validateMaxLength(value, schema.maxLength)) {
     failures.push('maxLength');
+  }
+  if (schema.pattern && validatePattern(value, schema.pattern)) {
+    failures.push('pattern');
   }
   if (schema.min && validateMin(value, schema.min)) {
     failures.push('min');
@@ -40,6 +45,10 @@ function validateString(value, schema) {
 }
 
 function validateNumber(value, schema) {
+  if (typeof value !== 'number') {
+    return ['type'];
+  }
+
   const failures = [];
   if (schema.required && validateRequired(value)) {
     failures.push('required');
@@ -53,7 +62,18 @@ function validateNumber(value, schema) {
   return failures;
 }
 
+function validateInteger(value, schema) {
+  if (Math.floor(value) !== value) {
+    return ['type'];
+  }
+  return validateNumber(value, schema);
+}
+
 function validateBoolean(value, schema) {
+  if (typeof value !== 'boolean') {
+    return ['type'];
+  }
+
   const failures = [];
   if (schema.required && validateRequired(value)) {
     failures.push('required');
@@ -62,6 +82,10 @@ function validateBoolean(value, schema) {
 }
 
 function validateArray(value, schema) {
+  if (!Array.isArray(value)) {
+    return ['type'];
+  }
+
   const failures = [];
   if (schema.required && validateRequired(value)) {
     failures.push('required');
@@ -75,13 +99,20 @@ function validateArray(value, schema) {
   return failures;
 }
 
-// TODO think about how we handle required
-function validateObject(value, schema) { // eslint-disable-line
-  const failures = [];
-  // if (schema.required) {
-  //
-  // }
-  return failures;
+function validateObject(value, schema) {
+  if (value.constructor !== Object) {
+    return ['type'];
+  }
+
+  if (!Array.isArray(schema.required)) {
+    return [];
+  }
+
+  const allPresent = schema.required
+    .map(prop => typeof value[prop] !== 'undefined')
+    .reduce((propInModel, validSoFar) => propInModel && validSoFar, true);
+
+  return allPresent ? [] : ['required'];
 }
 
 function validateRequired(value) {
@@ -97,8 +128,12 @@ function validateMaxLength(value, maxLength) {
 }
 
 function validatePattern(value, pattern) {
-  const regex = new RegExp(pattern);
-  return regex.test(value);
+  try {
+    const regex = new RegExp(pattern);
+    return !regex.test(value);
+  } catch (error) {
+    return false;
+  }
 }
 
 function validateMax(value, max) {
