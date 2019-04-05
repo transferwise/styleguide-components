@@ -81,6 +81,10 @@ function validateBoolean(value, schema) {
   return failures;
 }
 
+/**
+ * When validating an array we only checking that it is an array and that it
+ * fits our size constraints, we do not check if the items are valid.
+ */
 function validateArray(value, schema) {
   if (!Array.isArray(value)) {
     return ['type'];
@@ -99,6 +103,10 @@ function validateArray(value, schema) {
   return failures;
 }
 
+/**
+ * When validating an object we only checking that it is an object and that it
+ * has the required properties, we do not check if the properties are valid.
+ */
 function validateObject(value, schema) {
   if (value.constructor !== Object) {
     return ['type'];

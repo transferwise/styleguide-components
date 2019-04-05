@@ -138,8 +138,6 @@ describe('Given a library for validating json schema models', function() {
     it('should return [type] when incorrect data type', function() {
       expect(validateSchema({a:1}, schema)).toEqual(['type']);
     });
-
-    // TODO recursive checks?
   });
 
   describe('when validating an object schema', function() {
@@ -164,7 +162,5 @@ describe('Given a library for validating json schema models', function() {
     it('should return [type] when incorrect data type', function() {
       expect(validateSchema([1], schema)).toEqual(['type']);
     });
-
-    // TODO recursive checks?
   });
 });
