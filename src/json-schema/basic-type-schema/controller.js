@@ -1,4 +1,4 @@
-import { validateSchema } from '../validation/validation.js';
+import { validateSchema } from '../utils/validation';
 
 class Controller {
   $onInit() {

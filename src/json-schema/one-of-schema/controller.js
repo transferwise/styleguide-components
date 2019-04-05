@@ -1,3 +1,5 @@
+import { cleanModel } from '../utils/clean-model';
+
 class Controller {
   $onInit() {
     this.options = [];
@@ -5,12 +7,8 @@ class Controller {
   }
 
   onSchemaChange(newSchema) {
-    if (newSchema.properties) {
-      this.onModelChange(getModelWithOnlyCurrentProps(this.model, newSchema.properties));
-    } else {
-      // Tricky to clear model intelligently in this case, just reset it
-      this.onModelChange({});
-    }
+    const validModel = cleanModel(this.model, newSchema);
+    this.onModelChange(validModel);
   }
 
   onModelChange(model) {
@@ -24,19 +22,6 @@ class Controller {
       this.onRefresh({ model });
     }
   }
-}
-
-function getModelWithOnlyCurrentProps(model, properties) {
-  const newModel = {};
-  const propsInNewSchema = Object.keys(properties);
-
-  propsInNewSchema.forEach((prop) => {
-    if (typeof model[prop] !== 'undefined') {
-      newModel[prop] = model[prop];
-    }
-  });
-
-  return newModel;
 }
 
 export default Controller;

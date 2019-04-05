@@ -28,15 +28,10 @@ class controller {
     this.schema = schema;
 
     this.model = {
-      name: 'Example',
-      taxRegistered: true,
-      shareholders: [{
-        firstName: 'Joe',
-        lastName: 'Blogs'
-      }, {
-        firstName: 'Joe'
-      }],
-      streetAddress: '22 Accacia Avenue'
+      email: 'bigbob',
+      details: {
+        aba: 1234
+      }
     };
 
     this.model = {};
