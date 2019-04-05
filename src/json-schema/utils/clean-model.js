@@ -90,4 +90,4 @@ function cleanModelWithOneOfSchema(model, schema) { // eslint-disable-line
   return model;
 }
 
-export default { cleanModel };
+export { cleanModel }; // eslint-disable-line
