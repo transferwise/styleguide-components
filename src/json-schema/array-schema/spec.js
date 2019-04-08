@@ -25,12 +25,10 @@ describe('Given a component for arrays of schemas', function() {
         errors="errors" \
         locale="locale" \
         translations="translations" \
-        on-change="onChange(model)" \
-        on-refresh="onRefresh(model)" \
+        on-change="onChange(model, schema)" \
       ></array-schema>';
 
     $scope.onChange = jasmine.createSpy('onChange');
-    $scope.onRefresh = jasmine.createSpy('onRefresh');
 
     component = getComponent($compile, $scope, template);
   });
@@ -77,20 +75,17 @@ describe('Given a component for arrays of schemas', function() {
 
     describe('when the child component triggers onChange', function() {
       beforeEach(function() {
-        genericSchema.bindings.onChange({ model: { foo: "bar" }});
+        genericSchema.bindings.onChange({
+          model: { foo: "bar" },
+          schema: $scope.schema.items
+        });
       });
       it('should trigger the components onChange with the new value under the correct key', function() {
         expect($scope.onChange.calls.count()).toBe(1);
-        expect($scope.onChange).toHaveBeenCalledWith([{ foo: "bar" }]);
-      });
-    });
-    describe('when the child component triggers onRefresh', function() {
-      beforeEach(function() {
-        genericSchema.bindings.onRefresh({ model: { foo: "bar" } });
-      });
-      it('should trigger the components onRefresh with the new value under the correct key', function() {
-        expect($scope.onRefresh.calls.count()).toBe(1);
-        expect($scope.onRefresh).toHaveBeenCalledWith([{ foo: "bar" }]);
+        expect($scope.onChange).toHaveBeenCalledWith(
+          [{ foo: "bar" }],
+          $scope.schema.items
+        );
       });
     });
   });

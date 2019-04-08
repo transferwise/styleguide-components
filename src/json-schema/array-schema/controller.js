@@ -11,18 +11,10 @@ class Controller {
     }
   }
 
-  onModelChange(model, index) {
+  onModelChange(index, model, schema) {
     this.model[index] = model;
     if (this.onChange) {
-      this.onChange({ model: this.model });
-    }
-  }
-
-
-  onRefreshRequirements(model, index) {
-    this.model[index] = model; // TODO doing this twice...
-    if (this.onRefresh) {
-      this.onRefresh({ model: this.model });
+      this.onChange({ model: this.model, schema });
     }
   }
 

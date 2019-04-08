@@ -1,4 +1,4 @@
-import { getValidModelParts } from '../utils/clean-model';
+import { getValidModelParts } from '../utils/valid-model';
 
 class Controller {
   $onInit() {
@@ -8,18 +8,12 @@ class Controller {
 
   onSchemaChange(newSchema) {
     const validModel = getValidModelParts(this.model, newSchema);
-    this.onModelChange(validModel);
+    this.onModelChange(validModel, newSchema);
   }
 
-  onModelChange(model) {
+  onModelChange(model, schema) {
     if (this.onChange) {
-      this.onChange({ model });
-    }
-  }
-
-  onRefreshRequirements(model) {
-    if (this.onRefresh) {
-      this.onRefresh({ model });
+      this.onChange({ model, schema });
     }
   }
 }

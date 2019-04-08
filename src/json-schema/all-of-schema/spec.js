@@ -25,12 +25,10 @@ describe('Given a component from rendering allOf schemas', function() {
         errors="errors" \
         locale="locale" \
         translations="translations" \
-        on-change="onChange(model)" \
-        on-refresh="onRefresh(model)" \
+        on-change="onChange(model, schema)" \
       ></all-of-schema>';
 
     $scope.onChange = jasmine.createSpy('onChange');
-    $scope.onRefresh = jasmine.createSpy('onRefresh');
 
     component = getComponent($compile, $scope, template);
   });
@@ -162,26 +160,19 @@ describe('Given a component from rendering allOf schemas', function() {
     describe('when a child schema triggers onChange', function() {
       beforeEach(function() {
         // refers to second generic-schema component
-        genericSchema.bindings.onChange({ model: { b: 2 } });
+        genericSchema.bindings.onChange({
+          model: { b: 2 },
+          schema: $scope.schema.allOf[1]
+        });
       });
       it('should trigger the components onChange once', function() {
         expect($scope.onChange.calls.count()).toBe(1);
       });
       it('should combine the changed model with the other parts of the model', function() {
-        expect($scope.onChange).toHaveBeenCalledWith({ a: 'hello', b: 2 });
-      });
-    });
-
-    describe('when a child schema triggers onRefresh', function() {
-      beforeEach(function() {
-        // refers to second generic-schema component
-        genericSchema.bindings.onRefresh({ model: { b: 3 } });
-      });
-      it('should trigger the components onChange once', function() {
-        expect($scope.onRefresh.calls.count()).toBe(1);
-      });
-      it('should combine the changed model with the other parts of the model', function() {
-        expect($scope.onRefresh).toHaveBeenCalledWith({ a: 'hello', b: 3 });
+        expect($scope.onChange).toHaveBeenCalledWith(
+          { a: 'hello', b: 2 },
+          $scope.schema.allOf[1]
+        );
       });
     });
   });

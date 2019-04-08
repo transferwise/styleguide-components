@@ -59,13 +59,10 @@ class controller {
     };
   }
 
-  onModelChange(model) {
-    console.log('outer', model); // eslint-disable-line
+  onModelChange(model, schema) {
+    console.log('Model changed', model); // eslint-disable-line
+    console.log('Triggered by schema', schema); // eslint-disable-line
     this.model = model;
-  }
-
-  onRefreshRequirements(model) { // eslint-disable-line
-    console.log('refresh', model); // eslint-disable-line
   }
 }
 

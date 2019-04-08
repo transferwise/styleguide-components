@@ -19,7 +19,7 @@
           errors="$ctrl.errors[index]"
           locale="$ctrl.locale"
           translations="$ctrl.translations"
-          on-change="$ctrl.onModelChange(model, index)"
+          on-change="$ctrl.onModelChange(index, model, schema)"
           on-refresh="$ctrl.onRefreshRequirements(model, index)">
         </generic-schema>
       </div>

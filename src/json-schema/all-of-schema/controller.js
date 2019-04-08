@@ -1,4 +1,4 @@
-import { getValidModelParts } from '../utils/clean-model';
+import { getValidModelParts } from '../utils/valid-model';
 
 class Controller {
   $onChanges(changes) {
@@ -10,23 +10,13 @@ class Controller {
     }
   }
 
-  onModelChange(model, index) {
-    const schema = this.schema.allOf[index];
+  onModelChange(index, model, schema) {
+    const schemaForIndex = this.schema.allOf[index];
 
-    this.models[index] = getValidModelParts(model, schema);
+    this.models[index] = getValidModelParts(model, schemaForIndex);
 
     if (this.onChange) {
-      this.onChange({ model: combineModels(this.models) });
-    }
-  }
-
-  onRefreshRequirements(model, index) {
-    const schema = this.schema.allOf[index];
-
-    this.models[index] = getValidModelParts(model, schema);
-
-    if (this.onRefresh) {
-      this.onRefresh({ model: combineModels(this.models) });
+      this.onChange({ model: combineModels(this.models), schema });
     }
   }
 }

@@ -18,7 +18,7 @@ function getValidModelParts(model, schema) {
       case 'boolean':
         return cleanModelWithBooleanSchema(model);
       default:
-        return; // eslint-disable-line
+        return null;
     }
   } else if (schema.enum) {
     if (schema.enum.indexOf(model) >= 0) {
@@ -26,7 +26,7 @@ function getValidModelParts(model, schema) {
     }
   }
   // Unrecognised schema
-  return; // eslint-disable-line
+  return null;
 }
 
 function cleanModelWithObjectSchema(model, schema) {
@@ -34,8 +34,8 @@ function cleanModelWithObjectSchema(model, schema) {
   Object.keys(schema.properties).forEach((property) => {
     // If the property exists in the model, clean it, and add it
     if (typeof model[property] !== 'undefined') {
-      const newValue = cleanModel(model[property], schema.properties[property]);
-      if (typeof newValue !== 'undefined') {
+      const newValue = getValidModelParts(model[property], schema.properties[property]);
+      if (newValue !== null) {
         cleanedModel[property] = newValue;
       }
     }
@@ -45,39 +45,38 @@ function cleanModelWithObjectSchema(model, schema) {
 
 function cleanModelWithArraySchema(model, schema) {
   if (Array.isArray(model)) {
-    // TODO not adequate
-    return model.map(childModel => cleanModel(childModel, schema));
+    return model.map(childModel => getValidModelParts(childModel, schema));
   }
-  return; // eslint-disable-line
+  return null;
 }
 
 function cleanModelWithStringSchema(model) {
   if (typeof model === 'string') {
     return model;
   }
-  return; // eslint-disable-line
+  return null;
 }
 
 function cleanModelWithNumberSchema(model) {
   if (typeof model === 'number') {
     return model;
   }
-  return; // eslint-disable-line
+  return null;
 }
 
 function cleanModelWithBooleanSchema(model) {
   if (typeof model === 'boolean') {
     return model;
   }
-  return; // eslint-disable-line
+  return null;
 }
 
-function cleanModelWithAllOfSchema(model, schema) {  // eslint-disable-line
+function cleanModelWithAllOfSchema(model, schema) {
   const cleanedModel = {};
   let validSubsetOfModel;
 
   schema.allOf.forEach((nestedSchema) => {
-    validSubsetOfModel = cleanModel(model, nestedSchema);
+    validSubsetOfModel = getValidModelParts(model, nestedSchema);
 
     if (typeof validSubsetOfModel === 'object') {
       angular.extend(cleanedModel, validSubsetOfModel);

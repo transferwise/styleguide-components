@@ -26,8 +26,7 @@ describe('Given a component for rendering basic type schemas', function() {
         errors="errors" \
         locale="locale" \
         translations="translations" \
-        on-change="onChange(model)" \
-        on-refresh="onRefresh(model)" \
+        on-change="onChange(model, schema)" \
       ></basic-type-schema>';
 
     $scope.schema = {
@@ -40,7 +39,6 @@ describe('Given a component for rendering basic type schemas', function() {
     $scope.translations = {};
 
     $scope.onChange = jasmine.createSpy('onChange');
-    $scope.onRefresh = jasmine.createSpy('onRefresh');
 
     component = getComponent($compile, $scope, template);
   });
@@ -61,10 +59,10 @@ describe('Given a component for rendering basic type schemas', function() {
 
     describe('when there is no model and a default', function() {
       it('should call the onChange handler with the default ', function() {
-        expect($scope.onChange).toHaveBeenCalledWith($scope.schema.default);
-      });
-      it('should not call the onRefresh handler', function() {
-        expect($scope.onRefresh).not.toHaveBeenCalled();
+        expect($scope.onChange).toHaveBeenCalledWith(
+          $scope.schema.default,
+          $scope.schema
+        );
       });
     });
 
@@ -78,7 +76,7 @@ describe('Given a component for rendering basic type schemas', function() {
       });
     });
 
-    describe('when twField triggers onChange and refreshRequirementsOnChange=false', function() {
+    describe('when twField triggers onChange', function() {
       beforeEach(function() {
         $scope.onChange = jasmine.createSpy('onChange');
         $scope.$apply();
@@ -86,22 +84,7 @@ describe('Given a component for rendering basic type schemas', function() {
       });
       it('should trigger the components onChange with the new value', function() {
         expect($scope.onChange.calls.count()).toBe(1);
-        expect($scope.onChange).toHaveBeenCalledWith("foo");
-      });
-      it('should not trigger the components onRefresh', function() {
-        expect($scope.onRefresh.calls.count()).toBe(0);
-      });
-    });
-
-    describe('when twField triggers onChange and refreshRequirementsOnChange=true', function() {
-      beforeEach(function() {
-        $scope.schema.refreshRequirementsOnChange = true;
-        $scope.$apply();
-        twField.bindings.changeHandler({ value: "foo" });
-      });
-      it('should trigger the components onRefresh with the new value ', function() {
-        expect($scope.onRefresh.calls.count()).toBe(1);
-        expect($scope.onRefresh).toHaveBeenCalledWith("foo");
+        expect($scope.onChange).toHaveBeenCalledWith("foo", $scope.schema);
       });
     });
   });

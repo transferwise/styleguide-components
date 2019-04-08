@@ -25,12 +25,10 @@ describe('Given an oneOfSchema component', function() {
         errors="errors" \
         locale="locale" \
         translations="translations" \
-        on-change="onChange(model)" \
-        on-refresh="onRefresh(model)" \
+        on-change="onChange(model, schema)" \
       ></one-of-schema>';
 
     $scope.onChange = jasmine.createSpy('onChange');
-    $scope.onRefresh = jasmine.createSpy('onRefresh');
 
     component = getComponent($compile, $scope, template);
   });
@@ -100,7 +98,10 @@ describe('Given an oneOfSchema component', function() {
         expect(genericSchema.bindings.schema).toBe($scope.schema.oneOf[1]);
       });
       it('should trigger onChange with only the properties in the new schema', function() {
-        expect($scope.onChange).toHaveBeenCalledWith({ a: 1 });
+        expect($scope.onChange).toHaveBeenCalledWith(
+          { a: 1 }, 
+          $scope.schema.oneOf[1]
+        );
       })
     });
 
@@ -108,27 +109,19 @@ describe('Given an oneOfSchema component', function() {
       beforeEach(function() {
         $scope.model = { a: 1 };
         $scope.$apply();
-        genericSchema.bindings.onChange({ model: { b: 2 } });
+        genericSchema.bindings.onChange({
+          model: { b: 2 },
+          schema: $scope.schema.oneOf[0]
+        });
       });
       it('should trigger the components onChange once', function() {
         expect($scope.onChange.calls.count()).toBe(1);
       });
       it('should broadcast the changed model from the child', function() {
-        expect($scope.onChange).toHaveBeenCalledWith({ b: 2 });
-      });
-    });
-
-    describe('when the generic schema triggers onRefreshRequirements', function() {
-      beforeEach(function() {
-        $scope.model = { a: 1 };
-        $scope.$apply();
-        genericSchema.bindings.onRefresh({ model: { b: 2 } });
-      });
-      it('should propogate that event to consumers', function() {
-        expect($scope.onRefresh.calls.count()).toBe(1);
-      });
-      it('should broadcast the changed model from the child', function() {
-        expect($scope.onRefresh).toHaveBeenCalledWith({ b: 2 });
+        expect($scope.onChange).toHaveBeenCalledWith(
+          { b: 2 },
+          $scope.schema.oneOf[0]
+        );
       });
     });
   });

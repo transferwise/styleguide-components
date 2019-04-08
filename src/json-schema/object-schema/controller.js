@@ -5,19 +5,11 @@ class Controller {
     }
   }
 
-  onModelChange(model, property) {
+  onModelChange(property, model, schema) {
     this.model[property] = model;
 
     if (this.onChange) {
-      this.onChange({ model: this.model });
-    }
-  }
-
-  onRefreshRequirements(model, property) {
-    this.model[property] = model; // TODO doing this twice
-
-    if (this.onRefresh) {
-      this.onRefresh({ model: this.model });
+      this.onChange({ model: this.model, schema });
     }
   }
 

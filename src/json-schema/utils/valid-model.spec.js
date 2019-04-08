@@ -29,7 +29,7 @@ describe('Given a library for returning the valid parts of a model based on a sc
         result = getValidModelParts({a:1}, schema);
       });
       it('should return undefined', function() {
-        expect(result).toBeUndefined();
+        expect(result).toBeNull();
       });
     });
   });
@@ -53,7 +53,7 @@ describe('Given a library for returning the valid parts of a model based on a sc
         result = getValidModelParts("string", schema);
       });
       it('should return undefined', function() {
-        expect(result).toBeUndefined();
+        expect(result).toBeNull();
       });
     });
   });
@@ -77,7 +77,7 @@ describe('Given a library for returning the valid parts of a model based on a sc
         result = getValidModelParts("string", schema);
       });
       it('should return undefined', function() {
-        expect(result).toBeUndefined();
+        expect(result).toBeNull();
       });
     });
   });

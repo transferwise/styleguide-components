@@ -5,20 +5,14 @@ class Controller {
 
       // If this schema is just a single enum, set the value
       if (newSchema && newSchema.enum && newSchema.enum.length === 1) {
-        this.onModelChange(newSchema.enum[0]);
+        this.onModelChange(newSchema.enum[0], newSchema);
       }
     }
   }
 
-  onModelChange(model) {
+  onModelChange(model, schema) {
     if (this.onChange) {
-      this.onChange({ model });
-    }
-  }
-
-  onRefreshRequirements(model) {
-    if (this.onRefresh) {
-      this.onRefresh({ model });
+      this.onChange({ model, schema });
     }
   }
 }

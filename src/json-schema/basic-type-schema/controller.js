@@ -13,17 +13,13 @@ class Controller {
     this.validationKeys = validateSchema(model, this.schema);
 
     if (this.onChange) {
-      this.onChange({ model });
-    }
-
-    if (this.schema.refreshRequirementsOnChange && this.onRefresh) {
-      this.onRefresh({ model });
+      this.onChange({ model, schema: this.schema });
     }
   }
 
   getValidationMessages() {
     return (this.schema && this.schema.validationMessages) ||
-      (this.translations && this.translations.validation) || false;
+      (this.translations && this.translations.validation) || null;
   }
 }
 
