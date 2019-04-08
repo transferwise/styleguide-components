@@ -1,4 +1,4 @@
-import { cleanModel } from '../utils/clean-model';
+import { getValidModelParts } from '../utils/clean-model';
 
 class Controller {
   $onChanges(changes) {
@@ -11,9 +11,9 @@ class Controller {
   }
 
   onModelChange(model, index) {
-    const schemaForIndex = this.schema.allOf[index];
+    const schema = this.schema.allOf[index];
 
-    this.models[index] = cleanModel(model, schemaForIndex);
+    this.models[index] = getValidModelParts(model, schema);
 
     if (this.onChange) {
       this.onChange({ model: combineModels(this.models) });
@@ -21,10 +21,9 @@ class Controller {
   }
 
   onRefreshRequirements(model, index) {
-    // TODO tidy
-    const schemaForIndex = this.schema.allOf[index];
+    const schema = this.schema.allOf[index];
 
-    this.models[index] = cleanModel(model, schemaForIndex);
+    this.models[index] = getValidModelParts(model, schema);
 
     if (this.onRefresh) {
       this.onRefresh({ model: combineModels(this.models) });
@@ -37,7 +36,7 @@ function splitModel(model, schemas) {
   const models = [];
   if (model && schemas) {
     schemas.forEach((schema) => {
-      models.push(cleanModel(model, schema) || {});
+      models.push(getValidModelParts(model, schema) || {});
     });
   }
   return models;

@@ -1,5 +1,5 @@
 
-function cleanModel(model, schema) {
+function getValidModelParts(model, schema) {
   if (schema.allOf) {
     return cleanModelWithAllOfSchema(model, schema);
   } else if (schema.oneOf) {
@@ -90,4 +90,4 @@ function cleanModelWithOneOfSchema(model, schema) { // eslint-disable-line
   return model;
 }
 
-export { cleanModel }; // eslint-disable-line
+export { getValidModelParts }; // eslint-disable-line

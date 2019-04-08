@@ -1,13 +1,13 @@
 
-describe('Given a library for cleaning models based on a schema', function() {
-  var result, schema, cleanModel;
+describe('Given a library for returning the valid parts of a model based on a schema', function() {
+  var result, schema, getValidModelParts;
 
   beforeEach(module('tw.styleguide-components'));
   beforeEach(module('tw.json-schema'));
 
   beforeEach(inject(function($injector) {
     var SchemaUtils = $injector.get('SchemaUtils');
-    cleanModel = SchemaUtils.cleanModel;
+    getValidModelParts = SchemaUtils.getValidModelParts;
   }));
 
   describe('when cleaning a string schema', function() {
@@ -17,7 +17,7 @@ describe('Given a library for cleaning models based on a schema', function() {
 
     describe('with a string model', function() {
       beforeEach(function() {
-        result = cleanModel("string", schema);
+        result = getValidModelParts("string", schema);
       });
       it('should return the original string', function() {
         expect(result).toBe("string");
@@ -26,7 +26,7 @@ describe('Given a library for cleaning models based on a schema', function() {
 
     describe('with any non string model', function() {
       beforeEach(function() {
-        result = cleanModel({a:1}, schema);
+        result = getValidModelParts({a:1}, schema);
       });
       it('should return undefined', function() {
         expect(result).toBeUndefined();
@@ -41,7 +41,7 @@ describe('Given a library for cleaning models based on a schema', function() {
 
     describe('with a number model', function() {
       beforeEach(function() {
-        result = cleanModel(12345, schema);
+        result = getValidModelParts(12345, schema);
       });
       it('should return the original number', function() {
         expect(result).toBe(12345);
@@ -50,7 +50,7 @@ describe('Given a library for cleaning models based on a schema', function() {
 
     describe('with any non number model', function() {
       beforeEach(function() {
-        result = cleanModel("string", schema);
+        result = getValidModelParts("string", schema);
       });
       it('should return undefined', function() {
         expect(result).toBeUndefined();
@@ -65,7 +65,7 @@ describe('Given a library for cleaning models based on a schema', function() {
 
     describe('with a boolean model', function() {
       beforeEach(function() {
-        result = cleanModel(false, schema);
+        result = getValidModelParts(false, schema);
       });
       it('should return the original boolean', function() {
         expect(result).toBe(false);
@@ -74,7 +74,7 @@ describe('Given a library for cleaning models based on a schema', function() {
 
     describe('with any non number model', function() {
       beforeEach(function() {
-        result = cleanModel("string", schema);
+        result = getValidModelParts("string", schema);
       });
       it('should return undefined', function() {
         expect(result).toBeUndefined();
@@ -97,7 +97,7 @@ describe('Given a library for cleaning models based on a schema', function() {
 
     describe('if the model has a property with the correct name and the correct type', function() {
       beforeEach(function() {
-        result = cleanModel({ a: 1 }, schema);
+        result = getValidModelParts({ a: 1 }, schema);
       });
       it('should return the property', function() {
         expect(result).toEqual({ a: 1 });
@@ -106,7 +106,7 @@ describe('Given a library for cleaning models based on a schema', function() {
 
     describe('if the model has a property with the correct name and an incorrect typs', function() {
       beforeEach(function() {
-        result = cleanModel({ a: "1" }, schema);
+        result = getValidModelParts({ a: "1" }, schema);
       });
       it('should return an empty object', function() {
         expect(result).toEqual({ });
@@ -115,7 +115,7 @@ describe('Given a library for cleaning models based on a schema', function() {
 
     describe('if the model contains properties not in the schema', function() {
       beforeEach(function() {
-        result = cleanModel({ a: 1, b: 2 }, schema);
+        result = getValidModelParts({ a: 1, b: 2 }, schema);
       });
       it('should return the object without those properties', function() {
         expect(result).toEqual({ a: 1 });
@@ -145,7 +145,7 @@ describe('Given a library for cleaning models based on a schema', function() {
 
     describe('if the nested model is valid', function() {
       beforeEach(function() {
-        result = cleanModel({ a: 1, b: { c: 2 } }, schema);
+        result = getValidModelParts({ a: 1, b: { c: 2 } }, schema);
       });
       it('should be returned', function() {
         expect(result).toEqual({ a: 1, b: { c: 2 } });
@@ -154,7 +154,7 @@ describe('Given a library for cleaning models based on a schema', function() {
 
     describe('if the nested model contains invalid properties', function() {
       beforeEach(function() {
-        result = cleanModel({ a: 1, b: { c: 2, d: 3 }, e: 4 }, schema);
+        result = getValidModelParts({ a: 1, b: { c: 2, d: 3 }, e: 4 }, schema);
       });
       it('should remove them', function() {
         expect(result).toEqual({ a: 1, b: { c: 2 } });
@@ -185,7 +185,7 @@ describe('Given a library for cleaning models based on a schema', function() {
 
     describe('if all of the properties are valid', function() {
       beforeEach(function() {
-        result = cleanModel({ a: 1, b: 2 }, schema);
+        result = getValidModelParts({ a: 1, b: 2 }, schema);
       });
       it('should return them', function() {
         expect(result).toEqual({ a: 1, b: 2 });
@@ -194,7 +194,7 @@ describe('Given a library for cleaning models based on a schema', function() {
 
     describe('if the nested model contains invalid properties', function() {
       beforeEach(function() {
-        result = cleanModel({ a: 1, b: "2" }, schema);
+        result = getValidModelParts({ a: 1, b: "2" }, schema);
       });
       it('should remove them', function() {
         expect(result).toEqual({ a: 1 });

@@ -1,10 +1,10 @@
 import angular from 'angular';
 
-import { cleanModel } from './clean-model';
+import { getValidModelParts } from './valid-model';
 import { validateSchema } from './validation';
 
 function Utils() {
-  this.cleanModel = cleanModel;
+  this.getValidModelParts = getValidModelParts;
   this.validateSchema = validateSchema;
 }
 
