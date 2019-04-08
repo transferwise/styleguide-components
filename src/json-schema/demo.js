@@ -59,9 +59,9 @@ class controller {
     };
   }
 
-  onModelChange(model, schema) {
+  onModelChange(model, originatingShema) {
     console.log('Model changed', model); // eslint-disable-line
-    console.log('Triggered by schema', schema); // eslint-disable-line
+    console.log('Triggered by schema', originatingShema); // eslint-disable-line
     this.model = model;
   }
 }
