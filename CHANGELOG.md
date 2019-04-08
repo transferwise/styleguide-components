@@ -1,7 +1,11 @@
+# v3.7.0
+## Add full support for JSON schema dynamic forms
+These components are published in a separate file which must be included to use
+the functionality
+
 # v3.6.2
 ## Add support for twFieldset to use JSON schema required format
 twField was already adapted to work this way, this brings twFieldset into line and addresses a bug.  Backwards compatibility is maintained for the previous approach.
-
 
 # v3.6.1
 ## Allow user to remove a chosen file from Upload form
