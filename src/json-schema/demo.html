@@ -1,0 +1,27 @@
+<div class="panel">
+  <div class="panel-heading">
+    <div class="panel-title">
+      <h2>JSON schema dynamic forms</h2>
+    </div>
+  </div>
+  <div class="panel-body">
+
+    <generic-schema
+      model="$ctrl.model"
+      schema="$ctrl.schema"
+      errors="$ctrl.errors"
+      locale="'en-GB'"
+      translations="$ctrl.translations"
+      on-change="$ctrl.onModelChange(model, schema)">
+    </generic-schema>
+
+    <button class="btn btn-primary m-b-5"> Save </button>
+    <pre>
+Model:
+{{ $ctrl.model | json }}
+
+Errors:
+{{ $ctrl.errors | json }}
+    </pre>
+  </div>
+</div>

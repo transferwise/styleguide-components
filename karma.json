@@ -7,9 +7,10 @@
     "node_modules/angular-mocks/angular-mocks.js",
 
     "dist/js/styleguide-components.js",
+    "dist/js/json-schema.js",
 
     "test-utils.js",
-    "src/**/*.spec.js"
+    "src/**/*spec.js"
   ],
   "exclude": [],
   "autoWatch": false,

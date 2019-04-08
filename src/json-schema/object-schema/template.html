@@ -1,0 +1,34 @@
+<fieldset>
+  <legend ng-if="$ctrl.schema.title && !$ctrl.hideTitle">
+    {{ $ctrl.schema.title }}
+  </legend>
+  <p ng-if="$ctrl.schema.description">
+    {{ $ctrl.schema.description }}
+  </p>
+  <div ng-if="$ctrl.schema.help.warning"
+    class="alert alert-warning">
+    {{ $ctrl.schema.help.warning }}
+  </div>
+
+  <div class="row">
+    <div ng-repeat="(property, nestedSchema) in $ctrl.schema.properties"
+      class="col-xs-12"
+      ng-hide="nestedSchema.hidden"
+      ng-class="{
+        'col-sm-4': !$ctrl.narrow  && nestedSchema.width === 'sm',
+        'col-sm-6': !$ctrl.narrow  && nestedSchema.width === 'md',
+        'col-sm-12': $ctrl.narrow || nestedSchema.width === 'lg'
+      }">
+      <generic-schema
+        schema="nestedSchema"
+        model="$ctrl.model[property]"
+        errors="$ctrl.errors[property]"
+        locale="$ctrl.locale"
+        translations="$ctrl.translations"
+        required="$ctrl.isRequired(property)"
+        on-change="$ctrl.onModelChange(property, model, schema)"
+        on-refresh="$ctrl.onRefreshRequirements(model, property)">
+      </generic-schema>
+    </div>
+  </div>
+</fieldset>

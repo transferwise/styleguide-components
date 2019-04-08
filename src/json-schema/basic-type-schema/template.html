@@ -1,0 +1,13 @@
+<tw-field
+  name="{{ $ctrl.key }}"
+  model="$ctrl.model"
+  field="$ctrl.schema"
+  required="$ctrl.required"
+  locale="{{ $ctrl.locale }}"
+  on-change="$ctrl.onModelChange(value)"
+  error-message="$ctrl.errors"
+  warning-message="$ctrl.schema.help.warning"
+  validation-messages="$ctrl.getValidationMessages()"
+  upload-options="$ctrl.translations.upload"
+  class="btn-block"> <!-- Remove btn-block after boostrap update -->
+</tw-field>

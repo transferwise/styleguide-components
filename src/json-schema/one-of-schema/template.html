@@ -1,0 +1,31 @@
+<label class="control-label" ng-if="$ctrl.schema.title">
+  {{ $ctrl.schema.title }}
+</label>
+<div class="form-group m-b-5">
+  <div class="radio"
+    ng-repeat="(index, schema) in $ctrl.schema.oneOf"
+    ng-class="{'radio-lg': schema.description}">
+    <label>
+      <tw-radio
+        ng-model="$ctrl.activeIndex"
+        ng-value="(index + 1)"
+        ng-change="$ctrl.onSchemaChange(schema)"></tw-radio>
+      {{ schema.title }}
+      <p ng-if="schema.description" class="secondary m-b-0">
+        {{ schema.description }}
+      </p>
+    </label>
+  </div>
+</div>
+
+<generic-schema
+  ng-if="$ctrl.schema.oneOf[$ctrl.activeIndex - 1]"
+  schema="$ctrl.schema.oneOf[$ctrl.activeIndex - 1]"
+  model="$ctrl.model"
+  errors="$ctrl.errors"
+  locale="$ctrl.locale"
+  translations="$ctrl.translations"
+  on-change="$ctrl.onModelChange(model, schema)"
+  on-refresh="$ctrl.onRefreshRequirements(model)"
+  hide-title="true">
+</generic-schema>

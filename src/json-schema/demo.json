@@ -1,0 +1,136 @@
+{
+  "allOf": [
+    {
+      "type": "object",
+      "title": "Create business",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Business name",
+          "width": "md",
+          "minLength": 2,
+          "maxLength": 32,
+          "onRefreshRequirements": true
+        },
+        "incorporationDate": {
+          "type": "string",
+          "title": "Date incorporated",
+          "format": "date",
+          "width": "md",
+          "min": "1700-01-01",
+          "max": "2020-01-01"
+        },
+        "industry": {
+          "title": "Industry",
+          "type": "string",
+          "values": [
+            {
+              "value": "technology",
+              "label": "Information technology"
+            },
+            {
+              "value": "finance",
+              "label": "Finance & banking"
+            }
+          ],
+          "control": "select",
+          "default": "technology",
+          "width": "md"
+        },
+        "contactNumber": {
+          "type": "string",
+          "format": "phone",
+          "title": "Contact number",
+          "width": "md",
+          "pattern": "^[0-9]{9,11}$",
+          "help": {
+            "warning": "We'll send you a text to confirm this nunber"
+          }
+        },
+        "things": {
+          "type": "array",
+          "title": "Multi-select",
+          "width": "md",
+          "items": {
+            "type": "string",
+            "values": [{
+              "value": "1",
+              "label": "One"
+            },{
+              "value": "2",
+              "label": "Two"
+            }]
+          }
+        }
+      }
+    },{
+      "oneOf": [{
+        "type": "object",
+        "title": "Private business",
+        "properties": {
+          "taxRegistered": {
+            "type": "boolean",
+            "title": "Is it tax registed?",
+            "placeholder": "Yes, registered",
+            "onRefreshRequirements": true
+          },
+          "shareholders": {
+            "description": "Please list all shareholders with 25% or greater ownership",
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 4,
+            "items": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string",
+                  "title": "First name",
+                  "width": "md"
+                },
+                "lastName": {
+                  "type": "string",
+                  "title": "Last name",
+                  "width": "md"
+                }
+              }
+            }
+          }
+        }
+      },{
+        "type": "object",
+        "title": "Public business",
+        "properties": {
+          "registrationNumber": {
+            "type": "integer",
+            "title": "Registration number"
+          }
+        }
+      }]
+    },{
+      "type": "object",
+      "title": "Address details",
+      "properties": {
+        "streetAddress": {
+          "title": "Street address",
+          "type": "string"
+        },
+        "contact": {
+          "title": "Can we contact you at this address?",
+          "type": "bool",
+          "default": true,
+          "values": [
+            {
+              "value": true,
+              "label": "Yes"
+            },
+            {
+              "value": false,
+              "label": "No"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

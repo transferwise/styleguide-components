@@ -72,7 +72,9 @@ module.exports = [{
   entry: {
     'dist/js/styleguide-components': './src/index.js',
     'dist/js/styleguide-components.min': './src/index.js',
+    'dist/js/json-schema': './src/json-schema/index.js',
     'demo/lib/styleguide-components': './src/index.js',
+    'demo/lib/json-schema': './src/json-schema/index.js',
     'demo/lib/demo': './src/demo.js'
   },
   output: {

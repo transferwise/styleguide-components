@@ -1,0 +1,51 @@
+<one-of-schema
+  ng-if="$ctrl.schema.oneOf"
+  model="$ctrl.model"
+  schema="$ctrl.schema"
+  errors="$ctrl.errors"
+  locale="$ctrl.locale"
+  translations="$ctrl.translations"
+  on-change="$ctrl.onModelChange(model, schema)">
+</one-of-schema>
+
+<all-of-schema
+  ng-if="$ctrl.schema.allOf"
+  model="$ctrl.model"
+  schema="$ctrl.schema"
+  errors="$ctrl.errors"
+  locale="$ctrl.locale"
+  translations="$ctrl.translations"
+  on-change="$ctrl.onModelChange(model, schema)">
+</all-of-schema>
+
+<basic-type-schema
+  ng-if="$ctrl.schema.type && ($ctrl.schema.type !== 'object' && $ctrl.schema.type !== 'array')"
+  model="$ctrl.model"
+  schema="$ctrl.schema"
+  errors="$ctrl.errors"
+  locale="$ctrl.locale"
+  translations="$ctrl.translations"
+  required="$ctrl.required"
+  on-change="$ctrl.onModelChange(model, schema)">
+</basic-type-schema>
+
+<object-schema
+  ng-if="$ctrl.schema.type === 'object'"
+  model="$ctrl.model"
+  schema="$ctrl.schema"
+  errors="$ctrl.errors"
+  locale="$ctrl.locale"
+  translations="$ctrl.translations"
+  on-change="$ctrl.onModelChange(model, schema)"
+  hide-title="$ctrl.hideTitle">
+</object-schema>
+
+<array-schema
+  ng-if="$ctrl.schema.type === 'array'"
+  model="$ctrl.model"
+  schema="$ctrl.schema"
+  errors="$ctrl.errors"
+  locale="$ctrl.locale"
+  translations="$ctrl.translations"
+  on-change="$ctrl.onModelChange(model, schema)">
+</array-schema>
