@@ -10,7 +10,7 @@ class controller {
     this.locale = 'en-GB';
 
     this.errors = {
-      industry: 'We were hping you would pick the other one',
+      industry: 'We were hoping you would pick the other one',
       shareholders: [{
         firstName: 'Choose a better one'
       }, {
