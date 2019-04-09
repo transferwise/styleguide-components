@@ -1,3 +1,7 @@
+# v3.7.1
+## Improve JSON schema dynamic forms documentation
+Also fixes a small bug on help text and browser autocomplete
+
 # v3.7.0
 ## Add full support for JSON schema dynamic forms
 These components are published in a separate file which must be included to use
