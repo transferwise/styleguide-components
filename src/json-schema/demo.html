@@ -5,15 +5,76 @@
     </div>
   </div>
   <div class="panel-body">
+    <div class="row">
+      <div class="col-md-6">
+        <ul>
+          <li>
+            <code>model</code> - a data model to prefill the form.  This is
+            not two-way bound, you should use the on-change handler to update
+            model state.
+          </li>
+          <li>
+            <code>schema</code> - the JSON schema for the form. This root
+            schema can be of any supported type.
+          </li>
+          <li>
+            <code>errors</code> - a collection of errors.  The format of which
+            should match the model strcuture.  For example, if a profile model
+            contained an invalid postcode in nested structure
+            'profile.address.postcode' the error message should be supplied
+            as the value in an identical structure.
+          </li>
+          <li>
+            <code>locale</code> - the locale. Used to customise formatting.
+          </li>
+          <li>
+            <code>translations</code> - an object containing translations.
+            Check further down the page to see the translations we can use.
+          </li>
+          <li>
+            <code>on-change</code> - a callback handler that returns the new
+            value of the model and the schema of the property that caused the
+            change.  This can be used to implement features like
+            'refresh requirements on change'.
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+<pre>&lt;json-schema-form
+  model="{ ... }"
+  schema="{ ... }"
+  errors="{ ... }"
+  locale="{{ $ctrl.locale }}"
+  translations="{ ... }"
+  on-change="$ctrl.onChange(model, schema)"
+&gt;&lt;/json-schema-form&gt;</pre>
+        <div class="form-group">
+          <label class="control-label">
+            Choose schema
+          </label>
+          <tw-select
+            ng-model="$ctrl.schemaType"
+            options="$ctrl.schemaOptions"
+            ng-change="$ctrl.onSchemaChange($ctrl.schemaType)"
+            ng-required="true"
+          ></tw-select>
 
-    <generic-schema
+        </div>
+      </div>
+    </div>
+
+    <h3 class="page-header">
+      Example
+    </h3>
+
+    <json-schema-form
       model="$ctrl.model"
       schema="$ctrl.schema"
       errors="$ctrl.errors"
       locale="'en-GB'"
       translations="$ctrl.translations"
       on-change="$ctrl.onModelChange(model, schema)">
-    </generic-schema>
+    </json-schema-form>
 
     <button class="btn btn-primary m-b-5"> Save </button>
     <pre>
@@ -23,5 +84,33 @@ Model:
 Errors:
 {{ $ctrl.errors | json }}
     </pre>
+
+    <h4>Translations</h4>
+    <p>We need a number of translations to take advantage of all of the JSON
+      schema form functionality.  The following are example translations.</p>
+<pre>
+{
+  array: {
+    add: 'Add',
+    remove: 'Remove'
+  },
+  validation: {
+    required: 'Field is required',
+    minLength: 'Too short',
+    maxLength: 'Too long',
+    minimum: 'Too low',
+    maximum: 'Too high',
+    pattern: 'Invalid characters'
+  },
+  upload: {
+    choose: 'Choose file',
+    processing: 'Working...',
+    success: 'Success!',
+    failed: 'Upload failed',
+    cancel: 'Choose another file'
+  }
+}
+</pre>
+
   </div>
 </div>

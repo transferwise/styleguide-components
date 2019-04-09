@@ -1,38 +1,25 @@
 import angular from 'angular';
 import template from './demo.html';
 
-// import schema from './demo.json';
-import schema from './recipient.json';
-
 class controller {
+  constructor($http) {
+    this.$http = $http;
+  }
+
   $onInit() {
+    this.locale = 'en-GB';
+
     this.errors = {
-      currency: 'This one is bad',
-      accountNumber: 'Also this one',
-      streetAddress: 'And this one could be better',
+      industry: 'We were hping you would pick the other one',
       shareholders: [{
-        firstName: 'Will it...'
+        firstName: 'Choose a better one'
       }, {
-        lastName: 'Wont it...'
-      }]
+        lastName: 'And here as well'
+      }],
+      streetAddress: 'And this one could be better'
     };
 
-    this.errors = {
-      shareholders: [
-        {},
-        {
-          lastName: 'Last name is required'
-        }
-      ]
-    };
-    this.schema = schema;
-
-    this.model = {
-      email: 'bigbob',
-      details: {
-        aba: 1234
-      }
-    };
+    this.schema = {};
 
     this.model = {};
 
@@ -57,6 +44,27 @@ class controller {
         cancel: 'Choose another file'
       }
     };
+
+    this.schemaType = '';
+
+    this.schemaOptions = [{
+      value: 'json-schema/gbp-recipient.json',
+      label: 'GBP recipient'
+    }, {
+      value: 'json-schema/usd-recipient.json',
+      label: 'USD recipient'
+    }, {
+      value: 'json-schema/demo.json',
+      label: 'Complex example'
+    }];
+
+    this.onSchemaChange(this.schemaOptions[0].value);
+  }
+
+  onSchemaChange(schemaType) {
+    this.$http.get(schemaType).then((response) => {
+      this.schema = response.data;
+    });
   }
 
   onModelChange(model, originatingShema) {
@@ -65,6 +73,8 @@ class controller {
     this.model = model;
   }
 }
+
+controller.$inject = ['$http'];
 
 export default angular
   .module('tw.styleguide.demo.json-schema', [])
