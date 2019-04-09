@@ -19,7 +19,10 @@
           "format": "date",
           "width": "md",
           "min": "1700-01-01",
-          "max": "2020-01-01"
+          "max": "2020-01-01",
+          "help": {
+            "message": "Make it a good one!"
+          }
         },
         "industry": {
           "title": "Industry",
@@ -43,7 +46,7 @@
           "format": "phone",
           "title": "Contact number",
           "width": "md",
-          "pattern": "^[0-9]{9,11}$",
+          "pattern": "^\\+[0-9]{9,15}$",
           "help": {
             "warning": "We'll send you a text to confirm this nunber"
           }
@@ -65,6 +68,7 @@
         }
       }
     },{
+      "title": "What type of business is it?",
       "oneOf": [{
         "type": "object",
         "title": "Private business",
