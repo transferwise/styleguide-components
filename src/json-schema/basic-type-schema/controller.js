@@ -1,4 +1,4 @@
-import { getValidationFailures } from '../utils/validation';
+import { getValidationFailures } from '../utils/validation-failures';
 
 class Controller {
   $onInit() {

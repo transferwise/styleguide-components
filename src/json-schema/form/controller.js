@@ -1,4 +1,4 @@
-import { isValidSchema } from '../utils/validation';
+import { isValidSchema } from '../utils/schema-validators';
 
 class Controller {
   onModelChange(model, schema) {
