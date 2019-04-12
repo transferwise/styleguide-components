@@ -56,6 +56,9 @@ class controller {
     }, {
       value: 'json-schema/demo.json',
       label: 'Complex example'
+    }, {
+      value: 'json-schema/simple.json',
+      label: 'Simple example'
     }];
 
     this.onSchemaChange(this.schemaOptions[0].value);
@@ -67,8 +70,10 @@ class controller {
     });
   }
 
-  onModelChange(model, originatingShema) {
+  onModelChange(model, valid, originatingShema) {
+    this.valid = valid;
     console.log('Model changed', model); // eslint-disable-line
+    console.log('Valid', valid); // eslint-disable-line
     console.log('Triggered by schema', originatingShema); // eslint-disable-line
     this.model = model;
   }

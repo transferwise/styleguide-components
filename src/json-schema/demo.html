@@ -76,10 +76,12 @@
       on-change="$ctrl.onModelChange(model, schema)">
     </json-schema-form>
 
-    <button class="btn btn-primary m-b-5"> Save </button>
+    <button class="btn btn-primary m-b-5" ng-disabled="!$ctrl.valid"> Save </button>
     <pre>
 Model:
 {{ $ctrl.model | json }}
+
+Is valid: {{ $ctrl.valid }}
 
 Errors:
 {{ $ctrl.errors | json }}

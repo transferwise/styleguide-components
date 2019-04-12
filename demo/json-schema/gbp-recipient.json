@@ -47,12 +47,18 @@
                 "type": "string",
                 "title": "Sort code",
                 "displayFormat": "**-**-**",
-                "width": "md"
+                "width": "md",
+                "minLength": 6,
+                "maxLength": 7,
+                "pattern": "[0-9]+"
               },
               "accountNumber": {
                 "type": "string",
                 "title": "Account Number",
-                "width": "md"
+                "width": "md",
+                "minLength": 8,
+                "maxLength": 8,
+                "pattern": "[0-9]+"
               }
             },
             "required": ["sortcode", "accountNumber"]
