@@ -1,11 +1,11 @@
 import angular from 'angular';
 
 import { getValidModelParts } from './valid-model';
-import { validateSchema, isValidSchema } from './validation';
+import { getValidationFailures, isValidSchema } from './validation';
 
 function Utils() {
   this.getValidModelParts = getValidModelParts;
-  this.validateSchema = validateSchema;
+  this.getValidationFailures = getValidationFailures;
   this.isValidSchema = isValidSchema;
 }
 

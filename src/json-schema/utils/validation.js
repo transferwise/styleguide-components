@@ -1,103 +1,96 @@
-function validateSchema(value, schema) {
+function getValidationFailures(value, schema, isRequired) {
   switch (schema.type) {
     case 'string':
-      return validateString(value, schema);
+      return getStringValidationFailures(value, schema, isRequired);
     case 'number':
-      return validateNumber(value, schema);
+      return getNumberValidationFailures(value, schema, isRequired);
     case 'integer':
-      return validateInteger(value, schema);
+      return getIntegerValidationFailures(value, schema, isRequired);
     case 'boolean':
-      return validateBoolean(value, schema);
+      return getBooleanValidationFailures(value, schema, isRequired);
     case 'array':
-      return validateArray(value, schema);
+      return getArrayValidationFailures(value, schema);
     case 'object':
-      return validateObject(value, schema);
+      return getObjectValidationFailures(value, schema);
     default:
       return [];
   }
 }
 
-function validateString(value, schema) {
-  if (typeof value !== 'string') {
+function getStringValidationFailures(value, schema, isRequired) {
+  if (!isString(value)) {
     return ['type'];
   }
 
   const failures = [];
-  if (schema.required && validateRequired(value)) {
+  if (!isValidRequired(value, isRequired)) {
     failures.push('required');
   }
-  if (schema.minLength && validateMinLength(value, schema.minLength)) {
+  if (!isValidMinLength(value, schema.minLength)) {
     failures.push('minLength');
   }
-  if (schema.maxLength && validateMaxLength(value, schema.maxLength)) {
+  if (!isValidMaxLength(value, schema.maxLength)) {
     failures.push('maxLength');
   }
-  if (schema.pattern && validatePattern(value, schema.pattern)) {
+  if (!isValidPattern(value, schema.pattern)) {
     failures.push('pattern');
   }
-  if (schema.min && validateMin(value, schema.min)) {
+  if (!isValidMin(value, schema.min)) {
     failures.push('min');
   }
-  if (schema.max && validateMax(value, schema.max)) {
+  if (!isValidMax(value, schema.max)) {
     failures.push('max');
   }
   return failures;
 }
 
-function validateNumber(value, schema) {
-  if (typeof value !== 'number') {
+function getNumberValidationFailures(value, schema, isRequired) {
+  if (!isNumber(value)) {
     return ['type'];
   }
 
   const failures = [];
-  if (schema.required && validateRequired(value)) {
+  if (!isValidRequired(value, isRequired)) {
     failures.push('required');
   }
-  if (schema.min && validateMin(value, schema.min)) {
+  if (!isValidMin(value, schema.min)) {
     failures.push('min');
   }
-  if (schema.max && validateMax(value, schema.max)) {
+  if (!isValidMax(value, schema.max)) {
     failures.push('max');
   }
   return failures;
 }
 
-function validateInteger(value, schema) {
-  if (Math.floor(value) !== value) {
+function getIntegerValidationFailures(value, schema, isRequired) {
+  if (!isInteger(value)) {
     return ['type'];
   }
-  return validateNumber(value, schema);
+  return getNumberValidationFailures(value, schema, isRequired);
 }
 
-function validateBoolean(value, schema) {
-  if (typeof value !== 'boolean') {
+function getBooleanValidationFailures(value, schema, isRequired) {
+  if (!isBoolean(value)) {
     return ['type'];
   }
 
   const failures = [];
-  if (schema.required && validateRequired(value)) {
+  if (!isValidRequired(value, isRequired)) {
     failures.push('required');
   }
   return failures;
 }
 
-/**
- * When validating an array we only checking that it is an array and that it
- * fits our size constraints, we do not check if the items are valid.
- */
-function validateArray(value, schema) {
+function getArrayValidationFailures(value, schema) {
   if (!isArray(value)) {
     return ['type'];
   }
 
   const failures = [];
-  if (schema.required && validateRequired(value)) {
-    failures.push('required');
-  }
-  if (schema.minItems && validateMinItems(value, schema.minItems)) {
+  if (!isValidMinItems(value, schema.minItems)) {
     failures.push('minItems');
   }
-  if (schema.maxItems && validateMaxItems(value, schema.maxItems)) {
+  if (!isValidMaxItems(value, schema.maxItems)) {
     failures.push('maxItems');
   }
   return failures;
@@ -107,7 +100,7 @@ function validateArray(value, schema) {
  * When validating an object we only checking that it is an object and that it
  * has the required properties, we do not check if the properties are valid.
  */
-function validateObject(value, schema) {
+function getObjectValidationFailures(value, schema) {
   if (!isObject(value)) {
     return ['type'];
   }
@@ -123,55 +116,73 @@ function validateObject(value, schema) {
   return allPresent ? [] : ['required'];
 }
 
-function validateRequired(value) {
-  return !value;
+function isValidRequired(value, isRequired) {
+  return !isRequired || typeof value !== 'undefined';
 }
 
-function validateMinLength(value, minLength) {
-  return value && value.length < minLength;
+function isValidMinLength(value, minLength) {
+  return !minLength || (value && value.length >= minLength);
 }
 
-function validateMaxLength(value, maxLength) {
-  return value && value.length > maxLength;
+function isValidMaxLength(value, maxLength) {
+  return !maxLength || (value && value.length <= maxLength);
 }
 
-function validatePattern(value, pattern) {
+function isValidPattern(value, pattern) {
   try {
     const regex = new RegExp(pattern);
-    return !regex.test(value);
+    return regex.test(value);
   } catch (error) {
-    return false;
+    return true;
   }
 }
 
-function validateMax(value, max) {
-  return value && value > max;
+function isValidMax(value, max) {
+  return typeof max === 'undefined' || (typeof value !== 'undefined' && value <= max);
 }
 
-function validateMin(value, min) {
-  return value && value < min;
+function isValidMin(value, min) {
+  return typeof min === 'undefined' || (typeof value !== 'undefined' && value >= min);
 }
 
-function validateMinItems(value, minItems) {
-  return value && value.length < minItems;
+function isValidMinItems(value, minItems) {
+  return !minItems || (value && value.length >= minItems);
 }
 
-function validateMaxItems(value, maxItems) {
-  return value && value.length > maxItems;
+function isValidMaxItems(value, maxItems) {
+  return !maxItems || (value && value.length <= maxItems);
 }
 
+function isObject(value) {
+  return value.constructor === Object;
+}
+function isArray(value) {
+  return Array.isArray(value);
+}
+function isString(value) {
+  return typeof value === 'string';
+}
+function isNumber(value) {
+  return typeof value === 'number';
+}
+function isInteger(value) {
+  return isNumber(value) && Math.floor(value) === value;
+}
+function isBoolean(value) {
+  return typeof value === 'boolean';
+}
 
 function isValidStringSchema(value, schema) {
-  return !validateString(value, schema).length;
+  return !getStringValidationFailures(value, schema).length;
 }
 function isValidNumberSchema(value, schema) {
-  return !validateNumber(value, schema).length;
+  return !getNumberValidationFailures(value, schema).length;
 }
 function isValidIntegerSchema(value, schema) {
-  return !validateInteger(value, schema).length;
+  return !getIntegerValidationFailures(value, schema).length;
 }
 function isValidBooleanSchema(value, schema) {
-  return !validateBoolean(value, schema).length;
+  return !getBooleanValidationFailures(value, schema).length;
 }
 
 function isValidObjectSchema(value, schema) {
@@ -196,14 +207,11 @@ function isObjectPropertyValid(propertyValue, propertySchema, isRequired) {
 }
 
 function isValidArraySchema(value, schema) { // eslint-disable-line
-  if (!isArray(value) || schema.type !== 'array' || !isObject(schema.items)) {
+  if (schema.type !== 'array' || !isObject(schema.items)) {
     return false;
   }
 
-  if (schema.minItems && value.length < schema.minItems) {
-    return false;
-  }
-  if (schema.maxItems && value.length > schema.maxItems) {
+  if (getArrayValidationFailures(value, schema).length) {
     return false;
   }
 
@@ -251,19 +259,12 @@ function isValidSchema(value, schema) {
   }
 }
 
-function isObject(value) {
-  return value.constructor === Object;
-}
-function isArray(value) {
-  return Array.isArray(value);
-}
-
 export {
-  validateSchema,
-  validateString,
-  validateNumber,
-  validateBoolean,
-  validateArray,
-  validateObject,
+  getValidationFailures,
+  getStringValidationFailures,
+  getNumberValidationFailures,
+  getBooleanValidationFailures,
+  getArrayValidationFailures,
+  getObjectValidationFailures,
   isValidSchema
 };

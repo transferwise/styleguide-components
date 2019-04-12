@@ -1,4 +1,4 @@
-import { validateSchema } from '../utils/validation';
+import { getValidationFailures } from '../utils/validation';
 
 class Controller {
   $onInit() {
@@ -10,7 +10,7 @@ class Controller {
   }
 
   onModelChange(model) {
-    this.validationKeys = validateSchema(model, this.schema);
+    this.validationKeys = getValidationFailures(model, this.schema, this.required);
 
     if (this.onChange) {
       this.onChange({ model, schema: this.schema });
