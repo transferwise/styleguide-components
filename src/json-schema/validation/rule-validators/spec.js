@@ -5,8 +5,8 @@ describe('Given a library for validating json schema rules', function() {
   beforeEach(module('tw.json-schema'));
 
   beforeEach(inject(function($injector) {
-    var SchemaUtils = $injector.get('SchemaUtils');
-    ruleValidators = SchemaUtils.ruleValidators;
+    var SchemaValidation = $injector.get('SchemaValidation');
+    ruleValidators = SchemaValidation.ruleValidators;
   }));
 
   describe('when establishing if a value passes required validation', function() {

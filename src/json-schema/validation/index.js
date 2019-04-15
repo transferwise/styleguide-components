@@ -6,7 +6,7 @@ import { isValidSchema } from './schema-validators';
 import * as ruleValidators from './rule-validators';
 import * as typeValidators from './type-validators';
 
-function Utils() {
+function Validation() {
   this.getValidModelParts = getValidModelParts;
   this.getValidationFailures = getValidationFailures;
   this.isValidSchema = isValidSchema;
@@ -15,5 +15,5 @@ function Utils() {
 }
 
 export default angular
-  .module('tw.json-schema.utils', [])
-  .service('SchemaUtils', Utils).name;
+  .module('tw.json-schema.validation', [])
+  .service('SchemaValidation', Validation).name;

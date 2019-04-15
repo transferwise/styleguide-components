@@ -6,8 +6,8 @@ describe('Given a library for identifying validation failures', function() {
   beforeEach(module('tw.json-schema'));
 
   beforeEach(inject(function($injector) {
-    var SchemaUtils = $injector.get('SchemaUtils');
-    getValidationFailures = SchemaUtils.getValidationFailures;
+    var SchemaValidation = $injector.get('SchemaValidation');
+    getValidationFailures = SchemaValidation.getValidationFailures;
   }));
 
   describe('when validating a string schema', function() {

@@ -5,8 +5,8 @@ describe('Given a library for validating data types', function() {
   beforeEach(module('tw.json-schema'));
 
   beforeEach(inject(function($injector) {
-    var SchemaUtils = $injector.get('SchemaUtils');
-    typeValidators = SchemaUtils.typeValidators;
+    var SchemaValidation = $injector.get('SchemaValidation');
+    typeValidators = SchemaValidation.typeValidators;
   }));
 
   describe('when validating a string', function() {
