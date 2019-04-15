@@ -1,4 +1,4 @@
-import { getValidModelParts } from '../utils/valid-model';
+import { getValidModelParts } from '../validation/valid-model';
 
 class Controller {
   $onChanges(changes) {

@@ -6,8 +6,8 @@ describe('Given a library for returning the valid parts of a model based on a sc
   beforeEach(module('tw.json-schema'));
 
   beforeEach(inject(function($injector) {
-    var SchemaUtils = $injector.get('SchemaUtils');
-    getValidModelParts = SchemaUtils.getValidModelParts;
+    var SchemaValidation = $injector.get('SchemaValidation');
+    getValidModelParts = SchemaValidation.getValidModelParts;
   }));
 
   describe('when cleaning a string schema', function() {

@@ -12,8 +12,7 @@ const Component = {
     translations: '<',
     required: '<',
     hideTitle: '<',
-    onChange: '&',
-    onRefresh: '&'
+    onChange: '&'
   }
 };
 

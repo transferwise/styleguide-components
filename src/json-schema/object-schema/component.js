@@ -11,8 +11,7 @@ const Component = {
     locale: '<',
     translations: '<',
     hideTitle: '<',
-    onChange: '&',
-    onRefresh: '&'
+    onChange: '&'
   }
 };
 

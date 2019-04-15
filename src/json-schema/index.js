@@ -7,7 +7,7 @@ import BasicTypeSchema from './basic-type-schema/';
 import GenericSchema from './generic-schema/';
 import ObjectSchema from './object-schema/';
 import OneOfSchema from './one-of-schema/';
-import Utils from './utils/';
+import Validation from './validation/';
 
 export default angular.module('tw.json-schema', [
   Form,
@@ -17,5 +17,5 @@ export default angular.module('tw.json-schema', [
   GenericSchema,
   ObjectSchema,
   OneOfSchema,
-  Utils
+  Validation
 ]).name;
