@@ -1,3 +1,7 @@
+# v3.8.0
+## Add validation features and broadcast validity from json schema form
+onChange event now includes an isValid parameter
+
 # v3.7.1
 ## Improve JSON schema dynamic forms documentation
 Also fixes a small bug on help text and browser autocomplete
