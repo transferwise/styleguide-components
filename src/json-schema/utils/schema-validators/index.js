@@ -1,4 +1,4 @@
-import { isObject, isArray } from './type-validators';
+import { isObject, isArray } from '../type-validators';
 
 import {
   getStringValidationFailures,
@@ -6,7 +6,7 @@ import {
   getIntegerValidationFailures,
   getBooleanValidationFailures,
   getArrayValidationFailures
-} from './validation-failures';
+} from '../validation-failures';
 
 function isValidStringSchema(value, schema) {
   return !getStringValidationFailures(value, schema).length;

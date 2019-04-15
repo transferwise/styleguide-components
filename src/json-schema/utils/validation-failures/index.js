@@ -5,7 +5,7 @@ import {
   isNumber,
   isInteger,
   isBoolean
-} from './type-validators';
+} from '../type-validators';
 
 import {
   isValidRequired,
@@ -16,7 +16,7 @@ import {
   isValidMin,
   isValidMinItems,
   isValidMaxItems
-} from './rule-validators';
+} from '../rule-validators';
 
 function getValidationFailures(value, schema, isRequired) {
   switch (schema.type) {

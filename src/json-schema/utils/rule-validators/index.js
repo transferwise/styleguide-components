@@ -4,17 +4,17 @@ function isValidRequired(value, isRequired) {
 }
 
 function isValidMinLength(value, minLength) {
-  return !minLength || (value && value.length >= minLength);
+  return typeof minLength === 'undefined' || (!!value && value.length >= minLength);
 }
 
 function isValidMaxLength(value, maxLength) {
-  return !maxLength || (value && value.length <= maxLength);
+  return typeof maxLength === 'undefined' || (!!value && value.length <= maxLength);
 }
 
 function isValidPattern(value, pattern) {
   try {
     const regex = new RegExp(pattern);
-    return regex.test(value);
+    return typeof value !== 'undefined' && !!regex.test(value);
   } catch (error) {
     return true;
   }
@@ -29,11 +29,11 @@ function isValidMin(value, min) {
 }
 
 function isValidMinItems(value, minItems) {
-  return !minItems || (value && value.length >= minItems);
+  return !minItems || (!!value && value.length >= minItems);
 }
 
 function isValidMaxItems(value, maxItems) {
-  return !maxItems || (value && value.length <= maxItems);
+  return !maxItems || (!!value && value.length <= maxItems);
 }
 
 export {
