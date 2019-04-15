@@ -32,10 +32,11 @@
             Check further down the page to see the translations we can use.
           </li>
           <li>
-            <code>on-change</code> - a callback handler that returns the new
-            value of the model and the schema of the property that caused the
-            change.  This can be used to implement features like
-            'refresh requirements on change'.
+            <code>on-change(model, isValid, schema)</code> - a callback handler
+            that returns the new value of the model, whether the model 'isValid'
+            and the schema of the property that caused the change.  This final
+            parameter can be used to implement features like 'refresh
+            requirements on change'.
           </li>
         </ul>
       </div>
@@ -46,7 +47,7 @@
   errors="{ ... }"
   locale="{{ $ctrl.locale }}"
   translations="{ ... }"
-  on-change="$ctrl.onChange(model, schema)"
+  on-change="$ctrl.onChange(model, isValid, schema)"
 &gt;&lt;/json-schema-form&gt;</pre>
         <div class="form-group">
           <label class="control-label">
@@ -73,15 +74,15 @@
       errors="$ctrl.errors"
       locale="'en-GB'"
       translations="$ctrl.translations"
-      on-change="$ctrl.onModelChange(model, schema)">
+      on-change="$ctrl.onModelChange(model, isValid, schema)">
     </json-schema-form>
 
-    <button class="btn btn-primary m-b-5" ng-disabled="!$ctrl.valid"> Save </button>
+    <button class="btn btn-primary m-b-5" ng-disabled="!$ctrl.isValid"> Save </button>
     <pre>
 Model:
 {{ $ctrl.model | json }}
 
-Is valid: {{ $ctrl.valid }}
+Is valid: {{ $ctrl.isValid }}
 
 Errors:
 {{ $ctrl.errors | json }}

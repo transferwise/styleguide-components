@@ -70,10 +70,10 @@ class controller {
     });
   }
 
-  onModelChange(model, valid, originatingShema) {
-    this.valid = valid;
+  onModelChange(model, isValid, originatingShema) {
+    this.isValid = isValid;
     console.log('Model changed', model); // eslint-disable-line
-    console.log('Valid', valid); // eslint-disable-line
+    console.log('Is valid?', isValid); // eslint-disable-line
     console.log('Triggered by schema', originatingShema); // eslint-disable-line
     this.model = model;
   }
