@@ -1,3 +1,7 @@
+# v3.8.1
+## Changes the background for repeat transfer section of the card
+This section was wrongly painted white, where it should have been grey.
+
 # v3.8.0
 ## Add validation features and broadcast validity from json schema form
 onChange event now includes an isValid parameter
