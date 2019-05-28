@@ -104,8 +104,8 @@ export default angular
           long: [{ header: 'example header' }]
         }
       };
-      for (let i = 0; i < 999; i++) {
-        this.select.options.long.push({ value: String(i), label: String(i) });
+      for (let i = 1; i <= 3000; i++) {
+        this.select.options.long.push({ value: `option-${i}`, label: `Optiony Option ${i}` });
       }
 
       this.hideOptions = [
