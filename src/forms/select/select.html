@@ -113,7 +113,7 @@
         'dropdown-header': option.header,
         'tw-select-option': !option.header && !option.disabled
       }">
-      <span ng-if="option.header" class="text-ellipsis">{{option.header}}</span>
+      <span ng-if="option.header" class="text-ellipsis" ng-click="$event.stopPropagation()">{{option.header}}</span>
       <a href=""
         ng-if="!option.header"
         ng-click="$ctrl.optionClick(option, $event)"
@@ -148,6 +148,16 @@
           ng-if="option.note" class="tw-select-note small m-l-1">{{option.note}}</span><span
           ng-if="option.secondary"
           class="tw-select-secondary small text-ellipsis">{{option.secondary}}</span>
+      </a>
+    </li>
+
+    <li ng-if="$ctrl.hasMoreOptionsToReveal">
+      <a href=""
+        ng-click="$ctrl.revealMoreOptions($event)"
+        class="tw-select-load-more"
+        tabindex="-1"
+        tw-focusable >
+        ...
       </a>
     </li>
 

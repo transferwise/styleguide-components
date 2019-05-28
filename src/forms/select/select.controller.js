@@ -26,6 +26,10 @@ class SelectController {
 
     this.responsiveClasses = responsiveClasses;
 
+    this.optionsPageSize = 50;
+    this.numberOfOptionsRevealed = this.optionsPageSize; // Init.
+    this.hasMoreOptionsToReveal = false;
+
     this.filterString = '';
     this.filteredOptions = this.getFilteredOptions();
   }
@@ -124,36 +128,43 @@ class SelectController {
   }
 
   getFilteredOptions() {
+    this.hasMoreOptionsToReveal = false;
     if (!this.options || !this.options.filter) {
       return [];
     }
 
-    const filteredLabels = [];
-    return this.options.filter((option) => {
-      const filterStringLower =
+    const filterStringLower =
         this.filterString && escapeRegExp(this.filterString.toLowerCase());
 
-      if (!filterStringLower) {
-        return true;
-      }
+    const encounteredLabels = Object.create(null);
 
-      let duplicate = false;
-      if (filteredLabels.indexOf(option.label) > -1) {
-        duplicate = true;
-      }
+    const filteredOptions = [];
+    for (let i = 0; i < this.options.length; ++i) {
+      const option = this.options[i];
 
-      const addOption = (
+      const isDuplicate = encounteredLabels[option.label];
+
+      const shouldAddOption = !isDuplicate && (
+        !filterStringLower || // empty filterstring means pass everything.
         labelMatches(option, filterStringLower) ||
         noteMatches(option, filterStringLower) ||
         secondaryMatches(option, filterStringLower) ||
         searchableMatches(option, filterStringLower)
-      ) && !duplicate;
+      );
 
-      if (addOption) {
-        filteredLabels.push(option.label);
+      if (shouldAddOption) {
+        // Too many options? Don't add anymore, indicate that there's more instead.
+        if (filteredOptions.length >= this.numberOfOptionsRevealed) {
+          this.hasMoreOptionsToReveal = true;
+          break;
+        }
+
+        encounteredLabels[option.label] = true;
+        filteredOptions.push(option);
       }
-      return addOption;
-    });
+    }
+
+    return filteredOptions;
   }
 
   focusOnFilterInput() {
@@ -164,6 +175,7 @@ class SelectController {
   }
 
   filterChange() {
+    this.numberOfOptionsRevealed = this.optionsPageSize; // Reset.
     this.filteredOptions = this.getFilteredOptions();
     const selectedOption = findSelected(this.filteredOptions, this.selected);
 
@@ -253,6 +265,12 @@ class SelectController {
     // We choose twelve as we don't need it for month selector
     return this.filter || (this.options && this.options.length > 12);
   }
+
+  revealMoreOptions($event) {
+    $event.stopPropagation();
+    this.numberOfOptionsRevealed += this.optionsPageSize;
+    this.filteredOptions = this.getFilteredOptions(); // Re-calc options based on larger list size.
+  }
 }
 
 function labelMatches(option, search) {
@@ -301,7 +319,7 @@ function addEventHandlers($ctrl, $element, $ngModel, options, $timeout) {
     $ctrl.optionKeypress(event);
   };
 
-  const onDrodownKeypress = (event) => {
+  const onDropdownKeypress = (event) => {
     if (event.target.tagName.toLowerCase() === 'a') {
       $ctrl.optionKeypress(event);
     }
@@ -316,7 +334,7 @@ function addEventHandlers($ctrl, $element, $ngModel, options, $timeout) {
   button.addEventListener('click', onButtonClick);
   button.addEventListener('focusout', onFocusOut);
   dropdown.addEventListener('focusout', onFocusOut);
-  dropdown.addEventListener('keypress', onDrodownKeypress);
+  dropdown.addEventListener('keypress', onDropdownKeypress);
 }
 
 function focusOnActiveLink(element) {
