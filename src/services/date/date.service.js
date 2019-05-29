@@ -349,10 +349,10 @@ function DateService() {
     currentYear,
     format
   ) => {
-    const sixDaysInHours = 144 * 60 * 60 * 1000;
+    const sixDays = 144 * 60 * 60 * 1000;
     const eightDays = 8 * 24 * 60 * 60 * 1000;
 
-    const hasTime = Math.abs(offset) < sixDaysInHours && format !== 'long';
+    const hasTime = Math.abs(offset) < sixDays && format !== 'long';
     const hasDate = !hasTime;
     const hasWeekday = Math.abs(offset) < eightDays || format === 'long';
     const hasMonth = !hasWeekday || format === 'long';
