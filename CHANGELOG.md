@@ -1,3 +1,6 @@
+# v3.8.2
+## Adjust date time format
+
 # v3.8.1
 ## Changes the background for repeat transfer section of the card
 This section was wrongly painted white, where it should have been grey.
