@@ -25,6 +25,7 @@ describe('Select', function() {
   var OPTION_CIRCLE_TEXT_SELECTOR = '.dropdown-menu .tw-select-circle-text';
   var OPTION_CIRCLE_ICON_SELECTOR = '.dropdown-menu .circle .icon';
   var OPTION_DISABLED_SELECTOR = '.dropdown-menu .disabled';
+  var OPTION_LOAD_MORE_SELECTOR = '.dropdown-menu .tw-select-load-more';
 
   beforeEach(module('tw.styleguide.forms'));
   beforeEach(module('tw.styleguide.services'));
@@ -508,22 +509,50 @@ describe('Select', function() {
     });
   });
 
-  describe('when a long list of options is supplied (and no filter)', function() {
-    var filterInput;
+  describe('when a long list of options is supplied', function() {
+    var template, component;
     beforeEach(function() {
       $scope.options = OPTIONS_LONG;
       $scope.ngModel = '1';
-      var template = " \
+      template = " \
         <tw-select \
           options='options' \
           ng-model='ngModel'> \
         </tw-select>";
       component = getComponent($scope, template);
-      filterInput = component.find(FILTER_INPUT_SELECTOR)[0];
     });
-    it('should automatically show the search input', function() {
+
+    it('should always show the search input (without having to specify the filter attribute)', function() {
+      var filterInput = component.find(FILTER_INPUT_SELECTOR)[0];
       expect(filterInput).toBeTruthy();
     });
+
+    it('should limit the number of options initially shown', function () {
+      expect(component.find(LIST_ITEMS_SELECTOR).length).toBe(50);
+    });
+
+    it('should show a "..." option at the end to load more options', function () {
+      expect(component.find(OPTION_LOAD_MORE_SELECTOR).length).toBe(1);
+    });
+
+    it('should load more options when "..." is clicked', function () {
+      component.find(OPTION_LOAD_MORE_SELECTOR).click();
+      expect(component.find(LIST_ITEMS_SELECTOR).length).toBe(100);
+      expect(component.find(OPTION_LOAD_MORE_SELECTOR).length).toBe(1);
+
+      component.find(OPTION_LOAD_MORE_SELECTOR).click();
+      expect(component.find(LIST_ITEMS_SELECTOR).length).toBe(101); // List exhausted.
+      expect(component.find(OPTION_LOAD_MORE_SELECTOR).length).toBe(0);
+    });
+
+    it('does not show a "..." when there aren\'t any more options to load', function () {
+      $scope.options = OPTIONS_LONG.slice(0, 50);
+      component = getComponent($scope, template);
+
+      expect(component.find(LIST_ITEMS_SELECTOR).length).toBe(50);
+      expect(component.find(OPTION_LOAD_MORE_SELECTOR).length).toBe(0);
+    });
+
   });
 
   describe('when a filter attribute is supplied', function() {
@@ -1331,20 +1360,14 @@ describe('Select', function() {
     searchable: "Searchable"
   }];
 
-  var OPTIONS_LONG = [
-    { value: '0',label: 'Zero' },
-    { value: '1', label: 'One' },
-    { value: '2', label: 'Two' },
-    { value: '3', label: 'Three'},
-    { value: '4', label: 'Four'},
-    { value: '5', label: 'Five'},
-    { value: '6', label: 'Six'},
-    { value: '7', label: 'Seven'},
-    { value: '8', label: 'Eight'},
-    { value: '9', label: 'Nine'},
-    { value: '10', label: 'Ten'},
-    { value: '11', label: 'Eleven'},
-    { value: '12', label: 'Twelve'},
-    { value: '13', label: 'Thirteen'}
-  ];
+  // 101 options.
+  var OPTIONS_LONG = (function () {
+    var options = [];
+
+    for (var i = 1; i <= 101; ++i) {
+      options.push({ value: '' + i, label: 'Optiony Option ' + i });
+    }
+
+    return options;
+  })();
 });

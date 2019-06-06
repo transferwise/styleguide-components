@@ -1,3 +1,6 @@
+# v3.8.3
+## Improve tw-select performance with large option lists
+
 # v3.8.2
 ## Adjust date time format
 
