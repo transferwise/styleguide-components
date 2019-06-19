@@ -1,3 +1,6 @@
+# v3.8.4
+## Increase the tw-select large option size from 50 to 300
+
 # v3.8.3
 ## Improve tw-select performance with large option lists
 
