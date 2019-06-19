@@ -528,7 +528,7 @@ describe('Select', function() {
     });
 
     it('should limit the number of options initially shown', function () {
-      expect(component.find(LIST_ITEMS_SELECTOR).length).toBe(50);
+      expect(component.find(LIST_ITEMS_SELECTOR).length).toBe(300);
     });
 
     it('should show a "..." option at the end to load more options', function () {
@@ -537,19 +537,19 @@ describe('Select', function() {
 
     it('should load more options when "..." is clicked', function () {
       component.find(OPTION_LOAD_MORE_SELECTOR).click();
-      expect(component.find(LIST_ITEMS_SELECTOR).length).toBe(100);
+      expect(component.find(LIST_ITEMS_SELECTOR).length).toBe(600);
       expect(component.find(OPTION_LOAD_MORE_SELECTOR).length).toBe(1);
 
       component.find(OPTION_LOAD_MORE_SELECTOR).click();
-      expect(component.find(LIST_ITEMS_SELECTOR).length).toBe(101); // List exhausted.
+      expect(component.find(LIST_ITEMS_SELECTOR).length).toBe(601); // List exhausted.
       expect(component.find(OPTION_LOAD_MORE_SELECTOR).length).toBe(0);
     });
 
     it('does not show a "..." when there aren\'t any more options to load', function () {
-      $scope.options = OPTIONS_LONG.slice(0, 50);
+      $scope.options = OPTIONS_LONG.slice(0, 300);
       component = getComponent($scope, template);
 
-      expect(component.find(LIST_ITEMS_SELECTOR).length).toBe(50);
+      expect(component.find(LIST_ITEMS_SELECTOR).length).toBe(300);
       expect(component.find(OPTION_LOAD_MORE_SELECTOR).length).toBe(0);
     });
 
@@ -1360,11 +1360,11 @@ describe('Select', function() {
     searchable: "Searchable"
   }];
 
-  // 101 options.
+  // 601 options.
   var OPTIONS_LONG = (function () {
     var options = [];
 
-    for (var i = 1; i <= 101; ++i) {
+    for (var i = 1; i <= 601; ++i) {
       options.push({ value: '' + i, label: 'Optiony Option ' + i });
     }
 
