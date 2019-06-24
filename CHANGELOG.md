@@ -1,3 +1,7 @@
+# v3.8.5
+## Decrease the tw-select large option size from 300 back to 50
+We know how to write our frontend-apps integration tests to not fail now
+
 # v3.8.4
 ## Increase the tw-select large option size from 50 to 300
 
