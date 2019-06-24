@@ -26,7 +26,7 @@ class SelectController {
 
     this.responsiveClasses = responsiveClasses;
 
-    this.optionsPageSize = 300;
+    this.optionsPageSize = 50;
     this.numberOfOptionsRevealed = this.optionsPageSize; // Init.
     this.hasMoreOptionsToReveal = false;
 
