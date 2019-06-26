@@ -200,6 +200,44 @@ describe('Fieldset', function() {
       expect(sortCodeField.controller('twField').required).toBe(true);
       expect(ibanField.controller('twField').required).toBe(false);
     });
+
+    it('should only show applicable error messages', function() {
+      var sortCodeField = fields[0];
+      var ibanField = fields[1];
+
+      var errorNodesFor = function(element) {
+        return {
+          required: element.querySelector(".error-required"),
+          pattern: element.querySelector(".error-pattern"),
+          min: element.querySelector(".error-minimum"),
+          max: element.querySelector(".error-maximum"),
+          minLength: element.querySelector(".error-minlength"),
+          maxLength: element.querySelector(".error-maxlength")
+        };
+      };
+
+      sortCodeField.blur();
+      ibanField.blur();
+
+      var sortCodeErrors = errorNodesFor(sortCodeField);
+      var ibanErrors = errorNodesFor(ibanField);
+
+      expect(sortCodeErrors.required.innerText).toContain(
+        $scope.fields[0].validationMessages.required
+      );
+      expect(sortCodeErrors.pattern).toBeNull();
+      expect(sortCodeErrors.minLength).toBeNull();
+      expect(sortCodeErrors.maxLength).toBeNull();
+      expect(sortCodeErrors.min).toBeNull();
+      expect(sortCodeErrors.max).toBeNull();
+
+      expect(ibanErrors.required).toBeTruthy();
+      expect(ibanErrors.pattern).toBeTruthy();
+      expect(ibanErrors.minLength).toBeTruthy();
+      expect(ibanErrors.maxLength).toBeTruthy();
+      expect(ibanErrors.min).toBeNull();
+      expect(ibanErrors.max).toBeNull();
+    });
   });
 
   function getCompiledDirectiveElement() {
