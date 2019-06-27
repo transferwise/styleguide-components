@@ -41,7 +41,9 @@
     ng-class="{
       'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)
     }">
-    <div ng-repeat="(validationType, validationMessage) in $ctrl.field.validationMessages track by $index"
+    <div
+      ng-repeat="(validationType, validationMessage) in $ctrl.field.validationMessages track by $index"
+      ng-if="$ctrl.isValidationApplicable(validationType)"
       class="error-{{ validationType | lowercase }}">
       {{validationMessage}}
     </div>

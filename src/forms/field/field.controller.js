@@ -1,3 +1,7 @@
+const STRING_VALIDATION_TYPES = ['async', 'required', 'min', 'max', 'pattern', 'minlength', 'maxlength'];
+const NUMBER_VALIDATION_TYPES = ['async', 'required', 'min', 'max'];
+const BOOLEAN_VALIDATION_TYPES = ['async', 'required'];
+
 class FieldController {
   constructor(RequirementsService) {
     this.RequirementsService = RequirementsService;
@@ -64,6 +68,22 @@ class FieldController {
         controlType === 'tel') {
       return true;
     }
+    return false;
+  }
+
+  isValidationApplicable(validationType) {
+    if (this.field.type === 'string') {
+      return STRING_VALIDATION_TYPES.indexOf(validationType) !== -1;
+    }
+
+    if (this.field.type === 'number') {
+      return NUMBER_VALIDATION_TYPES.indexOf(validationType) !== -1;
+    }
+
+    if (this.field.type === 'boolean') {
+      return BOOLEAN_VALIDATION_TYPES.indexOf(validationType) !== -1;
+    }
+
     return false;
   }
 }
