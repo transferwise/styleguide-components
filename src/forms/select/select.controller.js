@@ -134,23 +134,35 @@ class SelectController {
     }
 
     const filterStringLower =
-        this.filterString && escapeRegExp(this.filterString.toLowerCase());
+      this.filterString && escapeRegExp(this.filterString.toLowerCase());
 
-    const encounteredLabels = Object.create(null);
+    const encounteredLabelsAndValues = Object.create(null);
 
     const filteredOptions = [];
     for (let i = 0; i < this.options.length; ++i) {
       const option = this.options[i];
 
-      const isDuplicate = encounteredLabels[option.label];
+      let isDuplicate = false;
 
-      const shouldAddOption = !isDuplicate && (
-        !filterStringLower || // empty filterstring means pass everything.
-        labelMatches(option, filterStringLower) ||
-        noteMatches(option, filterStringLower) ||
-        secondaryMatches(option, filterStringLower) ||
-        searchableMatches(option, filterStringLower)
-      );
+      const existingValuesForLabel = encounteredLabelsAndValues[option.label];
+      const hasExistingValues = angular.isArray(existingValuesForLabel);
+
+      if (hasExistingValues) {
+        for (let j = 0; j < existingValuesForLabel.length; j++) {
+          if (angular.equals(existingValuesForLabel[j], option.value)) {
+            isDuplicate = true;
+            break;
+          }
+        }
+      }
+
+      const shouldAddOption =
+        !isDuplicate &&
+        (!filterStringLower || // empty filterstring means pass everything.
+          labelMatches(option, filterStringLower) ||
+          noteMatches(option, filterStringLower) ||
+          secondaryMatches(option, filterStringLower) ||
+          searchableMatches(option, filterStringLower));
 
       if (shouldAddOption) {
         // Too many options? Don't add anymore, indicate that there's more instead.
@@ -159,7 +171,12 @@ class SelectController {
           break;
         }
 
-        encounteredLabels[option.label] = true;
+        if (hasExistingValues) {
+          existingValuesForLabel.push(option.value);
+        } else {
+          encounteredLabelsAndValues[option.label] = [option.value];
+        }
+
         filteredOptions.push(option);
       }
     }

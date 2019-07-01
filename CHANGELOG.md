@@ -1,3 +1,6 @@
+# v3.8.5
+## Filter duplicates based on label and value in tw-select
+
 # v3.8.4
 ## Increase the tw-select large option size from 50 to 300
 
