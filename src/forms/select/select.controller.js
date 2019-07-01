@@ -136,15 +136,25 @@ class SelectController {
     const filterStringLower =
       this.filterString && escapeRegExp(this.filterString.toLowerCase());
 
-    const encounteredLabelsAndValues = {};
+    const encounteredLabelsAndValues = Object.create(null);
 
     const filteredOptions = [];
     for (let i = 0; i < this.options.length; ++i) {
       const option = this.options[i];
 
-      const isDuplicate =
-        encounteredLabelsAndValues[option.label] &&
-        angular.equals(encounteredLabelsAndValues[option.label], option.value);
+      let isDuplicate = false;
+
+      const existingValuesForLabel = encounteredLabelsAndValues[option.label];
+      const hasExistingValues = angular.isArray(existingValuesForLabel);
+
+      if (hasExistingValues) {
+        for (let j = 0; j < existingValuesForLabel.length; j++) {
+          if (angular.equals(existingValuesForLabel[j], option.value)) {
+            isDuplicate = true;
+            break;
+          }
+        }
+      }
 
       const shouldAddOption =
         !isDuplicate &&
@@ -161,7 +171,12 @@ class SelectController {
           break;
         }
 
-        encounteredLabelsAndValues[option.label] = option.value;
+        if (hasExistingValues) {
+          existingValuesForLabel.push(option.value);
+        } else {
+          encounteredLabelsAndValues[option.label] = [option.value];
+        }
+
         filteredOptions.push(option);
       }
     }
