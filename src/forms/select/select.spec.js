@@ -1149,11 +1149,11 @@ describe('Select', function() {
     var $filterInput;
     beforeEach(function () {
       $scope.options = [{
-        value: '0',
-        label: 'Abel'
-      },{
         value: '1',
         label: 'Cain'
+      },{
+        value: '0',
+        label: 'Abel'
       },{
         value: '1',
         label: 'Cain'
@@ -1184,11 +1184,11 @@ describe('Select', function() {
     var $filterInput;
     beforeEach(function () {
       $scope.options = [{
-        value: '0',
-        label: 'Abel'
-      },{
         value: '1',
         label: 'Cain'
+      },{
+        value: '0',
+        label: 'Abel'
       },{
         value: '2',
         label: 'Cain'
