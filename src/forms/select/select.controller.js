@@ -134,23 +134,25 @@ class SelectController {
     }
 
     const filterStringLower =
-        this.filterString && escapeRegExp(this.filterString.toLowerCase());
+      this.filterString && escapeRegExp(this.filterString.toLowerCase());
 
-    const encounteredLabels = Object.create(null);
+    const encounteredLabelsAndValues = {};
 
     const filteredOptions = [];
     for (let i = 0; i < this.options.length; ++i) {
       const option = this.options[i];
 
-      const isDuplicate = encounteredLabels[option.label];
+      const isDuplicate =
+        encounteredLabelsAndValues[option.label] &&
+        angular.equals(encounteredLabelsAndValues[option.label], option.value);
 
-      const shouldAddOption = !isDuplicate && (
-        !filterStringLower || // empty filterstring means pass everything.
-        labelMatches(option, filterStringLower) ||
-        noteMatches(option, filterStringLower) ||
-        secondaryMatches(option, filterStringLower) ||
-        searchableMatches(option, filterStringLower)
-      );
+      const shouldAddOption =
+        !isDuplicate &&
+        (!filterStringLower || // empty filterstring means pass everything.
+          labelMatches(option, filterStringLower) ||
+          noteMatches(option, filterStringLower) ||
+          secondaryMatches(option, filterStringLower) ||
+          searchableMatches(option, filterStringLower));
 
       if (shouldAddOption) {
         // Too many options? Don't add anymore, indicate that there's more instead.
@@ -159,7 +161,7 @@ class SelectController {
           break;
         }
 
-        encounteredLabels[option.label] = true;
+        encounteredLabelsAndValues[option.label] = option.value;
         filteredOptions.push(option);
       }
     }

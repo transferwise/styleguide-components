@@ -1145,7 +1145,7 @@ describe('Select', function() {
     });
   });
 
-  describe('filter duplicates', function() {
+  describe('filter duplicates with same label and value', function() {
     var $filterInput;
     beforeEach(function () {
       $scope.options = [{
@@ -1177,6 +1177,42 @@ describe('Select', function() {
       var options = component.find(LIST_ITEMS_SELECTOR);
       expect(options.length).toBe(1);
       expect(optionText(options[0])).toBe('Cain');
+    });
+  });
+
+  describe('render options with same label but different value', function() {
+    var $filterInput;
+    beforeEach(function () {
+      $scope.options = [{
+        value: '0',
+        label: 'Abel'
+      },{
+        value: '1',
+        label: 'Cain'
+      },{
+        value: '2',
+        label: 'Cain'
+      }];
+      $scope.filter = 'Search';
+      var template = " \
+        <tw-select \
+          options='options' \
+          ng-model='ngModel' \
+          filter='{{filter}}'> \
+          <a href='' class='custom-action'> \
+              Custom action \
+          </a> \
+        </tw-select>";
+      component = getComponent($scope, template);
+      $filterInput = component.find(FILTER_INPUT_SELECTOR);
+    });
+
+    it('should show two results', function() {
+      $filterInput.val("ca").trigger('change');
+      var options = component.find(LIST_ITEMS_SELECTOR);
+      expect(options.length).toBe(2);
+      expect(optionText(options[0])).toBe('Cain');
+      expect(optionText(options[1])).toBe('Cain');
     });
   });
 
