@@ -424,9 +424,9 @@ function DateService() {
     let name = date.toLocaleDateString(locale, formattingObject);
 
     if (isLocaleTranslationRequiresStripping(locale)) {
-      // strip out any numbers, spaces and commas in case browser (cough...Safari)
+      // strip out any numbers, spaces, commas and dots in case browser (cough...Safari)
       // doesn't respect format
-      name = name.replace(/[0-9]|\s|,/g, '');
+      name = name.replace(/[0-9]|\s|,|\./g, '');
     }
 
     return name[0].toUpperCase() + name.substring(1);
