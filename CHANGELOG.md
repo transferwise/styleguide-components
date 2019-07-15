@@ -1,3 +1,6 @@
+# v3.9.0
+## Adds "empty" option to tw-card
+
 # v3.8.5
 ## Filter duplicates based on label and value in tw-select
 
