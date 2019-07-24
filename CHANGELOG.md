@@ -1,3 +1,6 @@
+# v3.9.1
+## Fix min and max validation error messages
+
 # v3.9.0
 ## Adds "empty" option to tw-card
 
