@@ -19,8 +19,8 @@ class FieldsetController {
       this.validationMessages = {
         required: 'Required',
         pattern: 'Incorrect format',
-        minimum: 'The value is too low',
-        maximum: 'The value is too high',
+        min: 'The value is too low',
+        max: 'The value is too high',
         minlength: 'The value is too short',
         maxlength: 'The value is too long'
       };
