@@ -1216,6 +1216,49 @@ describe('Select', function() {
     });
   });
 
+  describe('when multiple headers are passed', function() {
+    var $filterInput;
+
+    beforeEach(function () {
+      $scope.options = [
+        { header: 'First' },
+        {
+          value: '1',
+          label: 'Cain'
+        },
+        {
+          value: '0',
+          label: 'Abel'
+        },
+        { header: 'Second' },
+        {
+          value: '1',
+          label: 'Cain'
+        }
+      ];
+      $scope.filter = 'Search';
+      var template = " \
+        <tw-select \
+          options='options' \
+          ng-model='ngModel' \
+          filter='{{filter}}'> \
+          <a href='' class='custom-action'> \
+              Custom action \
+          </a> \
+        </tw-select>";
+      component = getComponent($scope, template);
+      $filterInput = component.find(FILTER_INPUT_SELECTOR);
+    });
+
+    it('should show two header options', function() {
+      $filterInput.val("ca").trigger('change');
+      var options = component.find('span[ng-if="option.header"]');
+      expect(options.length).toBe(2);
+      expect(optionText(options[0])).toBe('First');
+      expect(optionText(options[1])).toBe('Second');
+    });
+  });
+
   function getComponent($scope, template) {
     if (!template) {
       template = " \
