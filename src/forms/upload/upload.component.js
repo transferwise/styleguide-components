@@ -20,6 +20,7 @@ const Upload = {
     cancelText: '@',
     processingText: '@',
     successText: '@',
+    failureText: '@',
     errorMessage: '@',
     tooLargeMessage: '@',
     // wrongTypeMessage: '@',

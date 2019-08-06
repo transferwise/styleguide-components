@@ -39,9 +39,18 @@
     aria-hidden="{{$ctrl.isDone}}">
     <div class="droppable-card-content">
       <h4 class="m-b-2">
-        <span ng-if="$ctrl.isProcessing && $ctrl.processingText">{{$ctrl.processingText}}</span>
-        <span ng-if="$ctrl.isSuccess && $ctrl.successText">{{$ctrl.successText}}</span>
-        <span ng-if="$ctrl.isError && $ctrl.failureText">{{$ctrl.failureText}}</span>
+        <span ng-if="$ctrl.isProcessing && $ctrl.processingText"
+          class="upload-processing-message">
+          {{$ctrl.processingText}}
+        </span>
+        <span ng-if="$ctrl.isSuccess && $ctrl.successText"
+          class="upload-success-message">
+          {{$ctrl.successText}}
+        </span>
+        <span ng-if="$ctrl.isError && $ctrl.failureText"
+          class="upload-failure-message">
+          {{$ctrl.failureText}}
+        </span>
       </h4>
       <tw-process size="sm" state="$ctrl.processingState"
         ng-if="($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"></tw-process>
@@ -73,9 +82,9 @@
       <div ng-if="$ctrl.hasTranscluded" ng-transclude></div>
       <p class="m-t-2 m-b-0">
         <a href="" ng-click="$ctrl.clear()">
-          <svg 
-            ng-if="!$ctrl.cancelText" 
-            viewBox="0 0 24 24" 
+          <svg
+            ng-if="!$ctrl.cancelText"
+            viewBox="0 0 24 24"
             fill="#00b9ff"
             xmlns="http://www.w3.org/2000/svg"
             height="25">
