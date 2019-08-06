@@ -1,3 +1,12 @@
+# v3.9.1
+## Fix min and max validation error messages
+
+# v3.9.0
+## Adds "empty" option to tw-card
+
+# v3.8.5
+## Filter duplicates based on label and value in tw-select
+
 # v3.8.4
 ## Increase the tw-select large option size from 50 to 300
 

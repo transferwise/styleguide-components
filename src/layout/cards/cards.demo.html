@@ -17,6 +17,8 @@
       be expanded</li>
       <li><code>disabled</code> - (optional) boolean for greyed out text on a card for
       something like a cancelled transfer</li>
+      <li><code>empty</code> - (optional) boolean for indicating that the card should not
+      expand on being clicked, false by default</li>
     </ul>
     <p>Each tw-card provides transclusion slots the following elements</p>
     <ul>
@@ -170,6 +172,34 @@
           </buttons>
         </expanded-example>
       </expanded>
+    </tw-card>
+    <tw-card empty="true">
+      <card-icon>
+        <span class="icon icon-md icon-transfer"></span>
+      </card-icon>
+      <collapsed>
+        <collapse-example>
+          <middle>
+            <p class="list-group-item-heading text-max-width">
+              <span class="hidden-xs">Transfer to</span>
+              <strong> John Doe</strong>
+            </p>
+            <p class="small m-b-0 text-max-width list-group-item-text">
+              For the sake of example, this card has been marked as empty. Thus, you can't expand it.
+            </p>
+          </middle>
+          <right>
+            <p class="m-y-0  h5">
+              <span class="sr-only">Sent</span> 950 <span class="hidden-xs ">HUF</span>
+            </p>
+            <p class="m-y-0 small">
+              <span class="sr-only">Received</span>
+              $3.28 <span class="hidden-xs ">USD</span>
+            </p>
+          </right>
+        </collapse-example>
+      </collapsed>
+      <expanded></expanded>
     </tw-card>
     <tw-card
       state="warning"

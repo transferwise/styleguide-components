@@ -17,7 +17,8 @@ describe('Directive: TwCards', function() {
   var cardTemplate = "\
     <tw-card \
       state='info' \
-      open='open'> \
+      open='open' \
+      empty='empty'> \
       <card-icon>T</card-icon> \
       <collapsed> \
         <a class='collapsed-content'></a> \
@@ -75,6 +76,20 @@ describe('Directive: TwCards', function() {
     it('only expand one card', function() {
       var open = directiveElement.find('.expanded-content');
       expect(open.length).toBe(1); // as opposed to two
+    });
+  });
+
+  describe('creating an empty card', function() {
+    beforeEach(function() {
+      $scope.empty = true;
+      $scope.open = true;
+      directiveElement = getCompiledDirectiveElement($scope, cardSetTemplate());
+    });
+    it('opening should be impossible', function() {
+      var collapsed = directiveElement.find('.collapsed-content');
+      expect(collapsed.length).toBe(1);
+      var open = directiveElement.find('.expanded-content');
+      expect(open.length).toBe(0);
     });
   });
 

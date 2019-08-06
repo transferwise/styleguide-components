@@ -4,7 +4,7 @@
     'disabled': $ctrl.disabled
   }">
 
-  <div class="p-a-panel" role="button" ng-click="$ctrl.toggle($ctrl.index)">
+  <div class="p-a-panel" role="{{$ctrl.empty ? null : 'button'}}" ng-click="!$ctrl.empty && $ctrl.toggle($ctrl.index)">
     <div class="media">
       <div class="media-left">
         <div class="circle circle-sm circle-responsive" ng-class="{'circle-inverse': !$ctrl.inactive }">
@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="media-body" ng-transclude="collapsedCard"></div>
-      <div class="media-right">
+      <div class="media-right" ng-class="{'invisible': $ctrl.empty }">
         <span class="glyphicon hidden-xs hidden-sm anchor text-no-decoration font-weight-normal  " ng-class="{'glyphicon-chevron-up': $ctrl.open, 'glyphicon-chevron-down': !$ctrl.open}"></span>
         <span class="glyphicon visible-xs-inline visible-sm-inline anchor text-no-decoration font-weight-normal " ng-class="{'glyphicon-chevron-right': !$ctrl.open }"></span>
       </div>

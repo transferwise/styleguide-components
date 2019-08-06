@@ -18,6 +18,7 @@ function Card() {
       showForm: '<?',
       open: '<?',
       disabled: '<?',
+      empty: '<?',
       inactive: '<',
       onExpand: '&',
       onCollapse: '&'
@@ -40,7 +41,12 @@ function CardLink($scope) {
   $ctrl.index = $ctrl.getLength() - 1;
   $ctrl.inactive = $ctrl.cardContainerController.inactive;
 
+  if ($ctrl.empty == null) {
+    $ctrl.empty = false;
+  }
+
   if ($ctrl.open === true &&
+    $ctrl.empty === false &&
     $ctrl.getExpandedIndex() === -1) { // only takes first pre-expanded card
     $ctrl.updateExpandedIndex($ctrl.index);
   } else {
