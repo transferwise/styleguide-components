@@ -137,8 +137,7 @@ describe('given an upload component', function() {
     });
   });
 
-
-  fdescribe('when a file is dropped and we have http-options', function() {
+  describe('when a file is dropped and we have http-options', function() {
     var deferred, mockFile, droppable;
 
     beforeEach(function() {
