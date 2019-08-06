@@ -210,7 +210,7 @@ describe('FormControl', function() {
     }, 1);
   });
 
-  describe('type: file - validation', function() {
+  describe('type: file', function() {
     beforeEach(function() {
       $scope.model = null;
       formGroup = compileTemplate(
