@@ -201,6 +201,27 @@ function fieldDocsController() {
   };
   this.valuesAsyncModel = null;
 
+  // Values Async
+  this.persistAsync = {
+    type: 'string',
+    format: 'base64url',
+    title: 'Persist async',
+    placeholder: 'Please choose a file',
+    uploadOptions: {
+      buttonText: 'Choose file...',
+      cancelText: 'Choose a different file?',
+      processingText: 'Processing...',
+      successText: 'Upload complete!',
+      failureText: 'Upload failed'
+    },
+    persistAsync: {
+      method: 'GET',
+      url: 'json/image-upload.json',
+      idProperty: 'id'
+    }
+  };
+  this.persistAsyncModel = null;
+
   // Validation
   this.stringValidation = {
     type: 'string',
