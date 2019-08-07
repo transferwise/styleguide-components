@@ -138,8 +138,23 @@ function DateService() {
   };
 
   this.getDayNameForLocale = (dayOfWeek, locale, format) => {
+    const defaultDayName = getDefaultDayName(dayOfWeek, locale, format);
+    if (defaultDayName) {
+      return defaultDayName;
+    }
+
+    const validLocale = getValidLocale(locale);
+    const date = this.getUTCDateFromParts(2006, 0, dayOfWeek + 1); // 2006 started with a Sunday
+
+    const localDateName = getLocalisedDateName(date, validLocale, { weekday: format });
+
+    return localDateName || getDefaultDayName(dayOfWeek, 'en-GB', format);
+  };
+
+  function getDefaultDayName(dayOfWeek, locale, format) {
     let defaultDayName;
     const language = getLanguageFromLocale(locale);
+
     if (DEFAULT_DAY_NAMES_BY_LANGUAGE[language]) {
       defaultDayName = DEFAULT_DAY_NAMES_BY_LANGUAGE[language][dayOfWeek];
     }
@@ -153,11 +168,8 @@ function DateService() {
       return defaultDayName;
     }
 
-    const validLocale = getValidLocale(locale);
-    const date = this.getUTCDateFromParts(2006, 0, dayOfWeek + 1); // 2006 started with a Sunday
-
-    return getLocalisedDateName(date, validLocale, { weekday: format });
-  };
+    return null;
+  }
 
   this.getMonthNamesForLocale = (locale, format) => {
     const months = [];
@@ -171,10 +183,10 @@ function DateService() {
   };
 
   this.getMonthNameForLocale = (month, locale, format) => {
-    const language = getLanguageFromLocale(locale);
-    if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] &&
-      (format !== 'short' || language === 'ja')) {
-      return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language][month];
+    const defaultMonthName = getDefaultMonthName(month, locale, format);
+
+    if (defaultMonthName) {
+      return defaultMonthName;
     }
 
     const validLocale = getValidLocale(locale);
@@ -184,8 +196,19 @@ function DateService() {
       month = getLocalisedDateName(date, validLocale, { month: 'long' });
       return (month.length > 4) ? month.slice(0, 3) : month;
     }
-    return getLocalisedDateName(date, validLocale, { month: format });
+    const localMonthName = getLocalisedDateName(date, validLocale, { month: format });
+
+    return localMonthName || getDefaultMonthName(month, 'en-GB', format);
   };
+
+  function getDefaultMonthName(month, locale, format) {
+    const language = getLanguageFromLocale(locale);
+    if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] &&
+      (format !== 'short' || language === 'ja')) {
+      return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language][month];
+    }
+    return null;
+  }
 
 
   this.getWeekday = (year, month, day) => {
@@ -421,7 +444,16 @@ function DateService() {
   }
 
   function getLocalisedDateName(date, locale, formattingObject) {
-    let name = date.toLocaleDateString(locale, formattingObject);
+    let name;
+
+    if (!date.toLocaleDateString) {
+      return null;
+    }
+    try {
+      name = date.toLocaleDateString(locale, formattingObject);
+    } catch (error) {
+      return null;
+    }
 
     if (isLocaleTranslationRequiresStripping(locale)) {
       // strip out any numbers, spaces, commas and dots in case browser (cough...Safari)
