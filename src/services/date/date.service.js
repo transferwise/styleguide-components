@@ -451,16 +451,11 @@ function DateService() {
   }
 
   function getLocalisedDateName(date, locale, formattingObject) {
-    let name;
-
     if (!date.toLocaleDateString) {
       return null;
     }
-    try {
-      name = date.toLocaleDateString(locale, formattingObject);
-    } catch (error) {
-      return null;
-    }
+
+    let name = date.toLocaleDateString(locale, formattingObject);
 
     if (isLocaleTranslationRequiresStripping(locale)) {
       // strip out any numbers, spaces, commas and dots in case browser (cough...Safari)

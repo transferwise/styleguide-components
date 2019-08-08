@@ -18,6 +18,13 @@
 
     "no-param-reassign": "off",
     "no-plusplus": "off",
-    "prefer-destructuring": "off"
+    "prefer-destructuring": "off",
+
+    "operator-linebreak": "off",
+    "import/no-useless-path-segments": "off",
+    "implicit-arrow-linebreak": "off",
+    "no-else-return": "off",
+    "import/named": "off",
+    "lines-between-class-members": "off"
   }
 }
