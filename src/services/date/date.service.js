@@ -144,11 +144,13 @@ function DateService() {
     }
 
     const validLocale = getValidLocale(locale);
+    const validFormat = getValidDateFormat(format);
+
     const date = this.getUTCDateFromParts(2006, 0, dayOfWeek + 1); // 2006 started with a Sunday
 
-    const localDateName = getLocalisedDateName(date, validLocale, { weekday: format });
+    const localDateName = getLocalisedDateName(date, validLocale, { weekday: 'long' });
 
-    return localDateName || getDefaultDayName(dayOfWeek, 'en-GB', format);
+    return localDateName || getDefaultDayName(dayOfWeek, 'en-GB', validFormat);
   };
 
   function getDefaultDayName(dayOfWeek, locale, format) {
@@ -190,23 +192,28 @@ function DateService() {
     }
 
     const validLocale = getValidLocale(locale);
+    const validFormat = getValidDateFormat(format);
+
     // Day in middle of month avoids timezone issues
     const date = this.getUTCDateFromParts(2000, month, 15);
     if (format === 'short') {
       month = getLocalisedDateName(date, validLocale, { month: 'long' });
       return (month.length > 4) ? month.slice(0, 3) : month;
     }
-    const localMonthName = getLocalisedDateName(date, validLocale, { month: format });
+    const localMonthName = getLocalisedDateName(date, validLocale, { month: 'long' });
 
-    return localMonthName || getDefaultMonthName(month, 'en-GB', format);
+    return localMonthName || getDefaultMonthName(month, 'en-GB', validFormat);
   };
 
   function getDefaultMonthName(month, locale, format) {
     const language = getLanguageFromLocale(locale);
-    if (DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] &&
+
+    if (language &&
+      DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] &&
       (format !== 'short' || language === 'ja')) {
       return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language][month];
     }
+
     return null;
   }
 
