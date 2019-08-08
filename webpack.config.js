@@ -15,14 +15,6 @@ const eslintLoader = {
   loader: 'eslint-loader'
 };
 
-// Runs eslint before packaging
-const jshintLoader = {
-  enforce: 'pre',
-  test: /\.js$/,
-  exclude: [/node_modules/],
-  loader: 'jshint-loader'
-};
-
 // Packages our code and processes using babel
 const babelLoader = {
   test: /\.js$/,
@@ -33,7 +25,6 @@ const babelLoader = {
 const webpackModule = {
   rules: [
     htmlLoader,
-    // jshintLoader,
     eslintLoader,
     babelLoader
   ]
@@ -47,15 +38,16 @@ const webpackExternals = [{
 const webpackPlugins = [
   new UglifyJSPlugin({
     include: /\.min\.js$/,
-    ie8: false,
-    ecma: 6,
-    mangle: true,
-    output: {
-      beautify: false,
-      indent_level: 2
-    },
-    compress: true,
-    warnings: false
+    uglifyOptions: {
+      ie8: false,
+      mangle: true,
+      compress: true,
+      warnings: false,
+      output: {
+        beautify: false,
+        indent_level: 2
+      }
+    }
   })
 ];
 
