@@ -2,7 +2,6 @@ describe('TwDateService test', function() {
   'use strict';
 
   var service;
-
   var dateFormats = ['narrow', 'short', 'long', null];
 
   beforeEach(module('tw.styleguide-components'));
