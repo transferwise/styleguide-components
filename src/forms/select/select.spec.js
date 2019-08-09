@@ -1217,8 +1217,6 @@ describe('Select', function() {
   });
 
   describe('when multiple headers are passed', function() {
-    var $filterInput;
-
     beforeEach(function () {
       $scope.options = [
         { header: 'First' },
@@ -1242,16 +1240,11 @@ describe('Select', function() {
           options='options' \
           ng-model='ngModel' \
           filter='{{filter}}'> \
-          <a href='' class='custom-action'> \
-              Custom action \
-          </a> \
         </tw-select>";
       component = getComponent($scope, template);
-      $filterInput = component.find(FILTER_INPUT_SELECTOR);
     });
 
     it('should show two header options', function() {
-      $filterInput.val("ca").trigger('change');
       var options = component.find('span[ng-if="option.header"]');
       expect(options.length).toBe(2);
       expect(optionText(options[0])).toBe('First');
