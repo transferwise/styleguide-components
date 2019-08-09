@@ -1216,6 +1216,40 @@ describe('Select', function() {
     });
   });
 
+  describe('when multiple headers are passed', function() {
+    beforeEach(function () {
+      $scope.options = [
+        { header: 'First' },
+        {
+          value: '1',
+          label: 'Cain'
+        },
+        {
+          value: '0',
+          label: 'Abel'
+        },
+        { header: 'Second' },
+        {
+          value: '1',
+          label: 'Cain'
+        }
+      ];
+      var template = " \
+        <tw-select \
+          options='options' \
+          ng-model='ngModel'> \
+        </tw-select>";
+      component = getComponent($scope, template);
+    });
+
+    it('should show two header options', function() {
+      var options = component.find('span[ng-if="option.header"]');
+      expect(options.length).toBe(2);
+      expect(optionText(options[0])).toBe('First');
+      expect(optionText(options[1])).toBe('Second');
+    });
+  });
+
   function getComponent($scope, template) {
     if (!template) {
       template = " \
