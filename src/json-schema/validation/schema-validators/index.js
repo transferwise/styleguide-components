@@ -74,7 +74,9 @@ function isValidAllOfSchema(value, schema) { // eslint-disable-line
 function isValidSchema(value, schema) {
   if (schema.oneOf) {
     return isValidOneOfSchema(value, schema);
-  } else if (schema.allOf) {
+  }
+
+  if (schema.allOf) {
     return isValidAllOfSchema(value, schema);
   }
 

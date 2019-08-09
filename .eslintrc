@@ -21,8 +21,6 @@
     "prefer-destructuring": "off",
 
     "operator-linebreak": "off",
-    "import/no-useless-path-segments": "off",
-    "implicit-arrow-linebreak": "off",
-    "no-else-return": "off"
+    "import/no-useless-path-segments": "off"
   }
 }

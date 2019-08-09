@@ -2,9 +2,13 @@
 function getValidModelParts(model, schema) {
   if (schema.allOf) {
     return cleanModelWithAllOfSchema(model, schema);
-  } else if (schema.oneOf) {
+  }
+
+  if (schema.oneOf) {
     return cleanModelWithOneOfSchema(model, schema);
-  } else if (schema.type) {
+  }
+
+  if (schema.type) {
     switch (schema.type) {
       case 'object':
         return cleanModelWithObjectSchema(model, schema);
@@ -20,10 +24,10 @@ function getValidModelParts(model, schema) {
       default:
         return null;
     }
-  } else if (schema.enum) {
-    if (schema.enum.indexOf(model) >= 0) {
-      return model;
-    }
+  }
+
+  if (schema.enum && schema.enum.indexOf(model) >= 0) {
+    return model;
   }
   // Unrecognised schema
   return null;

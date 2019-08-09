@@ -222,7 +222,8 @@ function getPopoverParent(config) {
 
   if (container && container.toLowerCase() === 'body') {
     return document.body;
-  } else if (typeof container === 'string' && document.querySelector(container)) {
+  }
+  if (typeof container === 'string' && document.querySelector(container)) {
     return document.querySelector(container);
   }
 
