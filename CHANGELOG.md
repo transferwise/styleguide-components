@@ -1,3 +1,6 @@
+# v3.9.2
+## Update dependencies, remove jshint.
+
 # v3.9.1
 ## Fix min and max validation error messages
 

@@ -140,6 +140,7 @@ export {
   getValidationFailures,
   getStringValidationFailures,
   getNumberValidationFailures,
+  getIntegerValidationFailures,
   getBooleanValidationFailures,
   getArrayValidationFailures,
   getObjectValidationFailures

@@ -18,6 +18,9 @@
 
     "no-param-reassign": "off",
     "no-plusplus": "off",
-    "prefer-destructuring": "off"
+    "prefer-destructuring": "off",
+
+    "operator-linebreak": "off",
+    "import/no-useless-path-segments": "off"
   }
 }

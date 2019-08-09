@@ -351,19 +351,18 @@ function RequirementsService($http) {
       postData = this.getParamValuesFromModel(model, field.valuesAsync.params);
     }
 
-    this.fetchValuesAsync(field, postData).catch(() =>
-      // Retry once on failure
-      this.fetchValuesAsync(field, postData));
+    // Retry once on failure
+    this.fetchValuesAsync(field, postData)
+      .catch(() => this.fetchValuesAsync(field, postData));
   };
 
-  this.fetchValuesAsync = (field, postData) =>
-    $http({
-      method: field.valuesAsync.method || 'GET',
-      url: field.valuesAsync.url,
-      data: postData || {}
-    }).then((response) => {
-      field.values = this.prepLegacyValues(response.data);
-    });
+  this.fetchValuesAsync = (field, postData) => $http({
+    method: field.valuesAsync.method || 'GET',
+    url: field.valuesAsync.url,
+    data: postData || {}
+  }).then(
+    (response) => { field.values = this.prepLegacyValues(response.data); }
+  );
 
   this.getParamValuesFromModel = (model, params) => {
     const data = {};
@@ -471,9 +470,13 @@ function getControlForStringFormat(format) {
 function getSelectionType(field) {
   if (field.control) {
     return field.control;
-  } else if (field.type === 'select') {
+  }
+
+  if (field.type === 'select') {
     return 'select';
-  } else if (field.type === 'radio') {
+  }
+
+  if (field.type === 'radio') {
     return 'radio';
   }
 

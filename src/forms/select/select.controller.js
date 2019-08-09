@@ -123,6 +123,7 @@ class SelectController {
     resetOption(this.$ngModel, this);
     this.button.focus();
   }
+
   placeholderFocus() {
     resetOption(this.$ngModel, this);
   }
