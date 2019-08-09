@@ -12,6 +12,7 @@ class CardController {
   isExpanded() {
     return this.open;
   }
+
   collapse() {
     this.open = false;
 
@@ -19,6 +20,7 @@ class CardController {
       this.onCollapse();
     }
   }
+
   expand() {
     this.open = true;
 

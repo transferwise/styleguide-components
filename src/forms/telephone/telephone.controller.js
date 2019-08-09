@@ -115,6 +115,7 @@ class TelephoneController {
   onFocus() {
     this.$element[0].dispatchEvent(new CustomEvent('focus'));
   }
+
   onBlur() {
     this.$ngModel.$setTouched();
     this.$element[0].dispatchEvent(new CustomEvent('blur'));

@@ -24,7 +24,6 @@
     "import/no-useless-path-segments": "off",
     "implicit-arrow-linebreak": "off",
     "no-else-return": "off",
-    "import/named": "off",
-    "lines-between-class-members": "off"
+    "import/named": "off"
   }
 }
