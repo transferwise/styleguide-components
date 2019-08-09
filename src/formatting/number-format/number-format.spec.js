@@ -108,9 +108,9 @@ describe('NumberFormat filter, ', function() {
     });
   });
 
-  describe('when es-ES locale supplied', function() {
+  describe('when fr-FR locale supplied', function() {
     beforeEach(function() {
-      $scope.locale = 'es-ES';
+      $scope.locale = 'fr-FR';
     });
     describe('and given an integer number', function() {
       beforeEach(function() {
@@ -121,7 +121,8 @@ describe('NumberFormat filter, ', function() {
 
       it('should format the value', function() {
         if (isNumberLocaleSupported()) {
-          expect(textValue).toEqual('123.456');
+          // Note: this contains a special space character used by Chrome
+          expect(textValue).toEqual('123 456');
         } else {
           expect(textValue).toEqual('123456');
         }
@@ -137,7 +138,8 @@ describe('NumberFormat filter, ', function() {
 
       it('should format the value', function() {
         if (isNumberLocaleSupported()) {
-          expect(textValue).toEqual('1.234,56');
+          // Note: this contains a special space character used by Chrome
+          expect(textValue).toEqual('1 234,56');
         } else {
           expect(textValue).toEqual('1234.56');
         }
@@ -153,7 +155,8 @@ describe('NumberFormat filter, ', function() {
 
       it('should format the value', function() {
         if (isNumberLocaleSupported()) {
-          expect(textValue).toEqual('123.456');
+          // Note: this contains a special space character used by Chrome
+          expect(textValue).toEqual('123 456');
         } else {
           expect(textValue).toEqual('123456');
         }
@@ -169,7 +172,8 @@ describe('NumberFormat filter, ', function() {
 
       it('should format the value', function() {
         if (isNumberLocaleSupported()) {
-          expect(textValue).toEqual('1.234,56');
+          // Note: this contains a special space character used by Chrome
+          expect(textValue).toEqual('1 234,56');
         } else {
           expect(textValue).toEqual('1234.56');
         }

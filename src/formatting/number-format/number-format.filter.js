@@ -8,7 +8,9 @@ function NumberFormatFilter(LocaleService) {
       number = Number(number);
     }
 
-    const options = {};
+    const options = {
+      useGrouping: true
+    };
     if (typeof precision === 'number') {
       options.minimumFractionDigits = precision;
       options.maximumFractionDigits = precision;
