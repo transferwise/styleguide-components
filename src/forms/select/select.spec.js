@@ -1234,12 +1234,10 @@ describe('Select', function() {
           label: 'Cain'
         }
       ];
-      $scope.filter = 'Search';
       var template = " \
         <tw-select \
           options='options' \
-          ng-model='ngModel' \
-          filter='{{filter}}'> \
+          ng-model='ngModel'> \
         </tw-select>";
       component = getComponent($scope, template);
     });
