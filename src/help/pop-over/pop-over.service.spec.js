@@ -1,3 +1,5 @@
+'use strict';
+
 describe('TwPopoverService', function() {
   var PopoverService = null;
 

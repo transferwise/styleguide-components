@@ -1,6 +1,6 @@
-describe('DomService', function() {
-  'use strict';
+'use strict';
 
+describe('DomService', function() {
   var dom,
     $scope,
     $rootScope,
@@ -11,20 +11,23 @@ describe('DomService', function() {
     outermost,
     $compile;
 
-  beforeEach(module('tw.styleguide-components'));
+  beforeEach(function() {
+    module('tw.styleguide-components');
 
-  beforeEach(inject(function($injector) {
-    dom = $injector.get('TwDomService');
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
-    $window = $injector.get('$window');
+    inject(function($injector) {
+      dom = $injector.get('TwDomService');
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      $window = $injector.get('$window');
+    });
+
     $scope = $rootScope.$new();
 
     $document = getCompiledElement($scope)[0];
     element = $document.getElementsByClassName('element')[0];
     outer = $document.getElementsByClassName('outer')[0];
     outermost = $document.getElementsByClassName('outermost')[0];
-  }));
+  });
 
   describe('when asking for parent tag', function() {
     it('should return the first matching element', function () {

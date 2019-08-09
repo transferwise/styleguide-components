@@ -1,13 +1,17 @@
+'use strict';
+
 describe('Given a library for validating json schema models', function() {
   var schema, isValidSchema;
 
-  beforeEach(module('tw.styleguide-components'));
-  beforeEach(module('tw.json-schema'));
+  beforeEach(function() {
+    module('tw.styleguide-components');
+    module('tw.json-schema');
 
-  beforeEach(inject(function($injector) {
-    var SchemaValidation = $injector.get('SchemaValidation');
-    isValidSchema = SchemaValidation.isValidSchema;
-  }));
+    inject(function($injector) {
+      var SchemaValidation = $injector.get('SchemaValidation');
+      isValidSchema = SchemaValidation.isValidSchema;
+    });
+  });
 
   describe('when validating an object schema', function() {
     beforeEach(function() {

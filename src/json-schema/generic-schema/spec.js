@@ -1,3 +1,5 @@
+'use strict';
+
 describe('Given a component for rendering any generic schema', function() {
   var $scope,
     component,
@@ -9,10 +11,10 @@ describe('Given a component for rendering any generic schema', function() {
     basicTypeSchema,
     childComponent;
 
-  beforeEach(module('tw.styleguide-components'));
-  beforeEach(module('tw.json-schema'));
-
   beforeEach(function() {
+    module('tw.styleguide-components');
+    module('tw.json-schema');
+
     oneOfSchema = getMockComponent('oneOfSchema');
     allOfSchema = getMockComponent('allOfSchema');
     objectSchema = getMockComponent('objectSchema');
@@ -24,15 +26,13 @@ describe('Given a component for rendering any generic schema', function() {
     angular.mock.module('tw.json-schema.object', objectSchema);
     angular.mock.module('tw.json-schema.array', arraySchema);
     angular.mock.module('tw.json-schema.basic-type', basicTypeSchema);
-  });
 
-  beforeEach(inject(function($injector) {
-    $compile = $injector.get('$compile');
-    $scope = $injector.get('$rootScope').$new();
-  }));
+    inject(function($injector) {
+      $compile = $injector.get('$compile');
+      $scope = $injector.get('$rootScope').$new();
+    })
 
-  beforeEach(function() {
-    const template = ' \
+    var template = ' \
       <generic-schema \
         schema="schema" \
         model="model" \

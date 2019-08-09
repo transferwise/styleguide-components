@@ -20,13 +20,16 @@ describe('Radio', function() {
   var INPUT_SELECTOR = 'input';
   var LABEL_SELECTOR = '.radio label';
 
-  beforeEach(module('tw.styleguide.forms'));
-  beforeEach(module('tw.styleguide.validation'));
-  beforeEach(module('tw.styleguide.services'));
+  beforeEach(function() {
+    module('tw.styleguide.forms')
+    module('tw.styleguide.validation')
+    module('tw.styleguide.services')
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+    });
+
     $scope = $rootScope.$new();
 
     $scope.ngModel = null;
@@ -52,7 +55,7 @@ describe('Radio', function() {
     var labels = templateElement.querySelectorAll(LABEL_SELECTOR);
     labelOne = labels[0];
     labelTwo = labels[1];
-  }));
+  });
 
   describe('when initialised using value attributes', function() {
     it('should add radio replacement for each component', function() {

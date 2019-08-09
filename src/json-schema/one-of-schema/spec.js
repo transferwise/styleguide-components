@@ -1,23 +1,23 @@
+'use strict';
+
 describe('Given an oneOfSchema component', function() {
   var $scope,
     component,
     $compile,
     genericSchema;
 
-  beforeEach(module('tw.styleguide-components'));
-  beforeEach(module('tw.json-schema'));
-
   beforeEach(function() {
+    module('tw.styleguide-components');
+    module('tw.json-schema');
+
     genericSchema = getMockComponent('genericSchema');
     angular.mock.module('tw.json-schema.generic', genericSchema);
-  });
 
-  beforeEach(inject(function($injector) {
-    $compile = $injector.get('$compile');
-    $scope = $injector.get('$rootScope').$new();
-  }));
+    inject(function($injector) {
+      $compile = $injector.get('$compile');
+      $scope = $injector.get('$rootScope').$new();
+    });
 
-  beforeEach(function() {
     var template = ' \
       <one-of-schema \
         schema="schema" \
@@ -99,7 +99,7 @@ describe('Given an oneOfSchema component', function() {
       });
       it('should trigger onChange with only the properties in the new schema', function() {
         expect($scope.onChange).toHaveBeenCalledWith(
-          { a: 1 }, 
+          { a: 1 },
           $scope.schema.oneOf[1]
         );
       })

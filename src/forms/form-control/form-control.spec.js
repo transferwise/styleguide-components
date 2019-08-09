@@ -1,3 +1,5 @@
+'use strict';
+
 describe('FormControl', function() {
   var $compile,
     $rootScope,
@@ -10,18 +12,18 @@ describe('FormControl', function() {
   beforeEach(function() {
     module('tw.styleguide.forms');
     module('tw.styleguide.services');
-  });
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $scope = $rootScope.$new();
-    $compile = $injector.get('$compile');
-    $timeout = $injector.get('$timeout');
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $scope = $rootScope.$new();
+      $compile = $injector.get('$compile');
+      $timeout = $injector.get('$timeout');
+    });
 
     $scope.onFocus = jasmine.createSpy('onFocus');
     $scope.onBlur = jasmine.createSpy('onBlur');
     $scope.onChange = jasmine.createSpy('onChange');
-  }));
+  });
 
   testSimpleControl('text', 'input[type=text]', 'example');
   testSimpleControl('password', 'input[type=password]', 'qwerty');

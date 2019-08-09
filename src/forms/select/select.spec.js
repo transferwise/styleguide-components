@@ -27,14 +27,16 @@ describe('Select', function() {
   var OPTION_DISABLED_SELECTOR = '.dropdown-menu .disabled';
   var OPTION_LOAD_MORE_SELECTOR = '.dropdown-menu .tw-select-load-more';
 
-  beforeEach(module('tw.styleguide.forms'));
-  beforeEach(module('tw.styleguide.services'));
+  beforeEach(function() {
+    module('tw.styleguide.forms');
+    module('tw.styleguide.services');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
-    $scope = $rootScope.$new();
-  }));
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      $scope = $rootScope.$new();
+    });
+  });
 
   describe('init', function() {
     describe('basics', function() {

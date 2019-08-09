@@ -1,23 +1,23 @@
+'use strict';
+
 describe('Given a component for rendering basic type schemas', function() {
   var $scope,
     component,
     $compile,
     twField;
 
-  beforeEach(module('tw.styleguide-components'));
-  beforeEach(module('tw.json-schema'));
-
   beforeEach(function() {
+    module('tw.styleguide-components');
+    module('tw.json-schema');
+
     twField = getMockComponent('twField');
     angular.mock.module('tw.styleguide.forms.field', twField);
-  });
 
-  beforeEach(inject(function($injector) {
-    $compile = $injector.get('$compile');
-    $scope = $injector.get('$rootScope').$new();
-  }));
+    inject(function($injector) {
+      $compile = $injector.get('$compile');
+      $scope = $injector.get('$rootScope').$new();
+    });
 
-  beforeEach(function() {
     var template = ' \
       <basic-type-schema \
         schema="schema" \
@@ -33,6 +33,7 @@ describe('Given a component for rendering basic type schemas', function() {
       type: "string",
       default: "initial"
     };
+
     $scope.required = true;
     $scope.errors = "error";
     $scope.locale = "en-GB";

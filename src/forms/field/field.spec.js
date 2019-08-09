@@ -8,18 +8,21 @@ describe('Field', function() {
       formGroup,
       $timeout;
 
-  beforeEach(module('tw.styleguide-components'));
+  beforeEach(function() {
+    module('tw.styleguide-components');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
-    $timeout = $injector.get('$timeout');
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      $timeout = $injector.get('$timeout');
+    });
+
     $scope = $rootScope.$new();
     $scope.model;
     $scope.onChange = jasmine.createSpy();
     $scope.onFocus = jasmine.createSpy();
     $scope.onBlur = jasmine.createSpy();
-  }));
+  });
 
   describe('when given a title for the field', function() {
     beforeEach(function() {

@@ -9,14 +9,16 @@ describe('CurrencyFormat filter, ', function() {
       textValue,
       LocaleService;
 
-  beforeEach(module('tw.styleguide-components'));
+  beforeEach(function() {
+    module('tw.styleguide-components');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
-    $scope = $rootScope.$new();
-    LocaleService = $injector.get('TwLocaleService');
-  }));
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      $scope = $rootScope.$new();
+      LocaleService = $injector.get('TwLocaleService');
+    });
+  });
 
   describe('when no locale supplied', function() {
     beforeEach(function() {

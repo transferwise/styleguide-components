@@ -6,14 +6,16 @@ describe('Date', function() {
     $scope,
     element;
 
-  beforeEach(module('tw.styleguide.forms'));
-  beforeEach(module('tw.styleguide.services'));
+  beforeEach(function() {
+    module('tw.styleguide.forms');
+    module('tw.styleguide.services');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
-    $scope = $rootScope.$new();
-  }));
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      $scope = $rootScope.$new();
+    });
+  });
 
   var ENGLISH_MONTHS = [
     'January',

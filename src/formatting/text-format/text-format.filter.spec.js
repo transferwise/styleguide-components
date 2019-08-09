@@ -8,14 +8,17 @@ describe('TextFormat filter, ', function() {
       $timeout,
       input;
 
-  beforeEach(module('tw.styleguide-components'));
+  beforeEach(function() {
+    module('tw.styleguide-components');
+    module('tw.styleguide.formatting.text-format');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
-    $timeout = $injector.get('$timeout');
-    $scope = $rootScope.$new();
-  }));
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      $timeout = $injector.get('$timeout');
+      $scope = $rootScope.$new();
+    });
+  });
 
   describe('Given there is a pattern', function() {
     beforeEach(function() {
