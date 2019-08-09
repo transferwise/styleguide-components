@@ -1,3 +1,6 @@
+# v3.9.3
+## Render all header option in select
+
 # v3.9.2
 ## Update dependencies, remove jshint.
 
