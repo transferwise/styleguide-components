@@ -334,4 +334,5 @@ describe('given an upload component', function() {
     $scope.$digest();
     return compiledElement[0];
   }
+  
 });
