@@ -105,7 +105,7 @@
     </div>
     <h5>Configuration</h5>
 <pre>&lt;tw-upload<span ng-if="$ctrl.showNgModel">
-  ng-model="{{$ctrl.model | limitTo : 30}}..."</span>
+  ng-model="{{ $ctrl.model.length > 30 ? ($ctrl.model | limitTo : 30) + '...' : $ctrl.model }}"</span>
   name="{{$ctrl.name}}"<span ng-if="$ctrl.icon">
   icon="{{$ctrl.icon}}"</span><span ng-if="$ctrl.size !== 'md'">
   size="{{$ctrl.size}}"</span><span ng-if="$ctrl.label">
