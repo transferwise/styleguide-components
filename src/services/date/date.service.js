@@ -164,7 +164,8 @@ function DateService() {
     if (defaultDayName) {
       if (format === 'short') {
         return defaultDayName.substr(0, 3);
-      } else if (format === 'narrow') {
+      }
+      if (format === 'narrow') {
         return defaultDayName.substr(0, 1);
       }
       return defaultDayName;

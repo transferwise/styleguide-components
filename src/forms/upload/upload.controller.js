@@ -111,6 +111,7 @@ class UploadController {
       this.isDroppable = true;
     }
   }
+
   onDragLeave() {
     this.dragCounter--;
     if (this.dragCounter <= 0) {

@@ -387,25 +387,22 @@ class TextFormatController {
       const originalPattern = $ngModel.$validators.pattern;
 
       if (originalMinLength) {
-        $ngModel.$validators.minlength = (modelValue, viewValue) =>
-          originalMinLength(
-            modelValue,
-            TextFormatService.unformatUsingPattern(viewValue, this.pattern)
-          );
+        $ngModel.$validators.minlength = (modelValue, viewValue) => originalMinLength(
+          modelValue,
+          TextFormatService.unformatUsingPattern(viewValue, this.pattern)
+        );
       }
       if (originalMaxLength) {
-        $ngModel.$validators.maxlength = (modelValue, viewValue) =>
-          originalMaxLength(
-            modelValue,
-            TextFormatService.unformatUsingPattern(viewValue, this.pattern)
-          );
+        $ngModel.$validators.maxlength = (modelValue, viewValue) => originalMaxLength(
+          modelValue,
+          TextFormatService.unformatUsingPattern(viewValue, this.pattern)
+        );
       }
       if (originalPattern) {
-        $ngModel.$validators.pattern = (modelValue, viewValue) =>
-          originalPattern(
-            modelValue,
-            TextFormatService.unformatUsingPattern(viewValue, this.pattern)
-          );
+        $ngModel.$validators.pattern = (modelValue, viewValue) => originalPattern(
+          modelValue,
+          TextFormatService.unformatUsingPattern(viewValue, this.pattern)
+        );
       }
     });
   }

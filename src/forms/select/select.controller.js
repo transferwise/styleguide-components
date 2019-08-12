@@ -123,6 +123,7 @@ class SelectController {
     resetOption(this.$ngModel, this);
     this.button.focus();
   }
+
   placeholderFocus() {
     resetOption(this.$ngModel, this);
   }
@@ -141,6 +142,12 @@ class SelectController {
     const filteredOptions = [];
     for (let i = 0; i < this.options.length; ++i) {
       const option = this.options[i];
+
+      if (option.header && !option.value && !option.label) {
+        filteredOptions.push(option);
+        // eslint-disable-next-line no-continue
+        continue;
+      }
 
       let isDuplicate = false;
 

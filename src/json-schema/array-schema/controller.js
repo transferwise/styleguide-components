@@ -47,7 +47,8 @@ function getArrayType(schema) {
 function getNewItem(arrayType) {
   if (arrayType === 'object') {
     return {};
-  } else if (arrayType === 'array') {
+  }
+  if (arrayType === 'array') {
     return [];
   }
 

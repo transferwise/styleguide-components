@@ -3,6 +3,12 @@
 twUpload can now post images immediately and extract an id from the response to
 bind to the model.  This can also be used by twFormControl and twField.
 
+# v3.9.3
+## Render all header option in select
+
+# v3.9.2
+## Update dependencies, remove jshint.
+
 # v3.9.1
 ## Fix min and max validation error messages
 
