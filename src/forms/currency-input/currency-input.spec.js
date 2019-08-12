@@ -13,21 +13,23 @@ describe('CurrencyInput', function() {
   var DIRECTIVE_SELECTOR = 'tw-currency-input';
   var INPUT_SELECTOR = 'input';
 
-  //beforeEach(module('tw.styleguide.forms'));
-  //beforeEach(module('tw.styleguide.validation'));
-  beforeEach(module('tw.styleguide-components'));
+  beforeEach(function() {
+    module('tw.styleguide-components');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+    });
+
     $scope = $rootScope.$new();
+
     $scope.ngModel = null;
     $scope.name = 'myCurrencyInput';
     $scope.onChange = function() {};
     $scope.ngClick = function() {};
     $scope.ngFocus = function() {};
     $scope.ngBlur = function() {};
-  }));
+  });
 
   describe('init', function() {
     beforeEach(inject(function() {

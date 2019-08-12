@@ -16,14 +16,14 @@
   "autoWatch": false,
   "frameworks": ["jasmine"],
   "browsers": [
-    "PhantomJS"
+    "Chrome"
   ],
   "reporters": ["coverage", "mocha"],
   "preprocessors": {
     "src/**/*.controller.js": ["coverage"]
   },
   "plugins": [
-    "karma-phantomjs-launcher",
+    "karma-chrome-launcher",
     "karma-jasmine",
     "karma-coverage",
     "karma-mocha-reporter"

@@ -20,17 +20,19 @@ describe('given an upload component', function() {
    "Fh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAADElEQVQI12P4//8/AAX+" +
    "Av7czFnnAAAAAElFTkSuQmCC";
 
-  beforeEach(module('tw.styleguide.forms'));
+  beforeEach(function() {
+    module('tw.styleguide.forms');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
-    $scope = $rootScope.$new();
-    $timeout = $injector.get('$timeout');
-    $q = $injector.get('$q');
-    AsyncFileReader = $injector.get('AsyncFileReader');
-    AsyncFileSaver = $injector.get('AsyncFileSaver');
-  }));
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      $scope = $rootScope.$new();
+      $timeout = $injector.get('$timeout');
+      $q = $injector.get('$q');
+      AsyncFileReader = $injector.get('AsyncFileReader');
+      AsyncFileSaver = $injector.get('AsyncFileSaver');
+    });
+  });
 
   describe('when a file is dropped', function() {
     var dropTarget, deferred;

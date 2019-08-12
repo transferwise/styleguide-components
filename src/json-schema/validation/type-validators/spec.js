@@ -1,13 +1,17 @@
+'use strict';
+
 describe('Given a library for validating data types', function() {
   var schema, typeValidators;
 
-  beforeEach(module('tw.styleguide-components'));
-  beforeEach(module('tw.json-schema'));
+  beforeEach(function() {
+    module('tw.styleguide-components');
+    module('tw.json-schema');
 
-  beforeEach(inject(function($injector) {
-    var SchemaValidation = $injector.get('SchemaValidation');
-    typeValidators = SchemaValidation.typeValidators;
-  }));
+    inject(function($injector) {
+      var SchemaValidation = $injector.get('SchemaValidation');
+      typeValidators = SchemaValidation.typeValidators;
+    });
+  });
 
   describe('when validating a string', function() {
     it('should return true when the value is a string', function() {

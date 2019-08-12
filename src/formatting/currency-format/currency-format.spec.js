@@ -9,14 +9,16 @@ describe('CurrencyFormat filter, ', function() {
       textValue,
       LocaleService;
 
-  beforeEach(module('tw.styleguide-components'));
+  beforeEach(function() {
+    module('tw.styleguide-components');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
-    $scope = $rootScope.$new();
-    LocaleService = $injector.get('TwLocaleService');
-  }));
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      $scope = $rootScope.$new();
+      LocaleService = $injector.get('TwLocaleService');
+    });
+  });
 
   describe('when no locale supplied', function() {
     beforeEach(function() {
@@ -29,7 +31,7 @@ describe('CurrencyFormat filter, ', function() {
 
     it('should use the locale from the locale service', function() {
       if (isNumberLocaleSupported()) {
-        expect(textValue).toEqual('1 234,56 GBP');
+        expect(textValue).toEqual('1 234,56 GBP');
       } else {
         expect(textValue).toEqual('1234.56 GBP');
       }
@@ -186,9 +188,9 @@ describe('CurrencyFormat filter, ', function() {
     });
   });
 
-  describe('when es-ES locale supplied', function() {
+  describe('when fr-FR locale supplied', function() {
     beforeEach(function() {
-      $scope.locale = 'es-ES';
+      $scope.locale = 'fr-FR';
     });
 
     describe('with an integer', function() {
@@ -201,7 +203,8 @@ describe('CurrencyFormat filter, ', function() {
 
       it('should format without decimals', function() {
         if (isNumberLocaleSupported()) {
-          expect(textValue).toEqual('123.456 GBP');
+          // Note: this contains a special space character used by Chrome
+          expect(textValue).toEqual('123 456 GBP');
         } else {
           expect(textValue).toEqual('123456 GBP');
         }
@@ -222,7 +225,8 @@ describe('CurrencyFormat filter, ', function() {
 
         it('should format with 0 decimals', function() {
           if (isNumberLocaleSupported()) {
-            expect(textValue).toEqual('1.235 JPY');
+            // Note: this contains a special space character used by Chrome
+            expect(textValue).toEqual('1 235 JPY');
           } else {
             expect(textValue).toEqual('1235 JPY');
           }
@@ -238,7 +242,8 @@ describe('CurrencyFormat filter, ', function() {
 
         it('should format with 2 decimals', function() {
           if (isNumberLocaleSupported()) {
-            expect(textValue).toEqual('1.234,50 GBP');
+            // Note: this contains a special space character used by Chrome
+            expect(textValue).toEqual('1 234,50 GBP');
           } else {
             expect(textValue).toEqual('1234.50 GBP');
           }
@@ -254,7 +259,8 @@ describe('CurrencyFormat filter, ', function() {
 
         it('should format the value with 3 decimals', function() {
           if (isNumberLocaleSupported()) {
-            expect(textValue).toEqual('1.234,500 JOD');
+            // Note: this contains a special space character used by Chrome
+            expect(textValue).toEqual('1 234,500 JOD');
           } else {
             expect(textValue).toEqual('1234.500 JOD');
           }
@@ -272,7 +278,8 @@ describe('CurrencyFormat filter, ', function() {
 
       it('should format without decimals', function() {
         if (isNumberLocaleSupported()) {
-          expect(textValue).toEqual('123.456 GBP');
+          // Note: this contains a special space character used by Chrome
+          expect(textValue).toEqual('123 456 GBP');
         } else {
           expect(textValue).toEqual('123456 GBP');
         }
@@ -293,7 +300,8 @@ describe('CurrencyFormat filter, ', function() {
 
         it('should format with two decimals', function() {
           if (isNumberLocaleSupported()) {
-            expect(textValue).toEqual('1.235 JPY');
+            // Note: this contains a special space character used by Chrome
+            expect(textValue).toEqual('1 235 JPY');
           } else {
             expect(textValue).toEqual('1235 JPY');
           }
@@ -309,7 +317,8 @@ describe('CurrencyFormat filter, ', function() {
 
         it('should format with two decimals', function() {
           if (isNumberLocaleSupported()) {
-            expect(textValue).toEqual('1.234,50 GBP');
+            // Note: this contains a special space character used by Chrome
+            expect(textValue).toEqual('1 234,50 GBP');
           } else {
             expect(textValue).toEqual('1234.50 GBP');
           }
@@ -325,7 +334,8 @@ describe('CurrencyFormat filter, ', function() {
 
         it('should format the value with 3 decimals', function() {
           if (isNumberLocaleSupported()) {
-            expect(textValue).toEqual('1.234,500 JOD');
+            // Note: this contains a special space character used by Chrome
+            expect(textValue).toEqual('1 234,500 JOD');
           } else {
             expect(textValue).toEqual('1234.500 JOD');
           }

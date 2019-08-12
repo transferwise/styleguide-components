@@ -10,25 +10,25 @@ describe('RequirementsForm', function() {
     Tabs,
     RequirementsService;
 
-  beforeEach(module('tw.styleguide.forms'));
-  beforeEach(module('tw.styleguide.navigation'));
-  beforeEach(module('tw.styleguide.services'));
-
   beforeEach(function() {
+    module('tw.styleguide.forms');
+    module('tw.styleguide.navigation');
+    module('tw.styleguide.services');
+
     Fieldset = getMockComponent('twFieldset');
     Tabs = getMockComponent('twTabs');
 
     angular.mock.module('tw.styleguide.forms.fieldset', Fieldset);
     angular.mock.module('tw.styleguide.navigation.tabs', Tabs);
-  });
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
-    $timeout = $injector.get('$timeout');
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      $timeout = $injector.get('$timeout');
+      RequirementsService = $injector.get('TwRequirementsService');
+    });
+
     $scope = $rootScope.$new();
-
-    RequirementsService = $injector.get('TwRequirementsService');
 
     spyOn(RequirementsService, 'prepRequirements').and.callFake(function(requirements) {
       return requirements;
@@ -44,7 +44,7 @@ describe('RequirementsForm', function() {
     $scope.onModelChange = jasmine.createSpy('onModelChange');
 
     component = getComponent($scope);
-  }));
+  });
 
   describe('when a single set of requirements is supplied', function() {
     var requirements;

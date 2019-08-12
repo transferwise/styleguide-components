@@ -7,16 +7,19 @@ describe('Fieldset', function() {
       element,
       $timeout;
 
-  beforeEach(module('tw.styleguide-components'));
+  beforeEach(function() {
+    module('tw.styleguide-components');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
-    $timeout = $injector.get('$timeout');
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      $timeout = $injector.get('$timeout');
+    });
+
     $scope = $rootScope.$new();
-    $scope.onRefreshRequirements = function () {}
+    $scope.onRefreshRequirements = function() {}
     spyOn($scope, 'onRefreshRequirements');
-  }));
+  });
 
   describe('when given an array of fields', function() {
     beforeEach(function() {

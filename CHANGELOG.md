@@ -3,6 +3,10 @@
 twUpload can now post images immediately and extract an id from the response to
 bind to the model.  This can also be used by twFormControl and twField.
 
+# v3.9.4
+## Change the tests to run in Chrome
+PhantomJS was failing non-deterministically.
+
 # v3.9.3
 ## Render all header option in select
 

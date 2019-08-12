@@ -1,23 +1,23 @@
+'use strict';
+
 describe('Given a component from rendering allOf schemas', function() {
   var $scope,
     component,
     $compile,
     genericSchema;
 
-  beforeEach(module('tw.styleguide-components'));
-  beforeEach(module('tw.json-schema'));
-
   beforeEach(function() {
+    module('tw.styleguide-components');
+    module('tw.json-schema');
+
     genericSchema = getMockComponent('genericSchema');
     angular.mock.module('tw.json-schema.generic', genericSchema);
-  });
 
-  beforeEach(inject(function($injector) {
-    $compile = $injector.get('$compile');
-    $scope = $injector.get('$rootScope').$new();
-  }));
+    inject(function($injector) {
+      $compile = $injector.get('$compile');
+      $scope = $injector.get('$rootScope').$new();
+    });
 
-  beforeEach(function() {
     var template = ' \
       <all-of-schema \
         schema="schema" \

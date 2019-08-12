@@ -9,17 +9,20 @@ describe('Focusable', function() {
 
   var FOCUSABLE_SELECTOR = '[tw-focusable]';
 
-  beforeEach(module('tw.styleguide.forms'));
-  beforeEach(module('tw.styleguide.services'));
+  beforeEach(function() {
+    module('tw.styleguide.forms');
+    module('tw.styleguide.services');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+    });
+
     $scope = $rootScope.$new();
 
     formGroupElement = getCompiledTemplateElement($scope);
     focusableElement = formGroupElement.find(FOCUSABLE_SELECTOR);
-  }));
+  });
 
   describe('when focusing on an element with focus states', function() {
     beforeEach(function() {

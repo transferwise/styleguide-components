@@ -1,23 +1,22 @@
+'use strict';
+
 describe('Given a component for arrays of schemas', function() {
   var $scope,
     component,
     $compile,
     genericSchema;
 
-  beforeEach(module('tw.styleguide-components'));
-  beforeEach(module('tw.json-schema'));
-
   beforeEach(function() {
+    module('tw.styleguide-components');
+    module('tw.json-schema');
+
     genericSchema = getMockComponent('genericSchema');
     angular.mock.module('tw.json-schema.generic', genericSchema);
-  });
+    inject(function($injector) {
+      $compile = $injector.get('$compile');
+      $scope = $injector.get('$rootScope').$new();
+    });
 
-  beforeEach(inject(function($injector) {
-    $compile = $injector.get('$compile');
-    $scope = $injector.get('$rootScope').$new();
-  }));
-
-  beforeEach(function() {
     var template = ' \
       <array-schema \
         schema="schema" \

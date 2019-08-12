@@ -8,14 +8,16 @@ describe('DateFormat filter, ', function() {
       input,
       DateService;
 
-  beforeEach(module('tw.styleguide-components'));
+  beforeEach(function() {
+    module('tw.styleguide-components');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
-    DateService = $injector.get('TwDateService');
-    $scope = $rootScope.$new();
-  }));
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      DateService = $injector.get('TwDateService');
+      $scope = $rootScope.$new();
+    });
+  });
 
   describe('Given the locale is en-GB', function() {
     beforeEach(function() {

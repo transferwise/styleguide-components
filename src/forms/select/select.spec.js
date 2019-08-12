@@ -11,30 +11,18 @@ describe('Select', function() {
   var FILTER_INPUT_SELECTOR = '.tw-select-filter';
 
   var SELECTED_LABEL_SELECTOR = '.tw-select-selected .tw-select-label';
-  var SELECTED_NOTE_SELECTOR = '.tw-select-selected .tw-select-note';
-  var SELECTED_SECONDARY_SELECTOR = '.tw-select-selected .tw-select-secondary';
-  var SELECTED_CURRENCY_FLAG_SELECTOR = '.tw-select-selected .currency-flag';
-  var SELECTED_ICON_SELECTOR = '.tw-select-selected .icon';
-  var SELECTED_CIRCLE_SELECTOR = '.tw-select-selected .circle';
-
-  var OPTION_NOTE_SELECTOR = '.dropdown-menu .tw-select-note';
-  var OPTION_SECONDARY_SELECTOR = '.dropdown-menu .tw-select-secondary';
-  var OPTION_CURRENCY_FLAG_SELECTOR = '.dropdown-menu .currency-flag';
-  var OPTION_ICON_SELECTOR = '.dropdown-menu a > .icon';
-  var OPTION_CIRCLE_IMAGE_SELECTOR = '.dropdown-menu .circle img';
-  var OPTION_CIRCLE_TEXT_SELECTOR = '.dropdown-menu .tw-select-circle-text';
-  var OPTION_CIRCLE_ICON_SELECTOR = '.dropdown-menu .circle .icon';
-  var OPTION_DISABLED_SELECTOR = '.dropdown-menu .disabled';
   var OPTION_LOAD_MORE_SELECTOR = '.dropdown-menu .tw-select-load-more';
 
-  beforeEach(module('tw.styleguide.forms'));
-  beforeEach(module('tw.styleguide.services'));
+  beforeEach(function() {
+    module('tw.styleguide.forms');
+    module('tw.styleguide.services');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
-    $scope = $rootScope.$new();
-  }));
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      $scope = $rootScope.$new();
+    });
+  });
 
   describe('init', function() {
     describe('basics', function() {
@@ -68,8 +56,8 @@ describe('Select', function() {
         it('should not show placeholder', function() {
           $scope.ngRequired = true;
           component = getComponent($scope);
-          var placeholerElement = component.find('.form-control-placeholder');
-          expect(placeholerElement.length).toBe(0);
+          var placeholderElement = component.find('.form-control-placeholder');
+          expect(placeholderElement.length).toBe(0);
         });
         it('should not change ngModel', function() {
           expect($scope.ngModel).toBe('2');
@@ -146,8 +134,8 @@ describe('Select', function() {
           expect($scope.ngModel).toBe(2);
         });
         it('should not show placeholder', function() {
-          var placeholerElement = component.find('.form-control-placeholder');
-          expect(placeholerElement.length).toBe(0);
+          var placeholderElement = component.find('.form-control-placeholder');
+          expect(placeholderElement.length).toBe(0);
         });
         it('should set the value of hidden control', function() {
           // always string...
@@ -185,8 +173,8 @@ describe('Select', function() {
         });
         it('should not show placeholder', function() {
           component = getComponent($scope);
-          var placeholerElement = component.find('.form-control-placeholder');
-          expect(placeholerElement.length).toBe(0);
+          var placeholderElement = component.find('.form-control-placeholder');
+          expect(placeholderElement.length).toBe(0);
         });
         it('should not change ngModel', function() {
           expect($scope.ngModel).toEqual({id: 2});
@@ -205,8 +193,8 @@ describe('Select', function() {
         component = getComponent($scope);
       });
       it('should show placeholder', function() {
-        var placeholerElement = component.find('.form-control-placeholder');
-        expect(placeholerElement.length).toBe(1);
+        var placeholderElement = component.find('.form-control-placeholder');
+        expect(placeholderElement.length).toBe(1);
       });
       it('should not set ngModel', function() {
         expect($scope.ngModel).toBe(null);
@@ -219,17 +207,17 @@ describe('Select', function() {
 
     describe('when ngModel not supplied but ngRequired', function() {
       beforeEach(function() {
-        $scope.options = OPTIONS_EXTRAS;
+        $scope.options = OPTIONS_HEADER;
         $scope.ngModel = null;
         $scope.ngRequired = true;
         component = getComponent($scope);
       });
       it('should select first option with a value', function() {
-        expect($scope.ngModel).toBe(OPTIONS_EXTRAS[1].value);
+        expect($scope.ngModel).toBe(OPTIONS_HEADER[0].value);
       });
       it('should show selected text', function() {
         var selectedTextElement = component.find(SELECTED_LABEL_SELECTOR)[0];
-        expect($(selectedTextElement).text().trim()).toBe(OPTIONS_EXTRAS[1].label);
+        expect($(selectedTextElement).text().trim()).toBe(OPTIONS_HEADER[0].label);
       });
       it('should select first value even if 0', function() {
         $scope.options = OPTIONS_NUMERIC;
@@ -502,13 +490,6 @@ describe('Select', function() {
     });
   });
 
-  describe('when no filter attribute is supplied', function() {
-    it('should not be dispalyed in the template', function() {
-      var filter = component.find(FILTER_INPUT_SELECTOR);
-      expect(filter.length).toBe(0);
-    });
-  });
-
   describe('when a long list of options is supplied', function() {
     var template, component;
     beforeEach(function() {
@@ -551,510 +532,6 @@ describe('Select', function() {
 
       expect(component.find(LIST_ITEMS_SELECTOR).length).toBe(300);
       expect(component.find(OPTION_LOAD_MORE_SELECTOR).length).toBe(0);
-    });
-
-  });
-
-  describe('when a filter attribute is supplied', function() {
-    var $filterInput,
-      filterInput,
-      $button,
-      button;
-
-    beforeEach(function() {
-      $scope.options = OPTIONS;
-      $scope.ngModel = '1';
-      $scope.filter = 'Search';
-      var template = " \
-        <tw-select \
-          options='options' \
-          ng-model='ngModel' \
-          filter='{{filter}}'> \
-        </tw-select>";
-      component = getComponent($scope, template);
-      $filterInput = component.find(FILTER_INPUT_SELECTOR);
-    });
-
-    it('should render a search input in the dropdown', function() {
-      expect($filterInput.length).toBe(1);
-    });
-  });
-
-  describe('when using the search input', function() {
-    var filterInput, $filterInput,
-      button;
-    beforeEach(function() {
-      $scope.options = OPTIONS;
-      $scope.ngModel = '1';
-      $scope.filter = 'Search';
-      var template = " \
-        <tw-select \
-          options='options' \
-          ng-model='ngModel' \
-          filter='{{filter}}'> \
-          <a href='' class='custom-action'> \
-            Custom action \
-          </a> \
-        </tw-select>";
-      component = getComponent($scope, template);
-      $filterInput = component.find(FILTER_INPUT_SELECTOR);
-      filterInput = $filterInput[0];
-      button = component.find('.btn')[0];
-
-      $filterInput.focus();
-    });
-
-    describe('when characters are entered', function() {
-      it('should filter the list', function() {
-        $filterInput.val("One").trigger('change');
-        var options = component.find(LIST_ITEMS_SELECTOR);
-        expect(options.length).toBe(1);
-        expect(optionText(options[0])).toBe('One');
-      });
-      it('should include options that match case insensitively', function() {
-        $filterInput.val("t").trigger('change');
-        var options = component.find(LIST_ITEMS_SELECTOR);
-        expect(options.length).toBe(2);
-        expect(optionText(options[0])).toBe('Two');
-        expect(optionText(options[1])).toBe('Three');
-      });
-      it('should include options that match on substrings', function() {
-        $filterInput.val("ne").trigger('change');
-        var options = component.find(LIST_ITEMS_SELECTOR);
-        expect(options.length).toBe(1);
-        expect(optionText(options[0])).toBe('One');
-      });
-      it('should change ngModel to first visible option if none selected', function() {
-        $filterInput.val("t").trigger('change');
-        var options = component.find(LIST_ITEMS_SELECTOR);
-        expect($scope.ngModel).toBe('2');
-        expect(optionText(options[0])).toBe('Two');
-      });
-    });
-
-    describe('when an option is selected', function() {
-      beforeEach(function() {
-        $scope.ngModel = '2';
-        $scope.$digest();
-      });
-
-      describe('and the down arrow is pressed', function() {
-        beforeEach(function() {
-          triggerKeyCode(filterInput, SPECIAL_KEYS.down);
-        });
-        it('should select the next option', function() {
-          expect($scope.ngModel).toBe('3');
-        });
-        it('should retain focus', function() {
-          expect(filterInput === document.activeElement).toBe(true);
-        });
-      });
-
-      describe('and the up arrow is pressed', function() {
-        beforeEach(function() {
-          triggerKeyCode(filterInput, SPECIAL_KEYS.up);
-        });
-        it('should select the previous option', function() {
-          expect($scope.ngModel).toBe('1');
-        });
-        it('should retain focus', function() {
-          expect(filterInput === document.activeElement).toBe(true);
-        });
-      });
-
-      describe('and the return key is pressed', function() {
-        beforeEach(function() {
-          triggerKeyCode(filterInput, SPECIAL_KEYS.return);
-        });
-        it('should focus back on the select button', function() {
-          expect(button === document.activeElement).toBe(true);
-        });
-      });
-    });
-
-    describe('when no option is selected', function() {
-      beforeEach(function() {
-        $scope.ngModel = '99';
-        $scope.$digest();
-      });
-
-      describe('and the down arrow is pressed', function() {
-        beforeEach(function() {
-          triggerKeyCode(filterInput, SPECIAL_KEYS.down);
-        });
-        it('should move to the first option ', function() {
-          expect($scope.ngModel).toBe(OPTIONS[0].value);
-        });
-      });
-
-      describe('and the up arrow is pressed', function() {
-        beforeEach(function() {
-          triggerKeyCode(filterInput, SPECIAL_KEYS.up);
-        });
-        it('should move to the last option  ', function() {
-          expect($scope.ngModel).toBe(OPTIONS[OPTIONS.length - 1].value);
-        });
-      });
-    });
-
-    describe('when the last option is selected', function() {
-      beforeEach(function() {
-        $scope.ngModel = '3';
-        $scope.$digest();
-      });
-      describe('and the down arrow is pressed', function() {
-        beforeEach(function() {
-          triggerKeyCode(filterInput, SPECIAL_KEYS.down);
-        });
-        it('should move focus to custom action', function() {
-          expect(component.find('.custom-action')[0] === document.activeElement).toBe(true);
-        });
-      });
-    });
-
-    describe('when there are no matching search results', function() {
-      var selectedElements
-      beforeEach(function() {
-        $filterInput.val('a').trigger('change');
-      });
-      it('should not show any options', function() {
-        expect(component[0].querySelectorAll(LIST_ITEMS_SELECTOR).length).toBe(0);
-      });
-
-      describe('and the return key is pressed', function() {
-        beforeEach(function() {
-          triggerKeyCode(filterInput, SPECIAL_KEYS.return);
-        });
-
-        it('should prevent the default action', function() {
-          var optionOne = OPTIONS[1];
-          expect($scope.ngModel).toBe(optionOne.value);
-        });
-      });
-    });
-  });
-
-  describe('when selected option has', function() {
-    beforeEach(function() {
-      $scope.options = OPTIONS_EXTRAS;
-      $scope.ngModel = null;
-    });
-
-    describe('note text', function() {
-      var note;
-
-      beforeEach(function() {
-        $scope.ngModel = 'NOTE';
-        note = getComponent($scope).find(SELECTED_NOTE_SELECTOR);
-      });
-
-      it('should be displayed', function() {
-        expect(note.length).toBe(1);
-        checkVisible(note);
-      });
-      it('should be possible to hide it', function() {
-        $scope.hideNote = true;
-        $scope.$digest();
-        expect(note.hasClass('hidden')).toBe(true);
-      });
-      it('should be hideable for xs grid and narrower', function() {
-        $scope.hideNote = 'xs';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(note, 'xs');
-      });
-      it('should be hideable for sm grid and narrower', function() {
-        $scope.hideNote = 'sm';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(note, 'sm');
-      });
-      it('should be hideable for md grid and narrower', function() {
-        $scope.hideNote = 'md';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(note, 'md');
-      });
-      it('should be hideable for lg grid and narrower', function() {
-        $scope.hideNote = 'lg';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(note, 'lg');
-      });
-      it('should be hideable for xl grid and narrower', function() {
-        $scope.hideNote = 'xl';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(note, 'xl');
-      });
-      it('should be hideable for supplied grid widths', function() {
-        $scope.hideNote = 'xs,xl';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(note, 'xs,xl');
-
-        $scope.hideNote = 'md,sm,lg';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(note, 'sm,md,lg');
-      });
-    });
-
-    describe('secondary text', function() {
-      var secondary;
-
-      beforeEach(function() {
-        $scope.ngModel = 'SECONDARY';
-        secondary = getComponent($scope).find(SELECTED_SECONDARY_SELECTOR);
-      });
-      it('should be displayed', function() {
-        expect(secondary.length).toBe(1);
-        checkVisible(secondary);
-      });
-      it('should be possible to hide it', function() {
-        $scope.hideSecondary = true;
-        $scope.$digest();
-        expect(secondary.hasClass('hidden')).toBe(true);
-      });
-      it('should be hideable for xs grid and narrower', function() {
-        $scope.hideSecondary = 'xs';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(secondary, 'xs');
-      });
-      it('should be hideable for sm grid and narrower', function() {
-        $scope.hideSecondary = 'sm';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(secondary, 'sm');
-      });
-      it('should be hideable for md grid and narrower', function() {
-        $scope.hideSecondary = 'md';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(secondary, 'md');
-      });
-      it('should be hideable for lg grid and narrower', function() {
-        $scope.hideSecondary = 'lg';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(secondary, 'lg');
-      });
-      it('should be hideable for xl grid and narrower', function() {
-        $scope.hideSecondary = 'xl';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(secondary, 'xl');
-      });
-      it('should be hideable for supplied grid widths', function() {
-        $scope.hideSecondary = 'xs,xl';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(secondary, 'xs,xl');
-
-        $scope.hideSecondary = 'md,sm,lg';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(secondary, 'sm,md,lg');
-      });
-    });
-
-    describe('icon', function() {
-      var icon;
-
-      beforeEach(function() {
-        $scope.ngModel = 'ICON';
-        icon = getComponent($scope).find(SELECTED_ICON_SELECTOR);
-      });
-
-      it('should be displayed', function() {
-        expect(icon.length).toBe(1);
-        checkVisible(icon);
-      });
-      it('should be possible to hide it', function() {
-        $scope.hideIcon = true;
-        $scope.$digest();
-        expect(icon.hasClass('hidden')).toBe(true);
-      });
-      it('should be hideable for xs grid and narrower', function() {
-        $scope.hideIcon = 'xs';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(icon, 'xs');
-      });
-      it('should be hideable for sm grid and narrower', function() {
-        $scope.hideIcon = 'sm';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(icon, 'sm');
-      });
-      it('should be hideable for md grid and narrower', function() {
-        $scope.hideIcon = 'md';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(icon, 'md');
-      });
-      it('should be hideable for lg grid and narrower', function() {
-        $scope.hideIcon = 'lg';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(icon, 'lg');
-      });
-      it('should be hideable for xl grid and narrower', function() {
-        $scope.hideIcon = 'xl';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(icon, 'xl');
-      });
-      it('should be hideable for supplied grid widths', function() {
-        $scope.hideIcon = 'xs,xl';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(icon, 'xs,xl');
-
-        $scope.hideIcon = 'md,sm,lg';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(icon, 'sm,md,lg');
-      });
-    });
-
-    describe('currency flag', function() {
-      var flag;
-
-      beforeEach(function() {
-        $scope.ngModel = 'CURRENCY_FLAG';
-        flag = getComponent($scope).find(SELECTED_CURRENCY_FLAG_SELECTOR);
-      });
-
-      it('should be displayed', function() {
-        $scope.$digest();
-        expect(flag.length).toBe(1);
-        checkVisible(flag);
-      });
-      it('should be possible to hide it', function() {
-        $scope.hideCurrency = true;
-        $scope.$digest();
-        expect(flag.hasClass('hidden')).toBe(true);
-      });
-      it('should be hideable for xs grid and narrower', function() {
-        $scope.hideCurrency = 'xs';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(flag, 'xs');
-      });
-      it('should be hideable for sm grid and narrower', function() {
-        $scope.hideCurrency = 'sm';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(flag, 'sm');
-      });
-      it('should be hideable for md grid and narrower', function() {
-        $scope.hideCurrency = 'md';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(flag, 'md');
-      });
-      it('should be hideable for lg grid and narrower', function() {
-        $scope.hideCurrency = 'lg';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(flag, 'lg');
-      });
-      it('should be hideable for xl grid and narrower', function() {
-        $scope.hideCurrency = 'xl';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(flag, 'xl');
-      });
-      it('should be hideable for supplied grid widths', function() {
-        $scope.hideCurrency = 'xs,xl';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(flag, 'xs,xl');
-
-        $scope.hideCurrency = 'md,sm,lg';
-        $scope.$digest();
-        checkVisibilityAtBreakpoints(flag, 'sm,md,lg');
-      });
-    });
-
-    describe('circle icon', function() {
-      var circle;
-
-      beforeEach(function() {
-        $scope.ngModel = 'CIRCLE_ICON';
-        circle = getComponent($scope).find(SELECTED_CIRCLE_SELECTOR);
-      });
-
-      it('should be displayed', function() {
-        expect(circle.length).toBe(1);
-      });
-      it('should be possible to hide it', function() {
-        $scope.hideCircle = true;
-        $scope.$digest();
-        expect(circle.hasClass('hidden')).toBe(true);
-      });
-    });
-
-    describe('label', function() {
-      var label;
-      beforeEach(function() {
-        $scope.ngModel = 'CIRCLE_ICON';
-        label = getComponent($scope).find(SELECTED_LABEL_SELECTOR);
-      });
-      it('should be displayed by default', function() {
-        expect(label.length).toBe(1);
-      });
-      it('can be hidden', function() {
-        $scope.hideLabel = true;
-        $scope.$digest();
-        expect(label.hasClass('hidden')).toBe(true);
-      });
-    });
-
-    describe('circle image', function() {
-      var circle;
-      beforeEach(function() {
-        $scope.ngModel = 'CIRCLE_IMAGE';
-        circle = getComponent($scope).find(SELECTED_CIRCLE_SELECTOR);
-      });
-      it('should be displayed', function() {
-        expect(circle.length).toBe(1);
-      });
-      it('should be possible to hide it', function() {
-        $scope.hideCircle = true;
-        $scope.$digest();
-        expect(circle.hasClass('hidden')).toBe(true);
-      });
-    });
-    describe('circle text', function() {
-      var circle;
-      beforeEach(function() {
-        $scope.ngModel = 'CIRCLE_TEXT';
-        circle = getComponent($scope).find(SELECTED_CIRCLE_SELECTOR);
-      });
-      it('should be displayed', function() {
-        expect(circle.length).toBe(1);
-      });
-      it('should be possible to hide it', function() {
-        $scope.hideCircle = true;
-        $scope.$digest();
-        expect(circle.hasClass('hidden')).toBe(true);
-      });
-    });
-  });
-
-  describe('when special options are supplied', function() {
-    beforeEach(function() {
-      $scope.options = OPTIONS_EXTRAS;
-      $scope.ngModel = null;
-      component = getComponent($scope);
-    });
-    it('should show note text', function() {
-      var el = component.find(OPTION_NOTE_SELECTOR);
-      expect(el.length).toBe(1);
-    });
-    it('should show secondary text', function() {
-      var el = component.find(OPTION_SECONDARY_SELECTOR);
-      expect(el.length).toBe(1);
-    });
-    it('should show currency flag', function() {
-      var el = component.find(OPTION_CURRENCY_FLAG_SELECTOR);
-      expect(el.length).toBe(1);
-    });
-    it('should show icon', function() {
-      var el = component.find(OPTION_ICON_SELECTOR);
-      expect(el.length).toBe(1);
-    });
-    it('should show circle image', function() {
-      var el = component.find(OPTION_CIRCLE_IMAGE_SELECTOR);
-      expect(el.length).toBe(1);
-    });
-    it('should show circle text', function() {
-      var el = component.find(OPTION_CIRCLE_TEXT_SELECTOR);
-      expect(el.length).toBe(1);
-    });
-    it('should show circle icon', function() {
-      var el = component.find(OPTION_CIRCLE_ICON_SELECTOR);
-      expect(el.length).toBe(1);
-    });
-    it('should show disabled option', function() {
-      var el = component.find(OPTION_DISABLED_SELECTOR);
-      expect(el.length).toBe(1);
     });
   });
 
@@ -1145,42 +622,7 @@ describe('Select', function() {
     });
   });
 
-  describe('filter duplicates with same label and value', function() {
-    var $filterInput;
-    beforeEach(function () {
-      $scope.options = [{
-        value: '1',
-        label: 'Cain'
-      },{
-        value: '0',
-        label: 'Abel'
-      },{
-        value: '1',
-        label: 'Cain'
-      }];
-      $scope.filter = 'Search';
-      var template = " \
-        <tw-select \
-          options='options' \
-          ng-model='ngModel' \
-          filter='{{filter}}'> \
-          <a href='' class='custom-action'> \
-              Custom action \
-          </a> \
-        </tw-select>";
-      component = getComponent($scope, template);
-      $filterInput = component.find(FILTER_INPUT_SELECTOR);
-    });
-
-    it('should show one result, removing duplicates', function() {
-      $filterInput.val("ca").trigger('change');
-      var options = component.find(LIST_ITEMS_SELECTOR);
-      expect(options.length).toBe(1);
-      expect(optionText(options[0])).toBe('Cain');
-    });
-  });
-
-  describe('render options with same label but different value', function() {
+  describe('when two options have the same label but different values', function() {
     var $filterInput;
     beforeEach(function () {
       $scope.options = [{
@@ -1303,24 +745,6 @@ describe('Select', function() {
     return event;
   }
 
-  function checkVisible(el) {
-    expect(el.hasClass('hidden')).toBe(false);
-    expect(el.hasClass('hidden-xs')).toBe(false);
-    expect(el.hasClass('hidden-sm')).toBe(false);
-    expect(el.hasClass('hidden-md')).toBe(false);
-    expect(el.hasClass('hidden-lg')).toBe(false);
-    expect(el.hasClass('hidden-xl')).toBe(false);
-  }
-
-  function checkVisibilityAtBreakpoints(el, breakpoint) {
-    var breakpoints = breakpoint.split(',');
-    expect(el.hasClass('hidden-xs')).toBe(breakpoints.indexOf('xs') > -1);
-    expect(el.hasClass('hidden-sm')).toBe(breakpoints.indexOf('sm') > -1);
-    expect(el.hasClass('hidden-md')).toBe(breakpoints.indexOf('md') > -1);
-    expect(el.hasClass('hidden-lg')).toBe(breakpoints.indexOf('lg') > -1);
-    expect(el.hasClass('hidden-xl')).toBe(breakpoints.indexOf('xl') > -1);
-  }
-
   var SPECIAL_KEYS = {
     up: 38,
     down: 40,
@@ -1387,47 +811,6 @@ describe('Select', function() {
   },{
     value: 3,
     label: 'Three'
-  }];
-
-
-  var OPTIONS_EXTRAS = [{
-    header: "header"
-  },{
-    value: 'NOTE',
-    label: 'Note text',
-    note: 'Note text'
-  },{
-    value: 'DISABLED',
-    label: 'Disabled',
-    disabled: true
-  },{
-    value: 'SECONDARY',
-    label: 'Secondary text',
-    secondary: "Secondary text"
-  },{
-    value: "ICON",
-    label: 'Icon',
-    icon: "bank"
-  },{
-    value: "CURRENCY_FLAG",
-    label: 'Currency flag',
-    currency: "USD"
-  },{
-    value: "CIRCLE_IMAGE",
-    label: 'Circle image',
-    circleImage: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-  },{
-    value: "CIRCLE_ICON",
-    label: 'Circle icon',
-    circleIcon: "bank"
-  },{
-    value: "CIRCLE_TEXT",
-    label: 'Circle text',
-    circleText: "AZ"
-  },{
-    value: "SEARCHABLE",
-    label: "Unrelated",
-    searchable: "Searchable"
   }];
 
   // 601 options.

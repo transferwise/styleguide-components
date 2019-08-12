@@ -14,14 +14,17 @@ describe('Checkbox', function() {
   var INPUT_SELECTOR = 'input';
   var LABEL_SELECTOR = '.checkbox label';
 
-  beforeEach(module('tw.styleguide.forms.checkbox'));
-  beforeEach(module('tw.styleguide.forms.focusable'));
-  beforeEach(module('tw.styleguide.validation'));
-  beforeEach(module('tw.styleguide.services'));
+  beforeEach(function() {
+    module('tw.styleguide.forms.checkbox');
+    module('tw.styleguide.forms.focusable');
+    module('tw.styleguide.validation');
+    module('tw.styleguide.services');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+    });
+
     $scope = $rootScope.$new();
 
     $scope.ngModel = null;
@@ -36,7 +39,7 @@ describe('Checkbox', function() {
     directiveElement = templateElement.find(DIRECTIVE_SELECTOR);
     $ngModel = directiveElement.controller('ngModel');
     button = directiveElement.find(BUTTON_SELECTOR);
-  }));
+  });
 
   describe('init', function() {
     it('should add checkbox replacement', function() {

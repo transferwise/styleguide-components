@@ -6,13 +6,15 @@ describe('Directive: TwCards', function() {
     $scope,
     directiveElement;
 
-  beforeEach(module('tw.styleguide.layout'));
+  beforeEach(function() {
+    module('tw.styleguide.layout');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
-    $scope = $rootScope.$new();
-  }));
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      $scope = $rootScope.$new();
+    });
+  });
 
   var cardTemplate = "\
     <tw-card \

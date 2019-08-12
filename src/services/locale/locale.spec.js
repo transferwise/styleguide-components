@@ -1,13 +1,15 @@
-describe('TwDateService test', function() {
-  'use strict';
+'use strict';
 
+describe('TwDateService test', function() {
   var LocaleService;
 
-  beforeEach(module('tw.styleguide-components'));
+  beforeEach(function() {
+    module('tw.styleguide-components');
 
-  beforeEach(inject(function($injector) {
-    LocaleService = $injector.get('TwLocaleService');
-  }));
+    inject(function($injector) {
+      LocaleService = $injector.get('TwLocaleService');
+    });
+  });
 
   describe('when getting the locale', function() {
     it('should return en-GB by default', function () {

@@ -7,16 +7,18 @@ describe('DateLookup, ', function() {
       element,
       TwDateService;
 
-  beforeEach(module('tw.styleguide.forms.date-lookup'));
-  beforeEach(module('tw.styleguide.services.date'));
-  beforeEach(module('tw.styleguide.services.dom'));
+  beforeEach(function() {
+    module('tw.styleguide.forms.date-lookup');
+    module('tw.styleguide.services.date');
+    module('tw.styleguide.services.dom');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
-    TwDateService = $injector.get('TwDateService');
-    $scope = $rootScope.$new();
-  }));
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      TwDateService = $injector.get('TwDateService');
+      $scope = $rootScope.$new();
+    });
+  });
 
   var ENGLISH_MONTHS = [
     'January',
