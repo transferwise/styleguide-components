@@ -14,12 +14,15 @@ describe('AmountCurrencySelect', function() {
   var INPUT_SELECTOR = 'input';
   var SELECT_SELECTOR = 'select';
 
-  beforeEach(module('tw.styleguide-components'));
+  beforeEach(function() {
+    module('tw.styleguide-components');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
-    $scope = $rootScope.$new();
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      $scope = $rootScope.$new();
+    });
+
     $scope.ngModel = null;
     $scope.currency = "eur";
     $scope.currencies = [
@@ -27,11 +30,12 @@ describe('AmountCurrencySelect', function() {
       {value:'gbp',label:'GBP'},
       {value:'usd',label:'USD'}
     ];
+
     $scope.ngChange = function() {};
     $scope.ngClick = function() {};
     $scope.ngFocus = function() {};
     $scope.ngBlur = function() {};
-  }));
+  });
 
   describe('init', function() {
     beforeEach(inject(function() {

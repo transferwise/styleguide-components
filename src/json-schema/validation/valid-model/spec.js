@@ -1,14 +1,17 @@
+'use strict';
 
 describe('Given a library for returning the valid parts of a model based on a schema', function() {
   var result, schema, getValidModelParts;
 
-  beforeEach(module('tw.styleguide-components'));
-  beforeEach(module('tw.json-schema'));
+  beforeEach(function() {
+    module('tw.styleguide-components');
+    module('tw.json-schema');
 
-  beforeEach(inject(function($injector) {
-    var SchemaValidation = $injector.get('SchemaValidation');
-    getValidModelParts = SchemaValidation.getValidModelParts;
-  }));
+    inject(function($injector) {
+      var SchemaValidation = $injector.get('SchemaValidation');
+      getValidModelParts = SchemaValidation.getValidModelParts;
+    });
+  });
 
   describe('when cleaning a string schema', function() {
     beforeEach(function() {

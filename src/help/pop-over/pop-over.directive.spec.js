@@ -1,3 +1,5 @@
+'use strict';
+
 describe('Popover directive', function() {
   var $compile,
       $rootScope,
@@ -5,14 +7,17 @@ describe('Popover directive', function() {
       $window,
       popover;
 
-  beforeEach(module('tw.styleguide-components'));
+  beforeEach(function() {
+    module('tw.styleguide-components');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      $window = $injector.get('$window');
+    });
+
     $scope = $rootScope.$new();
-    $window = $injector.get('$window');
-  }));
+  });
 
   describe('when we click on a popover trigger', function () {
     beforeEach(function () {

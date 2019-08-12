@@ -1,13 +1,15 @@
-describe('Requirements Service', function() {
-  'use strict';
+'use strict';
 
+describe('Requirements Service', function() {
   var service;
 
-  beforeEach(module('tw.styleguide-components'));
+  beforeEach(function() {
+    module('tw.styleguide-components');
 
-  beforeEach(inject(function($injector) {
-    service = $injector.get('TwRequirementsService');
-  }));
+    inject(function($injector) {
+      service = $injector.get('TwRequirementsService');
+    });
+  });
 
   describe('when preparing legacy field requirements', function() {
 

@@ -10,13 +10,15 @@ describe('Definition list', function() {
     listItem,
     definition;
 
-  beforeEach(module('tw.styleguide-components'));
+  beforeEach(function() {
+    module('tw.styleguide-components');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+    });
+
     $scope = $rootScope.$new();
-
     $scope.locale = 'en-GB';
     $scope.model = {};
     $scope.fields = [];
@@ -26,7 +28,7 @@ describe('Definition list', function() {
     listItem = element.getElementsByTagName('dl')[0];
     term = element.getElementsByTagName('dt')[0];
     definition = element.getElementsByTagName('dd')[0];
-  }));
+  });
 
   describe('when given a text field', function() {
     beforeEach(function() {

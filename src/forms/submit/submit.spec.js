@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Given a submit button component', function() {
-  var $compile, $rootScope, $scope, $timeout, $q, form, button, process;
+  var $compile, $rootScope, $scope, $timeout, $q, form, button, process, deferred;
 
   var PROCESS_SELECTOR = 'tw-process';
   var BUTTON_SELECTOR = 'button';
@@ -21,6 +21,10 @@ describe('Given a submit button component', function() {
     $scope.onSubmit = jasmine.createSpy('onSubmit');
     $scope.onSuccess = jasmine.createSpy('onSuccess');
     $scope.onFailure = jasmine.createSpy('onFailure');
+
+    $scope.onFormSubmit = function() {
+      console.log("form was submitted"); // eslint-disable-line
+    };
 
     form = getCompiledDirectiveElement($scope);
     button = form.querySelector(BUTTON_SELECTOR);
@@ -42,9 +46,10 @@ describe('Given a submit button component', function() {
   describe('when a parent form is submitted', function() {
     beforeEach(function() {
       dispatchEvent(form, 'submit');
-      $scope.$digest();
+      $scope.$apply();
     });
-    it('should disabled the button', function() {
+
+    it('should disable the button', function() {
       expect(button.hasAttribute('disabled')).toBeTruthy();
     });
     it('should trigger the submit callback', function() {
@@ -52,15 +57,18 @@ describe('Given a submit button component', function() {
     });
   });
 
-  describe('when the button is clicked', function() {
+  // Unfortunately Chrome does not submit the form when a submit button is
+  // clicked programatically, only via a real event.
+  xdescribe('when the button is clicked', function() {
     beforeEach(function() {
       dispatchEvent(button, 'click');
-      $scope.$digest();
+      $scope.$apply();
     });
     it('should submit the form', function() {
       expect($scope.testForm.$submitted).toBe(true);
     });
     it('should disabled the button', function() {
+
       expect(button.hasAttribute('disabled')).toBeTruthy();
     });
     it('should trigger the submit callback', function() {
@@ -68,60 +76,65 @@ describe('Given a submit button component', function() {
     });
   });
 
-  describe('when assigned a promise', function() {
+  describe('when submitted and an unresolved promise is supplied', function() {
     beforeEach(function() {
-      dispatchEvent(button, 'click');
-      $scope.promise = $q.defer().promise;
-      $scope.$digest();
-      $timeout.flush();
+      dispatchEvent(form, 'submit');
+      deferred = $q.defer();
+      $scope.promise = deferred.promise;
+      $scope.$apply();
+      //$timeout.flush();
       process = button.querySelector(PROCESS_SELECTOR);
     });
+
     it('should show the process component', function() {
       expect(process).toBeTruthy();
     });
-  });
 
-  describe('when a promise resolves succesfully', function() {
-    beforeEach(function() {
-      dispatchEvent(button, 'click');
-      $scope.promise = $q.when(true);
-      $scope.$digest();
-      $timeout.flush();
-      process = form.querySelector(PROCESS_SELECTOR);
+    describe('when the promise resolves succesfully and animation is complete', function() {
+      beforeEach(function() {
+        deferred.resolve();
+        $timeout.flush(1500);
+      });
+      // TODO mock component and test bindings
+      // it('should pass success state to process indicator', function() {
+      //
+      // });
+      it('should trigger the success callback', function() {
+        expect($scope.onSuccess).toHaveBeenCalled();
+      });
+      it('should reenable the button', function() {
+        expect(button.hasAttribute('disabled')).toBeFalsy();
+      });
     });
-    // TODO mock component and test bindings
-    // it('should pass success state to process indicator', function() {
-    //
-    // });
-    it('should trigger the success callback', function() {
-      expect($scope.onSuccess).toHaveBeenCalled();
-    });
-    it('should reenable the button', function() {
-      expect(button.hasAttribute('disabled')).toBeFalsy();
-    });
-  });
 
-  describe('when a promise resolution fails', function() {
-    beforeEach(function() {
-      dispatchEvent(button, 'click');
-      $scope.promise = $q.reject();
-      $scope.$digest();
-      $timeout.flush();
-      process = button.querySelector(PROCESS_SELECTOR);
-    });
-    // TODO this state is only temporary, but timeout flush takes us stright back to default
-    // it('should show a failed result', function() {
-    //   expect(button.classList).toContain('btn-danger');
-    // });
-    // TODO mock component and test bindings
-    // it('should pass failure state to process indicator', function() {
-    //
-    // });
-    it('should trigger the failure callback', function() {
-      expect($scope.onFailure).toHaveBeenCalled();
-    });
-    it('should reenable the button', function() {
-      expect(button.hasAttribute('disabled')).toBeFalsy();
+    describe('when the promise fails and animation is complete', function() {
+      beforeEach(function() {
+        deferred.reject();
+        $timeout.flush(1500);
+        process = button.querySelector(PROCESS_SELECTOR);
+      });
+      it('should turn the button red', function() {
+        expect(button.classList).toContain('btn-danger');
+      });
+      // TODO mock component and test bindings
+      // it('should pass failure state to process indicator', function() {
+      //
+      // });
+      it('should trigger the failure callback', function() {
+        expect($scope.onFailure).toHaveBeenCalled();
+      });
+      it('should reenable the button', function() {
+        expect(button.hasAttribute('disabled')).toBeFalsy();
+      });
+
+      describe('and another 3 seconds has elapsed ', function() {
+        beforeEach(function() {
+          $timeout.flush(3000);
+        });
+        it('should change the button back to blue', function() {
+          expect(button.classList).toContain('btn-primary');
+        })
+      });
     });
   });
 
@@ -142,7 +155,7 @@ describe('Given a submit button component', function() {
   });
 
   function dispatchEvent(element, type) {
-    element.dispatchEvent(new CustomEvent(type));
+    element.dispatchEvent(new Event(type));
   }
 
   function getCompiledDirectiveElement(scope, template) {

@@ -8,14 +8,16 @@ describe('TextFormat directive, ', function() {
       $timeout,
       input;
 
-  beforeEach(module('tw.styleguide.formatting'));
+  beforeEach(function() {
+    module('tw.styleguide.formatting.text-format');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
-    $timeout = $injector.get('$timeout');
-    $scope = $rootScope.$new();
-  }));
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      $timeout = $injector.get('$timeout');
+      $scope = $rootScope.$new();
+    });
+  });
 
   describe('Given there is a pattern', function() {
     describe('when typing first character', function() {

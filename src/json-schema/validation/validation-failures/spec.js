@@ -1,14 +1,17 @@
+'use strict';
 
 describe('Given a library for identifying validation failures', function() {
   var schema, getValidationFailures;
 
-  beforeEach(module('tw.styleguide-components'));
-  beforeEach(module('tw.json-schema'));
+  beforeEach(function() {
+    module('tw.styleguide-components');
+    module('tw.json-schema');
 
-  beforeEach(inject(function($injector) {
-    var SchemaValidation = $injector.get('SchemaValidation');
-    getValidationFailures = SchemaValidation.getValidationFailures;
-  }));
+    inject(function($injector) {
+      var SchemaValidation = $injector.get('SchemaValidation');
+      getValidationFailures = SchemaValidation.getValidationFailures;
+    })
+  });
 
   describe('when validating a string schema', function() {
     beforeEach(function() {

@@ -12,14 +12,16 @@ describe('Upload', function() {
   var LIST_ITEMS_SELECTOR = '.tw-select-option-link';
   var FILTER_INPUT_SELECTOR = '.tw-select-filter';
 
-  beforeEach(module('tw.styleguide.forms'));
+  beforeEach(function() {
+    module('tw.styleguide.forms');
 
-  beforeEach(inject(function($injector) {
-    $rootScope = $injector.get('$rootScope');
-    $compile = $injector.get('$compile');
-    $scope = $rootScope.$new();
-    $timeout = $injector.get('$timeout');
-  }));
+    inject(function($injector) {
+      $rootScope = $injector.get('$rootScope');
+      $compile = $injector.get('$compile');
+      $scope = $rootScope.$new();
+      $timeout = $injector.get('$timeout');
+    });
+  });
 
   describe('transclusion', function() {
     beforeEach(function() {

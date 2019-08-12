@@ -1,15 +1,17 @@
-describe('TwDateService test', function() {
-  'use strict';
+'use strict';
 
+describe('TwDateService test', function() {
   var service;
 
   var dateFormats = ['narrow', 'short', 'long', null];
 
-  beforeEach(module('tw.styleguide-components'));
+  beforeEach(function() {
+    module('tw.styleguide-components');
 
-  beforeEach(inject(function($injector) {
-    service = $injector.get('TwDateService');
-  }));
+    inject(function($injector) {
+      service = $injector.get('TwDateService');
+    });
+  });
 
   describe('when English locale', function() {
     dateFormats.forEach(function(format) {
