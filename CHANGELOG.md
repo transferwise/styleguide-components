@@ -1,3 +1,7 @@
+# v3.10.1
+## Enable eslint no-useless-path-segments rule
+Fix violations
+
 # v3.10.0
 ## Add support for persistAsync
 twUpload can now post images immediately and extract an id from the response to
