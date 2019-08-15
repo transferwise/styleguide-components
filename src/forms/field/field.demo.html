@@ -175,13 +175,14 @@ on-change="changeHandler(value)"&gt;
 </field-example>
 
 <h4 id="async" class="page-header">
-  Async values
+  Async tasks
   <a href="#async" class="pull-xs-right">
     <span class="glyphicon glyphicon-link"></span>
   </a>
 </h4>
 <div class="row">
   <div class="col-md-6">
+    <h5>Async values</h5>
     <p>
       Sometimes the list of values is excessively long, or dependent on
       some other data in the model.  In these cases you can load these
@@ -193,6 +194,20 @@ on-change="changeHandler(value)"&gt;
   name="valuesAsyncModel"
   field="$ctrl.valuesAsync"
   model="$ctrl.valuesAsyncModel">
+</field-example>
+
+<div class="row">
+  <div class="col-md-6">
+    <h4>Async persistence</h4>
+    <p>
+      Save asynchronously.
+    </p>
+  </div>
+</div>
+<field-example
+  name="persistAsyncModel"
+  field="$ctrl.persistAsync"
+  model="$ctrl.persistAsyncModel">
 </field-example>
 
 <h4 id="validation" class="page-header">

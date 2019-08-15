@@ -2,7 +2,6 @@
 
 describe('TwDateService test', function() {
   var service;
-
   var dateFormats = ['narrow', 'short', 'long', null];
 
   beforeEach(function() {

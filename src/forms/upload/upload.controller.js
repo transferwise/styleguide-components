@@ -4,17 +4,19 @@ class UploadController {
   constructor(
     $timeout,
     $element,
-    $http,
     $scope,
     $transclude,
     $q,
-    $attrs
+    $attrs,
+    AsyncFileReader,
+    AsyncFileSaver
   ) {
     this.$timeout = $timeout;
     this.$element = $element;
-    this.$http = $http;
     this.$attrs = $attrs;
     this.$q = $q;
+    this.AsyncFileReader = AsyncFileReader;
+    this.AsyncFileSaver = AsyncFileSaver;
 
     // First isImage updated only at select times, second updated instantly.
     this.isImage = false;
@@ -90,23 +92,15 @@ class UploadController {
       // Post file now
       this.$q
         .all([
-          this.asyncPost(file),
+          this.asyncFileSave(file),
           this.asyncFileRead(file)
         ])
-        .then((response) => {
-          asyncSuccess(response[0], this);
-          return response;
-        })
-        .then((response) => {
-          showDataImage(response[1], this);
-          return response;
-        })
+        .then(response => asyncSuccess(response[0], response[1], this))
         .catch(error => asyncFailure(error, this));
     } else {
       // Post on form submit
       this.asyncFileRead(file)
-        .then(response => asyncSuccess(response, this))
-        .then(response => showDataImage(response, this))
+        .then(response => asyncSuccess(null, response, this))
         .catch(error => asyncFailure(error, this));
     }
   }
@@ -154,29 +148,12 @@ class UploadController {
     }
   }
 
-  asyncPost(file) {
-    const formData = new FormData();
-    formData.append(this.name, file);
-
-    const $httpOptions = prepareHttpOptions(angular.copy(this.httpOptions));
-    return this.$http.post($httpOptions.url, formData, $httpOptions);
+  asyncFileSave(file) {
+    return this.AsyncFileSaver.save(this.name, file, this.httpOptions);
   }
 
   asyncFileRead(file) {
-    const reader = new FileReader();
-    const deferred = this.$q.defer();
-
-    // When the reader finishes loading resolve the promise
-    reader.onload = (event) => {
-      deferred.resolve(event.target.result);
-    };
-    reader.onerror = (event) => {
-      deferred.reject(event);
-    };
-
-    // Load the file
-    reader.readAsDataURL(file);
-    return deferred.promise;
+    return this.AsyncFileReader.read(file);
   }
 
   addDragHandlers($scope, $element) {
@@ -220,24 +197,6 @@ function triggerHandler(method, argument) {
   }
 }
 
-
-function prepareHttpOptions($httpOptions) {
-  if (!$httpOptions.url) {
-    throw new Error('You must supply a URL to post image data asynchronously');
-  }
-  if (!$httpOptions.headers) {
-    $httpOptions.headers = {};
-  }
-  if ($httpOptions.method) {
-    delete $httpOptions.method;
-  }
-
-  $httpOptions.headers['Content-Type'] = undefined;
-  $httpOptions.transformRequest = angular.identity;
-
-  return $httpOptions;
-}
-
 function isSizeValid(file, maxSize) {
   return !(angular.isNumber(maxSize) && file.size > maxSize);
 }
@@ -251,7 +210,6 @@ function isTypeValid(file, accept) {
 */
 
 function showDataImage(dataUrl, $ctrl) {
-  $ctrl.setNgModel(dataUrl);
   // Only set isImage at this point to avoid trying to show another file type
   $ctrl.isImage = $ctrl.isImage_instant;
   if ($ctrl.isImage) {
@@ -259,9 +217,22 @@ function showDataImage(dataUrl, $ctrl) {
   }
 }
 
-function asyncSuccess(response, $ctrl) {
+function asyncSuccess(apiResponse, dataUrl, $ctrl) {
   // Start changing process indicator immediately
   $ctrl.processingState = 1;
+
+  if ($ctrl.httpOptions &&
+      $ctrl.httpOptions.idProperty &&
+      apiResponse &&
+      apiResponse.data &&
+      apiResponse.data[$ctrl.httpOptions.idProperty]) {
+    const imageId = apiResponse.data[$ctrl.httpOptions.idProperty];
+    $ctrl.setNgModel(imageId);
+  } else {
+    $ctrl.setNgModel(dataUrl);
+  }
+
+  showDataImage(dataUrl, $ctrl);
 
   if ($ctrl.ngChange) {
     $ctrl.ngChange();
@@ -275,11 +246,11 @@ function asyncSuccess(response, $ctrl) {
 
   // Allow a small amount of extra time before notifying external handlers
   $ctrl.$timeout(() => {
-    triggerHandler($ctrl.onSuccess, response);
+    triggerHandler($ctrl.onSuccess, dataUrl);
     $ctrl.isDone = true;
   }, 3800);
 
-  return response;
+  return dataUrl;
 }
 
 function asyncFailure(error, $ctrl) {
@@ -304,11 +275,12 @@ function asyncFailure(error, $ctrl) {
 UploadController.$inject = [
   '$timeout',
   '$element',
-  '$http',
   '$scope',
   '$transclude',
   '$q',
-  '$attrs'
+  '$attrs',
+  'AsyncFileReader',
+  'AsyncFileSaver'
 ];
 
 export default UploadController;

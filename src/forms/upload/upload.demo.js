@@ -1,6 +1,27 @@
 import angular from 'angular';
 import template from './upload.demo.html';
 
+// Mock the file saver for the purposes of the demo.
+class AsyncFileSaverMock {
+  constructor($q) {
+    this.$q = $q;
+  }
+
+  save() {
+    return this.$q.resolve({
+      data: {
+        id: 1234
+      }
+    });
+  }
+}
+
+AsyncFileSaverMock.$inject = ['$q'];
+
+angular
+  .module('tw.styleguide.forms.upload')
+  .service('AsyncFileSaver', AsyncFileSaverMock);
+
 export default angular
   .module('tw.styleguide.demo.forms.upload', [])
   .component('twUploadDocs', {
