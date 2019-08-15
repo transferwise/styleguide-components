@@ -13,13 +13,9 @@ class AsyncFileSaver {
 
     const $httpOptions = prepareHttpOptions(httpOptions);
 
-    const method = $httpOptions.method ? $httpOptions.method : 'POST';
     delete $httpOptions.method;
 
     // For testing
-    if (method === 'GET') {
-      return this.$http.get($httpOptions.url, $httpOptions);
-    }
     return this.$http.post($httpOptions.url, formData, $httpOptions);
   }
 }
@@ -35,6 +31,8 @@ function prepareHttpOptions($inputOptions) {
     $httpOptions.headers = {};
   }
 
+  // Content-Type = undefined allows the browser to choose the right type
+  // https://stackoverflow.com/questions/41607656/purpose-of-content-type-undefined-in-angularjs-fileupload
   $httpOptions.headers['Content-Type'] = undefined;
   $httpOptions.transformRequest = angular.identity;
 
