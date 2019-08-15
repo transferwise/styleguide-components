@@ -4,8 +4,8 @@ import angular from 'angular';
 
 import './polyfill';
 
-import Validation from './validation/';
-import Services from './services/';
+import Validation from './validation';
+import Services from './services';
 
 export default angular.module('tw.form-validation', [
   Validation,

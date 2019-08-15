@@ -4,9 +4,9 @@ import angular from 'angular';
 
 import './polyfill';
 
-import Forms from './forms/';
-import Loading from './loading/';
-import Services from './services/';
+import Forms from './forms';
+import Loading from './loading';
+import Services from './services';
 
 export default angular.module('tw.form-components', [
   Forms,

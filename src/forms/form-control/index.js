@@ -1,9 +1,9 @@
 import angular from 'angular';
-import Select from '../select/';
-import Radio from '../radio/';
-import Checkbox from '../checkbox/';
-import DateControl from '../date/';
-import Upload from '../upload/';
+import Select from '../select';
+import Radio from '../radio';
+import Checkbox from '../checkbox';
+import DateControl from '../date';
+import Upload from '../upload';
 
 import FormControl from './form-control.component.js';
 
