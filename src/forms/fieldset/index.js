@@ -1,7 +1,7 @@
 import angular from 'angular';
-import Field from '../field/';
+import Field from '../field';
 import Fieldset from './fieldset.component.js';
-import RequirementsService from '../../services/requirements/';
+import RequirementsService from '../../services/requirements';
 
 export default angular
   .module('tw.styleguide.forms.fieldset', [

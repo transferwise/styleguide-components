@@ -2,15 +2,15 @@ import angular from 'angular';
 
 import './polyfill';
 
-import Forms from './forms/';
-import Validation from './validation/';
-import Formatting from './formatting/';
-import Services from './services/';
+import Forms from './forms';
+import Validation from './validation';
+import Formatting from './formatting';
+import Services from './services';
 
-import Help from './help/';
-import Layout from './layout/';
-import Loading from './loading/';
-import Navigation from './navigation/';
+import Help from './help';
+import Layout from './layout';
+import Loading from './loading';
+import Navigation from './navigation';
 
 // DEPRECATED This is required to support old usages of the sub modules when
 // importing the full JS library.

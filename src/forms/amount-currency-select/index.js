@@ -1,7 +1,7 @@
 import angular from 'angular';
-import Select from '../select/';
+import Select from '../select';
 import AmountCurrencySelect from './amount-currency-select.component.js';
-import CurrencyService from '../../services/currency/';
+import CurrencyService from '../../services/currency';
 
 
 export default angular
