@@ -16,9 +16,9 @@ function RequirementsService($http) {
       alternative.properties = this.prepFields(alternative.properties || alternative.fields);
 
       // If we're still treating type as a special case, move it to a hidden value
-      if (alternative.type &&
-          alternative.type !== 'object' &&
-          !alternative.types) {
+      if (alternative.type
+          && alternative.type !== 'object'
+          && !alternative.types) {
         alternative.properties.type = {
           type: 'string',
           enum: [alternative.type],
@@ -290,12 +290,12 @@ function RequirementsService($http) {
 
     if (field.values) {
       // In some legacy arrays the first value is a placeholder, extract it.
-      if (field.values &&
-        field.values.length &&
-        field.values[0] &&
-        !field.values[0].value &&
-        field.values[0].label &&
-        !field.placeholder) {
+      if (field.values
+        && field.values.length
+        && field.values[0]
+        && !field.values[0].value
+        && field.values[0].label
+        && !field.placeholder) {
         field.placeholder = field.values[0].label;
         field.values = field.values.slice(1);
       }
@@ -346,8 +346,8 @@ function RequirementsService($http) {
     }
 
     let postData = {};
-    if (field.valuesAsync.params &&
-      field.valuesAsync.params.length) {
+    if (field.valuesAsync.params
+      && field.valuesAsync.params.length) {
       postData = this.getParamValuesFromModel(model, field.valuesAsync.params);
     }
 

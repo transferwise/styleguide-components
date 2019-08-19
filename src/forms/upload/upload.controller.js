@@ -33,8 +33,8 @@ class UploadController {
       this.viewIcon = this.icon ? this.icon : 'upload';
     });
 
-    if ((this.processingText || this.successText || this.failureText) &&
-        (!this.processingText || !this.successText || !this.failureText)) {
+    if ((this.processingText || this.successText || this.failureText)
+        && (!this.processingText || !this.successText || !this.failureText)) {
       throw new Error('Supply all of processing, success, and failure text, or supply none.');
     }
 
@@ -221,11 +221,11 @@ function asyncSuccess(apiResponse, dataUrl, $ctrl) {
   // Start changing process indicator immediately
   $ctrl.processingState = 1;
 
-  if ($ctrl.httpOptions &&
-      $ctrl.httpOptions.idProperty &&
-      apiResponse &&
-      apiResponse.data &&
-      apiResponse.data[$ctrl.httpOptions.idProperty]) {
+  if ($ctrl.httpOptions
+      && $ctrl.httpOptions.idProperty
+      && apiResponse
+      && apiResponse.data
+      && apiResponse.data[$ctrl.httpOptions.idProperty]) {
     const imageId = apiResponse.data[$ctrl.httpOptions.idProperty];
     $ctrl.setNgModel(imageId);
   } else {

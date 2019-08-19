@@ -7,8 +7,8 @@ class FieldController {
     if (changes.initialField) {
       this.field = copyJSON(this.initialField);
 
-      this.control = this.field.control ? this.field.control :
-        this.RequirementsService.getControlType(changes.initialField.currentValue);
+      this.control = this.field.control ? this.field.control
+        : this.RequirementsService.getControlType(changes.initialField.currentValue);
 
       // TODO we should probably do this at fieldset level, so the model is available
       if (this.field.valuesAsync) {
@@ -58,10 +58,10 @@ class FieldController {
 
   // eslint-disable-next-line
   isFeedbackDetached(controlType) {
-    if (controlType === 'date' ||
-        controlType === 'file' ||
-        controlType === 'radio' ||
-        controlType === 'tel') {
+    if (controlType === 'date'
+        || controlType === 'file'
+        || controlType === 'radio'
+        || controlType === 'tel') {
       return true;
     }
     return false;

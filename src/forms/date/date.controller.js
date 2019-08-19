@@ -39,13 +39,12 @@ class DateController {
 
   applyDateModelIfValidOrThrowError() {
     if (validDate(this.ngModel)) {
-      this.dateModelType =
-        typeof this.ngModel === 'string' ? STRING_TYPE : OBJECT_TYPE;
+      this.dateModelType = typeof this.ngModel === 'string' ? STRING_TYPE : OBJECT_TYPE;
 
       this.explodeDateModel(this.ngModel);
     } else {
-      throw new Error('date model passed should either be instance of ' +
-        'Date or valid ISO8601 string');
+      throw new Error('date model passed should either be instance of '
+        + 'Date or valid ISO8601 string');
     }
   }
 
@@ -54,13 +53,15 @@ class DateController {
   }
 
   setDateRequired() {
-    this.dateRequired =
-      this.ngRequired !== undefined ? this.ngRequired : this.required !== undefined;
+    this.dateRequired = this.ngRequired !== undefined
+      ? this.ngRequired
+      : this.required !== undefined;
   }
 
   setDateDisabled() {
-    this.dateDisabled =
-      this.ngDisabled !== undefined ? this.ngDisabled : this.disabled !== undefined;
+    this.dateDisabled = this.ngDisabled !== undefined
+      ? this.ngDisabled
+      : this.disabled !== undefined;
   }
 
   setDateLocale() {
@@ -210,9 +211,9 @@ function isNumericString(value) {
 }
 
 function isExplodedDatePatternCorrect(year, month, day) {
-  return isNumber(year) &&
-    isNumber(day) &&
-    (isNumber(month) || isNumericString(month));
+  return isNumber(year)
+    && isNumber(day)
+    && (isNumber(month) || isNumericString(month));
 }
 
 function validDate(date) {

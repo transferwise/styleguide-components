@@ -65,18 +65,18 @@ class FormControlController {
       if (typeof this.ngMin === 'undefined') {
         return true;
       }
-      if (typeof value === 'number' &&
-        typeof this.ngMin === 'number') {
+      if (typeof value === 'number'
+        && typeof this.ngMin === 'number') {
         return value >= this.ngMin;
       }
-      if (this.type === 'date' &&
-        typeof value === 'string' &&
-        typeof this.ngMin === 'string') {
+      if (this.type === 'date'
+        && typeof value === 'string'
+        && typeof this.ngMin === 'string') {
         return value >= this.ngMin;
       }
-      if (this.type === 'date' &&
-        value instanceof Date &&
-        this.ngMin instanceof Date) {
+      if (this.type === 'date'
+        && value instanceof Date
+        && this.ngMin instanceof Date) {
         return value >= this.ngMin;
       }
       return true;
@@ -87,18 +87,18 @@ class FormControlController {
       if (typeof this.ngMax === 'undefined') {
         return true;
       }
-      if (typeof value === 'number' &&
-        typeof this.ngMax === 'number') {
+      if (typeof value === 'number'
+        && typeof this.ngMax === 'number') {
         return value <= this.ngMax;
       }
-      if (this.type === 'date' &&
-        typeof value === 'string' &&
-        typeof this.ngMax === 'string') {
+      if (this.type === 'date'
+        && typeof value === 'string'
+        && typeof this.ngMax === 'string') {
         return value <= this.ngMax;
       }
-      if (this.type === 'date' &&
-        value instanceof Date &&
-        this.ngMax instanceof Date) {
+      if (this.type === 'date'
+        && value instanceof Date
+        && this.ngMax instanceof Date) {
         return value <= this.ngMax;
       }
       return true;

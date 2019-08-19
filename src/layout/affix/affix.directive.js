@@ -19,12 +19,12 @@ function AffixLink(scope, element) {
   if (tag.getAttribute('data-offset-top') || tag.getAttribute('data-offset-bottom')) {
     options.offset = {};
   }
-  if (tag.getAttribute('data-offset-top') &&
-      Number(tag.getAttribute('data-offset-top'))) {
+  if (tag.getAttribute('data-offset-top')
+      && Number(tag.getAttribute('data-offset-top'))) {
     options.offset.top = Number(tag.getAttribute('data-offset-top'));
   }
-  if (tag.getAttribute('data-offset-bottom') &&
-      Number(tag.getAttribute('data-offset-bottom'))) {
+  if (tag.getAttribute('data-offset-bottom')
+      && Number(tag.getAttribute('data-offset-bottom'))) {
     options.offset.bottom = Number(tag.getAttribute('data-offset-bottom'));
   }
   element.affix(options);

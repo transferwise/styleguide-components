@@ -134,8 +134,7 @@ class SelectController {
       return [];
     }
 
-    const filterStringLower =
-      this.filterString && escapeRegExp(this.filterString.toLowerCase());
+    const filterStringLower = this.filterString && escapeRegExp(this.filterString.toLowerCase());
 
     const encounteredLabelsAndValues = Object.create(null);
 
@@ -163,13 +162,12 @@ class SelectController {
         }
       }
 
-      const shouldAddOption =
-        !isDuplicate &&
-        (!filterStringLower || // empty filterstring means pass everything.
-          labelMatches(option, filterStringLower) ||
-          noteMatches(option, filterStringLower) ||
-          secondaryMatches(option, filterStringLower) ||
-          searchableMatches(option, filterStringLower));
+      const shouldAddOption = !isDuplicate
+        && (!filterStringLower // empty filterstring means pass everything.
+          || labelMatches(option, filterStringLower)
+          || noteMatches(option, filterStringLower)
+          || secondaryMatches(option, filterStringLower)
+          || searchableMatches(option, filterStringLower));
 
       if (shouldAddOption) {
         // Too many options? Don't add anymore, indicate that there's more instead.
@@ -276,8 +274,7 @@ class SelectController {
       }
     }
     // If active is last and custom action, focus on it
-    const transcludedOption =
-      this.element.getElementsByClassName('tw-select-transcluded');
+    const transcludedOption = this.element.getElementsByClassName('tw-select-transcluded');
 
     if (transcludedOption.length) {
       transcludedOption[0].getElementsByTagName('a')[0].focus();
@@ -319,8 +316,8 @@ function addEventHandlers($ctrl, $element, $ngModel, options, $timeout) {
   const onFocusOut = () => {
     $timeout(() => {
       // If button isn't focused and dropdown not open, blur
-      if (button !== document.activeElement &&
-        !buttonGroup.classList.contains('open')) {
+      if (button !== document.activeElement
+        && !buttonGroup.classList.contains('open')) {
         element.dispatchEvent(new CustomEvent('blur'));
       }
     }, 150); // need timeout because using dropdown.js,
@@ -467,10 +464,10 @@ function searchAndSelect($ngModel, $ctrl, options, term) {
     if (found) {
       return;
     }
-    if (containsSearch(option.label, searchTerm) ||
-      containsSearch(option.note, searchTerm) ||
-      containsSearch(option.secondary, searchTerm) ||
-      containsSearch(option.searchable, searchTerm)) {
+    if (containsSearch(option.label, searchTerm)
+      || containsSearch(option.note, searchTerm)
+      || containsSearch(option.secondary, searchTerm)
+      || containsSearch(option.searchable, searchTerm)) {
       selectOption($ngModel, $ctrl, option);
       found = true;
     }

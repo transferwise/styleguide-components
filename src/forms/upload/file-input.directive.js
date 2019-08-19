@@ -18,8 +18,8 @@ class FileInputController {
   constructor($element) {
     const element = $element[0];
     element.addEventListener('change', () => {
-      if (this.onUserInput &&
-        typeof this.onUserInput === 'function') {
+      if (this.onUserInput
+        && typeof this.onUserInput === 'function') {
         this.onUserInput();
       }
     });
