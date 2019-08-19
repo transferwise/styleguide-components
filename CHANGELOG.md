@@ -1,3 +1,7 @@
+# v3.10.2
+## Enable eslint operator-linebrea rule
+Fix violations
+
 # v3.10.1
 ## Enable eslint no-useless-path-segments rule
 Fix violations
