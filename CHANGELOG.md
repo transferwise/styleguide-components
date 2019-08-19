@@ -1,5 +1,5 @@
 # v3.10.2
-## Enable eslint operator-linebrea rule
+## Enable eslint operator-linebreak rule
 Fix violations
 
 # v3.10.1
