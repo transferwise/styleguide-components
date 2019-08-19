@@ -38,8 +38,7 @@ class TelephoneController {
 
     // Once loaded add a parser to remove special characters from suffix
     this.$timeout(() => {
-      this.suffixModelController =
-        this.$element.find('input[type=tel]').controller('ngModel');
+      this.suffixModelController = this.$element.find('input[type=tel]').controller('ngModel');
       if (this.suffixModelController && this.suffixModelController.$parsers) {
         this.suffixModelController.$parsers
           .unshift(viewValue => viewValue.replace(this.charactersToRemove, ''));

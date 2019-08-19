@@ -67,9 +67,9 @@ class RequirementsFormController {
     this.tabs = this.requirements.map(requirement => requirement.title);
 
     // If activeIndex is invalid, correct it
-    if ((!this.activeIndex ||
-      (this.activeIndex && !this.requirements[this.activeIndex])) &&
-      this.requirements.length > 0
+    if ((!this.activeIndex
+      || (this.activeIndex && !this.requirements[this.activeIndex]))
+      && this.requirements.length > 0
     ) {
       this.activeIndex = 0;
     }
@@ -83,18 +83,19 @@ class RequirementsFormController {
 }
 
 function cleanRequirementsModel(model, oldRequirements, newRequirements) {
-  if (!oldRequirements ||
-    !newRequirements ||
-    !oldRequirements.properties ||
-    !newRequirements.properties) {
+  if (!oldRequirements
+    || !newRequirements
+    || !oldRequirements.properties
+    || !newRequirements.properties) {
     return;
   }
 
   const oldFieldNames = getFieldNamesFromRequirement(oldRequirements);
   const newFieldNames = getFieldNamesFromRequirement(newRequirements);
 
-  const obsoleteFieldNames =
-    oldFieldNames.filter(fieldName => newFieldNames.indexOf(fieldName) < 0);
+  const obsoleteFieldNames = oldFieldNames.filter(
+    fieldName => newFieldNames.indexOf(fieldName) < 0
+  );
 
   obsoleteFieldNames.forEach((fieldName) => {
     delete model[fieldName];

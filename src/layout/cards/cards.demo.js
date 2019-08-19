@@ -5,8 +5,8 @@ export default angular
   .module('tw.styleguide.demo.layout.cards', [])
   .component('twCardsDocs', {
     controller() {
-      this.imageUrl = 'https://static1.squarespace.com/static/' +
-        '58775efdd482e90f8535f34f/t/58d97b69ebbd1a5c0c1d9473/1498213976117/?format=750w';
+      this.imageUrl = 'https://static1.squarespace.com/static/'
+        + '58775efdd482e90f8535f34f/t/58d97b69ebbd1a5c0c1d9473/1498213976117/?format=750w';
       this.log = console.log; // eslint-disable-line
     },
     template

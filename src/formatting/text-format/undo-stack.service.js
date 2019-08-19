@@ -27,16 +27,14 @@ function UndoStack() {
   };
 
   this.undo = () => {
-    if (pointer >= 0 &&
-      typeof stack[pointer - 1] !== 'undefined') {
+    if (pointer >= 0 && typeof stack[pointer - 1] !== 'undefined') {
       pointer--;
     }
     return stack[pointer];
   };
 
   this.redo = () => {
-    if (pointer < stack.length &&
-      typeof stack[pointer + 1] !== 'undefined') {
+    if (pointer < stack.length && typeof stack[pointer + 1] !== 'undefined') {
       pointer++;
     }
     return stack[pointer];

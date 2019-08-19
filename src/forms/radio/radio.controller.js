@@ -17,8 +17,8 @@ class RadioController {
   }
 
   isChecked() {
-    return (this.ngValue && this.ngModel === this.ngValue) ||
-      this.value === this.ngModel;
+    return (this.ngValue && this.ngModel === this.ngValue)
+      || this.value === this.ngModel;
   }
 
   buttonClick() {

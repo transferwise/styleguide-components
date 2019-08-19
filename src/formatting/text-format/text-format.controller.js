@@ -18,13 +18,13 @@ class TextFormatController {
     this.element = $element[0];
 
     // We need the formatter for external model changes
-    this.$ngModel.$formatters.push(value => (this.pattern ?
-      TwTextFormatService.formatUsingPattern(value, this.pattern) :
-      value));
+    this.$ngModel.$formatters.push(value => (this.pattern
+      ? TwTextFormatService.formatUsingPattern(value, this.pattern)
+      : value));
 
-    this.$ngModel.$parsers.push(value => (this.pattern ?
-      TwTextFormatService.unformatUsingPattern(value, this.pattern) :
-      value));
+    this.$ngModel.$parsers.push(value => (this.pattern
+      ? TwTextFormatService.unformatUsingPattern(value, this.pattern)
+      : value));
 
     this.element.addEventListener('change', (event) => {
       this.onChange(event);
@@ -357,8 +357,8 @@ class TextFormatController {
       this.undoStack.add(this.element.value);
 
       // Also move cursor to the right of any separators
-      const newPosition = selectionStart +
-        this.TextFormatService.countSeparatorsAfterCursor(
+      const newPosition = selectionStart
+        + this.TextFormatService.countSeparatorsAfterCursor(
           this.pattern,
           selectionStart
         );
@@ -409,8 +409,7 @@ class TextFormatController {
 }
 
 function removeCharacters(value, first, last) {
-  return value.substring(0, first - 1) +
-    value.substring(last - 1, value.length);
+  return value.substring(0, first - 1) + value.substring(last - 1, value.length);
 }
 
 const keys = {

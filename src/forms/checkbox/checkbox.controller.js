@@ -15,10 +15,9 @@ class CheckboxController {
       'checkbox'
     );
 
-    this.label =
-      this.checkboxContainer ?
-        this.checkboxContainer.getElementsByTagName('label')[0] :
-        false;
+    this.label = this.checkboxContainer
+      ? this.checkboxContainer.getElementsByTagName('label')[0]
+      : false;
   }
 
   $onInit() {
@@ -26,9 +25,9 @@ class CheckboxController {
   }
 
   isChecked() {
-    return (this.ngTrueValue && this.ngTrueValue === this.ngModel) ||
-      (!this.ngTrueValue && this.ngModel) ||
-      false;
+    return (this.ngTrueValue && this.ngTrueValue === this.ngModel)
+      || (!this.ngTrueValue && this.ngModel)
+      || false;
   }
 
   buttonClick(event) {

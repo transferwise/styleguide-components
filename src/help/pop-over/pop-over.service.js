@@ -66,10 +66,9 @@ class PopOverService {
       const clickedModalOverlay = event.target.classList.contains('popover-modal-cover');
       const popoverIsVisible = !popover.classList.contains('scale-down');
 
-      const closeModalCondition =
-        popoverIsVisible &&
-        (clickedOutsidePopover || clickedModalOverlay ||
-          (clickedInsidePopover && clickedPopoverClose));
+      const closeModalCondition = popoverIsVisible
+        && (clickedOutsidePopover || clickedModalOverlay
+          || (clickedInsidePopover && clickedPopoverClose));
 
       if (closeModalCondition) {
         this.hidePopover(config);
@@ -301,11 +300,11 @@ function checkPopoverPlacement(popover, config) {
   const elementOffsetDimensions = getOffsetDimensions(node);
   const popoverOffsetDimensions = getOffsetDimensions(popover);
 
-  const popoverOffsetWidth = elementOffset.offsetX +
-    elementOffsetDimensions.offsetWidth + spacing +
-    popoverOffsetDimensions.offsetWidth;
-  const popoverLeftOffset = elementOffset.offsetX -
-    (popoverOffsetDimensions.offsetWidth + spacing);
+  const popoverOffsetWidth = elementOffset.offsetX
+    + elementOffsetDimensions.offsetWidth + spacing
+    + popoverOffsetDimensions.offsetWidth;
+  const popoverLeftOffset = elementOffset.offsetX
+    - (popoverOffsetDimensions.offsetWidth + spacing);
 
   const overflowsRight = popoverOffsetWidth > viewportClientDimensions.clientWidth;
   const overflowsLeft = popoverLeftOffset < 0;
@@ -374,11 +373,11 @@ function getPopoverCoordinates(popover, config, placement) {
   const popoverArrowMarginTop = getNumericValue('margin-top', popoverArrowStyles);
 
   if (placement === 'top') {
-    const popoverOffsetX = (elementOffset.offsetX -
-      (popoverOffsetDimensions.offsetWidth / 2)) +
-      (elementOffsetDimensions.offsetWidth / 2);
-    const popoverOffsetY = elementOffset.offsetY -
-      popoverOffsetDimensions.offsetHeight - spacing;
+    const popoverOffsetX = (elementOffset.offsetX
+      - (popoverOffsetDimensions.offsetWidth / 2))
+      + (elementOffsetDimensions.offsetWidth / 2);
+    const popoverOffsetY = elementOffset.offsetY
+      - popoverOffsetDimensions.offsetHeight - spacing;
 
     popoverOffsets = {
       offsetX: popoverOffsetX,
@@ -387,12 +386,12 @@ function getPopoverCoordinates(popover, config, placement) {
   }
 
   if (placement === 'top-right') {
-    const popoverOffsetX = ((elementOffset.offsetX +
-      (elementOffsetDimensions.offsetWidth / 2)) -
-      popoverArrowLeftOffset
+    const popoverOffsetX = ((elementOffset.offsetX
+      + (elementOffsetDimensions.offsetWidth / 2))
+      - popoverArrowLeftOffset
     );
-    const popoverOffsetY = elementOffset.offsetY -
-      popoverOffsetDimensions.offsetHeight - spacing;
+    const popoverOffsetY = elementOffset.offsetY
+      - popoverOffsetDimensions.offsetHeight - spacing;
 
     popoverOffsets = {
       offsetX: popoverOffsetX,
@@ -401,13 +400,13 @@ function getPopoverCoordinates(popover, config, placement) {
   }
 
   if (placement === 'top-left') {
-    const popoverOffsetX = ((elementOffset.offsetX -
-      popoverOffsetDimensions.offsetWidth) +
-      ((elementOffsetDimensions.offsetWidth / 2) +
-      popoverArrowRightOffset)
+    const popoverOffsetX = ((elementOffset.offsetX
+      - popoverOffsetDimensions.offsetWidth)
+      + ((elementOffsetDimensions.offsetWidth / 2)
+      + popoverArrowRightOffset)
     );
-    const popoverOffsetY = elementOffset.offsetY -
-      popoverOffsetDimensions.offsetHeight - spacing;
+    const popoverOffsetY = elementOffset.offsetY
+      - popoverOffsetDimensions.offsetHeight - spacing;
 
     popoverOffsets = {
       offsetX: popoverOffsetX,
@@ -416,13 +415,12 @@ function getPopoverCoordinates(popover, config, placement) {
   }
 
   if (placement === 'right-top' || placement === 'right' || placement === 'right-bottom') {
-    const popoverOffsetX = elementOffset.offsetX +
-      elementOffsetDimensions.offsetWidth + spacing;
-    const popoverOffsetY =
-      (elementOffset.offsetY -
-      (popoverArrowTopOffset + popoverArrowMarginTop +
-        (popoverArrowHeight / 2))) +
-      (elementOffsetDimensions.offsetHeight / 2);
+    const popoverOffsetX = elementOffset.offsetX
+      + elementOffsetDimensions.offsetWidth + spacing;
+    const popoverOffsetY = (elementOffset.offsetY
+      - (popoverArrowTopOffset + popoverArrowMarginTop
+        + (popoverArrowHeight / 2)))
+      + (elementOffsetDimensions.offsetHeight / 2);
 
     popoverOffsets = {
       offsetX: popoverOffsetX,
@@ -431,11 +429,11 @@ function getPopoverCoordinates(popover, config, placement) {
   }
 
   if (placement === 'bottom') {
-    const popoverOffsetX = (elementOffset.offsetX -
-      (popoverOffsetDimensions.offsetWidth / 2)) +
-      (elementOffsetDimensions.offsetWidth / 2);
-    const popoverOffsetY = elementOffset.offsetY +
-      elementOffsetDimensions.offsetHeight + spacing;
+    const popoverOffsetX = (elementOffset.offsetX
+      - (popoverOffsetDimensions.offsetWidth / 2))
+      + (elementOffsetDimensions.offsetWidth / 2);
+    const popoverOffsetY = elementOffset.offsetY
+      + elementOffsetDimensions.offsetHeight + spacing;
 
     popoverOffsets = {
       offsetX: popoverOffsetX,
@@ -444,12 +442,12 @@ function getPopoverCoordinates(popover, config, placement) {
   }
 
   if (placement === 'bottom-right') {
-    const popoverOffsetX = ((elementOffset.offsetX +
-      (elementOffsetDimensions.offsetWidth / 2)) -
-      popoverArrowLeftOffset
+    const popoverOffsetX = ((elementOffset.offsetX
+      + (elementOffsetDimensions.offsetWidth / 2))
+      - popoverArrowLeftOffset
     );
-    const popoverOffsetY = elementOffset.offsetY +
-      elementOffsetDimensions.offsetHeight + spacing;
+    const popoverOffsetY = elementOffset.offsetY
+      + elementOffsetDimensions.offsetHeight + spacing;
 
     popoverOffsets = {
       offsetX: popoverOffsetX,
@@ -458,13 +456,13 @@ function getPopoverCoordinates(popover, config, placement) {
   }
 
   if (placement === 'bottom-left') {
-    const popoverOffsetX = ((elementOffset.offsetX -
-      popoverOffsetDimensions.offsetWidth) +
-      ((elementOffsetDimensions.offsetWidth / 2) +
-      popoverArrowRightOffset)
+    const popoverOffsetX = ((elementOffset.offsetX
+      - popoverOffsetDimensions.offsetWidth)
+      + ((elementOffsetDimensions.offsetWidth / 2)
+      + popoverArrowRightOffset)
     );
-    const popoverOffsetY = elementOffset.offsetY +
-      elementOffsetDimensions.offsetHeight + spacing;
+    const popoverOffsetY = elementOffset.offsetY
+      + elementOffsetDimensions.offsetHeight + spacing;
 
     popoverOffsets = {
       offsetX: popoverOffsetX,
@@ -473,13 +471,12 @@ function getPopoverCoordinates(popover, config, placement) {
   }
 
   if (placement === 'left-top' || placement === 'left' || placement === 'left-bottom') {
-    const popoverOffsetX = elementOffset.offsetX -
-      popoverOffsetDimensions.offsetWidth - spacing;
-    const popoverOffsetY =
-      (elementOffset.offsetY -
-      (popoverArrowTopOffset + popoverArrowMarginTop +
-        (popoverArrowHeight / 2))) +
-      (elementOffsetDimensions.offsetHeight / 2);
+    const popoverOffsetX = elementOffset.offsetX
+      - popoverOffsetDimensions.offsetWidth - spacing;
+    const popoverOffsetY = (elementOffset.offsetY
+      - (popoverArrowTopOffset + popoverArrowMarginTop
+        + (popoverArrowHeight / 2)))
+      + (elementOffsetDimensions.offsetHeight / 2);
 
     popoverOffsets = {
       offsetX: popoverOffsetX,

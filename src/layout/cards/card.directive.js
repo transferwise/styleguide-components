@@ -45,9 +45,9 @@ function CardLink($scope) {
     $ctrl.empty = false;
   }
 
-  if ($ctrl.open === true &&
-    $ctrl.empty === false &&
-    $ctrl.getExpandedIndex() === -1) { // only takes first pre-expanded card
+  if ($ctrl.open === true
+    && $ctrl.empty === false
+    && $ctrl.getExpandedIndex() === -1) { // only takes first pre-expanded card
     $ctrl.updateExpandedIndex($ctrl.index);
   } else {
     $ctrl.open = false;

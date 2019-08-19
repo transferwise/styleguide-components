@@ -26,8 +26,8 @@ class DateLookupController {
     const onFocusOut = () => {
       $timeout(() => {
         // If button isn't focused and dropdown not open, then blur
-        if (button !== document.activeElement &&
-          !buttonGroup.classList.contains('open')) {
+        if (button !== document.activeElement
+          && !buttonGroup.classList.contains('open')) {
           if (this.formGroup) {
             this.formGroup.classList.remove('focus');
           }
@@ -143,22 +143,22 @@ class DateLookupController {
   }
 
   isCurrentlySelected(day, month, year) {
-    return day === this.selectedDate &&
-      month === this.selectedMonth &&
-      year === this.selectedYear;
+    return day === this.selectedDate
+      && month === this.selectedMonth
+      && year === this.selectedYear;
   }
 
   isDayDisabled(day, month, year) {
-    return this.isYearDisabled(year) ||
-      this.isMonthDisabled(month, year) ||
-      (year === this.minYear && month === this.minMonth && day < this.minDay) ||
-      (year === this.maxYear && month === this.maxMonth && day > this.maxDay);
+    return this.isYearDisabled(year)
+      || this.isMonthDisabled(month, year)
+      || (year === this.minYear && month === this.minMonth && day < this.minDay)
+      || (year === this.maxYear && month === this.maxMonth && day > this.maxDay);
   }
 
   isMonthDisabled(month, year) {
-    return this.isYearDisabled(year) ||
-      (year === this.minYear && month < this.minMonth) ||
-      (year === this.maxYear && month > this.maxMonth);
+    return this.isYearDisabled(year)
+      || (year === this.minYear && month < this.minMonth)
+      || (year === this.maxYear && month > this.maxMonth);
   }
 
   isYearDisabled(year) {

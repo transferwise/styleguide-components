@@ -18,8 +18,8 @@ class Controller {
   }
 
   getValidationMessages() {
-    return (this.schema && this.schema.validationMessages) ||
-      (this.translations && this.translations.validation) || null;
+    return (this.schema && this.schema.validationMessages)
+      || (this.translations && this.translations.validation) || null;
   }
 }
 

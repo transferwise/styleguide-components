@@ -109,8 +109,7 @@ function DateService() {
     const timeSection = 'T[0-9]{2}:[0-9]{2}:[0-9]{2}';
     const millisecondSection = '(.[0-9]{3})?';
     const zoneSection = '(Z|[+,-][0-9]{2}(:[0-9]{2})?)';
-    const regex =
-      new RegExp(`^${dateSection}(${timeSection}${millisecondSection}${zoneSection})?$`);
+    const regex = new RegExp(`^${dateSection}(${timeSection}${millisecondSection}${zoneSection})?$`);
     return regex.test(isoDate);
   };
 
@@ -118,8 +117,18 @@ function DateService() {
     if (!this.isIsoStringValid(isoDate)) {
       return null;
     }
-    const [year, month, day, hours, minutes, seconds, hoursOffset, minutesOffset] =
-      this.getDatePartsFromIso(isoDate);
+
+    const [
+      year,
+      month,
+      day,
+      hours,
+      minutes,
+      seconds,
+      hoursOffset,
+      minutesOffset
+    ] = this.getDatePartsFromIso(isoDate);
+
     return this.getUTCDateFromParts(
       year, month, day,
       hours + hoursOffset, minutes + minutesOffset, seconds
@@ -209,9 +218,9 @@ function DateService() {
   function getDefaultMonthName(month, locale, format) {
     const language = getLanguageFromLocale(locale);
 
-    if (language &&
-      DEFAULT_MONTH_NAMES_BY_LANGUAGE[language] &&
-      (format !== 'short' || language === 'ja')) {
+    if (language
+      && DEFAULT_MONTH_NAMES_BY_LANGUAGE[language]
+      && (format !== 'short' || language === 'ja')) {
       return DEFAULT_MONTH_NAMES_BY_LANGUAGE[language][month];
     }
 
