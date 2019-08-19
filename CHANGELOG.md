@@ -1,6 +1,6 @@
 # v3.10.2
 ## Enable eslint operator-linebreak rule
-Fix violations
+Fix violations.
 
 # v3.10.1
 ## Enable eslint no-useless-path-segments rule
