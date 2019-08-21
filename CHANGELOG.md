@@ -1,3 +1,8 @@
+# v3.10.3
+## Ensure components include their dependent modules
+Tests now only instantiate their own module, rather than the full library.
+Switch to using angular.mock.inject and angular.mock.module rather than globals.
+
 # v3.10.2
 ## Enable eslint operator-linebreak rule
 Fix violations.
