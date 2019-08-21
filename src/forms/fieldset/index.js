@@ -1,6 +1,6 @@
 import angular from 'angular';
+import Fieldset from './fieldset.component';
 import Field from '../field';
-import Fieldset from './fieldset.component.js';
 import RequirementsService from '../../services/requirements';
 
 export default angular

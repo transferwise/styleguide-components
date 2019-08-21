@@ -12,8 +12,7 @@ describe('Given a component for rendering any generic schema', function() {
     childComponent;
 
   beforeEach(function() {
-    module('tw.styleguide-components');
-    module('tw.json-schema');
+    angular.mock.module('tw.json-schema.generic');
 
     oneOfSchema = getMockComponent('oneOfSchema');
     allOfSchema = getMockComponent('allOfSchema');
@@ -27,7 +26,7 @@ describe('Given a component for rendering any generic schema', function() {
     angular.mock.module('tw.json-schema.array', arraySchema);
     angular.mock.module('tw.json-schema.basic-type', basicTypeSchema);
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       $compile = $injector.get('$compile');
       $scope = $injector.get('$rootScope').$new();
     })

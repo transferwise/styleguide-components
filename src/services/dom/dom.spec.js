@@ -12,9 +12,9 @@ describe('DomService', function() {
     $compile;
 
   beforeEach(function() {
-    module('tw.styleguide-components');
+    angular.mock.module('tw.styleguide.services.dom');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       dom = $injector.get('TwDomService');
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');

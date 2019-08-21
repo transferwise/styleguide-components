@@ -4,10 +4,9 @@ describe('Given a library for validating json schema models', function() {
   var schema, isValidSchema;
 
   beforeEach(function() {
-    module('tw.styleguide-components');
-    module('tw.json-schema');
+    angular.mock.module('tw.json-schema.validation');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       var SchemaValidation = $injector.get('SchemaValidation');
       isValidSchema = SchemaValidation.isValidSchema;
     });

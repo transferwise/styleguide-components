@@ -7,13 +7,12 @@ describe('Given a component for rendering basic type schemas', function() {
     twField;
 
   beforeEach(function() {
-    module('tw.styleguide-components');
-    module('tw.json-schema');
+    angular.mock.module('tw.json-schema.basic-type');
 
     twField = getMockComponent('twField');
     angular.mock.module('tw.styleguide.forms.field', twField);
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       $compile = $injector.get('$compile');
       $scope = $injector.get('$rootScope').$new();
     });

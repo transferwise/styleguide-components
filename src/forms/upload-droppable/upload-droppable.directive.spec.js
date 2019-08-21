@@ -12,9 +12,9 @@ describe('Directive: TwUploadDroppable', function() {
   var FILTER_INPUT_SELECTOR = '.tw-select-filter';
 
   beforeEach(function() {
-    module('tw.styleguide.forms');
+    angular.mock.module('tw.styleguide.forms.upload-droppable');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
       $scope = $rootScope.$new();

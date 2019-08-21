@@ -21,11 +21,9 @@ describe('Radio', function() {
   var LABEL_SELECTOR = '.radio label';
 
   beforeEach(function() {
-    module('tw.styleguide.forms')
-    module('tw.styleguide.validation')
-    module('tw.styleguide.services')
+    angular.mock.module('tw.styleguide.forms.radio');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
     });

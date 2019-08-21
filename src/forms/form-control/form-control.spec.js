@@ -10,10 +10,9 @@ describe('FormControl', function() {
     input;
 
   beforeEach(function() {
-    module('tw.styleguide.forms');
-    module('tw.styleguide.services');
+    angular.mock.module('tw.styleguide.forms.form-control');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $scope = $rootScope.$new();
       $compile = $injector.get('$compile');

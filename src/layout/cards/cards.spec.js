@@ -7,9 +7,9 @@ describe('Directive: TwCards', function() {
     directiveElement;
 
   beforeEach(function() {
-    module('tw.styleguide.layout');
+    angular.mock.module('tw.styleguide.layout.cards');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
       $scope = $rootScope.$new();

@@ -8,9 +8,9 @@ describe('Given a telephone number component', function() {
   var NUMBER_SELECTOR = 'input[name=phoneNumber]';
 
   beforeEach(function() {
-    module('tw.styleguide.forms');
+    angular.mock.module('tw.styleguide.forms.telephone');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       var $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
       $timeout = $injector.get('$timeout');

@@ -8,11 +8,9 @@ describe('DateLookup, ', function() {
       TwDateService;
 
   beforeEach(function() {
-    module('tw.styleguide.forms.date-lookup');
-    module('tw.styleguide.services.date');
-    module('tw.styleguide.services.dom');
+    angular.mock.module('tw.styleguide.forms.date-lookup');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
       TwDateService = $injector.get('TwDateService');

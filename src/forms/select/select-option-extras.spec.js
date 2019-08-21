@@ -25,10 +25,9 @@ describe('Select', function() {
   var OPTION_DISABLED_SELECTOR = '.dropdown-menu .disabled';
 
   beforeEach(function() {
-    module('tw.styleguide.forms');
-    module('tw.styleguide.services');
+    angular.mock.module('tw.styleguide.forms.select');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
       $scope = $rootScope.$new();

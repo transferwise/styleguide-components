@@ -9,9 +9,9 @@ describe('DateFormat filter, ', function() {
       DateService;
 
   beforeEach(function() {
-    module('tw.styleguide-components');
+    angular.mock.module('tw.styleguide.formatting.date');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
       DateService = $injector.get('TwDateService');

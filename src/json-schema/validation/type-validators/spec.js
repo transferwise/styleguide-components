@@ -4,10 +4,9 @@ describe('Given a library for validating data types', function() {
   var schema, typeValidators;
 
   beforeEach(function() {
-    module('tw.styleguide-components');
-    module('tw.json-schema');
+    angular.mock.module('tw.json-schema.validation');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       var SchemaValidation = $injector.get('SchemaValidation');
       typeValidators = SchemaValidation.typeValidators;
     });

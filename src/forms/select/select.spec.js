@@ -14,10 +14,9 @@ describe('Select', function() {
   var OPTION_LOAD_MORE_SELECTOR = '.dropdown-menu .tw-select-load-more';
 
   beforeEach(function() {
-    module('tw.styleguide.forms');
-    module('tw.styleguide.services');
+    angular.mock.module('tw.styleguide.forms.select');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
       $scope = $rootScope.$new();

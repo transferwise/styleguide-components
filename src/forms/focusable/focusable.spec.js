@@ -10,10 +10,9 @@ describe('Focusable', function() {
   var FOCUSABLE_SELECTOR = '[tw-focusable]';
 
   beforeEach(function() {
-    module('tw.styleguide.forms');
-    module('tw.styleguide.services');
+    angular.mock.module('tw.styleguide.forms.focusable');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
     });

@@ -4,9 +4,9 @@ describe('TwDateService test', function() {
   var LocaleService;
 
   beforeEach(function() {
-    module('tw.styleguide-components');
+    angular.mock.module('tw.styleguide.services.locale');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       LocaleService = $injector.get('TwLocaleService');
     });
   });
