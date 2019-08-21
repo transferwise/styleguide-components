@@ -1,6 +1,6 @@
 'use strict';
 
-fdescribe('CurrencyInput', function() {
+describe('CurrencyInput', function() {
   var $compile,
     $rootScope,
     $scope,
