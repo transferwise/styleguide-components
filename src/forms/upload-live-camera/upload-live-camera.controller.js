@@ -79,73 +79,79 @@ class UploadLiveCameraController {
     video.pause();
 
     let isFullScreen = true;
-    if (screenfull.enabled) {
-      if (!screenfull.isFullscreen) {
-        try {
-          // TODO : broken, need to wait for promise return
-          screenfull.request(videoPreviewElement);
+
+    function tryAcquireFullScreen() {
+      if (screenfull.enabled) {
+        if (!screenfull.isFullscreen) {
+          screenfull.request(videoPreviewElement)
+            .then(() => this.$q.resolve(true))
+            .catch(() => this.$q.resolve(false));
+        }
+        return this.$q.resolve(true);
+      }
+      return this.$q.resolve(false);
+    }
+
+    tryAcquireFullScreen()
+      .then((response) => {
+        if (response) {
           isFullScreen = true;
           console.log('Acquired full screen.');
-        } catch (err) {
+        } else {
           isFullScreen = false;
-          console.error(`Failed to acquire full screen with error : ${err}.`);
+          console.error('Failed to acquire full screen.');
         }
-      }
-    } else {
-      // Pretty much only mobile safari does not support this
-      isFullScreen = false;
-      // Supported platforms https://caniuse.com/#feat=fullscreen
-      console.warn('Full Screen is not enabled');
-    }
 
-    function resolveScreenDimensions($ctrl) {
-      // TODO haoyuan : firefox is recognizing pixel's btm bar
-      console.log(`screen : ${window.screen.height} x ${window.screen.width}`);
-      console.log(`screen available : ${window.screen.availHeight} x ${window.screen.availWidth}`);
-      console.log(`screen inner : ${window.innerHeight} x ${window.innerWidth}`);
+        // After trying to acquire full screen, resolve video stream
+        function resolveScreenDimensions($ctrl) {
+          // TODO haoyuan : firefox is recognizing pixel's btm bar
+          console.log(`screen : ${window.screen.height} x ${window.screen.width}`);
+          console.log(`screen available : ${window.screen.availHeight} x ${window.screen.availWidth}`);
+          console.log(`screen inner : ${window.innerHeight} x ${window.innerWidth}`);
 
-      $ctrl.screenHeight = window.innerHeight;
-      $ctrl.screenWidth = window.innerWidth;
-    }
+          $ctrl.screenHeight = window.innerHeight;
+          $ctrl.screenWidth = window.innerWidth;
+        }
 
-    resolveScreenDimensions(this, isFullScreen);
-    console.log(`**screen resolved** : ${this.screenHeight} x ${this.screenWidth}`);
-
-    function postVideoStreamAcquisition($ctrl, stream) {
-      $ctrl.mediaStream = stream;
-
-      /*
-       This is done instead of just reassigning video stream everytime
-       to prevent screen from blinking excessively during switch
-        */
-      if (video.srcObject !== $ctrl.mediaStream) {
-        video.srcObject = $ctrl.mediaStream;
-      }
-
-      // Toggle controls
-      $ctrl.showVideoPreview = true;
-      $ctrl.showVideoInPreview = true;
-      $ctrl.showCaptureInPreview = false;
-
-      video.play();
-    }
-
-    if (!this.mediaStream) {
-      // TODO haoyuan: add compatible methods for different browsers
-      try {
-        // TODO : need await here
-        const stream = navigator.mediaDevices.getUserMedia(constraints);
-        postVideoStreamAcquisition(this, stream);
         resolveScreenDimensions(this, isFullScreen);
         console.log(`**screen resolved** : ${this.screenHeight} x ${this.screenWidth}`);
-      } catch (err) {
-        console.error(err);
-      }
-    } else {
-      postVideoStreamAcquisition(this, this.mediaStream);
-      resolveScreenDimensions(this, isFullScreen);
-      console.log(`**screen resolved** : ${this.screenHeight} x ${this.screenWidth}`);
-    }
+
+        function postVideoStreamAcquisition($ctrl, stream) {
+          $ctrl.mediaStream = stream;
+
+          /*
+           This is done instead of just reassigning video stream everytime
+           to prevent screen from blinking excessively during switch
+            */
+          if (video.srcObject !== $ctrl.mediaStream) {
+            video.srcObject = $ctrl.mediaStream;
+          }
+
+          // Toggle controls
+          $ctrl.showVideoPreview = true;
+          $ctrl.showVideoInPreview = true;
+          $ctrl.showCaptureInPreview = false;
+
+          video.play();
+        }
+
+        function tryAcquireMediaStream($ctrl) {
+          if (!$ctrl.stream) {
+            return navigator.mediaDevices.getUserMedia(constraints);
+          }
+          return this.$q.resolve($ctrl.stream);
+        }
+
+        tryAcquireMediaStream(this)
+          .then((stream) => {
+            postVideoStreamAcquisition(this, stream);
+            resolveScreenDimensions(this, isFullScreen);
+            console.log(`**screen resolved** : ${this.screenHeight} x ${this.screenWidth}`);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      });
   }
 
   closeVideoStream() {
