@@ -108,7 +108,7 @@ class UploadController {
   onDragEnter() {
     this.dragCounter++;
     if (this.dragCounter >= 1 && !this.ngDisabled) {
-      this.isDroppable = true;
+      this.isDroppable = !this.isCameraOnly; // do not enable dropping for camera only upload mode
     }
   }
 

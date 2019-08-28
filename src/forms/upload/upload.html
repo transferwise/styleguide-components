@@ -7,7 +7,8 @@
   'droppable-complete': $ctrl.isDone
 }">
   <div class="droppable-default-card" aria-hidden="{{$ctrl.isDone}}">
-    <div class="droppable-card-content">
+    <div ng-hide="$ctrl.showVideoPreview" class="droppable-card-content">
+      <!-- Display illustration as image or icon -->
       <div class="m-b-2">
         <img
           ng-show="$ctrl.helpImage"
@@ -16,11 +17,14 @@
           class="thumbnail text-xs-center" />
         <span ng-show="!$ctrl.helpImage" class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></span>
       </div>
+      <!-- helper texts -->
       <h4 class="m-b-1" ng-if="$ctrl.label || $ctrl.description">
         {{$ctrl.label || $ctrl.description}}
       </h4>
+      <!-- upload action -->
       <p class="m-b-2">{{$ctrl.placeholder || $ctrl.instructions}}</p>
-      <label class="btn btn-primary" ng-class="{'disabled': $ctrl.ngDisabled}">
+      <!-- regular upload -->
+      <label class="btn btn-primary" ng-if="!$ctrl.isCameraOnly" ng-class="{'disabled': $ctrl.ngDisabled}">
         <span ng-if="$ctrl.buttonText" ng-bind="$ctrl.buttonText"></span>
         <span ng-if="!$ctrl.buttonText" class="icon icon-upload m-r-0"></span>
         <input tw-file-input
@@ -33,29 +37,52 @@
           ng-model="$ctrl.inputFile" />
         <!-- ng-change="$ctrl.onManualUpload()" -->
       </label>
+      <!-- TODO : abstract this into a directive much like "input"-->
+      <!-- camera only upload -->
+      <label class="btn btn-primary" ng-click="$ctrl.onLiveCamFlowStart()" ng-if="$ctrl.isCameraOnly" ng-disabled="$ctrl.ngDisabled" ng-class="{'disabled': $ctrl.ngDisabled}">
+        <span class="icon icon-camera m-r-0"></span>
+      </label>
+    </div>
+
+    <!-- Video preview screen with the video itself and capture screen, should be full screen -->
+    <div id="video-preview" ng-show="$ctrl.showVideoPreview" class="w-100 h-100 fixed-top bg-dark">
+      <!-- TODO haoyuan: center and rotate camera overlay -->
+      <img id="overlay" ng-if="$ctrl.cameraOverlay" ng-show="$ctrl.showVideoInPreview" ng-src="{{$ctrl.cameraOverlay}}" alt="overlay" class="w-100 h-100 fixed-top opacity-overlay zindex-video-overlay"/>
+      <!-- TODO haoyuan: work with designer to figure out how this asset is going to be provided -->
+      <video id="video" ng-show="$ctrl.showVideoInPreview" ng-style="{height: $ctrl.videoHeight + '%'}" class="w-100 fixed-top zindex-video" playsinline></video>
+      <canvas id="display-canvas" ng-show="$ctrl.showCaptureInPreview" class="fixed zindex-video" ></canvas>
+      <canvas id="upload-canvas" ng-show="false" class="fixed" ></canvas>
+
+      <label class="fixed-bottom camera-ctrl-bar">
+        <span class="camera-ctrl-box-small">
+          <span class="camera-ctrl-btn-small camera-ctrl-btn-cancel icon icon-close" ng-if="$ctrl.showVideoInPreview" ng-click="$ctrl.onCancelBtnClick()"></span>
+          <span class="camera-ctrl-btn-small camera-ctrl-btn-cancel icon icon-close" ng-if="$ctrl.showCaptureInPreview" ng-click="$ctrl.onRecaptureBtnClick()"></span>
+        </span>
+        <span class="camera-ctrl-box-big">
+          <span class="camera-ctrl-btn-big" ng-if="$ctrl.showVideoInPreview" ng-click="!$ctrl.captureButtonDisabled && $ctrl.onCaptureBtnClick()">
+            <span class="camera-ctrl-btn-big-inner"></span>
+          </span>
+        </span>
+        <span class="camera-ctrl-box-small">
+          <span class="camera-ctrl-btn-small camera-ctrl-btn-confirm icon icon-check" ng-if="$ctrl.showCaptureInPreview" ng-click="$ctrl.onUploadBtnClick()"></span>
+        </span>
+      </label>
     </div>
   </div>
+
   <div class="droppable-processing-card droppable-card"
     aria-hidden="{{$ctrl.isDone}}">
     <div class="droppable-card-content">
       <h4 class="m-b-2">
-        <span ng-if="$ctrl.isProcessing && $ctrl.processingText"
-          class="upload-processing-message">
-          {{$ctrl.processingText}}
-        </span>
-        <span ng-if="$ctrl.isSuccess && $ctrl.successText"
-          class="upload-success-message">
-          {{$ctrl.successText}}
-        </span>
-        <span ng-if="$ctrl.isError && $ctrl.failureText"
-          class="upload-failure-message">
-          {{$ctrl.failureText}}
-        </span>
+        <span ng-if="$ctrl.isProcessing && $ctrl.processingText" class="upload-processing-message">{{$ctrl.processingText}}</span>
+        <span ng-if="$ctrl.isSuccess && $ctrl.successText" class="upload-success-message">{{$ctrl.successText}}</span>
+        <span ng-if="$ctrl.isError && $ctrl.failureText" class="upload-failure-message">{{$ctrl.failureText}}</span>
       </h4>
       <tw-process size="sm" state="$ctrl.processingState"
         ng-if="($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"></tw-process>
     </div>
   </div>
+
   <div class="droppable-complete-card droppable-card"
     aria-hidden="{{!$ctrl.isDone}}">
     <div class="droppable-card-content">
@@ -82,6 +109,7 @@
       <div ng-if="$ctrl.hasTranscluded" ng-transclude></div>
       <p class="m-t-2 m-b-0">
         <a href="" ng-click="$ctrl.clear()">
+          <!-- Draw a happy little cross in a happy little circle (X) -->
           <svg
             ng-if="!$ctrl.cancelText"
             viewBox="0 0 24 24"
@@ -98,6 +126,7 @@
       </p>
     </div>
   </div>
+
   <div class="droppable-dropping-card droppable-card">
     <div class="droppable-card-content">
       <h4 class="m-b-2">Drop file to start upload</h4>
