@@ -54,7 +54,7 @@ class UploadLiveCameraController {
   }
 
   // Acquire and attach video stream to video tag.
-  async onLiveCamFlowStart() {
+  onLiveCamFlowStart() {
     console.log('----- Live cam flow start -----');
     this.captureButtonDisabled = true;
 
@@ -82,7 +82,8 @@ class UploadLiveCameraController {
     if (screenfull.enabled) {
       if (!screenfull.isFullscreen) {
         try {
-          await screenfull.request(videoPreviewElement);
+          // TODO : broken, need to wait for promise return
+          screenfull.request(videoPreviewElement);
           isFullScreen = true;
           console.log('Acquired full screen.');
         } catch (err) {
@@ -132,7 +133,8 @@ class UploadLiveCameraController {
     if (!this.mediaStream) {
       // TODO haoyuan: add compatible methods for different browsers
       try {
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        // TODO : need await here
+        const stream = navigator.mediaDevices.getUserMedia(constraints);
         postVideoStreamAcquisition(this, stream);
         resolveScreenDimensions(this, isFullScreen);
         console.log(`**screen resolved** : ${this.screenHeight} x ${this.screenWidth}`);
@@ -300,8 +302,8 @@ function createVideoPlayCallback($ctrl) {
   return function videoPlayCallback() {
     function resolveVideoDimensions() {
       // Handle long portrait camera in a portrait screen leaving ugly side margins
-      if ($ctrl.screenHeight > $ctrl.screenWidth &&
-        $ctrl.videoResHeight / $ctrl.videoResWidth > $ctrl.screenHeight / $ctrl.screenWidth) {
+      if ($ctrl.screenHeight > $ctrl.screenWidth
+        && $ctrl.videoResHeight / $ctrl.videoResWidth > $ctrl.screenHeight / $ctrl.screenWidth) {
         console.log('Resolve video for narrow screen case');
         const videoResRatio = $ctrl.videoResHeight / $ctrl.videoResWidth;
         const screenResRatio = $ctrl.screenHeight / $ctrl.screenWidth;

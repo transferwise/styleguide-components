@@ -1,5 +1,5 @@
 <h4 id="upload">Upload</h4>
-<p><code>tw-upload</code> is a component for uploading a single file. It is
+<p><code>tw-upload</code> is a test123 component for uploading a single file. It is
   designed to be used multiple times when more than one file is required.</p>
 <ul>
   <li>Files can be saved immediately by passing in a set of <code>http-options</code>,
@@ -144,6 +144,15 @@
           class="btn btn-sm btn-default pull-xs-right"
           ng-click="$ctrl.makeFancy()">Make fancy</button>
       </h5>
+
+      <div class="form-group">
+        <div class="checkbox">
+          <label>
+            <tw-checkbox ng-model="$ctrl.isCameraOnly"></tw-checkbox>
+            Camera only upload?
+          </label>
+        </div>
+      </div>
 
       <div class="form-group" ng-init="$ctrl.name = 'file'">
         <label class="control-label">

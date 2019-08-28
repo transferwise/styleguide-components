@@ -36,7 +36,7 @@ const Upload = {
     // Camera only upload options
     isCameraOnly: '@', // true/false
     cameraOverlay: '@', // Optional
-    cameraFaceMode: '@', // environment/user
+    cameraFaceMode: '@' // environment/user
   }
 };
 
