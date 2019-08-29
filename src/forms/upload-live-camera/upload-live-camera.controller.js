@@ -45,8 +45,7 @@ class UploadLiveCameraController {
     }
 
     window.addEventListener('orientationchange', createOrientationChangeCallback(this), false);
-
-    const video = document.querySelector('#video-preview #video');
+    const video = this.$element[0].querySelector('#video-preview #video');
     video.addEventListener('play', createVideoPlayCallback(this));
 
     // TODO haoyuan : add change event listener to screenful,
@@ -74,8 +73,8 @@ class UploadLiveCameraController {
 
     // Display video component in full screen
     // This part of code cannot be in callback due to browser security requirement
-    const videoPreviewElement = document.querySelector('#video-preview');
-    const video = document.querySelector('#video-preview #video');
+    const videoPreviewElement = this.$element[0].querySelector('#video-preview');
+    const video = this.$element[0].querySelector('#video-preview #video');
     video.pause();
 
     let isFullScreen = true;
@@ -84,73 +83,69 @@ class UploadLiveCameraController {
       if (screenfull.enabled) {
         if (!screenfull.isFullscreen) {
           screenfull.request(videoPreviewElement)
-            .then(() => this.$q.resolve(true))
-            .catch(() => this.$q.resolve(false));
+            .then(() => true)
+            .catch(() => false);
         }
-        return this.$q.resolve(true);
+        return true;
       }
-      return this.$q.resolve(false);
+      return false;
     }
 
-    tryAcquireFullScreen()
-      .then((response) => {
-        if (response) {
-          isFullScreen = true;
-          console.log('Acquired full screen.');
-        } else {
-          isFullScreen = false;
-          console.error('Failed to acquire full screen.');
-        }
+    isFullScreen = tryAcquireFullScreen(this);
+    if (isFullScreen) {
+      console.log('Acquired full screen.');
+    } else {
+      console.error('Failed to acquire full screen.');
+    }
 
-        // After trying to acquire full screen, resolve video stream
-        function resolveScreenDimensions($ctrl) {
-          // TODO haoyuan : firefox is recognizing pixel's btm bar
-          console.log(`screen : ${window.screen.height} x ${window.screen.width}`);
-          console.log(`screen available : ${window.screen.availHeight} x ${window.screen.availWidth}`);
-          console.log(`screen inner : ${window.innerHeight} x ${window.innerWidth}`);
+    // After trying to acquire full screen, resolve video stream
+    function resolveScreenDimensions($ctrl) {
+      // TODO haoyuan : firefox is recognizing pixel's btm bar
+      console.log(`screen : ${window.screen.height} x ${window.screen.width}`);
+      console.log(`screen available : ${window.screen.availHeight} x ${window.screen.availWidth}`);
+      console.log(`screen inner : ${window.innerHeight} x ${window.innerWidth}`);
 
-          $ctrl.screenHeight = window.innerHeight;
-          $ctrl.screenWidth = window.innerWidth;
-        }
+      $ctrl.screenHeight = window.innerHeight;
+      $ctrl.screenWidth = window.innerWidth;
+    }
 
+    resolveScreenDimensions(this, isFullScreen);
+    console.log(`**screen resolved** : ${this.screenHeight} x ${this.screenWidth}`);
+
+    function postVideoStreamAcquisition($ctrl, stream) {
+      $ctrl.mediaStream = stream;
+
+      /*
+       This is done instead of just reassigning video stream everytime
+       to prevent screen from blinking excessively during switch
+        */
+      if (video.srcObject !== $ctrl.mediaStream) {
+        video.srcObject = $ctrl.mediaStream;
+      }
+
+      // Toggle controls
+      $ctrl.showVideoPreview = true;
+      $ctrl.showVideoInPreview = true;
+      $ctrl.showCaptureInPreview = false;
+
+      video.play();
+    }
+
+    function tryAcquireMediaStream($ctrl) {
+      if (!$ctrl.mediaStream) {
+        return navigator.mediaDevices.getUserMedia(constraints);
+      }
+      return $ctrl.$q.resolve($ctrl.mediaStream);
+    }
+
+    tryAcquireMediaStream(this)
+      .then((stream) => {
+        postVideoStreamAcquisition(this, stream);
         resolveScreenDimensions(this, isFullScreen);
         console.log(`**screen resolved** : ${this.screenHeight} x ${this.screenWidth}`);
-
-        function postVideoStreamAcquisition($ctrl, stream) {
-          $ctrl.mediaStream = stream;
-
-          /*
-           This is done instead of just reassigning video stream everytime
-           to prevent screen from blinking excessively during switch
-            */
-          if (video.srcObject !== $ctrl.mediaStream) {
-            video.srcObject = $ctrl.mediaStream;
-          }
-
-          // Toggle controls
-          $ctrl.showVideoPreview = true;
-          $ctrl.showVideoInPreview = true;
-          $ctrl.showCaptureInPreview = false;
-
-          video.play();
-        }
-
-        function tryAcquireMediaStream($ctrl) {
-          if (!$ctrl.stream) {
-            return navigator.mediaDevices.getUserMedia(constraints);
-          }
-          return this.$q.resolve($ctrl.stream);
-        }
-
-        tryAcquireMediaStream(this)
-          .then((stream) => {
-            postVideoStreamAcquisition(this, stream);
-            resolveScreenDimensions(this, isFullScreen);
-            console.log(`**screen resolved** : ${this.screenHeight} x ${this.screenWidth}`);
-          })
-          .catch((err) => {
-            console.error(err);
-          });
+      })
+      .catch((err) => {
+        console.error(err);
       });
   }
 
@@ -166,13 +161,13 @@ class UploadLiveCameraController {
     }
     this.showVideoPreview = false;
     this.closeVideoStream();
-    const video = document.querySelector('#video-preview #video');
+    const video = this.$element[0].querySelector('#video-preview #video');
     video.srcObject = null;
   }
 
   onCaptureBtnClick() {
-    const canvas = document.querySelector('#video-preview #display-canvas');
-    const video = document.querySelector('#video-preview #video');
+    const canvas = this.$element[0].querySelector('#video-preview #display-canvas');
+    const video = this.$element[0].querySelector('#video-preview #video');
     const resolved = resolveCanvasDimensions(
       this,
       this.screenHeight,
@@ -194,8 +189,8 @@ class UploadLiveCameraController {
   }
 
   onUploadBtnClick() {
-    const displayCanvas = document.querySelector('#video-preview #display-canvas');
-    const uploadCanvas = document.querySelector('#video-preview #upload-canvas');
+    const displayCanvas = this.$element[0].querySelector('#video-preview #display-canvas');
+    const uploadCanvas = this.$element[0].querySelector('#video-preview #upload-canvas');
     const resolved = resolveCanvasDimensions(
       this,
       this.screenHeight,
