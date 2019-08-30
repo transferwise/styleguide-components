@@ -1,26 +1,15 @@
-import angular from 'angular';
 import screenfull from 'screenfull'; // MIT@https://github.com/sindresorhus/screenfull.js
 
 class CameraOnlyUploadController {
   constructor(
-    $timeout,
     $element,
-    $http,
     $scope,
     $q,
     $attrs
   ) {
-    this.$timeout = $timeout;
     this.$element = $element;
-    this.$http = $http;
     this.$attrs = $attrs;
     this.$q = $q;
-
-    // First isImage updated only at select times, second updated instantly.
-    this.isImage = false;
-    this.isImageInstant = false;
-
-    this.isProcessing = false;
 
     // Video preview control
     this.showVideoPreview = false;
@@ -208,63 +197,6 @@ class CameraOnlyUploadController {
     uploadCanvas.toBlob(createUploadCallback(this), 'image/png', 1.0);
   }
 
-  doFileUpload(file) {
-    if (this.ngDisabled) {
-      return;
-    }
-
-    this.reset();
-
-    this.isImageInstant = (file.type && file.type.indexOf('image') > -1);
-    this.fileName = file.name;
-
-    this.isProcessing = true;
-    this.processingState = null;
-
-    triggerHandler(this.onStart, file);
-
-    console.log(`Uploading file of size ${file.size}`);
-
-    if (this.httpOptions) {
-      // Post file now
-      this.$q
-        .all([
-          this.asyncPost(file),
-          this.asyncFileRead(file)
-        ])
-        .then((response) => {
-          asyncSuccess(response[0], this);
-          return response;
-        })
-        .then((response) => {
-          showDataImage(response[1], this);
-          return response;
-        })
-        .catch(error => asyncFailure(error, this));
-    } else {
-      // Post on form submit
-      this.asyncFileRead(file)
-        .then(response => asyncSuccess(response, this))
-        .then(response => showDataImage(response, this))
-        .catch(error => asyncFailure(error, this));
-    }
-  }
-
-
-  clear() {
-    this.reset();
-    triggerHandler(this.onCancel);
-  }
-
-  reset() {
-    this.isProcessing = false;
-    this.isSuccess = false;
-    this.isError = false;
-    this.isDone = false;
-    // this.$element[0].querySelector('input').value = null;
-    this.setNgModel(null);
-  }
-
   setNgModel(value) {
     // If ngModel not assignable, we don't want to error.
     if (typeof this.$attrs.ngModel !== 'undefined') {
@@ -274,31 +206,6 @@ class CameraOnlyUploadController {
       }
       $ngModel.$setViewValue(value);
     }
-  }
-
-  asyncPost(file) {
-    const formData = new FormData();
-    formData.append(this.name, file);
-
-    const $httpOptions = prepareHttpOptions(angular.copy(this.httpOptions));
-    return this.$http.post($httpOptions.url, formData, $httpOptions);
-  }
-
-  asyncFileRead(file) {
-    const reader = new FileReader();
-    const deferred = this.$q.defer();
-
-    // When the reader finishes loading resolve the promise
-    reader.onload = (event) => {
-      deferred.resolve(event.target.result);
-    };
-    reader.onerror = (event) => {
-      deferred.reject(event);
-    };
-
-    // Load the file
-    reader.readAsDataURL(file);
-    return deferred.promise;
   }
 }
 
@@ -364,18 +271,11 @@ function createUploadCallback($ctrl) {
     $ctrl.showVideoPreview = false;
     $ctrl.onUserCaptureConfirmation({ file: blob });
     $ctrl.closeVideoStream();
-    // $ctrl.doFileUpload(blob); TODO haoyuan clean this up
   };
 }
 
 function hasGetUserMedia() {
   return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
-}
-
-function triggerHandler(method, argument) {
-  if (method && typeof method === 'function') {
-    method(argument);
-  }
 }
 
 /**
@@ -467,79 +367,8 @@ function resolveNormalCanvas(screenHeight, screenWidth, videoResHeight, videoRes
   };
 }
 
-function prepareHttpOptions($httpOptions) {
-  if (!$httpOptions.url) {
-    throw new Error('You must supply a URL to post image data asynchronously');
-  }
-  if (!$httpOptions.headers) {
-    $httpOptions.headers = {};
-  }
-  if ($httpOptions.method) {
-    delete $httpOptions.method;
-  }
-
-  $httpOptions.headers['Content-Type'] = undefined;
-  $httpOptions.transformRequest = angular.identity;
-
-  return $httpOptions;
-}
-
-function showDataImage(dataUrl, $ctrl) {
-  $ctrl.setNgModel(dataUrl);
-  // Only set isImage at this point to avoid trying to show another file type
-  $ctrl.isImage = $ctrl.isImageInstant;
-  if ($ctrl.isImage) {
-    $ctrl.image = dataUrl;
-  }
-}
-
-function asyncSuccess(response, $ctrl) {
-  // Start changing process indicator immediately
-  $ctrl.processingState = 1;
-
-  if ($ctrl.ngChange) {
-    $ctrl.ngChange();
-  }
-
-  // Wait before updating text
-  $ctrl.$timeout(() => {
-    $ctrl.isProcessing = false;
-    $ctrl.isSuccess = true;
-  }, 3000);
-
-  // Allow a small amount of extra time before notifying external handlers
-  $ctrl.$timeout(() => {
-    triggerHandler($ctrl.onSuccess, response);
-    $ctrl.isDone = true;
-  }, 3800);
-
-  return response;
-}
-
-function asyncFailure(error, $ctrl) {
-  console.error(error);
-  // Start changing process indicator immediately
-  $ctrl.processingState = -1;
-
-  // Wait before updating text
-  $ctrl.$timeout(() => {
-    $ctrl.isProcessing = false;
-    $ctrl.isError = true;
-  }, 3000);
-
-  // Allow a small amount of extra time before notifying external handlers
-  $ctrl.$timeout(() => {
-    triggerHandler($ctrl.onFailure, error);
-    $ctrl.isDone = true;
-  }, 4100); // 3500); TODO for some reason more time is needed
-
-  return error;
-}
-
 CameraOnlyUploadController.$inject = [
-  '$timeout',
   '$element',
-  '$http',
   '$scope',
   '$q',
   '$attrs'

@@ -9,27 +9,14 @@ const CameraOnlyUpload = {
     cameraOverlay: '@', // Optional
     cameraFaceMode: '@', // environment/user
 
-    // Work flow related text msgs
-    processingText: '@', // Text while uploading
-    successText: '@', // Text after upload is successful, shown quite briefly before preview
-    failureText: '@',
-    cancelText: '@', // Go back to re-upload after upload is done
-
     // Angular binding
-    ngDisabled: '<',
-    ngModel: '=',
-    ngChange: '&',
+    ngDisabled: '<', // TODO prolly not needed
+    ngModel: '=', // TODO prolly not needed
+    ngChange: '&', // TODO prolly not needed
 
-    // Custom events
-    onStart: '=',
-    onSuccess: '=',
-    onFailure: '=',
-    onCancel: '=',
+    name: '@', // TODO prolly not needed form name
 
-    name: '@', // form name
-
-    errorMessage: '@',
-    httpOptions: '<',
+    errorMessage: '@', // TODO prolly not needed
 
     onUserCaptureConfirmation: '&'
   }
