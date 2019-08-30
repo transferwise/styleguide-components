@@ -41,11 +41,17 @@ class UploadController {
     this.addDragHandlers($scope, $element);
   }
 
+  // Function binding for file upload by input tag
   onManualUpload() {
     const element = this.$element[0];
     const uploadInput = element.querySelector('.tw-droppable-input');
     const file = uploadInput.files[0];
 
+    this.onFileConfirmation(file);
+  }
+
+  // Function binding for file upload by live
+  onFileConfirmation(file) {
     if (!file) {
       throw new Error('Could not retrieve file');
     }
@@ -54,6 +60,8 @@ class UploadController {
   }
 
   fileDropped(file) {
+    console.log('In parent file drop');
+    console.log(file);
     if (this.ngDisabled) {
       return;
     }
@@ -133,7 +141,9 @@ class UploadController {
     this.isDone = false;
     this.isTooLarge = false;
     this.isWrongType = false;
-    this.$element[0].querySelector('input').value = null;
+    if (this.$element[0].querySelector('input')) {
+      this.$element[0].querySelector('input').value = null;
+    }
     this.setNgModel(null);
   }
 

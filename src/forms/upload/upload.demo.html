@@ -73,9 +73,8 @@
 
         http-options="$ctrl.httpOptions"
 
-        is-camera-only="{{$ctrl.isCameraOnly}}"
-      >
-      </tw-upload>
+        is-camera-only="$ctrl.isCameraOnly"
+      ></tw-upload>
       <tw-upload
         ng-if="$ctrl.customComplete"
         ng-model="$ctrl.model"
@@ -104,9 +103,8 @@
 
         http-options="$ctrl.httpOptions"
 
-        is-camera-only="{{$ctrl.isCameraOnly}}"
-      >
-        <h1>Custom completion card</h1>
+        is-camera-only="$ctrl.isCameraOnly">
+      <h1>Custom completion card</h1>
       </tw-upload>
     </div>
     <h5>Configuration</h5>
@@ -121,7 +119,8 @@
   cancel-text="{{$ctrl.cancelText}}"
   accept="{{$ctrl.accept}}"
   wrong-type-text="{{$ctrl.wrongTypeMessage}}"
-  max-size="{{$ctrl.maxSize}}"too-large-message="{{$ctrl.tooLargeMessage}}"
+  max-size="{{$ctrl.maxSize}}"
+  too-large-message="{{$ctrl.tooLargeMessage}}"
   processing-text="{{$ctrl.processingText}}"
   success-text="{{$ctrl.successText}}"
   failure-text="{{$ctrl.failureText}}"

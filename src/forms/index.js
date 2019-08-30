@@ -4,7 +4,6 @@ import Checkbox from './checkbox';
 import Radio from './radio';
 import Select from './select';
 import Upload from './upload';
-import UploadLiveCam from './upload-live-camera';
 import DateControl from './date';
 import DateLookup from './date-lookup';
 import CurrencyInput from './currency-input';
@@ -26,7 +25,6 @@ export default angular.module('tw.styleguide.forms', [
   Radio,
   Select,
   Upload,
-  UploadLiveCam,
   DateControl,
   DateLookup,
   CurrencyInput,

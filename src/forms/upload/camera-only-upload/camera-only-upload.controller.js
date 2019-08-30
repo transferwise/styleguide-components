@@ -1,7 +1,7 @@
 import angular from 'angular';
 import screenfull from 'screenfull'; // MIT@https://github.com/sindresorhus/screenfull.js
 
-class UploadLiveCameraController {
+class CameraOnlyUploadController {
   constructor(
     $timeout,
     $element,
@@ -79,73 +79,76 @@ class UploadLiveCameraController {
 
     let isFullScreen = true;
 
-    function tryAcquireFullScreen() {
+    // Class method
+    function tryAcquireFullScreen($ctrl) {
       if (screenfull.enabled) {
         if (!screenfull.isFullscreen) {
-          screenfull.request(videoPreviewElement)
-            .then(() => true)
-            .catch(() => false);
+          return screenfull.request(videoPreviewElement);
         }
-        return true;
+        return $ctrl.$q.resolve();
       }
-      return false;
+      return $ctrl.$q.reject();
     }
 
-    isFullScreen = tryAcquireFullScreen(this);
-    if (isFullScreen) {
-      console.log('Acquired full screen.');
-    } else {
-      console.error('Failed to acquire full screen.');
-    }
+    tryAcquireFullScreen(this)
+      .then(() => {
+        isFullScreen = true;
+        console.log('Acquired full screen.');
+      })
+      .catch(() => {
+        isFullScreen = false;
+        console.error('Failed to acquire full screen.');
+      })
+      .finally(() => {
+        // After trying to acquire full screen, resolve video stream
+        function resolveScreenDimensions($ctrl) {
+          // TODO haoyuan : firefox is recognizing pixel's btm bar
+          console.log(`screen : ${window.screen.height} x ${window.screen.width}`);
+          console.log(`screen available : ${window.screen.availHeight} x ${window.screen.availWidth}`);
+          console.log(`screen inner : ${window.innerHeight} x ${window.innerWidth}`);
 
-    // After trying to acquire full screen, resolve video stream
-    function resolveScreenDimensions($ctrl) {
-      // TODO haoyuan : firefox is recognizing pixel's btm bar
-      console.log(`screen : ${window.screen.height} x ${window.screen.width}`);
-      console.log(`screen available : ${window.screen.availHeight} x ${window.screen.availWidth}`);
-      console.log(`screen inner : ${window.innerHeight} x ${window.innerWidth}`);
+          $ctrl.screenHeight = window.innerHeight;
+          $ctrl.screenWidth = window.innerWidth;
+        }
 
-      $ctrl.screenHeight = window.innerHeight;
-      $ctrl.screenWidth = window.innerWidth;
-    }
-
-    resolveScreenDimensions(this, isFullScreen);
-    console.log(`**screen resolved** : ${this.screenHeight} x ${this.screenWidth}`);
-
-    function postVideoStreamAcquisition($ctrl, stream) {
-      $ctrl.mediaStream = stream;
-
-      /*
-       This is done instead of just reassigning video stream everytime
-       to prevent screen from blinking excessively during switch
-        */
-      if (video.srcObject !== $ctrl.mediaStream) {
-        video.srcObject = $ctrl.mediaStream;
-      }
-
-      // Toggle controls
-      $ctrl.showVideoPreview = true;
-      $ctrl.showVideoInPreview = true;
-      $ctrl.showCaptureInPreview = false;
-
-      video.play();
-    }
-
-    function tryAcquireMediaStream($ctrl) {
-      if (!$ctrl.mediaStream) {
-        return navigator.mediaDevices.getUserMedia(constraints);
-      }
-      return $ctrl.$q.resolve($ctrl.mediaStream);
-    }
-
-    tryAcquireMediaStream(this)
-      .then((stream) => {
-        postVideoStreamAcquisition(this, stream);
         resolveScreenDimensions(this, isFullScreen);
         console.log(`**screen resolved** : ${this.screenHeight} x ${this.screenWidth}`);
-      })
-      .catch((err) => {
-        console.error(err);
+
+        function postVideoStreamAcquisition($ctrl, stream) {
+          $ctrl.mediaStream = stream;
+
+          /*
+           This is done instead of just reassigning video stream everytime
+           to prevent screen from blinking excessively during switch
+            */
+          if (video.srcObject !== $ctrl.mediaStream) {
+            video.srcObject = $ctrl.mediaStream;
+          }
+
+          // Toggle controls
+          $ctrl.showVideoPreview = true;
+          $ctrl.showVideoInPreview = true;
+          $ctrl.showCaptureInPreview = false;
+
+          video.play();
+        }
+
+        function tryAcquireMediaStream($ctrl) {
+          if (!$ctrl.mediaStream) {
+            return navigator.mediaDevices.getUserMedia(constraints);
+          }
+          return $ctrl.$q.resolve($ctrl.mediaStream);
+        }
+
+        tryAcquireMediaStream(this)
+          .then((stream) => {
+            postVideoStreamAcquisition(this, stream);
+            resolveScreenDimensions(this, isFullScreen);
+            console.log(`**screen resolved** : ${this.screenHeight} x ${this.screenWidth}`);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
       });
   }
 
@@ -299,6 +302,7 @@ class UploadLiveCameraController {
   }
 }
 
+// TODO haoyuan : move this inside class?
 function createVideoPlayCallback($ctrl) {
   return function videoPlayCallback() {
     function resolveVideoDimensions() {
@@ -349,15 +353,18 @@ function createOrientationChangeCallback($ctrl) {
   };
 }
 
+// TODO haoyuan : Add custom file upload handler here
 function createUploadCallback($ctrl) {
   return function uploadCallback(blob) {
     console.log('blob created');
+    console.log(blob);
     if (screenfull.enabled) {
       screenfull.exit();
     }
     $ctrl.showVideoPreview = false;
-    $ctrl.doFileUpload(blob);
+    $ctrl.onUserCaptureConfirmation({ file: blob });
     $ctrl.closeVideoStream();
+    // $ctrl.doFileUpload(blob); TODO haoyuan clean this up
   };
 }
 
@@ -529,7 +536,7 @@ function asyncFailure(error, $ctrl) {
   return error;
 }
 
-UploadLiveCameraController.$inject = [
+CameraOnlyUploadController.$inject = [
   '$timeout',
   '$element',
   '$http',
@@ -538,4 +545,4 @@ UploadLiveCameraController.$inject = [
   '$attrs'
 ];
 
-export default UploadLiveCameraController;
+export default CameraOnlyUploadController;

@@ -1,18 +1,11 @@
-import controller from './upload-live-camera.controller.js';
-import template from './upload-live-camera.html';
-import './upload-live-camera.less';
+import controller from './camera-only-upload.controller.js';
+import template from './camera-only-upload.html';
+import './camera-only-upload.less';
 
-const UploadLiveCam = {
+const CameraOnlyUpload = {
   controller,
   template,
   bindings: {
-
-    illustrationImage: '@',
-
-    // Texts below pictures
-    label: '@', // Optional
-    placeholder: '@',
-
     cameraOverlay: '@', // Optional
     cameraFaceMode: '@', // environment/user
 
@@ -37,7 +30,9 @@ const UploadLiveCam = {
 
     errorMessage: '@',
     httpOptions: '<',
+
+    onUserCaptureConfirmation: '&'
   }
 };
 
-export default UploadLiveCam;
+export default CameraOnlyUpload;

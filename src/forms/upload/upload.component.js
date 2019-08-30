@@ -34,7 +34,7 @@ const Upload = {
     maxSize: '<', // TODO move to ngMax?
 
     // Camera only upload options
-    isCameraOnly: '@', // true/false
+    isCameraOnly: '<', // true/false
     cameraOverlay: '@', // Optional
     cameraFaceMode: '@' // environment/user
   }
