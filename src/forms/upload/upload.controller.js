@@ -39,6 +39,14 @@ class UploadController {
     }
 
     this.addDragHandlers($scope, $element);
+
+    this.showLiveCaptureScreen = false;
+  }
+
+  onUploadButtonClick() {
+    if (this.isCameraOnly) {
+      this.showLiveCaptureScreen = true;
+    }
   }
 
   // Function binding for file upload by input tag

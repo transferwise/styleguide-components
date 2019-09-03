@@ -9,6 +9,7 @@ class CameraOnlyUploadController {
   ) {
     this.$element = $element;
     this.$attrs = $attrs;
+    this.$scope = $scope;
     this.$q = $q;
 
     // Video preview control
@@ -32,6 +33,12 @@ class CameraOnlyUploadController {
       // TODO: haoyuan how to handle get user media not being available?
       console.warn('getUserMedia() is not supported by your browser');
     }
+
+    this.$scope.$watch('$ctrl.showCaptureScreen', (newValue, oldValue) => {
+      if (newValue !== oldValue && newValue) {
+        this.onLiveCamFlowStart();
+      }
+    });
 
     window.addEventListener('orientationchange', createOrientationChangeCallback(this), false);
     const video = this.$element[0].querySelector('#video-preview #video');
@@ -145,6 +152,7 @@ class CameraOnlyUploadController {
     this.mediaStream.getTracks().forEach(track => track.stop());
     this.mediaStream = null;
     this.captureButtonDisabled = true;
+    this.showCaptureScreen = false;
   }
 
   onCancelBtnClick() {

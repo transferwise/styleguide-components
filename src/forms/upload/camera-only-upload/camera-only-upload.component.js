@@ -18,6 +18,7 @@ const CameraOnlyUpload = {
 
     errorMessage: '@', // TODO prolly not needed
 
+    showCaptureScreen: '=',
     onUserCaptureConfirmation: '&'
   }
 };
