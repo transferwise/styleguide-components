@@ -47,7 +47,7 @@
     <div class="form-group">
       <tw-upload
         ng-if="!$ctrl.customComplete"
-        ng-model="$ctrl.model"
+        ng-model="$ctrl.modelToBind"
         name="$ctrl.name"
         icon="{{$ctrl.icon}}"
         size="{{$ctrl.size}}"
@@ -73,11 +73,13 @@
 
         http-options="$ctrl.httpOptions"
 
-        is-camera-only="$ctrl.isCameraOnly"
+        source="$ctrl.source"
+        camera-overlay="$ctrl.cameraOverlay"
+        camera-face-mode="$ctrl.cameraFaceMode"
       ></tw-upload>
       <tw-upload
         ng-if="$ctrl.customComplete"
-        ng-model="$ctrl.model"
+        ng-model="$ctrl.modelToBind"
         name="$ctrl.name"
         icon="{{$ctrl.icon}}"
         size="{{$ctrl.size}}"
@@ -103,7 +105,9 @@
 
         http-options="$ctrl.httpOptions"
 
-        is-camera-only="$ctrl.isCameraOnly">
+        source="$ctrl.source"
+        camera-overlay="$ctrl.cameraOverlay"
+        camera-face-mode="$ctrl.cameraFaceMode">
       <h1>Custom completion card</h1>
       </tw-upload>
     </div>
@@ -130,7 +134,7 @@
   on-success="$ctrl.onSuccess"
   on-failure="$ctrl.onFailure"
   on-cancel="$ctrl.onCancel"
-  is-camera-only="{{$ctrl.isCameraOnly}}"
+  source="{{$ctrl.source}}"
   &gt;
   &lt;h1&gt;Custom completion card&lt;/h1&gt;
 &lt;/tw-upload&gt;
@@ -146,13 +150,24 @@
           ng-click="$ctrl.makeFancy()">Make fancy</button>
       </h5>
 
-      <div class="form-group">
-        <div class="checkbox">
-          <label>
-            <tw-checkbox ng-model="$ctrl.isCameraOnly"></tw-checkbox>
-            Camera only upload?
-          </label>
-        </div>
+      <div class="form-group" ng-init="$ctrl.size = 'md'">
+        <label class="control-label">
+          File Source
+        </label>
+        <tw-select
+          placeholder="File Source"
+          ng-model="$ctrl.source"
+          options="$ctrl.sources"></tw-select>
+      </div>
+
+      <div class="form-group" ng-init="$ctrl.size = 'md'">
+        <label class="control-label">
+          Camera Face Mode
+        </label>
+        <tw-select
+          placeholder="Camera Face Mode"
+          ng-model="$ctrl.cameraFaceMode"
+          options="$ctrl.cameraFaceModes"></tw-select>
       </div>
 
       <div class="form-group" ng-init="$ctrl.name = 'file'">

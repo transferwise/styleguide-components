@@ -29,23 +29,26 @@
         <span ng-if="$ctrl.buttonText" ng-bind="$ctrl.buttonText"></span>
         <span ng-if="!$ctrl.buttonText" class="icon icon-upload m-r-0"></span>
         <!-- normal upload -->
-        <input ng-if="!$ctrl.isCameraOnly"
-               tw-file-input
-               type="file"
-               accept="{{$ctrl.accept}}"
-               class="tw-droppable-input hidden"
-               ng-disabled="$ctrl.ngDisabled"
-               name="file-upload"
-               on-user-input="$ctrl.onManualUpload()"
-               ng-model="$ctrl.inputFile" />
+        <input
+          ng-if="!$ctrl.isLiveCameraUpload"
+          tw-file-input
+          type="file"
+          accept="{{$ctrl.accept}}"
+          class="tw-droppable-input hidden"
+          ng-disabled="$ctrl.ngDisabled"
+          name="file-upload"
+          on-user-input="$ctrl.onManualUpload()"
+          ng-model="$ctrl.inputFile" />
       </label>
 
       <!-- camera only upload -->
-      <tw-camera-only-upload show-capture-screen="$ctrl.showLiveCaptureScreen"
-                             on-user-capture-confirmation="$ctrl.onFileConfirmation(file)"
-                             ng-if="$ctrl.isCameraOnly"
-                             ng-disabled="$ctrl.ngDisabled"/>
-
+      <tw-camera-only-upload
+        show-capture-screen="$ctrl.showLiveCaptureScreen"
+        on-capture-screen-close="$ctrl.onLiveCameraCaptureScreenClose()"
+        on-user-capture-confirmation="$ctrl.onFileConfirmation(file)"
+        ng-if="$ctrl.isLiveCameraUpload"
+        ng-disabled="$ctrl.ngDisabled">
+      </tw-camera-only-upload>
     </div>
   </div>
 

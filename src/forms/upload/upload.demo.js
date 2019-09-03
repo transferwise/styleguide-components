@@ -29,8 +29,17 @@ export default angular
       model: '=',
       sizes: '<'
     },
-    controller() {
+    controller: ['$scope', function ($scope) {
       const $ctrl = this;
+      this.$scope = $scope;
+
+      this.$scope.$watch('$ctrl.showNgModel', (newValue) => {
+        if (newValue) {
+          this.model = this.modelToBind;
+        } else {
+          this.model = null;
+        }
+      });
 
       this.onStart = () => {
         this.log('File upload starting');
@@ -71,6 +80,17 @@ export default angular
         { value: 'lg', label: 'Large' }
       ];
 
+      this.sources = [
+        { value: 'CAMERA_ONLY', label: 'CAMERA_ONLY' },
+        { value: 'UPLOAD_ONLY', label: 'UPLOAD_ONLY' },
+        { value: 'ANY', label: 'ANY' }
+      ];
+
+      this.cameraFaceModes = [
+        { value: 'environment', label: 'environment' },
+        { value: 'user', label: 'user' }
+      ];
+
       this.icons = [
         { value: 'upload', label: 'Upload' },
         { value: 'id', label: 'ID' },
@@ -80,6 +100,6 @@ export default angular
       this.log = (message) => {
         console.log(message); // eslint-disable-line
       };
-    },
+    }],
     template
   }).name;

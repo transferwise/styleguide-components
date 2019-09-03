@@ -29,6 +29,11 @@ class UploadController {
 
     this.checkForTranscludedContent($transclude);
 
+    this.isLiveCameraUpload = this.source && this.source === 'CAMERA_ONLY';
+    $scope.$watch('$ctrl.source', () => {
+      this.isLiveCameraUpload = this.source && this.source === 'CAMERA_ONLY';
+    });
+
     $scope.$watch('$ctrl.icon', () => {
       this.viewIcon = this.icon ? this.icon : 'upload';
     });
@@ -44,9 +49,13 @@ class UploadController {
   }
 
   onUploadButtonClick() {
-    if (this.isCameraOnly) {
+    if (this.isLiveCameraUpload) {
       this.showLiveCaptureScreen = true;
     }
+  }
+
+  onLiveCameraCaptureScreenClose() {
+    this.showLiveCaptureScreen = false;
   }
 
   // Function binding for file upload by input tag
@@ -68,8 +77,6 @@ class UploadController {
   }
 
   fileDropped(file) {
-    console.log('In parent file drop');
-    console.log(file);
     if (this.ngDisabled) {
       return;
     }
@@ -124,7 +131,8 @@ class UploadController {
   onDragEnter() {
     this.dragCounter++;
     if (this.dragCounter >= 1 && !this.ngDisabled) {
-      this.isDroppable = !this.isCameraOnly; // do not enable dropping for camera only upload mode
+      // do not enable dropping for camera only upload mode
+      this.isDroppable = !this.isLiveCameraUpload;
     }
   }
 

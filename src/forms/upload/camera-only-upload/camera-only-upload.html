@@ -4,7 +4,7 @@
     <!-- TODO haoyuan: center and rotate camera overlay -->
     <img id="overlay" ng-if="$ctrl.cameraOverlay" ng-show="$ctrl.showVideoInPreview" ng-src="{{$ctrl.cameraOverlay}}" alt="overlay" class="w-100 h-100 fixed-top opacity-overlay zindex-video-overlay"/>
     <!-- TODO haoyuan: work with designer to figure out how this asset is going to be provided -->
-    <video id="video" ng-show="$ctrl.showVideoInPreview" ng-style="{height: $ctrl.videoHeight + '%'}" class="w-100 fixed-top zindex-video" playsinline></video>
+    <video id="video" ng-show="$ctrl.showVideoInPreview" ng-style="{height: $ctrl.videoHeight + '%', width: $ctrl.videoWidth + '%'}" class="fixed-top zindex-video" playsinline></video>
     <canvas id="display-canvas" ng-show="$ctrl.showCaptureInPreview" class="fixed zindex-video" ></canvas>
     <canvas id="upload-canvas" ng-show="false" class="fixed" ></canvas>
 

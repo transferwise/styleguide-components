@@ -9,16 +9,8 @@ const CameraOnlyUpload = {
     cameraOverlay: '@', // Optional
     cameraFaceMode: '@', // environment/user
 
-    // Angular binding
-    ngDisabled: '<', // TODO prolly not needed
-    ngModel: '=', // TODO prolly not needed
-    ngChange: '&', // TODO prolly not needed
-
-    name: '@', // TODO prolly not needed form name
-
-    errorMessage: '@', // TODO prolly not needed
-
-    showCaptureScreen: '=',
+    showCaptureScreen: '<',
+    onCaptureScreenClose: '&',
     onUserCaptureConfirmation: '&'
   }
 };
