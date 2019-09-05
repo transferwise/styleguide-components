@@ -5,9 +5,9 @@ describe('TwDateService test', function() {
   var dateFormats = ['narrow', 'short', 'long', null];
 
   beforeEach(function() {
-    module('tw.styleguide-components');
+    angular.mock.module('tw.styleguide.services.date');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       service = $injector.get('TwDateService');
     });
   });

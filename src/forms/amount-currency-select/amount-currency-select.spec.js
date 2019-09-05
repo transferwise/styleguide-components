@@ -15,9 +15,12 @@ describe('AmountCurrencySelect', function() {
   var SELECT_SELECTOR = 'select';
 
   beforeEach(function() {
-    module('tw.styleguide-components');
+    angular.mock.module('tw.styleguide.forms.amount-currency-select');
 
-    inject(function($injector) {
+    // Used in a transclusion test
+    angular.mock.module('tw.styleguide.loading.loader');
+
+    angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
       $scope = $rootScope.$new();

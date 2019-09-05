@@ -9,9 +9,9 @@ describe('Field', function() {
       $timeout;
 
   beforeEach(function() {
-    module('tw.styleguide-components');
+    angular.mock.module('tw.styleguide.forms.field');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
       $timeout = $injector.get('$timeout');

@@ -15,12 +15,9 @@ describe('Checkbox', function() {
   var LABEL_SELECTOR = '.checkbox label';
 
   beforeEach(function() {
-    module('tw.styleguide.forms.checkbox');
-    module('tw.styleguide.forms.focusable');
-    module('tw.styleguide.validation');
-    module('tw.styleguide.services');
+    angular.mock.module('tw.styleguide.forms.checkbox');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
     });

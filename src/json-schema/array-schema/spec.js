@@ -7,12 +7,12 @@ describe('Given a component for arrays of schemas', function() {
     genericSchema;
 
   beforeEach(function() {
-    module('tw.styleguide-components');
-    module('tw.json-schema');
+    angular.mock.module('tw.json-schema.array');
 
     genericSchema = getMockComponent('genericSchema');
     angular.mock.module('tw.json-schema.generic', genericSchema);
-    inject(function($injector) {
+
+    angular.mock.inject(function($injector) {
       $compile = $injector.get('$compile');
       $scope = $injector.get('$rootScope').$new();
     });

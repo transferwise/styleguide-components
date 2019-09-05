@@ -4,10 +4,9 @@ describe('Given a library for returning the valid parts of a model based on a sc
   var result, schema, getValidModelParts;
 
   beforeEach(function() {
-    module('tw.styleguide-components');
-    module('tw.json-schema');
+    angular.mock.module('tw.json-schema.validation');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       var SchemaValidation = $injector.get('SchemaValidation');
       getValidModelParts = SchemaValidation.getValidModelParts;
     });

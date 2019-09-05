@@ -7,9 +7,9 @@ describe('Given a submit button component', function() {
   var BUTTON_SELECTOR = 'button';
 
   beforeEach(function() {
-    module('tw.styleguide.forms');
+    angular.mock.module('tw.styleguide.forms.submit');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
       $timeout = $injector.get('$timeout');

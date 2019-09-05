@@ -21,9 +21,9 @@ describe('given an upload component', function() {
    "Av7czFnnAAAAAElFTkSuQmCC";
 
   beforeEach(function() {
-    module('tw.styleguide.forms');
+    angular.mock.module('tw.styleguide.forms.upload');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
       $scope = $rootScope.$new();
@@ -334,5 +334,5 @@ describe('given an upload component', function() {
     $scope.$digest();
     return compiledElement[0];
   }
-  
+
 });

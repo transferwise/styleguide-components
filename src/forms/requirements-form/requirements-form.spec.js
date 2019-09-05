@@ -11,9 +11,7 @@ describe('RequirementsForm', function() {
     RequirementsService;
 
   beforeEach(function() {
-    module('tw.styleguide.forms');
-    module('tw.styleguide.navigation');
-    module('tw.styleguide.services');
+    angular.mock.module('tw.styleguide.forms.requirements-form');
 
     Fieldset = getMockComponent('twFieldset');
     Tabs = getMockComponent('twTabs');
@@ -21,7 +19,7 @@ describe('RequirementsForm', function() {
     angular.mock.module('tw.styleguide.forms.fieldset', Fieldset);
     angular.mock.module('tw.styleguide.navigation.tabs', Tabs);
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
       $timeout = $injector.get('$timeout');

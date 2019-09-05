@@ -4,9 +4,9 @@ describe('Requirements Service', function() {
   var service;
 
   beforeEach(function() {
-    module('tw.styleguide-components');
+    angular.mock.module('tw.styleguide.services.requirements');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       service = $injector.get('TwRequirementsService');
     });
   });

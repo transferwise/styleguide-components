@@ -14,9 +14,12 @@ describe('CurrencyInput', function() {
   var INPUT_SELECTOR = 'input';
 
   beforeEach(function() {
-    module('tw.styleguide-components');
+    angular.mock.module('tw.styleguide.forms.currency-input');
 
-    inject(function($injector) {
+    // Used in a transclusion test
+    angular.mock.module('tw.styleguide.loading.loader');
+
+    angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
     });
