@@ -250,18 +250,18 @@ describe('Select', function() {
       component = getComponent($scope);
       button = component.find('.btn');
     });
-    it('should open dropdown when button clicked', function() {
-      button.trigger('click');
-      $scope.$digest();
-
-      // TODO problem with loading dropdown.js? Or timing?
-      //setTimeout(function() {
-        var buttonGroupElement = component.find('.btn-group');
-        //console.log(buttonGroupElement.attr('class'));
-        //expect(buttonGroupElement.hasClass('open')).toBe(true);
-        //expect(false).toBe(true);
-      //});
-    });
+    // TODO problem with loading dropdown.js? Or timing?
+    // it('should open dropdown when button clicked', function() {
+    //   button.trigger('click');
+    //   $scope.$digest();
+    //
+    //   setTimeout(function() {
+    //     var buttonGroupElement = component.find('.btn-group');
+    //     console.log(buttonGroupElement.attr('class'));
+    //     expect(buttonGroupElement.hasClass('open')).toBe(true);
+    //     expect(false).toBe(true);
+    //   });
+    // });
   });
 
   describe('keyboard controls', function() {
@@ -350,32 +350,33 @@ describe('Select', function() {
     });
 
     describe('when dropdown item has focus', function() {
-      it('should select item below when down arrow pressed', function() {
-        $scope.ngModel = OPTIONS[1].value;
-        $scope.$digest();
+      // Dropdown.js not working in tests
+      // it('should select item below when down arrow pressed', function() {
+      //   $scope.ngModel = OPTIONS[1].value;
+      //   $scope.$digest();
+      //
+      //   var secondLink = component.find('.active a')[0];
+      //   $(secondLink).focus();
+      //   triggerKeyCode(secondLink, SPECIAL_KEYS.down);
+      //
+      //   var thirdLink = component.find('.active a')[0];
+      //   expect($scope.ngModel).toBe(OPTIONS[2].value);
+      //   expect($(thirdLink).text().trim()).toBe(OPTIONS[2].label);
+      // });
+      // it('should select item above when up arrow pressed', function() {
+      //   $scope.ngModel = OPTIONS[2].value;
+      //   $scope.$digest();
+      //
+      //   var thirdLink = component.find('.active a')[0];
+      //   $(thirdLink).focus();
+      //   triggerKeyCode(thirdLink, SPECIAL_KEYS.up);
+      //
+      //
+      //   var secondLink = component.find('.active a')[0];
+      //   expect($scope.ngModel).toBe(OPTIONS[1].value);
+      //   expect($(secondLink).text().trim()).toBe(OPTIONS[1].label);
+      // });
 
-        var secondLink = component.find('.active a')[0];
-        $(secondLink).focus();
-        triggerKeyCode(secondLink, SPECIAL_KEYS.down);
-
-        // Dropdown.js not working in tests
-        var thirdLink = component.find('.active a')[0];
-        //expect($scope.ngModel).toBe(OPTIONS[2].value);
-        //expect($(thirdLink).text().trim()).toBe(OPTIONS[2].label);
-      });
-      it('should select item above when up arrow pressed', function() {
-        $scope.ngModel = OPTIONS[2].value;
-        $scope.$digest();
-
-        var thirdLink = component.find('.active a')[0];
-        $(thirdLink).focus();
-        triggerKeyCode(thirdLink, SPECIAL_KEYS.up);
-
-        // Dropdown.js not working in tests
-        var secondLink = component.find('.active a')[0];
-        //expect($scope.ngModel).toBe(OPTIONS[1].value);
-        //expect($(secondLink).text().trim()).toBe(OPTIONS[1].label);
-      });
       it('should not select next option when tab presses', function() {
         var firstLink = component.find('.active a')[0];
         $(firstLink).focus();
@@ -387,34 +388,35 @@ describe('Select', function() {
         expect($scope.ngModel).toBe(OPTIONS[0].value);
         expect($(activeLink).text().trim()).toBe('Zero');
       });
-      it('should skip next option if header', function() {
-        $scope.options = OPTIONS_HEADER;
-        $scope.ngModel = 1;
-        $scope.$digest();
 
-        var firstLink = component.find('.active a')[0];
-        $(firstLink).focus();
-        triggerKeyCode(firstLink, SPECIAL_KEYS.down);
-
-        var activeLink = component.find('.active a')[0];
-        // TODO Dropdown.js not working in tests
-        //expect($scope.ngModel).toBe(3);
-        //expect($(activeLink).text().trim()).toBe('Three');
-      });
-      it('should skip next option if disabled', function() {
-        $scope.options = OPTIONS_DISABLED;
-        $scope.ngModel = 1;
-        $scope.$digest();
-
-        var firstLink = component.find('.active a')[0];
-        $(firstLink).focus();
-        triggerKeyCode(firstLink, SPECIAL_KEYS.down);
-
-        var activeLink = component.find('.active a')[0];
-        // TODO Dropdown.js not working in tests
-        //expect($scope.ngModel).toBe(3);
-        //expect($(activeLink).text().trim()).toBe('Three');
-      });
+      // TODO Dropdown.js not working in tests
+      // it('should skip next option if header', function() {
+      //   $scope.options = OPTIONS_HEADER;
+      //   $scope.ngModel = 1;
+      //   $scope.$digest();
+      //
+      //   var firstLink = component.find('.active a')[0];
+      //   $(firstLink).focus();
+      //   triggerKeyCode(firstLink, SPECIAL_KEYS.down);
+      //
+      //   var activeLink = component.find('.active a')[0];
+      //
+      //   expect($scope.ngModel).toBe(3);
+      //   expect($(activeLink).text().trim()).toBe('Three');
+      // });
+      // it('should skip next option if disabled', function() {
+      //   $scope.options = OPTIONS_DISABLED;
+      //   $scope.ngModel = 1;
+      //   $scope.$digest();
+      //
+      //   var firstLink = component.find('.active a')[0];
+      //   $(firstLink).focus();
+      //   triggerKeyCode(firstLink, SPECIAL_KEYS.down);
+      //
+      //   var activeLink = component.find('.active a')[0];
+      //   expect($scope.ngModel).toBe(3);
+      //   expect($(activeLink).text().trim()).toBe('Three');
+      // });
     });
   });
 

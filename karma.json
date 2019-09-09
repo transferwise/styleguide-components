@@ -18,15 +18,23 @@
   "browsers": [
     "Chrome"
   ],
-  "reporters": ["coverage", "mocha"],
+  "singleRun": true,
+  "client": {
+    "clearContext": false
+  },
+  "reporters": ["mocha", "progress", "coverage", "remap-coverage"],
   "preprocessors": {
-    "src/**/*.controller.js": ["coverage"]
+    "src/**/*.spec.js": ["coverage", "webpack", "sourcemap"],
+    "src/**/spec.js": ["coverage", "webpack", "sourcemap"]
   },
   "plugins": [
-    "karma-chrome-launcher",
     "karma-jasmine",
     "karma-coverage",
-    "karma-mocha-reporter"
+    "karma-chrome-launcher",
+    "karma-webpack",
+    "karma-sourcemap-loader",
+    "karma-mocha-reporter",
+    "karma-remap-coverage"
   ],
   "coverageReporter": {
     "reporters": [{
@@ -38,6 +46,18 @@
       "dir": "build/coverage/",
       "file": "coverage.xml"
     }]
+  },
+  "remapCoverageReporter": {
+    "text": null,
+    "json": "./coverage/coverage.json",
+    "html": "./coverage/coverage.html",
+    "lcov": "./coverage/coverage.lcov"
+  },
+  "webpackMiddleware": {
+    "logLevel": "warn",
+    "stats": {
+      "chunks": false
+    }
   },
   "mochaReporter": {
     "output": "minimal"
