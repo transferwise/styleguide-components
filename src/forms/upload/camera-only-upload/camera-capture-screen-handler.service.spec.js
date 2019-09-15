@@ -36,12 +36,12 @@ describe('CameraCaptureScreenHandler', function() {
     });
 
     it("stretches video to remove margins by overflowing video height", function() {
-      const { videoHeight, videoWidth } = CameraCaptureScreenHandler.getVideoSpecifications(
+      const result = CameraCaptureScreenHandler.getVideoSpecifications(
         screenHeight, screenWidth,
         videoResHeight, videoResWidth
       );
-      expect(videoWidth).toBeCloseTo(100, 2);
-      expect(videoHeight).toBeCloseTo(111, 2);
+      expect(result.videoWidthInPercentage).toBeCloseTo(100, 2);
+      expect(result.videoHeightInPercentage).toBeCloseTo(111, 2);
     });
 
     it("gives canvas dimension with truncated resolution in height", function() {
@@ -76,12 +76,12 @@ describe('CameraCaptureScreenHandler', function() {
     });
 
     it("stretches video to remove margins by overflowing video width", function() {
-      const { videoHeight, videoWidth } = CameraCaptureScreenHandler.getVideoSpecifications(
+      const result = CameraCaptureScreenHandler.getVideoSpecifications(
         screenHeight, screenWidth,
         videoResHeight, videoResWidth
       );
-      expect(videoWidth).toBeCloseTo(111, 2);
-      expect(videoHeight).toBeCloseTo(100, 2);
+      expect(result.videoWidthInPercentage).toBeCloseTo(111, 2);
+      expect(result.videoHeightInPercentage).toBeCloseTo(100, 2);
     });
 
     it("gives canvas dimension with truncated resolution in width", function() {
@@ -116,12 +116,12 @@ describe('CameraCaptureScreenHandler', function() {
     });
 
     it("keeps video dimension as is", function() {
-      const { videoHeight, videoWidth } = CameraCaptureScreenHandler.getVideoSpecifications(
+      const result = CameraCaptureScreenHandler.getVideoSpecifications(
         screenHeight, screenWidth,
         videoResHeight, videoResWidth
       );
-      expect(videoWidth).toBeCloseTo(100, 2);
-      expect(videoHeight).toBeCloseTo(100, 2);
+      expect(result.videoWidthInPercentage).toBeCloseTo(100, 2);
+      expect(result.videoHeightInPercentage).toBeCloseTo(100, 2);
     });
 
     it("gets canvas dimension overlaying video position", function() {
@@ -156,12 +156,12 @@ describe('CameraCaptureScreenHandler', function() {
     });
 
     it("keeps video dimension as is", function() {
-      const { videoHeight, videoWidth } = CameraCaptureScreenHandler.getVideoSpecifications(
+      const result = CameraCaptureScreenHandler.getVideoSpecifications(
         screenHeight, screenWidth,
         videoResHeight, videoResWidth
       );
-      expect(videoWidth).toBeCloseTo(100, 2);
-      expect(videoHeight).toBeCloseTo(100, 2);
+      expect(result.videoWidthInPercentage).toBeCloseTo(100, 2);
+      expect(result.videoHeightInPercentage).toBeCloseTo(100, 2);
     });
 
     it("gets canvas dimension overlaying video position", function() {
@@ -195,14 +195,12 @@ describe('CameraCaptureScreenHandler', function() {
     });
 
     it("keeps video dimension as is", function () {
-      const { videoHeight, videoWidth } = CameraCaptureScreenHandler.getVideoSpecifications(
+      const result = CameraCaptureScreenHandler.getVideoSpecifications(
         screenHeight, screenWidth,
         videoResHeight, videoResWidth
       );
-      expect(videoWidth)
-        .toBeCloseTo(100, 2);
-      expect(videoHeight)
-        .toBeCloseTo(100, 2);
+      expect(result.videoWidthInPercentage).toBeCloseTo(100, 2);
+      expect(result.videoHeightInPercentage).toBeCloseTo(100, 2);
     });
 
     it("gives canvas dimension with untruncated video and screen dimensions", function() {
