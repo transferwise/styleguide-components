@@ -96,16 +96,12 @@ class CameraOnlyUploadController {
       })
       .finally(() => {
         // After trying to acquire full screen, resolve video stream
-        // TODO haoyuan : firefox is recognizing pixel's btm bar
-        this.$log.debug(`screen : ${this.$window.screen.height} x ${this.$window.screen.width}`);
-        this.$log.debug(`screen available : ${this.$window.screen.availHeight} x ${this.$window.screen.availWidth}`);
-        this.$log.debug(`screen inner : ${this.$window.innerHeight} x ${this.$window.innerWidth}`);
         this.setScreenDimensions();
-
         this.tryAcquireMediaStream()
           .then((stream) => {
             this.onVideoStreamAcquisition(stream);
-            this.setScreenDimensions();
+            // TODO haoyuan : check this during ios testing
+            // this.setScreenDimensions();
           })
           .catch((err) => {
             this.$log.error(err);
@@ -150,14 +146,20 @@ class CameraOnlyUploadController {
   }
 
   setScreenDimensions() {
+    // TODO haoyuan : firefox is recognizing pixel's btm bar
+    this.$log.debug(`screen : ${this.$window.screen.height} x ${this.$window.screen.width}`);
+    this.$log.debug(`screen available : ${this.$window.screen.availHeight} x ${this.$window.screen.availWidth}`);
+    this.$log.debug(`screen inner : ${this.$window.innerHeight} x ${this.$window.innerWidth}`);
     this.screenHeight = this.$window.innerHeight;
     this.screenWidth = this.$window.innerWidth;
     this.$log.debug(`**screen resolved** : ${this.screenHeight} x ${this.screenWidth}`);
   }
 
   closeVideoStream() {
-    this.mediaStream.getTracks().forEach(track => track.stop());
-    this.mediaStream = null;
+    if (this.mediaStream) {
+      this.mediaStream.getTracks().forEach(track => track.stop());
+      this.mediaStream = null;
+    }
     this.captureButtonDisabled = true;
     this.onCaptureScreenClose();
   }
