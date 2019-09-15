@@ -10,16 +10,16 @@
 
     <label class="fixed-bottom camera-ctrl-bar">
       <span class="camera-ctrl-box-small">
-        <span class="camera-ctrl-btn-small camera-ctrl-btn-cancel icon icon-close" ng-if="$ctrl.showVideoInPreview" ng-click="$ctrl.onCancelBtnClick()"></span>
-        <span class="camera-ctrl-btn-small camera-ctrl-btn-cancel icon icon-close" ng-if="$ctrl.showCaptureInPreview" ng-click="$ctrl.onRecaptureBtnClick()"></span>
+        <span id="video-cancel" class="camera-ctrl-btn-small camera-ctrl-btn-cancel icon icon-close" ng-if="$ctrl.showVideoInPreview" ng-click="$ctrl.onCancelBtnClick()"></span>
+        <span id="capture-cancel" class="camera-ctrl-btn-small camera-ctrl-btn-cancel icon icon-close" ng-if="$ctrl.showCaptureInPreview" ng-click="$ctrl.onRecaptureBtnClick()"></span>
       </span>
       <span class="camera-ctrl-box-big">
-        <span class="camera-ctrl-btn-big" ng-if="$ctrl.showVideoInPreview" ng-click="!$ctrl.captureButtonDisabled && $ctrl.onCaptureBtnClick()">
+        <span id="video-comfirm" class="camera-ctrl-btn-big" ng-if="$ctrl.showVideoInPreview" ng-click="!$ctrl.captureButtonDisabled && $ctrl.onCaptureBtnClick()">
           <span class="camera-ctrl-btn-big-inner"></span>
         </span>
       </span>
       <span class="camera-ctrl-box-small">
-        <span class="camera-ctrl-btn-small camera-ctrl-btn-confirm icon icon-check" ng-if="$ctrl.showCaptureInPreview" ng-click="$ctrl.onUploadBtnClick()"></span>
+        <span id="capture-confirm" class="camera-ctrl-btn-small camera-ctrl-btn-confirm icon icon-check" ng-if="$ctrl.showCaptureInPreview" ng-click="$ctrl.onUploadBtnClick()"></span>
       </span>
     </label>
   </div>
