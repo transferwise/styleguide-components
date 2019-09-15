@@ -256,13 +256,13 @@ function createVideoPlayCallback($ctrl) {
       $ctrl.videoResHeight = video.videoHeight;
       $ctrl.videoResWidth = video.videoWidth;
       $ctrl.$log.debug(`playing updated video : ${$ctrl.videoResHeight} x ${$ctrl.videoResWidth}`);
-      const { videoHeight, videoWidth } = $ctrl.CameraCaptureScreenHandler
+      const { videoHeightInPercentage, videoWidthInPercentage } = $ctrl.CameraCaptureScreenHandler
         .getVideoSpecifications(
           $ctrl.screenHeight, $ctrl.screenWidth,
           $ctrl.videoResHeight, $ctrl.videoResWidth
         );
-      $ctrl.videoHeight = videoHeight;
-      $ctrl.videoWidth = videoWidth;
+      $ctrl.videoHeight = videoHeightInPercentage;
+      $ctrl.videoWidth = videoWidthInPercentage;
     }
   };
 }

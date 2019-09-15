@@ -4,10 +4,16 @@ describe('CameraCaptureScreenHandler', function() {
   var $compile,
     $rootScope,
     $timeout,
-    CameraCaptureScreenHandler;
+    CameraCaptureScreenHandler,
+    screenHeight,
+    screenWidth,
+    videoResHeight,
+    videoResWidth,
+    videoHeightInPercentage,
+    videoWidthInPercentage;
 
   beforeEach(function() {
-    module('tw.styleguide.forms');
+    module('tw.styleguide.forms.upload');
 
     inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
@@ -17,162 +23,204 @@ describe('CameraCaptureScreenHandler', function() {
     });
   });
 
-  it("gets correct video dimension for portrait narrow screen", function() {
-    const screenHeight = 90.0;
-    const screenWidth = 40.0;
-    const videoResHeight = 100.0;
-    const videoResWidth = 40.0;
-    const { videoHeight, videoWidth } = CameraCaptureScreenHandler.getVideoSpecifications(
+  describe('When screen is portrait and video resolution is thin ' +
+    'leaving smaller black margins on left and right of screen', function() {
+
+    beforeEach(function() {
+      videoHeightInPercentage = 111.0;
+      videoWidthInPercentage = 100.0;
+      screenHeight = 90.0;
+      screenWidth = 40.0;
+      videoResHeight = 100.0;
+      videoResWidth = 40.0;
+    });
+
+    it("stretches video to remove margins by overflowing video height", function() {
+      const { videoHeight, videoWidth } = CameraCaptureScreenHandler.getVideoSpecifications(
         screenHeight, screenWidth,
         videoResHeight, videoResWidth
       );
-    expect(videoWidth).toBeCloseTo(100, 2);
-    expect(videoHeight).toBeCloseTo(111, 2);
-  });
+      expect(videoWidth).toBeCloseTo(100, 2);
+      expect(videoHeight).toBeCloseTo(111, 2);
+    });
 
-  it("gets correct video dimension for landscape narrow screen", function() {
-    const screenHeight = 40.0;
-    const screenWidth = 90.0;
-    const videoResHeight = 40.0;
-    const videoResWidth = 100.0;
-    const { videoHeight, videoWidth } = CameraCaptureScreenHandler.getVideoSpecifications(
+    it("gives canvas dimension with truncated resolution in height", function() {
+      const [
+        height, width,
+        yOffset, xOffset,
+        paintHeight, paintWidth
+      ] = CameraCaptureScreenHandler.getCanvasSpecifications(
+        videoHeightInPercentage, videoWidthInPercentage,
         screenHeight, screenWidth,
         videoResHeight, videoResWidth
       );
-    expect(videoWidth).toBeCloseTo(111, 2);
-    expect(videoHeight).toBeCloseTo(100, 2);
+      expect(xOffset).toBeCloseTo(0, 2);
+      expect(yOffset).toBeCloseTo(0, 2);
+      expect(height).toBeCloseTo(screenHeight, 2);
+      expect(width).toBeCloseTo(screenWidth, 2);
+      expect(paintHeight).toBeCloseTo(90, 2);
+      expect(paintWidth).toBeCloseTo(40, 2);
+    });
   });
 
-  it("gets correct video dimension for the perfect screen", function() {
-    const screenHeight = 40.0;
-    const screenWidth = 40.0;
-    const videoResHeight = 80.0;
-    const videoResWidth = 80.0;
-    const { videoHeight, videoWidth } = CameraCaptureScreenHandler.getVideoSpecifications(
-      screenHeight, screenWidth,
-      videoResHeight, videoResWidth
-    );
-    expect(videoWidth).toBeCloseTo(100, 2);
-    expect(videoHeight).toBeCloseTo(100, 2);
+  describe('When screen is landscape and video resolution is wide ' +
+    'leaving smaller black margins on top and bottom of screen', function() {
+
+    beforeEach(function() {
+      videoHeightInPercentage = 100.0;
+      videoWidthInPercentage = 111.0;
+      screenHeight = 40.0;
+      screenWidth = 90.0;
+      videoResHeight = 40.0;
+      videoResWidth = 100.0;
+    });
+
+    it("stretches video to remove margins by overflowing video width", function() {
+      const { videoHeight, videoWidth } = CameraCaptureScreenHandler.getVideoSpecifications(
+        screenHeight, screenWidth,
+        videoResHeight, videoResWidth
+      );
+      expect(videoWidth).toBeCloseTo(111, 2);
+      expect(videoHeight).toBeCloseTo(100, 2);
+    });
+
+    it("gives canvas dimension with truncated resolution in width", function() {
+      const [
+        height, width,
+        yOffset, xOffset,
+        paintHeight, paintWidth
+      ] = CameraCaptureScreenHandler.getCanvasSpecifications(
+        videoHeightInPercentage, videoWidthInPercentage,
+        screenHeight, screenWidth,
+        videoResHeight, videoResWidth
+      );
+      expect(xOffset).toBeCloseTo(0, 2);
+      expect(yOffset).toBeCloseTo(0, 2);
+      expect(height).toBeCloseTo(screenHeight, 2);
+      expect(width).toBeCloseTo(screenWidth, 2);
+      expect(paintWidth).toBeCloseTo(90, 2);
+      expect(paintHeight).toBeCloseTo(40, 2);
+    });
   });
 
-  it("gets correct canvas dimension for portrait narrow screen", function() {
-    const videoHeight = 111.0;
-    const videoWidth = 100.0;
-    const screenHeight = 90.0;
-    const screenWidth = 40.0;
-    const videoResHeight = 100.0;
-    const videoResWidth = 40.0;
-    const [
-      height, width,
-      yOffset, xOffset,
-      paintHeight, paintWidth
-    ] = CameraCaptureScreenHandler.getCanvasSpecifications(
-      videoHeight, videoWidth,
-      screenHeight, screenWidth,
-      videoResHeight, videoResWidth
-    );
-    expect(xOffset).toBeCloseTo(0, 2);
-    expect(yOffset).toBeCloseTo(0, 2);
-    expect(height).toBeCloseTo(screenHeight, 2);
-    expect(width).toBeCloseTo(screenWidth, 2);
-    expect(paintHeight).toBeCloseTo(90, 2);
-    expect(paintWidth).toBeCloseTo(40, 2);
+  describe('When screen is portrait and video resolution is wide ' +
+    'leaving black margins on top and bottom of screen', function() {
+
+    beforeEach(function () {
+      videoHeightInPercentage = 100.0;
+      videoWidthInPercentage = 100.0;
+      screenHeight = 90.0;
+      screenWidth = 40.0;
+      videoResHeight = 40.0;
+      videoResWidth = 80.0;
+    });
+
+    it("keeps video dimension as is", function() {
+      const { videoHeight, videoWidth } = CameraCaptureScreenHandler.getVideoSpecifications(
+        screenHeight, screenWidth,
+        videoResHeight, videoResWidth
+      );
+      expect(videoWidth).toBeCloseTo(100, 2);
+      expect(videoHeight).toBeCloseTo(100, 2);
+    });
+
+    it("gets canvas dimension overlaying video position", function() {
+      const [
+        height, width,
+        yOffset, xOffset,
+        paintHeight, paintWidth
+      ] = CameraCaptureScreenHandler.getCanvasSpecifications(
+        videoHeightInPercentage, videoWidthInPercentage,
+        screenHeight, screenWidth,
+        videoResHeight, videoResWidth
+      );
+      expect(xOffset).toBeCloseTo(0, 2);
+      expect(yOffset).toBeCloseTo(35, 2);
+      expect(width).toBeCloseTo(screenWidth, 2);
+      expect(height).toBeCloseTo(20, 2);
+      expect(paintWidth).toBeCloseTo(videoResWidth, 2);
+      expect(paintHeight).toBeCloseTo(videoResHeight, 2);
+    });
   });
 
-  it("gets correct canvas dimension for landscape narrow screen", function() {
-    const videoWidth = 111.0;
-    const videoHeight = 100.0;
-    const screenWidth = 90.0;
-    const screenHeight = 40.0;
-    const videoResWidth = 100.0;
-    const videoResHeight = 40.0;
-    const [
-      height, width,
-      yOffset, xOffset,
-      paintHeight, paintWidth
-    ] = CameraCaptureScreenHandler.getCanvasSpecifications(
-      videoHeight, videoWidth,
-      screenHeight, screenWidth,
-      videoResHeight, videoResWidth
-    );
-    expect(xOffset).toBeCloseTo(0, 2);
-    expect(yOffset).toBeCloseTo(0, 2);
-    expect(height).toBeCloseTo(screenHeight, 2);
-    expect(width).toBeCloseTo(screenWidth, 2);
-    expect(paintWidth).toBeCloseTo(90, 2);
-    expect(paintHeight).toBeCloseTo(40, 2);
+  describe('When screen is landscape and video resolution is thin ' +
+    'leaving black margins on left and right of screen', function() {
+
+    beforeEach(function () {
+      videoHeightInPercentage = 100.0;
+      videoWidthInPercentage = 100.0;
+      screenHeight = 40.0;
+      screenWidth = 90.0;
+      videoResHeight = 20.0;
+      videoResWidth = 10.0;
+    });
+
+    it("keeps video dimension as is", function() {
+      const { videoHeight, videoWidth } = CameraCaptureScreenHandler.getVideoSpecifications(
+        screenHeight, screenWidth,
+        videoResHeight, videoResWidth
+      );
+      expect(videoWidth).toBeCloseTo(100, 2);
+      expect(videoHeight).toBeCloseTo(100, 2);
+    });
+
+    it("gets canvas dimension overlaying video position", function() {
+      const [
+        height, width,
+        yOffset, xOffset,
+        paintHeight, paintWidth
+      ] = CameraCaptureScreenHandler.getCanvasSpecifications(
+        videoHeightInPercentage, videoWidthInPercentage,
+        screenHeight, screenWidth,
+        videoResHeight, videoResWidth
+      );
+      expect(xOffset).toBeCloseTo(35, 2);
+      expect(yOffset).toBeCloseTo(0, 2);
+      expect(width).toBeCloseTo(20, 2);
+      expect(height).toBeCloseTo(screenHeight, 2);
+      expect(paintWidth).toBeCloseTo(videoResWidth, 2);
+      expect(paintHeight).toBeCloseTo(videoResHeight, 2);
+    });
   });
 
-  it("gets correct canvas dimension for normal portrait screen", function() {
-    const videoWidth = 100.0;
-    const videoHeight = 100.0;
-    const screenWidth = 100.0;
-    const screenHeight = 80.0;
-    const videoResWidth = 100.0;
-    const videoResHeight = 100.0;
-    const [
-      height, width,
-      yOffset, xOffset,
-      paintHeight, paintWidth
-    ] = CameraCaptureScreenHandler.getCanvasSpecifications(
-      videoHeight, videoWidth,
-      screenHeight, screenWidth,
-      videoResHeight, videoResWidth
-    );
-    expect(xOffset).toBeCloseTo(10, 2);
-    expect(yOffset).toBeCloseTo(0, 2);
-    expect(height).toBeCloseTo(80, 2);
-    expect(width).toBeCloseTo(80, 2);
-    expect(paintWidth).toBeCloseTo(100, 2);
-    expect(paintHeight).toBeCloseTo(100, 2);
-  });
+  describe('When screen perfect', function() {
 
-  it("gets correct canvas dimension for normal landscape screen", function() {
-    const videoWidth = 100.0;
-    const videoHeight = 100.0;
-    const screenWidth = 80.0;
-    const screenHeight = 100.0;
-    const videoResWidth = 100.0;
-    const videoResHeight = 100.0;
-    const [
-      height, width,
-      yOffset, xOffset,
-      paintHeight, paintWidth
-    ] = CameraCaptureScreenHandler.getCanvasSpecifications(
-      videoHeight, videoWidth,
-      screenHeight, screenWidth,
-      videoResHeight, videoResWidth
-    );
-    expect(xOffset).toBeCloseTo(0, 2);
-    expect(yOffset).toBeCloseTo(10, 2);
-    expect(height).toBeCloseTo(80, 2);
-    expect(width).toBeCloseTo(80, 2);
-    expect(paintWidth).toBeCloseTo(100, 2);
-    expect(paintHeight).toBeCloseTo(100, 2);
-  });
+    beforeEach(function () {
+      videoHeightInPercentage = 100.0;
+      videoWidthInPercentage = 100.0;
+      screenHeight = 80.0;
+      screenWidth = 80.0;
+      videoResHeight = 40.0;
+      videoResWidth = 40.0;
+    });
 
-  it("gets correct canvas dimension for the perfect screen", function() {
-    const videoWidth = 100.0;
-    const videoHeight = 100.0;
-    const screenWidth = 40.0;
-    const screenHeight = 40.0;
-    const videoResWidth = 80.0;
-    const videoResHeight = 80.0;
-    const [
-      height, width,
-      yOffset, xOffset,
-      paintHeight, paintWidth
-    ] = CameraCaptureScreenHandler.getCanvasSpecifications(
-      videoHeight, videoWidth,
-      screenHeight, screenWidth,
-      videoResHeight, videoResWidth
-    );
-    expect(xOffset).toBeCloseTo(0, 2);
-    expect(yOffset).toBeCloseTo(0, 2);
-    expect(height).toBeCloseTo(screenHeight, 2);
-    expect(width).toBeCloseTo(screenWidth, 2);
-    expect(paintWidth).toBeCloseTo(80, 2);
-    expect(paintHeight).toBeCloseTo(80, 2);
+    it("keeps video dimension as is", function () {
+      const { videoHeight, videoWidth } = CameraCaptureScreenHandler.getVideoSpecifications(
+        screenHeight, screenWidth,
+        videoResHeight, videoResWidth
+      );
+      expect(videoWidth)
+        .toBeCloseTo(100, 2);
+      expect(videoHeight)
+        .toBeCloseTo(100, 2);
+    });
+
+    it("gives canvas dimension with untruncated video and screen dimensions", function() {
+      const [
+        height, width,
+        yOffset, xOffset,
+        paintHeight, paintWidth
+      ] = CameraCaptureScreenHandler.getCanvasSpecifications(
+        videoHeightInPercentage, videoWidthInPercentage,
+        screenHeight, screenWidth,
+        videoResHeight, videoResWidth
+      );
+      expect(xOffset).toBeCloseTo(0, 2);
+      expect(yOffset).toBeCloseTo(0, 2);
+      expect(width).toBeCloseTo(screenWidth, 2);
+      expect(height).toBeCloseTo(screenHeight, 2);
+      expect(paintWidth).toBeCloseTo(videoResHeight, 2);
+      expect(paintHeight).toBeCloseTo(videoResWidth, 2);
+    });
   });
 });

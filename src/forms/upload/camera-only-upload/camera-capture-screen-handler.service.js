@@ -15,8 +15,8 @@ class CameraCaptureScreenHandler {
     screenHeight, screenWidth,
     videoResHeight, videoResWidth
   ) {
-    let videoHeight = 100;
-    let videoWidth = 100;
+    let videoHeightInPercentage = 100;
+    let videoWidthInPercentage = 100;
 
     if (hasNarrowVideoInPortraitScreen(
       screenHeight, screenWidth,
@@ -25,7 +25,7 @@ class CameraCaptureScreenHandler {
       this.$log.debug('(video) Portrait narrow screen');
       const videoResRatio = videoResHeight / videoResWidth;
       const screenResRatio = screenHeight / screenWidth;
-      videoHeight = parseInt((videoResRatio / screenResRatio) * 100, 10);
+      videoHeightInPercentage = parseInt((videoResRatio / screenResRatio) * 100, 10);
     } else if (hasNarrowVideoInLandScapeScreen(
       screenHeight, screenWidth,
       videoResHeight, videoResWidth
@@ -33,13 +33,13 @@ class CameraCaptureScreenHandler {
       this.$log.debug('(video) Landscape narrow screen');
       const videoResRatio = videoResWidth / videoResHeight;
       const screenResRatio = screenWidth / screenHeight;
-      videoWidth = parseInt((videoResRatio / screenResRatio) * 100, 10);
+      videoWidthInPercentage = parseInt((videoResRatio / screenResRatio) * 100, 10);
     }
     // We should not get a "normal" case here
 
     return {
-      videoHeight,
-      videoWidth
+      videoHeightInPercentage,
+      videoWidthInPercentage
     };
   }
 
