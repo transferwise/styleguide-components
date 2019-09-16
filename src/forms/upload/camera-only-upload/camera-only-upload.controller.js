@@ -100,8 +100,6 @@ class CameraOnlyUploadController {
         this.tryAcquireMediaStream()
           .then((stream) => {
             this.onVideoStreamAcquisition(stream);
-            // TODO haoyuan : check this during ios testing
-            // this.setScreenDimensions();
           })
           .catch((err) => {
             this.$log.error(err);
