@@ -238,6 +238,10 @@ class CameraOnlyUploadController {
   }
 }
 
+/**
+ * Need to use this pattern here because
+ * we only get height and width of video after it is playing
+ */
 function createVideoPlayCallback($ctrl) {
   return function videoPlayCallback() {
     $ctrl.captureButtonDisabled = false;
@@ -265,6 +269,7 @@ function createVideoPlayCallback($ctrl) {
         );
       $ctrl.videoHeight = videoHeightInPercentage;
       $ctrl.videoWidth = videoWidthInPercentage;
+      $ctrl.$scope.$apply();
     }
   };
 }
@@ -273,14 +278,14 @@ function createVideoPlayCallback($ctrl) {
 function createOrientationChangeCallback($ctrl) {
   // TODO haoyuan : should we cancel the capture if screen rotates?
   return function orientationChangeCallback() {
-    const afterOrientationChange = function afterOrientationChange() {
+    const onOrientationChange = function onOrientationChange() {
       if ($ctrl.showVideoPreview) {
-        this.$log.debug('Orientation change detected, recompute screen');
+        $ctrl.$log.debug('Orientation change detected, recompute screen');
         $ctrl.onLiveCamFlowStart();
       }
-      $ctrl.$window.removeEventListener('resize', afterOrientationChange);
+      $ctrl.$window.removeEventListener('resize', onOrientationChange);
     };
-    $ctrl.$window.addEventListener('resize', afterOrientationChange);
+    $ctrl.$window.addEventListener('resize', onOrientationChange);
   };
 }
 
