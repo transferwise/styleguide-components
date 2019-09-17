@@ -9,7 +9,6 @@ const CameraOnlyUpload = {
     cameraOverlay: '@', // Optional
     cameraFaceMode: '@', // environment/user
 
-    showCaptureScreen: '<',
     onCaptureScreenClose: '&',
     onUserCaptureConfirmation: '&'
   }

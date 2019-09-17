@@ -59,13 +59,6 @@ class CameraOnlyUploadController {
       this.$log.warn('getUserMedia() is not supported by your browser');
     }
 
-    // entry point of this component
-    this.$scope.$watch('$ctrl.showCaptureScreen', (newValue, oldValue) => {
-      if (newValue !== oldValue && newValue) {
-        this.onLiveCamFlowStart();
-      }
-    });
-
     this.displayCanvas = this.$element[0].querySelector('#video-preview #display-canvas');
     this.uploadCanvas = this.$element[0].querySelector('#video-preview #upload-canvas');
     this.videoPreviewElement = this.$element[0].querySelector('#video-preview');
@@ -76,10 +69,12 @@ class CameraOnlyUploadController {
 
     // TODO haoyuan : add change event listener to screenful,
     //  existing full screen should quit capture instead of showing non full screen camera
+
+    this.startLiveCamFlow();
   }
 
   // Acquire and attach video stream to video tag.
-  onLiveCamFlowStart() {
+  startLiveCamFlow() {
     this.$log.debug('----- Live cam flow start -----');
     this.captureButtonDisabled = true;
 
@@ -199,7 +194,7 @@ class CameraOnlyUploadController {
   }
 
   onRecaptureBtnClick() {
-    this.onLiveCamFlowStart();
+    this.startLiveCamFlow();
   }
 
   onUploadBtnClick() {
@@ -279,7 +274,7 @@ function createOrientationChangeCallback($ctrl) {
     const onOrientationChange = function onOrientationChange() {
       if ($ctrl.showVideoPreview) {
         $ctrl.$log.debug('Orientation change detected, recompute screen');
-        $ctrl.onLiveCamFlowStart();
+        $ctrl.startLiveCamFlow();
       }
       $ctrl.$window.removeEventListener('resize', onOrientationChange);
     };
