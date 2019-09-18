@@ -22,6 +22,7 @@ describe('Given a library for validating data types', function() {
       expect(typeValidators.isString(true)).toBe(false);
       expect(typeValidators.isString([])).toBe(false);
       expect(typeValidators.isString({})).toBe(false);
+      expect(typeValidators.isObject(undefined)).toBe(false);
     });
   });
 
@@ -37,6 +38,7 @@ describe('Given a library for validating data types', function() {
       expect(typeValidators.isNumber(true)).toBe(false);
       expect(typeValidators.isNumber([])).toBe(false);
       expect(typeValidators.isNumber({})).toBe(false);
+      expect(typeValidators.isObject(undefined)).toBe(false);
     });
   });
 
@@ -52,6 +54,7 @@ describe('Given a library for validating data types', function() {
       expect(typeValidators.isInteger(true)).toBe(false);
       expect(typeValidators.isInteger([])).toBe(false);
       expect(typeValidators.isInteger({})).toBe(false);
+      expect(typeValidators.isObject(undefined)).toBe(false);
     });
   });
 
@@ -65,6 +68,7 @@ describe('Given a library for validating data types', function() {
       expect(typeValidators.isBoolean('a')).toBe(false);
       expect(typeValidators.isBoolean([])).toBe(false);
       expect(typeValidators.isBoolean({})).toBe(false);
+      expect(typeValidators.isObject(undefined)).toBe(false);
     });
   });
 
@@ -78,6 +82,7 @@ describe('Given a library for validating data types', function() {
       expect(typeValidators.isArray('a')).toBe(false);
       expect(typeValidators.isArray(true)).toBe(false);
       expect(typeValidators.isArray({})).toBe(false);
+      expect(typeValidators.isObject(undefined)).toBe(false);
     });
   });
 
@@ -86,11 +91,12 @@ describe('Given a library for validating data types', function() {
       expect(typeValidators.isObject({a:1})).toBe(true);
       expect(typeValidators.isObject({})).toBe(true);
     });
-    it('should return false when the value is not an array', function() {
+    it('should return false when the value is not an object', function() {
       expect(typeValidators.isObject(1)).toBe(false);
       expect(typeValidators.isObject('a')).toBe(false);
       expect(typeValidators.isObject(true)).toBe(false);
       expect(typeValidators.isObject([])).toBe(false);
+      expect(typeValidators.isObject(undefined)).toBe(false);
     });
   });
 });

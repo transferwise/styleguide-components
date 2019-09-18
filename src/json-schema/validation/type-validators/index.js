@@ -12,7 +12,7 @@ function isBoolean(value) {
   return typeof value === 'boolean';
 }
 function isObject(value) {
-  return value.constructor === Object;
+  return value && value.constructor === Object;
 }
 function isArray(value) {
   return Array.isArray(value);
