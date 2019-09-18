@@ -63,7 +63,7 @@ workflows:
                 - gh-pages
                 - releases
       - release:
-          context: frontend-deploy-app
+          context: frontend-deploy-library
           requires:
             - test
           filters:
