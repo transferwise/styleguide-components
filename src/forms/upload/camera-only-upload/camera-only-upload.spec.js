@@ -5,16 +5,9 @@ describe('Given a camera only upload component', function() {
     $compile,
     $rootScope,
     $scope,
-    $timeout,
-    $controller,
     CameraCaptureScreenHandler,
     directiveController,
     directiveElement;
-
-  var base64url = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCA" +
-   "IAAACQd1PeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4wcMEQwbn8bvgwAAAB1pV" +
-   "Fh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAADElEQVQI12P4//8/AAX+" +
-   "Av7czFnnAAAAAElFTkSuQmCC";
 
   beforeEach(function() {
     module('tw.styleguide.forms.upload');
@@ -23,21 +16,18 @@ describe('Given a camera only upload component', function() {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
       $scope = $rootScope.$new();
-      $timeout = $injector.get('$timeout');
-      $controller = $injector.get('$controller');
       $q = $injector.get('$q');
       CameraCaptureScreenHandler = $injector.get('CameraCaptureScreenHandler');
     });
 
     var template = " \
          <tw-camera-only-upload \
-          show-capture-screen='showCaptureScreen' \
           on-capture-screen-close='onCaptureScreenClose()' \
-          on-user-capture-confirmation='onUserCaptureConfirmation(file)'> \
+          on-user-capture-confirmation='onUserCaptureConfirmation(file)' \
+          test-mode='true'> \
         </tw-camera-only-upload>";
 
     // Create spies for callbacks
-    $scope.showCaptureScreen = false;
     $scope.onCaptureScreenClose = jasmine.createSpy('onCaptureScreenClose');
     $scope.onUserCaptureConfirmation = jasmine.createSpy('onUserCaptureConfirmation');
 
@@ -45,132 +35,173 @@ describe('Given a camera only upload component', function() {
     directiveController = directiveElement.controller('twCameraOnlyUpload');
   });
 
-  describe('After it is attached', function() {
+  describe('After startLiveCamFlow is triggered', function() {
     beforeEach(function() {
-      spyOn(directiveController, 'onLiveCamFlowStart').and.callFake(function() {});
-    });
-
-    it('Should not start video capture flow when showCaptureScreen changes to false', function() {
-      $scope.showCaptureScreen = false;
-      $scope.$apply();
-      expect(directiveController.onLiveCamFlowStart).not.toHaveBeenCalled();
-    });
-
-    it('Should start video capture flow when showCaptureScreen changes to true', function() {
-      $scope.showCaptureScreen = true;
-      $scope.$apply();
-      expect(directiveController.onLiveCamFlowStart).toHaveBeenCalled();
-    });
-  });
-
-  describe('After onLiveCamFlowStart is triggered', function() {
-    beforeEach(function() {
-      spyOn(directiveController, 'setScreenDimensions').and.callFake(function() {});
       spyOn(directiveController, 'tryAcquireFullScreen').and.returnValue($q.resolve());
       spyOn(directiveController, 'tryAcquireMediaStream').and.returnValue($q.resolve());
-      spyOn(directiveController, 'onVideoStreamAcquisition').and.callFake(function() {});
+      spyOn(directiveController, 'onVideoStreamAcquisition').and.callThrough();
+    });
+
+    it('Should try to acquire full screen', function() {
+      startLiveCameraFlow(directiveController);
+      expect(directiveController.tryAcquireFullScreen).toHaveBeenCalled();
     });
 
     it('Should try to acquire media stream after getting full screen', function() {
       directiveController.tryAcquireFullScreen.and.returnValue($q.resolve());
-      $scope.showCaptureScreen = true;
-      $scope.$apply();
-      expect(directiveController.setScreenDimensions).toHaveBeenCalled();
+      startLiveCameraFlow(directiveController);
       expect(directiveController.tryAcquireMediaStream).toHaveBeenCalled();
     });
 
     it('Should try to acquire media stream after not getting full screen', function() {
       directiveController.tryAcquireFullScreen.and.returnValue($q.reject());
-      $scope.showCaptureScreen = true;
-      $scope.$apply();
-      expect(directiveController.setScreenDimensions).toHaveBeenCalled();
+      startLiveCameraFlow(directiveController);
       expect(directiveController.tryAcquireMediaStream).toHaveBeenCalled();
     });
 
-    it('Should call onVideoStreamAcquisition after video stream acquisition', function(){
+    it('Should display video after video stream acquisition', function(){
       directiveController.tryAcquireMediaStream.and.returnValue($q.resolve());
-      $scope.showCaptureScreen = true;
-      $scope.$apply();
+      startLiveCameraFlow(directiveController);
       expect(directiveController.onVideoStreamAcquisition).toHaveBeenCalled();
+      expect($(getVideoElement(directiveElement[0])).hasClass('ng-hide')).not.toBeTruthy();
+      expect($(getDisplayCanvasElement(directiveElement[0])).hasClass('ng-hide')).toBeTruthy();
     });
 
-    it('Should not call onVideoStreamAcquisition after video stream acquisition', function(){
+    it('Should quit on video stream acquisition failure', function(){
       directiveController.tryAcquireMediaStream.and.returnValue($q.reject());
-      $scope.showCaptureScreen = true;
-      $scope.$apply();
+      startLiveCameraFlow(directiveController);
       expect(directiveController.onVideoStreamAcquisition).not.toHaveBeenCalled();
+      expect($(getVideoPreviewElement(directiveElement[0])).hasClass('ng-hide')).toBeTruthy();
+      expect($scope.onCaptureScreenClose).toHaveBeenCalled();
     });
   });
 
   describe('After entering live upload flow', function() {
     beforeEach(function() {
-      spyOn(directiveController, 'onLiveCamFlowStart').and.callFake(function() {
-        directiveController.onVideoStreamAcquisition(null);
-      });
-      $scope.showCaptureScreen = true;
-      $scope.$apply();
+      spyOn(directiveController, 'tryAcquireFullScreen').and.returnValue($q.resolve());
+      spyOn(directiveController, 'tryAcquireMediaStream').and.returnValue($q.resolve());
+      startLiveCameraFlow(directiveController);
     });
 
     it('Should quit live upload flow when cancel is clicked', function () {
-      spyOn(directiveController, 'onCancelBtnClick').and.callThrough();
       spyOn(directiveController, 'onCaptureScreenClose').and.callThrough();
-      const cancelButton = directiveElement[0].querySelector('#video-cancel');
-      cancelButton.click();
-      expect(directiveController.onCancelBtnClick).toHaveBeenCalled();
-      expect(directiveController.showVideoPreview).not.toBeTruthy();
+      getVideoCancelButton(directiveElement[0]).click();
+      expect($(getVideoPreviewElement(directiveElement[0])).hasClass('ng-hide')).toBeTruthy();
       expect($scope.onCaptureScreenClose).toHaveBeenCalled();
     });
 
     it('Should show capture screen when capture is clicked', function () {
-      directiveController.captureButtonDisabled = false;
+      setupScreen();
       spyOn(directiveController, 'onCaptureBtnClick').and.callThrough();
-      spyOn(directiveController.CameraCaptureScreenHandler, 'getCanvasSpecifications')
-        .and.returnValue([1, 1, 1, 1, 1, 1]);
-      const confirmButton = directiveElement[0].querySelector('#video-confirm');
-      confirmButton.click();
-      expect(directiveController.onCaptureBtnClick).toHaveBeenCalled();
-      expect(directiveController.CameraCaptureScreenHandler.getCanvasSpecifications).toHaveBeenCalled();
-      expect(directiveController.showVideoInPreview).not.toBeTruthy();
-      expect(directiveController.showCaptureInPreview).toBeTruthy();
+      getVideoConfirmButton(directiveElement[0]).click();
+      expect($(getVideoElement(directiveElement[0])).hasClass('ng-hide')).toBeTruthy();
+      const canvas = getDisplayCanvasElement(directiveElement[0]);
+      expect($(canvas).hasClass('ng-hide')).not.toBeTruthy();
+      expect(canvas.height).toBe(90);
+      expect(canvas.width).toBe(40);
+      expect($(canvas).offset().top).toBe(0);
+      expect($(canvas).offset().left).toBe(0);
+
+      // Setting up a portrait screen, other orientations have been tested in screen handler
+      function setupScreen() {
+        directiveController.captureButtonDisabled = false;
+        directiveController.videoHeight = 111.0;
+        directiveController.videoWidth = 100.0;
+        directiveController.screenHeight = 90.0;
+        directiveController.screenWidth = 40.0;
+        directiveController.videoResHeight = 100.0;
+        directiveController.videoResWidth = 40.0;
+      }
     });
   });
 
   describe('When at video capture preview screen', function() {
     beforeEach(function() {
-      spyOn(directiveController, 'onLiveCamFlowStart').and.callFake(function() {
-        directiveController.onVideoStreamAcquisition(null);
-      });
-      $scope.showCaptureScreen = true;
-      $scope.$apply();
-      directiveController.showCaptureInPreview = true;
-      directiveController.showVideoInPreview = false;
+      spyOn(directiveController, 'tryAcquireFullScreen').and.returnValue($q.resolve());
+      spyOn(directiveController, 'tryAcquireMediaStream').and.returnValue($q.resolve());
+      startLiveCameraFlow(directiveController);
+      directiveController.onCaptureBtnClick();
       $scope.$apply();
     });
 
     it('Should re-enter video preview when capture cancel is clicked', function () {
-      spyOn(directiveController, 'onRecaptureBtnClick').and.callThrough();
-      const cancelButton = directiveElement[0].querySelector('#capture-cancel');
-      cancelButton.click();
-      expect(directiveController.onRecaptureBtnClick).toHaveBeenCalled();
-      expect(directiveController.onLiveCamFlowStart).toHaveBeenCalled();
+      getCaptureCancelButton(directiveElement[0]).click();
+      // Video preview is shown
+      expect($(getVideoElement(directiveElement[0])).hasClass('ng-hide')).not.toBeTruthy();
+      expect($(getDisplayCanvasElement(directiveElement[0])).hasClass('ng-hide')).toBeTruthy();
+      // Video control buttons are shown
+      expect(getVideoCancelButton(directiveElement[0])).toBeTruthy();
+      expect(getVideoConfirmButton(directiveElement[0])).toBeTruthy();
+      // Canvas control buttons are hidden
+      expect(getCaptureCancelButton(directiveElement[0])).not.toBeTruthy();
+      expect(getCaptureConfirmButton(directiveElement[0])).not.toBeTruthy();
     });
-    
+
     it('Should perform file upload when confirm button is clicked', function () {
-      spyOn(directiveController, 'onUploadBtnClick').and.callThrough();
-      spyOn(directiveController.CameraCaptureScreenHandler, 'getCanvasSpecifications')
-        .and.returnValue([1, 1, 1, 1, 1, 1]);
+      setupScreen();
       spyOn(directiveController.uploadCanvas,'toBlob').and.callFake(function(callback) {
         // Mock to skip async behavior
         callback();
       });
 
-      const confirmButton = directiveElement[0].querySelector('#capture-confirm');
-      confirmButton.click();
-      expect(directiveController.onUploadBtnClick).toHaveBeenCalled();
-      expect(directiveController.CameraCaptureScreenHandler.getCanvasSpecifications).toHaveBeenCalled();
+      getCaptureConfirmButton(directiveElement[0]).click();
       expect($scope.onUserCaptureConfirmation).toHaveBeenCalled();
+      expect($scope.onCaptureScreenClose).toHaveBeenCalled();
+      const canvas = getUploadCanvasElement(directiveElement[0]);
+      expect($(canvas).hasClass('ng-hide')).toBeTruthy();
+      expect(canvas.height).toBe(90);
+      expect(canvas.width).toBe(40);
+      expect($(canvas).offset().top).toBe(0);
+      expect($(canvas).offset().left).toBe(0);
+
+      // Setting up a portrait screen, other orientations have been tested in screen handler
+      function setupScreen() {
+        directiveController.videoHeight = 111.0;
+        directiveController.videoWidth = 100.0;
+        directiveController.screenHeight = 90.0;
+        directiveController.screenWidth = 40.0;
+        directiveController.videoResHeight = 100.0;
+        directiveController.videoResWidth = 40.0;
+      }
     });
   });
+
+  function startLiveCameraFlow(controller) {
+    controller.startLiveCamFlow();
+    controller.$scope.$apply();
+  }
+
+  function getVideoPreviewElement(element) {
+    return element.querySelector('#video-preview');
+  }
+
+  function getVideoElement(element) {
+    return element.querySelector('#video');
+  }
+
+  function getDisplayCanvasElement(element) {
+    return element.querySelector('#display-canvas');
+  }
+
+  function getUploadCanvasElement(element) {
+    return element.querySelector('#upload-canvas');
+  }
+
+  function getVideoCancelButton(element) {
+    return element.querySelector('#video-cancel');
+  }
+
+  function getVideoConfirmButton(element) {
+    return element.querySelector('#video-confirm');
+  }
+
+  function getCaptureCancelButton(element) {
+    return element.querySelector('#capture-cancel');
+  }
+
+  function getCaptureConfirmButton(element) {
+    return element.querySelector('#capture-confirm');
+  }
 
   function getCompiledDirectiveElement($scope, template) {
     var element = angular.element(template);

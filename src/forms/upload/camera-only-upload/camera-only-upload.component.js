@@ -10,7 +10,13 @@ const CameraOnlyUpload = {
     cameraFaceMode: '@', // environment/user
 
     onCaptureScreenClose: '&',
-    onUserCaptureConfirmation: '&'
+    onUserCaptureConfirmation: '&',
+
+    /**
+     * Need this parameter to skip user interaction
+     * during controller initialization in unit tests
+     */
+    testMode: '@' // true/false
   }
 };
 

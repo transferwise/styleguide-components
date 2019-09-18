@@ -70,7 +70,9 @@ class CameraOnlyUploadController {
     // TODO haoyuan : add change event listener to screenful,
     //  existing full screen should quit capture instead of showing non full screen camera
 
-    this.startLiveCamFlow();
+    if (!this.testMode || this.testMode.toLowerCase() !== 'true') {
+      this.startLiveCamFlow();
+    }
   }
 
   // Acquire and attach video stream to video tag.
@@ -97,7 +99,9 @@ class CameraOnlyUploadController {
             this.onVideoStreamAcquisition(stream);
           })
           .catch((err) => {
+            // TODO haoyuan : Should somehow ask user to refresh page to reaquire permission
             this.$log.error(err);
+            this.onCancelBtnClick();
           });
       });
   }
