@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JSON Schema Components - TransferWise</title>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <script src="lib/jquery.min.js"></script>
+  <script src="lib/angular.min.js"></script>
+  <script src="lib/bootstrap.min.js"></script>
+  <script src="lib/styleguide-components.js"></script>
+  <script src="lib/json-schema.js"></script>
+
+  <script src="lib/demo.js"></script>
+  <script>
+  angular.module('my-app', [
+    'tw.styleguide-components',
+    'tw.json-schema',
+    'tw.styleguide.demo'
+  ]);
+  </script>
+
+  <link type="text/css" rel="stylesheet" href="lib/bootstrap.css" />
+  <!--<link type="text/css" rel="stylesheet"
+    href="http://localhost:9001/dist/css/bootstrap.min.css" />-->
+  <link type="text/css" rel="stylesheet" href="lib/currency-flags.css" />
+  <link type="text/css" rel="stylesheet" href="css/examples.css" />
+
+</head>
+<body ng-app="my-app" class="bg-default">
+  <div class="container m-t-3" ng-controller="PageController as vm">
+    <json-schema-playground></json-schema-playground>
+  </div>
+</body>
+</html>
