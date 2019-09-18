@@ -112,31 +112,30 @@
       </tw-upload>
     </div>
     <h5>Configuration</h5>
-<pre>&lt;tw-upload
-  ng-model="{{ $ctrl.model.length > 30 ? ($ctrl.model | limitTo : 30) + '...' : $ctrl.model }}"
-  name="{{$ctrl.name}}"
-  icon="{{$ctrl.icon}}"
-  size="{{$ctrl.size}}"
-  label="{{$ctrl.label}}"
+<pre>&lt;tw-upload<span ng-if="$ctrl.showNgModel">
+  ng-model="{{ $ctrl.model.length > 30 ? ($ctrl.model | limitTo : 30) + '...' : $ctrl.model }}"</span>
+  name="{{$ctrl.name}}"<span ng-if="$ctrl.icon">
+  icon="{{$ctrl.icon}}"</span><span ng-if="$ctrl.size !== 'md'">
+  size="{{$ctrl.size}}"</span><span ng-if="$ctrl.label">
+  label="{{$ctrl.label}}"</span>
   placeholder="{{$ctrl.placeholder}}"
   button-text="{{$ctrl.buttonText}}"
-  cancel-text="{{$ctrl.cancelText}}"
-  accept="{{$ctrl.accept}}"
-  wrong-type-text="{{$ctrl.wrongTypeMessage}}"
+  cancel-text="{{$ctrl.cancelText}}"<span ng-if="$ctrl.accept">
+  accept="{{$ctrl.accept}}"</span><span ng-if="$ctrl.wrongTypeText">
+  wrong-type-text="{{$ctrl.wrongTypeMessage}}"</span><span ng-if="$ctrl.maxSize">
   max-size="{{$ctrl.maxSize}}"
-  too-large-message="{{$ctrl.tooLargeMessage}}"
-  processing-text="{{$ctrl.processingText}}"
-  success-text="{{$ctrl.successText}}"
-  failure-text="{{$ctrl.failureText}}"
-  http-options="{{$ctrl.httpOptions}}"
-  error-message="{{$ctrl.errorMessage}}"
+  too-large-message="{{$ctrl.tooLargeMessage}}"</span><span ng-if="$ctrl.processingText">
+  processing-text="{{$ctrl.processingText}}"</span><span ng-if="$ctrl.successText">
+  success-text="{{$ctrl.successText}}"</span><span ng-if="$ctrl.failureText">
+  failure-text="{{$ctrl.failureText}}"</span><span ng-if="$ctrl.httpOptions">
+  http-options="{{$ctrl.httpOptions}}"</span><span ng-if="$ctrl.errorMessage">
+  error-message="{{$ctrl.errorMessage}}"</span>
   on-start="$ctrl.onStart"
   on-success="$ctrl.onSuccess"
   on-failure="$ctrl.onFailure"
-  on-cancel="$ctrl.onCancel"
-  source="{{$ctrl.source}}"
-  &gt;
-  &lt;h1&gt;Custom completion card&lt;/h1&gt;
+  on-cancel="$ctrl.onCancel"</span><span ng-if="$ctrl.source">
+  source="{{$ctrl.source}}"</span>&gt;<span ng-if="$ctrl.customComplete">
+  &lt;h1&gt;Custom completion card&lt;/h1&gt;</span>
 &lt;/tw-upload&gt;
 </pre>
   </div>
