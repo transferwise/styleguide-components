@@ -56,7 +56,7 @@ workflows:
   build_and_publish:
     jobs:
       - test:
-          context: frontend-deploy-library
+          context: frontend-deploy-app
           filters:
             branches:
               ignore:
