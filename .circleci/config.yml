@@ -47,6 +47,7 @@ jobs:
             npm run copy-files-to-dist
             npm run build
             npm run deploy
+            npm run release-to-github
             npm publish dist/ --access=public
             npm run deploy:demo
 
