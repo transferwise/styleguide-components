@@ -1,3 +1,31 @@
+# v3.10.3
+## Ensure components include their dependent modules
+Tests now only instantiate their own module, rather than the full library.
+Switch to using angular.mock.inject and angular.mock.module rather than globals.
+
+# v3.10.2
+## Enable eslint operator-linebreak rule
+Fix violations.
+
+# v3.10.1
+## Enable eslint no-useless-path-segments rule
+Fix violations
+
+# v3.10.0
+## Add support for persistAsync
+twUpload can now post images immediately and extract an id from the response to
+bind to the model.  This can also be used by twFormControl and twField.
+
+# v3.9.4
+## Change the tests to run in Chrome
+PhantomJS was failing non-deterministically.
+
+# v3.9.3
+## Render all header option in select
+
+# v3.9.2
+## Update dependencies, remove jshint.
+
 # v3.9.1
 ## Fix min and max validation error messages
 
