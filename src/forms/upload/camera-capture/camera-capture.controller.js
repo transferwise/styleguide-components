@@ -153,20 +153,20 @@ class CameraOnlyUploadController {
   }
 
   closeVideoStream() {
+    if (screenfull.enabled) {
+      screenfull.exit();
+    }
+    this.video.srcObject = null;
     if (this.mediaStream) {
       this.mediaStream.getTracks().forEach(track => track.stop());
       this.mediaStream = null;
     }
+    this.showVideoPreview = false;
     this.captureButtonDisabled = true;
   }
 
   onCancelBtnClick() {
-    if (screenfull.enabled) {
-      screenfull.exit();
-    }
-    this.showVideoPreview = false;
     this.closeVideoStream();
-    this.video.srcObject = null;
     this.onCancel();
   }
 
@@ -292,8 +292,8 @@ function createUploadCallback($ctrl) {
       screenfull.exit();
     }
     $ctrl.showVideoPreview = false;
-    $ctrl.onConfirm({ file: blob });
     $ctrl.closeVideoStream();
+    $ctrl.onConfirm({ file: blob });
   };
 }
 
