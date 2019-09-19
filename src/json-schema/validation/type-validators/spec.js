@@ -22,7 +22,7 @@ describe('Given a library for validating data types', function() {
       expect(typeValidators.isString(true)).toBe(false);
       expect(typeValidators.isString([])).toBe(false);
       expect(typeValidators.isString({})).toBe(false);
-      expect(typeValidators.isObject(undefined)).toBe(false);
+      expect(typeValidators.isString(undefined)).toBe(false);
     });
   });
 
@@ -38,7 +38,7 @@ describe('Given a library for validating data types', function() {
       expect(typeValidators.isNumber(true)).toBe(false);
       expect(typeValidators.isNumber([])).toBe(false);
       expect(typeValidators.isNumber({})).toBe(false);
-      expect(typeValidators.isObject(undefined)).toBe(false);
+      expect(typeValidators.isNumber(undefined)).toBe(false);
     });
   });
 
@@ -54,7 +54,7 @@ describe('Given a library for validating data types', function() {
       expect(typeValidators.isInteger(true)).toBe(false);
       expect(typeValidators.isInteger([])).toBe(false);
       expect(typeValidators.isInteger({})).toBe(false);
-      expect(typeValidators.isObject(undefined)).toBe(false);
+      expect(typeValidators.isInteger(undefined)).toBe(false);
     });
   });
 
@@ -68,7 +68,7 @@ describe('Given a library for validating data types', function() {
       expect(typeValidators.isBoolean('a')).toBe(false);
       expect(typeValidators.isBoolean([])).toBe(false);
       expect(typeValidators.isBoolean({})).toBe(false);
-      expect(typeValidators.isObject(undefined)).toBe(false);
+      expect(typeValidators.isBoolean(undefined)).toBe(false);
     });
   });
 
@@ -82,7 +82,7 @@ describe('Given a library for validating data types', function() {
       expect(typeValidators.isArray('a')).toBe(false);
       expect(typeValidators.isArray(true)).toBe(false);
       expect(typeValidators.isArray({})).toBe(false);
-      expect(typeValidators.isObject(undefined)).toBe(false);
+      expect(typeValidators.isArray(undefined)).toBe(false);
     });
   });
 
