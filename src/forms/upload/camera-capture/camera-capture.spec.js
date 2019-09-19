@@ -25,7 +25,7 @@ describe('Given a camera capture component', function() {
         on-cancel='onCancel()' \
         on-confirm='onConfirm(file)' \
         test-mode='true'> \
-      </tw-camera-capture";
+      </tw-camera-capture>";
 
     // Create spies for callbacks
     $scope.onCancel = jasmine.createSpy('onCancel');
@@ -42,7 +42,7 @@ describe('Given a camera capture component', function() {
     spyOn(controller, 'tryAcquireMediaStream').and.returnValue(acquireMediaStreamRequest.promise);
   });
 
-  describe('After startLiveCamFlow is triggered', function() {
+  describe('after startLiveCamFlow is triggered', function() {
     beforeEach(function() {
       spyOn(controller, 'onVideoStreamAcquisition').and.callThrough();
     });
@@ -53,58 +53,71 @@ describe('Given a camera capture component', function() {
     });
 
     describe('when we get full screen successfully', function() {
-      beforeEach(function() {
+      beforeEach(function () {
         acquireFullScreenRequest.resolve();
         acquireMediaStreamRequest.resolve();
         startLiveCameraFlow(controller);
       });
 
-      it('should try to acquire the media stream', function() {
-        expect(controller.tryAcquireMediaStream).toHaveBeenCalled();
-      });
-
-      it('should fire the stream acquisition handler', function(){
-        expect(controller.onVideoStreamAcquisition).toHaveBeenCalled();
-      });
-
-      it('should show the video element', function() {
-        expect(getVideoElement(component).classList).not.toContain('ng-hide');
-      });
-
-      it('should not show the display canvas', function() {
-        expect(getDisplayCanvasElement(component).classList).toContain('ng-hide');
+      it('should try to acquire the media stream', function () {
+        expect(controller.tryAcquireMediaStream)
+          .toHaveBeenCalled();
       });
     });
 
     describe('when we fail to get full screen', function() {
-      beforeEach(function() {
+      beforeEach(function () {
         acquireFullScreenRequest.reject();
         startLiveCameraFlow(controller);
       });
 
-      it('should try to acquire media stream after not getting full screen', function() {
-        expect(controller.tryAcquireMediaStream).toHaveBeenCalled();
+      it('should try to acquire media stream after not getting full screen', function () {
+        expect(controller.tryAcquireMediaStream)
+          .toHaveBeenCalled();
+      });
+    });
+
+    describe('after trying to acquire full screen regardless of success or failure', function() {
+      beforeEach(function () {
+        acquireFullScreenRequest.resolve();
       });
 
-      it('should not call the stream acquisition handler', function(){
-        expect(controller.onVideoStreamAcquisition).not.toHaveBeenCalled();
+      describe('when we acquire media stream successfully', function() {
+        beforeEach(function () {
+          acquireMediaStreamRequest.resolve();
+          startLiveCameraFlow(controller);
+        });
+        it('should fire the stream acquisition handler', function(){
+          expect(controller.onVideoStreamAcquisition).toHaveBeenCalled();
+        });
+
+        it('should show the video element', function() {
+          expect(getVideoElement(component).classList).not.toContain('ng-hide');
+        });
+
+        it('should not show the display canvas', function() {
+          expect(getDisplayCanvasElement(component).classList).toContain('ng-hide');
+        });
       });
 
-      it('should not call the onCancel callback', function() {
-        expect($scope.onCancel).not.toHaveBeenCalled();
-      });
+      describe('when we fail to acquire media stream', function() {
+        beforeEach(function () {
+          acquireMediaStreamRequest.reject();
+          startLiveCameraFlow(controller);
+        });
 
-      it('should not hide the video element', function() {
-        expect(getVideoElement(component).classList).not.toContain('ng-hide');
-      });
+        it('should not call the stream acquisition handler', function(){
+          expect(controller.onVideoStreamAcquisition).not.toHaveBeenCalled();
+        });
 
-      it('should hide the display canvas', function() {
-        expect(getDisplayCanvasElement(component).classList).toContain('ng-hide');
+        it('should shutdown thus calling the onCancel callback', function() {
+          expect($scope.onCancel).toHaveBeenCalled();
+        });
       });
     });
   });
 
-  describe('After entering live upload flow', function() {
+  describe('after entering live upload flow', function() {
     beforeEach(function() {
       acquireFullScreenRequest.resolve();
       acquireMediaStreamRequest.resolve();
@@ -122,7 +135,7 @@ describe('Given a camera capture component', function() {
         expect(getVideoPreviewElement(component).classList).toContain('ng-hide');
       });
 
-      it('should call the onCancel handler', function () {
+      it('should shutdown thus calling the onCancel handler', function () {
         expect($scope.onCancel).toHaveBeenCalled();
       });
     });
@@ -160,7 +173,7 @@ describe('Given a camera capture component', function() {
     });
   });
 
-  describe('When at video capture preview screen', function() {
+  describe('when at video capture preview screen', function() {
     beforeEach(function() {
       acquireFullScreenRequest.resolve();
       acquireMediaStreamRequest.resolve();
