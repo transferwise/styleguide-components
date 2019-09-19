@@ -42,13 +42,11 @@
       </label>
 
       <!-- camera only upload -->
-      <tw-camera-only-upload
+      <tw-camera-capture
         ng-if="$ctrl.isLiveCameraUpload && $ctrl.showLiveCaptureScreen"
-        show-capture-screen="$ctrl.showLiveCaptureScreen"
-        on-capture-screen-close="$ctrl.onLiveCameraCaptureScreenClose()"
-        on-user-capture-confirmation="$ctrl.onFileConfirmation(file)"
-        ng-disabled="$ctrl.ngDisabled">
-      </tw-camera-only-upload>
+        on-cancel="$ctrl.onCameraCaptureCancel()"
+        on-confirm="$ctrl.onCameraCaptureConfirm(file)">
+      </tw-camera-capture>
     </div>
   </div>
 

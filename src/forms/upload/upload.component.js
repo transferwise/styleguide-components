@@ -33,7 +33,7 @@ const Upload = {
     onCancel: '=',
     maxSize: '<', // TODO move to ngMax?
 
-    // Camera only upload options
+    // Camera capture upload options
 
     /* Source of file to upload
      * Possible values
