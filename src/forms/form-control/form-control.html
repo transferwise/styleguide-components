@@ -58,7 +58,7 @@
       name="{{$ctrl.name}}"
       label="{{$ctrl.label}}"
       icon="{{$ctrl.uploadIcon}}"
-      help-image="{{$ctrl.help.image}}"
+      help-image="{{$ctrl.helpImage}}"
       placeholder="{{$ctrl.placeholder}}"
       accept="{{$ctrl.uploadAccept}}"
       complete-text="{{$ctrl.label}}"
@@ -73,6 +73,9 @@
       ng-focus="$ctrl.focus()"
       ng-blur="$ctrl.blur()"
       http-options="$ctrl.persistAsync"
+      source="$ctrl.fileUploadSource"
+      camera-overlay="{{$ctrl.cameraOptions.overlay}}"
+      camera-direction="{{$ctrl.cameraOptions.direction}}"
     ></tw-upload>
   </div>
 

@@ -34,7 +34,10 @@ const FormControl = {
     uploadOptions: '<',
     textFormat: '<',
     validationAsync: '<',
-    persistAsync: '<'
+    persistAsync: '<',
+    // Live capture parameters for upload component
+    fileUploadSource: '<',
+    cameraOptions: '<'
   }
 };
 

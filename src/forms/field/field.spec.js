@@ -64,11 +64,37 @@ describe('Field', function() {
         element = getCompiledDirectiveElement();
       });
 
-      it('should render a password control', function() {
+      it('should render a file upload', function() {
         expect(element.querySelector('tw-upload')).toBeTruthy();
       });
+
       it('should not render a visible label', function() {
         expect(element.querySelector('.control-label')).toBeFalsy();
+      });
+
+      describe('and camera capture attributes', function() {
+        beforeEach(function() {
+          const cameraCaptureAttributes = {
+            sourceType: "CAMERA_ONLY",
+            help: {
+              image: "helpImage"
+            },
+            cameraOptions: {
+              overlay: "overlay",
+              direction: "direction"
+            }
+          };
+          $scope.options = $.extend($scope.options, cameraCaptureAttributes);
+          element = getCompiledDirectiveElement();
+        });
+
+        it('should render a file upload with camera capture attributes', function() {
+          const uploadElement = element.querySelector('tw-upload');
+          expect(uploadElement).toBeTruthy();
+          expect(uploadElement.getAttribute('help-image')).toBe('helpImage');
+          expect(uploadElement.getAttribute('camera-overlay')).toBe('overlay');
+          expect(uploadElement.getAttribute('camera-direction')).toBe('direction');
+        });
       });
     });
 

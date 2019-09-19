@@ -62,6 +62,7 @@ function RequirementsService($http) {
     this.prepValuesAsync(preparedField, model);
     this.prepValidationMessages(preparedField, validationMessages);
     this.prepHelp(preparedField);
+    this.prepCameraOptions(preparedField);
 
     return preparedField;
   };
@@ -388,7 +389,8 @@ function RequirementsService($http) {
   };
 
   this.prepHelp = (field) => {
-    if (!field.help && (field.helpText || field.helpImage || field.helpList)) {
+    if (!field.help
+      && (field.helpText || field.helpImage || field.helpList || field.uploadPlaceholderImage)) {
       field.help = {};
     }
     if (field.helpText) {
@@ -399,9 +401,30 @@ function RequirementsService($http) {
       field.help.image = field.helpImage;
       delete field.helpImage;
     }
+    // helpImage does not have same lineage placeholder image
+    // 2 fields can overwrite each other safely (only one will be present at a time)
+    if (field.uploadPlaceholderImage) {
+      field.help.image = field.uploadPlaceholderImage;
+      delete field.uploadPlaceholderImage;
+    }
     if (field.list) {
       field.help.list = field.helpList;
       delete field.helpList;
+    }
+  };
+
+  this.prepCameraOptions = (field) => {
+    if (!field.cameraOptions && field.camera) {
+      field.cameraOptions = {};
+    }
+    if (field.camera) {
+      if (field.camera.guideOverlay) {
+        field.cameraOptions.overlay = field.camera.guideOverlay;
+      }
+      if (field.camera.facingMode) {
+        field.cameraOptions.direction = field.camera.facingMode;
+      }
+      delete field.camera;
     }
   };
 
