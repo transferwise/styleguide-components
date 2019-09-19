@@ -5,7 +5,7 @@
     <div class="well bg-focus">
       <json-schema-form
         schema="$ctrl.schema"
-        model="$ctrl.model"
+        model="$ctrl.inputModel"
         on-change="$ctrl.onModelChange(model, isValid)"
       ></json-schema-form>
     </div>
@@ -15,14 +15,25 @@
       <label class="control-label">Schema</label>
       <textarea
         class="form-control"
-        ng-model="$ctrl.currentSchema"
-        ng-change="$ctrl.onSchemaChange($ctrl.currentSchema)"
-        ng-model-options="{ debounce: 300 }">
+        ng-model="$ctrl.schemaString"
+        ng-change="$ctrl.onSchemaChange($ctrl.schemaString)"
+        ng-model-options="{ debounce: 300 }"
+        style="height:400px">
+      </textarea>
+    </div>
+    <div class="form-group">
+      <label class="control-label">Input model:</label>
+      <textarea
+        class="form-control"
+        ng-model="$ctrl.modelString"
+        ng-change="$ctrl.onInputModelChange($ctrl.modelString)"
+        ng-model-options="{ debounce: 300 }"
+        style="height:250px">
       </textarea>
     </div>
 
-    <h4>Data model:</h4>
-<pre>{{ $ctrl.myModel | json }}</pre>
+    <h4>Output model:</h4>
+<pre>{{ $ctrl.outputModel | json }}</pre>
     <div class="label" ng-class="{
       'label-success': $ctrl.isValid,
       'label-warning': !$ctrl.isValid
