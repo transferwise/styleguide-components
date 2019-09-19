@@ -1,6 +1,6 @@
 import screenfull from 'screenfull'; // MIT@https://github.com/sindresorhus/screenfull.js
 
-class CameraOnlyUploadController {
+class CameraCaptureController {
   constructor(
     $element,
     $scope,
@@ -297,7 +297,7 @@ function createUploadCallback($ctrl) {
   };
 }
 
-CameraOnlyUploadController.$inject = [
+CameraCaptureController.$inject = [
   '$element',
   '$scope',
   '$window',
@@ -307,4 +307,4 @@ CameraOnlyUploadController.$inject = [
   'CameraCaptureScreenHandler'
 ];
 
-export default CameraOnlyUploadController;
+export default CameraCaptureController;
