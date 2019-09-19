@@ -9,7 +9,7 @@
       <tw-radio
         ng-model="$ctrl.activeIndex"
         ng-value="(index + 1)"
-        ng-change="$ctrl.onSchemaChange(schema)"></tw-radio>
+        ng-change="$ctrl.onSchemaChange(schema, index)"></tw-radio>
       {{ schema.title }}
       <p ng-if="schema.description" class="secondary m-b-0">
         {{ schema.description }}
@@ -18,13 +18,15 @@
   </div>
 </div>
 
-<generic-schema
-  ng-if="$ctrl.schema.oneOf[$ctrl.activeIndex - 1]"
-  schema="$ctrl.schema.oneOf[$ctrl.activeIndex - 1]"
-  model="$ctrl.model"
-  errors="$ctrl.errors"
-  locale="$ctrl.locale"
-  translations="$ctrl.translations"
-  on-change="$ctrl.onModelChange(model, schema)"
-  hide-title="true">
-</generic-schema>
+<div ng-repeat="(index, schema) in $ctrl.schema.oneOf">
+  <generic-schema
+    ng-if="$ctrl.activeIndex === (index + 1)"
+    schema="schema"
+    model="$ctrl.models[index]"
+    errors="$ctrl.errors"
+    locale="$ctrl.locale"
+    translations="$ctrl.translations"
+    on-change="$ctrl.onModelChange(model, schema, index)"
+    hide-title="true">
+  </generic-schema>
+</div>
