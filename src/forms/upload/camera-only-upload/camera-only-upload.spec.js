@@ -7,8 +7,8 @@ describe('Given a camera only upload component', function() {
     $scope,
     controller,
     component,
-    acquireFullScreenPromise,
-    acquireMediaStreamPromise;
+    acquireFullScreenRequest,
+    acquireMediaStreamRequest;
 
   beforeEach(function() {
     module('tw.styleguide.forms.upload');
@@ -34,12 +34,16 @@ describe('Given a camera only upload component', function() {
     const $component = getComponent($scope, template);
     controller = $component.controller('twCameraOnlyUpload');
     component = $component[0];
+
+    acquireFullScreenRequest = $q.defer();
+    acquireMediaStreamRequest = $q.defer();
+
+    spyOn(controller, 'tryAcquireFullScreen').and.returnValue(acquireFullScreenRequest.promise);
+    spyOn(controller, 'tryAcquireMediaStream').and.returnValue(acquireMediaStreamRequest.promise);
   });
 
   describe('After startLiveCamFlow is triggered', function() {
     beforeEach(function() {
-      spyOn(controller, 'tryAcquireFullScreen').and.returnValue($q.resolve());
-      spyOn(controller, 'tryAcquireMediaStream').and.returnValue($q.resolve());
       spyOn(controller, 'onVideoStreamAcquisition').and.callThrough();
     });
 
@@ -50,7 +54,8 @@ describe('Given a camera only upload component', function() {
 
     describe('when we get full screen successfully', function() {
       beforeEach(function() {
-        controller.tryAcquireFullScreen.and.returnValue($q.resolve());
+        acquireFullScreenRequest.resolve();
+        acquireMediaStreamRequest.resolve();
         startLiveCameraFlow(controller);
       });
 
@@ -73,7 +78,7 @@ describe('Given a camera only upload component', function() {
 
     describe('when we fail to get full screen', function() {
       beforeEach(function() {
-        controller.tryAcquireFullScreen.and.returnValue($q.reject());
+        acquireFullScreenRequest.reject();
         startLiveCameraFlow(controller);
       });
 
@@ -101,8 +106,8 @@ describe('Given a camera only upload component', function() {
 
   describe('After entering live upload flow', function() {
     beforeEach(function() {
-      spyOn(controller, 'tryAcquireFullScreen').and.returnValue($q.resolve());
-      spyOn(controller, 'tryAcquireMediaStream').and.returnValue($q.resolve());
+      acquireFullScreenRequest.resolve();
+      acquireMediaStreamRequest.resolve();
       spyOn(controller, 'onCaptureScreenClose').and.callThrough();
       spyOn(controller, 'onCaptureBtnClick').and.callThrough();
       startLiveCameraFlow(controller);
@@ -157,8 +162,8 @@ describe('Given a camera only upload component', function() {
 
   describe('When at video capture preview screen', function() {
     beforeEach(function() {
-      spyOn(controller, 'tryAcquireFullScreen').and.returnValue($q.resolve());
-      spyOn(controller, 'tryAcquireMediaStream').and.returnValue($q.resolve());
+      acquireFullScreenRequest.resolve();
+      acquireMediaStreamRequest.resolve();
       startLiveCameraFlow(controller);
       controller.onCaptureBtnClick();
       $scope.$apply();
