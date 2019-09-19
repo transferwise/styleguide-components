@@ -158,7 +158,6 @@ class CameraOnlyUploadController {
       this.mediaStream = null;
     }
     this.captureButtonDisabled = true;
-    this.onCaptureScreenClose();
   }
 
   onCancelBtnClick() {
@@ -168,6 +167,7 @@ class CameraOnlyUploadController {
     this.showVideoPreview = false;
     this.closeVideoStream();
     this.video.srcObject = null;
+    this.onCancel();
   }
 
   onCaptureBtnClick() {
@@ -292,7 +292,7 @@ function createUploadCallback($ctrl) {
       screenfull.exit();
     }
     $ctrl.showVideoPreview = false;
-    $ctrl.onUserCaptureConfirmation({ file: blob });
+    $ctrl.onConfirm({ file: blob });
     $ctrl.closeVideoStream();
   };
 }

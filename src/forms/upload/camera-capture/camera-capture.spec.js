@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Given a camera only upload component', function() {
+describe('Given a camera capture component', function() {
   var $q,
     $compile,
     $rootScope,
@@ -21,18 +21,18 @@ describe('Given a camera only upload component', function() {
     });
 
     var template = " \
-      <tw-camera-only-upload \
-        on-capture-screen-close='onCaptureScreenClose()' \
-        on-user-capture-confirmation='onUserCaptureConfirmation(file)' \
+      <tw-camera-capture \
+        on-cancel='onCancel()' \
+        on-confirm='onConfirm(file)' \
         test-mode='true'> \
-      </tw-camera-only-upload>";
+      </tw-camera-capture";
 
     // Create spies for callbacks
-    $scope.onCaptureScreenClose = jasmine.createSpy('onCaptureScreenClose');
-    $scope.onUserCaptureConfirmation = jasmine.createSpy('onUserCaptureConfirmation');
+    $scope.onCancel = jasmine.createSpy('onCancel');
+    $scope.onConfirm = jasmine.createSpy('onConfirm');
 
     const $component = getComponent($scope, template);
-    controller = $component.controller('twCameraOnlyUpload');
+    controller = $component.controller('twCameraCapture');
     component = $component[0];
 
     acquireFullScreenRequest = $q.defer();
@@ -71,8 +71,8 @@ describe('Given a camera only upload component', function() {
         expect(getVideoElement(component).classList).not.toContain('ng-hide');
       });
 
-      it('should show the display canvas', function() {
-        expect(getDisplayCanvasElement(component).classList).not.toContain('ng-hide');
+      it('should not show the display canvas', function() {
+        expect(getDisplayCanvasElement(component).classList).toContain('ng-hide');
       });
     });
 
@@ -90,16 +90,16 @@ describe('Given a camera only upload component', function() {
         expect(controller.onVideoStreamAcquisition).not.toHaveBeenCalled();
       });
 
-      it('should call the onCaptureScreenClose callback', function() {
-        expect($scope.onCaptureScreenClose).toHaveBeenCalled();
+      it('should not call the onCancel callback', function() {
+        expect($scope.onCancel).not.toHaveBeenCalled();
       });
 
-      it('should hide the video element', function() {
-        expect(getVideoElement(component).classList).toContain('ng-hide');
+      it('should not hide the video element', function() {
+        expect(getVideoElement(component).classList).not.toContain('ng-hide');
       });
 
       it('should hide the display canvas', function() {
-        expect(getDisplayCanvasElement(component).classList).toContains('ng-hide');
+        expect(getDisplayCanvasElement(component).classList).toContain('ng-hide');
       });
     });
   });
@@ -108,7 +108,7 @@ describe('Given a camera only upload component', function() {
     beforeEach(function() {
       acquireFullScreenRequest.resolve();
       acquireMediaStreamRequest.resolve();
-      spyOn(controller, 'onCaptureScreenClose').and.callThrough();
+      spyOn(controller, 'onCancel').and.callThrough();
       spyOn(controller, 'onCaptureBtnClick').and.callThrough();
       startLiveCameraFlow(controller);
     });
@@ -122,8 +122,8 @@ describe('Given a camera only upload component', function() {
         expect(getVideoPreviewElement(component).classList).toContain('ng-hide');
       });
 
-      it('should call the onCaptureScreenClose handler', function () {
-        expect($scope.onCaptureScreenClose).toHaveBeenCalled();
+      it('should call the onCancel handler', function () {
+        expect($scope.onCancel).toHaveBeenCalled();
       });
     });
 
@@ -214,12 +214,12 @@ describe('Given a camera only upload component', function() {
         getCaptureConfirmButton(component).click();
       });
 
-      it('should call the onUserCaptureConfirmation handler', function () {
-        expect($scope.onUserCaptureConfirmation).toHaveBeenCalled();
+      it('should call the onConfirm handler', function () {
+        expect($scope.onConfirm).toHaveBeenCalled();
       });
 
-      it('should call the onCaptureScreenClose handler', function () {
-        expect($scope.onCaptureScreenClose).toHaveBeenCalled();
+      it('should not call the onCancel handler', function () {
+        expect($scope.onCancel).not.toHaveBeenCalled();
       });
 
       it('should hide the canvas', function () {

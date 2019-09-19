@@ -54,7 +54,12 @@ class UploadController {
     }
   }
 
-  onLiveCameraCaptureScreenClose() {
+  onCameraCaptureCancel() {
+    this.showLiveCaptureScreen = false;
+  }
+
+  onCameraCaptureConfirm(file) {
+    this.onFileConfirmation(file);
     this.showLiveCaptureScreen = false;
   }
 

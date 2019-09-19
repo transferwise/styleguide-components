@@ -1,16 +1,16 @@
-import controller from './camera-only-upload.controller.js';
-import template from './camera-only-upload.html';
-import './camera-only-upload.less';
+import controller from './camera-capture.controller.js';
+import template from './camera-capture.html';
+import './camera-capture.less';
 
-const CameraOnlyUpload = {
+const CameraCapture = {
   controller,
   template,
   bindings: {
     cameraOverlay: '@', // Optional
     cameraFaceMode: '@', // environment/user
 
-    onCaptureScreenClose: '&',
-    onUserCaptureConfirmation: '&',
+    onCancel: '&',
+    onConfirm: '&',
 
     /**
      * Need this parameter to skip user interaction
@@ -20,4 +20,4 @@ const CameraOnlyUpload = {
   }
 };
 
-export default CameraOnlyUpload;
+export default CameraCapture;
