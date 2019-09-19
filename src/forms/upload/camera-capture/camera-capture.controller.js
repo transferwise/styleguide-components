@@ -26,7 +26,7 @@ class CameraOnlyUploadController {
           max: 1280
         },
         facingMode: {
-          ideal: this.cameraFaceMode
+          ideal: this.direction
         }
       },
       audio: false
@@ -34,7 +34,7 @@ class CameraOnlyUploadController {
   }
 
   $onInit() {
-    this.cameraFaceMode = this.cameraFaceMode || 'environment';
+    this.direction = this.direction || 'environment';
 
     // Video preview control
     this.showVideoPreview = false;

@@ -43,7 +43,7 @@ const Upload = {
      */
     source: '<',
     cameraOverlay: '@', // Optional
-    cameraFaceMode: '@' // environment/user
+    cameraDirection: '@' // environment/user
   }
 };
 

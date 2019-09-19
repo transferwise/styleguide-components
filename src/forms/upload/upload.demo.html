@@ -74,8 +74,8 @@
         http-options="$ctrl.httpOptions"
 
         source="$ctrl.source"
-        camera-overlay="$ctrl.cameraOverlay"
-        camera-face-mode="$ctrl.cameraFaceMode"
+        camera-overlay="{{$ctrl.cameraOverlay}}"
+        camera-direction="{{$ctrl.cameraDirection}}"
       ></tw-upload>
       <tw-upload
         ng-if="$ctrl.customComplete"
@@ -106,8 +106,8 @@
         http-options="$ctrl.httpOptions"
 
         source="$ctrl.source"
-        camera-overlay="$ctrl.cameraOverlay"
-        camera-face-mode="$ctrl.cameraFaceMode">
+        camera-overlay="{{$ctrl.cameraOverlay}}"
+        camera-direction="{{$ctrl.cameraDirection}}">
       <h1>Custom completion card</h1>
       </tw-upload>
     </div>
@@ -160,12 +160,12 @@
 
       <div class="form-group" ng-init="$ctrl.size = 'md'">
         <label class="control-label">
-          Camera Face Mode
+          Camera Direction
         </label>
         <tw-select
-          placeholder="Camera Face Mode"
-          ng-model="$ctrl.cameraFaceMode"
-          options="$ctrl.cameraFaceModes"></tw-select>
+          placeholder="Camera Direction"
+          ng-model="$ctrl.cameraDirection"
+          options="$ctrl.cameraDirections"></tw-select>
       </div>
 
       <div class="form-group" ng-init="$ctrl.name = 'file'">

@@ -2,7 +2,7 @@
   <!-- Video preview screen with the video itself and capture screen, should be full screen -->
   <div id="video-preview" ng-show="$ctrl.showVideoPreview" class="w-100 h-100 fixed-top bg-dark">
     <!-- TODO haoyuan: center and rotate camera overlay -->
-    <img id="overlay" ng-if="$ctrl.cameraOverlay" ng-show="$ctrl.showVideoInPreview" ng-src="{{$ctrl.cameraOverlay}}" alt="overlay" class="w-100 h-100 fixed-top opacity-overlay zindex-video-overlay"/>
+    <img id="overlay" ng-if="$ctrl.overlay" ng-show="$ctrl.showVideoInPreview" ng-src="{{$ctrl.overlay}}" alt="overlay" class="w-100 h-100 fixed-top opacity-overlay zindex-video-overlay"/>
     <!-- TODO haoyuan: work with designer to figure out how this asset is going to be provided -->
     <video id="video" ng-show="$ctrl.showVideoInPreview" ng-style="{height: $ctrl.videoHeight + '%', width: $ctrl.videoWidth + '%'}" class="fixed-top zindex-video" playsinline></video>
     <canvas id="display-canvas" ng-show="$ctrl.showCaptureInPreview" class="fixed zindex-video" ></canvas>

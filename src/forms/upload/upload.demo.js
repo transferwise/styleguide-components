@@ -79,7 +79,7 @@ function controller($scope) {
     { value: 'ANY', label: 'ANY' }
   ];
 
-  this.cameraFaceModes = [
+  this.cameraDirections = [
     { value: 'environment', label: 'environment' },
     { value: 'user', label: 'user' }
   ];

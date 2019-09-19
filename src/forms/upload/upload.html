@@ -44,6 +44,8 @@
       <!-- camera only upload -->
       <tw-camera-capture
         ng-if="$ctrl.isLiveCameraUpload && $ctrl.showLiveCaptureScreen"
+        overlay="{{$ctrl.cameraOverlay}}"
+        direction="{{$ctrl.cameraDirection}}"
         on-cancel="$ctrl.onCameraCaptureCancel()"
         on-confirm="$ctrl.onCameraCaptureConfirm(file)">
       </tw-camera-capture>
