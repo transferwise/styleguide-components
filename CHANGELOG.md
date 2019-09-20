@@ -1,3 +1,8 @@
+# v3.11.0
+## Add camera upload component
+Added a component in twUpload that allows users to perform assisted camera uploads
+This component is used in place when a "camera only" upload mode is specified for twUpload 
+
 # v3.10.3
 ## Ensure components include their dependent modules
 Tests now only instantiate their own module, rather than the full library.
