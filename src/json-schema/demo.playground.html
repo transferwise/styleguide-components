@@ -1,15 +1,6 @@
 <h1 class="h2">JSON schema playground</h1>
 <div class="row m-t-2">
-  <div class="col-md-6">
-    <label class="control-label">The form</label>
-    <div class="well bg-focus">
-      <json-schema-form
-        schema="$ctrl.schema"
-        model="$ctrl.inputModel"
-        on-change="$ctrl.onModelChange(model, isValid)"
-      ></json-schema-form>
-    </div>
-  </div>
+
   <div class="col-md-6">
     <div class="form-group">
       <label class="control-label">Schema</label>
@@ -31,7 +22,17 @@
         ng-style="{ 'height': '200px' }">
       </textarea>
     </div>
+  </div>
 
+  <div class="col-md-6">
+    <label class="control-label">The form</label>
+    <div class="well bg-focus">
+      <json-schema-form
+        schema="$ctrl.schema"
+        model="$ctrl.inputModel"
+        on-change="$ctrl.onModelChange(model, isValid)"
+      ></json-schema-form>
+    </div>
     <h4>Output model:</h4>
 <pre>{{ $ctrl.outputModel | json }}</pre>
     <div class="label" ng-class="{
@@ -41,4 +42,5 @@
       {{ $ctrl.isValid ? 'Valid' : 'Invalid!' }}
     </div>
   </div>
+  
 </div>
