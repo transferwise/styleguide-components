@@ -418,11 +418,11 @@ function RequirementsService($http) {
       field.cameraOptions = {};
     }
     if (field.camera) {
-      if (field.camera.guideOverlay) {
-        field.cameraOptions.overlay = field.camera.guideOverlay;
+      if (field.camera.overlay) {
+        field.cameraOptions.overlay = field.camera.overlay;
       }
-      if (field.camera.facingMode) {
-        field.cameraOptions.direction = field.camera.facingMode;
+      if (field.camera.direction) {
+        field.cameraOptions.direction = field.camera.direction;
       }
       delete field.camera;
     }

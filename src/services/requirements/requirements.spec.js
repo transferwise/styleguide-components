@@ -245,16 +245,16 @@ describe('Requirements Service', function() {
         var input = {
           type: "text",
           camera: {
-            guideOverlay: "guideOverlay",
-            facingMode: "facingMode"
+            overlay: "overlay",
+            direction: "direction"
           }
         };
 
         var expectedOutput = {
           type: "string",
           cameraOptions : {
-            overlay: "guideOverlay",
-            direction: "facingMode"
+            overlay: "overlay",
+            direction: "direction"
           },
           control: "text"
         };
