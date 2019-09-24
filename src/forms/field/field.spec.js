@@ -76,10 +76,10 @@ describe('Field', function() {
         beforeEach(function() {
           const cameraCaptureAttributes = {
             sourceType: "CAMERA_ONLY",
-            helpOptions: {
+            help: {
               image: "helpImage"
             },
-            cameraOptions: {
+            camera: {
               overlay: "overlay",
               direction: "direction"
             }

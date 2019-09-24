@@ -13,7 +13,7 @@
     label="{{ $ctrl.field.title }}"
     type="{{ $ctrl.control | lowercase }}"
     placeholder="{{ $ctrl.field.placeholder }}"
-    help-options="$ctrl.field.helpOptions"
+    help-options="$ctrl.field.help"
     locale="{{ $ctrl.locale }}"
     upload-accept="{{ $ctrl.field.accept }}"
     upload-icon="{{ $ctrl.field.icon }}"
@@ -35,7 +35,7 @@
     validation-async="$ctrl.field.validationAsync"
     persist-async="$ctrl.field.persistAsync"
     file-upload-source="$ctrl.field.sourceType"
-    camera-options="$ctrl.field.cameraOptions"
+    camera-options="$ctrl.field.camera"
     tw-validation
   ></tw-form-control>
 
@@ -61,20 +61,20 @@
     {{ $ctrl.warningMessage }}
   </div>
 
-  <div ng-if="$ctrl.field.helpOptions"
+  <div ng-if="$ctrl.field.help"
     class="alert alert-focus"
     ng-class="{
       'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)
     }">
-    <span ng-if="$ctrl.field.helpOptions.message">
-      {{ $ctrl.field.helpOptions.message }}
+    <span ng-if="$ctrl.field.help.message">
+      {{ $ctrl.field.help.message }}
     </span>
-    <ul ng-if="$ctrl.field.helpOptions.list" class="list-unstyled">
-      <li ng-repeat="helpMessage in $ctrl.field.helpOptions.list">{{ helpMessage }}</li>
+    <ul ng-if="$ctrl.field.help.list" class="list-unstyled">
+      <li ng-repeat="helpMessage in $ctrl.field.help.list">{{ helpMessage }}</li>
     </ul>
     <img
-      ng-if="$ctrl.field.helpOptions.image && $ctrl.control !== 'file'"
-      ng-src="{{$ctrl.field.helpOptions.image}}"
+      ng-if="$ctrl.field.help.image && $ctrl.control !== 'file'"
+      ng-src="{{$ctrl.field.help.image}}"
       alt="{{ $ctrl.field.title }}"
       class="thumbnail m-y-2" />
   </div>

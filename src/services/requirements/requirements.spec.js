@@ -87,7 +87,7 @@ describe('Requirements Service', function() {
           type: "string",
           control: "text",
           placeholder: "Example",
-          helpOptions: {
+          help: {
             message: "Tool tip"
           },
           minimum: 1,
@@ -212,7 +212,7 @@ describe('Requirements Service', function() {
 
         var expectedOutput = {
           type: "string",
-          helpOptions : {
+          help : {
             message: "helpText",
             image: "helpImage",
           },
@@ -230,7 +230,7 @@ describe('Requirements Service', function() {
 
         var expectedOutput = {
           type: "string",
-          helpOptions : {
+          help : {
             image: "helpImage",
           },
           control: "text"
@@ -241,7 +241,7 @@ describe('Requirements Service', function() {
     });
 
     describe('when preparing camera fields', function() {
-      it('should rename fields to new format', function() {
+      it('should leave fields untouched', function() {
         var input = {
           type: "text",
           camera: {
@@ -252,7 +252,7 @@ describe('Requirements Service', function() {
 
         var expectedOutput = {
           type: "string",
-          cameraOptions : {
+          camera : {
             overlay: "overlay",
             direction: "direction"
           },
