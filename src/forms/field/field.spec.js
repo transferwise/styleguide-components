@@ -76,7 +76,7 @@ describe('Field', function() {
         beforeEach(function() {
           const cameraCaptureAttributes = {
             sourceType: "CAMERA_ONLY",
-            help: {
+            helpOptions: {
               image: "helpImage"
             },
             cameraOptions: {

@@ -13,8 +13,7 @@
     label="{{ $ctrl.field.title }}"
     type="{{ $ctrl.control | lowercase }}"
     placeholder="{{ $ctrl.field.placeholder }}"
-    help-text="{{ $ctrl.field.help.message }}"
-    help-image="{{ $ctrl.field.help.image }}"
+    help-options="$ctrl.field.helpOptions"
     locale="{{ $ctrl.locale }}"
     upload-accept="{{ $ctrl.field.accept }}"
     upload-icon="{{ $ctrl.field.icon }}"
@@ -62,20 +61,20 @@
     {{ $ctrl.warningMessage }}
   </div>
 
-  <div ng-if="$ctrl.field.help"
+  <div ng-if="$ctrl.field.helpOptions"
     class="alert alert-focus"
     ng-class="{
       'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)
     }">
-    <span ng-if="$ctrl.field.help.message">
-      {{ $ctrl.field.help.message }}
+    <span ng-if="$ctrl.field.helpOptions.message">
+      {{ $ctrl.field.helpOptions.message }}
     </span>
-    <ul ng-if="$ctrl.field.help.list" class="list-unstyled">
-      <li ng-repeat="helpMessage in $ctrl.field.help.list">{{ helpMessage }}</li>
+    <ul ng-if="$ctrl.field.helpOptions.list" class="list-unstyled">
+      <li ng-repeat="helpMessage in $ctrl.field.helpOptions.list">{{ helpMessage }}</li>
     </ul>
     <img
-      ng-if="$ctrl.field.help.image && $ctrl.control !== 'file'"
-      ng-src="{{$ctrl.field.help.image}}"
+      ng-if="$ctrl.field.helpOptions.image && $ctrl.control !== 'file'"
+      ng-src="{{$ctrl.field.helpOptions.image}}"
       alt="{{ $ctrl.field.title }}"
       class="thumbnail m-y-2" />
   </div>

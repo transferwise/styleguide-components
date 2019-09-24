@@ -87,7 +87,7 @@ describe('Requirements Service', function() {
           type: "string",
           control: "text",
           placeholder: "Example",
-          help: {
+          helpOptions: {
             message: "Tool tip"
           },
           minimum: 1,
@@ -212,7 +212,7 @@ describe('Requirements Service', function() {
 
         var expectedOutput = {
           type: "string",
-          help : {
+          helpOptions : {
             message: "helpText",
             image: "helpImage",
           },
@@ -230,7 +230,7 @@ describe('Requirements Service', function() {
 
         var expectedOutput = {
           type: "string",
-          help : {
+          helpOptions : {
             image: "helpImage",
           },
           control: "text"
