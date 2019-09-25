@@ -1,3 +1,9 @@
+# v3.12.0
+## JSON schema forms now default to the first 'oneOf' schema that validates
+This is useful when editing existing data as we select a sensible schema.  Also
+addresses a couple small bugs when handling unusual data. Adds a new 'JSON schema
+playground' where you can see how schemas render in real time.
+
 # v3.10.3
 ## Ensure components include their dependent modules
 Tests now only instantiate their own module, rather than the full library.
