@@ -2,14 +2,17 @@
 AngularJS components for TransferWise Bootstrap.  The repo provides form controls,
 dynamic form components, validation, and some styling directives.
 
-Live demo and documentation http://transferwise.github.io/styleguide-components/
+Live demo and documentation: http://transferwise.github.io/styleguide-components/
+
+For detailed documentation on how to use JSON schema dynamic forms: https://transferwise.github.io/styleguide-components/requirements.html
+
+For a playground where you can try out different JSON schemas in a live editor: https://transferwise.github.io/styleguide-components/playground.html
 
 ### Installation
-Use yarn, npm or bower to import the latest version.  Specify at least a major
-version so that you can manage breaking changes.
+Import the latest version number from NPM.
 ```
 dependencies: {
-    "styleguide-components": "https://github.com/transferwise/styleguide-components.git#vX.X.X",
+  "@transferwise/styleguide-components": "^3.10.4",
 }
 ```
 
