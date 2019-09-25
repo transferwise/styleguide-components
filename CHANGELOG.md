@@ -1,3 +1,9 @@
+# v3.12.0
+## JSON schema forms now default to the first 'oneOf' schema that validates
+This is useful when editing existing data as we select a sensible schema.  Also
+addresses a couple small bugs when handling unusual data. Adds a new 'JSON schema
+playground' where you can see how schemas render in real time.
+
 # v3.11.1
 ## Support new camera upload related dynamic form properties
 Process and propate newly added properties in dynamic interface supporting camera upload
@@ -5,7 +11,7 @@ Process and propate newly added properties in dynamic interface supporting camer
 # v3.11.0
 ## Add camera upload component
 Added a component in twUpload that allows users to perform assisted camera uploads
-This component is used in place when a "camera only" upload mode is specified for twUpload 
+This component is used in place when a "camera only" upload mode is specified for twUpload
 
 # v3.10.3
 ## Ensure components include their dependent modules

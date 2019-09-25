@@ -1,15 +1,13 @@
 class Controller {
   $onInit() {
-    if (!this.model) {
-      this.model = {};
-    }
+    this.outputModel = angular.extend({}, this.model || {});
   }
 
   onModelChange(property, model, schema) {
-    this.model[property] = model;
+    this.outputModel[property] = model;
 
     if (this.onChange) {
-      this.onChange({ model: this.model, schema });
+      this.onChange({ model: this.outputModel, schema });
     }
   }
 

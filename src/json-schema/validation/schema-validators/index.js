@@ -30,7 +30,7 @@ function isValidObjectSchema(value, schema) {
     .map(propertyName => isObjectPropertyValid(
       value[propertyName],
       schema.properties[propertyName],
-      schema.required.indexOf(propertyName) >= 0
+      schema.required && schema.required.indexOf(propertyName) >= 0
     ))
     .reduce((validSoFar, validProperty) => validSoFar && validProperty, true);
 }

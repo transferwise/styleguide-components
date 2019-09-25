@@ -32,30 +32,38 @@ describe('Given an oneOfSchema component', function() {
     component = getComponent($compile, $scope, template);
   });
 
-  describe('when given a multiple schemas', function() {
+  describe('when given multiple schemas', function() {
     beforeEach(function() {
       $scope.schema = {
         oneOf: [{
-          type: "object",
+          type: 'object',
           properties: {
             a: {
-              type: "number"
-            },
+              type: 'number'
+            }
+          },
+          required: ['a']
+        }, {
+          type: 'object',
+          properties: {
             b: {
-              type: "number"
+              type: 'number'
             }
-          }
-        },{
-          type: "object",
+          },
+          required: ['b']
+        }, {
+          type: 'object',
           properties: {
-            a: {
-              type: "number"
+            c: {
+              type: 'number'
             }
-          }
+          },
+          required: ['c']
         }]
       };
 
-      $scope.errors = {a:"error"};
+      $scope.model = { b: 2, c: 3 };
+      $scope.errors = { a: 'error' };
       $scope.locale = 'es-ES';
       $scope.translations = {};
 
@@ -66,12 +74,12 @@ describe('Given an oneOfSchema component', function() {
       expect(component.querySelectorAll('generic-schema').length).toBe(1);
     });
 
-    it('should pass the first schema to the generic-schema', function() {
-      expect(genericSchema.bindings.schema).toEqual($scope.schema.oneOf[0]);
+    it('should pass the first schema with a valid model', function() {
+      expect(genericSchema.bindings.schema).toEqual($scope.schema.oneOf[1]);
     });
 
-    it('should pass the model to the generic-schema', function() {
-      expect(genericSchema.bindings.model).toEqual($scope.model);
+    it('should pass the valid part of the model to the generic-schema', function() {
+      expect(genericSchema.bindings.model).toEqual({ b: 2 });
     });
 
     it('should pass errors to the nested generic schema component', function() {
@@ -88,39 +96,58 @@ describe('Given an oneOfSchema component', function() {
 
     describe('when another schema is selected', function() {
       beforeEach(function() {
-        $scope.model = { a: 1, b: 2 };
-        $scope.$apply();
         var radios = component.querySelectorAll('tw-radio button')
-        radios[1].dispatchEvent(new CustomEvent('click'));
+        radios[2].dispatchEvent(new CustomEvent('click'));
       });
       it('should pass that schema to the nested generic schema', function() {
-        expect(genericSchema.bindings.schema).toBe($scope.schema.oneOf[1]);
+        expect(genericSchema.bindings.schema).toBe($scope.schema.oneOf[2]);
       });
+
+      it('should pass the valid parts of the original model to the nested generic schema', function() {
+        expect(genericSchema.bindings.model).toEqual({ c: 3 });
+      });
+
       it('should trigger onChange with only the properties in the new schema', function() {
         expect($scope.onChange).toHaveBeenCalledWith(
-          { a: 1 },
-          $scope.schema.oneOf[1]
+          { c: 3 },
+          $scope.schema.oneOf[2]
         );
       })
     });
 
     describe('when the generic schema triggers an onChange event', function() {
       beforeEach(function() {
-        $scope.model = { a: 1 };
-        $scope.$apply();
         genericSchema.bindings.onChange({
-          model: { b: 2 },
-          schema: $scope.schema.oneOf[0]
+          model: { b: 4 },
+          schema: $scope.schema.oneOf[1]
         });
       });
+
       it('should trigger the components onChange once', function() {
         expect($scope.onChange.calls.count()).toBe(1);
       });
+
       it('should broadcast the changed model from the child', function() {
         expect($scope.onChange).toHaveBeenCalledWith(
-          { b: 2 },
-          $scope.schema.oneOf[0]
+          { b: 4 },
+          $scope.schema.oneOf[1]
         );
+      });
+
+      it('should not change the input model', function() {
+        expect($scope.model).toEqual({ b: 2, c: 3 });
+      });
+
+      describe('when the user toggles to another schema, and back again', function() {
+        beforeEach(function() {
+          var radios = component.querySelectorAll('tw-radio button')
+          radios[2].dispatchEvent(new CustomEvent('click'));
+          radios[1].dispatchEvent(new CustomEvent('click'));
+        });
+
+        it('should remember and pass down the changed value', function() {
+          expect( genericSchema.bindings.model).toEqual({ b: 4 });
+        });
       });
     });
   });

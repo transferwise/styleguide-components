@@ -73,16 +73,21 @@ describe('Given a component for rendering object schemas', function() {
     describe('when the child component triggers onChange', function() {
       beforeEach(function() {
         genericSchema.bindings.onChange({
-          model: "bar",
+          model: "barbar",
           schema: $scope.schema.properties.foo
         });
       });
       it('should trigger the components onChange with the new value under the correct key', function() {
         expect($scope.onChange.calls.count()).toBe(1);
         expect($scope.onChange).toHaveBeenCalledWith(
-          { foo: "bar" },
+          { foo: "barbar" },
           $scope.schema.properties.foo
         );
+      });
+
+      it('should not change the original model', function() {
+        expect($scope.model).not.toBe({ foo: "barbar" });
+        expect($scope.model).toEqual({ foo: "bar" });
       });
     });
   });

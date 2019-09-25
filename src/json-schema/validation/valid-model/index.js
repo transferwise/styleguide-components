@@ -37,7 +37,7 @@ function cleanModelWithObjectSchema(model, schema) {
   const cleanedModel = {};
   Object.keys(schema.properties).forEach((property) => {
     // If the property exists in the model, clean it, and add it
-    if (typeof model[property] !== 'undefined') {
+    if (model && typeof model[property] !== 'undefined') {
       const newValue = getValidModelParts(model[property], schema.properties[property]);
       if (newValue !== null) {
         cleanedModel[property] = newValue;

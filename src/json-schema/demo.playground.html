@@ -1,0 +1,46 @@
+<h1 class="h2">JSON schema playground</h1>
+<div class="row m-t-2">
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label class="control-label">Schema</label>
+      <textarea
+        class="form-control"
+        ng-model="$ctrl.schemaString"
+        ng-change="$ctrl.onSchemaChange($ctrl.schemaString)"
+        ng-model-options="{ debounce: 300 }"
+        ng-style="{ 'height': '400px' }">
+      </textarea>
+    </div>
+    <div class="form-group">
+      <label class="control-label">Input model:</label>
+      <textarea
+        class="form-control"
+        ng-model="$ctrl.modelString"
+        ng-change="$ctrl.onInputModelChange($ctrl.modelString)"
+        ng-model-options="{ debounce: 300 }"
+        ng-style="{ 'height': '200px' }">
+      </textarea>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <label class="control-label">The form</label>
+    <div class="well bg-focus">
+      <json-schema-form
+        schema="$ctrl.schema"
+        model="$ctrl.inputModel"
+        on-change="$ctrl.onModelChange(model, isValid)"
+      ></json-schema-form>
+    </div>
+    <h4>Output model:</h4>
+<pre>{{ $ctrl.outputModel | json }}</pre>
+    <div class="label" ng-class="{
+      'label-success': $ctrl.isValid,
+      'label-warning': !$ctrl.isValid
+    }">
+      {{ $ctrl.isValid ? 'Valid' : 'Invalid!' }}
+    </div>
+  </div>
+  
+</div>
