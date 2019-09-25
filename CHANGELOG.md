@@ -1,3 +1,7 @@
+# v3.11.1
+## Support new camera upload related dynamic form properties
+Process and propate newly added properties in dynamic interface supporting camera upload
+
 # v3.11.0
 ## Add camera upload component
 Added a component in twUpload that allows users to perform assisted camera uploads
