@@ -360,7 +360,7 @@ describe('FormControl', function() {
       <tw-form-control \
         type='{{ controlType }}' \
         ng-model='model' \
-        help-text='{{ helpText }}'> \
+        help-options='helpOptions'> \
       </tw-form-control>";
 
     var control;
@@ -369,7 +369,9 @@ describe('FormControl', function() {
       beforeEach(function() {
         $scope.controlType = controlType;
         $scope.model = null;
-        $scope.helpText = "Help!";
+        $scope.helpOptions = {
+          message: 'Help!'
+        };
         control = compileTemplate(template).querySelector(controlSelector);
       });
       it('should disable autocomplete', function() {
@@ -381,7 +383,7 @@ describe('FormControl', function() {
       beforeEach(function() {
         $scope.controlType = controlType;
         $scope.model = null;
-        $scope.helpText = null;
+        $scope.helpOptions = {};
         control = compileTemplate(template).querySelector(controlSelector);
       });
       it('should enable autocomplete', function() {

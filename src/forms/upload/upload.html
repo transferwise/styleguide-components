@@ -7,7 +7,8 @@
   'droppable-complete': $ctrl.isDone
 }">
   <div class="droppable-default-card" aria-hidden="{{$ctrl.isDone}}">
-    <div class="droppable-card-content">
+    <div ng-hide="$ctrl.showVideoPreview" class="droppable-card-content">
+      <!-- Display illustration as image or icon -->
       <div class="m-b-2">
         <img
           ng-show="$ctrl.helpImage"
@@ -16,14 +17,21 @@
           class="thumbnail text-xs-center" />
         <span ng-show="!$ctrl.helpImage" class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></span>
       </div>
+      <!-- helper texts -->
       <h4 class="m-b-1" ng-if="$ctrl.label || $ctrl.description">
         {{$ctrl.label || $ctrl.description}}
       </h4>
+      <!-- upload action -->
       <p class="m-b-2">{{$ctrl.placeholder || $ctrl.instructions}}</p>
-      <label class="btn btn-primary" ng-class="{'disabled': $ctrl.ngDisabled}">
+
+      <!-- regular upload -->
+      <label class="btn btn-primary" ng-click="$ctrl.onUploadButtonClick()" ng-class="{'disabled': $ctrl.ngDisabled}">
         <span ng-if="$ctrl.buttonText" ng-bind="$ctrl.buttonText"></span>
         <span ng-if="!$ctrl.buttonText" class="icon icon-upload m-r-0"></span>
-        <input tw-file-input
+        <!-- normal upload -->
+        <input
+          ng-if="!$ctrl.isLiveCameraUpload"
+          tw-file-input
           type="file"
           accept="{{$ctrl.accept}}"
           class="tw-droppable-input hidden"
@@ -31,31 +39,32 @@
           name="file-upload"
           on-user-input="$ctrl.onManualUpload()"
           ng-model="$ctrl.inputFile" />
-        <!-- ng-change="$ctrl.onManualUpload()" -->
       </label>
+
+      <!-- camera only upload -->
+      <tw-camera-capture
+        ng-if="$ctrl.isLiveCameraUpload && $ctrl.showLiveCaptureScreen"
+        overlay="{{$ctrl.cameraOverlay}}"
+        direction="{{$ctrl.cameraDirection}}"
+        on-cancel="$ctrl.onCameraCaptureCancel()"
+        on-confirm="$ctrl.onCameraCaptureConfirm(file)">
+      </tw-camera-capture>
     </div>
   </div>
+
   <div class="droppable-processing-card droppable-card"
     aria-hidden="{{$ctrl.isDone}}">
     <div class="droppable-card-content">
       <h4 class="m-b-2">
-        <span ng-if="$ctrl.isProcessing && $ctrl.processingText"
-          class="upload-processing-message">
-          {{$ctrl.processingText}}
-        </span>
-        <span ng-if="$ctrl.isSuccess && $ctrl.successText"
-          class="upload-success-message">
-          {{$ctrl.successText}}
-        </span>
-        <span ng-if="$ctrl.isError && $ctrl.failureText"
-          class="upload-failure-message">
-          {{$ctrl.failureText}}
-        </span>
+        <span ng-if="$ctrl.isProcessing && $ctrl.processingText" class="upload-processing-message">{{$ctrl.processingText}}</span>
+        <span ng-if="$ctrl.isSuccess && $ctrl.successText" class="upload-success-message">{{$ctrl.successText}}</span>
+        <span ng-if="$ctrl.isError && $ctrl.failureText" class="upload-failure-message">{{$ctrl.failureText}}</span>
       </h4>
       <tw-process size="sm" state="$ctrl.processingState"
         ng-if="($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"></tw-process>
     </div>
   </div>
+
   <div class="droppable-complete-card droppable-card"
     aria-hidden="{{!$ctrl.isDone}}">
     <div class="droppable-card-content">
@@ -82,6 +91,7 @@
       <div ng-if="$ctrl.hasTranscluded" ng-transclude></div>
       <p class="m-t-2 m-b-0">
         <a href="" ng-click="$ctrl.clear()">
+          <!-- Draw a happy little cross in a happy little circle (X) -->
           <svg
             ng-if="!$ctrl.cancelText"
             viewBox="0 0 24 24"
@@ -98,6 +108,7 @@
       </p>
     </div>
   </div>
+
   <div class="droppable-dropping-card droppable-card">
     <div class="droppable-card-content">
       <h4 class="m-b-2">Drop file to start upload</h4>

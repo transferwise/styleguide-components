@@ -29,6 +29,11 @@ class UploadController {
 
     this.checkForTranscludedContent($transclude);
 
+    this.isLiveCameraUpload = this.source && this.source === 'CAMERA_ONLY';
+    $scope.$watch('$ctrl.source', () => {
+      this.isLiveCameraUpload = this.source && this.source === 'CAMERA_ONLY';
+    });
+
     $scope.$watch('$ctrl.icon', () => {
       this.viewIcon = this.icon ? this.icon : 'upload';
     });
@@ -39,13 +44,36 @@ class UploadController {
     }
 
     this.addDragHandlers($scope, $element);
+
+    this.showLiveCaptureScreen = false;
   }
 
+  onUploadButtonClick() {
+    if (this.isLiveCameraUpload) {
+      this.showLiveCaptureScreen = true;
+    }
+  }
+
+  onCameraCaptureCancel() {
+    this.showLiveCaptureScreen = false;
+  }
+
+  onCameraCaptureConfirm(file) {
+    this.onFileConfirmation(file);
+    this.showLiveCaptureScreen = false;
+  }
+
+  // Function binding for file upload by input tag
   onManualUpload() {
     const element = this.$element[0];
     const uploadInput = element.querySelector('.tw-droppable-input');
     const file = uploadInput.files[0];
 
+    this.onFileConfirmation(file);
+  }
+
+  // Function binding for file upload by live
+  onFileConfirmation(file) {
     if (!file) {
       throw new Error('Could not retrieve file');
     }
@@ -108,7 +136,8 @@ class UploadController {
   onDragEnter() {
     this.dragCounter++;
     if (this.dragCounter >= 1 && !this.ngDisabled) {
-      this.isDroppable = true;
+      // do not enable dropping for camera only upload mode
+      this.isDroppable = !this.isLiveCameraUpload;
     }
   }
 
@@ -133,7 +162,9 @@ class UploadController {
     this.isDone = false;
     this.isTooLarge = false;
     this.isWrongType = false;
-    this.$element[0].querySelector('input').value = null;
+    if (this.$element[0].querySelector('input')) {
+      this.$element[0].querySelector('input').value = null;
+    }
     this.setNgModel(null);
   }
 

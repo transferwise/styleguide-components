@@ -1,0 +1,26 @@
+<div>
+  <!-- Video preview screen with the video itself and capture screen, should be full screen -->
+  <div id="video-preview" ng-show="$ctrl.showVideoPreview" class="w-100 h-100 fixed-top bg-dark">
+    <!-- TODO haoyuan: center and rotate camera overlay -->
+    <img id="overlay" ng-if="$ctrl.overlay" ng-show="$ctrl.showVideoInPreview" ng-src="{{$ctrl.overlay}}" alt="overlay" class="w-100 h-100 fixed-top opacity-overlay zindex-video-overlay"/>
+    <!-- TODO haoyuan: work with designer to figure out how this asset is going to be provided -->
+    <video id="video" ng-show="$ctrl.showVideoInPreview" ng-style="{height: $ctrl.videoHeight + '%', width: $ctrl.videoWidth + '%'}" class="fixed-top zindex-video" playsinline></video>
+    <canvas id="display-canvas" ng-show="$ctrl.showCaptureInPreview" class="fixed zindex-video" ></canvas>
+    <canvas id="upload-canvas" ng-show="false" class="fixed" ></canvas>
+
+    <label class="fixed-bottom camera-ctrl-bar">
+      <span class="camera-ctrl-box-small">
+        <span id="video-cancel" class="camera-ctrl-btn-small camera-ctrl-btn-cancel icon icon-close" ng-if="$ctrl.showVideoInPreview" ng-click="$ctrl.onCancelBtnClick()"></span>
+        <span id="capture-cancel" class="camera-ctrl-btn-small camera-ctrl-btn-cancel icon icon-close" ng-if="$ctrl.showCaptureInPreview" ng-click="$ctrl.onRecaptureBtnClick()"></span>
+      </span>
+      <span class="camera-ctrl-box-big">
+        <span id="video-confirm" class="camera-ctrl-btn-big" ng-if="$ctrl.showVideoInPreview" ng-click="!$ctrl.captureButtonDisabled && $ctrl.onCaptureBtnClick()">
+          <span class="camera-ctrl-btn-big-inner"></span>
+        </span>
+      </span>
+      <span class="camera-ctrl-box-small">
+        <span id="capture-confirm" class="camera-ctrl-btn-small camera-ctrl-btn-confirm icon icon-check" ng-if="$ctrl.showCaptureInPreview" ng-click="$ctrl.onUploadBtnClick()"></span>
+      </span>
+    </label>
+  </div>
+</div>

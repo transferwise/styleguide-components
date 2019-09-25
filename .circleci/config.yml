@@ -56,13 +56,14 @@ workflows:
   build_and_publish:
     jobs:
       - test:
+          context: frontend-deploy-app
           filters:
             branches:
               ignore:
                 - gh-pages
                 - releases
       - release:
-          context: frontend-publish
+          context: frontend-deploy-library
           requires:
             - test
           filters:

@@ -13,13 +13,11 @@ const FormControl = {
     id: '@',
     label: '@',
     placeholder: '@',
-    helpText: '@',
     step: '@',
     locale: '@',
     uploadAccept: '@',
     uploadIcon: '@',
     uploadTooLargeMessage: '@',
-    helpImage: '@',
     options: '<',
     ngModel: '=',
     ngChange: '&',
@@ -32,9 +30,13 @@ const FormControl = {
     ngMax: '<',
     ngPattern: '<',
     uploadOptions: '<',
+    helpOptions: '<',
     textFormat: '<',
     validationAsync: '<',
-    persistAsync: '<'
+    persistAsync: '<',
+    // Live capture parameters for upload component
+    fileUploadSource: '<',
+    cameraOptions: '<'
   }
 };
 

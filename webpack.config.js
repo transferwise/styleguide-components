@@ -7,6 +7,13 @@ const htmlLoader = {
   loader: 'html-loader?root=.'
 };
 
+// Less
+const lessLoader = {
+  test: /\.less$/,
+  exclude: [/node_modules/],
+  use: ['style-loader', 'css-loader', 'less-loader']
+};
+
 // Runs eslint before packaging
 const eslintLoader = {
   enforce: 'pre',
@@ -25,6 +32,8 @@ const babelLoader = {
 const webpackModule = {
   rules: [
     htmlLoader,
+    lessLoader,
+    // jshintLoader,
     eslintLoader,
     babelLoader
   ]

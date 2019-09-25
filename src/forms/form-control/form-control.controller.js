@@ -32,7 +32,7 @@ class FormControlController {
    * to provide an 'invalid' value, for which 'disabled' serves.
    */
   getAutocompleteStatus() {
-    return this.helpText ? 'disabled' : 'on';
+    return (this.helpOptions && this.helpOptions.message) ? 'disabled' : 'on';
   }
 
   addValidators() {
