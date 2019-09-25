@@ -13,8 +13,7 @@
     label="{{ $ctrl.field.title }}"
     type="{{ $ctrl.control | lowercase }}"
     placeholder="{{ $ctrl.field.placeholder }}"
-    help-text="{{ $ctrl.field.help.message }}"
-    help-image="{{ $ctrl.field.help.image }}"
+    help-options="$ctrl.field.help"
     locale="{{ $ctrl.locale }}"
     upload-accept="{{ $ctrl.field.accept }}"
     upload-icon="{{ $ctrl.field.icon }}"
@@ -35,6 +34,8 @@
     text-format="$ctrl.field.displayFormat"
     validation-async="$ctrl.field.validationAsync"
     persist-async="$ctrl.field.persistAsync"
+    file-upload-source="$ctrl.field.sourceType"
+    camera-options="$ctrl.field.camera"
     tw-validation
   ></tw-form-control>
 

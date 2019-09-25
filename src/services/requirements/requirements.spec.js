@@ -200,6 +200,69 @@ describe('Requirements Service', function() {
       expect(result).toEqual(["two"]);
     });
   });
+
+  describe('when preparing non-legacy field requirements', function() {
+    describe('when preparing help fields', function() {
+      it('should convert help fields to nested format', function() {
+        var input = {
+          type: "text",
+          helpText: "helpText",
+          helpImage: "helpImage",
+        };
+
+        var expectedOutput = {
+          type: "string",
+          help : {
+            message: "helpText",
+            image: "helpImage",
+          },
+          control: "text"
+        };
+
+        expect(service.prepField(input)).toEqual(expectedOutput);
+      });
+
+      it('should convert upload placeholder image to image in nested help field', function() {
+        var input = {
+          type: "text",
+          uploadPlaceholderImage: "helpImage"
+        };
+
+        var expectedOutput = {
+          type: "string",
+          help : {
+            image: "helpImage",
+          },
+          control: "text"
+        };
+
+        expect(service.prepField(input)).toEqual(expectedOutput);
+      });
+    });
+
+    describe('when preparing camera fields', function() {
+      it('should leave fields untouched', function() {
+        var input = {
+          type: "text",
+          camera: {
+            overlay: "overlay",
+            direction: "direction"
+          }
+        };
+
+        var expectedOutput = {
+          type: "string",
+          camera : {
+            overlay: "overlay",
+            direction: "direction"
+          },
+          control: "text"
+        };
+
+        expect(service.prepField(input)).toEqual(expectedOutput);
+      });
+    });
+  });
 });
 
 var requirementsWithFieldGroups = {

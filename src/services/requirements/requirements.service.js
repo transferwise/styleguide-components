@@ -388,7 +388,8 @@ function RequirementsService($http) {
   };
 
   this.prepHelp = (field) => {
-    if (!field.help && (field.helpText || field.helpImage || field.helpList)) {
+    if (!field.help
+      && (field.helpText || field.helpImage || field.helpList || field.uploadPlaceholderImage)) {
       field.help = {};
     }
     if (field.helpText) {
@@ -398,6 +399,12 @@ function RequirementsService($http) {
     if (field.helpImage) {
       field.help.image = field.helpImage;
       delete field.helpImage;
+    }
+    // helpImage does not have same lineage placeholder image
+    // 2 fields can overwrite each other safely (only one will be present at a time)
+    if (field.uploadPlaceholderImage) {
+      field.help.image = field.uploadPlaceholderImage;
+      delete field.uploadPlaceholderImage;
     }
     if (field.list) {
       field.help.list = field.helpList;
