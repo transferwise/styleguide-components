@@ -245,7 +245,7 @@ class CameraCaptureController {
     this.uploadCanvas.height = this.displayCanvas.height;
     this.uploadCanvas.getContext('2d').drawImage(this.displayCanvas, 0, 0, this.displayCanvas.width, this.displayCanvas.height);
     // Support : https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob
-    this.uploadCanvas.toBlob(createUploadCallback(this), 'image/png', 1.0);
+    this.uploadCanvas.toBlob(createUploadCallback(this), 'image/jpeg', 0.92);
   }
 
   setNgModel(value) {
