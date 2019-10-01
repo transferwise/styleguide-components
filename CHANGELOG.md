@@ -1,3 +1,7 @@
+# v3.12.1
+## Fix css style problem with buttons in camera upload component
+Fixed line-height attribute for cancel and confirm button in camera upload component
+
 # v3.12.0
 ## JSON schema forms now default to the first 'oneOf' schema that validates
 This is useful when editing existing data as we select a sensible schema.  Also
