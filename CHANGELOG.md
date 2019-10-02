@@ -1,3 +1,7 @@
+# v3.12.2
+## Camera upload component bugfix
+Convert camera direction component input to lowercase
+
 # v3.12.1
 ## Fix css style problem with buttons in camera upload component
 Fixed line-height attribute for cancel and confirm button in camera upload component
