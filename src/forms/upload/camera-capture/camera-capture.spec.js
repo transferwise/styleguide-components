@@ -20,7 +20,7 @@ describe('Given a camera capture component', function() {
       $q = $injector.get('$q');
     });
 
-    var template = " \
+    const template = " \
       <tw-camera-capture \
         direction='USER' \
         on-cancel='onCancel()' \
@@ -45,7 +45,7 @@ describe('Given a camera capture component', function() {
 
   describe('after initialization with camera direction', function() {
     beforeEach(function() {
-      var template = " \
+      const template = " \
         <tw-camera-capture \
           direction='USER' \
           test-mode='true'> \
@@ -63,7 +63,7 @@ describe('Given a camera capture component', function() {
 
   describe('after initialization without camera direction', function() {
     beforeEach(function() {
-      var template = " \
+      const template = " \
         <tw-camera-capture \
           test-mode='true'> \
         </tw-camera-capture>";
@@ -315,8 +315,8 @@ describe('Given a camera capture component', function() {
   }
 
   function getComponent($scope, template) {
-    var element = angular.element(template);
-    var compiledElement = $compile(element)($scope);
+    const element = angular.element(template);
+    const compiledElement = $compile(element)($scope);
     $scope.$digest();
     return compiledElement;
   }
