@@ -20,8 +20,9 @@ describe('Given a camera capture component', function() {
       $q = $injector.get('$q');
     });
 
-    var template = " \
+    const template = " \
       <tw-camera-capture \
+        direction='USER' \
         on-cancel='onCancel()' \
         on-confirm='onConfirm(file)' \
         test-mode='true'> \
@@ -40,6 +41,41 @@ describe('Given a camera capture component', function() {
 
     spyOn(controller, 'tryAcquireFullScreen').and.returnValue(acquireFullScreenRequest.promise);
     spyOn(controller, 'tryAcquireMediaStream').and.returnValue(acquireMediaStreamRequest.promise);
+  });
+
+  describe('after initialization with camera direction', function() {
+    beforeEach(function() {
+      const template = " \
+        <tw-camera-capture \
+          direction='USER' \
+          test-mode='true'> \
+        </tw-camera-capture>";
+      const $component = getComponent($scope, template);
+      controller = $component.controller('twCameraCapture');
+      component = $component[0];
+      spyOn(controller, 'onVideoStreamAcquisition').and.callFake(function(){});
+    });
+
+    it('should convert camera direction in upper case to lower case', function() {
+      expect(controller.cameraConstraints.video.facingMode.ideal).toBe('user');
+    });
+  });
+
+  describe('after initialization without camera direction', function() {
+    beforeEach(function() {
+      const template = " \
+        <tw-camera-capture \
+          test-mode='true'> \
+        </tw-camera-capture>";
+      const $component = getComponent($scope, template);
+      controller = $component.controller('twCameraCapture');
+      component = $component[0];
+      spyOn(controller, 'onVideoStreamAcquisition').and.callFake(function(){});
+    });
+
+    it('should set camera direction to environment by default', function() {
+      expect(controller.cameraConstraints.video.facingMode.ideal).toBe('environment');
+    });
   });
 
   describe('after startLiveCamFlow is triggered', function() {
@@ -279,8 +315,8 @@ describe('Given a camera capture component', function() {
   }
 
   function getComponent($scope, template) {
-    var element = angular.element(template);
-    var compiledElement = $compile(element)($scope);
+    const element = angular.element(template);
+    const compiledElement = $compile(element)($scope);
     $scope.$digest();
     return compiledElement;
   }

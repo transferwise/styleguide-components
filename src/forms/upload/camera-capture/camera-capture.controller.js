@@ -17,7 +17,10 @@ class CameraCaptureController {
     this.$q = $q;
     this.$window = $window;
     this.CameraCaptureScreenHandler = CameraCaptureScreenHandler;
+  }
 
+  $onInit() {
+    this.direction = this.direction || 'environment';
     this.cameraConstraints = {
       video: {
         width: {
@@ -26,15 +29,11 @@ class CameraCaptureController {
           max: 1280
         },
         facingMode: {
-          ideal: this.direction
+          ideal: this.direction.toLowerCase()
         }
       },
       audio: false
     };
-  }
-
-  $onInit() {
-    this.direction = this.direction || 'environment';
 
     // Video preview control
     this.showVideoPreview = false;

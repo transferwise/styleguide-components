@@ -80,8 +80,8 @@ function controller($scope) {
   ];
 
   this.cameraDirections = [
-    { value: 'environment', label: 'environment' },
-    { value: 'user', label: 'user' }
+    { value: 'ENVIRONMENT', label: 'ENVIRONMENT' },
+    { value: 'USER', label: 'USER' }
   ];
 
   this.icons = [
