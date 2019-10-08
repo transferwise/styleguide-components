@@ -428,6 +428,14 @@ function selectOption($ngModel, $ctrl, option) {
 }
 
 function findSelected(options, selected) {
+  // There can be scenarios when the `filteredOptions` are loaded asynchronously
+  // so this method may be called with an undefined as `options` argument, so
+  // we should check if that passed argument is really an array before calling
+  // `.forEach` on it
+  if (!angular.isArray(options)) {
+    return undefined;
+  }
+
   // Prefer forEach over find for browser support
   let selectedOption;
   options.forEach((option) => {
