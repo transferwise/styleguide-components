@@ -25,6 +25,7 @@ angular
 function controller($scope) {
   const $ctrl = this;
   this.$scope = $scope;
+  this.cameraOverlay = 'http://10.80.0.163:8887/jpn-id-edge-overlay.png';
 
   this.$scope.$watch('$ctrl.showNgModel', (newValue) => {
     if (newValue) {

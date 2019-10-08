@@ -20,21 +20,6 @@ class CameraCaptureController {
   }
 
   $onInit() {
-    this.direction = this.direction || 'environment';
-    this.cameraConstraints = {
-      video: {
-        width: {
-          min: 640,
-          ideal: 1280,
-          max: 1280
-        },
-        facingMode: {
-          ideal: this.direction.toLowerCase()
-        }
-      },
-      audio: false
-    };
-
     // Video preview control
     this.showVideoPreview = false;
     this.showVideoInPreview = true;
@@ -50,6 +35,13 @@ class CameraCaptureController {
     this.videoResHeight = 0.0;
     this.videoResWidth = 0.0;
 
+    this.overlayWidth = 0;
+    this.overlayHeight = 0;
+    this.overlayXOffset = 0;
+    this.overlayYOffset = 0;
+    this.displayCanvasXOffset = 0; // in px
+    this.displayCanvasYOffset = 0; // in px
+    this.videoXOffset = 0; // video x offset in percentage
     this.videoHeight = 100; // video height in percentage
     this.videoWidth = 100; // video width in percentage
 
@@ -58,6 +50,7 @@ class CameraCaptureController {
       this.$log.warn('getUserMedia() is not supported by your browser');
     }
 
+    this.overlayElement = this.$element[0].querySelector('#video-preview #overlay');
     this.displayCanvas = this.$element[0].querySelector('#video-preview #display-canvas');
     this.uploadCanvas = this.$element[0].querySelector('#video-preview #upload-canvas');
     this.videoPreviewElement = this.$element[0].querySelector('#video-preview');
@@ -68,9 +61,39 @@ class CameraCaptureController {
 
     // TODO haoyuan : add change event listener to screenful,
     //  existing full screen should quit capture instead of showing non full screen camera
-
     if (!this.testMode || this.testMode.toLowerCase() !== 'true') {
-      this.startLiveCamFlow();
+      this.$window.navigator.mediaDevices.enumerateDevices().then((devices) => {
+        // If device only has one camera, assume it is selfie cam
+        const numVideoDevices = devices.filter(device => device.kind === 'videoinput').length;
+        this.$log.debug(`Found ${numVideoDevices} video devices.`);
+        if (numVideoDevices === 1 || !this.direction) {
+          this.direction = 'user';
+        } else {
+          this.direction = this.direction.toLowerCase();
+        }
+
+        // Flip video along x axis so selfie video becomes a mirror
+        if (this.direction === 'user') {
+          this.$log.debug('Changed user video to mirror');
+          this.video.classList.add('display-mirror');
+          this.isVideoHorizontallyFlipped = true;
+        }
+
+        this.cameraConstraints = {
+          video: {
+            width: {
+              min: 640,
+              ideal: 1280,
+              max: 1280
+            },
+            facingMode: {
+              ideal: this.direction
+            }
+          },
+          audio: false
+        };
+        this.startLiveCamFlow();
+      });
     }
   }
 
@@ -78,6 +101,8 @@ class CameraCaptureController {
   startLiveCamFlow() {
     this.$log.debug('----- Live cam flow start -----');
     this.captureButtonDisabled = true;
+    this.overlayLoaded = false;
+    this.videoPlaying = false;
 
     // Display video component in full screen
     // This part of code cannot be in callback due to browser security requirement
@@ -93,6 +118,13 @@ class CameraCaptureController {
       .finally(() => {
         // After trying to acquire full screen, resolve video stream
         this.setScreenDimensions();
+        if (this.overlayElement.naturalHeight === 0 || this.overlayElement.naturalWidth === 0) {
+          this.$log.debug('Overlay has not loaded after full screen is acquired');
+          this.overlayElement.addEventListener('load', createOverlayOnLoadCallback(this));
+        } else {
+          this.$log.debug('Overlay has loaded before full screen is acquired');
+          createOverlayOnLoadCallback(this).call();
+        }
         this.tryAcquireMediaStream()
           .then((stream) => {
             this.onVideoStreamAcquisition(stream);
@@ -169,12 +201,20 @@ class CameraCaptureController {
     this.onCancel();
   }
 
+  onCaptureBtnClickTest() {
+    if (this.video.classList.contains('display-mirror')) {
+      this.video.classList.remove('display-mirror');
+    } else {
+      this.video.classList.add('display-mirror');
+    }
+  }
+
   onCaptureBtnClick() {
-    const [
+    const {
       height, width,
       yOffset, xOffset,
       paintHeight, paintWidth
-    ] = this.CameraCaptureScreenHandler.getCanvasSpecifications(
+    } = this.CameraCaptureScreenHandler.getCanvasSpecifications(
       this.videoHeight,
       this.videoWidth,
       this.screenHeight,
@@ -182,16 +222,18 @@ class CameraCaptureController {
       this.videoResHeight,
       this.videoResWidth
     );
-    this.displayCanvas.style.top = `${yOffset}px`;
-    this.displayCanvas.style.left = `${xOffset}px`;
-    this.displayCanvas.width = width;
-    this.displayCanvas.height = height;
+    this.displayCanvasYOffset = yOffset;
+    this.displayCanvasXOffset = xOffset;
+    this.displayCanvas.width = width; // TODO : ngstyle it
+    this.displayCanvas.height = height; // TODO : ngstyle it
     /* Confusing draw image method for video
      * Despite video dimension can be more than 100%, the video never extends beyond the screen
      * Instead, its resolution gets truncated to fit the screen perfectly
      * Thus drawing always starts from (0, 0)
      */
-    this.displayCanvas.getContext('2d').drawImage(this.video, 0, 0, paintWidth, paintHeight, 0, 0, width, height);
+    const ctx = this.displayCanvas.getContext('2d');
+    ctx.resetTransform();
+    ctx.drawImage(this.video, 0, 0, paintWidth, paintHeight, 0, 0, width, height);
     this.showCaptureInPreview = true;
     this.showVideoInPreview = false;
   }
@@ -201,18 +243,9 @@ class CameraCaptureController {
   }
 
   onUploadBtnClick() {
-    const [, , , , paintHeight, paintWidth] = this.CameraCaptureScreenHandler
-      .getCanvasSpecifications(
-        this.videoHeight,
-        this.videoWidth,
-        this.screenHeight,
-        this.screenWidth,
-        this.videoResHeight,
-        this.videoResWidth
-      );
-    this.uploadCanvas.width = paintWidth;
-    this.uploadCanvas.height = paintHeight;
-    this.uploadCanvas.getContext('2d').drawImage(this.displayCanvas, 0, 0, paintWidth, paintHeight);
+    this.uploadCanvas.width = this.displayCanvas.width; // TODO : ngstyle it
+    this.uploadCanvas.height = this.displayCanvas.height; // TODO : ngstyle it
+    this.uploadCanvas.getContext('2d').drawImage(this.displayCanvas, 0, 0, this.displayCanvas.width, this.displayCanvas.height);
     // Support : https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob
     this.uploadCanvas.toBlob(createUploadCallback(this), 'image/png', 1.0);
   }
@@ -238,6 +271,35 @@ class CameraCaptureController {
  * Need to use this pattern here because
  * we only get height and width of video after it is playing
  */
+function createOverlayOnLoadCallback($ctrl) {
+  return function overlayOnLoadCallback() {
+    if (!$ctrl.overlay) {
+      return;
+    }
+    const {
+      height: overlayHeight,
+      width: overlayWidth,
+      yOffset: overlayYOffset,
+      xOffset: overlayXOffset
+    } = $ctrl.CameraCaptureScreenHandler
+      .getOverlaySpecifications(
+        $ctrl.screenHeight, $ctrl.screenWidth,
+        $ctrl.overlayElement.naturalHeight, $ctrl.overlayElement.naturalWidth
+      );
+
+    $ctrl.overlayYOffset = overlayYOffset;
+    $ctrl.overlayXOffset = overlayXOffset;
+    $ctrl.overlayHeight = overlayHeight;
+    $ctrl.overlayWidth = overlayWidth;
+
+    $ctrl.overlayLoaded = true;
+  };
+}
+
+/**
+ * Need to use this pattern here because
+ * we only get height and width of video after it is playing
+ */
 function createVideoPlayCallback($ctrl) {
   return function videoPlayCallback() {
     $ctrl.captureButtonDisabled = false;
@@ -248,9 +310,11 @@ function createVideoPlayCallback($ctrl) {
       // Video is not playing, listen for it to start
       this.addEventListener('playing', function videoPlayingCallback() {
         assignVideoDimensions(this);
+        $ctrl.videoPlaying = true;
         this.removeEventListener('playing', videoPlayingCallback);
       });
     } else {
+      $ctrl.videoPlaying = true;
       assignVideoDimensions(this);
     }
 
@@ -263,6 +327,18 @@ function createVideoPlayCallback($ctrl) {
           $ctrl.screenHeight, $ctrl.screenWidth,
           $ctrl.videoResHeight, $ctrl.videoResWidth
         );
+      /**
+       * When video width is more than screen width
+       * natural video will overflow to right of screen
+       * As selfie cam is flipped, the overflown part will be flipped onto the screen on the left
+       * When drawing canvas from video, video transformation is not considered
+       * Thus by naturally drawing the screen, canvas image will mismatch with video
+       * We needed to apply an offset here
+       * to make sure overflown part in unflipped video is still overflown in flipped video
+       */
+      if ($ctrl.isVideoHorizontallyFlipped && videoWidthInPercentage > 100.0) {
+        $ctrl.videoXOffset = 100 - videoWidthInPercentage;
+      }
       $ctrl.videoHeight = videoHeightInPercentage;
       $ctrl.videoWidth = videoWidthInPercentage;
       $ctrl.$scope.$apply();

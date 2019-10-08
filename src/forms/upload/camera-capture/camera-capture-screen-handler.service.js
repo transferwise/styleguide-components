@@ -4,6 +4,8 @@ class CameraCaptureScreenHandler {
     $log
   ) {
     this.$log = $log;
+    this.overlayXOffsetPercentage = 0.10;
+    this.overlayMaxWidth = 800;
   }
 
   /* Get height and width of video in percentage * 100
@@ -15,6 +17,7 @@ class CameraCaptureScreenHandler {
     screenHeight, screenWidth,
     videoResHeight, videoResWidth
   ) {
+    this.$log.debug('Computing video specs');
     let videoHeightInPercentage = 100;
     let videoWidthInPercentage = 100;
 
@@ -36,6 +39,15 @@ class CameraCaptureScreenHandler {
       videoWidthInPercentage = parseInt((videoResRatio / screenResRatio) * 100, 10);
     }
     // We should not get a "normal" case here
+    this.$log.debug(`video width : ${videoWidthInPercentage}`);
+    this.$log.debug(`video height : ${videoHeightInPercentage}`);
+
+    /*
+    return {
+      videoHeightInPercentage: 100.0,
+      videoWidthInPercentage: 100.0
+    };
+    */
 
     return {
       videoHeightInPercentage,
@@ -49,13 +61,13 @@ class CameraCaptureScreenHandler {
    * We need to know which dimension it is
    */
   getCanvasSpecifications(
-    videoHeight, videoWidth,
+    videoHeightInPercentage, videoWidthInPercentage,
     screenHeight, screenWidth,
     videoResHeight, videoResWidth
   ) {
-    this.$log.debug('Recomputing canvas');
-    this.$log.debug(`video width : ${videoWidth}`);
-    this.$log.debug(`video height : ${videoHeight}`);
+    this.$log.debug('Computing canvas specs');
+    this.$log.debug(`video width : ${videoWidthInPercentage}`);
+    this.$log.debug(`video height : ${videoHeightInPercentage}`);
     this.$log.debug(`screen width : ${screenWidth}`);
     this.$log.debug(`screen height : ${screenHeight}`);
     this.$log.debug(`video res width : ${videoResWidth}`);
@@ -70,7 +82,7 @@ class CameraCaptureScreenHandler {
     )) {
       this.$log.debug('(canvas) Portrait narrow screen');
       canvasDimensions = getCanvasSpecsForPortraitScreenWithNarrowVideo(
-        videoHeight, videoWidth,
+        videoHeightInPercentage, videoWidthInPercentage,
         screenHeight, screenWidth,
         videoResHeight, videoResWidth
       );
@@ -80,7 +92,7 @@ class CameraCaptureScreenHandler {
     )) {
       this.$log.debug('(canvas) Landscape narrow screen');
       canvasDimensions = getCanvasSpecsForLandscapeScreenWithNarrowVideo(
-        videoHeight, videoWidth,
+        videoHeightInPercentage, videoWidthInPercentage,
         screenHeight, screenWidth,
         videoResHeight, videoResWidth
       );
@@ -92,11 +104,11 @@ class CameraCaptureScreenHandler {
       );
     }
 
-    const [
+    const {
       height, width,
       yOffset, xOffset,
       paintHeight, paintWidth
-    ] = canvasDimensions;
+    } = canvasDimensions;
 
     this.$log.debug(`canvas width : ${width}`);
     this.$log.debug(`canvas height : ${height}`);
@@ -106,6 +118,44 @@ class CameraCaptureScreenHandler {
     this.$log.debug(`canvas height to paint : ${paintHeight}`);
 
     return canvasDimensions;
+  }
+
+  /**
+   * Overlay is going to be an image with appropriate width to indicate an ID
+   * If screen is portrait, leave a margin at both sides
+   * and strech overlay to fit screen width preserving ratio
+   * If screen is landscrape, set a fixed max width for overlay
+   * and stretch overlay to that width instead
+   */
+  getOverlaySpecifications(
+    screenHeight, screenWidth,
+    overlayNaturalHeight, overlayNaturalWidth
+  ) {
+    this.$log.debug('Computing overlay specs');
+    const overlayHeightWidthRatio = overlayNaturalHeight / overlayNaturalWidth;
+
+    let xOffset = screenWidth * this.overlayXOffsetPercentage;
+    let width = screenWidth - 2 * xOffset;
+    // Screen is too wide, likely a landscape screen
+    if (width > this.overlayMaxWidth) {
+      width = this.overlayMaxWidth;
+      xOffset = (screenWidth - width) / 2;
+      this.$log.info('Restricted overlay size');
+    }
+    const height = width * overlayHeightWidthRatio;
+    const yOffset = (screenHeight - height) / 2;
+
+    this.$log.debug(`overlay width : ${width}`);
+    this.$log.debug(`overlay height : ${height}`);
+    this.$log.debug(`overlay x-offset : ${xOffset}`);
+    this.$log.debug(`overlay y-offset : ${yOffset}`);
+
+    return {
+      height,
+      width,
+      yOffset,
+      xOffset
+    };
   }
 }
 
@@ -117,7 +167,8 @@ class CameraCaptureScreenHandler {
  */
 
 function hasNarrowVideoInPortraitScreen(screenHeight, screenWidth, videoResHeight, videoResWidth) {
-  return screenHeight > screenWidth && videoResHeight / videoResWidth > screenHeight / screenWidth;
+  return isScreenPortrait(screenHeight, screenWidth)
+    && videoResHeight / videoResWidth > screenHeight / screenWidth;
 }
 
 function getCanvasSpecsForPortraitScreenWithNarrowVideo(
@@ -125,18 +176,27 @@ function getCanvasSpecsForPortraitScreenWithNarrowVideo(
   screenHeight, screenWidth,
   videoResHeight, videoResWidth
 ) {
-  return [
-    screenHeight, // height
-    screenWidth, // width
-    0, // yOffset
-    0, // xOffSet
-    parseInt(videoResHeight / (videoHeight / 100.0), 10), // paint height
-    videoResWidth // paint width
-  ];
+  return {
+    height: screenHeight,
+    width: screenWidth,
+    yOffset: 0,
+    xOffset: 0,
+    paintHeight: parseInt(videoResHeight / (videoHeight / 100.0), 10),
+    paintWidth: videoResWidth
+  };
 }
 
 function hasNarrowVideoInLandScapeScreen(screenHeight, screenWidth, videoResHeight, videoResWidth) {
-  return screenWidth > screenHeight && videoResWidth / videoResHeight > screenWidth / screenHeight;
+  return isScreenLandscape(screenHeight, screenWidth)
+    && videoResWidth / videoResHeight > screenWidth / screenHeight;
+}
+
+function isScreenPortrait(screenHeight, screenWidth) {
+  return screenHeight >= screenWidth;
+}
+
+function isScreenLandscape(screenHeight, screenWidth) {
+  return screenWidth >= screenHeight;
 }
 
 function getCanvasSpecsForLandscapeScreenWithNarrowVideo(
@@ -144,14 +204,14 @@ function getCanvasSpecsForLandscapeScreenWithNarrowVideo(
   screenHeight, screenWidth,
   videoResHeight, videoResWidth
 ) {
-  return [
-    screenHeight, // height
-    screenWidth, // width
-    0, // yOffset
-    0, // xOffSet
-    videoResHeight, // paint height
-    parseInt(videoResWidth / (videoWidth / 100), 10) // paint width
-  ];
+  return {
+    height: screenHeight,
+    width: screenWidth,
+    yOffset: 0,
+    xOffset: 0,
+    paintHeight: videoResHeight,
+    paintWidth: parseInt(videoResWidth / (videoWidth / 100), 10)
+  };
 }
 
 function getCanvasSpecs(screenHeight, screenWidth, videoResHeight, videoResWidth) {
@@ -179,14 +239,14 @@ function getCanvasSpecs(screenHeight, screenWidth, videoResHeight, videoResWidth
     canvasYOffset = 0;
   }
 
-  return [
-    canvasHeight, // height
-    canvasWidth, // width
-    canvasYOffset, // yOffset
-    canvasXOffset, // xOffset
-    videoResHeight, // paintHeight
-    videoResWidth // paintWidth
-  ];
+  return {
+    height: canvasHeight,
+    width: canvasWidth,
+    yOffset: canvasYOffset,
+    xOffset: canvasXOffset,
+    paintHeight: videoResHeight,
+    paintWidth: videoResWidth
+  };
 }
 
 CameraCaptureScreenHandler.$inject = [
