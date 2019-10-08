@@ -45,11 +45,11 @@ describe('CameraCaptureScreenHandler', function() {
     });
 
     it("gives canvas dimension with truncated resolution in height", function() {
-      const [
+      const {
         height, width,
         yOffset, xOffset,
         paintHeight, paintWidth
-      ] = CameraCaptureScreenHandler.getCanvasSpecifications(
+      } = CameraCaptureScreenHandler.getCanvasSpecifications(
         videoHeightInPercentage, videoWidthInPercentage,
         screenHeight, screenWidth,
         videoResHeight, videoResWidth
@@ -85,11 +85,11 @@ describe('CameraCaptureScreenHandler', function() {
     });
 
     it("gives canvas dimension with truncated resolution in width", function() {
-      const [
+      const {
         height, width,
         yOffset, xOffset,
         paintHeight, paintWidth
-      ] = CameraCaptureScreenHandler.getCanvasSpecifications(
+      } = CameraCaptureScreenHandler.getCanvasSpecifications(
         videoHeightInPercentage, videoWidthInPercentage,
         screenHeight, screenWidth,
         videoResHeight, videoResWidth
@@ -125,11 +125,11 @@ describe('CameraCaptureScreenHandler', function() {
     });
 
     it("gets canvas dimension overlaying video position", function() {
-      const [
+      const {
         height, width,
         yOffset, xOffset,
         paintHeight, paintWidth
-      ] = CameraCaptureScreenHandler.getCanvasSpecifications(
+      } = CameraCaptureScreenHandler.getCanvasSpecifications(
         videoHeightInPercentage, videoWidthInPercentage,
         screenHeight, screenWidth,
         videoResHeight, videoResWidth
@@ -165,11 +165,11 @@ describe('CameraCaptureScreenHandler', function() {
     });
 
     it("gets canvas dimension overlaying video position", function() {
-      const [
+      const {
         height, width,
         yOffset, xOffset,
         paintHeight, paintWidth
-      ] = CameraCaptureScreenHandler.getCanvasSpecifications(
+      } = CameraCaptureScreenHandler.getCanvasSpecifications(
         videoHeightInPercentage, videoWidthInPercentage,
         screenHeight, screenWidth,
         videoResHeight, videoResWidth
@@ -204,11 +204,11 @@ describe('CameraCaptureScreenHandler', function() {
     });
 
     it("gives canvas dimension with untruncated video and screen dimensions", function() {
-      const [
+      const {
         height, width,
         yOffset, xOffset,
         paintHeight, paintWidth
-      ] = CameraCaptureScreenHandler.getCanvasSpecifications(
+      } = CameraCaptureScreenHandler.getCanvasSpecifications(
         videoHeightInPercentage, videoWidthInPercentage,
         screenHeight, screenWidth,
         videoResHeight, videoResWidth

@@ -42,13 +42,6 @@ class CameraCaptureScreenHandler {
     this.$log.debug(`video width : ${videoWidthInPercentage}`);
     this.$log.debug(`video height : ${videoHeightInPercentage}`);
 
-    /*
-    return {
-      videoHeightInPercentage: 100.0,
-      videoWidthInPercentage: 100.0
-    };
-    */
-
     return {
       videoHeightInPercentage,
       videoWidthInPercentage
