@@ -62,38 +62,7 @@ class CameraCaptureController {
     // TODO haoyuan : add change event listener to screenful,
     //  existing full screen should quit capture instead of showing non full screen camera
     if (!this.testMode || this.testMode.toLowerCase() !== 'true') {
-      this.$window.navigator.mediaDevices.enumerateDevices().then((devices) => {
-        // If device only has one camera, assume it is selfie cam
-        const numVideoDevices = devices.filter(device => device.kind === 'videoinput').length;
-        this.$log.debug(`Found ${numVideoDevices} video devices.`);
-        if (numVideoDevices === 1 || !this.direction) {
-          this.direction = 'user';
-        } else {
-          this.direction = this.direction.toLowerCase();
-        }
-
-        // Flip video along x axis so selfie video becomes a mirror
-        if (this.direction === 'user') {
-          this.$log.debug('Changed user video to mirror');
-          this.video.classList.add('display-mirror');
-          this.isVideoHorizontallyFlipped = true;
-        }
-
-        this.cameraConstraints = {
-          video: {
-            width: {
-              min: 640,
-              ideal: 1280,
-              max: 1280
-            },
-            facingMode: {
-              ideal: this.direction
-            }
-          },
-          audio: false
-        };
-        this.startLiveCamFlow();
-      });
+      this.startLiveCamFlow();
     }
   }
 
@@ -168,8 +137,40 @@ class CameraCaptureController {
 
   tryAcquireMediaStream() {
     if (!this.mediaStream) {
-      return navigator.mediaDevices.getUserMedia(this.cameraConstraints);
+      return this.$window.navigator.mediaDevices.enumerateDevices().then((devices) => {
+        // If device only has one camera, assume it is selfie cam
+        const numVideoDevices = devices.filter(device => device.kind === 'videoinput').length;
+        this.$log.debug(`Found ${numVideoDevices} video devices.`);
+        if (numVideoDevices === 1 || !this.direction) {
+          this.direction = 'user';
+        } else {
+          this.direction = this.direction.toLowerCase();
+        }
+
+        // Flip video along x axis so selfie video becomes a mirror
+        if (this.direction === 'user') {
+          this.$log.debug('Changed user video to mirror');
+          this.video.classList.add('display-mirror');
+          this.isVideoHorizontallyFlipped = true;
+        }
+
+        this.cameraConstraints = {
+          video: {
+            width: {
+              min: 640,
+              ideal: 1280,
+              max: 1280
+            },
+            facingMode: {
+              ideal: this.direction
+            }
+          },
+          audio: false
+        };
+        return this.$window.navigator.mediaDevices.getUserMedia(this.cameraConstraints);
+      });
     }
+
     return this.$q.resolve(this.mediaStream);
   }
 
