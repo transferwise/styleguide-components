@@ -224,8 +224,8 @@ class CameraCaptureController {
     );
     this.displayCanvasYOffset = yOffset;
     this.displayCanvasXOffset = xOffset;
-    this.displayCanvas.width = width; // TODO : ngstyle it
-    this.displayCanvas.height = height; // TODO : ngstyle it
+    this.displayCanvas.width = width;
+    this.displayCanvas.height = height;
     /* Confusing draw image method for video
      * Despite video dimension can be more than 100%, the video never extends beyond the screen
      * Instead, its resolution gets truncated to fit the screen perfectly
@@ -243,8 +243,8 @@ class CameraCaptureController {
   }
 
   onUploadBtnClick() {
-    this.uploadCanvas.width = this.displayCanvas.width; // TODO : ngstyle it
-    this.uploadCanvas.height = this.displayCanvas.height; // TODO : ngstyle it
+    this.uploadCanvas.width = this.displayCanvas.width;
+    this.uploadCanvas.height = this.displayCanvas.height;
     this.uploadCanvas.getContext('2d').drawImage(this.displayCanvas, 0, 0, this.displayCanvas.width, this.displayCanvas.height);
     // Support : https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob
     this.uploadCanvas.toBlob(createUploadCallback(this), 'image/png', 1.0);
