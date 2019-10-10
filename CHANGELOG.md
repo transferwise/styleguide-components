@@ -1,3 +1,8 @@
+# v3.12.5
+## Feature enhancements for camera upload component
+Added camera overlay
+Default to selfie cam for devices with single video input and make selfie cam mirror user
+
 # v3.12.4
 ## Bump angular to 1.5.10
 The components use features introduced in 1.5.10, so the library should enforce that
