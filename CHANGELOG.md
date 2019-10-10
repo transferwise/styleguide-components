@@ -1,3 +1,7 @@
+# v3.12.3
+## Select undefined options fix
+Check if the available options passed to the `twSelect` component is an iterable array
+
 # v3.12.2
 ## Camera upload component bugfix
 Convert camera direction component input to lowercase
