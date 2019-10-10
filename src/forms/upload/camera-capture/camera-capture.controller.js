@@ -270,7 +270,7 @@ class CameraCaptureController {
 
 /**
  * Need to use this pattern here because
- * we only get height and width of video after it is playing
+ * we only get height and width of overlay image after it has been loaded
  */
 function createOverlayOnLoadCallback($ctrl) {
   return function overlayOnLoadCallback() {

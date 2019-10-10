@@ -10,7 +10,9 @@ describe('CameraCaptureScreenHandler', function() {
     videoResHeight,
     videoResWidth,
     videoHeightInPercentage,
-    videoWidthInPercentage;
+    videoWidthInPercentage,
+    overlayHeight,
+    overlayWidth;
 
   beforeEach(function() {
     module('tw.styleguide.forms.upload');
@@ -23,7 +25,53 @@ describe('CameraCaptureScreenHandler', function() {
     });
   });
 
-  describe('When screen is portrait and video resolution is thin ' +
+  describe('when displaying an overlay of an ID card (width : height is approximately 2)', function() {
+    beforeEach(function() {
+      // Using dimension of Singapore ID here :)
+      overlayHeight = 500;
+      overlayWidth = 850;
+    });
+
+    describe('when screen is portrait', function () {
+      beforeEach(function () {
+        screenHeight = 600;
+        screenWidth = 400;
+      });
+
+      it('should render an overlay with thin margins on left and right with original shape preserved', function () {
+        const result = CameraCaptureScreenHandler.getOverlaySpecifications(
+          screenHeight, screenWidth,
+          overlayHeight, overlayWidth
+        );
+
+        expect(result.height).toBeCloseTo(200, 1);
+        expect(result.width).toBeCloseTo(340, 1);
+        expect(result.yOffset).toBeCloseTo(160, 1);
+        expect(result.xOffset).toBeCloseTo(30, 1);
+      });
+    });
+
+    describe('when screen is landscape', function () {
+      beforeEach(function () {
+        screenHeight = 400;
+        screenWidth = 700;
+      });
+
+      it('should render an overlay centered in screen with original shape preserved', function () {
+        const result = CameraCaptureScreenHandler.getOverlaySpecifications(
+          screenHeight, screenWidth,
+          overlayHeight, overlayWidth
+        );
+
+        expect(result.height).toBeCloseTo(200, 1);
+        expect(result.width).toBeCloseTo(340, 1);
+        expect(result.yOffset).toBeCloseTo(80, 1);
+        expect(result.xOffset).toBeCloseTo(180, 1);
+      });
+    });
+  });
+
+  describe('when screen is portrait and video resolution is thin ' +
     'leaving smaller black margins on left and right of screen', function() {
 
     beforeEach(function() {
@@ -63,7 +111,7 @@ describe('CameraCaptureScreenHandler', function() {
     });
   });
 
-  describe('When screen is landscape and video resolution is wide ' +
+  describe('when screen is landscape and video resolution is wide ' +
     'leaving smaller black margins on top and bottom of screen', function() {
 
     beforeEach(function() {
@@ -103,7 +151,7 @@ describe('CameraCaptureScreenHandler', function() {
     });
   });
 
-  describe('When screen is portrait and video resolution is wide ' +
+  describe('when screen is portrait and video resolution is wide ' +
     'leaving black margins on top and bottom of screen', function() {
 
     beforeEach(function () {
@@ -143,7 +191,7 @@ describe('CameraCaptureScreenHandler', function() {
     });
   });
 
-  describe('When screen is landscape and video resolution is thin ' +
+  describe('when screen is landscape and video resolution is thin ' +
     'leaving black margins on left and right of screen', function() {
 
     beforeEach(function () {
@@ -183,7 +231,7 @@ describe('CameraCaptureScreenHandler', function() {
     });
   });
 
-  describe('When screen perfect', function() {
+  describe('when screen perfect', function() {
 
     beforeEach(function () {
       videoHeightInPercentage = 100.0;
