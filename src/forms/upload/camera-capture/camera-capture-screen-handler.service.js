@@ -4,8 +4,6 @@ class CameraCaptureScreenHandler {
     $log
   ) {
     this.$log = $log;
-    this.overlayXOffsetPercentage = 0.10;
-    this.overlayMaxWidth = 800;
   }
 
   /* Get height and width of video in percentage * 100
@@ -119,6 +117,10 @@ class CameraCaptureScreenHandler {
    * and strech overlay to fit screen width preserving ratio
    * If screen is landscrape, set a fixed max width for overlay
    * and stretch overlay to that width instead
+   *
+   * TODO : haoyuan make this more generic
+   * IMPORTANT: this method assumes an overlay of dimension roughly of an ID card
+   * Overlay with height > width may not work
    */
   getOverlaySpecifications(
     screenHeight, screenWidth,
@@ -126,17 +128,25 @@ class CameraCaptureScreenHandler {
   ) {
     this.$log.debug('Computing overlay specs');
     const overlayHeightWidthRatio = overlayNaturalHeight / overlayNaturalWidth;
-
-    let xOffset = screenWidth * this.overlayXOffsetPercentage;
-    let width = screenWidth - 2 * xOffset;
-    // Screen is too wide, likely a landscape screen
-    if (width > this.overlayMaxWidth) {
-      width = this.overlayMaxWidth;
-      xOffset = (screenWidth - width) / 2;
-      this.$log.info('Restricted overlay size');
+    let width;
+    let height;
+    if (CameraCaptureScreenHandler.isScreenPortrait(screenHeight, screenWidth)) {
+      width = screenWidth - 2 * screenWidth * 0.075; // Arbituary UI decision
+      height = width * overlayHeightWidthRatio;
+    } else { // Landscape
+      const maxWidth = screenWidth * 0.6; // Arbituary UI decision
+      const maxHeight = screenHeight * 0.5; // Arbituary UI decision
+      if (maxWidth * overlayHeightWidthRatio < maxHeight) {
+        width = maxWidth;
+        height = maxWidth * overlayHeightWidthRatio;
+      } else {
+        height = maxHeight;
+        width = maxHeight * (1 / overlayHeightWidthRatio);
+      }
     }
-    const height = width * overlayHeightWidthRatio;
-    const yOffset = (screenHeight - height) / 2;
+
+    const xOffset = (screenWidth - width) / 2; // Center overlay along x
+    const yOffset = (screenHeight - height) / 2.5; // Move overlay slightly up along y
 
     this.$log.debug(`overlay width : ${width}`);
     this.$log.debug(`overlay height : ${height}`);
@@ -150,6 +160,14 @@ class CameraCaptureScreenHandler {
       xOffset
     };
   }
+
+  static isScreenPortrait(screenHeight, screenWidth) {
+    return screenHeight >= screenWidth;
+  }
+
+  static isScreenLandscape(screenHeight, screenWidth) {
+    return screenWidth >= screenHeight;
+  }
 }
 
 /**
@@ -160,7 +178,7 @@ class CameraCaptureScreenHandler {
  */
 
 function hasNarrowVideoInPortraitScreen(screenHeight, screenWidth, videoResHeight, videoResWidth) {
-  return isScreenPortrait(screenHeight, screenWidth)
+  return CameraCaptureScreenHandler.isScreenPortrait(screenHeight, screenWidth)
     && videoResHeight / videoResWidth > screenHeight / screenWidth;
 }
 
@@ -180,16 +198,8 @@ function getCanvasSpecsForPortraitScreenWithNarrowVideo(
 }
 
 function hasNarrowVideoInLandScapeScreen(screenHeight, screenWidth, videoResHeight, videoResWidth) {
-  return isScreenLandscape(screenHeight, screenWidth)
+  return CameraCaptureScreenHandler.isScreenLandscape(screenHeight, screenWidth)
     && videoResWidth / videoResHeight > screenWidth / screenHeight;
-}
-
-function isScreenPortrait(screenHeight, screenWidth) {
-  return screenHeight >= screenWidth;
-}
-
-function isScreenLandscape(screenHeight, screenWidth) {
-  return screenWidth >= screenHeight;
 }
 
 function getCanvasSpecsForLandscapeScreenWithNarrowVideo(
