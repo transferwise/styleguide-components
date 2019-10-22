@@ -1,3 +1,7 @@
+# v3.12.4
+## Bump angular to 1.5.10
+The components use features introduced in 1.5.10, so the library should enforce that
+
 # v3.12.3
 ## Select undefined options fix
 Check if the available options passed to the `twSelect` component is an iterable array
