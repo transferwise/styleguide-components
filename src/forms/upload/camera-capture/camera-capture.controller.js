@@ -266,6 +266,30 @@ class CameraCaptureController {
     return !!(this.$window.navigator.mediaDevices
       && this.$window.navigator.mediaDevices.getUserMedia);
   }
+
+  getOverlayStyles() {
+    return {
+      left: `${this.overlayXOffset}px`,
+      top: `${this.overlayYOffset}px`,
+      width: `${this.overlayWidth}px`,
+      height: `${this.overlayHeight}px`,
+    };
+  }
+
+  getVideoStyles() {
+    return {
+      left: `${this.videoXOffset}%`,
+      height: `${this.videoHeight}%`,
+      width: `${this.videoWidth}%`,
+    };
+  }
+
+  getCanvasStyles() {
+    return {
+      left: `${this.displayCanvasXOffset}px`,
+      top: `${this.displayCanvasYOffset}px`,
+    };
+  }
 }
 
 /**
