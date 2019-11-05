@@ -1,9 +1,11 @@
 // Service resolving video and canvas screen sizes
 class CameraCaptureScreenHandler {
   constructor(
-    $log
+    $log,
+    CameraOverlayHandler
   ) {
     this.$log = $log;
+    this.CameraOverlayHandler = CameraOverlayHandler;
   }
 
   /* Get height and width of video in percentage * 100
@@ -112,53 +114,53 @@ class CameraCaptureScreenHandler {
   }
 
   /**
-   * Overlay is going to be an image with appropriate width to indicate an ID
-   * If screen is portrait, leave a margin at both sides
-   * and strech overlay to fit screen width preserving ratio
-   * If screen is landscrape, set a fixed max width for overlay
-   * and stretch overlay to that width instead
-   *
-   * TODO : haoyuan make this more generic
-   * IMPORTANT: this method assumes an overlay of dimension roughly of an ID card
-   * Overlay with height > width may not work
+   * Get dimension, offset of camera overlay
    */
   getOverlaySpecifications(
     screenHeight, screenWidth,
     overlayNaturalHeight, overlayNaturalWidth
   ) {
-    this.$log.debug('Computing overlay specs');
-    const overlayHeightWidthRatio = overlayNaturalHeight / overlayNaturalWidth;
-    let width;
-    let height;
-    if (CameraCaptureScreenHandler.isScreenPortrait(screenHeight, screenWidth)) {
-      width = screenWidth - 2 * screenWidth * 0.075; // Arbituary UI decision
-      height = width * overlayHeightWidthRatio;
-    } else { // Landscape
-      const maxWidth = screenWidth * 0.6; // Arbituary UI decision
-      const maxHeight = screenHeight * 0.5; // Arbituary UI decision
-      if (maxWidth * overlayHeightWidthRatio < maxHeight) {
-        width = maxWidth;
-        height = maxWidth * overlayHeightWidthRatio;
-      } else {
-        height = maxHeight;
-        width = maxHeight * (1 / overlayHeightWidthRatio);
-      }
-    }
+    const {
+      height: containerHeight, width: containerWidth,
+      yOffset: containerYOffset, xOffset: containerXOffset,
+    } = CameraCaptureScreenHandler.getOverlayContainer(screenHeight, screenWidth);
 
-    const xOffset = (screenWidth - width) / 2; // Center overlay along x
-    const yOffset = (screenHeight - height) / 2.5; // Move overlay slightly up along y
-
-    this.$log.debug(`overlay width : ${width}`);
-    this.$log.debug(`overlay height : ${height}`);
-    this.$log.debug(`overlay x-offset : ${xOffset}`);
-    this.$log.debug(`overlay y-offset : ${yOffset}`);
+    const {
+      height: overlayHeight, width: overlayWidth,
+      yOffset: overlayYOffset, xOffset: overlayXOffset,
+    } = this.CameraOverlayHandler.getOverlaySpecificationsWrtContainer(
+      containerHeight, containerWidth,
+      overlayNaturalHeight, overlayNaturalWidth
+    );
 
     return {
-      height,
-      width,
-      yOffset,
-      xOffset
+      height: overlayHeight,
+      width: overlayWidth,
+      yOffset: containerYOffset + overlayYOffset,
+      xOffset: containerXOffset + overlayXOffset
     };
+  }
+
+  /**
+   * Get a 1:1 box container based on screen size to render overlay
+   */
+  static getOverlayContainer(screenHeight, screenWidth) {
+    if (CameraCaptureScreenHandler.isScreenPortrait(screenHeight, screenWidth)) {
+      return {
+        height: screenWidth,
+        width: screenWidth,
+        yOffset: (screenHeight - screenWidth) / 2.5, // Place container above middle
+        xOffset: 0,
+      };
+    } else { // eslint-disable-line
+      const availableHeight = screenHeight * 0.90; // Leave the btm 10% blank
+      return {
+        height: availableHeight,
+        width: availableHeight,
+        yOffset: 0,
+        xOffset: (screenWidth - availableHeight) / 2,
+      };
+    }
   }
 
   static isScreenPortrait(screenHeight, screenWidth) {
@@ -254,6 +256,7 @@ function getCanvasSpecs(screenHeight, screenWidth, videoResHeight, videoResWidth
 
 CameraCaptureScreenHandler.$inject = [
   '$log',
+  'CameraOverlayHandler'
 ];
 
 export default CameraCaptureScreenHandler;
