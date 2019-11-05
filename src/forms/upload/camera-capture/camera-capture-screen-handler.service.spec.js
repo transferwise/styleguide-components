@@ -7,9 +7,7 @@ describe('CameraCaptureScreenHandler', function() {
     videoResHeight,
     videoResWidth,
     videoHeightInPercentage,
-    videoWidthInPercentage,
-    overlayHeight,
-    overlayWidth;
+    videoWidthInPercentage;
 
   beforeEach(function() {
     module('tw.styleguide.forms.upload');
@@ -19,11 +17,19 @@ describe('CameraCaptureScreenHandler', function() {
     });
   });
 
-  describe('when displaying an overlay of an ID card (width : height is approximately 2)', function() {
+  describe('when displaying an overlay', function() {
+    const mockedOverlayHeight = 100;
+    const mockedOverlayWidth = 110;
+    const mockedOverlayYOffset = 10;
+    const mockedOverlayXOffset = 20;
     beforeEach(function() {
-      // Using dimension of Singapore ID here :)
-      overlayHeight = 500;
-      overlayWidth = 850;
+      spyOn(CameraCaptureScreenHandler.CameraOverlayHandler, 'getOverlaySpecificationsWrtContainer')
+        .and.returnValue({
+          height: mockedOverlayHeight,
+          width: mockedOverlayWidth,
+          yOffset: mockedOverlayYOffset,
+          xOffset: mockedOverlayXOffset
+        })
     });
 
     describe('when screen is portrait', function () {
@@ -32,16 +38,13 @@ describe('CameraCaptureScreenHandler', function() {
         screenWidth = 400;
       });
 
-      it('should render an overlay with thin margins on left and right with original shape preserved', function () {
-        const result = CameraCaptureScreenHandler.getOverlaySpecifications(
-          screenHeight, screenWidth,
-          overlayHeight, overlayWidth
-        );
+      it('should position overlay correctly by applying container xy offsets', function () {
+        const result = CameraCaptureScreenHandler.getOverlaySpecifications(screenHeight, screenWidth, 0, 0);
 
-        expect(result.height).toBeCloseTo(200, 1);
-        expect(result.width).toBeCloseTo(340, 1);
-        expect(result.yOffset).toBeCloseTo(180, 1);
-        expect(result.xOffset).toBeCloseTo(30, 1);
+        expect(result.height).toBe(mockedOverlayHeight);
+        expect(result.width).toBe(mockedOverlayWidth);
+        expect(result.yOffset).toBeCloseTo(mockedOverlayYOffset + 80, 1);
+        expect(result.xOffset).toBeCloseTo(mockedOverlayXOffset, 1);
       });
     });
 
@@ -51,16 +54,13 @@ describe('CameraCaptureScreenHandler', function() {
         screenWidth = 600;
       });
 
-      it('should render an overlay centered in screen with original shape preserved', function () {
-        const result = CameraCaptureScreenHandler.getOverlaySpecifications(
-          screenHeight, screenWidth,
-          overlayHeight, overlayWidth
-        );
+      it('should position overlay correctly by applying container xy offsets', function () {
+        const result = CameraCaptureScreenHandler.getOverlaySpecifications(screenHeight, screenWidth, 0, 0);
 
-        expect(result.height).toBeCloseTo(180, 1);
-        expect(result.width).toBeCloseTo(306, 1);
-        expect(result.yOffset).toBeCloseTo(90, 1);
-        expect(result.xOffset).toBeCloseTo(147, 1);
+        expect(result.height).toBe(mockedOverlayHeight);
+        expect(result.width).toBeCloseTo(mockedOverlayWidth);
+        expect(result.yOffset).toBeCloseTo(mockedOverlayYOffset, 1);
+        expect(result.xOffset).toBeCloseTo(mockedOverlayXOffset + 120, 1);
       });
     });
   });
