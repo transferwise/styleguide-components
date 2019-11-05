@@ -1,10 +1,7 @@
 'use strict';
 
 describe('CameraCaptureScreenHandler', function() {
-  var $compile,
-    $rootScope,
-    $timeout,
-    CameraCaptureScreenHandler,
+  var CameraCaptureScreenHandler,
     screenHeight,
     screenWidth,
     videoResHeight,
@@ -18,9 +15,6 @@ describe('CameraCaptureScreenHandler', function() {
     module('tw.styleguide.forms.upload');
 
     inject(function($injector) {
-      $rootScope = $injector.get('$rootScope');
-      $compile = $injector.get('$compile');
-      $timeout = $injector.get('$timeout');
       CameraCaptureScreenHandler = $injector.get('CameraCaptureScreenHandler');
     });
   });
@@ -46,7 +40,7 @@ describe('CameraCaptureScreenHandler', function() {
 
         expect(result.height).toBeCloseTo(200, 1);
         expect(result.width).toBeCloseTo(340, 1);
-        expect(result.yOffset).toBeCloseTo(160, 1);
+        expect(result.yOffset).toBeCloseTo(180, 1);
         expect(result.xOffset).toBeCloseTo(30, 1);
       });
     });
@@ -54,7 +48,7 @@ describe('CameraCaptureScreenHandler', function() {
     describe('when screen is landscape', function () {
       beforeEach(function () {
         screenHeight = 400;
-        screenWidth = 700;
+        screenWidth = 600;
       });
 
       it('should render an overlay centered in screen with original shape preserved', function () {
@@ -63,10 +57,10 @@ describe('CameraCaptureScreenHandler', function() {
           overlayHeight, overlayWidth
         );
 
-        expect(result.height).toBeCloseTo(200, 1);
-        expect(result.width).toBeCloseTo(340, 1);
-        expect(result.yOffset).toBeCloseTo(80, 1);
-        expect(result.xOffset).toBeCloseTo(180, 1);
+        expect(result.height).toBeCloseTo(180, 1);
+        expect(result.width).toBeCloseTo(306, 1);
+        expect(result.yOffset).toBeCloseTo(90, 1);
+        expect(result.xOffset).toBeCloseTo(147, 1);
       });
     });
   });
@@ -109,6 +103,17 @@ describe('CameraCaptureScreenHandler', function() {
       expect(paintHeight).toBeCloseTo(90, 2);
       expect(paintWidth).toBeCloseTo(40, 2);
     });
+
+    it("gives overlay container fully fitting the width and in upper middle portion of screen", function () {
+      const {
+        height, width,
+        yOffset, xOffset
+      } = CameraCaptureScreenHandler.constructor.getOverlayContainer(screenHeight, screenWidth);
+      expect(height).toBe(40);
+      expect(width).toBe(40);
+      expect(yOffset).toBe(20);
+      expect(xOffset).toBe(0);
+    });
   });
 
   describe('when screen is landscape and video resolution is wide ' +
@@ -148,6 +153,17 @@ describe('CameraCaptureScreenHandler', function() {
       expect(width).toBeCloseTo(screenWidth, 2);
       expect(paintWidth).toBeCloseTo(90, 2);
       expect(paintHeight).toBeCloseTo(40, 2);
+    });
+
+    it("gives overlay container mostly fitting the height and in upper middle portion of screen", function () {
+      const {
+        height, width,
+        yOffset, xOffset
+      } = CameraCaptureScreenHandler.constructor.getOverlayContainer(screenHeight, screenWidth);
+      expect(height).toBe(36);
+      expect(width).toBe(36);
+      expect(yOffset).toBe(0);
+      expect(xOffset).toBe(27);
     });
   });
 
@@ -189,6 +205,17 @@ describe('CameraCaptureScreenHandler', function() {
       expect(paintWidth).toBeCloseTo(videoResWidth, 2);
       expect(paintHeight).toBeCloseTo(videoResHeight, 2);
     });
+
+    it("gives overlay container fully fitting the width and in upper middle portion of screen", function () {
+      const {
+        height, width,
+        yOffset, xOffset
+      } = CameraCaptureScreenHandler.constructor.getOverlayContainer(screenHeight, screenWidth);
+      expect(height).toBe(40);
+      expect(width).toBe(40);
+      expect(yOffset).toBe(20);
+      expect(xOffset).toBe(0);
+    });
   });
 
   describe('when screen is landscape and video resolution is thin ' +
@@ -228,6 +255,17 @@ describe('CameraCaptureScreenHandler', function() {
       expect(height).toBeCloseTo(screenHeight, 2);
       expect(paintWidth).toBeCloseTo(videoResWidth, 2);
       expect(paintHeight).toBeCloseTo(videoResHeight, 2);
+    });
+
+    it("gives overlay container mostly fitting the height and in upper middle portion of screen", function () {
+      const {
+        height, width,
+        yOffset, xOffset
+      } = CameraCaptureScreenHandler.constructor.getOverlayContainer(screenHeight, screenWidth);
+      expect(height).toBe(36);
+      expect(width).toBe(36);
+      expect(yOffset).toBe(0);
+      expect(xOffset).toBe(27);
     });
   });
 
