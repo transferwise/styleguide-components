@@ -152,15 +152,16 @@ class CameraCaptureScreenHandler {
         yOffset: (screenHeight - screenWidth) / 2.5, // Place container above middle
         xOffset: 0,
       };
-    } else { // eslint-disable-line
-      const availableHeight = screenHeight * 0.90; // Leave the btm 10% blank
-      return {
-        height: availableHeight,
-        width: availableHeight,
-        yOffset: 0,
-        xOffset: (screenWidth - availableHeight) / 2,
-      };
     }
+
+    // isLandscape
+    const availableHeight = screenHeight * 0.90; // Leave the btm 10% blank
+    return {
+      height: availableHeight,
+      width: availableHeight,
+      yOffset: 0,
+      xOffset: (screenWidth - availableHeight) / 2,
+    };
   }
 
   static isScreenPortrait(screenHeight, screenWidth) {
