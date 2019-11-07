@@ -1,4 +1,4 @@
-# v3.12.5
+# v3.13.0
 ## Feature enhancements for camera upload component
 Added camera overlay
 Default to selfie cam for devices with single video input and make selfie cam mirror user
