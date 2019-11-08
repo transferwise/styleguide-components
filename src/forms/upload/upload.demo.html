@@ -133,7 +133,8 @@
   on-start="$ctrl.onStart"
   on-success="$ctrl.onSuccess"
   on-failure="$ctrl.onFailure"
-  on-cancel="$ctrl.onCancel"</span><span ng-if="$ctrl.source">
+  on-cancel="$ctrl.onCancel"</span><span ng-if="$ctrl.cameraOverlay">
+  overlay="{{$ctrl.cameraOverlay}}"</span><span ng-if="$ctrl.source">
   source="{{$ctrl.source}}"</span>&gt;<span ng-if="$ctrl.customComplete">
   &lt;h1&gt;Custom completion card&lt;/h1&gt;</span>
 &lt;/tw-upload&gt;
@@ -158,7 +159,7 @@
           options="$ctrl.sources"></tw-select>
       </div>
 
-      <div class="form-group" ng-init="$ctrl.size = 'md'">
+      <div class="form-group" ng-if="$ctrl.source == 'CAMERA_ONLY'" ng-init="$ctrl.size = 'md'">
         <label class="control-label">
           Camera Direction
         </label>
@@ -166,6 +167,13 @@
           placeholder="Camera Direction"
           ng-model="$ctrl.cameraDirection"
           options="$ctrl.cameraDirections"></tw-select>
+      </div>
+
+      <div class="form-group" ng-if="$ctrl.source == 'CAMERA_ONLY'" ng-init="$ctrl.cameraOverlay = 'images/overlay.png'">
+        <label class="control-label">
+          Camera Overlay Image URL
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.cameraOverlay" />
       </div>
 
       <div class="form-group" ng-init="$ctrl.name = 'file'">

@@ -5,10 +5,16 @@ describe('Given a camera capture component', function() {
     $compile,
     $rootScope,
     $scope,
+    $window,
     controller,
-    component,
-    acquireFullScreenRequest,
+    component;
+
+  // Promises
+  var acquireFullScreenRequest,
     acquireMediaStreamRequest;
+
+  // Spies
+  var tryAcquireMediaStreamSpy;
 
   beforeEach(function() {
     module('tw.styleguide.forms.upload');
@@ -16,13 +22,14 @@ describe('Given a camera capture component', function() {
     inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
+      $window = $injector.get('$window');
       $scope = $rootScope.$new();
       $q = $injector.get('$q');
     });
 
     const template = " \
       <tw-camera-capture \
-        direction='USER' \
+        direction='ENVIRONMENT' \
         on-cancel='onCancel()' \
         on-confirm='onConfirm(file)' \
         test-mode='true'> \
@@ -39,43 +46,10 @@ describe('Given a camera capture component', function() {
     acquireFullScreenRequest = $q.defer();
     acquireMediaStreamRequest = $q.defer();
 
+    tryAcquireMediaStreamSpy = spyOn(controller, 'tryAcquireMediaStream');
+    tryAcquireMediaStreamSpy.and.returnValue(acquireMediaStreamRequest.promise);
+
     spyOn(controller, 'tryAcquireFullScreen').and.returnValue(acquireFullScreenRequest.promise);
-    spyOn(controller, 'tryAcquireMediaStream').and.returnValue(acquireMediaStreamRequest.promise);
-  });
-
-  describe('after initialization with camera direction', function() {
-    beforeEach(function() {
-      const template = " \
-        <tw-camera-capture \
-          direction='USER' \
-          test-mode='true'> \
-        </tw-camera-capture>";
-      const $component = getComponent($scope, template);
-      controller = $component.controller('twCameraCapture');
-      component = $component[0];
-      spyOn(controller, 'onVideoStreamAcquisition').and.callFake(function(){});
-    });
-
-    it('should convert camera direction in upper case to lower case', function() {
-      expect(controller.cameraConstraints.video.facingMode.ideal).toBe('user');
-    });
-  });
-
-  describe('after initialization without camera direction', function() {
-    beforeEach(function() {
-      const template = " \
-        <tw-camera-capture \
-          test-mode='true'> \
-        </tw-camera-capture>";
-      const $component = getComponent($scope, template);
-      controller = $component.controller('twCameraCapture');
-      component = $component[0];
-      spyOn(controller, 'onVideoStreamAcquisition').and.callFake(function(){});
-    });
-
-    it('should set camera direction to environment by default', function() {
-      expect(controller.cameraConstraints.video.facingMode.ideal).toBe('environment');
-    });
   });
 
   describe('after startLiveCamFlow is triggered', function() {
@@ -149,6 +123,32 @@ describe('Given a camera capture component', function() {
         it('should shutdown thus calling the onCancel callback', function() {
           expect($scope.onCancel).toHaveBeenCalled();
         });
+      });
+    });
+  });
+
+  describe('when trying to acquire media stream', function() {
+    var enumerateDevicesRequest;
+
+    beforeEach(function() {
+      enumerateDevicesRequest = $q.defer();
+      tryAcquireMediaStreamSpy.and.callThrough();
+      spyOn($window.navigator.mediaDevices, 'enumerateDevices').and.returnValue(enumerateDevicesRequest.promise);
+      spyOn($window.navigator.mediaDevices, 'getUserMedia').and.callFake(function(){});
+      controller.mediaStream = null;
+    });
+
+    it('camera direction defaults to user if device only has one video input', function() {
+      enumerateDevicesRequest.resolve([{kind: 'videoInput'}, {kind: 'audioInput'}, {kind: 'audioInput'}]);
+      controller.tryAcquireMediaStream().then(() => {
+        expect(controller.direction).toBe('user');
+      });
+    });
+
+    it('camera direction takes input value if device has more than 1 video input', function() {
+      enumerateDevicesRequest.resolve([{kind: 'videoInput'}, {kind: 'videoInput'}, {kind: 'audioInput'}]);
+      controller.tryAcquireMediaStream().then(() => {
+        expect(controller.direction).toBe('environment');
       });
     });
   });
