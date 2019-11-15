@@ -120,7 +120,8 @@ class UploadController {
      * NOTE: We temporarily want to ignore httpOptions until a full solution is implemented
      * Currently httpOptions.url is a relative path, but needs to know its baseUrl
      * As this call will return a 404, stopping a user from continuing the flow.
-     */
+    */
+
     // if (this.httpOptions) {
     //   // Post file now
     //   this.$q
@@ -131,12 +132,11 @@ class UploadController {
     //     .then(response => asyncSuccess(response[0], response[1], this))
     //     .catch(error => asyncFailure(error, this));
     // } else {
-      // Post on form submit
-      this.asyncFileRead(file)
-        .then(response => asyncSuccess(null, response, this))
-        .catch(error => asyncFailure(error, this));
-    //}
-
+    // Post on form submit
+    this.asyncFileRead(file)
+      .then(response => asyncSuccess(null, response, this))
+      .catch(error => asyncFailure(error, this));
+    // }
   }
 
   onDragEnter() {
