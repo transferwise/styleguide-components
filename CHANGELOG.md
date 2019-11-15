@@ -1,3 +1,8 @@
+# v3.13.1
+## Temporarily remove async upload with tw-upload
+Until a robust solution is found to accept the correct url.
+We temporarily stop async upload, because it fails and stops a user from submitting the form.
+
 # v3.13.0
 ## Feature enhancements for camera upload component
 Added camera overlay
