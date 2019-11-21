@@ -1,4 +1,4 @@
-class AsyncTasks {
+class AsyncTasksConfig {
   constructor() {
     this.apiUrl = '';
     this.headers = {};

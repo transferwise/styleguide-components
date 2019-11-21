@@ -1,6 +1,6 @@
 import angular from 'angular';
 
-import AsyncTasks from './asyncTasks';
+import AsyncTasks from './asyncTasksConfig';
 import DateService from './date';
 import CurrencyService from './currency';
 import LocaleService from './locale';

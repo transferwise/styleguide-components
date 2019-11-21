@@ -7,7 +7,7 @@ import CameraOverlayHandler from './camera-capture/camera-overlay-handler.servic
 import FileInput from './file-input.directive.js';
 import AsyncFileReader from './async-file-reader.service.js';
 import AsyncFileSaver from './async-file-saver.service.js';
-import AsyncTasks from '../../services/asyncTasks';
+import AsyncTasksConfig from '../../services/asyncTasksConfig';
 
 export default angular
   .module('tw.styleguide.forms.upload', [])
@@ -16,7 +16,7 @@ export default angular
   .service('AsyncFileSaver', AsyncFileSaver)
   .service('CameraCaptureScreenHandler', CameraCaptureScreenHandler)
   .service('CameraOverlayHandler', CameraOverlayHandler)
-  .service('TwAsyncTasksService', AsyncTasks)
+  .service('AsyncTasksConfig', AsyncTasksConfig)
   .component('twCameraCapture', CameraCapture)
   .component('twUpload', Upload)
   .name;

@@ -10,7 +10,7 @@ class UploadController {
     $attrs,
     AsyncFileReader,
     AsyncFileSaver,
-    TwAsyncTasksService,
+    AsyncTasksConfig,
   ) {
     this.$timeout = $timeout;
     this.$element = $element;
@@ -18,7 +18,7 @@ class UploadController {
     this.$q = $q;
     this.AsyncFileReader = AsyncFileReader;
     this.AsyncFileSaver = AsyncFileSaver;
-    this.AsyncTasks = TwAsyncTasksService;
+    this.AsyncTasksConfig = AsyncTasksConfig;
 
     // First isImage updated only at select times, second updated instantly.
     this.isImage = false;
@@ -188,7 +188,7 @@ class UploadController {
   }
 
   asyncFileSave(file) {
-    const httpOptions = this.AsyncTasks.extendHttpOptions(this.httpOptions);
+    const httpOptions = this.AsyncTasksConfig.extendHttpOptions(this.httpOptions);
     return this.AsyncFileSaver.save(this.name, file, httpOptions);
   }
 
@@ -321,7 +321,7 @@ UploadController.$inject = [
   '$attrs',
   'AsyncFileReader',
   'AsyncFileSaver',
-  'TwAsyncTasksService'
+  'AsyncTasksConfig'
 ];
 
 export default UploadController;
