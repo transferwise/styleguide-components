@@ -24,4 +24,4 @@ class AsyncTasksConfig {
   }
 }
 
-export default AsyncTasks;
+export default AsyncTasksConfig;
