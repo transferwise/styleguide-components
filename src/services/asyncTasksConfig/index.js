@@ -1,6 +1,6 @@
 import angular from 'angular';
-import AsyncTasks from './asyncTasks.service';
+import AsyncTasksConfig from './asyncTasksConfig.service';
 
 export default angular
-  .module('tw.styleguide.services.asynctasks', [])
-  .service('TwAsyncTasksService', AsyncTasks).name;
+  .module('tw.styleguide.services.asynctasksconfig', [])
+  .service('AsyncTasksConfig', AsyncTasksConfig).name;
