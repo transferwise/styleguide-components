@@ -2,7 +2,7 @@ describe('AsyncTasksConfig', () => {
   let service;
 
   beforeEach(() => {
-    angular.mock.module('tw.styleguide.services.asynctasksconfig');
+    angular.mock.module('tw.styleguide.services.async-tasks-config');
 
     angular.mock.inject(($injector) => {
       service = $injector.get('AsyncTasksConfig');

@@ -1,6 +1,6 @@
-'use strict';
 
-describe('Field', function() {
+
+describe('Field', () => {
   var $compile,
       $rootScope,
       $scope,
@@ -10,7 +10,7 @@ describe('Field', function() {
 
   beforeEach(function() {
     angular.mock.module('tw.styleguide.forms.field');
-    angular.mock.module('tw.styleguide.services.asynctasksconfig');
+    angular.mock.module('tw.styleguide.services.async-tasks-config');
 
     angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');

@@ -1,31 +1,30 @@
-'use strict';
 
-describe('given an upload component', function() {
-  var $q,
-    $compile,
-    $rootScope,
-    $scope,
-    $timeout,
-    isolateScope,
-    directiveElement,
-    AsyncFileReader,
-    AsyncFileSaver,
-    AsyncTasksConfig;
+describe('given an upload component', () => {
+  let $q;
+  let $compile;
+  let $rootScope;
+  let $scope;
+  let $timeout;
+  let isolateScope;
+  let directiveElement;
+  let AsyncFileReader;
+  let AsyncFileSaver;
+  let AsyncTasksConfig;
 
-  var INPUT_SELECTOR = '.hidden';
-  var LIST_ITEMS_SELECTOR = '.tw-select-option-link';
-  var FILTER_INPUT_SELECTOR = '.tw-select-filter';
+  const INPUT_SELECTOR = '.hidden';
+  const LIST_ITEMS_SELECTOR = '.tw-select-option-link';
+  const FILTER_INPUT_SELECTOR = '.tw-select-filter';
 
-  var base64url = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCA" +
-   "IAAACQd1PeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4wcMEQwbn8bvgwAAAB1pV" +
-   "Fh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAADElEQVQI12P4//8/AAX+" +
-   "Av7czFnnAAAAAElFTkSuQmCC";
+  const base64url = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCA'
+   + 'IAAACQd1PeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4wcMEQwbn8bvgwAAAB1pV'
+   + 'Fh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAADElEQVQI12P4//8/AAX+'
+   + 'Av7czFnnAAAAAElFTkSuQmCC';
 
-  beforeEach(function() {
+  beforeEach(() => {
     angular.mock.module('tw.styleguide.forms.upload');
-    angular.mock.module('tw.styleguide.services.asynctasksconfig')
+    angular.mock.module('tw.styleguide.services.async-tasks-config');
 
-    angular.mock.inject(function($injector) {
+    angular.mock.inject(($injector) => {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
       $scope = $rootScope.$new();
@@ -37,11 +36,12 @@ describe('given an upload component', function() {
     });
   });
 
-  describe('when a file is dropped', function() {
-    var dropTarget, deferred;
+  describe('when a file is dropped', () => {
+    let dropTarget;
+    let deferred;
 
-    beforeEach(function() {
-      var template = " \
+    beforeEach(() => {
+      const template = " \
         <tw-upload \
           too-large-message='File is too large' \
           processing-text='processing' \
@@ -65,77 +65,77 @@ describe('given an upload component', function() {
 
       directiveElement = getCompiledDirectiveElement($scope, template);
 
-      var fakeDropEvent = new CustomEvent('drop'); // file drop can be mocked
-      fakeDropEvent.dataTransfer = { files : [{ size: 2 }] };
+      const fakeDropEvent = new CustomEvent('drop'); // file drop can be mocked
+      fakeDropEvent.dataTransfer = { files: [{ size: 2 }] };
       directiveElement.dispatchEvent(fakeDropEvent);
 
       dropTarget = directiveElement.querySelector('.droppable');
     });
 
-    it('should trigger to the onStart handler', function() {
+    it('should trigger to the onStart handler', () => {
       expect($scope.onStart).toHaveBeenCalled();
     });
 
-    it('should not trigger the other handlers', function() {
+    it('should not trigger the other handlers', () => {
       expect($scope.onSuccess).not.toHaveBeenCalled();
       expect($scope.onFailure).not.toHaveBeenCalled();
       expect($scope.onCancel).not.toHaveBeenCalled();
     });
 
-    it('should move to the processing screen', function() {
+    it('should move to the processing screen', () => {
       expect(dropTarget.classList).toContain('droppable-processing');
     });
 
-    it('should show the processing message', function() {
-      var processingMessage = directiveElement.querySelector('.upload-processing-message');
+    it('should show the processing message', () => {
+      const processingMessage = directiveElement.querySelector('.upload-processing-message');
       expect(processingMessage).toBeTruthy();
       expect(processingMessage.innerText.trim()).toBe('processing');
     });
 
-    it('should not show the other messages', function() {
+    it('should not show the other messages', () => {
       expect(directiveElement.querySelector('.upload-success-message')).toBeFalsy();
       expect(directiveElement.querySelector('.upload-failure-message')).toBeFalsy();
     });
 
-    describe('after three seconds', function() {
-      beforeEach(function() {
+    describe('after three seconds', () => {
+      beforeEach(() => {
         deferred.resolve(base64url);
         $timeout.flush(3000);
       });
 
-      it('should display the success message', function() {
-        var successMessage = directiveElement.querySelector('.upload-success-message');
+      it('should display the success message', () => {
+        const successMessage = directiveElement.querySelector('.upload-success-message');
         expect(successMessage).toBeTruthy();
         expect(successMessage.innerText.trim()).toBe('success');
       });
 
-      it('should use the supplied success message', function() {
-        var successMessage = directiveElement.querySelector('.upload-success-message');
+      it('should use the supplied success message', () => {
+        const successMessage = directiveElement.querySelector('.upload-success-message');
         expect(successMessage.innerText.trim()).toBe('success');
       });
 
-      it('should not show the processing message', function() {
+      it('should not show the processing message', () => {
         expect(directiveElement.querySelector('.upload-processing-message')).toBeFalsy();
       });
 
-      it('should not show the failure message', function() {
+      it('should not show the failure message', () => {
         expect(directiveElement.querySelector('.upload-failure-message')).toBeFalsy();
       });
 
-      describe('after an additional 1.1 seconds', function() {
-        beforeEach(function() {
+      describe('after an additional 1.1 seconds', () => {
+        beforeEach(() => {
           $timeout.flush(1100);
         });
 
-        it('should not show the processing screen', function() {
+        it('should not show the processing screen', () => {
           expect(dropTarget.classList).not.toContain('droppable-processing');
         });
 
-        it('should show the success screen', function() {
+        it('should show the success screen', () => {
           expect(dropTarget.classList).toContain('droppable-complete');
         });
 
-        it('should trigger the onSuccess handler', function() {
+        it('should trigger the onSuccess handler', () => {
           expect($scope.onSuccess).toHaveBeenCalled();
         });
       });
@@ -273,10 +273,10 @@ describe('given an upload component', function() {
   //   });
   // });
 
-  describe('when a transcluded success screen is supplied', function() {
-    beforeEach(function() {
-      $scope.onUpload = function() {};
-      var template = " \
+  describe('when a transcluded success screen is supplied', () => {
+    beforeEach(() => {
+      $scope.onUpload = function () {};
+      const template = " \
         <tw-upload \
           title='Drag and drop here' \
           button-text='or click here' \
@@ -287,15 +287,15 @@ describe('given an upload component', function() {
         </tw-upload>";
       directiveElement = getCompiledDirectiveElement($scope, template);
     });
-    it('should render the transcluded content', function() {
-      var transcluded = directiveElement.querySelector('.transcluded-content');
+    it('should render the transcluded content', () => {
+      const transcluded = directiveElement.querySelector('.transcluded-content');
       expect(transcluded).toBeTruthy();
     });
   });
 
-  describe('when the dropped file is too large', function() {
-    beforeEach(function() {
-      var template = " \
+  describe('when the dropped file is too large', () => {
+    beforeEach(() => {
+      const template = " \
         <tw-upload \
           too-large-message='File is too large' \
           on-failure='onFailure' \
@@ -306,20 +306,20 @@ describe('given an upload component', function() {
 
       directiveElement = getCompiledDirectiveElement($scope, template);
 
-      var fakeDropEvent = new CustomEvent('drop'); // file drop can be mocked
-      fakeDropEvent.dataTransfer = { files : [{ size: 2 }] };
+      const fakeDropEvent = new CustomEvent('drop'); // file drop can be mocked
+      fakeDropEvent.dataTransfer = { files: [{ size: 2 }] };
       directiveElement.dispatchEvent(fakeDropEvent);
 
       // after 4.1s the flow is finished
       $timeout.flush(4100);
     });
 
-    it('should show an error message', function() {
-      var completeCard = directiveElement.querySelector('.droppable-complete-card[aria-hidden="false"]');
+    it('should show an error message', () => {
+      const completeCard = directiveElement.querySelector('.droppable-complete-card[aria-hidden="false"]');
       expect(completeCard.innerText.trim()).toBe('File is too large');
     });
 
-    it('should trigger the onFailure handler', function() {
+    it('should trigger the onFailure handler', () => {
       expect($scope.onFailure).toHaveBeenCalled();
     });
   });
@@ -335,13 +335,12 @@ describe('given an upload component', function() {
           ng-accept='csv'> \
         </tw-upload>";
     }
-    var element = angular.element(template);
+    const element = angular.element(template);
     // append to document so we can test document.activeElement
     angular.element(document.body).append(element);
-    var compiledElement = $compile(element)($scope);
+    const compiledElement = $compile(element)($scope);
 
     $scope.$digest();
     return compiledElement[0];
   }
-
 });
