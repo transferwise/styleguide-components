@@ -9,7 +9,8 @@ describe('given an upload component', function() {
     isolateScope,
     directiveElement,
     AsyncFileReader,
-    AsyncFileSaver;
+    AsyncFileSaver,
+    AsyncTasksConfig;
 
   var INPUT_SELECTOR = '.hidden';
   var LIST_ITEMS_SELECTOR = '.tw-select-option-link';
@@ -22,6 +23,7 @@ describe('given an upload component', function() {
 
   beforeEach(function() {
     angular.mock.module('tw.styleguide.forms.upload');
+    angular.mock.module('tw.styleguide.services.asynctasksconfig')
 
     angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
@@ -31,6 +33,7 @@ describe('given an upload component', function() {
       $q = $injector.get('$q');
       AsyncFileReader = $injector.get('AsyncFileReader');
       AsyncFileSaver = $injector.get('AsyncFileSaver');
+      AsyncTasksConfig = $injector.get('AsyncTasksConfig');
     });
   });
 
