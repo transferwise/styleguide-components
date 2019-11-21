@@ -10,7 +10,7 @@ describe('AsyncTasksConfig', () => {
   });
 
   describe('when calling setBaseUrl', () => {
-    it('should save baseUrl', () => {
+    it('should set baseUrl', () => {
       const baseUrl = 'http://localhost';
       service.setBaseUrl(baseUrl);
       expect(service.baseUrl).toEqual(baseUrl);
@@ -18,7 +18,7 @@ describe('AsyncTasksConfig', () => {
   });
 
   describe('when calling setHeader', () => {
-    it('should save header', () => {
+    it('should set header', () => {
       const header = 'Authorization';
       const value = 'Bearer 1234567890';
       service.setHeader(header, value);
@@ -27,7 +27,7 @@ describe('AsyncTasksConfig', () => {
       });
     });
 
-    it('should add multiple headers when needed', () => {
+    it('should set multiple headers when needed', () => {
       const header = 'Authorization';
       const value = 'Bearer 1234567890';
       const header2 = 'Accept-Language';
