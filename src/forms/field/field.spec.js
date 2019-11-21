@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-describe('Field', () => {
+describe('Field', function() {
   var $compile,
       $rootScope,
       $scope,

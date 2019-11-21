@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-describe('FormControl', () => {
+describe('FormControl', function() {
   var $compile,
     $rootScope,
     $scope,
