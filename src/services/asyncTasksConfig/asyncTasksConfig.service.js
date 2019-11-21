@@ -1,11 +1,11 @@
 class AsyncTasksConfig {
   constructor() {
-    this.apiUrl = '';
+    this.baseUrl = "";
     this.headers = {};
   }
 
-  setApiUrl(apiUrl) {
-    this.apiUrl = apiUrl;
+  setBaseUrl(baseUrl) {
+    this.baseUrl = baseUrl;
   }
 
   setHeader(header, value) {
@@ -15,10 +15,10 @@ class AsyncTasksConfig {
   extendHttpOptions(inputOptions) {
     const httpOptions = angular.copy(inputOptions);
     httpOptions.headers = httpOptions.headers
-      ? angular.extend(httpOptions.headers, this.headers)
+      ? { ...httpOptions.headers, ...this.headers }
       : this.headers;
     if (httpOptions.url) {
-      httpOptions.url = `${this.apiUrl}${httpOptions.url}`;
+      httpOptions.url = `${this.baseUrl}${httpOptions.url}`;
     }
     return httpOptions;
   }
