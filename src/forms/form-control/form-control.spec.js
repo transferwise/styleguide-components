@@ -11,7 +11,6 @@ describe('FormControl', function() {
 
   beforeEach(function() {
     angular.mock.module('tw.styleguide.forms.form-control');
-    angular.mock.module('tw.styleguide.services.async-tasks-config');
 
     angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');

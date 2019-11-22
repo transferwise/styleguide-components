@@ -10,13 +10,12 @@ import AsyncFileSaver from './async-file-saver.service.js';
 import AsyncTasksConfig from '../../services/asyncTasksConfig';
 
 export default angular
-  .module('tw.styleguide.forms.upload', [])
+  .module('tw.styleguide.forms.upload', [AsyncTasksConfig])
   .directive('twFileInput', FileInput)
   .service('AsyncFileReader', AsyncFileReader)
   .service('AsyncFileSaver', AsyncFileSaver)
   .service('CameraCaptureScreenHandler', CameraCaptureScreenHandler)
   .service('CameraOverlayHandler', CameraOverlayHandler)
-  .service('AsyncTasksConfig', AsyncTasksConfig)
   .component('twCameraCapture', CameraCapture)
   .component('twUpload', Upload)
   .name;
