@@ -1,6 +1,6 @@
 {
   "name": "@transferwise/styleguide-components",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "TransfeWise AngularJS 1.x Styleguide Components",
   "license": "MIT",
   "scripts": {
@@ -53,6 +53,7 @@
     "babel-core": "^6.26.0",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "bootstrap": "git+https://github.com/transferwise/bootstrap.git",
     "css-loader": "^0.28.11",
