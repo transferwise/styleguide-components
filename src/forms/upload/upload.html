@@ -60,7 +60,7 @@
         <span ng-if="$ctrl.isSuccess && $ctrl.successText" class="upload-success-message">{{$ctrl.successText}}</span>
         <span ng-if="$ctrl.isError && $ctrl.failureText" class="upload-failure-message">{{$ctrl.failureText}}</span>
       </h4>
-      <tw-process size="sm" state="$ctrl.processingState" class="process"
+      <tw-process size="sm" state="$ctrl.processingState"
         ng-if="($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"></tw-process>
       <h4 ng-if="$ctrl.uploadingText" class="p-t-3">
         <span class="upload-processing-message">{{$ctrl.uploadingText}}</span>
