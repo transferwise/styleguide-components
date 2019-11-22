@@ -22,7 +22,6 @@ describe('given an upload component', () => {
 
   beforeEach(() => {
     angular.mock.module('tw.styleguide.forms.upload');
-    angular.mock.module('tw.styleguide.services.async-tasks-config');
 
     angular.mock.inject(($injector) => {
       $rootScope = $injector.get('$rootScope');
