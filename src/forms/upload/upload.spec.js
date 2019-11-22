@@ -141,6 +141,93 @@ describe('given an upload component', () => {
     });
   });
 
+  describe('when a file is dropped and we have uploadingText', () => {
+    let dropTarget;
+    let deferred;
+    let template;
+
+    beforeEach(() => {
+      template = ` 
+        <tw-upload 
+          too-large-message='File is too large' 
+          uploading-text='uploading' 
+          on-start='onStart' 
+          on-success='onSuccess' 
+          on-failure='onFailure' 
+          on-cancel='onCancel' 
+          max-size='10'> 
+        </tw-upload>`;
+
+      // Create spies for callbacks
+      $scope.onStart = jasmine.createSpy('onStart');
+      $scope.onSuccess = jasmine.createSpy('onSuccess');
+      $scope.onFailure = jasmine.createSpy('onFailure');
+      $scope.onCancel = jasmine.createSpy('onCancel');
+
+      deferred = $q.defer();
+      spyOn(AsyncFileReader, 'read').and.returnValue(deferred.promise);
+
+      directiveElement = getCompiledDirectiveElement($scope, template);
+
+      const fakeDropEvent = new CustomEvent('drop'); // file drop can be mocked
+      fakeDropEvent.dataTransfer = { files: [{ size: 2 }] };
+      directiveElement.dispatchEvent(fakeDropEvent);
+
+      dropTarget = directiveElement.querySelector('.droppable');
+    });
+
+    it('should trigger to the onStart handler', () => {
+      expect($scope.onStart).toHaveBeenCalled();
+    });
+
+    it('should not trigger the other handlers', () => {
+      expect($scope.onSuccess).not.toHaveBeenCalled();
+      expect($scope.onFailure).not.toHaveBeenCalled();
+      expect($scope.onCancel).not.toHaveBeenCalled();
+    });
+
+    it('should move to the processing screen', () => {
+      expect(dropTarget.classList).toContain('droppable-processing');
+    });
+
+    it('should show the uploading message', () => {
+      const uploadingMessage = directiveElement.querySelector('.uploading-message');
+      expect(uploadingMessage).toBeTruthy();
+      expect(uploadingMessage.innerText.trim()).toBe('uploading');
+    });
+
+    describe('after three seconds', () => {
+      beforeEach(() => {
+        deferred.resolve(base64url);
+        $timeout.flush(3000);
+      });
+
+      it('should still display the uploading message', () => {
+        const uploadingMessage = directiveElement.querySelector('.uploading-message');
+        expect(uploadingMessage).toBeTruthy();
+        expect(uploadingMessage.innerText.trim()).toBe('uploading');
+      });
+
+      describe('after an additional 1.1 seconds', () => {
+        beforeEach(() => {
+          $timeout.flush(1100);
+        });
+
+        it('should not show the processing screen', () => {
+          expect(dropTarget.classList).not.toContain('droppable-processing');
+        });
+
+        it('should show the success screen', () => {
+          expect(dropTarget.classList).toContain('droppable-complete');
+        });
+
+        it('should trigger the onSuccess handler', () => {
+          expect($scope.onSuccess).toHaveBeenCalled();
+        });
+      });
+    });
+  });
+
   /*
    * NOTE: We temporarily want to ignore httpOptions until a full solution is implemented
    * Currently httpOptions.url is a relative path, but needs to know its baseUrl
