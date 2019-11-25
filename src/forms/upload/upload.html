@@ -64,11 +64,9 @@
         ng-if="($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"></tw-process>
     </div>
   </div>
-
-  <div class="droppable-complete-card droppable-card"
-    aria-hidden="{{!$ctrl.isDone}}">
-    <div class="droppable-card-content">
-      <div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError">
+  <div class="droppable-complete-card droppable-card" aria-hidden="{{!$ctrl.isDone}}">
+  <div class="droppable-card-content">
+      <div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError && !$ctrl.httpOptions">
         <h4 class="m-b-2" ng-if="$ctrl.label">
           {{$ctrl.label}}
         </h4>
@@ -82,6 +80,39 @@
         <span class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></span>
         <p class="text-ellipsis m-b-2">{{$ctrl.fileName}}</p>
       </div>
+      <div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError && $ctrl.httpOptions && $ctrl.isImage" ng-style="{'background': 'linear-gradient(rgba(250, 250, 250, 0.9), rgba(250, 250, 250, 0.9)), url({{ $ctrl.image }}) no-repeat center', 'background-size':'contain'}">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g filter="url(#filter0_d)">
+            <path d="M40 60C53.2548 60 64 49.2548 64 36C64 22.7452 53.2548 12 40 12C26.7452 12 16 22.7452 16 36C16 49.2548 26.7452 60 40 60Z" fill="white"/>
+          </g>
+          <path d="M34.92 44.06L28 37.32L28.7 36.6L34.92 42.66L51 27L51.7 27.72L34.92 44.06Z" fill="#2ED06E"/>
+          <defs>
+            <filter id="filter0_d" x="0" y="0" width="80" height="80" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+              <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+              <feOffset dy="4"/>
+              <feGaussianBlur stdDeviation="8"/>
+              <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0"/>
+              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+              <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+            </filter>
+          </defs>
+        </svg>
+            
+       <h4 class="m-b-2" ng-if="$ctrl.message">
+          {{$ctrl.message}}
+        </h4>
+        <!-- TODO BELOW SHOULD BE BACKGROUND? -->
+        <!-- <img
+          ng-if="$ctrl.isImage"
+          src="data:image/png;base64,
+            iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+          ng-src="{{$ctrl.image}}"
+          alt="OK"
+          class="thumbnail m-b-3" /> -->
+        <span class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></span>
+        <p class="text-ellipsis m-b-2">{{$ctrl.details}} So it is ready for review</p>
+      </div>
       <div ng-if="!$ctrl.hasTranscluded && $ctrl.isError">
         <h4 class="m-b-2" ng-if="$ctrl.isTooLarge">{{$ctrl.tooLargeMessage}}</h4>
         <h4 class="m-b-2" ng-if="$ctrl.isWrongType">{{$ctrl.wrongTypeText}}</h4>
@@ -89,23 +120,25 @@
         <span class="icon icon-alert icon-xxl text-danger m-b-1"></span>
       </div>
       <div ng-if="$ctrl.hasTranscluded" ng-transclude></div>
-      <p class="m-t-2 m-b-0">
-        <a href="" ng-click="$ctrl.clear()">
-          <!-- Draw a happy little cross in a happy little circle (X) -->
-          <svg
-            ng-if="!$ctrl.cancelText"
-            viewBox="0 0 24 24"
-            fill="#00b9ff"
-            xmlns="http://www.w3.org/2000/svg"
-            height="25">
-            <path d="M12 23a11 11 0 1 1 11-11 11 11 0 0 1-11 11zm0-21a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"></path>
-            <path
-              d="M16.85 7.85l-.71-.7L12 11.29 7.85 7.15l-.71.7L11.29 12l-4.15 4.15.71.7L12 12.71l4.14 4.14.71-.7L12.7 12l4.15-4.15z">
-            </path>
-          </svg>
-          {{$ctrl.cancelText}}
-        </a>
-      </p>
+      <div ng-if="!$ctrl.httpOptions">
+        <p class="m-t-2 m-b-0">
+          <a href="" ng-click="$ctrl.clear()">
+            <!-- Draw a happy little cross in a happy little circle (X) -->
+            <svg
+              ng-if="!$ctrl.cancelText"
+              viewBox="0 0 24 24"
+              fill="#00b9ff"
+              xmlns="http://www.w3.org/2000/svg"
+              height="25">
+              <path d="M12 23a11 11 0 1 1 11-11 11 11 0 0 1-11 11zm0-21a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"></path>
+              <path
+                d="M16.85 7.85l-.71-.7L12 11.29 7.85 7.15l-.71.7L11.29 12l-4.15 4.15.71.7L12 12.71l4.14 4.14.71-.7L12.7 12l4.15-4.15z">
+              </path>
+            </svg>
+            {{$ctrl.cancelText}}
+          </a>
+        </p>
+      </div>
     </div>
   </div>
 

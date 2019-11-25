@@ -1,6 +1,6 @@
 class AsyncTasksConfig {
   constructor() {
-    this.baseUrl = "";
+    this.baseUrl = '';
     this.headers = {};
   }
 
