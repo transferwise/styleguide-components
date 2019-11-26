@@ -107,14 +107,39 @@
         <span class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></span>
         <p class="text-ellipsis m-b-2">{{$ctrl.successDetails}}</p>
       </div>
-      <div ng-if="!$ctrl.hasTranscluded && $ctrl.isError">
+      <div ng-if="!$ctrl.hasTranscluded && $ctrl.isError && !$ctrl.errorMessage">
         <h4 class="m-b-2" ng-if="$ctrl.isTooLarge">{{$ctrl.tooLargeMessage}}</h4>
         <h4 class="m-b-2" ng-if="$ctrl.isWrongType">{{$ctrl.wrongTypeText}}</h4>
         <h4 class="m-b-2" ng-if="!$ctrl.isTooLarge && $ctrl.errorMessage">{{$ctrl.errorMessage}}</h4>
         <span class="icon icon-alert icon-xxl text-danger m-b-1"></span>
       </div>
+      <div ng-if="!$ctrl.hasTranscluded && $ctrl.isError && $ctrl.errorMessage">
+        <div class="m-b-3"><span class="icon icon-alert icon-circle-shadow icon-md"></span></div>
+        <h5 class="m-b-1" ng-if="$ctrl.errorMessage">{{$ctrl.errorMessage}}</h5>
+        <div class="m-b-2">
+          <p class="m-b-1" ng-repeat="error in $ctrl.errorReasons">
+            <span>
+              <svg class="inline-svg m-r-1" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11 22C4.92487 22 0 17.0751 0 11C0 4.92487 4.92487 0 11 0C17.0751 0 22 4.92487 22 11C22 13.9174 20.8411 16.7153 18.7782 18.7782C16.7153 20.8411 13.9174 22 11 22ZM11 1C5.47715 1 1 5.47715 1 11C1 16.5228 5.47715 21 11 21C16.5228 21 21 16.5228 21 11C21 8.34784 19.9464 5.8043 18.0711 3.92893C16.1957 2.05357 13.6522 1 11 1Z" fill="#F53636"/>
+                <path d="M14 10.5C14.8284 10.5 15.5 9.82843 15.5 9C15.5 8.17157 14.8284 7.5 14 7.5C13.1716 7.5 12.5 8.17157 12.5 9C12.5 9.82843 13.1716 10.5 14 10.5Z" fill="#F53636"/>
+                <path d="M8 10.5C8.82843 10.5 9.5 9.82843 9.5 9C9.5 8.17157 8.82843 7.5 8 7.5C7.17157 7.5 6.5 8.17157 6.5 9C6.5 9.82843 7.17157 10.5 8 10.5Z" fill="#F53636"/>
+                <path d="M15.45 16.73C14.5964 15.0548 12.8752 14 10.995 14C9.11483 14 7.3936 15.0548 6.54 16.73L5.65 16.28C6.6747 14.2708 8.73959 13.006 10.995 13.006C13.2504 13.006 15.3153 14.2708 16.34 16.28L15.45 16.73Z" fill="#F53636"/>
+              </svg>
+          </span>
+          <span>{{error.message}}</span>
+        </p>
+      </div>
+        <div class="btn-group btn-block hidden-md hidden-sm">
+          <div class="btn btn-danger btn-xs p-y-1 p-x-2 m-r-2" ng-click="$ctrl.clear()">{{$ctrl.cancelText}}</div>
+          <div class="btn btn-info btn-xs p-y-1 p-x-2">View image</div>
+        </div>
+        <div class="btn-group-vertical btn-block hidden-xl hidden-lg hidden-xs">
+            <div class="btn btn-danger btn-xs p-y-1 p-x-2 m-b-2" ng-click="$ctrl.clear()">{{$ctrl.cancelText}}</div>
+            <div ng-if="$ctrl.viewImageText" class="btn btn-info btn-xs p-y-1 p-x-2">{{$ctrl.viewImageText}}</div>
+          </div>
+      </div>
       <div ng-if="$ctrl.hasTranscluded" ng-transclude></div>
-      <p class="m-t-2 m-b-0" ng-if="!$ctrl.successMessage">
+      <p class="m-t-2 m-b-0" ng-if="!$ctrl.successMessage && !$ctrl.errorMessage">
         <a href="" ng-click="$ctrl.clear()">
           <!-- Draw a happy little cross in a happy little circle (X) -->
           <svg

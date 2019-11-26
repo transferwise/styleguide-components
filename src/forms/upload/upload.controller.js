@@ -124,21 +124,28 @@ class UploadController {
      * As this call will return a 404, stopping a user from continuing the flow.
     */
 
-    // if (this.httpOptions) {
-    //   // Post file now
-    //   this.$q
-    //     .all([
-    //       this.asyncFileSave(file),
-    //       this.asyncFileRead(file)
-    //     ])
-    //     .then(response => asyncSuccess(response[0], response[1], this))
-    //     .catch(error => asyncFailure(error, this));
-    // } else {
+    if (this.httpOptions) {
+      // Post file now
+      this.asyncFileRead(file)
+        .then((dataUrl) => {
+          this.asyncFileSave(file)
+            .then(response => asyncSuccess(response, dataUrl, this))
+            .catch(error => asyncFailure(error, dataUrl, this));
+        })
+        .catch(error => asyncFailure(error, null, this));
+      // this.$q
+      //   .all([
+      //     this.asyncFileRead(file),
+      //     this.asyncFileSave(file),
+      //   ])
+      //   .then(response => asyncSuccess(response[1], response[0], this))
+      //   .catch(error => asyncFailure(error, this));
+    } else {
     // Post on form submit
-    this.asyncFileRead(file)
-      .then(response => asyncSuccess(null, response, this))
-      .catch(error => asyncFailure(error, this));
-    // }
+      this.asyncFileRead(file)
+        .then(response => asyncSuccess(null, response, this))
+        .catch(error => asyncFailure(error, this));
+    }
   }
 
   onDragEnter() {
@@ -295,9 +302,21 @@ function asyncSuccess(apiResponse, dataUrl, $ctrl) {
   return dataUrl;
 }
 
-function asyncFailure(error, $ctrl) {
+function asyncFailure(error, dataUrl, $ctrl) {
   // Start changing process indicator immediately
   $ctrl.processingState = -1;
+
+  if ($ctrl.httpOptions && error.data && error.data.message) {
+    $ctrl.errorMessage = error.data.message;
+    $ctrl.errorReasons = error.data.errors || [];
+  }
+
+  if (dataUrl) {
+    showDataImage(dataUrl, $ctrl);
+    if ($ctrl.ngChange) {
+      $ctrl.ngChange();
+    }
+  }
 
   // Wait before updating text
   $ctrl.$timeout(() => {
