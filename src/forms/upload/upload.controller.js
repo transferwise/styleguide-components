@@ -268,6 +268,8 @@ function asyncSuccess(apiResponse, dataUrl, $ctrl) {
       && apiResponse.data[$ctrl.httpOptions.idProperty]) {
     const imageId = apiResponse.data[$ctrl.httpOptions.idProperty];
     $ctrl.setNgModel(imageId);
+    $ctrl.successMessage = apiResponse.data.message;
+    $ctrl.successDetails = apiResponse.data.details ? apiResponse.data.details[0] : null;
   } else {
     $ctrl.setNgModel(dataUrl);
   }

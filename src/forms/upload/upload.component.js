@@ -1,5 +1,6 @@
 import controller from './upload.controller.js';
 import template from './upload.html';
+import './upload.less';
 
 const Upload = {
   controller,
