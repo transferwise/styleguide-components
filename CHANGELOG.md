@@ -1,3 +1,7 @@
+# v4.3.0
+## Added new design when persistAsync is succesful
+Added new design for upload component.
+
 # v4.2.0
 ## New upload option
 Fix bug where uploadOptions was not propagated correctly and add uploadingText to have single state processing copy as an option over processing -> success/failure copy.
