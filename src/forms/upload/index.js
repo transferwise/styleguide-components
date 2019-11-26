@@ -16,7 +16,6 @@ export default angular
   .service('AsyncFileSaver', AsyncFileSaver)
   .service('CameraCaptureScreenHandler', CameraCaptureScreenHandler)
   .service('CameraOverlayHandler', CameraOverlayHandler)
-  .service('AsyncTasksConfig', AsyncTasksConfig)
   .component('twCameraCapture', CameraCapture)
   .component('twUpload', Upload)
   .name;
