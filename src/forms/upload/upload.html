@@ -66,9 +66,9 @@
       </h4>
     </div>
   </div>
-  <div class="droppable-complete-card droppable-card" aria-hidden="{{!$ctrl.isDone}}" ng-class="{'transparent-area': $ctrl.isImage && $ctrl.httpOptions }">
+  <div class="droppable-complete-card droppable-card" aria-hidden="{{!$ctrl.isDone}}" ng-class="{'transparent-area': $ctrl.isImage && $ctrl.successMessage }">
   <div class="droppable-card-content">
-      <div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError && !$ctrl.httpOptions">
+      <div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError && !$ctrl.successMessage">
         <h4 class="m-b-2" ng-if="$ctrl.label">
           {{$ctrl.label}}
         </h4>
