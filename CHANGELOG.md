@@ -1,3 +1,12 @@
+# v4.2.0
+## New upload option
+Fix bug where uploadOptions was not propagated correctly and add uploadingText to have single state processing copy as an option over processing -> success/failure copy.
+
+# v4.1.0
+## New Async Task Config service
+New service to enhance and extend async functionality (persistAsync/validationAsync).
+Optional service for consumers to set base url and headers.
+
 # v4.0.0
 ## Temporarily remove async upload with tw-upload
 Until a robust solution is found to accept the correct url.
