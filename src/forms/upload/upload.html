@@ -52,8 +52,7 @@
     </div>
   </div>
 
-  <div class="droppable-processing-card droppable-card"
-    aria-hidden="{{$ctrl.isDone}}">
+  <div class="droppable-processing-card droppable-card" aria-hidden="{{$ctrl.isDone}}">
     <div class="droppable-card-content">
       <h4 class="m-b-2">
         <span ng-if="$ctrl.isProcessing && $ctrl.processingText" class="upload-processing-message">{{$ctrl.processingText}}</span>
@@ -64,7 +63,7 @@
         ng-if="($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"></tw-process>
     </div>
   </div>
-  <div class="droppable-complete-card droppable-card" aria-hidden="{{!$ctrl.isDone}}">
+  <div class="droppable-complete-card droppable-card" aria-hidden="{{!$ctrl.isDone}}" ng-class="{'transparent-area': $ctrl.isImage && $ctrl.httpOptions }">
   <div class="droppable-card-content">
       <div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError && !$ctrl.httpOptions">
         <h4 class="m-b-2" ng-if="$ctrl.label">
@@ -102,14 +101,6 @@
        <h4 class="m-b-2" ng-if="$ctrl.message">
           {{$ctrl.message}}
         </h4>
-        <!-- TODO BELOW SHOULD BE BACKGROUND? -->
-        <!-- <img
-          ng-if="$ctrl.isImage"
-          src="data:image/png;base64,
-            iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-          ng-src="{{$ctrl.image}}"
-          alt="OK"
-          class="thumbnail m-b-3" /> -->
         <span class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></span>
         <p class="text-ellipsis m-b-2">{{$ctrl.details}} So it is ready for review</p>
       </div>
