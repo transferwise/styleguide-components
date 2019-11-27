@@ -103,7 +103,7 @@ class UploadController {
       asyncFailure({
         status: 413,
         statusText: 'Request Entity Too Large'
-      }, this);
+      }, null, this);
       return;
     }
 
