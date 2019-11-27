@@ -124,28 +124,21 @@ class UploadController {
      * As this call will return a 404, stopping a user from continuing the flow.
     */
 
-    if (this.httpOptions) {
-      // Post file now
-      this.asyncFileRead(file)
-        .then((dataUrl) => {
-          this.asyncFileSave(file)
-            .then(response => asyncSuccess(response, dataUrl, this))
-            .catch(error => asyncFailure(error, dataUrl, this));
-        })
-        .catch(error => asyncFailure(error, null, this));
-      // this.$q
-      //   .all([
-      //     this.asyncFileRead(file),
-      //     this.asyncFileSave(file),
-      //   ])
-      //   .then(response => asyncSuccess(response[1], response[0], this))
-      //   .catch(error => asyncFailure(error, this));
-    } else {
+    // if (this.httpOptions) {
+    //   // Post file now
+    //   this.asyncFileRead(file)
+    //     .then((dataUrl) => {
+    //       this.asyncFileSave(file)
+    //         .then(response => asyncSuccess(response, dataUrl, this))
+    //         .catch(error => asyncFailure(error, dataUrl, this));
+    //     })
+    //     .catch(error => asyncFailure(error, null, this));
+    // } else {
     // Post on form submit
       this.asyncFileRead(file)
         .then(response => asyncSuccess(null, response, this))
         .catch(error => asyncFailure(error, this));
-    }
+    // }
   }
 
   onDragEnter() {
@@ -314,9 +307,6 @@ function asyncFailure(error, dataUrl, $ctrl) {
 
   if (dataUrl) {
     showDataImage(dataUrl, $ctrl);
-    if ($ctrl.ngChange) {
-      $ctrl.ngChange();
-    }
   }
 
   // Wait before updating text
