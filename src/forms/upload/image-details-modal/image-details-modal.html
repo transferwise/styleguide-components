@@ -1,0 +1,36 @@
+<div ng-if="$ctrl.visibility">
+  <div ng-class="{'in': $ctrl.visibility}" class="modal-backdrop"></div>
+  <div
+    ng-style="$ctrl.visibility && {'display': 'block'}"
+    ng-class="{'fade-in': $ctrl.visibility}"
+    class="modal modal__overlay"
+    tabindex="-1"
+    role="dialog"
+    ng-click="$ctrl.handleOverlayClick($event)"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            ng-click="$ctrl.toggleModal()"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 data-test-id="modal-title">
+            {{ $ctrl.title }}
+          </h4>
+        </div>
+        <div class="modal-body">
+          <img class="m-b-3" ng-src="{{$ctrl.image}}" />
+          <ul class="sad-smiley-list" ng-repeat="reason in $ctrl.messages">
+            <li>{{reason.message}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

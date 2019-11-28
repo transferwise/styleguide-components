@@ -110,7 +110,7 @@
         </div>
         <div class="btn-group-vertical btn-block">
             <div class="btn btn-primary btn-sm m-b-1" ng-click="$ctrl.clear()">{{$ctrl.cancelText}}</div>
-            <div ng-if="$ctrl.viewImageText" class="btn btn-info btn-sm">{{$ctrl.viewImageText}}</div>
+            <div ng-if="$ctrl.viewImageText" ng-click="$ctrl.toggleImageModal()" class="btn btn-info btn-sm">{{$ctrl.viewImageText}}</div>
           </div>
       </div>
       <div ng-if="$ctrl.hasTranscluded" ng-transclude></div>
@@ -144,3 +144,12 @@
     </div>
   </div>
 </div>
+
+<tw-image-details-modal
+  title="$ctrl.errorMessage"
+  messages="$ctrl.errorReasons"
+  visibility="$ctrl.showModal"
+  image="$ctrl.image"
+  toggle-modal="$ctrl.toggleImageModal()"
+>
+</tw-image-details-modal>
