@@ -109,8 +109,8 @@
           <p ng-if="$ctrl.topError">{{$ctrl.topError.message}}</p>
         </div>
         <div class="btn-group-vertical btn-block">
-          <label class="btn btn-primary" ng-click="$ctrl.onUploadButtonClick()" ng-class="{'disabled': $ctrl.ngDisabled}" ng-if="!$ctrl.isLiveCameraUpload">
-              <span ng-if="$ctrl.buttonText" ng-bind="$ctrl.buttonText"></span>
+          <label class="btn btn-primary btn-sm m-b-1" ng-click="$ctrl.onUploadButtonClick()" ng-class="{'disabled': $ctrl.ngDisabled}" ng-if="!$ctrl.isLiveCameraUpload">
+              <span ng-if="$ctrl.buttonText" ng-bind="$ctrl.cancelText"></span>
               <!-- normal upload -->
               <input
                 
