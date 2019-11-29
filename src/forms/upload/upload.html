@@ -109,9 +109,23 @@
           <p ng-if="$ctrl.topError">{{$ctrl.topError.message}}</p>
         </div>
         <div class="btn-group-vertical btn-block">
-            <div class="btn btn-primary btn-sm m-b-1" ng-click="$ctrl.clear()">{{$ctrl.cancelText}}</div>
-            <div ng-if="$ctrl.viewImageText" ng-click="$ctrl.toggleImageModal()" class="btn btn-info btn-sm">{{$ctrl.viewImageText}}</div>
-          </div>
+          <label class="btn btn-primary" ng-click="$ctrl.onUploadButtonClick()" ng-class="{'disabled': $ctrl.ngDisabled}" ng-if="!$ctrl.isLiveCameraUpload">
+              <span ng-if="$ctrl.buttonText" ng-bind="$ctrl.buttonText"></span>
+              <!-- normal upload -->
+              <input
+                
+                tw-file-input
+                type="file"
+                accept="{{$ctrl.accept}}"
+                class="tw-droppable-input-reupload hidden"
+                ng-disabled="$ctrl.ngDisabled"
+                name="file-upload"
+                on-user-input="$ctrl.onManualReupload()"
+                ng-model="$ctrl.inputFile" />
+            </label>
+          <div class="btn btn-primary btn-sm m-b-1" ng-click="$ctrl.clear()" ng-if="$ctrl.isLiveCameraUpload">{{$ctrl.cancelText}}</div>
+          <div ng-if="$ctrl.viewImageText" ng-click="$ctrl.toggleImageModal()" class="btn btn-info btn-sm">{{$ctrl.viewImageText}}</div>
+        </div>
       </div>
       <div ng-if="$ctrl.hasTranscluded" ng-transclude></div>
       <p class="m-t-2 m-b-0" ng-if="!$ctrl.successMessage && !$ctrl.errorMessage">

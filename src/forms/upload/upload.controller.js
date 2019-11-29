@@ -76,6 +76,14 @@ class UploadController {
     this.onFileConfirmation(file);
   }
 
+  onManualReupload() {
+    const element = this.$element[0];
+    const uploadInput = element.querySelector('.tw-droppable-input-reupload');
+    const file = uploadInput.files[0];
+
+    this.onFileConfirmation(file);
+  }
+
   // Function binding for file upload by live
   onFileConfirmation(file) {
     if (!file) {
@@ -172,8 +180,10 @@ class UploadController {
     this.isDone = false;
     this.isTooLarge = false;
     this.isWrongType = false;
-    if (this.$element[0].querySelector('input')) {
-      this.$element[0].querySelector('input').value = null;
+    if (this.$element[0].querySelectorAll('input')) {
+      this.$element[0].querySelectorAll('input').forEach((input) => {
+        input.value = null;
+      });
     }
     this.setNgModel(null);
   }
