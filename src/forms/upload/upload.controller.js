@@ -318,7 +318,7 @@ function asyncFailure(error, dataUrl, $ctrl) {
   if ($ctrl.httpOptions && error.data && error.data.message) {
     $ctrl.errorMessage = error.data.message;
     $ctrl.errorReasons = error.data.errors || [];
-    $ctrl.topError = $ctrl.errorReasons[0];
+    $ctrl.firstError = $ctrl.errorReasons[0];
   }
 
   if (dataUrl) {
