@@ -29,6 +29,8 @@ class UploadController {
 
     this.processingState = null;
 
+    this.showModal = false;
+
     this.checkForTranscludedContent($transclude);
 
     this.isLiveCameraUpload = this.source && this.source === 'CAMERA_ONLY';
@@ -74,6 +76,14 @@ class UploadController {
     this.onFileConfirmation(file);
   }
 
+  onManualReupload() {
+    const element = this.$element[0];
+    const uploadInput = element.querySelector('.tw-droppable-input-reupload');
+    const file = uploadInput.files[0];
+
+    this.onFileConfirmation(file);
+  }
+
   // Function binding for file upload by live
   onFileConfirmation(file) {
     if (!file) {
@@ -103,7 +113,7 @@ class UploadController {
       asyncFailure({
         status: 413,
         statusText: 'Request Entity Too Large'
-      }, this);
+      }, null, this);
       return;
     }
 
@@ -126,13 +136,13 @@ class UploadController {
 
     // if (this.httpOptions) {
     //   // Post file now
-    //   this.$q
-    //     .all([
-    //       this.asyncFileSave(file),
-    //       this.asyncFileRead(file)
-    //     ])
-    //     .then(response => asyncSuccess(response[0], response[1], this))
-    //     .catch(error => asyncFailure(error, this));
+    //   this.asyncFileRead(file)
+    //     .then((dataUrl) => {
+    //       this.asyncFileSave(file)
+    //         .then(response => asyncSuccess(response, dataUrl, this))
+    //         .catch(error => asyncFailure(error, dataUrl, this));
+    //     })
+    //     .catch(error => asyncFailure(error, null, this));
     // } else {
     // Post on form submit
     this.asyncFileRead(file)
@@ -170,8 +180,10 @@ class UploadController {
     this.isDone = false;
     this.isTooLarge = false;
     this.isWrongType = false;
-    if (this.$element[0].querySelector('input')) {
-      this.$element[0].querySelector('input').value = null;
+    if (this.$element[0].querySelectorAll('input')) {
+      this.$element[0].querySelectorAll('input').forEach((input) => {
+        input.value = null;
+      });
     }
     this.setNgModel(null);
   }
@@ -228,6 +240,10 @@ class UploadController {
         this.hasTranscluded = false;
       }
     });
+  }
+
+  toggleImageModal() {
+    this.showModal = !this.showModal;
   }
 }
 
@@ -295,9 +311,19 @@ function asyncSuccess(apiResponse, dataUrl, $ctrl) {
   return dataUrl;
 }
 
-function asyncFailure(error, $ctrl) {
+function asyncFailure(error, dataUrl, $ctrl) {
   // Start changing process indicator immediately
   $ctrl.processingState = -1;
+
+  if ($ctrl.httpOptions && error.data && error.data.message) {
+    $ctrl.errorMessage = error.data.message;
+    $ctrl.errorReasons = error.data.errors || [];
+    $ctrl.firstError = $ctrl.errorReasons[0];
+  }
+
+  if (dataUrl) {
+    showDataImage(dataUrl, $ctrl);
+  }
 
   // Wait before updating text
   $ctrl.$timeout(() => {
