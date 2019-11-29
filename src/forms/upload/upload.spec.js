@@ -328,30 +328,29 @@ describe('given an upload component', () => {
         $timeout.flush(4100);
       });
 
-      // it('should not show the processing screen', function() {
-      //   console.log('droppable', droppable)
-      //   expect(droppable.classList).not.toContain('droppable-processing');
-      // });
+      it('should not show the processing screen', function() {
+        expect(droppable.classList).not.toContain('droppable-processing');
+      });
 
-    //   it('should show the complete screen', function() {
-    //     expect(droppable.classList).toContain('droppable-complete');
-    //   });
+      it('should show the complete screen', function() {
+        expect(droppable.classList).toContain('droppable-complete');
+      });
 
-    //   it('should show the failure message', function() {
-    //     expect(directiveElement.querySelector('.upload-failure-message')).toBeTruthy();
-    //   });
+      it('should show the failure message', function() {
+        expect(directiveElement.querySelector('.upload-failure-message')).toBeTruthy();
+      });
 
-    //   it('should not bind anything to the model', function() {
-    //     expect($scope.ngModel).toBe(null);
-    //   });
+      it('should not bind anything to the model', function() {
+        expect($scope.ngModel).toBe(null);
+      });
 
-    //   it('should not call the onSuccess handler', function() {
-    //     expect($scope.onSuccess).not.toHaveBeenCalled();
-    //   });
+      it('should not call the onSuccess handler', function() {
+        expect($scope.onSuccess).not.toHaveBeenCalled();
+      });
 
-      // it('should call the onFailure handler', function() {
-      //   expect($scope.onFailure).toHaveBeenCalled();
-      // });
+      it('should call the onFailure handler', function() {
+        expect($scope.onFailure).toHaveBeenCalled();
+      });
     });
   });
 

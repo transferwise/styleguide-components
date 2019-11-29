@@ -145,7 +145,7 @@ class UploadController {
     // Post on form submit
       this.asyncFileRead(file)
         .then(response => asyncSuccess(null, response, this))
-        .catch(error => asyncFailure(error, this));
+        .catch(error => asyncFailure(error, null, this));
     }
   }
 
@@ -303,9 +303,19 @@ function asyncSuccess(apiResponse, dataUrl, $ctrl) {
   return dataUrl;
 }
 
-function asyncFailure(error, $ctrl) {
+function asyncFailure(error, dataUrl, $ctrl) {
   // Start changing process indicator immediately
   $ctrl.processingState = -1;
+
+  if ($ctrl.httpOptions && error.data && error.data.message) {
+    $ctrl.errorMessage = error.data.message;
+    $ctrl.errorReasons = error.data.errors || [];
+    $ctrl.topError = $ctrl.errorReasons[0];
+  }
+
+  if (dataUrl) {
+    showDataImage(dataUrl, $ctrl);
+  }
 
   // Wait before updating text
   $ctrl.$timeout(() => {
