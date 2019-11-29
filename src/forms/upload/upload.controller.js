@@ -74,6 +74,14 @@ class UploadController {
     this.onFileConfirmation(file);
   }
 
+  onManualReupload() {
+    const element = this.$element[0];
+    const uploadInput = element.querySelector('.tw-droppable-input-reupload');
+    const file = uploadInput.files[0];
+
+    this.onFileConfirmation(file);
+  }
+
   // Function binding for file upload by live
   onFileConfirmation(file) {
     if (!file) {
@@ -103,7 +111,7 @@ class UploadController {
       asyncFailure({
         status: 413,
         statusText: 'Request Entity Too Large'
-      }, this);
+      }, null, this);
       return;
     }
 
@@ -126,13 +134,13 @@ class UploadController {
 
     if (this.httpOptions) {
       // Post file now
-      this.$q
-        .all([
-          this.asyncFileSave(file),
-          this.asyncFileRead(file)
-        ])
-        .then(response => asyncSuccess(response[0], response[1], this))
-        .catch(error => asyncFailure(error, this));
+      this.asyncFileRead(file)
+        .then((dataUrl) => {
+          this.asyncFileSave(file)
+            .then(response => asyncSuccess(response, dataUrl, this))
+            .catch(error => asyncFailure(error, dataUrl, this));
+        })
+        .catch(error => asyncFailure(error, null, this));
     } else {
     // Post on form submit
       this.asyncFileRead(file)
