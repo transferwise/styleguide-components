@@ -1,3 +1,7 @@
+# v4.4.0
+## Added new design when persistAsync returns errors
+Added new design when persistAsync returns errors that the user needs to act on.
+
 # v4.3.0
 ## Added new design when persistAsync is succesful
 Added new design for upload component.
