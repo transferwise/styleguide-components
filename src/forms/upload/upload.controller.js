@@ -144,7 +144,7 @@ class UploadController {
     } else {
     // Post on form submit
       this.asyncFileRead(file)
-        .then(response => asyncSuccess(null, response, this))
+        .then(dataUrl => asyncSuccess(null, dataUrl, this))
         .catch(error => asyncFailure(error, null, this));
     }
   }
