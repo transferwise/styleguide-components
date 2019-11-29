@@ -5,16 +5,10 @@ describe('given an upload component', () => {
   let $rootScope;
   let $scope;
   let $timeout;
-  let isolateScope;
   let directiveElement;
   let AsyncFileReader;
   let AsyncFileSaver;
-  let AsyncTasksConfig;
-
-  const INPUT_SELECTOR = '.hidden';
-  const LIST_ITEMS_SELECTOR = '.tw-select-option-link';
-  const FILTER_INPUT_SELECTOR = '.tw-select-filter';
-
+  
   const base64url = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCA'
    + 'IAAACQd1PeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4wcMEQwbn8bvgwAAAB1pV'
    + 'Fh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAADElEQVQI12P4//8/AAX+'
