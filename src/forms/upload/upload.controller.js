@@ -29,6 +29,8 @@ class UploadController {
 
     this.processingState = null;
 
+    this.showModal = false;
+
     this.checkForTranscludedContent($transclude);
 
     this.isLiveCameraUpload = this.source && this.source === 'CAMERA_ONLY';
@@ -178,8 +180,10 @@ class UploadController {
     this.isDone = false;
     this.isTooLarge = false;
     this.isWrongType = false;
-    if (this.$element[0].querySelector('input')) {
-      this.$element[0].querySelector('input').value = null;
+    if (this.$element[0].querySelectorAll('input')) {
+      this.$element[0].querySelectorAll('input').forEach((input) => {
+        input.value = null;
+      });
     }
     this.setNgModel(null);
   }
@@ -236,6 +240,10 @@ class UploadController {
         this.hasTranscluded = false;
       }
     });
+  }
+
+  toggleImageModal() {
+    this.showModal = !this.showModal;
   }
 }
 
@@ -310,7 +318,7 @@ function asyncFailure(error, dataUrl, $ctrl) {
   if ($ctrl.httpOptions && error.data && error.data.message) {
     $ctrl.errorMessage = error.data.message;
     $ctrl.errorReasons = error.data.errors || [];
-    $ctrl.topError = $ctrl.errorReasons[0];
+    $ctrl.firstError = $ctrl.errorReasons[0];
   }
 
   if (dataUrl) {

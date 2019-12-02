@@ -66,7 +66,7 @@
       </h4>
     </div>
   </div>
-  <div class="droppable-complete-card droppable-card" aria-hidden="{{!$ctrl.isDone}}" ng-class="{'transparent-area': $ctrl.isImage && $ctrl.successMessage }">
+  <div class="droppable-complete-card droppable-card" aria-hidden="{{!$ctrl.isDone}}" ng-class="{'transparent-area p-x-3': $ctrl.isImage && ($ctrl.successMessage || $ctrl.errorMessage) }">
   <div class="droppable-card-content">
       <div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError && !$ctrl.successMessage">
         <h4 class="m-b-2" ng-if="$ctrl.label">
@@ -83,38 +83,52 @@
         <p class="text-ellipsis m-b-2">{{$ctrl.fileName}}</p>
       </div>
       <div ng-if="!$ctrl.hasTranscluded && !$ctrl.isError && $ctrl.successMessage && $ctrl.isImage" ng-style="{'background': 'linear-gradient(rgba(250, 250, 250, 0.9), rgba(250, 250, 250, 0.9)), url({{ $ctrl.image }}) no-repeat center', 'background-size':'contain'}">
-        <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g filter="url(#filter0_d)">
-            <path d="M40 60C53.2548 60 64 49.2548 64 36C64 22.7452 53.2548 12 40 12C26.7452 12 16 22.7452 16 36C16 49.2548 26.7452 60 40 60Z" fill="white"/>
-          </g>
-          <path d="M34.92 44.06L28 37.32L28.7 36.6L34.92 42.66L51 27L51.7 27.72L34.92 44.06Z" fill="#2ED06E"/>
-          <defs>
-            <filter id="filter0_d" x="0" y="0" width="80" height="80" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-              <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
-              <feOffset dy="4"/>
-              <feGaussianBlur stdDeviation="8"/>
-              <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0"/>
-              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
-              <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
-            </filter>
-          </defs>
-        </svg>
-            
-       <h4 class="m-b-2" ng-if="$ctrl.successMessage">
+        <div class="m-b-3">
+          <span class="icon-circle-shadow icon-md">
+            <svg height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6.92 20.06L0 13.32L0.7 12.6L6.92 18.66L23 3L23.7 3.72L6.92 20.06Z" fill="#2ED06E"/>
+            </svg>
+          </span>
+        </div>
+        <h4 class="m-b-2" ng-if="$ctrl.successMessage">
           {{$ctrl.successMessage}}
         </h4>
         <span class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></span>
         <p class="text-ellipsis m-b-2">{{$ctrl.successDetails}}</p>
       </div>
-      <div ng-if="!$ctrl.hasTranscluded && $ctrl.isError">
+      <div ng-if="!$ctrl.hasTranscluded && $ctrl.isError && !$ctrl.errorMessage">
         <h4 class="m-b-2" ng-if="$ctrl.isTooLarge">{{$ctrl.tooLargeMessage}}</h4>
         <h4 class="m-b-2" ng-if="$ctrl.isWrongType">{{$ctrl.wrongTypeText}}</h4>
         <h4 class="m-b-2" ng-if="!$ctrl.isTooLarge && $ctrl.errorMessage">{{$ctrl.errorMessage}}</h4>
         <span class="icon icon-alert icon-xxl text-danger m-b-1"></span>
       </div>
+      <div ng-if="!$ctrl.hasTranscluded && $ctrl.isError && $ctrl.errorMessage && $ctrl.isImage" ng-style="{'background': 'linear-gradient(rgba(250, 250, 250, 0.9), rgba(250, 250, 250, 0.9)), url({{ $ctrl.image }}) no-repeat center', 'background-size':'contain'}">
+        <div class="m-b-3 hidden-md hidden-sm hidden-xs"><span class="icon icon-alert icon-circle-shadow icon-md"></span></div>
+        <h5 class="m-b-2" ng-if="$ctrl.errorMessage">{{$ctrl.errorMessage}}</h5>
+        <div class="m-b-3">
+          <p ng-if="$ctrl.firstError">{{$ctrl.firstError.message}}</p>
+        </div>
+        <div class="btn-group-vertical btn-block">
+          <label class="btn btn-primary btn-sm m-b-1" ng-click="$ctrl.onUploadButtonClick()" ng-class="{'disabled': $ctrl.ngDisabled}" ng-if="!$ctrl.isLiveCameraUpload">
+              <span ng-if="$ctrl.buttonText" ng-bind="$ctrl.cancelText"></span>
+              <!-- normal upload -->
+              <input
+                
+                tw-file-input
+                type="file"
+                accept="{{$ctrl.accept}}"
+                class="tw-droppable-input-reupload hidden"
+                ng-disabled="$ctrl.ngDisabled"
+                name="file-upload"
+                on-user-input="$ctrl.onManualReupload()"
+                ng-model="$ctrl.inputFile" />
+            </label>
+          <div class="btn btn-primary btn-sm m-b-1" ng-click="$ctrl.clear()" ng-if="$ctrl.isLiveCameraUpload">{{$ctrl.cancelText}}</div>
+          <div ng-if="$ctrl.viewImageText" ng-click="$ctrl.toggleImageModal()" class="btn btn-info btn-sm">{{$ctrl.viewImageText}}</div>
+        </div>
+      </div>
       <div ng-if="$ctrl.hasTranscluded" ng-transclude></div>
-      <p class="m-t-2 m-b-0" ng-if="!$ctrl.successMessage">
+      <p class="m-t-2 m-b-0" ng-if="!$ctrl.successMessage && !$ctrl.errorMessage">
         <a href="" ng-click="$ctrl.clear()">
           <!-- Draw a happy little cross in a happy little circle (X) -->
           <svg
@@ -144,3 +158,12 @@
     </div>
   </div>
 </div>
+
+<tw-image-details-modal
+  title="$ctrl.errorMessage"
+  messages="$ctrl.errorReasons"
+  visibility="$ctrl.showModal"
+  image="$ctrl.image"
+  toggle-modal="$ctrl.toggleImageModal()"
+>
+</tw-image-details-modal>

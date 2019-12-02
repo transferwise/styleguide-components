@@ -21,6 +21,7 @@ const Upload = {
     cancelText: '@', // Text instructing to go back to re-upload after upload is done
     uploadingText: '@', // Single state text during uploading instead of processing/success/failure
     processingText: '@', // Text shown while uploading
+    viewImageText: '@',
     successText: '@', // Text after upload is successful, shown quite briefly before preview
     failureText: '@',
     errorMessage: '@',
