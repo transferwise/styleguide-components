@@ -1,5 +1,6 @@
 import controller from './fieldset.controller.js';
 import template from './fieldset.html';
+import './fieldset.less';
 
 const Fieldset = {
   controller,
