@@ -1,3 +1,7 @@
+# v4.4.1
+## Fixing broken fieldset width
+Fieldset width without btn-block was breaking, adding width 100%
+
 # v4.4.0
 ## Added new design when persistAsync returns errors
 Added new design when persistAsync returns errors that the user needs to act on.
