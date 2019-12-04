@@ -1,3 +1,7 @@
+# v4.5.1
+## Remove elipsis on p
+Removed elipsis on p tag in verification 
+
 # v4.5.0
 ## Enablig persistAsync again
 Added back persistAsync functionality.
