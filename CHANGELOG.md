@@ -1,3 +1,7 @@
+# v4.5.2
+## Fix key for persistAsync
+Key should come from httpOptions or fallback to fieldName
+
 # v4.5.1
 ## Remove elipsis on p
 Removed elipsis on p tag in verification 
