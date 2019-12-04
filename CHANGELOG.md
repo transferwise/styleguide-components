@@ -1,3 +1,7 @@
+# v4.5.0
+## Enablig persistAsync again
+Added back persistAsync functionality.
+
 # v4.4.1
 ## Fixing broken fieldset width
 Fieldset width without btn-block was breaking, adding width 100%
