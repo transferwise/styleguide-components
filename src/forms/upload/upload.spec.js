@@ -5,15 +5,9 @@ describe('given an upload component', () => {
   let $rootScope;
   let $scope;
   let $timeout;
-  let isolateScope;
   let directiveElement;
   let AsyncFileReader;
   let AsyncFileSaver;
-  let AsyncTasksConfig;
-
-  const INPUT_SELECTOR = '.hidden';
-  const LIST_ITEMS_SELECTOR = '.tw-select-option-link';
-  const FILTER_INPUT_SELECTOR = '.tw-select-filter';
 
   const base64url = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCA'
    + 'IAAACQd1PeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4wcMEQwbn8bvgwAAAB1pV'
@@ -234,130 +228,131 @@ describe('given an upload component', () => {
    * As this call will return a 404, stopping a user from continuing the flow.=
    */
 
-  // describe('when a file is dropped and we have http-options', function() {
-  //   var deferred, mockFile, droppable;
+  describe('when a file is dropped and we have http-options', function() {
+    var deferred, mockFile, droppable;
 
-  //   beforeEach(function() {
-  //     var template = " \
-  //       <tw-upload \
-  //         name='myFile' \
-  //         ng-model='ngModel' \
-  //         on-success='onSuccess' \
-  //         on-failure='onFailure' \
-  //         processing-text='processing' \
-  //         success-text='success'\
-  //         failure-text='failure' \
-  //         http-options='httpOptions'> \
-  //       </tw-upload>";
+    beforeEach(function() {
+      var template = " \
+        <tw-upload \
+          name='myFile' \
+          ng-model='ngModel' \
+          on-success='onSuccess' \
+          on-failure='onFailure' \
+          processing-text='processing' \
+          success-text='success'\
+          failure-text='failure' \
+          http-options='httpOptions'> \
+        </tw-upload>";
 
-  //     $scope.httpOptions = {
-  //       idProperty: 'id',
-  //       url: 'https://www.google.com',
-  //       method: 'POST'
-  //     };
+      $scope.httpOptions = {
+        idProperty: 'id',
+        url: 'https://www.google.com',
+        method: 'POST',
+        headers: {}
+      };
 
-  //     $scope.ngModel = null;
-  //     $scope.onSuccess = jasmine.createSpy('onSuccess');
-  //     $scope.onFailure = jasmine.createSpy('onFailure');
+      $scope.ngModel = null;
+      $scope.onSuccess = jasmine.createSpy('onSuccess');
+      $scope.onFailure = jasmine.createSpy('onFailure');
 
-  //     deferred = $q.defer();
-  //     spyOn(AsyncFileSaver, 'save').and.returnValue(deferred.promise);
-  //     spyOn(AsyncFileReader, 'read').and.returnValue($q.when(base64url));
+      deferred = $q.defer();
+      spyOn(AsyncFileSaver, 'save').and.returnValue(deferred.promise);
+      spyOn(AsyncFileReader, 'read').and.returnValue($q.when(base64url));
 
-  //     directiveElement = getCompiledDirectiveElement($scope, template);
+      directiveElement = getCompiledDirectiveElement($scope, template);
 
-  //     mockFile = { size: 2 };
+      mockFile = { size: 2 };
 
-  //     var fakeDropEvent = new CustomEvent('drop');
-  //     fakeDropEvent.dataTransfer = { files : [ mockFile ] };
-  //     directiveElement.dispatchEvent(fakeDropEvent);
+      var fakeDropEvent = new CustomEvent('drop');
+      fakeDropEvent.dataTransfer = { files : [ mockFile ] };
+      directiveElement.dispatchEvent(fakeDropEvent);
 
-  //     droppable = directiveElement.querySelector('.droppable');
-  //   });
+      droppable = directiveElement.querySelector('.droppable');
+    });
 
-  //   it('should send the file to the asyncFileSaver', function() {
-  //     expect(AsyncFileSaver.save).toHaveBeenCalledWith(
-  //       'myFile', mockFile, $scope.httpOptions
-  //     );
-  //   });
+    it('should send the file to the asyncFileSaver', function() {
+      expect(AsyncFileSaver.save).toHaveBeenCalledWith(
+        'myFile', mockFile, $scope.httpOptions
+      );
+    });
 
-  //   it('should show the processing screen', function() {
-  //     expect(droppable.classList).toContain('droppable-processing');
-  //   });
+    it('should show the processing screen', function() {
+      expect(droppable.classList).toContain('droppable-processing');
+    });
 
-  //   describe('when the timer has elapsed, but the API has not responded', function() {
-  //     beforeEach(function() {
-  //       $timeout.flush(4100);
-  //     });
+    describe('when the timer has elapsed, but the API has not responded', function() {
+      beforeEach(function() {
+        $timeout.flush(4100);
+      });
 
-  //     it('should continue to show the processing screen', function() {
-  //       expect(droppable.classList).toContain('droppable-processing');
-  //     });
+      it('should continue to show the processing screen', function() {
+        expect(droppable.classList).toContain('droppable-processing');
+      });
 
-  //     it('should not call the onSuccess message', function() {
-  //       expect($scope.onSuccess).not.toHaveBeenCalled();
-  //     });
-  //   });
+      it('should not call the onSuccess message', function() {
+        expect($scope.onSuccess).not.toHaveBeenCalled();
+      });
+    });
 
-  //   describe('when the timer has elapsed and the request was resolved', function() {
-  //     beforeEach(function() {
-  //       var asyncResponse = { data: { id: 1234 } };
-  //       deferred.resolve(asyncResponse);
-  //       $timeout.flush(4100);
-  //     });
+    describe('when the timer has elapsed and the request was resolved', function() {
+      beforeEach(function() {
+        var asyncResponse = { data: { id: 1234 } };
+        deferred.resolve(asyncResponse);
+        $timeout.flush(4100);
+      });
 
-  //     it('should not show the processing screen', function() {
-  //       expect(droppable.classList).not.toContain('droppable-processing');
-  //     });
+      it('should not show the processing screen', function() {
+        expect(droppable.classList).not.toContain('droppable-processing');
+      });
 
-  //     it('should show the complete screen', function() {
-  //       expect(droppable.classList).toContain('droppable-complete');
-  //     });
+      it('should show the complete screen', function() {
+        expect(droppable.classList).toContain('droppable-complete');
+      });
 
-  //     it('should show the success message', function() {
-  //       expect(directiveElement.querySelector('.upload-success-message')).toBeTruthy();
-  //     });
+      it('should show the success message', function() {
+        expect(directiveElement.querySelector('.upload-success-message')).toBeTruthy();
+      });
 
-  //     it('should extract the id from the response and bind to the model', function() {
-  //       expect($scope.ngModel).toBe(1234);
-  //     });
+      it('should extract the id from the response and bind to the model', function() {
+        expect($scope.ngModel).toBe(1234);
+      });
 
-  //     it('should call the onSuccess handler', function() {
-  //       expect($scope.onSuccess).toHaveBeenCalled();
-  //     });
-  //   });
+      it('should call the onSuccess handler', function() {
+        expect($scope.onSuccess).toHaveBeenCalled();
+      });
+    });
 
-  //   describe('when the timer has elapsed and the request was rejected', function() {
-  //     beforeEach(function() {
-  //       deferred.reject({});
-  //       $timeout.flush(4100);
-  //     });
+    describe('when the timer has elapsed and the request was rejected', function() {
+      beforeEach(function() {
+        deferred.reject({});
+        $timeout.flush(4100);
+      });
 
-  //     it('should not show the processing screen', function() {
-  //       expect(droppable.classList).not.toContain('droppable-processing');
-  //     });
+      it('should not show the processing screen', function() {
+        expect(droppable.classList).not.toContain('droppable-processing');
+      });
 
-  //     it('should show the complete screen', function() {
-  //       expect(droppable.classList).toContain('droppable-complete');
-  //     });
+      it('should show the complete screen', function() {
+        expect(droppable.classList).toContain('droppable-complete');
+      });
 
-  //     it('should show the failure message', function() {
-  //       expect(directiveElement.querySelector('.upload-failure-message')).toBeTruthy();
-  //     });
+      it('should show the failure message', function() {
+        expect(directiveElement.querySelector('.upload-failure-message')).toBeTruthy();
+      });
 
-  //     it('should not bind anything to the model', function() {
-  //       expect($scope.ngModel).toBe(null);
-  //     });
+      it('should not bind anything to the model', function() {
+        expect($scope.ngModel).toBe(null);
+      });
 
-  //     it('should not call the onSuccess handler', function() {
-  //       expect($scope.onSuccess).not.toHaveBeenCalled();
-  //     });
+      it('should not call the onSuccess handler', function() {
+        expect($scope.onSuccess).not.toHaveBeenCalled();
+      });
 
-  //     it('should call the onFailure handler', function() {
-  //       expect($scope.onFailure).toHaveBeenCalled();
-  //     });
-  //   });
-  // });
+      it('should call the onFailure handler', function() {
+        expect($scope.onFailure).toHaveBeenCalled();
+      });
+    });
+  });
 
   describe('when a transcluded success screen is supplied', () => {
     beforeEach(() => {

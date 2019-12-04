@@ -134,21 +134,21 @@ class UploadController {
      * As this call will return a 404, stopping a user from continuing the flow.
     */
 
-    // if (this.httpOptions) {
-    //   // Post file now
-    //   this.asyncFileRead(file)
-    //     .then((dataUrl) => {
-    //       this.asyncFileSave(file)
-    //         .then(response => asyncSuccess(response, dataUrl, this))
-    //         .catch(error => asyncFailure(error, dataUrl, this));
-    //     })
-    //     .catch(error => asyncFailure(error, null, this));
-    // } else {
+    if (this.httpOptions) {
+      // Post file now
+      this.asyncFileRead(file)
+        .then((dataUrl) => {
+          this.asyncFileSave(file)
+            .then(response => asyncSuccess(response, dataUrl, this))
+            .catch(error => asyncFailure(error, dataUrl, this));
+        })
+        .catch(error => asyncFailure(error, null, this));
+    } else {
     // Post on form submit
-    this.asyncFileRead(file)
-      .then(response => asyncSuccess(null, response, this))
-      .catch(error => asyncFailure(error, this));
-    // }
+      this.asyncFileRead(file)
+        .then(dataUrl => asyncSuccess(null, dataUrl, this))
+        .catch(error => asyncFailure(error, null, this));
+    }
   }
 
   onDragEnter() {
