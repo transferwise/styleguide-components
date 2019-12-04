@@ -9,7 +9,8 @@ class AsyncFileSaver {
       throw new Error('You must supply httpOptions');
     }
     const formData = new FormData();
-    formData.append(fieldName, file);
+    const key = httpOptions.param || fieldName;
+    formData.append(key, file);
 
     const $httpOptions = prepareHttpOptions(httpOptions);
 
