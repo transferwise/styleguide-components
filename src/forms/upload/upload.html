@@ -94,7 +94,7 @@
           {{$ctrl.successMessage}}
         </h4>
         <span class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></span>
-        <p class="text-ellipsis m-b-2">{{$ctrl.successDetails}}</p>
+        <p class="m-b-2">{{$ctrl.successDetails}}</p>
       </div>
       <div ng-if="!$ctrl.hasTranscluded && $ctrl.isError && !$ctrl.errorMessage">
         <h4 class="m-b-2" ng-if="$ctrl.isTooLarge">{{$ctrl.tooLargeMessage}}</h4>

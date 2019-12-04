@@ -1,6 +1,6 @@
 {
   "name": "@transferwise/styleguide-components",
-  "version": "4.5.0",
+  "version": "4.5.1",
   "description": "TransfeWise AngularJS 1.x Styleguide Components",
   "license": "MIT",
   "scripts": {
