@@ -277,6 +277,8 @@ function asyncSuccess(apiResponse, dataUrl, $ctrl) {
   // Start changing process indicator immediately
   $ctrl.processingState = 1;
 
+  console.log(apiResponse);
+
   if ($ctrl.httpOptions
       && $ctrl.httpOptions.idProperty
       && apiResponse
@@ -318,6 +320,11 @@ function asyncFailure(error, dataUrl, $ctrl) {
   if ($ctrl.httpOptions && error.data && error.data.message) {
     $ctrl.errorMessage = error.data.message;
     $ctrl.errorReasons = error.data.errors || [];
+    $ctrl.firstError = $ctrl.errorReasons[0];
+  } else if ($ctrl.httpOptions && error.originalData && error.originalData.message) {
+    // error data can manipulated by interceptors, this ensures still get data
+    $ctrl.errorMessage = error.originalData.message;
+    $ctrl.errorReasons = error.originalData.errors || [];
     $ctrl.firstError = $ctrl.errorReasons[0];
   }
 
