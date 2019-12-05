@@ -320,7 +320,7 @@ function asyncFailure(error, dataUrl, $ctrl) {
     $ctrl.errorReasons = error.data.errors || [];
     $ctrl.firstError = $ctrl.errorReasons[0];
   } else if ($ctrl.httpOptions && error.originalData && error.originalData.message) {
-    // error data can manipulated by interceptors, this ensures still get data
+    // Note: error data can manipulated by interceptors, this ensures we still get data needed
     $ctrl.errorMessage = error.originalData.message;
     $ctrl.errorReasons = error.originalData.errors || [];
     $ctrl.firstError = $ctrl.errorReasons[0];
