@@ -1,3 +1,7 @@
+# v4.5.3
+## Fix checking error response
+Due to a http interceptor in frontend common, error can come back with originalData too.
+
 # v4.5.2
 ## Fix key for persistAsync
 Key should come from httpOptions or fallback to fieldName

@@ -319,6 +319,11 @@ function asyncFailure(error, dataUrl, $ctrl) {
     $ctrl.errorMessage = error.data.message;
     $ctrl.errorReasons = error.data.errors || [];
     $ctrl.firstError = $ctrl.errorReasons[0];
+  } else if ($ctrl.httpOptions && error.originalData && error.originalData.message) {
+    // Note: error data can manipulated by interceptors, this ensures we still get data needed
+    $ctrl.errorMessage = error.originalData.message;
+    $ctrl.errorReasons = error.originalData.errors || [];
+    $ctrl.firstError = $ctrl.errorReasons[0];
   }
 
   if (dataUrl) {
