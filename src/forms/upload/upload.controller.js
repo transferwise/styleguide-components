@@ -277,8 +277,6 @@ function asyncSuccess(apiResponse, dataUrl, $ctrl) {
   // Start changing process indicator immediately
   $ctrl.processingState = 1;
 
-  console.log(apiResponse);
-
   if ($ctrl.httpOptions
       && $ctrl.httpOptions.idProperty
       && apiResponse
