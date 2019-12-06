@@ -1,3 +1,7 @@
+# v4.5.6
+## Showing icon on SM screens
+Only hiding icons on success and error on XS screens
+
 # v4.5.5
 ## Fix spacing on feedback text and CTAs on upload
 Fail scenarios on async upload will have correct spacing between text and CTAs.
