@@ -1,3 +1,7 @@
+# v4.5.5
+## Fix spacing on feedback text and CTAs on upload
+Fail scenarios on async upload will have correct spacing between text and CTAs.
+
 # v4.5.4
 ## Fix inconsistency with feedback text on upload
 Success and fail are now h5 and all icons shown on all screen sizes.
