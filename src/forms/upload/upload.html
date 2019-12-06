@@ -106,7 +106,7 @@
         <div class="m-b-3 hidden-sm hidden-xs"><span class="icon icon-alert icon-circle-shadow icon-md"></span></div>
         <h5 class="m-b-2" ng-if="$ctrl.errorMessage">{{$ctrl.errorMessage}}</h5>
         <div class="m-b-3">
-          <p ng-if="$ctrl.firstError">{{$ctrl.firstError.message}}</p>
+          <p ng-if="$ctrl.firstError" class="first-error">{{$ctrl.firstError.message}}</p>
         </div>
         <div class="btn-group-vertical btn-block">
           <label class="btn btn-primary btn-sm m-b-1" ng-click="$ctrl.onUploadButtonClick()" ng-class="{'disabled': $ctrl.ngDisabled}" ng-if="!$ctrl.isLiveCameraUpload">
