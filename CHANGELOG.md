@@ -1,3 +1,7 @@
+# v4.5.4
+## Fix inconsistency with feedback text on upload
+Success and fail are now h5 and all icons shown on all screen sizes.
+
 # v4.5.3
 ## Fix checking error response
 Due to a http interceptor in frontend common, error can come back with originalData too.
