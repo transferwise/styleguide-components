@@ -90,9 +90,9 @@
             </svg>
           </span>
         </div>
-        <h4 class="m-b-2" ng-if="$ctrl.successMessage">
+        <h5 class="m-b-2" ng-if="$ctrl.successMessage">
           {{$ctrl.successMessage}}
-        </h4>
+        </h5>
         <span class="icon icon-pdf icon-xxl" ng-if="!$ctrl.isImage"></span>
         <p class="m-b-2">{{$ctrl.successDetails}}</p>
       </div>
@@ -103,7 +103,7 @@
         <span class="icon icon-alert icon-xxl text-danger m-b-1"></span>
       </div>
       <div ng-if="!$ctrl.hasTranscluded && $ctrl.isError && $ctrl.errorMessage && $ctrl.isImage" ng-style="{'background': 'linear-gradient(rgba(250, 250, 250, 0.9), rgba(250, 250, 250, 0.9)), url({{ $ctrl.image }}) no-repeat center', 'background-size':'contain'}">
-        <div class="m-b-3 hidden-md hidden-sm hidden-xs"><span class="icon icon-alert icon-circle-shadow icon-md"></span></div>
+        <div class="m-b-3"><span class="icon icon-alert icon-circle-shadow icon-md"></span></div>
         <h5 class="m-b-2" ng-if="$ctrl.errorMessage">{{$ctrl.errorMessage}}</h5>
         <div class="m-b-3">
           <p ng-if="$ctrl.firstError">{{$ctrl.firstError.message}}</p>
