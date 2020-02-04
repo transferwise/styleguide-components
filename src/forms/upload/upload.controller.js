@@ -278,7 +278,6 @@ function showDataImage(dataUrl, $ctrl) {
 function asyncSuccess(apiResponse, dataUrl, $ctrl) {
   // Start changing process indicator immediately
   $ctrl.processingState = 1;
-  console.log('SUCCESS CALLED');
 
   if ($ctrl.httpOptions
       && $ctrl.httpOptions.idProperty
