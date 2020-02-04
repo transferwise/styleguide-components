@@ -336,19 +336,19 @@ describe('given an upload component', () => {
         expect(droppable.classList).toContain('droppable-complete');
       });
 
-      it('should show the failure message', function() {
+      it('should not show the failure message', function() {
         expect(directiveElement.querySelector('.upload-failure-message')).toBeFalsy();
       });
 
-      it('should not bind anything to the model', function() {
+      it('should bind base64url to the model', function() {
         expect($scope.ngModel).toBe(base64url);
       });
 
-      it('should not call the onSuccess handler', function() {
+      it('should call the onSuccess handler', function() {
         expect($scope.onSuccess).toHaveBeenCalled();
       });
 
-      it('should call the onFailure handler', function() {
+      it('should call not the onFailure handler', function() {
         expect($scope.onFailure).not.toHaveBeenCalled();
       });
     });
