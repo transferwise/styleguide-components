@@ -128,19 +128,21 @@ class UploadController {
     }
     */
 
-    /*
-     * NOTE: We temporarily want to ignore httpOptions until a full solution is implemented
-     * Currently httpOptions.url is a relative path, but needs to know its baseUrl
-     * As this call will return a 404, stopping a user from continuing the flow.
-    */
-
     if (this.httpOptions) {
       // Post file now
       this.asyncFileRead(file)
         .then((dataUrl) => {
           this.asyncFileSave(file)
             .then(response => asyncSuccess(response, dataUrl, this))
-            .catch(error => asyncFailure(error, dataUrl, this));
+            .catch((error) => {
+              if (error.status === 422) {
+                // Note: Only if async action returns 422, do we want to process that error
+                asyncFailure(error, dataUrl, this);
+              } else {
+                // Note: If async action fails, we continue with original flow
+                asyncSuccess(null, dataUrl, this);
+              }
+            });
         })
         .catch(error => asyncFailure(error, null, this));
     } else {
@@ -276,6 +278,7 @@ function showDataImage(dataUrl, $ctrl) {
 function asyncSuccess(apiResponse, dataUrl, $ctrl) {
   // Start changing process indicator immediately
   $ctrl.processingState = 1;
+  console.log('SUCCESS CALLED');
 
   if ($ctrl.httpOptions
       && $ctrl.httpOptions.idProperty
