@@ -359,7 +359,6 @@ describe('given an upload component', () => {
           status: 422,
           data: { message: "Sorry, unreadable", errors: ["Too blurry"] }
         });
-        console.log('FOUR FOU TWO SPEC');
         $timeout.flush(4100);
       });
 
