@@ -1,3 +1,7 @@
+# v4.5.7
+## Fix upload async actions to not be blocking
+If an async action returns any status code other than 422 than continue with the upload flow as normal.
+
 # v4.5.6
 ## Showing icon on SM screens
 Only hiding icons on success and error on XS screens
