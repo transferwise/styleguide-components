@@ -1,5 +1,3 @@
-import angular from 'angular';
-
 class UploadController {
   constructor(
     $timeout,
@@ -11,6 +9,8 @@ class UploadController {
     AsyncFileReader,
     AsyncFileSaver,
     AsyncTasksConfig,
+    DroppableService,
+    FileValidationService,
   ) {
     this.$timeout = $timeout;
     this.$element = $element;
@@ -19,15 +19,16 @@ class UploadController {
     this.AsyncFileReader = AsyncFileReader;
     this.AsyncFileSaver = AsyncFileSaver;
     this.AsyncTasksConfig = AsyncTasksConfig;
+    this.droppable = DroppableService;
+    this.FileValidation = FileValidationService;
 
     // First isImage updated only at select times, second updated instantly.
     this.isImage = false;
     this.isImage_instant = false;
 
-    this.dragCounter = 0;
     this.isProcessing = false;
 
-    this.processingState = null;
+    this.processingState = null; // null (processing), -1 (failed), 0 (hidden), 1 (success)
 
     this.showModal = false;
 
@@ -49,31 +50,7 @@ class UploadController {
 
     this.addDragHandlers($scope, $element);
 
-    this.showLiveCaptureScreen = false;
-  }
-
-  onUploadButtonClick() {
-    if (this.isLiveCameraUpload) {
-      this.showLiveCaptureScreen = true;
-    }
-  }
-
-  onCameraCaptureCancel() {
-    this.showLiveCaptureScreen = false;
-  }
-
-  onCameraCaptureConfirm(file) {
-    this.onFileConfirmation(file);
-    this.showLiveCaptureScreen = false;
-  }
-
-  // Function binding for file upload by input tag
-  onManualUpload() {
-    const element = this.$element[0];
-    const uploadInput = element.querySelector('.tw-droppable-input');
-    const file = uploadInput.files[0];
-
-    this.onFileConfirmation(file);
+    // this.showLiveCaptureScreen = false;
   }
 
   onManualReupload() {
@@ -81,26 +58,21 @@ class UploadController {
     const uploadInput = element.querySelector('.tw-droppable-input-reupload');
     const file = uploadInput.files[0];
 
-    this.onFileConfirmation(file);
+    this.onFileCapture(file);
   }
 
-  // Function binding for file upload by live
-  onFileConfirmation(file) {
-    if (!file) {
-      throw new Error('Could not retrieve file');
-    }
-
-    this.fileDropped(file);
-  }
-
-  fileDropped(file) {
+  onFileCapture(file) {
     if (this.ngDisabled) {
       return;
     }
 
+    if (!file) {
+      throw new Error('Could not retrieve file');
+    }
+
     this.reset();
 
-    this.isImage_instant = (file.type && file.type.indexOf('image') > -1);
+    this.isImage_instant = this.FileValidation.isImage(file);
     this.fileName = file.name;
 
     this.isProcessing = true;
@@ -108,7 +80,7 @@ class UploadController {
 
     triggerHandler(this.onStart, file);
 
-    if (!isSizeValid(file, this.maxSize)) {
+    if (!this.FileValidation.isSmallerThanMaxSize(file, this.maxSize)) {
       this.isTooLarge = true;
       asyncFailure({
         status: 413,
@@ -116,17 +88,6 @@ class UploadController {
       }, null, this);
       return;
     }
-
-    /*
-    if (!isTypeValid(file, this.accept)) {
-      this.isWrongType = true;
-      asyncFailure({
-        status: 415,
-        statusText: 'Unsupported Media Type'
-      }, this);
-      return;
-    }
-    */
 
     if (this.httpOptions) {
       // Post file now
@@ -146,25 +107,10 @@ class UploadController {
         })
         .catch(error => asyncFailure(error, null, this));
     } else {
-    // Post on form submit
+      // Post on form submit
       this.asyncFileRead(file)
         .then(dataUrl => asyncSuccess(null, dataUrl, this))
         .catch(error => asyncFailure(error, null, this));
-    }
-  }
-
-  onDragEnter() {
-    this.dragCounter++;
-    if (this.dragCounter >= 1 && !this.ngDisabled) {
-      // do not enable dropping for camera only upload mode
-      this.isDroppable = !this.isLiveCameraUpload;
-    }
-  }
-
-  onDragLeave() {
-    this.dragCounter--;
-    if (this.dragCounter <= 0) {
-      this.isDroppable = false;
     }
   }
 
@@ -178,7 +124,7 @@ class UploadController {
     this.isProcessing = false;
     this.isSuccess = false;
     this.isError = false;
-    this.dragCounter = 0;
+    this.droppable.reset();
     this.isDone = false;
     this.isTooLarge = false;
     this.isWrongType = false;
@@ -212,24 +158,19 @@ class UploadController {
 
   addDragHandlers($scope, $element) {
     $element[0].addEventListener('dragenter', (event) => {
-      event.preventDefault();
-      this.onDragEnter();
+      this.isDroppable = this.droppable.onDragEnter(event) && !this.isLiveCameraUpload;
       $scope.$apply();
     }, false);
 
-    $element[0].addEventListener('dragover', (event) => {
-      event.preventDefault();
-    }, false);
+    $element[0].addEventListener('dragover', this.droppable.onDragOver, false);
 
     $element[0].addEventListener('dragleave', (event) => {
-      event.preventDefault();
-      this.onDragLeave();
+      this.isDroppable = this.droppable.onDragLeave(event);
       $scope.$apply();
     }, false);
 
     $element[0].addEventListener('drop', (event) => {
-      event.preventDefault();
-      this.fileDropped(event.dataTransfer.files[0]);
+      this.onFileCapture(this.droppable.getDroppedFiles(event)[0]);
       $scope.$apply();
     }, false);
   }
@@ -254,18 +195,6 @@ function triggerHandler(method, argument) {
     method(argument);
   }
 }
-
-function isSizeValid(file, maxSize) {
-  return !(angular.isNumber(maxSize) && file.size > maxSize);
-}
-
-/*
-// TODO validate file type
-function isTypeValid(file, accept) {
-  return true;
-  // this.isWrongType = true;
-}
-*/
 
 function showDataImage(dataUrl, $ctrl) {
   // Only set isImage at this point to avoid trying to show another file type
@@ -356,7 +285,9 @@ UploadController.$inject = [
   '$attrs',
   'AsyncFileReader',
   'AsyncFileSaver',
-  'AsyncTasksConfig'
+  'AsyncTasksConfig',
+  'DroppableService',
+  'FileValidationService'
 ];
 
 export default UploadController;

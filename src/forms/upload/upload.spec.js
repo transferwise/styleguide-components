@@ -141,15 +141,15 @@ describe('given an upload component', () => {
     let template;
 
     beforeEach(() => {
-      template = ` 
-        <tw-upload 
-          too-large-message='File is too large' 
-          uploading-text='uploading' 
-          on-start='onStart' 
-          on-success='onSuccess' 
-          on-failure='onFailure' 
-          on-cancel='onCancel' 
-          max-size='10'> 
+      template = `
+        <tw-upload
+          too-large-message='File is too large'
+          uploading-text='uploading'
+          on-start='onStart'
+          on-success='onSuccess'
+          on-failure='onFailure'
+          on-cancel='onCancel'
+          max-size='10'>
         </tw-upload>`;
 
       // Create spies for callbacks
@@ -430,7 +430,7 @@ describe('given an upload component', () => {
     });
 
     it('should show an error message', () => {
-      const completeCard = directiveElement.querySelector('.droppable-complete-card[aria-hidden="false"]');
+      const completeCard = directiveElement.querySelector('.droppable-complete-card');
       expect(completeCard.innerText.trim()).toBe('File is too large');
     });
 
