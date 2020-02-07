@@ -5,7 +5,6 @@ import './upload.less';
 const Upload = {
   controller,
   template,
-  transclude: true,
   bindings: {
     ngDisabled: '<',
     ngModel: '=',

@@ -56,19 +56,17 @@ on-camera-capture-confirm="$ctrl.onCameraCaptureConfirm(file)"
     is-too-large="$ctrl.isTooLarge"
     is-wrong-type="$ctrl.isWrongType"
 
-    has-transcluded="$ctrl.hasTranscluded"
-
     success-message="$ctrl.successMessage"
     error-message="$ctrl.errorMessage"
     too-large-message="$ctrl.tooLargeMessage"
     cancel-text="$ctrl.cancelText"
 
     first-error="$ctrl.firstError"
-    on-manual-reupload="$ctrl.onManualReupload()"
     is-live-camera-upload="$ctrl.isLiveCameraUpload"
     clear="$ctrl.clear()"
     view-image-text="$ctrl.viewImageText"
     toggle-image-modal="$ctrl.toggleImageModal()"
+    on-file-capture="$ctrl.onFileCapture(file)"
   ></tw-upload-complete>
 
   <tw-upload-dropping

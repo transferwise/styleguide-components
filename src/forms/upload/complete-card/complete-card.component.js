@@ -1,7 +1,9 @@
 import template from './complete-card.html';
+import controller from './complete-card.controller';
 
 const CompleteCard = {
   template,
+  controller,
   bindings: {
     image: '<',
     fileName: '<',
@@ -11,7 +13,6 @@ const CompleteCard = {
     isError: '<',
     isDone: '<',
 
-    hasTranscluded: '<',
     successMessage: '<',
     errorMessage: '<',
     cancelText: '<',
@@ -20,15 +21,14 @@ const CompleteCard = {
     tooLargeMessage: '<',
     isWrongType: '<',
     firstError: '<',
-    onManualReupload: '&',
 
     isLiveCameraUpload: '<',
     clear: '&',
 
     viewImageText: '<',
-    toggleImageModal: '&'
+    toggleImageModal: '&',
+    onFileCapture: '&'
   }
-  // ,transclude: true
 };
 
 export default CompleteCard;

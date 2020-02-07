@@ -388,25 +388,25 @@ describe('given an upload component', () => {
     });
   });
 
-  describe('when a transcluded success screen is supplied', () => {
-    beforeEach(() => {
-      $scope.onUpload = function () {};
-      const template = " \
-        <tw-upload \
-          title='Drag and drop here' \
-          button-text='or click here' \
-          placeholder='please choose' \
-          on-upload='onUpload' \
-          ng-accept='csv'> \
-          <a class='transcluded-content'></a> \
-        </tw-upload>";
-      directiveElement = getCompiledDirectiveElement($scope, template);
-    });
-    it('should render the transcluded content', () => {
-      const transcluded = directiveElement.querySelector('.transcluded-content');
-      expect(transcluded).toBeTruthy();
-    });
-  });
+  // describe('when a transcluded success screen is supplied', () => {
+  //   beforeEach(() => {
+  //     $scope.onUpload = function () {};
+  //     const template = " \
+  //       <tw-upload \
+  //         title='Drag and drop here' \
+  //         button-text='or click here' \
+  //         placeholder='please choose' \
+  //         on-upload='onUpload' \
+  //         ng-accept='csv'> \
+  //         <a class='transcluded-content'></a> \
+  //       </tw-upload>";
+  //     directiveElement = getCompiledDirectiveElement($scope, template);
+  //   });
+  //   it('should render the transcluded content', () => {
+  //     const transcluded = directiveElement.querySelector('.transcluded-content');
+  //     expect(transcluded).toBeTruthy();
+  //   });
+  // });
 
   describe('when the dropped file is too large', () => {
     beforeEach(() => {

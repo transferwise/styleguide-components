@@ -3,7 +3,6 @@ class UploadController {
     $timeout,
     $element,
     $scope,
-    $transclude,
     $q,
     $attrs,
     AsyncFileReader,
@@ -24,7 +23,7 @@ class UploadController {
 
     // First isImage updated only at select times, second updated instantly.
     this.isImage = false;
-    this.isImage_instant = false;
+    this.isImageInstant = false;
 
     this.isProcessing = false;
 
@@ -32,25 +31,22 @@ class UploadController {
 
     this.showModal = false;
 
-    this.checkForTranscludedContent($transclude);
-
-    this.isLiveCameraUpload = this.source && this.source === 'CAMERA_ONLY';
-    $scope.$watch('$ctrl.source', () => {
-      this.isLiveCameraUpload = this.source && this.source === 'CAMERA_ONLY';
-    });
-
-    $scope.$watch('$ctrl.icon', () => {
-      this.viewIcon = this.icon ? this.icon : 'upload';
-    });
-
     if ((this.processingText || this.successText || this.failureText)
         && (!this.processingText || !this.successText || !this.failureText)) {
       throw new Error('Supply all of processing, success, and failure text, or supply none.');
     }
 
     this.addDragHandlers($scope, $element);
+  }
 
-    // this.showLiveCaptureScreen = false;
+  $onChanges(changes) {
+    if (changes.source) {
+      this.isLiveCameraUpload = changes.source.currentValue === 'CAMERA_ONLY';
+    }
+
+    if (changes.icon) {
+      this.viewIcon = changes.icon.currentValue ? changes.icon.currentValue : 'upload';
+    }
   }
 
   onManualReupload() {
@@ -72,7 +68,7 @@ class UploadController {
 
     this.reset();
 
-    this.isImage_instant = this.FileValidation.isImage(file);
+    this.isImageInstant = this.FileValidation.isImage(file);
     this.fileName = file.name;
 
     this.isProcessing = true;
@@ -175,16 +171,6 @@ class UploadController {
     }, false);
   }
 
-  checkForTranscludedContent($transclude) {
-    $transclude((clone) => {
-      if (clone.length > 1 || clone.text().trim() !== '') {
-        this.hasTranscluded = true;
-      } else {
-        this.hasTranscluded = false;
-      }
-    });
-  }
-
   toggleImageModal() {
     this.showModal = !this.showModal;
   }
@@ -198,7 +184,7 @@ function triggerHandler(method, argument) {
 
 function showDataImage(dataUrl, $ctrl) {
   // Only set isImage at this point to avoid trying to show another file type
-  $ctrl.isImage = $ctrl.isImage_instant;
+  $ctrl.isImage = $ctrl.isImageInstant;
   if ($ctrl.isImage) {
     $ctrl.image = dataUrl;
   }
@@ -215,6 +201,8 @@ function asyncSuccess(apiResponse, dataUrl, $ctrl) {
       && apiResponse.data[$ctrl.httpOptions.idProperty]) {
     const imageId = apiResponse.data[$ctrl.httpOptions.idProperty];
     $ctrl.setNgModel(imageId);
+
+    // These are too specific to one use case.
     $ctrl.successMessage = apiResponse.data.message;
     $ctrl.successDetails = apiResponse.data.details ? apiResponse.data.details[0] : null;
   } else {
@@ -246,6 +234,7 @@ function asyncFailure(error, dataUrl, $ctrl) {
   // Start changing process indicator immediately
   $ctrl.processingState = -1;
 
+  // TODO this section is very implementation specific
   if ($ctrl.httpOptions && error.data && error.data.message) {
     $ctrl.errorMessage = error.data.message;
     $ctrl.errorReasons = error.data.errors || [];
@@ -280,7 +269,6 @@ UploadController.$inject = [
   '$timeout',
   '$element',
   '$scope',
-  '$transclude',
   '$q',
   '$attrs',
   'AsyncFileReader',

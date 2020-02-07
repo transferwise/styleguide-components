@@ -46,7 +46,6 @@
   <div class="col-md-6">
     <div class="form-group">
       <tw-upload
-        ng-if="!$ctrl.customComplete"
         ng-model="$ctrl.modelToBind"
         name="$ctrl.name"
         icon="{{$ctrl.icon}}"
@@ -76,40 +75,8 @@
         source="$ctrl.source"
         camera-overlay="{{$ctrl.cameraOverlay}}"
         camera-direction="{{$ctrl.cameraDirection}}"
+        view-image-text="$ctrl.errorMessage"
       ></tw-upload>
-      <tw-upload
-        ng-if="$ctrl.customComplete"
-        ng-model="$ctrl.modelToBind"
-        name="$ctrl.name"
-        icon="{{$ctrl.icon}}"
-        size="{{$ctrl.size}}"
-        accept="{{$ctrl.accept}}"
-        max-size="$ctrl.maxSize"
-        label="{{$ctrl.label}}"
-        placeholder="{{$ctrl.placeholder}}"
-
-        button-text="{{$ctrl.buttonText}}"
-        cancel-text="{{$ctrl.cancelText}}"
-
-        too-large-message="{{$ctrl.tooLargeMessage}}"
-        error-message="{{$ctrl.errorMessage}}"
-
-        processing-text="{{$ctrl.processingText}}"
-        success-text="{{$ctrl.successText}}"
-        failure-text="{{$ctrl.failureText}}"
-
-        on-start="$ctrl.onStart"
-        on-success="$ctrl.onSuccess"
-        on-failure="$ctrl.onFailure"
-        on-cancel="$ctrl.onCancel"
-
-        http-options="$ctrl.httpOptions"
-
-        source="$ctrl.source"
-        camera-overlay="{{$ctrl.cameraOverlay}}"
-        camera-direction="{{$ctrl.cameraDirection}}">
-      <h1>Custom completion card</h1>
-      </tw-upload>
     </div>
     <h5>Configuration</h5>
 <pre>&lt;tw-upload<span ng-if="$ctrl.showNgModel">
