@@ -10,7 +10,9 @@ class AsyncFileSaverMock {
   save() {
     return this.$q.resolve({
       data: {
-        id: 1234
+        id: 1234,
+        message: 'This photo passed our automatic checks',
+        details: ['So its ready for our team to review']
       }
     });
   }
