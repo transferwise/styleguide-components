@@ -1,55 +1,34 @@
 <div class="droppable-card-content">
-  <!--  ng-if="!$ctrl.uploadingText" -->
   <h4 class="m-b-2">
     <span ng-if="$ctrl.isProcessing && $ctrl.processingMessage"
       class="upload-processing-message">
       {{$ctrl.processingMessage}}
-    </span>
-    <span ng-if="$ctrl.isSuccess && $ctrl.successMessage"
-      class="upload-success-message">
-      {{$ctrl.successMessage}}
     </span>
     <span ng-if="$ctrl.isError && $ctrl.errorMessage"
       class="upload-failure-message">
       {{$ctrl.errorMessage}}
     </span>
   </h4>
+
   <tw-process
     size="sm"
     state="$ctrl.processingState"
-    ng-if="($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"
+    ng-if="$ctrl.isProcessing"
   ></tw-process>
 
-  <!--
-  <h4 ng-if="$ctrl.uploadingText" class="p-t-3">
-    <span class="uploading-message">{{$ctrl.uploadingText}}</span>
-  </h4>
-  -->
+  <ul ng-if="$ctrl.isError && $ctrl.validationMessages"
+    class="text-xs-left m-b-2">
+    <li ng-if="$ctrl.validationMessages[0]">{{ $ctrl.validationMessages[0] }}</li>
+    <li ng-if="$ctrl.validationMessages[1]">{{ $ctrl.validationMessages[1] }}</li>
+    <li ng-if="$ctrl.validationMessages[2]">{{ $ctrl.validationMessages[2] }}</li>
+  </ul>
 
-  <button ng-if="$ctrl.isError"
-    class="btn btn-sm btn-primary m-t-2"
-    ng-click="$ctrl.onCancel()">
+  <a href=""
+    ng-if="$ctrl.isError"
+    class="btn btn-primary"
+    ng-click="$ctrl.onReselect()"
+    role="button">
     <span ng-if="$ctrl.cancelText" ng-bind="$ctrl.cancelText"></span>
     <span ng-if="!$ctrl.cancelText" class="icon icon-upload m-r-0"></span>
-  </buton>
+  </a>
 </div>
-
-    <!--
-    <tw-upload-error
-      ng-if="$ctrl.isError"
-
-      image="$ctrl.image"
-      accept="$ctrl.accept"
-
-      error-message="$ctrl.errorMessage"
-      error-description="$ctrl.errorDescription"
-
-      cancel-text="$ctrl.cancelText"
-
-      is-live-camera-upload="$ctrl.isLiveCameraUpload"
-      clear="$ctrl.onCancel()"
-      view-image-text="$ctrl.viewImageText"
-      toggle-image-modal="$ctrl.toggleImageModal()"
-      on-file-capture="$ctrl.onFileCapture(file)"
-    ></tw-upload-error>
-    -->

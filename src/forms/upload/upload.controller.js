@@ -12,12 +12,6 @@ class UploadController {
     this.FileValidationService = FileValidationService;
 
     this.isProcessing = false;
-    this.showModal = false;
-
-    if ((this.processingText || this.successText || this.failureText)
-        && (!this.processingText || !this.successText || !this.failureText)) {
-      throw new Error('Supply all of processing, success, and failure text, or supply none.');
-    }
 
     this.addDragHandlers($scope, $element);
   }
@@ -96,10 +90,6 @@ class UploadController {
     }, false);
   }
 
-  toggleImageModal() {
-    this.showModal = !this.showModal;
-  }
-
   onProcessStart(file) {
     this.isDroppable = false;
     this.isDone = false;
@@ -126,8 +116,6 @@ class UploadController {
   }
 
   onProcessFailure(error) {
-    console.log(error); // eslint-disable-line
-
     if (this.onFailure) {
       this.onFailure({ error });
     }

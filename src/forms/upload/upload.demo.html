@@ -92,7 +92,8 @@
   accept="{{$ctrl.accept}}"</span><span ng-if="$ctrl.wrongTypeText">
   wrong-type-text="{{$ctrl.wrongTypeMessage}}"</span><span ng-if="$ctrl.maxSize">
   max-size="{{$ctrl.maxSize}}"
-  too-large-message="{{$ctrl.tooLargeMessage}}"</span><span ng-if="$ctrl.processingText">
+  too-large-message="{{$ctrl.tooLargeMessage}}"</span><span ng-if="$ctrl.droppingText">
+  processing-text="{{$ctrl.droppingText}}"</span><span ng-if="$ctrl.processingText">
   processing-text="{{$ctrl.processingText}}"</span><span ng-if="$ctrl.successText">
   success-text="{{$ctrl.successText}}"</span><span ng-if="$ctrl.failureText">
   failure-text="{{$ctrl.failureText}}"</span><span ng-if="$ctrl.httpOptions">
@@ -192,6 +193,12 @@
 
       <div class="form-group">
         <label class="control-label">
+          Dropping text
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.droppingText" />
+      </div>
+      <div class="form-group">
+        <label class="control-label">
           Processing text
         </label>
         <input type="text" class="form-control" ng-model="$ctrl.processingText" />
@@ -270,7 +277,7 @@
         <input type="text" class="form-control" ng-model="$ctrl.wrongTypeMessage" />
       </div>
       -->
-      <div class="form-group" ng-init="$ctrl.maxSize = 5000000">
+      <div class="form-group" ng-init="$ctrl.maxSize = 50000">
         <label class="control-label">
           Max file size
         </label>

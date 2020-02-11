@@ -42,12 +42,13 @@
       success-message="$ctrl.successText"
       error-message="$ctrl.failureText"
 
+      validation-messages="$ctrl.validationMessages"
+
       too-large-message="$ctrl.tooLargeMessage"
 
       cancel-text="$ctrl.cancelText"
       on-cancel="$ctrl.reset()"
     ></tw-upload-processing>
-    <!-- uploading-text="$ctrl.uploadingText" -->
   </div>
 
   <div class="droppable-complete-card droppable-card"
@@ -58,22 +59,15 @@
       file="$ctrl.file"
       data="$ctrl.dataUrl"
 
-      success-message="$ctrl.successMessage"
+      success-message="$ctrl.successText"
       cancel-text="$ctrl.cancelText"
       on-cancel="$ctrl.reset()"
     ></tw-upload-success>
   </div>
 
   <div class="droppable-dropping-card droppable-card">
-    <tw-upload-dropping></tw-upload-dropping>
+    <tw-upload-dropping
+      dropping-text="$ctrl.droppingText"
+    ></tw-upload-dropping>
   </div>
-
 </div>
-
-<tw-image-details-modal
-  title="$ctrl.errorMessage"
-  messages="$ctrl.errorReasons"
-  visibility="$ctrl.showModal"
-  image="$ctrl.image"
-  toggle-modal="$ctrl.toggleImageModal()"
-></tw-image-details-modal>

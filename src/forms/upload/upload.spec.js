@@ -1,5 +1,5 @@
 
-fdescribe('given an upload component', () => {
+describe('given an upload component', () => {
   let $q;
   let $compile;
   let $rootScope;
@@ -85,8 +85,7 @@ fdescribe('given an upload component', () => {
       expect(processingMessage.innerText.trim()).toBe('processing');
     });
 
-    it('should not show the other messages', () => {
-      expect(directiveElement.querySelector('.upload-success-message')).toBeFalsy();
+    it('should not error message', () => {
       expect(directiveElement.querySelector('.upload-failure-message')).toBeFalsy();
     });
 
@@ -94,17 +93,6 @@ fdescribe('given an upload component', () => {
       beforeEach(() => {
         deferred.resolve(base64url);
         $timeout.flush(3000);
-      });
-
-      it('should display the success message', () => {
-        const successMessage = directiveElement.querySelector('.upload-success-message');
-        expect(successMessage).toBeTruthy();
-        expect(successMessage.innerText.trim()).toBe('success');
-      });
-
-      it('should use the supplied success message', () => {
-        const successMessage = directiveElement.querySelector('.upload-success-message');
-        expect(successMessage.innerText.trim()).toBe('success');
       });
 
       it('should not show the processing message', () => {
@@ -126,6 +114,12 @@ fdescribe('given an upload component', () => {
 
         it('should show the success screen', () => {
           expect(dropTarget.classList).toContain('droppable-complete');
+        });
+
+        it('should use the supplied success message', () => {
+          const successMessage = directiveElement.querySelector('.upload-success-message');
+          expect(successMessage).toBeTruthy();
+          expect(successMessage.innerText.trim()).toBe('success');
         });
 
         it('should trigger the onSuccess handler', () => {

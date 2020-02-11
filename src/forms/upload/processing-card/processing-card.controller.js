@@ -40,7 +40,7 @@ class Controller {
     this.onStart({ file });
 
     if (!this.FileValidation.isSmallerThanMaxSize(file, this.maxSize)) {
-      this.errorMessage = this.tooLargeMessage;
+      this.validationMessages = [this.tooLargeMessage];
       asyncFailure({
         status: 413,
         statusText: 'Request Entity Too Large'
@@ -86,6 +86,10 @@ class Controller {
     this.isSuccess = false;
     this.isError = false;
   }
+
+  onReselect() {
+    this.onCancel();
+  }
 }
 
 function asyncSuccess(response, dataUrl, $ctrl) {
@@ -129,17 +133,17 @@ function asyncFailure(error, dataUrl, $ctrl) {
   // Start changing process indicator immediately
   $ctrl.processingState = -1;
 
-  // TODO this section is very implementation specific
-  if ($ctrl.httpOptions && error.data && error.data.message) {
-    $ctrl.errorMessage = error.data.message;
-    $ctrl.errorReasons = error.data.errors || [];
-    $ctrl.errorDescription = $ctrl.errorReasons[0].message;
-  } else if ($ctrl.httpOptions && error.originalData && error.originalData.message) {
-    // Note: error data can manipulated by interceptors, this ensures we still get data needed
-    $ctrl.errorMessage = error.originalData.message;
-    $ctrl.errorReasons = error.originalData.errors || [];
-    $ctrl.errorDescription = $ctrl.errorReasons[0].message;
-  }
+  // // TODO this section is very implementation specific
+  // if ($ctrl.httpOptions && error.data && error.data.message) {
+  //   $ctrl.errorMessage = error.data.message;
+  //   $ctrl.errorReasons = error.data.errors || [];
+  //   $ctrl.errorDescription = $ctrl.errorReasons[0].message;
+  // } else if ($ctrl.httpOptions && error.originalData && error.originalData.message) {
+  //   // Note: error data can manipulated by interceptors, this ensures we still get data needed
+  //   $ctrl.errorMessage = error.originalData.message;
+  //   $ctrl.errorReasons = error.originalData.errors || [];
+  //   $ctrl.errorDescription = $ctrl.errorReasons[0].message;
+  // }
 
   // Wait before updating text
   $ctrl.$timeout(() => {

@@ -1,7 +1,7 @@
 <div class="droppable-card-content">
-  <h4 class="m-b-2" >
-    <span ng-if="$ctrl.label">{{ $ctrl.label }}</span>
-    <span ng-if="$ctrl.successMessage">{{ $ctrl.successMessage }}</span>
+  <h4 ng-if="$ctrl.successMessage || $ctrl.label"
+    class="m-b-2 upload-success-message">
+    {{ $ctrl.successMessage || $ctrl.label }}
   </h4>
 
   <img
@@ -20,7 +20,8 @@
   <!-- cancel option -->
   <p class="m-t-2 m-b-0">
     <a href="" ng-click="$ctrl.onCancel()">
-      {{$ctrl.cancelText}}
+      <span ng-if="$ctrl.cancelText" ng-bind="$ctrl.cancelText"></span>
+      <span ng-if="!$ctrl.cancelText" class="icon icon-upload m-r-0"></span>
     </a>
   </p>
 </div>

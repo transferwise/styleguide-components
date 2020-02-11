@@ -14,25 +14,29 @@ const Upload = {
     helpImage: '@', // illustration in image showin in upload box, if specified, replaces icon
     label: '@',
     placeholder: '@',
-    description: '@', // DEPRECATED for label
-    instructions: '@', // DEPRECATED for placeholder
-    buttonText: '@',
+
+    buttonText: '@', // Button text shown in default state
     cancelText: '@', // Text instructing to go back to re-upload after upload is done
-    uploadingText: '@', // Single state text during uploading instead of processing/success/failure
-    processingText: '@', // Text shown while uploading
-    viewImageText: '@',
+    droppingText: '@', // Text shown when hovering with a file
+
+    processingText: '@', // Text shown while processing/uploading
     successText: '@', // Text after upload is successful, shown quite briefly before preview
     failureText: '@',
-    errorMessage: '@',
+
     tooLargeMessage: '@',
     // wrongTypeMessage: '@',
+
+    validationMessages: '<',
+
     size: '@',
     accept: '@',
     httpOptions: '<',
+
     onStart: '=',
     onSuccess: '=',
     onFailure: '=',
     onCancel: '=',
+
     maxSize: '<', // TODO move to ngMax?
 
     // Camera capture upload options
@@ -45,7 +49,10 @@ const Upload = {
      */
     source: '<',
     cameraOverlay: '@', // Optional
-    cameraDirection: '@' // environment/user
+    cameraDirection: '@', // environment/user
+
+    description: '@', // DEPRECATED for label
+    instructions: '@', // DEPRECATED for placeholder
   }
 };
 

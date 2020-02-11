@@ -22,7 +22,7 @@ const ProcessingCard = {
     errorMessage: '<',
     tooLargeMessage: '<',
 
-    // uploadingText: '<',
+    validationMessages: '<',
 
     cancelText: '<'
   }
