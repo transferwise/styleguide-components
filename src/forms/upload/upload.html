@@ -28,6 +28,7 @@
   <div class="droppable-processing-card droppable-card"
     aria-hidden="{{!$ctrl.isProcessing}}">
     <tw-upload-processing
+      name="$ctrl.name"
       file="$ctrl.file"
       on-start="$ctrl.onProcessStart(file)"
       on-success="$ctrl.onProcessSuccess(file, dataUrl, id, response)"
@@ -40,6 +41,8 @@
       processing-message="$ctrl.processingText"
       success-message="$ctrl.successText"
       error-message="$ctrl.failureText"
+
+      too-large-message="$ctrl.tooLargeMessage"
 
       cancel-text="$ctrl.cancelText"
       on-cancel="$ctrl.reset()"

@@ -5,6 +5,7 @@ const ProcessingCard = {
   controller,
   template,
   bindings: {
+    name: '<',
     file: '<',
 
     onStart: '&',
@@ -19,6 +20,7 @@ const ProcessingCard = {
     processingMessage: '<',
     successMessage: '<',
     errorMessage: '<',
+    tooLargeMessage: '<',
 
     // uploadingText: '<',
 

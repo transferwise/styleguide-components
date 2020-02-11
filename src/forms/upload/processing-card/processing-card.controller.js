@@ -73,7 +73,7 @@ class Controller {
 
   asyncFileSave(file) {
     const httpOptions = this.AsyncTasksConfig.extendHttpOptions(this.httpOptions);
-    return this.AsyncFileSaver.save(this.name, file, httpOptions);
+    return this.AsyncFileSaver.save(httpOptions.param || this.name, file, httpOptions);
   }
 
   asyncFileRead(file) {
