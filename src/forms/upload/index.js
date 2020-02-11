@@ -5,7 +5,8 @@ import Upload from './upload.component.js';
 import DefaultCard from './default-card';
 import DroppingCard from './dropping-card';
 import ProcessingCard from './processing-card';
-import CompleteCard from './complete-card';
+import SuccessCard from './success-card';
+import ErrorCard from './error-card';
 
 import CameraCapture from './camera-capture/camera-capture.component.js';
 import CameraCaptureScreenHandler from './camera-capture/camera-capture-screen-handler.service';
@@ -24,7 +25,8 @@ export default angular
     DefaultCard,
     DroppingCard,
     ProcessingCard,
-    CompleteCard
+    SuccessCard,
+    ErrorCard
   ])
   .directive('twFileInput', FileInput)
   .service('AsyncFileReader', AsyncFileReader)

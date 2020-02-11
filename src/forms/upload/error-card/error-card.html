@@ -1,0 +1,58 @@
+<div class="droppable-card-content">
+  <!-- Original error screen -->
+  <!-- This now has a logical flaw as error message will never show -->
+  <div ng-if="!$ctrl.errorMessage">
+    <h4 class="m-b-2" ng-if="$ctrl.isTooLarge">{{$ctrl.tooLargeMessage}}</h4>
+    <h4 class="m-b-2" ng-if="$ctrl.isWrongType">{{$ctrl.wrongTypeText}}</h4>
+    <h4 class="m-b-2" ng-if="!$ctrl.isTooLarge && $ctrl.errorMessage">{{$ctrl.errorMessage}}</h4>
+    <span class="icon icon-alert icon-xxl text-danger m-b-1"></span>
+  </div>
+
+  <!-- Pre eval error screen -->
+  <!-- If there's an error message but file size validation fails, this shows an empty screen... -->
+  <div ng-if="$ctrl.errorMessage">
+    <div class="m-b-3 hidden-xs">
+      <span class="icon icon-alert icon-xxl text-danger"></span>
+    </div>
+
+    <h5 class="m-b-2" ng-if="$ctrl.errorMessage">
+      {{ $ctrl.errorMessage }}
+    </h5>
+
+    <p class="first-error m-b-3" ng-if="$ctrl.errorDescription">
+      {{ $ctrl.errorDescription }}
+    </p>
+
+    <div class="btn-group-vertical btn-block">
+      <label class="btn btn-primary btn-sm m-b-1"
+        ng-click="$ctrl.onUploadButtonClick()"
+        ng-class="{'disabled': $ctrl.ngDisabled}"
+        ng-if="!$ctrl.isLiveCameraUpload">
+        <span ng-if="$ctrl.cancelText" ng-bind="$ctrl.cancelText"></span>
+        <span ng-if="!$ctrl.cancelText" class="icon icon-upload m-r-0"></span>
+        <!-- normal upload -->
+        <input
+          tw-file-input
+          type="file"
+          accept="{{$ctrl.accept}}"
+          class="tw-droppable-input-reupload hidden"
+          ng-disabled="$ctrl.ngDisabled"
+          name="file-upload"
+          on-user-input="$ctrl.onManualReupload()"
+          ng-model="$ctrl.inputFile" />
+      </label>
+
+      <div class="btn btn-primary btn-sm m-b-1"
+        ng-click="$ctrl.clear()"
+        ng-if="$ctrl.isLiveCameraUpload">
+        {{ $ctrl.cancelText }}
+      </div>
+
+      <div class="btn btn-info btn-sm"
+        ng-if="$ctrl.viewImageText"
+        ng-click="$ctrl.toggleImageModal()" >
+        {{ $ctrl.viewImageText }}
+      </div>
+    </div>
+  </div>
+</div>

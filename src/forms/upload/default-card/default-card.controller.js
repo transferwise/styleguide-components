@@ -4,6 +4,12 @@ class DefaultCardController {
     this.showLiveCaptureScreen = false;
   }
 
+  $onChanges(changes) {
+    if (changes.icon) {
+      this.viewIcon = changes.icon.currentValue ? changes.icon.currentValue : 'upload';
+    }
+  }
+
   onCameraCaptureCancel() {
     this.showLiveCaptureScreen = false;
   }

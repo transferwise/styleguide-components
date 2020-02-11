@@ -54,12 +54,12 @@ function controller($scope) {
     this.log('File upload cancelled');
   };
 
-  this.makeFancy = () => {
-    $ctrl.label = 'Front of your ID document';
-    $ctrl.processingText = 'Processing...';
-    $ctrl.successText = 'Upload complete!';
-    $ctrl.failureText = 'Upload failed!';
-  };
+  this.label = 'Front of your ID document';
+  $ctrl.processingText = 'Processing...';
+  $ctrl.successText = 'Upload complete!';
+  $ctrl.failureText = 'Upload failed!';
+
+  this.makeFancy = () => {};
 
   this.acceptOptions = [
     { value: '.png', label: 'PNG (.png)' },

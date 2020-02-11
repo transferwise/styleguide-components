@@ -71,6 +71,7 @@
         on-cancel="$ctrl.onCancel"
 
         http-options="$ctrl.httpOptions"
+        ng-disabled="$ctrl.ngDisabled"
 
         source="$ctrl.source"
         camera-overlay="{{$ctrl.cameraOverlay}}"
@@ -79,8 +80,8 @@
       ></tw-upload>
     </div>
     <h5>Configuration</h5>
-<pre>&lt;tw-upload<span ng-if="$ctrl.showNgModel">
-  ng-model="{{ $ctrl.model.length > 30 ? ($ctrl.model | limitTo : 30) + '...' : $ctrl.model }}"</span>
+<pre>&lt;tw-upload
+  ng-model="{{ $ctrl.model.length > 30 ? ($ctrl.model | limitTo : 30) + '...' : $ctrl.model }}"
   name="{{$ctrl.name}}"<span ng-if="$ctrl.icon">
   icon="{{$ctrl.icon}}"</span><span ng-if="$ctrl.size !== 'md'">
   size="{{$ctrl.size}}"</span><span ng-if="$ctrl.label">
@@ -102,8 +103,8 @@
   on-failure="$ctrl.onFailure"
   on-cancel="$ctrl.onCancel"</span><span ng-if="$ctrl.cameraOverlay">
   overlay="{{$ctrl.cameraOverlay}}"</span><span ng-if="$ctrl.source">
-  source="{{$ctrl.source}}"</span>&gt;<span ng-if="$ctrl.customComplete">
-  &lt;h1&gt;Custom completion card&lt;/h1&gt;</span>
+  source="{{$ctrl.source}}"</span><span ng-if="$ctrl.ngDisabled">
+  ng-disabled="{{$ctrl.ngDisabled}}"</span>&gt;
 &lt;/tw-upload&gt;
 </pre>
   </div>
@@ -136,7 +137,8 @@
           options="$ctrl.cameraDirections"></tw-select>
       </div>
 
-      <div class="form-group" ng-if="$ctrl.source == 'CAMERA_ONLY'" ng-init="$ctrl.cameraOverlay = 'images/overlay.png'">
+      <div class="form-group" ng-if="$ctrl.source == 'CAMERA_ONLY'"
+        ng-init="$ctrl.cameraOverlay = 'images/overlay.png'">
         <label class="control-label">
           Camera Overlay Image URL
         </label>
@@ -231,14 +233,10 @@
         </div>
         <div class="checkbox">
           <label>
-            <tw-checkbox ng-model="$ctrl.showNgModel"></tw-checkbox>
-            Bind to ngModel?
-          </label>
-        </div>
-        <div class="checkbox">
-          <label>
-            <tw-checkbox ng-model="$ctrl.customComplete"></tw-checkbox>
-            Custom complete screen?
+            <tw-checkbox
+              ng-model="$ctrl.ngDisabled">
+            </tw-checkbox>
+            Disabled?
           </label>
         </div>
       </div>

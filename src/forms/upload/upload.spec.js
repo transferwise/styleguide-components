@@ -1,5 +1,5 @@
 
-describe('given an upload component', () => {
+fdescribe('given an upload component', () => {
   let $q;
   let $compile;
   let $rootScope;
@@ -93,7 +93,7 @@ describe('given an upload component', () => {
     describe('after three seconds', () => {
       beforeEach(() => {
         deferred.resolve(base64url);
-        $timeout.flush(3000);
+        $timeout.flush(300);
       });
 
       it('should display the success message', () => {

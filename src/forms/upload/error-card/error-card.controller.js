@@ -1,8 +1,7 @@
-class CompleteCardController {
+class ErrorCardController {
   constructor($element) {
     this.$element = $element;
   }
-
 
   onManualReupload() {
     const element = this.$element[0];
@@ -13,6 +12,6 @@ class CompleteCardController {
   }
 }
 
-CompleteCardController.$inject = ['$element'];
+ErrorCardController.$inject = ['$element'];
 
-export default CompleteCardController;
+export default ErrorCardController;

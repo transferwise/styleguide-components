@@ -5,7 +5,7 @@ const Process = {
   controller,
   template,
   bindings: {
-    state: '<',
+    state: '<', // null - processing, -1 - failed, 0 - hidden, 1 - success
     size: '@',
     onStop: '&',
     promise: '<'

@@ -1,26 +1,24 @@
-import template from './complete-card.html';
-import controller from './complete-card.controller';
+import template from './error-card.html';
+import controller from './error-card.controller';
 
-const CompleteCard = {
+const ErrorCard = {
   template,
   controller,
   bindings: {
     image: '<',
-    fileName: '<',
     accept: '<',
 
     isImage: '<',
     isError: '<',
-    isDone: '<',
 
-    successMessage: '<',
     errorMessage: '<',
+    errorDescription: '<',
+
     cancelText: '<',
 
     isTooLarge: '<',
     tooLargeMessage: '<',
     isWrongType: '<',
-    firstError: '<',
 
     isLiveCameraUpload: '<',
     clear: '&',
@@ -31,4 +29,4 @@ const CompleteCard = {
   }
 };
 
-export default CompleteCard;
+export default ErrorCard;

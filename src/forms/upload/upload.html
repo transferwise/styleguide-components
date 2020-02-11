@@ -3,74 +3,68 @@
   'droppable-md': $ctrl.size ==='md' || !$ctrl.size,
   'droppable-lg': $ctrl.size ==='lg',
   'droppable-dropping': $ctrl.isDroppable && !$ctrl.ngDisabled,
-  'droppable-processing': !$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError),
+  'droppable-processing': !$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess),
   'droppable-complete': $ctrl.isDone
 }">
-  <tw-upload-default
-    is-done="$ctrl.isDone"
-    input-file="$ctrl.inputFile"
-    help-image="$ctrl.helpImage"
-    view-icon="$ctrl.viewIcon"
-    button-text="$ctrl.buttonText"
-    ng-disabled="$ctrl.ngDisabled"
-    label="$ctrl.label"
-    description="$ctrl.description"
-    accept="$ctrl.accept"
-    show-video-preview="$ctrl.showVideoPreview"
-    is-live-camera-upload="$ctrl.isLiveCameraUpload"
-    show-live-camera-capture-screen="$ctrl.showLiveCameraCaptureScreen"
-    camera-overlay="$ctrl.cameraOverlay"
-    camera-direction="$ctrl.cameraDirection"
-    on-file-capture="$ctrl.onFileCapture(file)"
-  ></tw-upload-default>
-<!--
 
-on-manual-upload="$ctrl.onManualUpload()"
-on-upload-button-click="$ctrl.onUploadButtonClick()"
-on-camera-capture-cancel="$ctrl.onCameraCaptureCancel()"
-on-camera-capture-confirm="$ctrl.onCameraCaptureConfirm(file)"
--->
-  <tw-upload-processing
-    is-processing="$ctrl.isProcessing"
-    is-success="$ctrl.isSuccess"
-    is-error="$ctrl.isError"
-    is-done="$ctrl.isDone"
+  <div class="droppable-default-card"
+    aria-hidden="{{$ctrl.isDone || $ctrl.isProcessing}}">
+    <tw-upload-default
+      label="$ctrl.label"
+      icon="$ctrl.icon"
+      accept="$ctrl.accept"
+      input-file="$ctrl.inputFile"
+      help-image="$ctrl.helpImage"
+      button-text="$ctrl.buttonText"
+      ng-disabled="$ctrl.ngDisabled"
+      placeholder="$ctrl.placeholder || $ctrl.description"
+      is-live-camera-upload="$ctrl.isLiveCameraUpload"
+      camera-overlay="$ctrl.cameraOverlay"
+      camera-direction="$ctrl.cameraDirection"
+      on-file-capture="$ctrl.onFileCapture(file)"
+    ></tw-upload-default>
+  </div>
 
-    processing-text="$ctrl.processingText"
-    success-text="$ctrl.successText"
-    failure-text="$ctrl.failureText"
-    uploading-text="$ctrl.uploadingText"
+  <div class="droppable-processing-card droppable-card"
+    aria-hidden="{{!$ctrl.isProcessing}}">
+    <tw-upload-processing
+      file="$ctrl.file"
+      on-start="$ctrl.onProcessStart(file)"
+      on-success="$ctrl.onProcessSuccess(file, dataUrl, id, response)"
+      on-failure="$ctrl.onProcessFailure(error)"
 
-    processing-state="$ctrl.processingState"
-  ></tw-upload-processing>
+      max-size="$ctrl.maxSize"
+      accepts="$ctrl.accepts"
+      http-options="$ctrl.httpOptions"
 
-  <tw-upload-complete
-    image="$ctrl.image"
-    file-name="$ctrl.fileName"
-    accept="$ctrl.accept"
+      processing-message="$ctrl.processingText"
+      success-message="$ctrl.successText"
+      error-message="$ctrl.failureText"
 
-    is-image="$ctrl.isImage"
-    is-error="$ctrl.isError"
-    is-done="$ctrl.isDone"
+      cancel-text="$ctrl.cancelText"
+      on-cancel="$ctrl.reset()"
+    ></tw-upload-processing>
+    <!-- uploading-text="$ctrl.uploadingText" -->
+  </div>
 
-    is-too-large="$ctrl.isTooLarge"
-    is-wrong-type="$ctrl.isWrongType"
+  <div class="droppable-complete-card droppable-card"
+    aria-hidden="{{!$ctrl.isDone}}">
+    <tw-upload-success
+      label="$ctrl.label"
+      is-image="$ctrl.isImage"
+      file="$ctrl.file"
+      data="$ctrl.dataUrl"
 
-    success-message="$ctrl.successMessage"
-    error-message="$ctrl.errorMessage"
-    too-large-message="$ctrl.tooLargeMessage"
-    cancel-text="$ctrl.cancelText"
+      success-message="$ctrl.successMessage"
+      cancel-text="$ctrl.cancelText"
+      on-cancel="$ctrl.reset()"
+    ></tw-upload-success>
+  </div>
 
-    first-error="$ctrl.firstError"
-    is-live-camera-upload="$ctrl.isLiveCameraUpload"
-    clear="$ctrl.clear()"
-    view-image-text="$ctrl.viewImageText"
-    toggle-image-modal="$ctrl.toggleImageModal()"
-    on-file-capture="$ctrl.onFileCapture(file)"
-  ></tw-upload-complete>
+  <div class="droppable-dropping-card droppable-card">
+    <tw-upload-dropping></tw-upload-dropping>
+  </div>
 
-  <tw-upload-dropping
-  ></tw-upload-dropping>
 </div>
 
 <tw-image-details-modal

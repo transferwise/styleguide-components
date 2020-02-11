@@ -1,18 +1,28 @@
+import controller from './processing-card.controller';
 import template from './processing-card.html';
 
 const ProcessingCard = {
+  controller,
   template,
   bindings: {
-    isProcessing: '<',
-    isSuccess: '<',
-    isError: '<',
-    isDone: '<',
+    file: '<',
 
-    processingText: '<',
-    successText: '<',
-    failureText: '<',
-    processingState: '<',
-    uploadingText: '<',
+    onStart: '&',
+    onSuccess: '&',
+    onFailure: '&',
+    onCancel: '&',
+
+    maxSize: '<',
+    accepts: '<',
+    httpOptions: '<',
+
+    processingMessage: '<',
+    successMessage: '<',
+    errorMessage: '<',
+
+    // uploadingText: '<',
+
+    cancelText: '<'
   }
 };
 

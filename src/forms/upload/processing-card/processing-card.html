@@ -1,20 +1,55 @@
-<div class="droppable-processing-card droppable-card" aria-hidden="{{$ctrl.isDone}}">
-  <div class="droppable-card-content">
-    <h4 class="m-b-2" ng-if="!$ctrl.uploadingText">
-      <span ng-if="$ctrl.isProcessing && $ctrl.processingText" class="upload-processing-message">
-        {{$ctrl.processingText}}
-      </span>
-      <span ng-if="$ctrl.isSuccess && $ctrl.successText" class="upload-success-message">
-        {{$ctrl.successText}}
-      </span>
-      <span ng-if="$ctrl.isError && $ctrl.failureText" class="upload-failure-message">
-        {{$ctrl.failureText}}
-      </span>
-    </h4>
-    <tw-process size="sm" state="$ctrl.processingState"
-      ng-if="($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"></tw-process>
-    <h4 ng-if="$ctrl.uploadingText" class="p-t-3">
-      <span class="uploading-message">{{$ctrl.uploadingText}}</span>
-    </h4>
-  </div>
+<div class="droppable-card-content">
+  <!--  ng-if="!$ctrl.uploadingText" -->
+  <h4 class="m-b-2">
+    <span ng-if="$ctrl.isProcessing && $ctrl.processingMessage"
+      class="upload-processing-message">
+      {{$ctrl.processingMessage}}
+    </span>
+    <span ng-if="$ctrl.isSuccess && $ctrl.successMessage"
+      class="upload-success-message">
+      {{$ctrl.successMessage}}
+    </span>
+    <span ng-if="$ctrl.isError && $ctrl.errorMessage"
+      class="upload-failure-message">
+      {{$ctrl.errorMessage}}
+    </span>
+  </h4>
+  <tw-process
+    size="sm"
+    state="$ctrl.processingState"
+    ng-if="($ctrl.isProcessing || $ctrl.isSuccess || $ctrl.isError)"
+  ></tw-process>
+
+  <!--
+  <h4 ng-if="$ctrl.uploadingText" class="p-t-3">
+    <span class="uploading-message">{{$ctrl.uploadingText}}</span>
+  </h4>
+  -->
+
+  <button ng-if="$ctrl.isError"
+    class="btn btn-sm btn-primary m-t-2"
+    ng-click="$ctrl.onCancel()">
+    <span ng-if="$ctrl.cancelText" ng-bind="$ctrl.cancelText"></span>
+    <span ng-if="!$ctrl.cancelText" class="icon icon-upload m-r-0"></span>
+  </buton>
 </div>
+
+    <!--
+    <tw-upload-error
+      ng-if="$ctrl.isError"
+
+      image="$ctrl.image"
+      accept="$ctrl.accept"
+
+      error-message="$ctrl.errorMessage"
+      error-description="$ctrl.errorDescription"
+
+      cancel-text="$ctrl.cancelText"
+
+      is-live-camera-upload="$ctrl.isLiveCameraUpload"
+      clear="$ctrl.onCancel()"
+      view-image-text="$ctrl.viewImageText"
+      toggle-image-modal="$ctrl.toggleImageModal()"
+      on-file-capture="$ctrl.onFileCapture(file)"
+    ></tw-upload-error>
+    -->
