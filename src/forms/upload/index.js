@@ -7,17 +7,16 @@ import DroppingCard from './dropping-card';
 import ProcessingCard from './processing-card';
 import SuccessCard from './success-card';
 import ErrorCard from './error-card';
+import CameraCapture from './camera-capture';
 
-import CameraCapture from './camera-capture/camera-capture.component.js';
-import CameraCaptureScreenHandler from './camera-capture/camera-capture-screen-handler.service';
-import CameraOverlayHandler from './camera-capture/camera-overlay-handler.service';
 import FileInput from './file-input.directive.js';
-import AsyncFileReader from './async-file-reader.service.js';
-import AsyncFileSaver from './async-file-saver.service.js';
+
 import AsyncTasksConfig from '../../services/asyncTasksConfig';
-import DroppableService from './droppable.service.js';
-import FileValidationService from './file-validation.service.js';
-import ImageDetailsModal from './image-details-modal/image-details-modal.component.js';
+
+import AsyncFileReader from './services/async-file-reader.service.js';
+import AsyncFileSaver from './services/async-file-saver.service.js';
+import DroppableService from './services/droppable.service.js';
+import FileValidationService from './services/file-validation.service.js';
 
 export default angular
   .module('tw.styleguide.forms.upload', [
@@ -26,16 +25,13 @@ export default angular
     DroppingCard,
     ProcessingCard,
     SuccessCard,
-    ErrorCard
+    ErrorCard,
+    CameraCapture
   ])
   .directive('twFileInput', FileInput)
   .service('AsyncFileReader', AsyncFileReader)
   .service('AsyncFileSaver', AsyncFileSaver)
-  .service('CameraCaptureScreenHandler', CameraCaptureScreenHandler)
-  .service('CameraOverlayHandler', CameraOverlayHandler)
   .service('DroppableService', DroppableService)
   .service('FileValidationService', FileValidationService)
-  .component('twCameraCapture', CameraCapture)
   .component('twUpload', Upload)
-  .component('twImageDetailsModal', ImageDetailsModal)
   .name;

@@ -56,7 +56,7 @@ function controller($scope) {
 
   this.label = 'Front of your ID document';
   $ctrl.processingText = 'Processing...';
-  $ctrl.droppingText = 'Drop a file...';
+  $ctrl.droppingText = 'Drop file to begin...';
   $ctrl.successText = 'Upload complete!';
   $ctrl.failureText = 'Upload failed!';
 

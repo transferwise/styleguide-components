@@ -87,7 +87,7 @@ class Controller {
     this.isError = false;
   }
 
-  onReselect() {
+  onRemove() {
     this.onCancel();
   }
 }
