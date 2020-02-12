@@ -5,8 +5,6 @@ class ProcessController {
 
     this.interval = null;
     this.processing = this.state;
-
-    // this.startProcess();
   }
 
   $onChanges(changes) {

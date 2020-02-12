@@ -31,13 +31,13 @@ describe('Given a camera capture component', function() {
       <tw-camera-capture \
         direction='ENVIRONMENT' \
         on-cancel='onCancel()' \
-        on-confirm='onConfirm(file)' \
+        on-capture='onCapture(file)' \
         test-mode='true'> \
       </tw-camera-capture>";
 
     // Create spies for callbacks
     $scope.onCancel = jasmine.createSpy('onCancel');
-    $scope.onConfirm = jasmine.createSpy('onConfirm');
+    $scope.onCapture = jasmine.createSpy('onCapture');
 
     const $component = getComponent($scope, template);
     controller = $component.controller('twCameraCapture');
@@ -263,8 +263,8 @@ describe('Given a camera capture component', function() {
         getCaptureConfirmButton(component).click();
       });
 
-      it('should call the onConfirm handler', function () {
-        expect($scope.onConfirm).toHaveBeenCalled();
+      it('should call the onCapture handler', function () {
+        expect($scope.onCapture).toHaveBeenCalled();
       });
 
       it('should not call the onCancel handler', function () {

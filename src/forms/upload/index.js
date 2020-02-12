@@ -8,6 +8,8 @@ import ProcessingCard from './processing-card';
 import SuccessCard from './success-card';
 import ErrorCard from './error-card';
 import CameraCapture from './camera-capture';
+import UploadButton from './upload-button';
+import CameraButton from './camera-button';
 
 import FileInput from './file-input.directive.js';
 
@@ -26,7 +28,9 @@ export default angular
     ProcessingCard,
     SuccessCard,
     ErrorCard,
-    CameraCapture
+    CameraCapture,
+    UploadButton,
+    CameraButton
   ])
   .directive('twFileInput', FileInput)
   .service('AsyncFileReader', AsyncFileReader)

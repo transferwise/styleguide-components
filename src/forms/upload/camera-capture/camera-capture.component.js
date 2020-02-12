@@ -10,7 +10,7 @@ const CameraCapture = {
     direction: '@', // environment/user
 
     onCancel: '&',
-    onConfirm: '&',
+    onCapture: '&',
 
     /**
      * Need this parameter to skip user interaction

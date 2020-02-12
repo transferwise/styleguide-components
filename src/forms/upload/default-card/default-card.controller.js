@@ -10,26 +10,21 @@ class DefaultCardController {
     }
   }
 
-  onCameraCaptureCancel() {
+  onCameraCancel() {
     this.showLiveCaptureScreen = false;
   }
 
-  onCameraCaptureConfirm(file) {
+  onCameraCapture(file) {
     this.showLiveCaptureScreen = false;
     this.onFileCapture({ file });
   }
 
-  onUploadButtonClick() {
-    if (this.isLiveCameraUpload) {
-      this.showLiveCaptureScreen = true;
-    }
+  onCameraButtonClick() {
+    this.showLiveCaptureScreen = true;
   }
 
-  onManualUpload() {
-    const element = this.$element[0];
-    const uploadInput = element.querySelector('.tw-droppable-input');
-    const file = uploadInput.files[0];
-
+  onButtonCapture(files) {
+    const file = files[0];
     this.onFileCapture({ file });
   }
 }

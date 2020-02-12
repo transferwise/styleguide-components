@@ -21,30 +21,29 @@
   </p>
 
   <!-- file upload -->
-  <label class="btn btn-primary"
-    ng-click="$ctrl.onUploadButtonClick()"
-    ng-class="{'disabled': $ctrl.ngDisabled}">
-    <span ng-if="$ctrl.buttonText" ng-bind="$ctrl.buttonText"></span>
-    <span ng-if="!$ctrl.buttonText" class="icon icon-upload m-r-0"></span>
-    <input
-      ng-if="!$ctrl.isLiveCameraUpload"
-      tw-file-input
-      type="file"
-      accept="{{$ctrl.accept}}"
-      class="tw-droppable-input hidden"
-      ng-disabled="$ctrl.ngDisabled"
-      name="file-upload"
-      on-user-input="$ctrl.onManualUpload()"
-      ng-model="$ctrl.inputFile"
-      multiple />
-  </label>
+  <tw-upload-button
+    ng-if="!$ctrl.isLiveCameraUpload"
+    name="$ctrl.name"
+    label="$ctrl.buttonText"
+    accept="$ctrl.accept"
+    model="$ctrl.inputFile"
+    disabled="$ctrl.ngDisabled"
+    on-capture="$ctrl.onButtonCapture(files)">
+  </tw-upload-button>
 
   <!-- camera only upload -->
+  <tw-camera-button
+    ng-if="$ctrl.isLiveCameraUpload"
+    label="$ctrl.buttonText"
+    disabled="$ctrl.ngDisabled"
+    on-click="$ctrl.onCameraButtonClick()">
+  </tw-camera-button>
+
   <tw-camera-capture
     ng-if="$ctrl.isLiveCameraUpload && $ctrl.showLiveCaptureScreen"
     overlay="{{$ctrl.cameraOverlay}}"
     direction="{{$ctrl.cameraDirection}}"
-    on-cancel="$ctrl.onCameraCaptureCancel()"
-    on-confirm="$ctrl.onCameraCaptureConfirm(file)">
+    on-cancel="$ctrl.onCameraCancel()"
+    on-capture="$ctrl.onCameraCapture(file)">
   </tw-camera-capture>
 </div>
