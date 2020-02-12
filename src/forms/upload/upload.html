@@ -1,11 +1,15 @@
-<div class="droppable" ng-class="{
-  'droppable-sm': $ctrl.size ==='sm',
-  'droppable-md': $ctrl.size ==='md' || !$ctrl.size,
-  'droppable-lg': $ctrl.size ==='lg',
-  'droppable-dropping': $ctrl.isDroppable && !$ctrl.ngDisabled,
-  'droppable-processing': !$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess),
-  'droppable-complete': $ctrl.isDone
-}">
+<div class="droppable"
+  on-drag-enter="$ctrl.onDragEnter()"
+  on-drag-leave="$ctrl.onDragLeave()"
+  on-drop="$ctrl.onDrop(files)"
+  ng-class="{
+    'droppable-sm': $ctrl.size ==='sm',
+    'droppable-md': $ctrl.size ==='md' || !$ctrl.size,
+    'droppable-lg': $ctrl.size ==='lg',
+    'droppable-dropping': $ctrl.isDroppable && !$ctrl.ngDisabled,
+    'droppable-processing': !$ctrl.isDone && ($ctrl.isProcessing || $ctrl.isSuccess),
+    'droppable-complete': $ctrl.isDone
+  }">
 
   <div class="droppable-default-card"
     aria-hidden="{{$ctrl.isDone || $ctrl.isProcessing}}">

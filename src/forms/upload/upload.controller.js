@@ -3,17 +3,13 @@ class UploadController {
     $element,
     $scope,
     $attrs,
-    DroppableService,
     FileValidationService,
   ) {
     this.$element = $element;
     this.$attrs = $attrs;
-    this.droppable = DroppableService;
     this.FileValidationService = FileValidationService;
 
     this.isProcessing = false;
-
-    this.addDragHandlers($scope, $element);
   }
 
   $onChanges(changes) {
@@ -37,9 +33,6 @@ class UploadController {
   reset() {
     this.isProcessing = false;
     this.isDone = false;
-    this.isDroppable = false;
-
-    this.droppable.reset();
 
     this.clearHtmlInput();
     this.setNgModel(null);
@@ -68,30 +61,24 @@ class UploadController {
     }
   }
 
-  addDragHandlers($scope, $element) {
-    // Get native element
-    const element = $element[0];
+  isDropEligible() {
+    return this.source !== 'CAMERA_ONLY';
+  }
 
-    element.addEventListener('dragenter', (event) => {
-      this.isDroppable = this.droppable.onDragEnter(event) && !this.isLiveCameraUpload;
-      $scope.$apply();
-    }, false);
+  onDragEnter() {
+    this.isDroppable = this.isDropEligible();
+  }
 
-    element.addEventListener('dragover', this.droppable.onDragOver, false);
+  onDragLeave() {
+    this.isDroppable = false;
+  }
 
-    element.addEventListener('dragleave', (event) => {
-      this.isDroppable = this.droppable.onDragLeave(event);
-      $scope.$apply();
-    }, false);
-
-    element.addEventListener('drop', (event) => {
-      this.onFileCapture(this.droppable.getDroppedFiles(event)[0]);
-      $scope.$apply();
-    }, false);
+  onDrop(files) {
+    this.isDroppable = false;
+    this.onFileCapture(files[0]);
   }
 
   onProcessStart(file) {
-    this.isDroppable = false;
     this.isDone = false;
     this.isProcessing = true;
 
@@ -126,7 +113,6 @@ UploadController.$inject = [
   '$element',
   '$scope',
   '$attrs',
-  'DroppableService',
   'FileValidationService'
 ];
 
