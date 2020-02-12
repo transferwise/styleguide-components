@@ -79,6 +79,29 @@
         camera-direction="{{$ctrl.cameraDirection}}"
       ></tw-upload>
 
+      <tw-multi-upload
+        ng-model="$ctrl.modelToBind"
+        name="$ctrl.name"
+        accept="{{$ctrl.accept}}"
+        max-size="$ctrl.maxSize"
+        label="{{$ctrl.label}}"
+        placeholder="{{$ctrl.placeholder}}"
+
+        button-text="{{$ctrl.buttonText}}"
+        cancel-text="{{$ctrl.cancelText}}"
+
+        too-large-message="{{$ctrl.tooLargeMessage}}"
+        error-message="{{$ctrl.errorMessage}}"
+
+        dropping-text="{{$ctrl.droppingText}}"
+        processing-text="{{$ctrl.processingText}}"
+        success-text="{{$ctrl.successText}}"
+        failure-text="{{$ctrl.failureText}}"
+
+        http-options="$ctrl.httpOptions"
+        ng-disabled="$ctrl.ngDisabled"
+      ></tw-multi-upload>
+
     </div>
     <h5>Configuration</h5>
 <pre>&lt;tw-upload

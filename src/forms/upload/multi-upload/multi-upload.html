@@ -1,0 +1,39 @@
+<div class="well">
+  <h4 class="page-header">{{$ctrl.label}}</h4>
+
+  <div ng-if="$ctrl.files.length > 1">
+    <div ng-repeat="(index, file) in $ctrl.files" class="m-b-1">
+      <tw-upload-processing-mini
+        name="$ctrl.name"
+        file="file"
+        on-success="$ctrl.onProcessSuccess(index, file, dataUrl, id, response)"
+        on-failure="$ctrl.onProcessFailure(error)"
+        on-cancel="$ctrl.onCancel(index)"
+
+        max-size="$ctrl.maxSize"
+        accept="$ctrl.accept"
+        http-options="$ctrl.httpOptions"
+
+        processing-message="$ctrl.processingText"
+        success-message="$ctrl.successText"
+        error-message="$ctrl.failureText"
+
+        validation-messages="$ctrl.validationMessages"
+
+        too-large-message="$ctrl.tooLargeMessage"
+
+        cancel-text="$ctrl.cancelText"
+      ></tw-upload-processing-mini>
+    </div>
+  </div>
+
+  <tw-upload-button
+    ng-if="!$ctrl.isLiveCameraUpload"
+    name="$ctrl.name"
+    label="$ctrl.buttonText"
+    accept="$ctrl.accept"
+    model="$ctrl.inputFile"
+    disabled="$ctrl.ngDisabled"
+    on-capture="$ctrl.onFileCapture(files)">
+  </tw-upload-button>
+</div>

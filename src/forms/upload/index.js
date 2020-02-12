@@ -20,6 +20,8 @@ import AsyncFileSaver from './services/async-file-saver.service.js';
 import DroppableService from './services/droppable.service.js';
 import FileValidationService from './services/file-validation.service.js';
 
+import MultiUpload from './multi-upload';
+
 export default angular
   .module('tw.styleguide.forms.upload', [
     AsyncTasksConfig,
@@ -30,7 +32,8 @@ export default angular
     ErrorCard,
     CameraCapture,
     UploadButton,
-    CameraButton
+    CameraButton,
+    MultiUpload
   ])
   .directive('twFileInput', FileInput)
   .service('AsyncFileReader', AsyncFileReader)

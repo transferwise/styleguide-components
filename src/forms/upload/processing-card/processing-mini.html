@@ -1,0 +1,28 @@
+<div style="position: relative; width: 100%;">
+  <div class="media">
+    <div class="media-left">
+      <tw-process
+        size="sm"
+        state="$ctrl.processingState"
+      ></tw-process>
+    </div>
+    <div class="media-body text-xs-left">
+      <div class="text-ellipsis">
+        <h5 class="m-b-0">{{ $ctrl.file.name }}</h5>
+        <p class="m-b-0">
+          <span ng-if="$ctrl.isProcessing">{{ $ctrl.processingMessage }}</span>
+          <span ng-if="$ctrl.isError">{{ $ctrl.errorMessage }}</span>
+        </p>
+      </div>
+    </div>
+    <div class="media-right">
+      <a href=""
+        ng-if="$ctrl.isError"
+        class="close"
+        ng-click="$ctrl.onRemove()"
+        role="button">
+        &times;
+      </a>
+    </div>
+  </div>
+</div>
