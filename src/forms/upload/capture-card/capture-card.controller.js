@@ -1,4 +1,4 @@
-class DefaultCardController {
+class Controller {
   constructor($element) {
     this.$element = $element;
     this.showLiveCaptureScreen = false;
@@ -29,6 +29,6 @@ class DefaultCardController {
   }
 }
 
-DefaultCardController.$inject = ['$element'];
+Controller.$inject = ['$element'];
 
-export default DefaultCardController;
+export default Controller;

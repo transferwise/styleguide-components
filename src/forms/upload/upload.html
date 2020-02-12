@@ -9,7 +9,7 @@
 
   <div class="droppable-default-card"
     aria-hidden="{{$ctrl.isDone || $ctrl.isProcessing}}">
-    <tw-upload-default
+    <tw-upload-capture
       label="$ctrl.label"
       icon="$ctrl.icon"
       accept="$ctrl.accept"
@@ -22,7 +22,7 @@
       camera-overlay="$ctrl.cameraOverlay"
       camera-direction="$ctrl.cameraDirection"
       on-file-capture="$ctrl.onFileCapture(file)"
-    ></tw-upload-default>
+    ></tw-upload-capture>
   </div>
 
   <div class="droppable-processing-card droppable-card"

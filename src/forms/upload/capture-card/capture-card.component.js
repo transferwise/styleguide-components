@@ -1,7 +1,7 @@
-import template from './default-card.html';
-import controller from './default-card.controller';
+import template from './capture-card.html';
+import controller from './capture-card.controller';
 
-const DefaultCard = {
+const CaptureCard = {
   template,
   controller,
   bindings: {
@@ -22,4 +22,4 @@ const DefaultCard = {
   }
 };
 
-export default DefaultCard;
+export default CaptureCard;

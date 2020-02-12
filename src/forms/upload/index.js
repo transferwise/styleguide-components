@@ -2,7 +2,7 @@ import angular from 'angular';
 
 import Upload from './upload.component.js';
 
-import DefaultCard from './default-card';
+import CaptureCard from './capture-card';
 import DroppingCard from './dropping-card';
 import ProcessingCard from './processing-card';
 import SuccessCard from './success-card';
@@ -23,7 +23,7 @@ import FileValidationService from './services/file-validation.service.js';
 export default angular
   .module('tw.styleguide.forms.upload', [
     AsyncTasksConfig,
-    DefaultCard,
+    CaptureCard,
     DroppingCard,
     ProcessingCard,
     SuccessCard,
