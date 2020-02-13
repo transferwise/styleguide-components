@@ -58,11 +58,11 @@ describe('given an upload component', () => {
 
       directiveElement = getCompiledDirectiveElement($scope, template);
 
+      dropTarget = directiveElement.querySelector('.droppable');
+
       const fakeDropEvent = new CustomEvent('drop'); // file drop can be mocked
       fakeDropEvent.dataTransfer = { files: [{ size: 2 }] };
-      directiveElement.dispatchEvent(fakeDropEvent);
-
-      dropTarget = directiveElement.querySelector('.droppable');
+      dropTarget.dispatchEvent(fakeDropEvent);
     });
 
     it('should trigger to the onStart handler', () => {
@@ -168,14 +168,13 @@ describe('given an upload component', () => {
       spyOn(AsyncFileReader, 'read').and.returnValue($q.when(base64url));
 
       directiveElement = getCompiledDirectiveElement($scope, template);
+      droppable = directiveElement.querySelector('.droppable');
 
       mockFile = { size: 2 };
 
       var fakeDropEvent = new CustomEvent('drop');
       fakeDropEvent.dataTransfer = { files : [ mockFile ] };
-      directiveElement.dispatchEvent(fakeDropEvent);
-
-      droppable = directiveElement.querySelector('.droppable');
+      droppable.dispatchEvent(fakeDropEvent);
     });
 
     it('should send the file to the asyncFileSaver', function() {
@@ -328,10 +327,11 @@ describe('given an upload component', () => {
       $scope.onFailure = jasmine.createSpy('onFailure');
 
       directiveElement = getCompiledDirectiveElement($scope, template);
+      const droppable = directiveElement.querySelector('.droppable');
 
       const fakeDropEvent = new CustomEvent('drop'); // file drop can be mocked
       fakeDropEvent.dataTransfer = { files: [{ size: 2 }] };
-      directiveElement.dispatchEvent(fakeDropEvent);
+      droppable.dispatchEvent(fakeDropEvent);
 
       // after 4.1s the flow is finished
       $timeout.flush(4100);
