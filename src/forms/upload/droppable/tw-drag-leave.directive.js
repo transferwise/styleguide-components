@@ -1,13 +1,13 @@
-function onDragEnter($parse, $rootScope) {
+function twDragLeave($parse, $rootScope) {
   return {
     restrict: 'A',
-    require: 'onDrop',
+    require: 'twDrop',
     link: (scope, elem, attr) => {
-      elem[0].addEventListener('dragenter', (event) => {
-        const fn = $parse(attr.onDragEnter);
-        scope.counter++;
+      elem[0].addEventListener('dragleave', (event) => {
+        const fn = $parse(attr.twDragLeave);
+        scope.counter--;
 
-        if (scope.counter >= 1) {
+        if (scope.counter <= 0) {
           const callback = () => {
             fn(scope, { $event: event });
           };
@@ -25,6 +25,6 @@ function onDragEnter($parse, $rootScope) {
   };
 }
 
-onDragEnter.$inject = ['$parse', '$rootScope'];
+twDragLeave.$inject = ['$parse', '$rootScope'];
 
-export default onDragEnter;
+export default twDragLeave;

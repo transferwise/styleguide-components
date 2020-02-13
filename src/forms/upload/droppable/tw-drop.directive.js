@@ -1,4 +1,4 @@
-function onDrop($parse, $rootScope, $exceptionHandler) {
+function twDrop($parse, $rootScope, $exceptionHandler) {
   return {
     restrict: 'A',
     controller: () => {
@@ -7,7 +7,7 @@ function onDrop($parse, $rootScope, $exceptionHandler) {
     link: (scope, elem, attr) => {
       scope.counter = 0;
       elem[0].addEventListener('drop', (event) => {
-        const fn = $parse(attr.onDrop);
+        const fn = $parse(attr.twDrop);
 
         const callback = () => {
           fn(scope, {
@@ -36,6 +36,6 @@ function onDrop($parse, $rootScope, $exceptionHandler) {
   };
 }
 
-onDrop.$inject = ['$parse', '$rootScope', '$exceptionHandler'];
+twDrop.$inject = ['$parse', '$rootScope', '$exceptionHandler'];
 
-export default onDrop;
+export default twDrop;

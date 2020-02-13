@@ -1,11 +1,11 @@
 import angular from 'angular';
-import onDrop from './on-drop.directive';
-import onDragEnter from './on-drag-enter.directive';
-import onDragLeave from './on-drag-leave.directive';
+import twDrop from './tw-drop.directive';
+import twDragEnter from './tw-drag-enter.directive';
+import twDragLeave from './tw-drag-leave.directive';
 
 export default angular
   .module('tw.styleguide.droppable', [])
-  .directive('onDrop', onDrop)
-  .directive('onDragEnter', onDragEnter)
-  .directive('onDragLeave', onDragLeave)
+  .directive('twDrop', twDrop)
+  .directive('twDragEnter', twDragEnter)
+  .directive('twDragLeave', twDragLeave)
   .name;
