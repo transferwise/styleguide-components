@@ -1,5 +1,12 @@
-<div class="well">
+<div class="well"
+  tw-drop="$ctrl.onDrop(files)"
+  tw-drag-enter="$ctrl.onDragEnter()"
+  tw-drag-leave="$ctrl.onDragLeave()">
   <h4 class="page-header">{{$ctrl.label}}</h4>
+
+  <h1 ng-if="$ctrl.isDroppable">
+    Drop the file!
+  </h1>
 
   <div ng-if="$ctrl.files.length > 1">
     <div ng-repeat="(index, file) in $ctrl.files" class="m-b-1">

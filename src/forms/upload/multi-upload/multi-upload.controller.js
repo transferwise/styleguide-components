@@ -33,6 +33,20 @@ class Controller {
     // TODO remove the index from array
   }
 
+  onDragEnter() {
+    this.isDroppable = true;
+  }
+
+  onDragLeave() {
+    this.isDroppable = false;
+  }
+
+  onDrop(files) {
+    console.log('drop!');
+    this.isDroppable = false;
+    this.onFileCapture(files);
+  }
+
   reset() {
     // this.clearHtmlInput();
     this.setNgModel(null);
