@@ -3,11 +3,19 @@ class Controller {
     $element,
     $scope,
     $attrs,
+    $timeout,
   ) {
     this.$element = $element;
     this.$attrs = $attrs;
     this.files = [];
     this.model = [];
+    this.$timeout = $timeout;
+  }
+
+  $onChanges(changes) {
+    if (changes.icon) {
+      this.viewIcon = changes.icon.currentValue ? changes.icon.currentValue : 'upload';
+    }
   }
 
   onFileCapture(files) {
@@ -19,18 +27,34 @@ class Controller {
       throw new Error('Could not retrieve file');
     }
 
-    this.files = files;
+    this.files = [...this.files, ...files];
+
+    this.$timeout(() => {
+      const objDiv = this.$element[0].querySelector('#processing-list');
+      objDiv.scrollTop = objDiv.scrollHeight;
+    }, 600);
   }
 
   // eslint-disable-next-line
   onProcessSuccess(index, file, dataUrl, id, response) {
-    this.model[index] = dataUrl;
-    this.setNgModel(this.model);
+    const key = this.httpOptions ? 'id' : 'dataUrl';
+
+    this.files[index][key] = this.httpOptions ? id : dataUrl;
+
+    const model = this.files.map(fileObject => fileObject[key]).filter(value => !!value);
+
+    this.setNgModel(model);
   }
 
   // eslint-disable-next-line
   onProcessCancel(index) {
-    // TODO remove the index from array
+    const key = this.httpOptions ? 'id' : 'dataUrl';
+
+    this.files.splice(index, 1);
+
+    const model = this.files.map(fileObject => fileObject[key]).filter(value => !!value);
+
+    this.setNgModel(model);
   }
 
   onDragEnter() {
@@ -75,7 +99,8 @@ class Controller {
 Controller.$inject = [
   '$element',
   '$scope',
-  '$attrs'
+  '$attrs',
+  '$timeout',
 ];
 
 export default Controller;

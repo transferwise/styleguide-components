@@ -1,46 +1,68 @@
-<div class="well"
+<div class="well droppable p-r-0 p-l-0"
   tw-drop="$ctrl.onDrop(files)"
   tw-drag-enter="$ctrl.onDragEnter()"
-  tw-drag-leave="$ctrl.onDragLeave()">
-  <h4 class="page-header">{{$ctrl.label}}</h4>
+  tw-drag-leave="$ctrl.onDragLeave()"
+  ng-class="{'droppable-dropping': $ctrl.isDroppable}"
+  style="height: 375px;"
+  >
+  <h4 class="page-header text-xs-left m-r-panel m-l-panel m-b-0">{{$ctrl.label}}</h4>
 
-  <h1 ng-if="$ctrl.isDroppable">
-    Drop the file!
-  </h1>
+  <div class="droppable-dropping-card droppable-card">
+    <tw-upload-dropping
+      dropping-text="$ctrl.droppingText"
+    ></tw-upload-dropping>
+  </div>
 
-  <div ng-if="$ctrl.files.length > 1">
-    <div ng-repeat="(index, file) in $ctrl.files" class="m-b-1">
+  <div ng-if="$ctrl.files.length === 0" class="droppable-default-card text-xs-center p-t-section-3" style="height: 230px;">
+    <!-- Display illustration as image or icon -->
+    <div class="m-b-3">
+      <img
+        ng-show="$ctrl.helpImage"
+        ng-src="{{$ctrl.helpImage}}"
+        alt="{{$ctrl.label}}"
+        class="thumbnail text-xs-center" />
+      <span ng-show="!$ctrl.helpImage"
+        class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></span>
+    </div>
+
+    <!-- placeholder instructions -->
+    <p ng-if="$ctrl.placeholder">
+      {{$ctrl.placeholder}}
+    </p>
+  </div>
+
+  <div ng-if="$ctrl.files.length > 0" id="processing-list" class="droppable-default-card p-l-panel p-t-1" style="height: 230px; overflow:auto; border-bottom: 1px solid #e2e6e8;">
+    <div ng-repeat="(index, file) in $ctrl.files" class="m-b-1 p-r-panel">
       <tw-upload-processing-mini
         name="$ctrl.name"
         file="file"
         on-success="$ctrl.onProcessSuccess(index, file, dataUrl, id, response)"
         on-failure="$ctrl.onProcessFailure(error)"
-        on-cancel="$ctrl.onCancel(index)"
-
+        on-cancel="$ctrl.onProcessCancel(index)"
         max-size="$ctrl.maxSize"
         accept="$ctrl.accept"
         http-options="$ctrl.httpOptions"
-
         processing-message="$ctrl.processingText"
         success-message="$ctrl.successText"
         error-message="$ctrl.failureText"
-
         validation-messages="$ctrl.validationMessages"
-
         too-large-message="$ctrl.tooLargeMessage"
-
         cancel-text="$ctrl.cancelText"
       ></tw-upload-processing-mini>
     </div>
   </div>
 
-  <tw-upload-button
-    ng-if="!$ctrl.isLiveCameraUpload"
-    name="$ctrl.name"
-    label="$ctrl.buttonText"
-    accept="$ctrl.accept"
-    model="$ctrl.inputFile"
-    disabled="$ctrl.ngDisabled"
-    on-capture="$ctrl.onFileCapture(files)">
-  </tw-upload-button>
+  <div class="m-l-panel m-r-panel">
+    <tw-upload-button
+      ng-if="!$ctrl.isLiveCameraUpload"
+      class="m-r-2"
+      name="$ctrl.name"
+      label="$ctrl.buttonText"
+      accept="$ctrl.accept"
+      model="$ctrl.inputFile"
+      disabled="$ctrl.ngDisabled"
+      on-capture="$ctrl.onFileCapture(files)"
+    >
+    </tw-upload-button>
+  </div>
 </div>

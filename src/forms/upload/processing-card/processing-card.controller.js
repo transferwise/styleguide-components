@@ -122,9 +122,10 @@ function asyncSuccess(response, dataUrl, $ctrl) {
   }, 3800);
 
   // Reset after card is animated out
-  $ctrl.$timeout(() => {
-    $ctrl.processingState = 0;
-  }, 4500);
+  // this is required for uploading another file after uploading for single file
+  // $ctrl.$timeout(() => {
+  //   $ctrl.processingState = 0;
+  // }, 4500);
 
   return dataUrl;
 }

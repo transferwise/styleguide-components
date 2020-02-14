@@ -6,10 +6,10 @@
         state="$ctrl.processingState"
       ></tw-process>
     </div>
-    <div class="media-body text-xs-left">
-      <div class="text-ellipsis">
-        <h5 class="m-b-0">{{ $ctrl.file.name }}</h5>
-        <p class="m-b-0">
+    <div class="media-body text-xs-left" style="overflow: auto;">
+      <div>
+        <h5 class="m-b-0 text-ellipsis">{{ $ctrl.file.name }}</h5>
+        <p class="m-b-0 text-ellipsis">
           <span ng-if="$ctrl.isProcessing">{{ $ctrl.processingMessage }}</span>
           <span ng-if="$ctrl.isError">{{ $ctrl.errorMessage }}</span>
         </p>
@@ -17,7 +17,7 @@
     </div>
     <div class="media-right">
       <a href=""
-        ng-if="$ctrl.isError"
+        ng-if="!$ctrl.isProcessing"
         class="close"
         ng-click="$ctrl.onRemove()"
         role="button">

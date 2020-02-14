@@ -11,6 +11,7 @@ const Component = {
     name: '@',
     label: '@',
     placeholder: '@',
+    icon: '@', // illustration in icon shown in upload box
 
     buttonText: '@', // Button text shown in default state
     cancelText: '@', // Text instructing to go back to re-upload after upload is done
