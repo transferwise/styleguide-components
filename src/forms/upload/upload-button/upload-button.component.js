@@ -9,6 +9,7 @@ const UploadButton = {
     label: '<',
     accept: '<',
     model: '<',
+    multiple: '<',
     disabled: '<',
     onClick: '&',
     onCapture: '&'
