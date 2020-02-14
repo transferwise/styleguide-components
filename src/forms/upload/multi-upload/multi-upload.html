@@ -1,9 +1,8 @@
-<div class="well droppable p-r-0 p-l-0"
+<div id="multi-upload" class="well droppable p-r-0 p-l-0"
   tw-drop="$ctrl.onDrop(files)"
   tw-drag-enter="$ctrl.onDragEnter()"
   tw-drag-leave="$ctrl.onDragLeave()"
   ng-class="{'droppable-dropping': $ctrl.isDroppable}"
-  style="height: 375px;"
   >
   <h4 class="page-header text-xs-left m-r-panel m-l-panel m-b-0">{{$ctrl.label}}</h4>
 
@@ -13,7 +12,7 @@
     ></tw-upload-dropping>
   </div>
 
-  <div ng-if="$ctrl.files.length === 0" class="droppable-default-card text-xs-center p-t-section-3" style="height: 230px;">
+  <div ng-if="$ctrl.files.length === 0" id="empty-processing-list" class="droppable-default-card text-xs-center p-t-section-3">
     <!-- Display illustration as image or icon -->
     <div class="m-b-3">
       <img
@@ -31,7 +30,7 @@
     </p>
   </div>
 
-  <div ng-if="$ctrl.files.length > 0" id="processing-list" class="droppable-default-card p-l-panel p-t-1" style="height: 230px; overflow:auto; border-bottom: 1px solid #e2e6e8;">
+  <div ng-if="$ctrl.files.length > 0" id="processing-list" class="droppable-default-card p-l-panel p-t-1">
     <div ng-repeat="(index, file) in $ctrl.files" class="m-b-1 p-r-panel">
       <tw-upload-processing-mini
         name="$ctrl.name"
