@@ -8,7 +8,7 @@
     </div>
     <div class="media-body text-xs-left" style="overflow: auto;">
       <div>
-        <small class="m-b-0 text-ellipsis"><strong>{{ $ctrl.file.name }}</strong></small>
+        <small class="m-b-0 text-ellipsis file-name"><strong>{{ $ctrl.file.name }}</strong></small>
         <small class="m-b-0 text-ellipsis">
           <span ng-if="$ctrl.isProcessing">{{ $ctrl.processingMessage }}</span>
           <span ng-if="$ctrl.isError">{{ $ctrl.errorMessage }}</span>

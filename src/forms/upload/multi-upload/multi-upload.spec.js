@@ -1,4 +1,4 @@
-fdescribe('multi-upload', () => {
+describe('multi-upload', () => {
     let $q;
     let $compile;
     let $rootScope;
@@ -25,9 +25,7 @@ fdescribe('multi-upload', () => {
           $timeout = $injector.get('$timeout');
           $q = $injector.get('$q');
           AsyncFileReader = $injector.get('AsyncFileReader');
-          // AsyncFileSaver = $injector.get('AsyncFileSaver');
-          // AsyncTasksConfig = $injector.get('AsyncTasksConfig');
-          // FileValidationService = $injector.get('FileValidationService');
+          AsyncFileSaver = $injector.get('AsyncFileSaver');
         });
     });
 
@@ -105,7 +103,7 @@ fdescribe('multi-upload', () => {
               firstFileRemoveButton.dispatchEvent(new CustomEvent('click'));
               
               expect(directiveElement.querySelectorAll('.processing-item').length).toBe(1);
-              expect(directiveElement.querySelector('.processing-item h5').innerText).toBe('two.png');
+              expect(directiveElement.querySelector('.processing-item .file-name').innerText).toBe('two.png');
               expect($scope.ngModel).toEqual([base64url]);
             });
 
@@ -149,6 +147,110 @@ fdescribe('multi-upload', () => {
             });
           });
         });
+    });
+
+    describe('user has files being processed', () => {
+      let dropTarget;
+      let deferred;
+      let asyncFileReaderSpy;
+
+      beforeEach(() => {
+        const template = " \
+        <tw-multi-upload \
+            ng-model='ngModel' \
+            on-start='onStart' \
+            on-success='onSuccess' \
+            on-finish='onFinish' \
+            processing-text='processing' \
+            success-text='success'\
+            failure-text='failure' \
+            max-size='10'> \
+        </tw-multi-upload>";
+
+        $scope.ngModel = null;
+        $scope.onStart = jasmine.createSpy('onStart');
+        $scope.onFinish = jasmine.createSpy('onFinish');
+
+        deferred = $q.defer();
+        asyncFileReaderSpy = spyOn(AsyncFileReader, 'read').and.returnValue(deferred.promise);
+
+        directiveElement = getCompiledDirectiveElement($scope, template);
+
+        dropTarget = directiveElement.querySelector('.droppable');
+    
+        const fakeDropEvent = new CustomEvent('drop');
+        fakeDropEvent.dataTransfer = { files: [{ size: 2 }, {size: 5}, {size: 1}] };
+        dropTarget.dispatchEvent(fakeDropEvent);
+        deferred.resolve(base64url);
+
+        $timeout.flush(2000);
+      });
+
+      it('shows processing items in the list', () => {
+        expect(directiveElement.querySelector('#empty-processing-list')).toBeFalsy();
+        expect(directiveElement.querySelectorAll('.processing-item').length).toBe(3);
+      });
+
+      it('calls onStart', () => {
+        expect($scope.onStart).toHaveBeenCalled();
+      });
+
+      it('returns an empty model', () => {
+        expect($scope.ngModel).toEqual(null);
+      });
+
+      describe('on addition of new files', () => {
+        describe('processing', () => {
+          beforeEach(() => {
+            const fakeDropEvent = new CustomEvent('drop');
+            fakeDropEvent.dataTransfer = { files: [{size: 1}, {size: 1}] };
+            
+            dropTarget.dispatchEvent(fakeDropEvent);
+          });
+
+          it('does NOT call onStart again', () => {
+            expect($scope.onStart.calls.count()).toBe(1);
+          });
+        });
+
+        describe('success for first batch', () => {
+          beforeEach(() => {
+            const fakeDropEvent = new CustomEvent('drop');
+            fakeDropEvent.dataTransfer = { files: [{size: 1}, {size: 1}] };
+            
+            dropTarget.dispatchEvent(fakeDropEvent);
+
+            $timeout.flush(3000);
+          });
+
+          it('does NOT call onFinish', () => {
+            expect($scope.onFinish).not.toHaveBeenCalled();
+          });
+
+          it('returns a model with only the data urls from the first batch', () => {
+            expect($scope.ngModel).toEqual([base64url, base64url, base64url]);
+          });
+        });
+
+        describe('success on all files', () => {
+          beforeEach(() => {
+            const fakeDropEvent = new CustomEvent('drop');
+            fakeDropEvent.dataTransfer = { files: [{size: 1}, {size: 1}] };
+            
+            dropTarget.dispatchEvent(fakeDropEvent);
+
+            $timeout.flush(5000);
+          });
+
+          it('calls onFinish', () => {
+            expect($scope.onFinish).toHaveBeenCalled();
+          });
+
+          it('returns a model with all data urls', () => {
+            expect($scope.ngModel).toEqual([base64url, base64url, base64url, base64url, base64url]);
+          });
+        });
+      });
     });
 
     describe('user already has processed files', () => {
@@ -205,32 +307,31 @@ fdescribe('multi-upload', () => {
 
             it('does NOT return the processing items in the model', () => {
                 expect($scope.ngModel).toEqual([base64url, base64url, base64url]);
-              });
+            });
 
-              fit('calls onStart', () => {
-                expect($scope.onStart.calls.count()).toBe(2);
-              });
+            it('calls onStart', () => {
+              expect($scope.onStart.calls.count()).toBe(2);
+            });
           });
 
           describe('success', () => {
-              beforeEach(() => {
-                const fakeDropEvent = new CustomEvent('drop');
-                fakeDropEvent.dataTransfer = { files: [{size: 1}, {size: 1}] };
-                
-                dropTarget.dispatchEvent(fakeDropEvent);
+            beforeEach(() => {
+              const fakeDropEvent = new CustomEvent('drop');
+              fakeDropEvent.dataTransfer = { files: [{size: 1}, {size: 1}] };
+              
+              dropTarget.dispatchEvent(fakeDropEvent);
 
-                $timeout.flush(3800);
-              });
+              $timeout.flush(3800);
+            });
 
-              it('returns the recently processed items in the model', () => {
-                expect($scope.ngModel).toEqual([base64url, base64url, base64url, base64url, base64url]);
-              });
+            it('returns the recently processed items in the model', () => {
+              expect($scope.ngModel).toEqual([base64url, base64url, base64url, base64url, base64url]);
+            });
 
-              it('calls onFinish', () => {
-                expect($scope.onFinish.calls.count()).toBe(2);
-              });
+            it('calls onFinish', () => {
+              expect($scope.onFinish.calls.count()).toBe(2);
+            });
 
-              it('calls onSuccess with the index of the successful file', () => {});
           });
 
           describe('failure', () => {
@@ -264,13 +365,96 @@ fdescribe('multi-upload', () => {
             it('calls onFinish', () => {
               expect($scope.onFinish.calls.count()).toBe(2);
             });
-
-            it('calls onFailure with the index of the rejected file', () => {});
           });
       });
     });
 
     describe('httpOptions set to true', () => {
+      let dropTarget;
+        let deferred;
+    
+        beforeEach(() => {
+          const template = " \
+            <tw-multi-upload \
+                ng-model='ngModel' \
+                on-start='onStart' \
+                on-finish='onFinish' \
+                processing-text='processing' \
+                success-text='success'\
+                failure-text='failure' \
+                http-options='httpOptions' \
+                max-size='10'> \
+            </tw-multi-upload>";
+
+          $scope.httpOptions = {
+            idProperty: 'id',
+            url: 'https://www.google.com',
+            method: 'POST',
+            param: 'myFile',
+            headers: {}
+          };
+    
+          $scope.ngModel = null;
+          $scope.onStart = jasmine.createSpy('onStart');
+          $scope.onFinish = jasmine.createSpy('onFinish');
+    
+          deferred = $q.defer();
+          spyOn(AsyncFileSaver, 'save').and.returnValue(deferred.promise);
+          spyOn(AsyncFileReader, 'read').and.returnValue($q.when(base64url));
+
+          directiveElement = getCompiledDirectiveElement($scope, template);
+        });
+
+        describe('on addition of new files', () => {
+          const fileA = { name: 'a.png', size: 2 };
+          const fileB = {name: 'b.pdf', size: 3};
+
+          describe('success', () => {
+            beforeEach(() => {
+              const asyncResponse = { data: { id: 1234 } };
+              deferred.resolve(asyncResponse);
+
+              dropTarget = directiveElement.querySelector('.droppable');
+    
+              const fakeDropEvent = new CustomEvent('drop');
+              fakeDropEvent.dataTransfer = { files: [fileA, fileB] };
+              dropTarget.dispatchEvent(fakeDropEvent);
+
+              $timeout.flush(3800);
+            });
+
+            it('makes requests to save against the provided httpOptions', () => {
+              expect(AsyncFileSaver.save).toHaveBeenCalledWith('myFile', fileA, $scope.httpOptions);
+              expect(AsyncFileSaver.save).toHaveBeenCalledWith('myFile', fileB, $scope.httpOptions);
+            });
+
+            it('returns a model with the IDs returned from the response', () => {
+              expect($scope.ngModel).toEqual([1234, 1234]);
+            });
+          });
+
+          describe('fail', () => {
+            beforeEach(function() {
+              deferred.reject({ status:500 });
+              dropTarget = directiveElement.querySelector('.droppable');
+    
+              const fakeDropEvent = new CustomEvent('drop');
+              fakeDropEvent.dataTransfer = { files: [fileA, fileB] };
+              dropTarget.dispatchEvent(fakeDropEvent);
+
+              $timeout.flush(4100);
+            });
+
+            it('makes requests to save against the provided httpOptions', () => {
+              expect(AsyncFileSaver.save).toHaveBeenCalledWith('myFile', fileA, $scope.httpOptions);
+              expect(AsyncFileSaver.save).toHaveBeenCalledWith('myFile', fileB, $scope.httpOptions);
+            });
+
+            it('returns a model with NO IDs', () => {
+              expect($scope.ngModel).toEqual([]);
+            });
+          });
+        });
     });
 
     function getCompiledDirectiveElement($scope, template) {

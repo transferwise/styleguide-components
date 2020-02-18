@@ -65,8 +65,6 @@ class Controller {
   onProcessFailure(index, file, error) {
     this.files[index].error = error;
 
-    this.setNgModel(this.files);
-
     if (this.onFinish && this.areAllFilesProcessed()) {
       this.onFinish();
     }
