@@ -27,6 +27,10 @@ class Controller {
       throw new Error('Could not retrieve file');
     }
 
+    if (this.onStart && this.areAllFilesProcessed()) {
+      this.onStart();
+    }
+
     this.files = [...this.files, ...files];
 
     this.$timeout(() => {
@@ -44,6 +48,28 @@ class Controller {
     const model = this.files.map(fileObject => fileObject[key]).filter(value => !!value);
 
     this.setNgModel(model);
+
+    if (this.onFinish && this.areAllFilesProcessed()) {
+      this.onFinish();
+    }
+  }
+
+  areAllFilesProcessed() {
+    const key = this.httpOptions ? 'id' : 'dataUrl';
+
+    const processingFile = this.files.some(file => file[key] == null && file.error == null);
+
+    return !processingFile;
+  }
+
+  onProcessFailure(index, file, error) {
+    this.files[index].error = error;
+
+    this.setNgModel(this.files);
+
+    if (this.onFinish && this.areAllFilesProcessed()) {
+      this.onFinish();
+    }
   }
 
   // eslint-disable-next-line
@@ -66,7 +92,6 @@ class Controller {
   }
 
   onDrop(files) {
-    console.log('drop!');
     this.isDroppable = false;
     this.onFileCapture(files);
   }

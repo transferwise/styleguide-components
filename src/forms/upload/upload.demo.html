@@ -98,6 +98,9 @@
         success-text="{{$ctrl.successText}}"
         failure-text="{{$ctrl.failureText}}"
 
+        on-start="$ctrl.onStart"
+        on-finish="$ctrl.onFinish"
+
         http-options="$ctrl.httpOptions"
         ng-disabled="$ctrl.ngDisabled"
       ></tw-multi-upload>

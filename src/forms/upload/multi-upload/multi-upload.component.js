@@ -25,13 +25,11 @@ const Component = {
 
     validationMessages: '<',
 
+    onStart: '=',
+    onFinish: '=',
+
     accept: '@',
     httpOptions: '<',
-
-    onStart: '=',
-    onSuccess: '=',
-    onFailure: '=',
-    onCancel: '=',
 
     maxSize: '<', // TODO move to ngMax?
   }

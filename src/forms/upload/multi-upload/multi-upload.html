@@ -36,7 +36,7 @@
         name="$ctrl.name"
         file="file"
         on-success="$ctrl.onProcessSuccess(index, file, dataUrl, id, response)"
-        on-failure="$ctrl.onProcessFailure(error)"
+        on-failure="$ctrl.onProcessFailure(index, file, error)"
         on-cancel="$ctrl.onProcessCancel(index)"
         max-size="$ctrl.maxSize"
         accept="$ctrl.accept"

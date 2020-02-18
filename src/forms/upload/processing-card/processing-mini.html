@@ -1,21 +1,22 @@
-<div style="position: relative; width: 100%;">
-  <div class="media">
-    <div class="media-left">
+<div class="processing-item">
+  <div class="media p-y-1">
+    <div class="media-left vertical-center">
       <tw-process
-        size="sm"
+        size="xs"
         state="$ctrl.processingState"
       ></tw-process>
     </div>
     <div class="media-body text-xs-left" style="overflow: auto;">
       <div>
-        <h5 class="m-b-0 text-ellipsis">{{ $ctrl.file.name }}</h5>
-        <p class="m-b-0 text-ellipsis">
+        <small class="m-b-0 text-ellipsis"><strong>{{ $ctrl.file.name }}</strong></small>
+        <small class="m-b-0 text-ellipsis">
           <span ng-if="$ctrl.isProcessing">{{ $ctrl.processingMessage }}</span>
           <span ng-if="$ctrl.isError">{{ $ctrl.errorMessage }}</span>
-        </p>
+          <span ng-if="$ctrl.isSuccess">{{ $ctrl.successMessage }}</span>
+        </small>
       </div>
     </div>
-    <div class="media-right">
+    <div class="media-right vertical-center">
       <a href=""
         ng-if="!$ctrl.isProcessing"
         class="close"
