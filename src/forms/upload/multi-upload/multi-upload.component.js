@@ -16,6 +16,7 @@ const Component = {
     buttonText: '@', // Button text shown in default state
     secondaryButtonText: '@', // Button text shown in processing state
 
+    droppingText: '@', // Text shown when hovering with a file
     processingText: '@', // Text shown while processing/uploading
     successText: '@', // Text after upload is successful, shown quite briefly before preview
     failureText: '@',

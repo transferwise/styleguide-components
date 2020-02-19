@@ -5,6 +5,7 @@ import Checkbox from './checkbox/checkbox.demo.js';
 import Radio from './radio/radio.demo.js';
 import Select from './select/select.demo.js';
 import Upload from './upload/upload.demo.js';
+import MultiUpload from './upload/multi-upload/multi-upload.demo.js';
 import Date from './date/date.demo.js';
 import DateLookup from './date-lookup/date-lookup.demo.js';
 import Telephone from './telephone/telephone.demo.js';
@@ -28,6 +29,7 @@ export default angular.module('tw.styleguide.demo.forms', [
   Date,
   DateLookup,
   Upload,
+  MultiUpload,
   Telephone,
   CurrencyInput,
   AmountCurrencySelect,
