@@ -47,6 +47,7 @@
     <div class="form-group">
       <tw-upload
         ng-model="$ctrl.modelToBind"
+        ng-change="$ctrl.log('test')"
         name="$ctrl.name"
         icon="{{$ctrl.icon}}"
         size="{{$ctrl.size}}"
@@ -81,6 +82,7 @@
 
       <tw-multi-upload
         ng-model="$ctrl.modelToBind"
+        ng-change="$ctrl.log('test')"
         name="$ctrl.name"
         accept="{{$ctrl.accept}}"
         max-size="$ctrl.maxSize"

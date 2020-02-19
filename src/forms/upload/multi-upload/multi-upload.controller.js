@@ -35,7 +35,9 @@ class Controller {
 
     this.$timeout(() => {
       const objDiv = this.$element[0].querySelector('#processing-list');
-      objDiv.scrollTop = objDiv.scrollHeight;
+      if (objDiv) {
+        objDiv.scrollTop = objDiv.scrollHeight;
+      }
     }, 600);
   }
 

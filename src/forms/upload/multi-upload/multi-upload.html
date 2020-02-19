@@ -12,22 +12,24 @@
     ></tw-upload-dropping>
   </div>
 
-  <div ng-if="$ctrl.files.length === 0" id="empty-processing-list" class="droppable-default-card text-xs-center p-t-section-3">
-    <!-- Display illustration as image or icon -->
-    <div class="m-b-3">
-      <img
-        ng-show="$ctrl.helpImage"
-        ng-src="{{$ctrl.helpImage}}"
-        alt="{{$ctrl.label}}"
-        class="thumbnail text-xs-center" />
-      <span ng-show="!$ctrl.helpImage"
-        class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></span>
-    </div>
+  <div ng-if="$ctrl.files.length === 0" id="empty-processing-list" class="droppable-default-card text-xs-center p-t-3">
+    <div class="empty-screen">
+      <!-- Display illustration as image or icon -->
+      <div class="circle circle-sm m-b-3">
+        <img
+          ng-show="$ctrl.helpImage"
+          ng-src="{{$ctrl.helpImage}}"
+          alt="{{$ctrl.label}}"
+          class="thumbnail text-xs-center" />
+        <span ng-show="!$ctrl.helpImage"
+          class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></span>
+      </div>
 
-    <!-- placeholder instructions -->
-    <p ng-if="$ctrl.placeholder">
-      {{$ctrl.placeholder}}
-    </p>
+      <!-- placeholder instructions -->
+      <p ng-if="$ctrl.placeholder">
+        {{$ctrl.placeholder}}
+      </p>
+    </div>
   </div>
 
   <div ng-if="$ctrl.files.length > 0" id="processing-list" class="droppable-default-card p-l-panel p-t-1">
