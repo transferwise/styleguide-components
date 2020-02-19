@@ -64,6 +64,7 @@ function controller($scope) {
   $ctrl.droppingText = 'Drop file to begin...';
   $ctrl.successText = 'Upload complete!';
   $ctrl.failureText = 'Upload failed!';
+  $ctrl.secondaryButtonText = 'Add more files';
 
   this.makeFancy = () => {};
 

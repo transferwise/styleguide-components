@@ -14,7 +14,7 @@ const Component = {
     icon: '@', // illustration in icon shown in upload box
 
     buttonText: '@', // Button text shown in default state
-    cancelText: '@', // Text instructing to go back to re-upload after upload is done
+    secondaryButtonText: '@', // Button text shown in processing state
 
     processingText: '@', // Text shown while processing/uploading
     successText: '@', // Text after upload is successful, shown quite briefly before preview
