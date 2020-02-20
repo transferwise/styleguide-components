@@ -59,8 +59,7 @@
   size="{{$ctrl.size}}"</span><span ng-if="$ctrl.label">
   label="{{$ctrl.label}}"</span>
   placeholder="{{$ctrl.placeholder}}"
-  button-text="{{$ctrl.buttonText}}"
-  cancel-text="{{$ctrl.cancelText}}"<span ng-if="$ctrl.accept">
+  button-text="{{$ctrl.buttonText}}"<span ng-if="$ctrl.accept">
   accept="{{$ctrl.accept}}"</span><span ng-if="$ctrl.wrongTypeText">
   wrong-type-text="{{$ctrl.wrongTypeMessage}}"</span><span ng-if="$ctrl.maxSize">
   max-size="{{$ctrl.maxSize}}"
@@ -72,12 +71,12 @@
   http-options="{{$ctrl.httpOptions}}"</span><span ng-if="$ctrl.errorMessage">
   error-message="{{$ctrl.errorMessage}}"</span>
   on-start="$ctrl.onStart"
-  on-success="$ctrl.onSuccess"
-  on-cancel="$ctrl.onCancel"</span><span ng-if="$ctrl.source">
+  on-finish="$ctrl.onFinish"
+  </span><span ng-if="$ctrl.source">
   source="{{$ctrl.source}}"</span><span ng-if="$ctrl.ngDisabled">
   ng-disabled="{{$ctrl.ngDisabled}}"</span><span ng-if="$ctrl.secondaryButtonText">
   secondary-button-text="{{$ctrl.secondaryButtonText}}"</span>&gt;
-&lt;/tw-upload&gt;
+&lt;/tw-multi-upload&gt;
 </pre>
   </div>
   <div class="col-md-6">
