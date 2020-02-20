@@ -114,7 +114,7 @@ function asyncSuccess(response, dataUrl, $ctrl) {
   $ctrl.$timeout(() => {
     $ctrl.isProcessing = false;
     $ctrl.isSuccess = true;
-  }, 3000);
+  }, 3700);
 
   // Allow a small amount of extra time before notifying external handlers
   $ctrl.$timeout(() => {
@@ -150,7 +150,7 @@ function asyncFailure(error, dataUrl, $ctrl) {
   $ctrl.$timeout(() => {
     $ctrl.isProcessing = false;
     $ctrl.isError = true;
-  }, 3000);
+  }, 3800);
 
   // Allow a small amount of extra time before notifying external handlers
   $ctrl.$timeout(() => {

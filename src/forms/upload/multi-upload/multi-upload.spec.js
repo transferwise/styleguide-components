@@ -413,18 +413,6 @@ fdescribe("multi-upload", () => {
           $timeout.flush(4500);
         });
 
-        // fit('renders the failed items with an error message', () => {
-        //   $scope.$digest();
-        //   const files = directiveElement.querySelectorAll('.processing-item');
-        //   const thirdItem = files[2];
-        //   const fourthItem = files[3];
-        //   const thirdMessage = thirdItem.querySelector('p').innerText;
-        //   const fourthMessage = fourthItem.querySelector('p').innerText;
-
-        //   expect(thirdMessage).toBe('failure');
-        //   expect(fourthMessage).toBe('failure');
-        // });
-
         it("returns a model with the data urls from the first successful upload", () => {
           expect($scope.ngModel).toEqual([base64url, base64url, base64url]);
         });
