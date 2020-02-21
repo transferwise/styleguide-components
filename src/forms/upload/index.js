@@ -6,7 +6,6 @@ import CaptureCard from './capture-card';
 import DroppingCard from './dropping-card';
 import ProcessingCard from './processing-card';
 import SuccessCard from './success-card';
-import ErrorCard from './error-card';
 import CameraCapture from './camera-capture';
 import UploadButton from './upload-button';
 import CameraButton from './camera-button';
@@ -28,7 +27,6 @@ export default angular
     DroppingCard,
     ProcessingCard,
     SuccessCard,
-    ErrorCard,
     CameraCapture,
     UploadButton,
     CameraButton,
