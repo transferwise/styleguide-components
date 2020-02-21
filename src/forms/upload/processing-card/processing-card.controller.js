@@ -104,10 +104,6 @@ function asyncSuccess(response, dataUrl, $ctrl) {
       && response.data
       && response.data[httpOptions.idProperty]) {
     id = response.data[httpOptions.idProperty];
-
-    // These are too specific to one use case.
-    // $ctrl.successMessage = response.data.message;
-    // $ctrl.successDetails = response.data.details ? response.data.details[0] : null;
   }
 
   // Time success messaging to match animation
@@ -132,18 +128,6 @@ function asyncSuccess(response, dataUrl, $ctrl) {
 function asyncFailure(error, dataUrl, $ctrl) {
   // Start changing process indicator immediately
   $ctrl.processingState = -1;
-
-  // // TODO this section is very implementation specific
-  // if ($ctrl.httpOptions && error.data && error.data.message) {
-  //   $ctrl.errorMessage = error.data.message;
-  //   $ctrl.errorReasons = error.data.errors || [];
-  //   $ctrl.errorDescription = $ctrl.errorReasons[0].message;
-  // } else if ($ctrl.httpOptions && error.originalData && error.originalData.message) {
-  //   // Note: error data can manipulated by interceptors, this ensures we still get data needed
-  //   $ctrl.errorMessage = error.originalData.message;
-  //   $ctrl.errorReasons = error.originalData.errors || [];
-  //   $ctrl.errorDescription = $ctrl.errorReasons[0].message;
-  // }
 
   // Wait before updating text
   $ctrl.$timeout(() => {
