@@ -1,0 +1,44 @@
+<div class="row m-b-3">
+  <div class="col-md-6">
+    <h4 id="drag-and-drop">Drag and Drop</h4>
+    <p>Drag and drop is achieved by a trio of attribute directives that let you
+      respond to the users drag and drop behaviour.  There are three directives:
+    <ul>
+      <li><code>twDragEnter</code> - Fires when the mouse enters the element's
+        perimeter while dragging a file.</li>
+      <li><code>twDragLeave</code> - Fires when the mouse exits the element's
+        perimeter while dragging a file.</li>
+      <li><code>twDrop</code> - Fires when files are dropped within the element's
+        perimeter.</li>
+    </ul>
+    <p>Use <code>twDragEnter</code> and <code>twDragLeave</code> to customise the UI
+      while the user is dragging. <code>twDrop</code> provides an array of
+      <code>files</code> as the first parameter to the callback you provide.</p>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <div class="well"
+        tw-drop="$ctrl.onDrop(files)"
+        tw-drag-enter="$ctrl.onEnter()"
+        tw-drag-leave="$ctrl.onLeave()">
+        <h3 ng-if="!$ctrl.dragging && !$ctrl.dropped">
+          Drag and drop a file here
+        </h3>
+        <h3 ng-if="$ctrl.dragging && !$ctrl.dropped">
+          Now drop the file!
+        </h3>
+        <h3 ng-if="!$ctrl.dragging && $ctrl.dropped">
+          Got it!
+        </h3>
+      </div>
+
+    </div>
+    <h5>Configuration</h5>
+<pre>&lt;div
+  tw-drop="$ctrl.onDrop(files)
+  tw-drag-enter="$ctrl.onDragEnter()"
+  tw-drag-leave="$ctrl.onDragLeave()""&gt;
+&lt;/div&gt;
+</pre>
+  </div>
+</div>

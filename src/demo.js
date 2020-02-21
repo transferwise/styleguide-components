@@ -61,6 +61,7 @@ module.config(['$compileProvider', ($compileProvider) => {
       <li><a href="index.html#currency-input">Currency input</a></li>
       <li><a href="index.html#date">Date</a></li>
       <li><a href="index.html#date-lookup">Date lookup</a></li>
+      <li><a href="index.html#drag-and-drop">Drag and drop</a></li>
       <li><a href="index.html#focusable">Focusable</a></li>
       <li><a href="index.html#form-control">Form control</a></li>
       <li><a href="index.html#radio">Radio</a></li>
