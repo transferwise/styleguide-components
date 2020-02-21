@@ -7,9 +7,14 @@ describe('FormControl', function() {
     $timeout,
     element,
     formGroup,
+    TwUpload,
     input;
 
   beforeEach(function() {
+    TwUpload = getMockComponent('twUpload');
+
+    angular.mock.module('tw.styleguide.forms.upload', TwUpload);
+
     angular.mock.module('tw.styleguide.forms.form-control');
 
     angular.mock.inject(function($injector) {
@@ -214,22 +219,56 @@ describe('FormControl', function() {
   describe('type: file', function() {
     beforeEach(function() {
       $scope.model = null;
+      $scope.onAsyncSuccess = jasmine.createSpy('onAsyncSuccess');
+      $scope.onAsyncFailure = jasmine.createSpy('onAsyncFailure');
+      // $scope.uploadOptions = {};
+
       formGroup = compileTemplate(
         "<div class='form-group'> \
           <label class='control-label'></label> \
-          <tw-form-control type='file' \
+          <tw-form-control \
+            type='file' \
             ng-model='model' \
             ng-focus='onFocus()' \
             ng-blur='onBlur()' \
             ng-change='onChange(value)' \
+            on-async-success='onAsyncSuccess(response)' \
+            on-async-failure='onAsyncFailure(response)' \
             required> \
           </tw-form-control> \
         </div>"
       );
       element = formGroup.querySelector('tw-form-control');
     });
+
     it('should render twUpload', function() {
       expect(element.querySelector('tw-upload')).toBeTruthy();
+    });
+
+    describe('when the upload triggers an async success', function() {
+      var response;
+      beforeEach(function() {
+        response = { data: {} };
+        TwUpload.bindings.onSuccess(response);
+        $scope.$apply();
+      });
+
+      it('should trigger the form control onAsyncSuccess handler', function() {
+        expect($scope.onAsyncSuccess).toHaveBeenCalledWith(response);
+      });
+    });
+
+    describe('when the upload triggers an async failure', function() {
+      var response;
+      beforeEach(function() {
+        response = { data: {} };
+        TwUpload.bindings.onFailure(response);
+        $scope.$apply();
+      });
+
+      it('should trigger the form control onAsyncFailure handler', function() {
+        expect($scope.onAsyncFailure).toHaveBeenCalledWith(response);
+      });
     });
   });
 

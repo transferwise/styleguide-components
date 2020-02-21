@@ -36,6 +36,8 @@
     persist-async="$ctrl.field.persistAsync"
     file-upload-source="$ctrl.field.sourceType"
     camera-options="$ctrl.field.camera"
+    on-async-success="$ctrl.onPersistAsyncSuccess(response)"
+    on-async-failure="$ctrl.onPersistAsyncFailure(response)"
     tw-validation
   ></tw-form-control>
 
