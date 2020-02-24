@@ -10,6 +10,7 @@ import Date from './date/date.demo.js';
 import DateLookup from './date-lookup/date-lookup.demo.js';
 import Telephone from './telephone/telephone.demo.js';
 import Submit from './submit/submit.demo.js';
+import DragAndDrop from './drag-and-drop/drag-and-drop.demo.js';
 
 import CurrencyInput from './currency-input/currency-input.demo.js';
 import AmountCurrencySelect from './amount-currency-select/amount-currency-select.demo.js';
@@ -39,7 +40,8 @@ export default angular.module('tw.styleguide.demo.forms', [
   RequirementsForm,
   DefinitionList,
   Focusable,
-  Submit
+  Submit,
+  DragAndDrop
 ]).component('formDocs', {
   bindings: {
     model: '=',

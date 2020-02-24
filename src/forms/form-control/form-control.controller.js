@@ -1,13 +1,22 @@
+let $ctrl;
 
 class FormControlController {
   constructor($element) {
     this.$element = $element;
     this.element = $element[0];
+
+    // This is a bit lame, but necessary due to the way twUpload's callbacks work
+    // Because they use '=', not '&', we lose reference to this controller.
+    $ctrl = this;
   }
 
   $onInit() {
     this.$ngModel = this.$element.controller('ngModel');
     this.addValidators();
+
+    if (!this.uploadOptions) {
+      this.uploadOptions = {};
+    }
   }
 
   change() {
@@ -24,6 +33,20 @@ class FormControlController {
   blur() {
     this.$ngModel.$setTouched();
     this.element.dispatchEvent(new CustomEvent('blur'));
+  }
+
+  // eslint-disable-next-line
+  onAsyncUploadSuccess(response) {
+    if ($ctrl.onAsyncSuccess) {
+      $ctrl.onAsyncSuccess({ response });
+    }
+  }
+
+  // eslint-disable-next-line
+  onAsyncUploadFailure(response) {
+    if ($ctrl.onAsyncFailure) {
+      $ctrl.onAsyncFailure({ response });
+    }
   }
 
   /**

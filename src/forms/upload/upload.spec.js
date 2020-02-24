@@ -1,4 +1,3 @@
-
 describe('given an upload component', () => {
   let $q;
   let $compile;
@@ -85,17 +84,18 @@ describe('given an upload component', () => {
       expect(processingMessage.innerText.trim()).toBe('processing');
     });
 
-    it('should not error message', () => {
+    it('should not show an error message', () => {
       expect(directiveElement.querySelector('.upload-failure-message')).toBeFalsy();
     });
 
     describe('after three seconds', () => {
       beforeEach(() => {
         deferred.resolve(base64url);
-        $timeout.flush(3000);
+        $timeout.flush(3800);
       });
 
       it('should not show the processing message', () => {
+        console.log('result', directiveElement);
         expect(directiveElement.querySelector('.upload-processing-message')).toBeFalsy();
       });
 
@@ -294,26 +294,6 @@ describe('given an upload component', () => {
       });
     });
   });
-
-  // describe('when a transcluded success screen is supplied', () => {
-  //   beforeEach(() => {
-  //     $scope.onUpload = function () {};
-  //     const template = " \
-  //       <tw-upload \
-  //         title='Drag and drop here' \
-  //         button-text='or click here' \
-  //         placeholder='please choose' \
-  //         on-upload='onUpload' \
-  //         ng-accept='csv'> \
-  //         <a class='transcluded-content'></a> \
-  //       </tw-upload>";
-  //     directiveElement = getCompiledDirectiveElement($scope, template);
-  //   });
-  //   it('should render the transcluded content', () => {
-  //     const transcluded = directiveElement.querySelector('.transcluded-content');
-  //     expect(transcluded).toBeTruthy();
-  //   });
-  // });
 
   describe('when the dropped file is too large', () => {
     beforeEach(() => {

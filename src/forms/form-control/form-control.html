@@ -61,24 +61,36 @@
       help-image="{{$ctrl.helpOptions.image}}"
       placeholder="{{$ctrl.placeholder}}"
       accept="{{$ctrl.uploadAccept}}"
+
       complete-text="{{$ctrl.label}}"
       button-text="{{$ctrl.uploadOptions.buttonText}}"
       cancel-text="{{$ctrl.uploadOptions.cancelText}}"
-      uploading-text="{{$ctrl.uploadOptions.uploadingText}}"
+
+      processing-text="{{ $ctrl.uploadOptions.processingText }}"
+      success-text="{{ $ctrl.uploadOptions.successText }}"
+      failure-text="{{ $ctrl.uploadOptions.failureText }}"
+      validation-messages="$ctrl.uploadOptions.validationMessages"
       view-image-text="{{$ctrl.uploadOptions.viewImageText}}"
       too-large-message="{{$ctrl.uploadTooLargeMessage}}"
       max-size="$ctrl.ngMax"
+
       ng-model="$ctrl.internalModel"
       ng-required="$ctrl.ngRequired"
       ng-disabled="$ctrl.ngDisabled"
       ng-change="$ctrl.change($ctrl.internalModel)"
       ng-focus="$ctrl.focus()"
       ng-blur="$ctrl.blur()"
+
       http-options="$ctrl.persistAsync"
       source="$ctrl.fileUploadSource"
       camera-overlay="{{$ctrl.cameraOptions.overlay}}"
       camera-direction="{{$ctrl.cameraOptions.direction}}"
+
+      on-success="$ctrl.onAsyncUploadSuccess"
+      on-failure="$ctrl.onAsyncUploadFailure"
     ></tw-upload>
+
+    <!-- uploading-text="{{$ctrl.uploadOptions.uploadingText}}" -->
   </div>
 
   <div ng-switch-when="date|date-time" ng-switch-when-separator="|">

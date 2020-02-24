@@ -1,4 +1,4 @@
-fdescribe("multi-upload", () => {
+describe("multi-upload", () => {
   let $q;
   let $compile;
   let $rootScope;
