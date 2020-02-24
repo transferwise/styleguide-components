@@ -1,3 +1,11 @@
+# v5.0.0
+## Refactor twUpload, add drag and drop directives
+Removes the ability to transclude a custom success screen into twUpload. Removes uploadingText binding, use processingText.  Removes errorMessage binding, use errorText.
+
+Adds ability to customise droppingText. Refactors the component into multiple parts.
+
+New drag and drop directives simplify working with drag and drop.
+
 # v4.5.7
 ## Fix upload async actions to not be blocking
 If an async action returns any status code other than 422 than continue with the upload flow as normal.
@@ -24,7 +32,7 @@ Key should come from httpOptions or fallback to fieldName
 
 # v4.5.1
 ## Remove elipsis on p
-Removed elipsis on p tag in verification 
+Removed elipsis on p tag in verification
 
 # v4.5.0
 ## Enablig persistAsync again
