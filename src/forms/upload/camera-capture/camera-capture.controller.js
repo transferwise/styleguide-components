@@ -45,6 +45,8 @@ class CameraCaptureController {
     this.videoHeight = 100; // video height in percentage
     this.videoWidth = 100; // video width in percentage
 
+    this.isVideoHorizontallyFlipped = false;
+
     if (!this.hasGetUserMedia()) {
       // TODO: haoyuan how to handle get user media not being available?
       this.$log.warn('getUserMedia() is not supported by your browser');
@@ -151,6 +153,7 @@ class CameraCaptureController {
         if (this.direction === 'user') {
           this.$log.debug('Changed user video to mirror');
           this.video.classList.add('display-mirror');
+          this.overlayElement.classList.add('display-mirror');
           this.isVideoHorizontallyFlipped = true;
         }
 
