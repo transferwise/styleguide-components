@@ -5,7 +5,7 @@ class FormControlController {
     this.$element = $element;
     this.element = $element[0];
 
-    // This is a bit lame, but necessary sue to the way twUpload's callbacks work
+    // This is a bit lame, but necessary due to the way twUpload's callbacks work
     // Because they use '=', not '&', we lose reference to this controller.
     $ctrl = this;
   }

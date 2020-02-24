@@ -85,7 +85,7 @@ describe('given an upload component', () => {
       expect(processingMessage.innerText.trim()).toBe('processing');
     });
 
-    it('should not error message', () => {
+    it('should not show an error message', () => {
       expect(directiveElement.querySelector('.upload-failure-message')).toBeFalsy();
     });
 
