@@ -1,193 +1,53 @@
-import angular from 'angular';
-
 class UploadController {
   constructor(
-    $timeout,
     $element,
     $scope,
-    $transclude,
-    $q,
     $attrs,
-    AsyncFileReader,
-    AsyncFileSaver,
-    AsyncTasksConfig,
+    FileValidationService,
   ) {
-    this.$timeout = $timeout;
     this.$element = $element;
     this.$attrs = $attrs;
-    this.$q = $q;
-    this.AsyncFileReader = AsyncFileReader;
-    this.AsyncFileSaver = AsyncFileSaver;
-    this.AsyncTasksConfig = AsyncTasksConfig;
+    this.FileValidationService = FileValidationService;
 
-    // First isImage updated only at select times, second updated instantly.
-    this.isImage = false;
-    this.isImage_instant = false;
-
-    this.dragCounter = 0;
     this.isProcessing = false;
-
-    this.processingState = null;
-
-    this.showModal = false;
-
-    this.checkForTranscludedContent($transclude);
-
-    this.isLiveCameraUpload = this.source && this.source === 'CAMERA_ONLY';
-    $scope.$watch('$ctrl.source', () => {
-      this.isLiveCameraUpload = this.source && this.source === 'CAMERA_ONLY';
-    });
-
-    $scope.$watch('$ctrl.icon', () => {
-      this.viewIcon = this.icon ? this.icon : 'upload';
-    });
-
-    if ((this.processingText || this.successText || this.failureText)
-        && (!this.processingText || !this.successText || !this.failureText)) {
-      throw new Error('Supply all of processing, success, and failure text, or supply none.');
-    }
-
-    this.addDragHandlers($scope, $element);
-
-    this.showLiveCaptureScreen = false;
   }
 
-  onUploadButtonClick() {
-    if (this.isLiveCameraUpload) {
-      this.showLiveCaptureScreen = true;
+  $onChanges(changes) {
+    if (changes.source) {
+      this.isLiveCameraUpload = changes.source.currentValue === 'CAMERA_ONLY';
     }
   }
 
-  onCameraCaptureCancel() {
-    this.showLiveCaptureScreen = false;
-  }
-
-  onCameraCaptureConfirm(file) {
-    this.onFileConfirmation(file);
-    this.showLiveCaptureScreen = false;
-  }
-
-  // Function binding for file upload by input tag
-  onManualUpload() {
-    const element = this.$element[0];
-    const uploadInput = element.querySelector('.tw-droppable-input');
-    const file = uploadInput.files[0];
-
-    this.onFileConfirmation(file);
-  }
-
-  onManualReupload() {
-    const element = this.$element[0];
-    const uploadInput = element.querySelector('.tw-droppable-input-reupload');
-    const file = uploadInput.files[0];
-
-    this.onFileConfirmation(file);
-  }
-
-  // Function binding for file upload by live
-  onFileConfirmation(file) {
-    if (!file) {
-      throw new Error('Could not retrieve file');
-    }
-
-    this.fileDropped(file);
-  }
-
-  fileDropped(file) {
+  onFileCapture(file) {
     if (this.ngDisabled) {
       return;
     }
 
-    this.reset();
-
-    this.isImage_instant = (file.type && file.type.indexOf('image') > -1);
-    this.fileName = file.name;
-
-    this.isProcessing = true;
-    this.processingState = null;
-
-    triggerHandler(this.onStart, file);
-
-    if (!isSizeValid(file, this.maxSize)) {
-      this.isTooLarge = true;
-      asyncFailure({
-        status: 413,
-        statusText: 'Request Entity Too Large'
-      }, null, this);
-      return;
+    if (!file) {
+      throw new Error('Could not retrieve file');
     }
 
-    /*
-    if (!isTypeValid(file, this.accept)) {
-      this.isWrongType = true;
-      asyncFailure({
-        status: 415,
-        statusText: 'Unsupported Media Type'
-      }, this);
-      return;
-    }
-    */
-
-    if (this.httpOptions) {
-      // Post file now
-      this.asyncFileRead(file)
-        .then((dataUrl) => {
-          this.asyncFileSave(file)
-            .then(response => asyncSuccess(response, dataUrl, this))
-            .catch((error) => {
-              if (error.status === 422) {
-                // Note: Only if async action returns 422, do we want to process that error
-                asyncFailure(error, dataUrl, this);
-              } else {
-                // Note: If async action fails, we continue with original flow
-                asyncSuccess(null, dataUrl, this);
-              }
-            });
-        })
-        .catch(error => asyncFailure(error, null, this));
-    } else {
-    // Post on form submit
-      this.asyncFileRead(file)
-        .then(dataUrl => asyncSuccess(null, dataUrl, this))
-        .catch(error => asyncFailure(error, null, this));
-    }
-  }
-
-  onDragEnter() {
-    this.dragCounter++;
-    if (this.dragCounter >= 1 && !this.ngDisabled) {
-      // do not enable dropping for camera only upload mode
-      this.isDroppable = !this.isLiveCameraUpload;
-    }
-  }
-
-  onDragLeave() {
-    this.dragCounter--;
-    if (this.dragCounter <= 0) {
-      this.isDroppable = false;
-    }
-  }
-
-  clear() {
-    this.reset();
-    triggerHandler(this.onCancel);
+    this.file = file;
   }
 
   reset() {
-    this.isDroppable = false;
     this.isProcessing = false;
-    this.isSuccess = false;
-    this.isError = false;
-    this.dragCounter = 0;
     this.isDone = false;
-    this.isTooLarge = false;
-    this.isWrongType = false;
+
+    this.clearHtmlInput();
+    this.setNgModel(null);
+
+    if (this.onCancel) {
+      this.onCancel();
+    }
+  }
+
+  clearHtmlInput() {
     if (this.$element[0].querySelectorAll('input')) {
       this.$element[0].querySelectorAll('input').forEach((input) => {
         input.value = null;
       });
     }
-    this.setNgModel(null);
   }
 
   setNgModel(value) {
@@ -201,162 +61,59 @@ class UploadController {
     }
   }
 
-  asyncFileSave(file) {
-    const httpOptions = this.AsyncTasksConfig.extendHttpOptions(this.httpOptions);
-    return this.AsyncFileSaver.save(this.name, file, httpOptions);
+  isDropEligible() {
+    return this.source !== 'CAMERA_ONLY';
   }
 
-  asyncFileRead(file) {
-    return this.AsyncFileReader.read(file);
+  onDragEnter() {
+    this.isDroppable = this.isDropEligible();
   }
 
-  addDragHandlers($scope, $element) {
-    $element[0].addEventListener('dragenter', (event) => {
-      event.preventDefault();
-      this.onDragEnter();
-      $scope.$apply();
-    }, false);
-
-    $element[0].addEventListener('dragover', (event) => {
-      event.preventDefault();
-    }, false);
-
-    $element[0].addEventListener('dragleave', (event) => {
-      event.preventDefault();
-      this.onDragLeave();
-      $scope.$apply();
-    }, false);
-
-    $element[0].addEventListener('drop', (event) => {
-      event.preventDefault();
-      this.fileDropped(event.dataTransfer.files[0]);
-      $scope.$apply();
-    }, false);
+  onDragLeave() {
+    this.isDroppable = false;
   }
 
-  checkForTranscludedContent($transclude) {
-    $transclude((clone) => {
-      if (clone.length > 1 || clone.text().trim() !== '') {
-        this.hasTranscluded = true;
-      } else {
-        this.hasTranscluded = false;
-      }
-    });
+  onDrop(files) {
+    this.isDroppable = false;
+    this.onFileCapture(files[0]);
   }
 
-  toggleImageModal() {
-    this.showModal = !this.showModal;
-  }
-}
+  onProcessStart(file) {
+    this.isDone = false;
+    this.isProcessing = true;
 
-function triggerHandler(method, argument) {
-  if (method && typeof method === 'function') {
-    method(argument);
-  }
-}
-
-function isSizeValid(file, maxSize) {
-  return !(angular.isNumber(maxSize) && file.size > maxSize);
-}
-
-/*
-// TODO validate file type
-function isTypeValid(file, accept) {
-  return true;
-  // this.isWrongType = true;
-}
-*/
-
-function showDataImage(dataUrl, $ctrl) {
-  // Only set isImage at this point to avoid trying to show another file type
-  $ctrl.isImage = $ctrl.isImage_instant;
-  if ($ctrl.isImage) {
-    $ctrl.image = dataUrl;
-  }
-}
-
-function asyncSuccess(apiResponse, dataUrl, $ctrl) {
-  // Start changing process indicator immediately
-  $ctrl.processingState = 1;
-
-  if ($ctrl.httpOptions
-      && $ctrl.httpOptions.idProperty
-      && apiResponse
-      && apiResponse.data
-      && apiResponse.data[$ctrl.httpOptions.idProperty]) {
-    const imageId = apiResponse.data[$ctrl.httpOptions.idProperty];
-    $ctrl.setNgModel(imageId);
-    $ctrl.successMessage = apiResponse.data.message;
-    $ctrl.successDetails = apiResponse.data.details ? apiResponse.data.details[0] : null;
-  } else {
-    $ctrl.setNgModel(dataUrl);
+    if (this.onStart) {
+      this.onStart({ file });
+    }
   }
 
-  showDataImage(dataUrl, $ctrl);
+  onProcessSuccess(file, dataUrl, id, response) {
+    this.isDone = true;
+    this.isProcessing = false;
+    this.dataUrl = dataUrl;
+    this.isImage = this.FileValidationService.isImage(file);
 
-  if ($ctrl.ngChange) {
-    $ctrl.ngChange();
+    if (this.httpOptions && id) {
+      this.setNgModel(id);
+    } else {
+      this.setNgModel(dataUrl);
+    }
+
+    this.onSuccess({ file, response });
   }
 
-  // Wait before updating text
-  $ctrl.$timeout(() => {
-    $ctrl.isProcessing = false;
-    $ctrl.isSuccess = true;
-  }, 3000);
-
-  // Allow a small amount of extra time before notifying external handlers
-  $ctrl.$timeout(() => {
-    triggerHandler($ctrl.onSuccess, dataUrl);
-    $ctrl.isDone = true;
-  }, 3800);
-
-  return dataUrl;
-}
-
-function asyncFailure(error, dataUrl, $ctrl) {
-  // Start changing process indicator immediately
-  $ctrl.processingState = -1;
-
-  if ($ctrl.httpOptions && error.data && error.data.message) {
-    $ctrl.errorMessage = error.data.message;
-    $ctrl.errorReasons = error.data.errors || [];
-    $ctrl.firstError = $ctrl.errorReasons[0];
-  } else if ($ctrl.httpOptions && error.originalData && error.originalData.message) {
-    // Note: error data can manipulated by interceptors, this ensures we still get data needed
-    $ctrl.errorMessage = error.originalData.message;
-    $ctrl.errorReasons = error.originalData.errors || [];
-    $ctrl.firstError = $ctrl.errorReasons[0];
+  onProcessFailure(error) {
+    if (this.onFailure) {
+      this.onFailure({ error });
+    }
   }
-
-  if (dataUrl) {
-    showDataImage(dataUrl, $ctrl);
-  }
-
-  // Wait before updating text
-  $ctrl.$timeout(() => {
-    $ctrl.isProcessing = false;
-    $ctrl.isError = true;
-  }, 3000);
-
-  // Allow a small amount of extra time before notifying external handlers
-  $ctrl.$timeout(() => {
-    triggerHandler($ctrl.onFailure, error);
-    $ctrl.isDone = true;
-  }, 4100); // 3500); TODO for some reason more time is needed
-
-  return error;
 }
 
 UploadController.$inject = [
-  '$timeout',
   '$element',
   '$scope',
-  '$transclude',
-  '$q',
   '$attrs',
-  'AsyncFileReader',
-  'AsyncFileSaver',
-  'AsyncTasksConfig'
+  'FileValidationService'
 ];
 
 export default UploadController;

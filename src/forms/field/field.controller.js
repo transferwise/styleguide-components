@@ -51,6 +51,43 @@ class FieldController {
     }
   }
 
+  onPersistAsyncFailure(response) {
+    // Interrogate response and extract error message
+    if (!this.uploadOptions) {
+      this.uploadOptions = {};
+    }
+
+    if (response.data) {
+      // When we do id pre eval, we get error messages and validations back in
+      // the response, extract them and pass back to be shown in the upload.
+      this.extractErrors(response.data);
+    } else if (response.originalData) {
+      // frontend-common has an interceptor that sometimes changes the response
+      // format, moving the response data under a new key 'originalData'
+      this.extractErrors(response.originalData);
+    }
+  }
+
+  extractErrors(data) {
+    // Note: error data can manipulated by interceptors, this ensures we still get data needed
+    if (data.message) {
+      this.uploadOptions.failureText = data.message;
+    }
+
+    if (Array.isArray(data.errors)) {
+      this.uploadOptions.validationMessages = data.errors.map(error => error.message);
+    }
+  }
+
+  onPersistAsyncSuccess(response) {
+    if (!this.uploadOptions) {
+      this.uploadOptions = {};
+    }
+
+    // These are too specific to one use case.
+    this.uploadOptions.successText = response.data.message;
+  }
+
   // eslint-disable-next-line
   sizeOf(obj) {
     return obj ? Object.keys(obj).length : 0;

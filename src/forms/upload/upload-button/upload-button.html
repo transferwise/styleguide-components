@@ -1,0 +1,29 @@
+<label class="btn btn-primary"
+  ng-click="$ctrl.onButtonClick()"
+  ng-class="{ 'disabled': $ctrl.disabled }">
+  <span ng-if="$ctrl.label" ng-bind="$ctrl.label"></span>
+  <span ng-if="!$ctrl.label" class="icon icon-upload m-r-0"></span>
+  <span ng-if="!$ctrl.isLiveCameraUpload">
+    <input
+      ng-if="!$ctrl.multiple"
+      tw-file-input
+      type="file"
+      accept="{{ $ctrl.accept }}"
+      class="tw-droppable-input hidden"
+      ng-disabled="$ctrl.ngDisabled"
+      name="{{ $ctrl.name }}"
+      on-user-input="$ctrl.onButtonCapture()"
+      ng-model="$ctrl.model" />
+    <input
+      ng-if="$ctrl.multiple"
+      tw-file-input
+      type="file"
+      accept="{{ $ctrl.accept }}"
+      class="tw-droppable-input hidden"
+      ng-disabled="$ctrl.ngDisabled"
+      name="{{ $ctrl.name }}"
+      on-user-input="$ctrl.onButtonCapture()"
+      ng-model="$ctrl.model"
+      multiple />
+  </span>
+</label>

@@ -393,7 +393,7 @@ function createUploadCallback($ctrl) {
     }
     $ctrl.showVideoPreview = false;
     $ctrl.closeVideoStream();
-    $ctrl.onConfirm({ file: blob });
+    $ctrl.onCapture({ file: blob });
   };
 }
 

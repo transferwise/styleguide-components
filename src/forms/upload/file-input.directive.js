@@ -5,9 +5,6 @@ function FileInputDirective() {
     controller: FileInputController,
     controllerAs: '$ctrl',
     bindToController: true,
-    require: {
-      UploadController: '^twUpload'
-    },
     scope: {
       onUserInput: '&'
     }

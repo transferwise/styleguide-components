@@ -1,0 +1,27 @@
+<div class="droppable-card-content">
+  <h4 ng-if="$ctrl.successMessage || $ctrl.label"
+    class="m-b-2 upload-success-message">
+    {{ $ctrl.successMessage || $ctrl.label }}
+  </h4>
+
+  <img
+    ng-if="$ctrl.isImage && $ctrl.data"
+    src="data:image/png;base64,
+      iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+    ng-src="{{ $ctrl.data }}"
+    alt="OK"
+    class="thumbnail m-b-3" />
+
+  <span class="icon icon-pdf icon-xxl"
+    ng-if="!$ctrl.isImage || !$ctrl.data"></span>
+
+  <p class="m-b-2 text-ellipsis">{{ $ctrl.fileName }}</p>
+
+  <!-- cancel option -->
+  <p class="m-t-2 m-b-0">
+    <a href="" ng-click="$ctrl.onCancel()">
+      <span ng-if="$ctrl.cancelText" ng-bind="$ctrl.cancelText"></span>
+      <span ng-if="!$ctrl.cancelText" class="icon icon-upload m-r-0"></span>
+    </a>
+  </p>
+</div>

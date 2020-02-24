@@ -10,7 +10,9 @@ class AsyncFileSaverMock {
   save() {
     return this.$q.resolve({
       data: {
-        id: 1234
+        id: 1234,
+        message: 'This photo passed our automatic checks',
+        details: ['So its ready for our team to review']
       }
     });
   }
@@ -52,12 +54,13 @@ function controller($scope) {
     this.log('File upload cancelled');
   };
 
-  this.makeFancy = () => {
-    $ctrl.label = 'Front of your ID document';
-    $ctrl.processingText = 'Processing...';
-    $ctrl.successText = 'Upload complete!';
-    $ctrl.failureText = 'Upload failed!';
-  };
+  this.label = 'Front of your ID document';
+  $ctrl.processingText = 'Processing...';
+  $ctrl.droppingText = 'Drop file to begin...';
+  $ctrl.successText = 'Upload complete!';
+  $ctrl.failureText = 'Upload failed!';
+
+  this.makeFancy = () => {};
 
   this.acceptOptions = [
     { value: '.png', label: 'PNG (.png)' },

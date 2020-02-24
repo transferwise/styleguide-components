@@ -19,21 +19,28 @@ const FormControl = {
     uploadIcon: '@',
     uploadTooLargeMessage: '@',
     options: '<',
+
     ngModel: '=',
     ngChange: '&',
+    ngFocus: '&',
+    ngBlur: '&',
     ngRequired: '<',
     ngDisabled: '<',
+
     // ngMinlength/ngMaxlength have default behaviour that cannot be overridden
     ngMinlength: '<twMinlength',
     ngMaxlength: '<twMaxlength',
     ngMin: '<',
     ngMax: '<',
     ngPattern: '<',
+
     uploadOptions: '<',
     helpOptions: '<',
     textFormat: '<',
     validationAsync: '<',
     persistAsync: '<',
+    onAsyncFailure: '&',
+    onAsyncSuccess: '&',
     // Live capture parameters for upload component
     fileUploadSource: '<',
     cameraOptions: '<'
