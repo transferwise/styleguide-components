@@ -97,17 +97,8 @@ class Controller {
   }
 
   reset() {
-    // this.clearHtmlInput();
     this.setNgModel(null);
   }
-
-  // clearHtmlInput() {
-  //   if (this.$element[0].querySelectorAll('input')) {
-  //     this.$element[0].querySelectorAll('input').forEach((input) => {
-  //       input.value = null;
-  //     });
-  //   }
-  // }
 
   setNgModel(value) {
     // If ngModel not assignable, we don't want to error.
