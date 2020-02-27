@@ -321,6 +321,7 @@ function createOverlayOnLoadCallback($ctrl) {
     $ctrl.overlayWidth = overlayWidth;
 
     $ctrl.overlayLoaded = true;
+    $ctrl.$scope.$apply();
   };
 }
 
