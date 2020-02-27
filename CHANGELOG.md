@@ -1,3 +1,7 @@
+# v5.1.0
+## Multi upload component
+Add multi upload component
+
 # v5.0.1
 ## Update live upload component's display of overlay image
 Flip overlay horizontally if camera is user facing
