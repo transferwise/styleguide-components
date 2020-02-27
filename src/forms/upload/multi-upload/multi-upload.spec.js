@@ -40,8 +40,8 @@ describe("multi-upload", () => {
             <tw-multi-upload \
                 ng-change='ngChange()' \
                 ng-model='ngModel' \
-                on-start='onStart' \
-                on-finish='onFinish' \
+                on-start='onStart()' \
+                on-finish='onFinish()' \
                 processing-text='processing' \
                 success-text='success'\
                 failure-text='failure' \
@@ -197,9 +197,8 @@ describe("multi-upload", () => {
         " \
         <tw-multi-upload \
             ng-model='ngModel' \
-            on-start='onStart' \
-            on-success='onSuccess' \
-            on-finish='onFinish' \
+            on-start='onStart()' \
+            on-finish='onFinish()' \
             processing-text='processing' \
             success-text='success'\
             failure-text='failure' \
@@ -316,9 +315,8 @@ describe("multi-upload", () => {
         " \
         <tw-multi-upload \
             ng-model='ngModel' \
-            on-start='onStart' \
-            on-success='onSuccess' \
-            on-finish='onFinish' \
+            on-start='onStart()' \
+            on-finish='onFinish()' \
             processing-text='processing' \
             success-text='success'\
             failure-text='failure' \
@@ -433,8 +431,8 @@ describe("multi-upload", () => {
         " \
             <tw-multi-upload \
                 ng-model='ngModel' \
-                on-start='onStart' \
-                on-finish='onFinish' \
+                on-start='onStart()' \
+                on-finish='onFinish()' \
                 processing-text='processing' \
                 success-text='success'\
                 failure-text='failure' \

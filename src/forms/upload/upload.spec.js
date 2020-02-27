@@ -95,7 +95,6 @@ describe('given an upload component', () => {
       });
 
       it('should not show the processing message', () => {
-        console.log('result', directiveElement);
         expect(directiveElement.querySelector('.upload-processing-message')).toBeFalsy();
       });
 
