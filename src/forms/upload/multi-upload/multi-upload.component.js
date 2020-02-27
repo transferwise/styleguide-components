@@ -26,8 +26,8 @@ const Component = {
 
     validationMessages: '<',
 
-    onStart: '=',
-    onFinish: '=',
+    onStart: '&',
+    onFinish: '&',
 
     accept: '@',
     httpOptions: '<',
