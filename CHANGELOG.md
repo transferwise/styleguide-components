@@ -1,3 +1,7 @@
+# v5.0.1
+## Update live upload component's display of overlay image
+Flip overlay horizontally if camera is user facing
+
 # v5.0.0
 ## Refactor twUpload, add drag and drop directives
 Removes the ability to transclude a custom success screen into twUpload. Removes uploadingText binding, use processingText.  Removes errorMessage binding, use errorText.
