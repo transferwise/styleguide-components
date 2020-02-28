@@ -338,8 +338,8 @@ function createVideoPlayCallback($ctrl) {
     if (this.videoHeight === 0 || this.videoWidth === 0) {
       // Video is not playing, listen for it to start
       this.addEventListener('playing', function videoPlayingCallback() {
-        assignVideoDimensions(this);
         $ctrl.videoPlaying = true;
+        assignVideoDimensions(this);
         this.removeEventListener('playing', videoPlayingCallback);
       });
     } else {
