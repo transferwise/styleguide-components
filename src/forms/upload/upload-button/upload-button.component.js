@@ -8,6 +8,8 @@ const UploadButton = {
     name: '<',
     label: '<',
     isSecondary: '<',
+    small: '<',
+    block: '<',
     accept: '<',
     model: '<',
     multiple: '<',

@@ -3,8 +3,8 @@
   tw-drag-enter="$ctrl.onDragEnter()"
   tw-drag-leave="$ctrl.onDragLeave()"
   ng-class="{'droppable-dropping': $ctrl.isDroppable}"
-  >
-  <h4 class="page-header text-xs-left m-r-panel m-l-panel m-b-0">{{$ctrl.label}}</h4>
+>
+  <h4 class="page-header text-xs-left m-r-3 m-l-3 m-b-0">{{$ctrl.label}}</h4>
 
   <div class="droppable-dropping-card droppable-card">
     <tw-upload-dropping
@@ -17,12 +17,14 @@
       <!-- Display illustration as image or icon -->
       <div class="circle circle-sm m-b-3">
         <img
-          ng-show="$ctrl.helpImage"
+          ng-if="$ctrl.helpImage"
           ng-src="{{$ctrl.helpImage}}"
           alt="{{$ctrl.label}}"
-          class="thumbnail text-xs-center" />
-        <span ng-show="!$ctrl.helpImage"
-          class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></span>
+          class="thumbnail text-xs-center"
+        />
+        <span ng-if="!$ctrl.helpImage"
+          class="icon icon-{{$ctrl.viewIcon}} icon-xxl"
+        ></span>
       </div>
 
       <!-- placeholder instructions -->
@@ -32,8 +34,8 @@
     </div>
   </div>
 
-  <div ng-if="$ctrl.files.length > 0" id="processing-list" class="droppable-default-card p-l-panel p-t-1">
-    <div ng-repeat="(index, file) in $ctrl.files" class="m-b-1 p-r-panel">
+  <div ng-if="$ctrl.files.length > 0" id="processing-list" class="droppable-default-card p-l-3">
+    <div ng-repeat="(index, file) in $ctrl.files" class="p-r-3" ng-class="{'last-item': $last}">
       <tw-upload-processing-mini
         name="$ctrl.name"
         file="file"
@@ -63,8 +65,9 @@
       model="$ctrl.inputFile"
       disabled="$ctrl.ngDisabled"
       on-capture="$ctrl.onFileCapture(files)"
+      block="true"
+      small="true"
       multiple="true"
-    >
-    </tw-upload-button>
+    ></tw-upload-button>
   </div>
 </div>

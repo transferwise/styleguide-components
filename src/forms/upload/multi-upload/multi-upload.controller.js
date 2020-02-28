@@ -41,8 +41,7 @@ class Controller {
     }, 600);
   }
 
-  // eslint-disable-next-line
-  onProcessSuccess(index, file, dataUrl, id, response) {
+  onProcessSuccess(index, file, dataUrl, id) {
     const key = this.httpOptions ? 'id' : 'dataUrl';
 
     this.files[index][key] = this.httpOptions ? id : dataUrl;
@@ -72,7 +71,6 @@ class Controller {
     }
   }
 
-  // eslint-disable-next-line
   onProcessCancel(index) {
     const key = this.httpOptions ? 'id' : 'dataUrl';
 

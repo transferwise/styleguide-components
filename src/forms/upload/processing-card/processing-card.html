@@ -1,4 +1,12 @@
 <div class="droppable-card-content">
+  <div class="m-b-2">
+    <tw-process
+      size="sm"
+      state="$ctrl.processingState"
+      ng-if="$ctrl.isProcessing"
+    ></tw-process>
+  </div>
+
   <h4 class="m-b-2">
     <span ng-if="$ctrl.isProcessing && $ctrl.processingMessage"
       class="upload-processing-message">
@@ -9,12 +17,6 @@
       {{$ctrl.errorMessage}}
     </span>
   </h4>
-
-  <tw-process
-    size="sm"
-    state="$ctrl.processingState"
-    ng-if="$ctrl.isProcessing"
-  ></tw-process>
 
   <ul ng-if="$ctrl.isError && $ctrl.validationMessages"
     class="text-xs-left m-b-2">

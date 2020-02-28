@@ -35,11 +35,18 @@ div.transparent-area {
     overflow: auto;
     border-bottom: 1px solid #e2e6e8;
 
+    .processing-item .media-body, .processing-item .media-right {
+        border-bottom: 1px solid #e2e6e8;
+    }
+
+    .last-item .processing-item .media-body, .last-item .processing-item .media-right {
+        border-bottom: 0;
+    }
+
     .processing-item {
         position: relative;
         width: 100%;
-        border-bottom: 1px solid #e2e6e8;
-    
+        
         .vertical-center {
             align-self: center;
         }

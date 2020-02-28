@@ -1,29 +1,28 @@
 <div class="processing-item">
-  <div class="media p-y-1">
-    <div class="media-left vertical-center">
+  <div class="media">
+    <div class="media-left vertical-center p-r-2 p-y-2">
       <tw-process
         size="xs"
         state="$ctrl.processingState"
       ></tw-process>
     </div>
-    <div class="media-body text-xs-left" style="overflow: auto;">
+    <div class="media-body text-xs-left p-y-2" style="overflow: auto;">
       <div>
         <small class="m-b-0 text-ellipsis file-name"><strong>{{ $ctrl.file.name }}</strong></small>
-        <small class="m-b-0 text-ellipsis">
+        <small class="m-b-0 text-ellipsis tiny">
           <span ng-if="$ctrl.isProcessing">{{ $ctrl.processingMessage }}</span>
           <span ng-if="$ctrl.isError">{{ $ctrl.errorMessage }}</span>
           <span ng-if="$ctrl.isSuccess">{{ $ctrl.successMessage }}</span>
         </small>
       </div>
     </div>
-    <div class="media-right vertical-center">
+    <div class="media-right p-l-2 p-y-3">
       <a href=""
         ng-if="!$ctrl.isProcessing"
         class="close"
         ng-click="$ctrl.onRemove()"
-        role="button">
-        &times;
-      </a>
+        role="button"
+      >&times;</a>
     </div>
   </div>
 </div>
