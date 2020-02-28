@@ -1,12 +1,12 @@
 <div class="processing-item">
   <div class="media">
-    <div class="media-left vertical-center p-r-2 p-y-2">
+    <div class="media-left vertical-center p-r-2 p-y-1">
       <tw-process
         size="xs"
         state="$ctrl.processingState"
       ></tw-process>
     </div>
-    <div class="media-body text-xs-left p-y-2" style="overflow: auto;">
+    <div class="media-body text-xs-left p-y-1" style="overflow: auto;">
       <div>
         <small class="m-b-0 text-ellipsis file-name"><strong>{{ $ctrl.file.name }}</strong></small>
         <small class="m-b-0 text-ellipsis tiny">
@@ -16,7 +16,7 @@
         </small>
       </div>
     </div>
-    <div class="media-right p-l-2 p-y-3">
+    <div class="media-right p-l-2 p-y-2">
       <a href=""
         ng-if="!$ctrl.isProcessing"
         class="close"
