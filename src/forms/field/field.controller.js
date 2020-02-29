@@ -85,7 +85,9 @@ class FieldController {
     }
 
     // These are too specific to one use case.
-    this.uploadOptions.successText = response.data.message;
+    if (response) {
+      this.uploadOptions.successText = response.data.message;
+    }
   }
 
   // eslint-disable-next-line

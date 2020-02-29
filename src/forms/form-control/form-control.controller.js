@@ -36,9 +36,9 @@ class FormControlController {
   }
 
   // eslint-disable-next-line
-  onAsyncUploadSuccess(response) {
+  onAsyncUploadSuccess(data) {
     if ($ctrl.onAsyncSuccess) {
-      $ctrl.onAsyncSuccess({ response });
+      $ctrl.onAsyncSuccess(data.response);
     }
   }
 
