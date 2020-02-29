@@ -207,14 +207,6 @@ class CameraCaptureController {
     this.onCancel();
   }
 
-  onCaptureBtnClickTest() {
-    if (this.video.classList.contains('display-mirror')) {
-      this.video.classList.remove('display-mirror');
-    } else {
-      this.video.classList.add('display-mirror');
-    }
-  }
-
   onCaptureBtnClick() {
     const {
       height, width,
@@ -403,7 +395,7 @@ function createUploadCallback($ctrl) {
     }
     $ctrl.showVideoPreview = false;
     $ctrl.closeVideoStream();
-    $ctrl.scope.$apply(() => {
+    $ctrl.$scope.$apply(() => {
       $ctrl.onCapture({ file: blob });
     });
   };
