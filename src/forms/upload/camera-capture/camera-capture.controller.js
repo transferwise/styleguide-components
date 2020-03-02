@@ -309,7 +309,7 @@ function createOverlayOnLoadCallback($ctrl) {
         $ctrl.overlayElement.naturalHeight, $ctrl.overlayElement.naturalWidth
       );
 
-    $ctrl.$scope.$apply(() => {
+    $ctrl.$scope.$applyAsync(() => {
       $ctrl.overlayYOffset = overlayYOffset;
       $ctrl.overlayXOffset = overlayXOffset;
       $ctrl.overlayHeight = overlayHeight;
@@ -333,14 +333,14 @@ function createVideoPlayCallback($ctrl) {
     if (this.videoHeight === 0 || this.videoWidth === 0) {
       // Video is not playing, listen for it to start
       this.addEventListener('playing', function videoPlayingCallback() {
-        $ctrl.$scope.$apply(() => {
+        $ctrl.$scope.$applyAsync(() => {
           $ctrl.videoPlaying = true;
           assignVideoDimensions(this);
         });
         this.removeEventListener('playing', videoPlayingCallback);
       });
     } else {
-      $ctrl.$scope.$apply(() => {
+      $ctrl.$scope.$applyAsync(() => {
         $ctrl.videoPlaying = true;
         assignVideoDimensions(this);
       });
@@ -395,7 +395,7 @@ function createUploadCallback($ctrl) {
     }
     $ctrl.showVideoPreview = false;
     $ctrl.closeVideoStream();
-    $ctrl.$scope.$apply(() => {
+    $ctrl.$scope.$applyAsync(() => {
       $ctrl.onCapture({ file: blob });
     });
   };
