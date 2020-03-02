@@ -246,10 +246,12 @@ describe('FormControl', function() {
     });
 
     describe('when the upload triggers an async success', function() {
+      var successReturnObj;
       var response;
       beforeEach(function() {
         response = { data: {} };
-        TwUpload.bindings.onSuccess(response);
+        successReturnObj = { response, file: {} };
+        TwUpload.bindings.onSuccess(successReturnObj);
         $scope.$apply();
       });
 
