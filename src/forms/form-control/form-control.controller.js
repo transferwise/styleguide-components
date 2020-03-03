@@ -36,7 +36,7 @@ class FormControlController {
   }
 
   // eslint-disable-next-line
-  onAsyncUploadSuccess({ file, response }) {
+  onAsyncUploadSuccess(file, response) {
     if ($ctrl.onAsyncSuccess) {
       $ctrl.onAsyncSuccess({ response });
     }
