@@ -99,7 +99,7 @@ class UploadController {
       this.setNgModel(dataUrl);
     }
 
-    this.onSuccess({ file, response });
+    this.onSuccess(file, response);
   }
 
   onProcessFailure(error) {

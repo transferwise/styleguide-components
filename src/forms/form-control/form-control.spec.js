@@ -246,15 +246,17 @@ describe('FormControl', function() {
     });
 
     describe('when the upload triggers an async success', function() {
-      var response;
+      var succFile;
+      var succResponse;
       beforeEach(function() {
-        response = { data: {} };
-        TwUpload.bindings.onSuccess(response);
+        succResponse = { data: {} };
+        succFile = {};
+        TwUpload.bindings.onSuccess(succFile, succResponse);
         $scope.$apply();
       });
 
       it('should trigger the form control onAsyncSuccess handler', function() {
-        expect($scope.onAsyncSuccess).toHaveBeenCalledWith(response);
+        expect($scope.onAsyncSuccess).toHaveBeenCalledWith(succResponse);
       });
     });
 
