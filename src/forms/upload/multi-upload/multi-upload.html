@@ -12,7 +12,7 @@
     ></tw-upload-dropping>
   </div>
 
-  <div ng-if="$ctrl.files.length === 0" id="empty-processing-list" class="droppable-default-card text-xs-center p-t-3">
+  <div ng-if="$ctrl.files.length === 0" class="empty-processing-list droppable-default-card text-xs-center p-t-3">
     <div class="empty-screen">
       <!-- Display illustration as image or icon -->
       <div class="circle circle-sm m-b-3">
@@ -34,7 +34,7 @@
     </div>
   </div>
 
-  <div ng-if="$ctrl.files.length > 0" id="processing-list" class="droppable-default-card p-l-3">
+  <div ng-if="$ctrl.files.length > 0" class="droppable-default-card p-l-3 processing-list">
     <div ng-repeat="(index, file) in $ctrl.files" class="p-r-3" ng-class="{'last-item': $last}">
       <tw-upload-processing-mini
         name="$ctrl.name"

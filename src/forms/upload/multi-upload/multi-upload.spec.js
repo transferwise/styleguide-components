@@ -61,9 +61,9 @@ describe("multi-upload", () => {
 
     it("should render the default screen", () => {
       expect(
-        directiveElement.querySelector("#empty-processing-list")
+        directiveElement.querySelector(".empty-processing-list")
       ).toBeTruthy();
-      expect(directiveElement.querySelector("#processing-list")).toBeFalsy();
+      expect(directiveElement.querySelector(".processing-list")).toBeFalsy();
     });
 
     describe("On addition of new files", () => {
@@ -78,7 +78,7 @@ describe("multi-upload", () => {
 
         it("renders the list of processing files", () => {
           expect(
-            directiveElement.querySelector("#empty-processing-list")
+            directiveElement.querySelector(".empty-processing-list")
           ).toBeFalsy();
           expect(
             directiveElement.querySelectorAll(".processing-item").length
@@ -143,10 +143,10 @@ describe("multi-upload", () => {
 
           expect($scope.ngModel).toEqual([]);
           expect(
-            directiveElement.querySelector("#empty-processing-list")
+            directiveElement.querySelector(".empty-processing-list")
           ).toBeTruthy();
           expect(
-            directiveElement.querySelector("#processing-list")
+            directiveElement.querySelector(".processing-list")
           ).toBeFalsy();
         });
 
@@ -230,7 +230,7 @@ describe("multi-upload", () => {
 
     it("shows processing items in the list", () => {
       expect(
-        directiveElement.querySelector("#empty-processing-list")
+        directiveElement.querySelector(".empty-processing-list")
       ).toBeFalsy();
       expect(directiveElement.querySelectorAll(".processing-item").length).toBe(
         3
@@ -348,7 +348,7 @@ describe("multi-upload", () => {
 
     it("should be in the processing screen", () => {
       expect(
-        directiveElement.querySelector("#empty-processing-list")
+        directiveElement.querySelector(".empty-processing-list")
       ).toBeFalsy();
       expect(directiveElement.querySelectorAll(".processing-item").length).toBe(
         3

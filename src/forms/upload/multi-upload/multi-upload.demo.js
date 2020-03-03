@@ -53,12 +53,6 @@ function controller($scope) {
     { value: 'audio/*', label: 'Audio (audio/*)' }
   ];
 
-  this.sizes = [
-    { value: 'sm', label: 'Small' },
-    { value: 'md', label: 'Medium' },
-    { value: 'lg', label: 'Large' }
-  ];
-
   this.log = (message) => {
     console.log(message); // eslint-disable-line
   };

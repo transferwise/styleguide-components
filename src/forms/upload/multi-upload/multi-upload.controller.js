@@ -34,7 +34,7 @@ class Controller {
     this.files = [...this.files, ...files];
 
     this.$timeout(() => {
-      const objDiv = this.$element[0].querySelector('#processing-list');
+      const objDiv = this.$element[0].querySelector('.processing-list');
       if (objDiv) {
         objDiv.scrollTop = objDiv.scrollHeight;
       }
