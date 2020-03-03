@@ -52,6 +52,7 @@ class CameraCaptureController {
       this.$log.warn('getUserMedia() is not supported by your browser');
     }
 
+    this.overlayLoaded = false;
     this.overlayElement = this.$element[0].querySelector('#video-preview #overlay');
     this.displayCanvas = this.$element[0].querySelector('#video-preview #display-canvas');
     this.uploadCanvas = this.$element[0].querySelector('#video-preview #upload-canvas');
@@ -72,7 +73,6 @@ class CameraCaptureController {
   startLiveCamFlow() {
     this.$log.debug('----- Live cam flow start -----');
     this.captureButtonDisabled = true;
-    this.overlayLoaded = false;
     this.videoPlaying = false;
 
     // Display video component in full screen
@@ -89,12 +89,14 @@ class CameraCaptureController {
       .finally(() => {
         // After trying to acquire full screen, resolve video stream
         this.setScreenDimensions();
-        if (this.overlayElement.naturalHeight === 0 || this.overlayElement.naturalWidth === 0) {
-          this.$log.debug('Overlay has not loaded after full screen is acquired');
-          this.overlayElement.addEventListener('load', createOverlayOnLoadCallback(this));
-        } else {
-          this.$log.debug('Overlay has loaded before full screen is acquired');
-          createOverlayOnLoadCallback(this).call();
+        if (!this.overlayLoaded) { // Dont trigger overlay computation if already loaded
+          if (this.overlayElement.naturalHeight === 0 || this.overlayElement.naturalWidth === 0) {
+            this.$log.debug('Overlay has not loaded after full screen is acquired');
+            this.overlayElement.addEventListener('load', createOverlayOnLoadCallback(this));
+          } else {
+            this.$log.debug('Overlay has loaded before full screen is acquired');
+            createOverlayOnLoadCallback(this).call();
+          }
         }
         this.tryAcquireMediaStream()
           .then((stream) => {
@@ -205,14 +207,6 @@ class CameraCaptureController {
     this.onCancel();
   }
 
-  onCaptureBtnClickTest() {
-    if (this.video.classList.contains('display-mirror')) {
-      this.video.classList.remove('display-mirror');
-    } else {
-      this.video.classList.add('display-mirror');
-    }
-  }
-
   onCaptureBtnClick() {
     const {
       height, width,
@@ -315,13 +309,14 @@ function createOverlayOnLoadCallback($ctrl) {
         $ctrl.overlayElement.naturalHeight, $ctrl.overlayElement.naturalWidth
       );
 
-    $ctrl.overlayYOffset = overlayYOffset;
-    $ctrl.overlayXOffset = overlayXOffset;
-    $ctrl.overlayHeight = overlayHeight;
-    $ctrl.overlayWidth = overlayWidth;
+    $ctrl.$scope.$applyAsync(() => {
+      $ctrl.overlayYOffset = overlayYOffset;
+      $ctrl.overlayXOffset = overlayXOffset;
+      $ctrl.overlayHeight = overlayHeight;
+      $ctrl.overlayWidth = overlayWidth;
 
-    $ctrl.overlayLoaded = true;
-    $ctrl.$scope.$apply();
+      $ctrl.overlayLoaded = true;
+    });
   };
 }
 
@@ -338,13 +333,17 @@ function createVideoPlayCallback($ctrl) {
     if (this.videoHeight === 0 || this.videoWidth === 0) {
       // Video is not playing, listen for it to start
       this.addEventListener('playing', function videoPlayingCallback() {
-        assignVideoDimensions(this);
-        $ctrl.videoPlaying = true;
+        $ctrl.$scope.$applyAsync(() => {
+          $ctrl.videoPlaying = true;
+          assignVideoDimensions(this);
+        });
         this.removeEventListener('playing', videoPlayingCallback);
       });
     } else {
-      $ctrl.videoPlaying = true;
-      assignVideoDimensions(this);
+      $ctrl.$scope.$applyAsync(() => {
+        $ctrl.videoPlaying = true;
+        assignVideoDimensions(this);
+      });
     }
 
     function assignVideoDimensions(video) {
@@ -370,7 +369,6 @@ function createVideoPlayCallback($ctrl) {
       }
       $ctrl.videoHeight = videoHeightInPercentage;
       $ctrl.videoWidth = videoWidthInPercentage;
-      $ctrl.$scope.$apply();
     }
   };
 }
@@ -397,7 +395,9 @@ function createUploadCallback($ctrl) {
     }
     $ctrl.showVideoPreview = false;
     $ctrl.closeVideoStream();
-    $ctrl.onCapture({ file: blob });
+    $ctrl.$scope.$applyAsync(() => {
+      $ctrl.onCapture({ file: blob });
+    });
   };
 }
 

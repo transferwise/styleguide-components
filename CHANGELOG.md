@@ -2,6 +2,11 @@
 ## Multi upload component
 Add multi upload component
 
+# v5.0.2
+## Minor problem fixes for upload component
+Added async apply to some UI state changes in live upload component
+Minor fix to "upload success" callback's parameter routing
+
 # v5.0.1
 ## Update live upload component's display of overlay image
 Flip overlay horizontally if camera is user facing
