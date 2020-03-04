@@ -1,11 +1,9 @@
-<div id="multi-upload" class="well droppable p-r-0 p-l-0"
+<div class="well droppable p-r-0 p-l-0 p-t-1 p-b-0 multi-upload"
   tw-drop="$ctrl.onDrop(files)"
   tw-drag-enter="$ctrl.onDragEnter()"
   tw-drag-leave="$ctrl.onDragLeave()"
   ng-class="{'droppable-dropping': $ctrl.isDroppable}"
 >
-  <h4 class="page-header text-xs-left m-r-3 m-l-3 m-b-0">{{$ctrl.label}}</h4>
-
   <div class="droppable-dropping-card droppable-card">
     <tw-upload-dropping
       dropping-text="$ctrl.droppingText"
@@ -15,7 +13,7 @@
   <div ng-if="$ctrl.files.length === 0" class="empty-processing-list droppable-default-card text-xs-center p-t-3">
     <div class="empty-screen">
       <!-- Display illustration as image or icon -->
-      <div class="circle circle-sm m-b-3">
+      <div class="circle circle-sm m-b-3 m-t-3">
         <img
           ng-if="$ctrl.helpImage"
           ng-src="{{$ctrl.helpImage}}"
