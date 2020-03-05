@@ -110,31 +110,19 @@ function asyncSuccess(response, dataUrl, $ctrl) {
   $ctrl.$timeout(() => {
     $ctrl.isProcessing = false;
     $ctrl.isSuccess = true;
-  }, 3000);
-
-  // Allow a small amount of extra time before notifying external handlers
-  $ctrl.$timeout(() => {
     $ctrl.onSuccess({ file, dataUrl, id, response }); // eslint-disable-line
-  }, 3800);
-
-  // Reset after card is animated out
-  $ctrl.$timeout(() => {
-    $ctrl.processingState = 0;
-  }, 4500);
+  }, 3600);
 
   return dataUrl;
 }
-
 function asyncFailure(error, dataUrl, $ctrl) {
   // Start changing process indicator immediately
   $ctrl.processingState = -1;
-
   // Wait before updating text
   $ctrl.$timeout(() => {
     $ctrl.isProcessing = false;
     $ctrl.isError = true;
-  }, 3000);
-
+  }, 3600);
   // Allow a small amount of extra time before notifying external handlers
   $ctrl.$timeout(() => {
     $ctrl.onFailure({ error });

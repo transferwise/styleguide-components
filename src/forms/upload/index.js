@@ -11,18 +11,11 @@ import UploadButton from './upload-button';
 import CameraButton from './camera-button';
 
 import FileInput from './file-input.directive.js';
-
-import AsyncTasksConfig from '../../services/asyncTasksConfig';
-
-import AsyncFileReader from './services/async-file-reader.service.js';
-import AsyncFileSaver from './services/async-file-saver.service.js';
-import FileValidationService from './services/file-validation.service.js';
-
+import MultiUpload from './multi-upload';
 import DragAndDrop from '../drag-and-drop';
 
 export default angular
   .module('tw.styleguide.forms.upload', [
-    AsyncTasksConfig,
     CaptureCard,
     DroppingCard,
     ProcessingCard,
@@ -30,11 +23,9 @@ export default angular
     CameraCapture,
     UploadButton,
     CameraButton,
+    MultiUpload,
     DragAndDrop
   ])
   .directive('twFileInput', FileInput)
-  .service('AsyncFileReader', AsyncFileReader)
-  .service('AsyncFileSaver', AsyncFileSaver)
-  .service('FileValidationService', FileValidationService)
   .component('twUpload', Upload)
   .name;

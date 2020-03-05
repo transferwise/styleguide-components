@@ -26,4 +26,7 @@ class AsyncFileReader {
 
 AsyncFileReader.$inject = ['$q'];
 
-export default AsyncFileReader;
+export default angular
+  .module('tw.styleguide.forms.upload.file-reader', [])
+  .service('AsyncFileReader', AsyncFileReader)
+  .name;

@@ -1,4 +1,3 @@
-
 describe('given an upload component', () => {
   let $q;
   let $compile;
@@ -92,7 +91,7 @@ describe('given an upload component', () => {
     describe('after three seconds', () => {
       beforeEach(() => {
         deferred.resolve(base64url);
-        $timeout.flush(3000);
+        $timeout.flush(3800);
       });
 
       it('should not show the processing message', () => {

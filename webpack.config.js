@@ -84,5 +84,6 @@ module.exports = [{
   },
   externals: webpackExternals,
   module: webpackModule,
-  plugins: webpackPlugins
+  plugins: webpackPlugins,
+  devtool: 'inline-source-map'
 }];

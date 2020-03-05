@@ -1,6 +1,11 @@
-<label class="btn btn-primary"
+<label class="btn"
   ng-click="$ctrl.onButtonClick()"
-  ng-class="{ 'disabled': $ctrl.disabled }">
+  ng-class="{ 'disabled': $ctrl.disabled,
+              'btn-primary': !$ctrl.isSecondary,
+              'btn-default': $ctrl.isSecondary,
+              'btn-block': $ctrl.block,
+              'btn-sm': $ctrl.small
+            }">
   <span ng-if="$ctrl.label" ng-bind="$ctrl.label"></span>
   <span ng-if="!$ctrl.label" class="icon icon-upload m-r-0"></span>
   <span ng-if="!$ctrl.isLiveCameraUpload">

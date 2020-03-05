@@ -69,6 +69,7 @@ module.config(['$compileProvider', ($compileProvider) => {
       <li><a href="index.html#submit">Submit</a></li>
       <li><a href="index.html#telephone">Telephone</a></li>
       <li><a href="index.html#upload">Upload</a></li>
+      <li><a href="index.html#multi-upload-demo">Multi-upload</a></li>
       <li><a href="index.html#validation">Validation</a></li>
     </ul>
 

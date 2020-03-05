@@ -1,3 +1,5 @@
+@import '~bootstrap/less/variables';
+
 div.transparent-area {
     background-color: rgba(250, 250, 250, 0.9);
 }
@@ -23,5 +25,64 @@ div.transparent-area {
 @media (min-width: 576px) {
     p.first-error {
         min-height:72px;
+    }
+}
+
+@media only screen and (max-width: @screen-xs-max) {
+    .empty-processing-list {
+        height: 130px;
+    }
+
+    .processing-list {
+        min-height: 130px;
+    }
+}
+
+@media only screen and (min-width: @screen-xs-max) {
+    .multi-upload {
+        height: 375px;
+
+        .empty-screen {
+            padding-top: 40px;
+        }
+    }
+
+    .empty-processing-list, .processing-list {
+        height: 290px;
+    }
+}
+
+.processing-list {
+    overflow: auto;
+    border-bottom: 1px solid #e2e6e8;
+
+    .processing-item .media-body, .processing-item .media-right {
+        border-bottom: 1px solid #e2e6e8;
+    }
+
+    .last-item .processing-item .media-body, .last-item .processing-item .media-right {
+        border-bottom: 0;
+    }
+
+    .processing-item {
+        position: relative;
+        width: 100%;
+        
+        .vertical-center {
+            align-self: center;
+        }
+    }
+}
+
+.empty-processing-list {
+    display: flex;
+    justify-content: center;
+
+    .circle {
+        background-color: #d8f1fa;
+    }
+
+    .empty-screen {
+        align-self: center;
     }
 }

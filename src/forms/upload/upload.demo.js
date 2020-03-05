@@ -39,6 +39,11 @@ function controller($scope) {
   this.onStart = () => {
     this.log('File upload starting');
   };
+
+  this.onFinish = () => {
+    this.log('File upload finished');
+  };
+
   this.onSuccess = () => {
     this.log('File upload complete');
   };

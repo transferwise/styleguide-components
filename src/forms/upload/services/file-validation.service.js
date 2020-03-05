@@ -20,4 +20,7 @@ class FileValidationService {
   */
 }
 
-export default FileValidationService;
+export default angular
+  .module('tw.styleguide.forms.upload.validation-service', [])
+  .service('FileValidationService', FileValidationService)
+  .name;

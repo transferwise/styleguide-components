@@ -7,6 +7,9 @@ const UploadButton = {
   bindings: {
     name: '<',
     label: '<',
+    isSecondary: '<',
+    small: '<',
+    block: '<',
     accept: '<',
     model: '<',
     multiple: '<',

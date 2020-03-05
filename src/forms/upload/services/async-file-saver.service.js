@@ -42,4 +42,7 @@ function prepareHttpOptions($inputOptions) {
 
 AsyncFileSaver.$inject = ['$http'];
 
-export default AsyncFileSaver;
+export default angular
+  .module('tw.styleguide.forms.upload.file-saver', [])
+  .service('AsyncFileSaver', AsyncFileSaver)
+  .name;
