@@ -1,3 +1,7 @@
+# v5.1.1
+## Fix single file upload
+Fix for single file upload where the user has to click on the upload button again to start the upload
+
 # v5.1.0
 ## Multi upload component
 Add multi upload component

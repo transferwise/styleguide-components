@@ -28,6 +28,26 @@ describe('given an upload component', () => {
     });
   });
 
+  it('initially starts an interval to check for state changes', () => {
+    const template = " \
+    <tw-upload \
+      too-large-message='File is too large' \
+      processing-text='processing' \
+      success-text='success'\
+      failure-text='failure' \
+      on-start='onStart' \
+      on-success='onSuccess' \
+      on-failure='onFailure' \
+      on-cancel='onCancel' \
+      max-size='10'> \
+    </tw-upload>";  
+
+    directiveElement = getCompiledDirectiveElement($scope, template);
+    const processingElement = angular.element(directiveElement.querySelector('tw-process'));
+
+    expect(processingElement.isolateScope().$ctrl.interval).not.toEqual(null);
+  });
+
   describe('when a file is dropped', () => {
     let dropTarget;
     let deferred;
