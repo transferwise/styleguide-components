@@ -27,6 +27,10 @@ class Controller {
       throw new Error('Could not retrieve file');
     }
 
+    if (files.length === 0) {
+      return;
+    }
+
     if (this.onStart && this.areAllFilesProcessed()) {
       this.onStart();
     }

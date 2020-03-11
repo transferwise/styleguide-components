@@ -251,41 +251,7 @@ describe('given an upload component', () => {
     describe('when the timer has elapsed and the request failed', function() {
       beforeEach(function() {
         deferred.reject({ status:500 });
-        $timeout.flush(4100);
-      });
-
-      it('should not show the processing screen', function() {
-        expect(droppable.classList).not.toContain('droppable-processing');
-      });
-
-      it('should show the complete screen', function() {
-        expect(droppable.classList).toContain('droppable-complete');
-      });
-
-      it('should not show the failure message', function() {
-        expect(directiveElement.querySelector('.upload-failure-message')).toBeFalsy();
-      });
-
-      it('should bind base64url to the model', function() {
-        expect($scope.ngModel).toBe(base64url);
-      });
-
-      it('should call the onSuccess handler', function() {
-        expect($scope.onSuccess).toHaveBeenCalled();
-      });
-
-      it('should call not the onFailure handler', function() {
-        expect($scope.onFailure).not.toHaveBeenCalled();
-      });
-    });
-
-    describe('when the timer has elapsed and the request returns 422', function() {
-      beforeEach(function() {
-        deferred.reject({
-          status: 422,
-          data: { message: "Sorry, unreadable", errors: ["Too blurry"] }
-        });
-        $timeout.flush(4100);
+        $timeout.flush(4200);
       });
 
       it('should not remain on the processing screen', function() {
@@ -300,11 +266,11 @@ describe('given an upload component', () => {
         expect(directiveElement.querySelector('.upload-failure-message')).toBeTruthy();
       });
 
-      it('should not bind anything to the model', function() {
-        expect($scope.ngModel).toBe(null);
+      it('should NOT bind base64url to the model', function() {
+        expect($scope.ngModel).not.toBe(base64url);
       });
 
-      it('should not call the onSuccess handler', function() {
+      it('should NOT call the onSuccess handler', function() {
         expect($scope.onSuccess).not.toHaveBeenCalled();
       });
 

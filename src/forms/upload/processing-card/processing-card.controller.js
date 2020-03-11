@@ -52,16 +52,7 @@ class Controller {
       // Post file now
       this.asyncFileRead(file)
         .then(dataUrl => this.asyncFileSave(file)
-          .then(response => asyncSuccess(response, dataUrl, this))
-          .catch((error) => {
-            if (error.status === 422) {
-              // Note: Only if async action returns 422, do we want to process that error
-              asyncFailure(error, dataUrl, this);
-            } else {
-              // Note: If async action fails, we continue with original flow
-              asyncSuccess(null, dataUrl, this);
-            }
-          }))
+          .then(response => asyncSuccess(response, dataUrl, this)))
         .catch(error => asyncFailure(error, null, this));
     } else {
       // Post on form submit

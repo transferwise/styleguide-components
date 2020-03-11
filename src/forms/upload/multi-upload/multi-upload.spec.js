@@ -301,6 +301,23 @@ describe("multi-upload", () => {
             base64url
           ]);
         });
+
+        describe('when the user clicks cancel on file browser', () => {
+          beforeEach(() => {
+            const fakeDropEvent = new CustomEvent("drop");
+
+            // simulate cancel
+            fakeDropEvent.dataTransfer = { files: [] };
+  
+            dropTarget.dispatchEvent(fakeDropEvent);
+  
+            $timeout.flush(5000);      
+          });
+
+          it('calls onStart once from previous drop event ONLY', () => {
+            expect($scope.onStart.calls.count()).toBe(1);
+          });
+        });
       });
     });
   });
@@ -521,7 +538,7 @@ describe("multi-upload", () => {
         });
 
         it("returns a model with NO IDs", () => {
-          expect($scope.ngModel).toEqual([]);
+          expect($scope.ngModel).toEqual(null);
         });
       });
     });
