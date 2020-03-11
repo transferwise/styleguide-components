@@ -301,6 +301,23 @@ describe("multi-upload", () => {
             base64url
           ]);
         });
+
+        fdescribe('when the user clicks cancel on file browser', () => {
+          beforeEach(() => {
+            const fakeDropEvent = new CustomEvent("drop");
+
+            // simulate cancel
+            fakeDropEvent.dataTransfer = { files: [] };
+  
+            dropTarget.dispatchEvent(fakeDropEvent);
+  
+            $timeout.flush(5000);      
+          });
+
+          it('calls onStart once from previous drop event ONLY', () => {
+            expect($scope.onStart.calls.count()).toBe(1);
+          });
+        });
       });
     });
   });
