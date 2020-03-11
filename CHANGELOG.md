@@ -1,4 +1,4 @@
-# v5.2.0
+# v5.1.2
 ## Remove failure for upload component on 422 only
 Fail on any error status instead of 422 only for upload components. Multi-file upload bug fix when user clicks cancel after uploading.
 
