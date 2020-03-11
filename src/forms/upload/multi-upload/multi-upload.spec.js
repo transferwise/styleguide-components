@@ -538,7 +538,7 @@ describe("multi-upload", () => {
         });
 
         it("returns a model with NO IDs", () => {
-          expect($scope.ngModel).toEqual([]);
+          expect($scope.ngModel).toEqual(null);
         });
       });
     });
