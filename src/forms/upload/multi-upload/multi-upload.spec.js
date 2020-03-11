@@ -302,7 +302,7 @@ describe("multi-upload", () => {
           ]);
         });
 
-        fdescribe('when the user clicks cancel on file browser', () => {
+        describe('when the user clicks cancel on file browser', () => {
           beforeEach(() => {
             const fakeDropEvent = new CustomEvent("drop");
 
