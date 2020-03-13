@@ -1,3 +1,7 @@
+# v5.1.3
+## Wire errors from backend to multi-file upload
+Errors coming back from persistAsync response are shown in multi-file upload. Add tooLargeMessage to multi-file upload as well.
+
 # v5.1.2
 ## Remove failure for upload component on 422 only
 Fail on any error status instead of 422 only for upload components. Multi-file upload bug fix when user clicks cancel after uploading.
