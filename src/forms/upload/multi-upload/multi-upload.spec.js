@@ -27,6 +27,7 @@ describe("multi-upload", () => {
       $q = $injector.get("$q");
       AsyncFileReader = $injector.get("AsyncFileReader");
       AsyncFileSaver = $injector.get("AsyncFileSaver");
+      FileValidationService = $injector.get("FileValidationService");
     });
   });
 
@@ -45,6 +46,7 @@ describe("multi-upload", () => {
                 processing-text='processing' \
                 success-text='success'\
                 failure-text='failure' \
+                too-large-message='TOO LARGE!' \
                 max-size='10'> \
             </tw-multi-upload>";
 
@@ -182,6 +184,55 @@ describe("multi-upload", () => {
           $timeout.flush(4500);
 
           expect($scope.onFinish).toHaveBeenCalled();
+        });
+
+        it('displays the failure text from the server if one exists', () => {
+          deferred.reject({
+            status: 500,
+            data: { message: "Message from the server side!"}
+          });
+          $timeout.flush(4500);
+
+          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').innerText;
+
+          expect(errorMessage).toBe('Message from the server side!');
+        });
+
+        it('displays the default failure text if the server does not return one', () => {
+          deferred.reject({
+            status: 500,
+            data: {}
+          });
+          $timeout.flush(4500);
+
+          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').innerText;
+
+          expect(errorMessage).toBe('failure');
+        });
+      });
+
+      describe('When it fails due to file being too large', () => {
+        beforeEach(() => {
+          spyOn(FileValidationService, 'isSmallerThanMaxSize').and.returnValue(false);
+
+          dropTarget = directiveElement.querySelector(".droppable");
+
+          const fakeDropEvent = new CustomEvent("drop");
+          fakeDropEvent.dataTransfer = { files: [{ size: 2 }, { size: 5 }] };
+          dropTarget.dispatchEvent(fakeDropEvent);
+        });
+
+        it('displays the too large message', () => {
+          deferred.reject({
+            status: 500,
+            data: {}
+          });
+
+          $timeout.flush(4500);
+
+          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').innerText;
+
+          expect(errorMessage).toBe('TOO LARGE!');
         });
       });
     });

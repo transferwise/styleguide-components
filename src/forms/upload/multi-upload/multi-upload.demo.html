@@ -36,7 +36,6 @@
         cancel-text="{{$ctrl.cancelText}}"
 
         too-large-message="{{$ctrl.tooLargeMessage}}"
-        error-message="{{$ctrl.errorMessage}}"
 
         dropping-text="{{$ctrl.droppingText}}"
         processing-text="{{$ctrl.processingText}}"
@@ -64,18 +63,17 @@
   wrong-type-text="{{$ctrl.wrongTypeMessage}}"</span><span ng-if="$ctrl.maxSize">
   max-size="{{$ctrl.maxSize}}"
   too-large-message="{{$ctrl.tooLargeMessage}}"</span><span ng-if="$ctrl.droppingText">
-  processing-text="{{$ctrl.droppingText}}"</span><span ng-if="$ctrl.processingText">
+  dropping-text="{{$ctrl.droppingText}}"</span><span ng-if="$ctrl.processingText">
   processing-text="{{$ctrl.processingText}}"</span><span ng-if="$ctrl.successText">
-  success-text="{{$ctrl.successText}}"</span><span ng-if="$ctrl.failureText">
-  failure-text="{{$ctrl.failureText}}"</span><span ng-if="$ctrl.httpOptions">
+  success-text="{{$ctrl.successText}}"</span><span ng-if="$ctrl.httpOptions">
   http-options="{{$ctrl.httpOptions}}"</span><span ng-if="$ctrl.errorMessage">
-  error-message="{{$ctrl.errorMessage}}"</span>
+  error-message="{{$ctrl.errorMessage}}"</span><span ng-if="$ctrl.secondaryButtonText">
+  secondary-button-text="{{$ctrl.secondaryButtonText}}"</span>
   on-start="$ctrl.onStart"
   on-finish="$ctrl.onFinish"
   </span><span ng-if="$ctrl.source">
   source="{{$ctrl.source}}"</span><span ng-if="$ctrl.ngDisabled">
-  ng-disabled="{{$ctrl.ngDisabled}}"</span><span ng-if="$ctrl.secondaryButtonText">
-  secondary-button-text="{{$ctrl.secondaryButtonText}}"</span>&gt;
+  ng-disabled="{{$ctrl.ngDisabled}}"</span>&gt;
 &lt;/tw-multi-upload&gt;
 </pre>
   </div>

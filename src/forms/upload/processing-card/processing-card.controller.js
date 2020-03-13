@@ -43,7 +43,7 @@ class Controller {
       this.validationMessages = [this.tooLargeMessage];
       asyncFailure({
         status: 413,
-        statusText: 'Request Entity Too Large'
+        data: { message: this.tooLargeMessage }
       }, null, this);
       return;
     }
@@ -109,6 +109,8 @@ function asyncSuccess(response, dataUrl, $ctrl) {
 function asyncFailure(error, dataUrl, $ctrl) {
   // Start changing process indicator immediately
   $ctrl.processingState = -1;
+  // use the server error message if one exists, else default to the provided error message
+  $ctrl.error = (error && error.data && error.data.message) || $ctrl.errorMessage;
   // Wait before updating text
   $ctrl.$timeout(() => {
     $ctrl.isProcessing = false;
