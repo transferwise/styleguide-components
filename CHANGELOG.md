@@ -1,6 +1,7 @@
-# v5.1.3
-## Wire errors from backend to multi-file upload
-Errors coming back from persistAsync response are shown in multi-file upload. Add tooLargeMessage to multi-file upload as well.
+# v5.2.0
+## Add onFailure callback when file fails to upload for multi-file upload
+onFailure is now called whenever a file fails to upload with an error object. Renamed 'secondaryButtonText' to 'addMoreButtonText'.
+
 
 # v5.1.2
 ## Remove failure for upload component on 422 only

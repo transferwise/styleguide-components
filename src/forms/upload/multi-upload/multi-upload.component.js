@@ -14,7 +14,7 @@ const Component = {
     icon: '@', // illustration in icon shown in upload box
 
     buttonText: '@', // Button text shown in default state
-    secondaryButtonText: '@', // Button text shown in processing state
+    addMoreButtonText: '@', // Button text shown in processing state
 
     droppingText: '@', // Text shown when hovering with a file
     processingText: '@', // Text shown while processing/uploading

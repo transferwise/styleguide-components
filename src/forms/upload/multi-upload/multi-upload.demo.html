@@ -33,7 +33,7 @@
         placeholder="{{$ctrl.placeholder}}"
 
         button-text="{{$ctrl.buttonText}}"
-        secondary-button-text="{{$ctrl.secondaryButtonText}}"
+        add-more-button-text="{{$ctrl.addMoreButtonText}}"
         cancel-text="{{$ctrl.cancelText}}"
 
         too-large-message="{{$ctrl.tooLargeMessage}}"
@@ -69,8 +69,8 @@
   processing-text="{{$ctrl.processingText}}"</span><span ng-if="$ctrl.successText">
   success-text="{{$ctrl.successText}}"</span><span ng-if="$ctrl.httpOptions">
   http-options="{{$ctrl.httpOptions}}"</span><span ng-if="$ctrl.errorMessage">
-  error-message="{{$ctrl.errorMessage}}"</span><span ng-if="$ctrl.secondaryButtonText">
-  secondary-button-text="{{$ctrl.secondaryButtonText}}"</span>
+  error-message="{{$ctrl.errorMessage}}"</span><span ng-if="$ctrl.addMoreButtonText">
+  add-more-button-text="{{$ctrl.addMoreButtonText}}"</span>
   on-start="$ctrl.onStart"
   on-finish="$ctrl.onFinish"
   on-failure="$ctrl.onFailure(error)"
@@ -114,11 +114,11 @@
         <input type="text" class="form-control" ng-model="$ctrl.buttonText" />
       </div>
 
-      <div class="form-group" ng-init="$ctrl.secondaryButtonText = 'Add more files'">
+      <div class="form-group" ng-init="$ctrl.addMoreButtonText = 'Add more files'">
         <label class="control-label">
-          Secondary button text
+          Add more button text
         </label>
-        <input type="text" class="form-control" ng-model="$ctrl.secondaryButtonText" />
+        <input type="text" class="form-control" ng-model="$ctrl.addMoreButtonText" />
       </div>
     
       <div class="form-group">
