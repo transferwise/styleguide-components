@@ -15,6 +15,7 @@
 <ul>
   <li><p><code>on-start()</code> - fired when we start processing the files. If more files are added whilst files are still being processed the event is not fired.</p></li>
   <li><p><code>on-finish()</code> - fired when all files which are in the processing screen have finished. If http-options are passed then the finish event is fired when all the files have been uploaded to the server.</li>
+  <li><p><code>on-failure(error)</code> - fired when a file has failed. The error is available in which an error message can be extracted and passed back to the component as failure-text.</li>
 </ul>
 
 <form action="/file" method="POST" enctype="multipart/form-data">
@@ -44,6 +45,7 @@
 
         on-start="$ctrl.onStart()"
         on-finish="$ctrl.onFinish()"
+        on-failure="$ctrl.onFailure(error)"
 
         http-options="$ctrl.httpOptions"
         ng-disabled="$ctrl.ngDisabled"
@@ -71,6 +73,7 @@
   secondary-button-text="{{$ctrl.secondaryButtonText}}"</span>
   on-start="$ctrl.onStart"
   on-finish="$ctrl.onFinish"
+  on-failure="$ctrl.onFailure(error)"
   </span><span ng-if="$ctrl.source">
   source="{{$ctrl.source}}"</span><span ng-if="$ctrl.ngDisabled">
   ng-disabled="{{$ctrl.ngDisabled}}"</span>&gt;

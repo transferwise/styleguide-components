@@ -70,6 +70,10 @@ class Controller {
   onProcessFailure(index, file, error) {
     this.files[index].error = error;
 
+    if (this.onFailure) {
+      this.onFailure({ error });
+    }
+
     if (this.onFinish && this.areAllFilesProcessed()) {
       this.onFinish();
     }

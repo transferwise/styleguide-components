@@ -43,6 +43,7 @@ describe("multi-upload", () => {
                 ng-model='ngModel' \
                 on-start='onStart()' \
                 on-finish='onFinish()' \
+                on-failure='onFailure(error)'\
                 processing-text='processing' \
                 success-text='success'\
                 failure-text='failure' \
@@ -54,6 +55,7 @@ describe("multi-upload", () => {
       $scope.ngChange = jasmine.createSpy("ngChange");
       $scope.onStart = jasmine.createSpy("onStart");
       $scope.onFinish = jasmine.createSpy("onFinish");
+      $scope.onFailure = jasmine.createSpy("onFailure");
 
       deferred = $q.defer();
       spyOn(AsyncFileReader, "read").and.returnValue(deferred.promise);
@@ -186,33 +188,25 @@ describe("multi-upload", () => {
           expect($scope.onFinish).toHaveBeenCalled();
         });
 
-        it('displays the failure text from the server if one exists', () => {
+        it('calls onFailure', () => {
           deferred.reject({
-            status: 500,
-            data: { message: "Message from the server side!"}
+            status: 422,
+            data: { message: "Sorry unreadable", errors: ["Too blurry"] }
           });
-          $timeout.flush(4500);
+          $timeout.flush(4500);    
 
-          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').innerText;
-
-          expect(errorMessage).toBe('Message from the server side!');
-        });
-
-        it('displays the default failure text if the server does not return one', () => {
-          deferred.reject({
-            status: 500,
-            data: {}
-          });
-          $timeout.flush(4500);
-
-          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').innerText;
-
-          expect(errorMessage).toBe('failure');
+          expect($scope.onFailure).toHaveBeenCalledWith({
+            status: 422,
+            data: { message: "Sorry unreadable", errors: ["Too blurry"] }
+          })
         });
       });
 
       describe('When it fails due to file being too large', () => {
         beforeEach(() => {
+          $scope.onFailure = (error) => {
+            angular.element(directiveElement).isolateScope().$ctrl.failureText = error.data.message;
+          };
           spyOn(FileValidationService, 'isSmallerThanMaxSize').and.returnValue(false);
 
           dropTarget = directiveElement.querySelector(".droppable");

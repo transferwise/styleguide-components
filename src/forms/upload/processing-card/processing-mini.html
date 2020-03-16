@@ -11,7 +11,7 @@
         <small class="m-b-0 text-ellipsis file-name"><strong>{{ $ctrl.file.name }}</strong></small>
         <small class="m-b-0 text-ellipsis tiny">
           <span ng-if="$ctrl.isProcessing">{{ $ctrl.processingMessage }}</span>
-          <span ng-if="$ctrl.isError">{{ $ctrl.error }}</span>
+          <span ng-if="$ctrl.isError">{{ $ctrl.errorMessage }}</span>
           <span ng-if="$ctrl.isSuccess">{{ $ctrl.successMessage }}</span>
         </small>
       </div>

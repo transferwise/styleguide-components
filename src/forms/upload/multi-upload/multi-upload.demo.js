@@ -10,7 +10,7 @@ class AsyncFileSaverMock {
   save(fieldName, file, httpOptions) {
     if (httpOptions.url === '404') {
       return this.$q.reject({
-        data: { message: 'Error message from server' }
+        data: {}
       });
     }
 
@@ -48,6 +48,10 @@ function controller($scope) {
   $ctrl.successText = 'Upload complete!';
   $ctrl.failureText = 'Upload failed!';
   $ctrl.secondaryButtonText = 'Add more files';
+
+  $ctrl.onFailure = (error) => {
+    $ctrl.failureText = error.data.message || $ctrl.failureText;
+  };
 
   this.makeFancy = () => {};
 

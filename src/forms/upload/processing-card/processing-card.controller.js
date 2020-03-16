@@ -109,8 +109,7 @@ function asyncSuccess(response, dataUrl, $ctrl) {
 function asyncFailure(error, dataUrl, $ctrl) {
   // Start changing process indicator immediately
   $ctrl.processingState = -1;
-  // use the server error message if one exists, else default to the provided error message
-  $ctrl.error = (error && error.data && error.data.message) || $ctrl.errorMessage;
+
   // Wait before updating text
   $ctrl.$timeout(() => {
     $ctrl.isProcessing = false;
@@ -119,7 +118,7 @@ function asyncFailure(error, dataUrl, $ctrl) {
   // Allow a small amount of extra time before notifying external handlers
   $ctrl.$timeout(() => {
     $ctrl.onFailure({ error });
-  }, 4100); // 3500); TODO for some reason more time is needed
+  }, 3600); // 3500); TODO for some reason more time is needed
 
   return error;
 }
