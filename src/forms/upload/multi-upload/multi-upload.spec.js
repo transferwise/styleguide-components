@@ -44,6 +44,7 @@ describe("multi-upload", () => {
                 on-start='onStart()' \
                 on-finish='onFinish()' \
                 on-failure='onFailure(error)'\
+                response-error-extractor='responseErrorExtractor(error)'\
                 processing-text='processing' \
                 success-text='success'\
                 failure-text='failure' \
@@ -56,6 +57,7 @@ describe("multi-upload", () => {
       $scope.onStart = jasmine.createSpy("onStart");
       $scope.onFinish = jasmine.createSpy("onFinish");
       $scope.onFailure = jasmine.createSpy("onFailure");
+      $scope.responseErrorExtractor = jasmine.createSpy("responseErrorExtractor");
 
       deferred = $q.defer();
       spyOn(AsyncFileReader, "read").and.returnValue(deferred.promise);
@@ -200,12 +202,51 @@ describe("multi-upload", () => {
             data: { message: "Sorry unreadable", errors: ["Too blurry"] }
           })
         });
+
+        it('calls responseErrorExtractor', () => {
+          deferred.reject({
+            status: 422,
+            data: { message: "Sorry unreadable", errors: ["Too blurry"] }
+          });
+          $timeout.flush(4500);    
+
+          expect($scope.responseErrorExtractor).toHaveBeenCalledWith({
+            status: 422,
+            data: { message: "Sorry unreadable", errors: ["Too blurry"] }
+          })
+        });
+
+        it('displays the error message extracted by the responseErrorExtractor', () => {
+          $scope.responseErrorExtractor.and.returnValue('a random error');
+
+          deferred.reject({
+            status: 422,
+            data: { message: "Sorry unreadable", errors: ["Too blurry"] }
+          });
+          $timeout.flush(4500);
+
+          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').innerText;
+          expect(errorMessage).toBe('a random error');
+        });
+
+        it('displays the failureText provided if a falsy value is returned from the responseErrorExtractor', () => {
+          $scope.responseErrorExtractor.and.returnValue(null);
+
+          deferred.reject({
+            status: 422,
+            data: { message: "Sorry unreadable", errors: ["Too blurry"] }
+          });
+          $timeout.flush(4500);
+
+          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').innerText;
+          expect(errorMessage).toBe('failure');
+        });
       });
 
       describe('When it fails due to file being too large', () => {
         beforeEach(() => {
-          $scope.onFailure = (error) => {
-            angular.element(directiveElement).isolateScope().$ctrl.failureText = error.data.message;
+          $scope.responseErrorExtractor = (error) => {
+            return error.data.message;
           };
           spyOn(FileValidationService, 'isSmallerThanMaxSize').and.returnValue(false);
 
