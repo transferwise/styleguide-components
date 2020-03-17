@@ -1,3 +1,8 @@
+# v5.2.0
+## Add onFailure callback when file fails to upload for multi-file upload
+onFailure is now called whenever a file fails to upload with an error object. Renamed 'secondaryButtonText' to 'addMoreButtonText'.
+
+
 # v5.1.2
 ## Remove failure for upload component on 422 only
 Fail on any error status instead of 422 only for upload components. Multi-file upload bug fix when user clicks cancel after uploading.

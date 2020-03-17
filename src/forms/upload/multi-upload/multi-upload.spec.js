@@ -27,6 +27,7 @@ describe("multi-upload", () => {
       $q = $injector.get("$q");
       AsyncFileReader = $injector.get("AsyncFileReader");
       AsyncFileSaver = $injector.get("AsyncFileSaver");
+      FileValidationService = $injector.get("FileValidationService");
     });
   });
 
@@ -42,9 +43,11 @@ describe("multi-upload", () => {
                 ng-model='ngModel' \
                 on-start='onStart()' \
                 on-finish='onFinish()' \
+                on-failure='onFailure(error)'\
                 processing-text='processing' \
                 success-text='success'\
                 failure-text='failure' \
+                too-large-message='TOO LARGE!' \
                 max-size='10'> \
             </tw-multi-upload>";
 
@@ -52,6 +55,7 @@ describe("multi-upload", () => {
       $scope.ngChange = jasmine.createSpy("ngChange");
       $scope.onStart = jasmine.createSpy("onStart");
       $scope.onFinish = jasmine.createSpy("onFinish");
+      $scope.onFailure = jasmine.createSpy("onFailure");
 
       deferred = $q.defer();
       spyOn(AsyncFileReader, "read").and.returnValue(deferred.promise);
@@ -182,6 +186,47 @@ describe("multi-upload", () => {
           $timeout.flush(4500);
 
           expect($scope.onFinish).toHaveBeenCalled();
+        });
+
+        it('calls onFailure', () => {
+          deferred.reject({
+            status: 422,
+            data: { message: "Sorry unreadable", errors: ["Too blurry"] }
+          });
+          $timeout.flush(4500);    
+
+          expect($scope.onFailure).toHaveBeenCalledWith({
+            status: 422,
+            data: { message: "Sorry unreadable", errors: ["Too blurry"] }
+          })
+        });
+      });
+
+      describe('When it fails due to file being too large', () => {
+        beforeEach(() => {
+          $scope.onFailure = (error) => {
+            angular.element(directiveElement).isolateScope().$ctrl.failureText = error.data.message;
+          };
+          spyOn(FileValidationService, 'isSmallerThanMaxSize').and.returnValue(false);
+
+          dropTarget = directiveElement.querySelector(".droppable");
+
+          const fakeDropEvent = new CustomEvent("drop");
+          fakeDropEvent.dataTransfer = { files: [{ size: 2 }, { size: 5 }] };
+          dropTarget.dispatchEvent(fakeDropEvent);
+        });
+
+        it('displays the too large message', () => {
+          deferred.reject({
+            status: 500,
+            data: {}
+          });
+
+          $timeout.flush(4500);
+
+          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').innerText;
+
+          expect(errorMessage).toBe('TOO LARGE!');
         });
       });
     });

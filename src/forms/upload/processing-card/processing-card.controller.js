@@ -43,7 +43,7 @@ class Controller {
       this.validationMessages = [this.tooLargeMessage];
       asyncFailure({
         status: 413,
-        statusText: 'Request Entity Too Large'
+        data: { message: this.tooLargeMessage }
       }, null, this);
       return;
     }
@@ -109,6 +109,7 @@ function asyncSuccess(response, dataUrl, $ctrl) {
 function asyncFailure(error, dataUrl, $ctrl) {
   // Start changing process indicator immediately
   $ctrl.processingState = -1;
+
   // Wait before updating text
   $ctrl.$timeout(() => {
     $ctrl.isProcessing = false;
@@ -117,7 +118,7 @@ function asyncFailure(error, dataUrl, $ctrl) {
   // Allow a small amount of extra time before notifying external handlers
   $ctrl.$timeout(() => {
     $ctrl.onFailure({ error });
-  }, 4100); // 3500); TODO for some reason more time is needed
+  }, 3600); // 3500); TODO for some reason more time is needed
 
   return error;
 }

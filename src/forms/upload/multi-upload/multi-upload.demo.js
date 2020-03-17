@@ -7,7 +7,13 @@ class AsyncFileSaverMock {
     this.$q = $q;
   }
 
-  save() {
+  save(fieldName, file, httpOptions) {
+    if (httpOptions.url === '404') {
+      return this.$q.reject({
+        data: {}
+      });
+    }
+
     return this.$q.resolve({
       data: {
         id: 1234,
@@ -41,7 +47,11 @@ function controller($scope) {
   $ctrl.droppingText = 'Drag files to upload';
   $ctrl.successText = 'Upload complete!';
   $ctrl.failureText = 'Upload failed!';
-  $ctrl.secondaryButtonText = 'Add more files';
+  $ctrl.addMoreButtonText = 'Add more files';
+
+  $ctrl.onFailure = (error) => {
+    $ctrl.failureText = error.data.message || $ctrl.failureText;
+  };
 
   this.makeFancy = () => {};
 

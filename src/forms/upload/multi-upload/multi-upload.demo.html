@@ -15,6 +15,7 @@
 <ul>
   <li><p><code>on-start()</code> - fired when we start processing the files. If more files are added whilst files are still being processed the event is not fired.</p></li>
   <li><p><code>on-finish()</code> - fired when all files which are in the processing screen have finished. If http-options are passed then the finish event is fired when all the files have been uploaded to the server.</li>
+  <li><p><code>on-failure(error)</code> - fired when a file has failed. The error is available in which an error message can be extracted and passed back to the component as failure-text.</li>
 </ul>
 
 <form action="/file" method="POST" enctype="multipart/form-data">
@@ -32,11 +33,10 @@
         placeholder="{{$ctrl.placeholder}}"
 
         button-text="{{$ctrl.buttonText}}"
-        secondary-button-text="{{$ctrl.secondaryButtonText}}"
+        add-more-button-text="{{$ctrl.addMoreButtonText}}"
         cancel-text="{{$ctrl.cancelText}}"
 
         too-large-message="{{$ctrl.tooLargeMessage}}"
-        error-message="{{$ctrl.errorMessage}}"
 
         dropping-text="{{$ctrl.droppingText}}"
         processing-text="{{$ctrl.processingText}}"
@@ -45,6 +45,7 @@
 
         on-start="$ctrl.onStart()"
         on-finish="$ctrl.onFinish()"
+        on-failure="$ctrl.onFailure(error)"
 
         http-options="$ctrl.httpOptions"
         ng-disabled="$ctrl.ngDisabled"
@@ -64,18 +65,18 @@
   wrong-type-text="{{$ctrl.wrongTypeMessage}}"</span><span ng-if="$ctrl.maxSize">
   max-size="{{$ctrl.maxSize}}"
   too-large-message="{{$ctrl.tooLargeMessage}}"</span><span ng-if="$ctrl.droppingText">
-  processing-text="{{$ctrl.droppingText}}"</span><span ng-if="$ctrl.processingText">
+  dropping-text="{{$ctrl.droppingText}}"</span><span ng-if="$ctrl.processingText">
   processing-text="{{$ctrl.processingText}}"</span><span ng-if="$ctrl.successText">
-  success-text="{{$ctrl.successText}}"</span><span ng-if="$ctrl.failureText">
-  failure-text="{{$ctrl.failureText}}"</span><span ng-if="$ctrl.httpOptions">
+  success-text="{{$ctrl.successText}}"</span><span ng-if="$ctrl.httpOptions">
   http-options="{{$ctrl.httpOptions}}"</span><span ng-if="$ctrl.errorMessage">
-  error-message="{{$ctrl.errorMessage}}"</span>
+  error-message="{{$ctrl.errorMessage}}"</span><span ng-if="$ctrl.addMoreButtonText">
+  add-more-button-text="{{$ctrl.addMoreButtonText}}"</span>
   on-start="$ctrl.onStart"
   on-finish="$ctrl.onFinish"
+  on-failure="$ctrl.onFailure(error)"
   </span><span ng-if="$ctrl.source">
   source="{{$ctrl.source}}"</span><span ng-if="$ctrl.ngDisabled">
-  ng-disabled="{{$ctrl.ngDisabled}}"</span><span ng-if="$ctrl.secondaryButtonText">
-  secondary-button-text="{{$ctrl.secondaryButtonText}}"</span>&gt;
+  ng-disabled="{{$ctrl.ngDisabled}}"</span>&gt;
 &lt;/tw-multi-upload&gt;
 </pre>
   </div>
@@ -113,11 +114,11 @@
         <input type="text" class="form-control" ng-model="$ctrl.buttonText" />
       </div>
 
-      <div class="form-group" ng-init="$ctrl.secondaryButtonText = 'Add more files'">
+      <div class="form-group" ng-init="$ctrl.addMoreButtonText = 'Add more files'">
         <label class="control-label">
-          Secondary button text
+          Add more button text
         </label>
-        <input type="text" class="form-control" ng-model="$ctrl.secondaryButtonText" />
+        <input type="text" class="form-control" ng-model="$ctrl.addMoreButtonText" />
       </div>
     
       <div class="form-group">

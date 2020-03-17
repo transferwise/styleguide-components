@@ -7,7 +7,13 @@ class AsyncFileSaverMock {
     this.$q = $q;
   }
 
-  save() {
+  save(fieldName, file, httpOptions) {
+    if (httpOptions.url === '404') {
+      return this.$q.reject({
+        data: { message: 'Error message from server' }
+      });
+    }
+
     return this.$q.resolve({
       data: {
         id: 1234,
