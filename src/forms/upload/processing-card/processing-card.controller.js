@@ -110,6 +110,10 @@ function asyncFailure(error, dataUrl, $ctrl) {
   // Start changing process indicator immediately
   $ctrl.processingState = -1;
 
+  if ($ctrl.responseErrorExtractor) {
+    $ctrl.errorMessage = $ctrl.responseErrorExtractor({ error }) || $ctrl.errorMessage;
+  }
+
   // Wait before updating text
   $ctrl.$timeout(() => {
     $ctrl.isProcessing = false;

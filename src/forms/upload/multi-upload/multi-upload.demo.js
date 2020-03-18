@@ -49,9 +49,7 @@ function controller($scope) {
   $ctrl.failureText = 'Upload failed!';
   $ctrl.addMoreButtonText = 'Add more files';
 
-  $ctrl.onFailure = (error) => {
-    $ctrl.failureText = error.data.message || $ctrl.failureText;
-  };
+  $ctrl.responseErrorExtractor = error => error.data.message || $ctrl.failureText;
 
   this.makeFancy = () => {};
 

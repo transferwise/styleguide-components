@@ -6,6 +6,7 @@ export default {
   onSuccess: '&',
   onFailure: '&',
   onCancel: '&',
+  responseErrorExtractor: '&',
 
   maxSize: '<',
   accept: '<',

@@ -29,6 +29,7 @@ const Component = {
     onStart: '&',
     onFinish: '&',
     onFailure: '&',
+    responseErrorExtractor: '&',
 
     accept: '@',
     httpOptions: '<',

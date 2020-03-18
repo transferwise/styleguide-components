@@ -1,3 +1,7 @@
+# v5.3.0
+## Add responseErrorExtractor to multi file upload
+responseErrorExtractor now called whenever a file fails to upload with an error object.
+
 # v5.2.0
 ## Add onFailure callback when file fails to upload for multi-file upload
 onFailure is now called whenever a file fails to upload with an error object. Renamed 'secondaryButtonText' to 'addMoreButtonText'.
