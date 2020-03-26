@@ -1,3 +1,7 @@
+# v5.3.1
+## twSelect calls ngChange when the ngModel and ngRequired are set
+Fixes a bug when ngRequired is set to true and a valid ngModel is passed to the component, but parent component was not notified via ngChange callback.
+
 # v5.3.0
 ## Add responseErrorExtractor to multi file upload
 responseErrorExtractor now called whenever a file fails to upload with an error object.
