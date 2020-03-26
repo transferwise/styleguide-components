@@ -8,6 +8,7 @@ const Select = {
   transclude: true,
   bindings: {
     ngModel: '=',
+    ngChange: '&',
     ngRequired: '<',
     ngDisabled: '<',
     options: '<',
