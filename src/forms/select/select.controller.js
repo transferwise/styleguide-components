@@ -35,8 +35,6 @@ class SelectController {
   }
 
   $onChanges(changes) {
-    console.log(this.ngChange);
-    console.log('adasdasd');
     if (changes.options) {
       this.onOptionsChange(
         changes.options.currentValue,
