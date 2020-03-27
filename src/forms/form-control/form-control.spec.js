@@ -190,13 +190,13 @@ describe('FormControl', function() {
     });
     it('should use the options correctly for the label', function() {
       var label = element.querySelector('label');
-      expect(label.innerText.trim()).toContain('One');
+      expect(label.textContent.trim()).toContain('One');
     });
     it('should use secondary label correctly', function() {
       var radios = element.querySelectorAll('.radio');
       expect(radios[1].classList).toContain('radio-lg');
       var smallLabel = radios[1].querySelector('small');
-      expect(smallLabel.innerText.trim()).toContain('Secondary label');
+      expect(smallLabel.textContent.trim()).toContain('Secondary label');
     });
 
     testFocusHandler(function() {

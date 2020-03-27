@@ -133,7 +133,7 @@ describe("multi-upload", () => {
           ).toBe(1);
           expect(
             directiveElement.querySelector(".processing-item .file-name")
-              .innerText
+              .textContent
           ).toBe("two.png");
           expect($scope.ngModel).toEqual([base64url]);
           expect($scope.ngChange.mock.calls.length).toBe(3);
@@ -225,7 +225,7 @@ describe("multi-upload", () => {
           });
           $timeout.flush(4500);
 
-          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').innerText;
+          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').textContent;
           expect(errorMessage).toBe('a random error');
         });
 
@@ -238,7 +238,7 @@ describe("multi-upload", () => {
           });
           $timeout.flush(4500);
 
-          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').innerText;
+          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').textContent;
           expect(errorMessage).toBe('failure');
         });
       });
@@ -265,7 +265,7 @@ describe("multi-upload", () => {
 
           $timeout.flush(4500);
 
-          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').innerText;
+          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').textContent;
 
           expect(errorMessage).toBe('TOO LARGE!');
         });

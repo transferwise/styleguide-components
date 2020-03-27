@@ -66,10 +66,10 @@ describe('Given a component for arrays of schemas', function() {
       expect(genericSchema.bindings.translations).toEqual($scope.translations);
     });
     it('should render the title', function() {
-      expect(component.querySelector('.page-header').innerText.trim()).toEqual($scope.schema.title);
+      expect(component.querySelector('.page-header').textContent.trim()).toEqual($scope.schema.title);
     });
     it('should render the description', function() {
-      expect(component.querySelector('p').innerText.trim()).toEqual($scope.schema.description);
+      expect(component.querySelector('p').textContent.trim()).toEqual($scope.schema.description);
     });
 
     describe('when the child component triggers onChange', function() {

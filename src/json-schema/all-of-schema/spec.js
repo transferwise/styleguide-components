@@ -55,10 +55,10 @@ describe('Given a component from rendering allOf schemas', function() {
     });
 
     it('should render the title', function() {
-      expect(component.querySelector('.page-header').innerText.trim()).toEqual($scope.schema.title);
+      expect(component.querySelector('.page-header').textContent.trim()).toEqual($scope.schema.title);
     });
     it('should render the description', function() {
-      expect(component.querySelector('p').innerText.trim()).toEqual($scope.schema.description);
+      expect(component.querySelector('p').textContent.trim()).toEqual($scope.schema.description);
     });
 
     describe('with a width', function() {

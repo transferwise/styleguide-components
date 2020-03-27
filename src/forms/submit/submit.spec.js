@@ -36,7 +36,7 @@ describe('Given a submit button component', function() {
       expect(process).toBeFalsy();
     });
     it('should render the supplied label', function() {
-      expect(button.innerText.trim()).toEqual($scope.label);
+      expect(button.textContent.trim()).toEqual($scope.label);
     });
     it('should render a primary submit button', function() {
       expect(button.classList).toContain('btn-primary');

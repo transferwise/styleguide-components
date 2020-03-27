@@ -72,7 +72,7 @@ describe('Fieldset', function() {
 
     it('should show the supplied error message', function() {
       var errorBlock = element.querySelector('.tw-field-sortCode .error-provided');
-      expect(errorBlock.innerText.trim()).toBe($scope.errorMessages.sortCode);
+      expect(errorBlock.textContent.trim()).toBe($scope.errorMessages.sortCode);
     });
   });
 
@@ -105,8 +105,8 @@ describe('Fieldset', function() {
       var requiredErrorIBAN =
         element.querySelector('.tw-field-iban .error-messages .error-required');
 
-      expect(requiredErrorSortCode.innerText).toContain('sortCode required');
-      expect(requiredErrorIBAN.innerText).toContain('default required');
+      expect(requiredErrorSortCode.textContent).toContain('sortCode required');
+      expect(requiredErrorIBAN.textContent).toContain('default required');
     });
   });
 
@@ -163,7 +163,7 @@ describe('Fieldset', function() {
       var formGroup = element.querySelector('.tw-field-textInput');
       var errorMessages = formGroup.querySelector('.error-messages');
       expect(formGroup.classList).toContain('has-error');
-      expect(errorMessages.innerText).toContain('Nested error');
+      expect(errorMessages.textContent).toContain('Nested error');
     });
 
     describe('and text is entered', function() {

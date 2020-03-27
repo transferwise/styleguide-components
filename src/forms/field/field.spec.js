@@ -35,7 +35,7 @@ describe('Field', function() {
     });
 
     it('should render a control label', function() {
-      expect(element.querySelector('label').innerText.trim()).toBe('Control label')
+      expect(element.querySelector('label').textContent.trim()).toBe('Control label')
     });
   });
 
@@ -263,7 +263,7 @@ describe('Field', function() {
     });
 
     it('should render the message', function() {
-      expect(element.querySelector('.error-provided').innerText.trim()).toBe('Custom error');
+      expect(element.querySelector('.error-provided').textContent.trim()).toBe('Custom error');
     });
 
     describe('and the value is changed', function() {
