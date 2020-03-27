@@ -24,7 +24,6 @@ describe('given an upload component', () => {
       $q = $injector.get('$q');
       AsyncFileReader = $injector.get('AsyncFileReader');
       AsyncFileSaver = $injector.get('AsyncFileSaver');
-      AsyncTasksConfig = $injector.get('AsyncTasksConfig');
     });
   });
 
@@ -101,7 +100,7 @@ describe('given an upload component', () => {
     it('should show the processing message', () => {
       const processingMessage = directiveElement.querySelector('.upload-processing-message');
       expect(processingMessage).toBeTruthy();
-      expect(processingMessage.innerText.trim()).toBe('processing');
+      expect(processingMessage.textContent.trim()).toBe('processing');
     });
 
     it('should not show an error message', () => {
@@ -138,7 +137,7 @@ describe('given an upload component', () => {
         it('should use the supplied success message', () => {
           const successMessage = directiveElement.querySelector('.upload-success-message');
           expect(successMessage).toBeTruthy();
-          expect(successMessage.innerText.trim()).toBe('success');
+          expect(successMessage.textContent.trim()).toBe('success');
         });
 
         it('should trigger the onSuccess handler', () => {
@@ -304,7 +303,7 @@ describe('given an upload component', () => {
 
     it('should show an error message', () => {
       const errorCard = directiveElement.querySelector('.droppable-processing-card');
-      expect(errorCard.innerText.trim()).toBe('File is too large');
+      expect(errorCard.textContent.trim()).toBe('File is too large');
     });
 
     it('should trigger the onFailure handler', () => {
