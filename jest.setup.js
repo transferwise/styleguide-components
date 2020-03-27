@@ -1,15 +1,15 @@
 /* eslint-disable no-multi-assign */
-window.jQuery = window.$ = require('jquery');
+global.jQuery = global.$ = require('jquery');
 require('bootstrap');
 require('angular');
 require('angular-mocks');
 
 require('./src');
+require('./src/json-schema');
 
-window.getMockComponent = function getMockComponent(name) {
+global.getMockComponent = function getMockComponent(name) {
   function mockComponentFactory($provide) {
     mockComponentFactory.templateText = `${name}content`;
-    mockComponentFactory.name = name;
     $provide.decorator(`${name}Directive`, ($delegate) => {
       const directive = $delegate[0];
 
