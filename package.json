@@ -51,6 +51,7 @@
     "@types/jest": "^25.1.4",
     "@uirouter/angularjs": "^1.0.22",
     "angular-mocks": "~1.5.10",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "bootstrap": "git+https://github.com/transferwise/bootstrap.git",
     "css-loader": "^0.28.11",
