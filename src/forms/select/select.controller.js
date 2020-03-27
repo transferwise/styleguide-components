@@ -18,7 +18,7 @@ class SelectController {
     this.search = '';
 
     preSelectModelValue(this.$ngModel, this);
-    setDefaultIfRequired(this.$ngModel, this, this.$element, this.$attrs);
+    setDefaultIfRequired(this.$ngModel, this, this.$attrs, this.$timeout);
 
     addEventHandlers(this, this.$element, this.$ngModel, this.options, this.$timeout);
 
@@ -61,7 +61,7 @@ class SelectController {
   onOptionsChange(newValue, oldValue) {
     if (newValue !== oldValue) {
       preSelectModelValue(this.$ngModel, this);
-      setDefaultIfRequired(this.$ngModel, this, this.$element, this.$attrs);
+      setDefaultIfRequired(this.$ngModel, this, this.$attrs, this.$timeout);
       this.filteredOptions = this.getFilteredOptions();
     }
   }
@@ -405,12 +405,13 @@ function findOptionFromValue(options, value) {
   return optionMatch;
 }
 
-function setDefaultIfRequired($ngModel, $ctrl, $element, $attrs) {
+function setDefaultIfRequired($ngModel, $ctrl, $attrs, $timeout) {
   // If required and model empty, select first option with value
   if (($ctrl.ngRequired || $attrs.required) && !isValidModel($ctrl.ngModel) && !$ctrl.placeholder) {
     for (let i = 0; i < $ctrl.options.length; i++) {
       if (isValidModel($ctrl.options[i].value)) {
         selectOption($ngModel, $ctrl, $ctrl.options[i]);
+        $timeout($ctrl.ngChange);
         break;
       }
     }
