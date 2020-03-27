@@ -595,18 +595,18 @@ describe('Date', function() {
         $yearInput = element.find(YEAR_SELECTOR);
       });
       it('should require controls', function() {
-        expect($dayInput.is(':required')).toBe(true);
-        //expect($monthInput.is(':required')).toBe(true);
-        expect($yearInput.is(':required')).toBe(true);
+        expect($dayInput.is('required')).toBe(true);
+        //expect($monthInput.is('required')).toBe(true);
+        expect($yearInput.is('required')).toBe(true);
       });
 
       it('should not require controls on change', function() {
         $scope.ngRequired = false;
         $scope.$digest();
 
-        expect($dayInput.is(':required')).toBe(false);
-        //expect($monthInput.is(':required')).toBe(false);
-        expect($yearInput.is(':required')).toBe(false);
+        expect($dayInput.is('required')).toBe(false);
+        //expect($monthInput.is('required')).toBe(false);
+        expect($yearInput.is('required')).toBe(false);
       });
     });
     describe('ngDisabled', function() {
