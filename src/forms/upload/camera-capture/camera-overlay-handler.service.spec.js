@@ -8,9 +8,9 @@ describe('CameraOverlayHandler', function() {
     imgNaturalWidth;
 
   beforeEach(function() {
-    module('tw.styleguide.forms.upload');
+    angular.mock.module('tw.styleguide.forms.upload');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       CameraOverlayHandler = $injector.get('CameraOverlayHandler');
     });
   });
