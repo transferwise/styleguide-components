@@ -35,9 +35,9 @@ describe('Radio', function() {
     $scope.ngRequired = true;
     $scope.ngDisabled = false;
 
-    $scope.ngChange = jasmine.createSpy('ngChange');
-    $scope.ngFocus = jasmine.createSpy('ngFocus');
-    $scope.ngBlur = jasmine.createSpy('ngBlur');
+    $scope.ngChange = jest.fn();
+    $scope.ngFocus = jest.fn();
+    $scope.ngBlur = jest.fn();
 
     templateElement = getCompiledTemplateElement($scope);
     twRadios = templateElement.querySelectorAll(DIRECTIVE_SELECTOR);
@@ -132,7 +132,7 @@ describe('Radio', function() {
     // TODO cannot figure out why this doesn't work in tests (works in browser)
     xit('should trigger the ngChange handler', function() {
       expect($scope.ngChange).toHaveBeenCalled();
-      expect($scope.ngChange.calls.count()).toBe(1);
+      expect($scope.ngChange.mock.calls.length).toBe(1);
     });
 
     describe('and then the second radio button is clicked', function() {
@@ -150,7 +150,7 @@ describe('Radio', function() {
       // TODO cannot figure out why this doesn't work in tests (works in browser)
       xit('should trigger the ngChange handler again', function() {
         expect($scope.ngChange).toHaveBeenCalled();
-        expect($scope.ngChange.calls.count()).toBe(2);
+        expect($scope.ngChange.mock.calls.length).toBe(2);
       });
     });
   });
@@ -167,7 +167,7 @@ describe('Radio', function() {
     });
     it('should trigger the ngChange handler', function() {
       expect($scope.ngChange).toHaveBeenCalled();
-      expect($scope.ngChange.calls.count()).toBe(1);
+      expect($scope.ngChange.mock.calls.length).toBe(1);
     });
   });
 

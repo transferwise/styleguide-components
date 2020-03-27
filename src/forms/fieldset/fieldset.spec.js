@@ -18,7 +18,7 @@ describe('Fieldset', function() {
 
     $scope = $rootScope.$new();
     $scope.onRefreshRequirements = function() {}
-    spyOn($scope, 'onRefreshRequirements');
+    jest.spyOn($scope, 'onRefreshRequirements').mockImplementation(() => {});
   });
 
   describe('when given an array of fields', function() {

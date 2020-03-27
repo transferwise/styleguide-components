@@ -87,7 +87,7 @@ describe('CurrencyInput', function() {
     });
 
     it('should trigger ngChange when internal model changes', function() {
-      spyOn($scope, 'onChange');
+      jest.spyOn($scope, 'onChange').mockImplementation(() => {});
       directiveElement.controller('ngModel').$setViewValue(100);
 
       expect($scope.ngModel).toBe(100);

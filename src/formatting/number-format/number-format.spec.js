@@ -23,7 +23,7 @@ describe('NumberFormat filter, ', function() {
   describe('when no locale supplied', function() {
     beforeEach(function() {
       $scope.value = 123456;
-      spyOn(LocaleService, 'getCurrent').and.returnValue('en-GB');
+      jest.spyOn(LocaleService, 'getCurrent').mockReturnValue('en-GB');
       $element = getCompiledDirectiveElement($scope);
       textValue = $element.text().trim();
     });

@@ -67,13 +67,13 @@ describe('given an upload component', () => {
         </tw-upload>";
 
       // Create spies for callbacks
-      $scope.onStart = jasmine.createSpy('onStart');
-      $scope.onSuccess = jasmine.createSpy('onSuccess');
-      $scope.onFailure = jasmine.createSpy('onFailure');
-      $scope.onCancel = jasmine.createSpy('onCancel');
+      $scope.onStart = jest.fn();
+      $scope.onSuccess = jest.fn();
+      $scope.onFailure = jest.fn();
+      $scope.onCancel = jest.fn();
 
       deferred = $q.defer();
-      spyOn(AsyncFileReader, 'read').and.returnValue(deferred.promise);
+      jest.spyOn(AsyncFileReader, 'read').mockReturnValue(deferred.promise);
 
       directiveElement = getCompiledDirectiveElement($scope, template);
 
@@ -179,12 +179,12 @@ describe('given an upload component', () => {
       };
 
       $scope.ngModel = null;
-      $scope.onSuccess = jasmine.createSpy('onSuccess');
-      $scope.onFailure = jasmine.createSpy('onFailure');
+      $scope.onSuccess = jest.fn();
+      $scope.onFailure = jest.fn();
 
       deferred = $q.defer();
-      spyOn(AsyncFileSaver, 'save').and.returnValue(deferred.promise);
-      spyOn(AsyncFileReader, 'read').and.returnValue($q.when(base64url));
+      jest.spyOn(AsyncFileSaver, 'save').mockReturnValue(deferred.promise);
+      jest.spyOn(AsyncFileReader, 'read').mockReturnValue($q.when(base64url));
 
       directiveElement = getCompiledDirectiveElement($scope, template);
       droppable = directiveElement.querySelector('.droppable');
@@ -289,7 +289,7 @@ describe('given an upload component', () => {
           max-size='1'> \
         </tw-upload>";
 
-      $scope.onFailure = jasmine.createSpy('onFailure');
+      $scope.onFailure = jest.fn();
 
       directiveElement = getCompiledDirectiveElement($scope, template);
       const droppable = directiveElement.querySelector('.droppable');

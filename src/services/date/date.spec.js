@@ -55,7 +55,7 @@ describe('TwDateService test', function() {
     beforeEach(function() {
       locale = 'en-GB';
       var fakeNow = service.getLocaleDateFromParts(2000, 5, 1, 12, 34);
-      spyOn(service, 'getLocaleNow').and.returnValue(fakeNow);
+      jest.spyOn(service, 'getLocaleNow').mockReturnValue(fakeNow);
     });
 
     it('and date is in the last hour', function() {

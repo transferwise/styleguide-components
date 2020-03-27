@@ -28,7 +28,7 @@ describe('RequirementsForm', function() {
 
     $scope = $rootScope.$new();
 
-    spyOn(RequirementsService, 'prepRequirements').and.callFake(function(requirements) {
+    jest.spyOn(RequirementsService, 'prepRequirements').mockImplementation(function(requirements) {
       return requirements;
     });
 
@@ -38,8 +38,8 @@ describe('RequirementsForm', function() {
     $scope.validationMessages = { sortCode: 'validation' };
     $scope.errorMessages = { accountNumber: 'error' };
 
-    $scope.onRefreshRequirements = jasmine.createSpy('onRefreshRequirements');
-    $scope.onModelChange = jasmine.createSpy('onModelChange');
+    $scope.onRefreshRequirements = jest.fn();
+    $scope.onModelChange = jest.fn();
 
     component = getComponent($scope);
   });

@@ -27,7 +27,7 @@ describe('Given an oneOfSchema component', function() {
         on-change="onChange(model, schema)" \
       ></one-of-schema>';
 
-    $scope.onChange = jasmine.createSpy('onChange');
+    $scope.onChange = jest.fn();
 
     component = getComponent($compile, $scope, template);
   });
@@ -124,7 +124,7 @@ describe('Given an oneOfSchema component', function() {
       });
 
       it('should trigger the components onChange once', function() {
-        expect($scope.onChange.calls.count()).toBe(1);
+        expect($scope.onChange.mock.calls.length).toBe(1);
       });
 
       it('should broadcast the changed model from the child', function() {

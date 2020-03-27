@@ -23,9 +23,9 @@ describe('Field', function() {
 
     $scope = $rootScope.$new();
     $scope.model;
-    $scope.onChange = jasmine.createSpy();
-    $scope.onFocus = jasmine.createSpy();
-    $scope.onBlur = jasmine.createSpy();
+    $scope.onChange = jest.fn();
+    $scope.onFocus = jest.fn();
+    $scope.onBlur = jest.fn();
   });
 
   describe('when given a title for the field', function() {

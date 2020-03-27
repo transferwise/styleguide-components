@@ -27,7 +27,7 @@ describe('Given a component from rendering allOf schemas', function() {
         on-change="onChange(model, schema)" \
       ></all-of-schema>';
 
-    $scope.onChange = jasmine.createSpy('onChange');
+    $scope.onChange = jest.fn();
 
     component = getComponent($compile, $scope, template);
   });
@@ -165,7 +165,7 @@ describe('Given a component from rendering allOf schemas', function() {
         });
       });
       it('should trigger the components onChange once', function() {
-        expect($scope.onChange.calls.count()).toBe(1);
+        expect($scope.onChange.mock.calls.length).toBe(1);
       });
       it('should combine the changed model with the other parts of the model', function() {
         expect($scope.onChange).toHaveBeenCalledWith(

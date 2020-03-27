@@ -36,8 +36,8 @@ describe('Given a camera capture component', function() {
       </tw-camera-capture>";
 
     // Create spies for callbacks
-    $scope.onCancel = jasmine.createSpy('onCancel');
-    $scope.onCapture = jasmine.createSpy('onCapture');
+    $scope.onCancel = jest.fn();
+    $scope.onCapture = jest.fn();
 
     const $component = getComponent($scope, template);
     controller = $component.controller('twCameraCapture');
@@ -46,15 +46,15 @@ describe('Given a camera capture component', function() {
     acquireFullScreenRequest = $q.defer();
     acquireMediaStreamRequest = $q.defer();
 
-    tryAcquireMediaStreamSpy = spyOn(controller, 'tryAcquireMediaStream');
-    tryAcquireMediaStreamSpy.and.returnValue(acquireMediaStreamRequest.promise);
+    tryAcquireMediaStreamSpy = jest.spyOn(controller, 'tryAcquireMediaStream');
+    tryAcquireMediaStreamSpy.mockReturnValue(acquireMediaStreamRequest.promise);
 
-    spyOn(controller, 'tryAcquireFullScreen').and.returnValue(acquireFullScreenRequest.promise);
+    jest.spyOn(controller, 'tryAcquireFullScreen').mockReturnValue(acquireFullScreenRequest.promise);
   });
 
   describe('after startLiveCamFlow is triggered', function() {
     beforeEach(function() {
-      spyOn(controller, 'onVideoStreamAcquisition').and.callThrough();
+      jest.spyOn(controller, 'onVideoStreamAcquisition');
     });
 
     it('should try to acquire full screen', function() {
@@ -133,8 +133,8 @@ describe('Given a camera capture component', function() {
     beforeEach(function() {
       enumerateDevicesRequest = $q.defer();
       tryAcquireMediaStreamSpy.and.callThrough();
-      spyOn($window.navigator.mediaDevices, 'enumerateDevices').and.returnValue(enumerateDevicesRequest.promise);
-      spyOn($window.navigator.mediaDevices, 'getUserMedia').and.callFake(function(){});
+      jest.spyOn($window.navigator.mediaDevices, 'enumerateDevices').mockReturnValue(enumerateDevicesRequest.promise);
+      jest.spyOn($window.navigator.mediaDevices, 'getUserMedia').mockImplementation(function(){});
       controller.mediaStream = null;
     });
 
@@ -157,8 +157,8 @@ describe('Given a camera capture component', function() {
     beforeEach(function() {
       acquireFullScreenRequest.resolve();
       acquireMediaStreamRequest.resolve();
-      spyOn(controller, 'onCancel').and.callThrough();
-      spyOn(controller, 'onCaptureBtnClick').and.callThrough();
+      jest.spyOn(controller, 'onCancel');
+      jest.spyOn(controller, 'onCaptureBtnClick');
       startLiveCameraFlow(controller);
     });
 
@@ -254,7 +254,7 @@ describe('Given a camera capture component', function() {
         controller.videoResHeight = 100.0;
         controller.videoResWidth = 40.0;
 
-        spyOn(controller.uploadCanvas,'toBlob').and.callFake(function(callback) {
+        jest.spyOn(controller.uploadCanvas,'toBlob').mockImplementation(function(callback) {
           // Mock to skip async behavior
           callback();
         });

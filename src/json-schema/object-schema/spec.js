@@ -27,7 +27,7 @@ describe('Given a component for rendering object schemas', function() {
         on-change="onChange(model, schema)" \
       ></object-schema>';
 
-    $scope.onChange = jasmine.createSpy('onChange');
+    $scope.onChange = jest.fn();
 
     component = getComponent($compile, $scope, template);
   });
@@ -78,7 +78,7 @@ describe('Given a component for rendering object schemas', function() {
         });
       });
       it('should trigger the components onChange with the new value under the correct key', function() {
-        expect($scope.onChange.calls.count()).toBe(1);
+        expect($scope.onChange.mock.calls.length).toBe(1);
         expect($scope.onChange).toHaveBeenCalledWith(
           { foo: "barbar" },
           $scope.schema.properties.foo

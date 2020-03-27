@@ -23,8 +23,7 @@ describe('CameraCaptureScreenHandler', function() {
     const mockedOverlayYOffset = 10;
     const mockedOverlayXOffset = 20;
     beforeEach(function() {
-      spyOn(CameraCaptureScreenHandler.CameraOverlayHandler, 'getOverlaySpecificationsWrtContainer')
-        .and.returnValue({
+      jest.spyOn(CameraCaptureScreenHandler.CameraOverlayHandler, 'getOverlaySpecificationsWrtContainer').mockReturnValue({
           height: mockedOverlayHeight,
           width: mockedOverlayWidth,
           yOffset: mockedOverlayYOffset,

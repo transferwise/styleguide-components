@@ -53,14 +53,14 @@ describe("multi-upload", () => {
             </tw-multi-upload>";
 
       $scope.ngModel = null;
-      $scope.ngChange = jasmine.createSpy("ngChange");
-      $scope.onStart = jasmine.createSpy("onStart");
-      $scope.onFinish = jasmine.createSpy("onFinish");
-      $scope.onFailure = jasmine.createSpy("onFailure");
-      $scope.responseErrorExtractor = jasmine.createSpy("responseErrorExtractor");
+      $scope.ngChange = jest.fn();
+      $scope.onStart = jest.fn();
+      $scope.onFinish = jest.fn();
+      $scope.onFailure = jest.fn();
+      $scope.responseErrorExtractor = jest.fn();
 
       deferred = $q.defer();
-      spyOn(AsyncFileReader, "read").and.returnValue(deferred.promise);
+      jest.spyOn(AsyncFileReader, "read").mockReturnValue(deferred.promise);
 
       directiveElement = getCompiledDirectiveElement($scope, template);
     });
@@ -118,7 +118,7 @@ describe("multi-upload", () => {
         });
 
         it('triggers an ngChange for each addition to the model', () => {
-          expect($scope.ngChange.calls.count()).toBe(2);
+          expect($scope.ngChange.mock.calls.length).toBe(2);
         });
 
         it("user can remove a file", () => {
@@ -136,7 +136,7 @@ describe("multi-upload", () => {
               .innerText
           ).toBe("two.png");
           expect($scope.ngModel).toEqual([base64url]);
-          expect($scope.ngChange.calls.count()).toBe(3);
+          expect($scope.ngChange.mock.calls.length).toBe(3);
         });
 
         it("user can remove all files and return to the landing screen", () => {
@@ -217,7 +217,7 @@ describe("multi-upload", () => {
         });
 
         it('displays the error message extracted by the responseErrorExtractor', () => {
-          $scope.responseErrorExtractor.and.returnValue('a random error');
+          $scope.responseErrorExtractor.mockReturnValue('a random error');
 
           deferred.reject({
             status: 422,
@@ -230,7 +230,7 @@ describe("multi-upload", () => {
         });
 
         it('displays the failureText provided if a falsy value is returned from the responseErrorExtractor', () => {
-          $scope.responseErrorExtractor.and.returnValue(null);
+          $scope.responseErrorExtractor.mockReturnValue(null);
 
           deferred.reject({
             status: 422,
@@ -248,7 +248,7 @@ describe("multi-upload", () => {
           $scope.responseErrorExtractor = (error) => {
             return error.data.message;
           };
-          spyOn(FileValidationService, 'isSmallerThanMaxSize').and.returnValue(false);
+          jest.spyOn(FileValidationService, 'isSmallerThanMaxSize').mockReturnValue(false);
 
           dropTarget = directiveElement.querySelector(".droppable");
 
@@ -292,11 +292,11 @@ describe("multi-upload", () => {
         </tw-multi-upload>";
 
       $scope.ngModel = null;
-      $scope.onStart = jasmine.createSpy("onStart");
-      $scope.onFinish = jasmine.createSpy("onFinish");
+      $scope.onStart = jest.fn();
+      $scope.onFinish = jest.fn();
 
       deferred = $q.defer();
-      asyncFileReaderSpy = spyOn(AsyncFileReader, "read").and.returnValue(
+      asyncFileReaderSpy = jest.spyOn(AsyncFileReader, "read").mockReturnValue(
         deferred.promise
       );
 
@@ -341,7 +341,7 @@ describe("multi-upload", () => {
         });
 
         it("does NOT call onStart again", () => {
-          expect($scope.onStart.calls.count()).toBe(1);
+          expect($scope.onStart.mock.calls.length).toBe(1);
         });
       });
 
@@ -401,7 +401,7 @@ describe("multi-upload", () => {
           });
 
           it('calls onStart once from previous drop event ONLY', () => {
-            expect($scope.onStart.calls.count()).toBe(1);
+            expect($scope.onStart.mock.calls.length).toBe(1);
           });
         });
       });
@@ -427,11 +427,11 @@ describe("multi-upload", () => {
         </tw-multi-upload>";
 
       $scope.ngModel = null;
-      $scope.onStart = jasmine.createSpy("onStart");
-      $scope.onFinish = jasmine.createSpy("onFinish");
+      $scope.onStart = jest.fn();
+      $scope.onFinish = jest.fn();
 
       deferred = $q.defer();
-      asyncFileReaderSpy = spyOn(AsyncFileReader, "read").and.returnValue(
+      asyncFileReaderSpy = jest.spyOn(AsyncFileReader, "read").mockReturnValue(
         deferred.promise
       );
 
@@ -473,7 +473,7 @@ describe("multi-upload", () => {
         });
 
         it("calls onStart", () => {
-          expect($scope.onStart.calls.count()).toBe(2);
+          expect($scope.onStart.mock.calls.length).toBe(2);
         });
       });
 
@@ -498,14 +498,14 @@ describe("multi-upload", () => {
         });
 
         it("calls onFinish", () => {
-          expect($scope.onFinish.calls.count()).toBe(2);
+          expect($scope.onFinish.mock.calls.length).toBe(2);
         });
       });
 
       describe("When it fails", () => {
         beforeEach(() => {
           const rejectedDeferred = $q.defer();
-          asyncFileReaderSpy.and.returnValue(rejectedDeferred.promise);
+          asyncFileReaderSpy.mockReturnValue(rejectedDeferred.promise);
           rejectedDeferred.reject({ error: "an error" });
           const fakeDropEvent = new CustomEvent("drop");
           fakeDropEvent.dataTransfer = { files: [{ size: 1 }, { size: 1 }] };
@@ -519,7 +519,7 @@ describe("multi-upload", () => {
         });
 
         it("calls onFinish", () => {
-          expect($scope.onFinish.calls.count()).toBe(2);
+          expect($scope.onFinish.mock.calls.length).toBe(2);
         });
       });
     });
@@ -552,12 +552,12 @@ describe("multi-upload", () => {
       };
 
       $scope.ngModel = null;
-      $scope.onStart = jasmine.createSpy("onStart");
-      $scope.onFinish = jasmine.createSpy("onFinish");
+      $scope.onStart = jest.fn();
+      $scope.onFinish = jest.fn();
 
       deferred = $q.defer();
-      spyOn(AsyncFileSaver, "save").and.returnValue(deferred.promise);
-      spyOn(AsyncFileReader, "read").and.returnValue($q.when(base64url));
+      jest.spyOn(AsyncFileSaver, "save").mockReturnValue(deferred.promise);
+      jest.spyOn(AsyncFileReader, "read").mockReturnValue($q.when(base64url));
 
       directiveElement = getCompiledDirectiveElement($scope, template);
     });

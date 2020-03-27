@@ -17,9 +17,9 @@ describe('Given a telephone number component', function() {
       $scope = $rootScope.$new();
     });
 
-    $scope.ngChange = jasmine.createSpy('ngChange');
-    $scope.ngFocus = jasmine.createSpy('ngFocus');
-    $scope.ngBlur = jasmine.createSpy('ngBlur');
+    $scope.ngChange = jest.fn();
+    $scope.ngFocus = jest.fn();
+    $scope.ngBlur = jest.fn();
 
     component = getComponent($scope);
     input = component.querySelector(NUMBER_SELECTOR);

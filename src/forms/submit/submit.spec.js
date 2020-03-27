@@ -18,9 +18,9 @@ describe('Given a submit button component', function() {
     });
 
     $scope.label = 'Submit';
-    $scope.onSubmit = jasmine.createSpy('onSubmit');
-    $scope.onSuccess = jasmine.createSpy('onSuccess');
-    $scope.onFailure = jasmine.createSpy('onFailure');
+    $scope.onSubmit = jest.fn();
+    $scope.onSuccess = jest.fn();
+    $scope.onFailure = jest.fn();
 
     $scope.onFormSubmit = function() {
       console.log("form was submitted"); // eslint-disable-line
