@@ -225,7 +225,7 @@ describe("multi-upload", () => {
           });
           $timeout.flush(4500);
 
-          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').textContent;
+          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').textContent.trim();
           expect(errorMessage).toBe('a random error');
         });
 
@@ -238,7 +238,7 @@ describe("multi-upload", () => {
           });
           $timeout.flush(4500);
 
-          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').textContent;
+          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').textContent.trim();
           expect(errorMessage).toBe('failure');
         });
       });
@@ -265,7 +265,7 @@ describe("multi-upload", () => {
 
           $timeout.flush(4500);
 
-          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').textContent;
+          const errorMessage = directiveElement.querySelector('.processing-item .media-body .tiny').textContent.trim();
 
           expect(errorMessage).toBe('TOO LARGE!');
         });
