@@ -17,9 +17,9 @@ describe('Given a camera capture component', function() {
   var tryAcquireMediaStreamSpy;
 
   beforeEach(function() {
-    module('tw.styleguide.forms.upload');
+    angular.mock.module('tw.styleguide.forms.upload');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
       $window = $injector.get('$window');
