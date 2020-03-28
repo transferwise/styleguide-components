@@ -27,6 +27,20 @@ describe('Given a camera capture component', function() {
       $q = $injector.get('$q');
     });
 
+    HTMLMediaElement.prototype.play = jest.fn();
+    HTMLMediaElement.prototype.pause = jest.fn();
+    HTMLCanvasElement.prototype.getContext = jest
+      .fn()
+      .mockImplementation(() => ({
+        resetTransform: jest.fn(),
+        drawImage: jest.fn()
+      }));
+
+    global.navigator.mediaDevices = {
+      enumerateDevices: jest.fn(),
+      getUserMedia: jest.fn(),
+    }
+
     const template = " \
       <tw-camera-capture \
         direction='ENVIRONMENT' \
@@ -132,7 +146,6 @@ describe('Given a camera capture component', function() {
 
     beforeEach(function() {
       enumerateDevicesRequest = $q.defer();
-      tryAcquireMediaStreamSpy.and.callThrough();
       jest.spyOn($window.navigator.mediaDevices, 'enumerateDevices').mockReturnValue(enumerateDevicesRequest.promise);
       jest.spyOn($window.navigator.mediaDevices, 'getUserMedia').mockImplementation(function(){});
       controller.mediaStream = null;
