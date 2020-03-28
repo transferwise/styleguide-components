@@ -944,12 +944,12 @@ describe('TextFormat directive, ', function() {
         });
 
         it('typing new character after undo should cancel any redo', function() {
-          typeCharacter(input, '1');
+          typeCharacterWithoutSelectionRange(input, '1');
           $timeout.flush();
-          typeCharacter(input, '2');
+          typeCharacterWithoutSelectionRange(input, '2');
           $timeout.flush();
           typeUndo(input);
-          typeCharacter(input, '3');
+          typeCharacterWithoutSelectionRange(input, '3');
           $timeout.flush();
           typeRedo(input);
           $scope.$apply();
@@ -1042,13 +1042,31 @@ describe('TextFormat directive, ', function() {
       navigator.userAgent.toLowerCase().indexOf('phantom') > -1);
   }
 
+  function getKeyCode(character) {
+    return character.charCodeAt(0);
+  }
+
+  /**
+   * 
+   * @param {HTMLInputElement} input 
+   * @param {*} character 
+   */
+  function typeCharacterWithoutSelectionRange(input, character) {
+    var keyCode = getKeyCode(character);
+    var event = getKeyDownEvent(keyCode);
+    input.dispatchEvent(event);
+    const jQLiteInputElement = angular.element(input);
+    const currentValue = jQLiteInputElement.val();
+    jQLiteInputElement.val(currentValue + character).trigger('input');
+  }
+
   function typeCharacter(input, character) {
-    var keyCode = character.charCodeAt(0);
+    var keyCode = getKeyCode(character);
     var selectionStart = input.selectionStart,
       selectionEnd = input.selectionEnd;
     var originalValue = input.value || '';
 
-    input.dispatchEvent(getKeyEvent('keydown', keyCode));
+    input.dispatchEvent(getKeyDownEvent(keyCode));
 
     // Following works for range selections and nor range
     input.value =
@@ -1058,8 +1076,6 @@ describe('TextFormat directive, ', function() {
 
     input.setSelectionRange(selectionStart + 1, selectionStart + 1);
 
-    input.dispatchEvent(getKeyEvent('keypress', keyCode));
-    input.dispatchEvent(getKeyEvent('keyup', keyCode));
     angular.element(input).trigger('input');
   }
 
@@ -1069,7 +1085,7 @@ describe('TextFormat directive, ', function() {
     var originalValue = input.value || '';
     var backspaceKey = 8;
 
-    input.dispatchEvent(getKeyEvent('keydown', backspaceKey));
+    input.dispatchEvent(getKeyDownEvent(backspaceKey));
 
     if (selectionStart === selectionEnd) {
       input.value =
@@ -1085,8 +1101,6 @@ describe('TextFormat directive, ', function() {
       input.setSelectionRange(selectionStart, selectionStart);
     }
 
-    input.dispatchEvent(getKeyEvent('keypress', backspaceKey));
-    input.dispatchEvent(getKeyEvent('keyup', backspaceKey));
     angular.element(input).trigger('input');
   }
 
@@ -1096,7 +1110,7 @@ describe('TextFormat directive, ', function() {
     var originalValue = input.value || '';
     var deleteKey = 46;
 
-    input.dispatchEvent(getKeyEvent('keydown', deleteKey));
+    input.dispatchEvent(getKeyDownEvent(deleteKey));
 
     if (selectionStart === selectionEnd) {
       input.value =
@@ -1110,42 +1124,22 @@ describe('TextFormat directive, ', function() {
 
     input.setSelectionRange(selectionStart, selectionStart);
 
-    input.dispatchEvent(getKeyEvent('keypress', deleteKey));
-    input.dispatchEvent(getKeyEvent('keyup', deleteKey));
     angular.element(input).trigger('input');
   }
 
   function typeUndo(input) {
-    triggerMetaEvent(input, 90); // z
+    input.dispatchEvent(new KeyboardEvent('keydown', { keyCode: 17, ctrlKey: true }));
+    input.dispatchEvent(new KeyboardEvent('keydown', { keyCode: 90, ctrlKey: true }));
+    angular.element(input).trigger('input');
   }
   function typeRedo(input) {
-    triggerMetaEvent(input, 89); // y
-  }
-
-  function triggerMetaEvent(input, keyCode) {
-    var keydown = getKeyEvent('keydown', keyCode);
-    var keypress = getKeyEvent('keypress', keyCode);
-    var keyup = getKeyEvent('keyup', keyCode);
-
-    //keydown.metaKey = true;
-    //keypress.metaKey = true;
-    //keyup.metaKey = true;
-
-    keydown.ctrlKey = true;
-    keypress.ctrlKey = true;
-    keyup.ctrlKey = true;
-
-    input.dispatchEvent(keydown);
-    input.dispatchEvent(keypress);
-    input.dispatchEvent(keyup);
+    input.dispatchEvent(new KeyboardEvent('keydown', { keyCode: 17, ctrlKey: true }));
+    input.dispatchEvent(new KeyboardEvent('keydown', { keyCode: 89, ctrlKey: true }));
     angular.element(input).trigger('input');
   }
 
-  function getKeyEvent(eventType, keyCode) {
-    var keyboardEvent = new Event(eventType);
-    keyboardEvent.which = String.fromCharCode(keyCode);
-    keyboardEvent.keyCode = keyCode;
-    keyboardEvent.charCode = keyCode;
+  function getKeyDownEvent(keyCode) {
+    var keyboardEvent = new KeyboardEvent('keydown', { keyCode });
     return keyboardEvent;
   }
 
