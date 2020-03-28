@@ -54,6 +54,7 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "bootstrap": "git+https://github.com/transferwise/bootstrap.git",
+    "canvas": "^2.6.1",
     "css-loader": "^0.28.11",
     "currency-flags": "git+https://github.com/transferwise/currency-flags.git",
     "eslint": "^5.16.0",
