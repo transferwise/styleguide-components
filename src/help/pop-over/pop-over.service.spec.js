@@ -26,6 +26,9 @@ describe('TwPopoverService', function() {
        * Shared DOM structure between test suites polutes this test suite
        */
       document.body.innerHTML = '';
+      Object.defineProperty(window.HTMLElement.prototype, "clientWidth", { value: 200 });
+      Object.defineProperty(window.HTMLElement.prototype, "clientHeight", { value: 800 });
+
       document.body.style.width = '200px';
     });
 
@@ -189,8 +192,23 @@ describe('TwPopoverService', function() {
     promoElement.className = 'promoted-element';
 
     Object.keys(styles).forEach(function(key) {
-      promoElement.style[key] = styles[key];
+      const value = styles[key];
+      promoElement.style[key] = value;
+
+      if (key === "width") {
+        Object.defineProperty(promoElement, "offsetWidth", {
+          value: parseInt(value)
+        });
+      }
+
+      if (key === "height") {
+        Object.defineProperty(promoElement, "offsetHeight", {
+          value: parseInt(value)
+        });
+      }
+
     });
+    
 
     return promoElement;
   }
