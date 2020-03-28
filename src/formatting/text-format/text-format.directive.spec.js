@@ -1047,9 +1047,8 @@ describe('TextFormat directive, ', function() {
   }
 
   /**
-   * 
    * @param {HTMLInputElement} input 
-   * @param {*} character 
+   * @param {string} character 
    */
   function typeCharacterWithoutSelectionRange(input, character) {
     var keyCode = getKeyCode(character);
