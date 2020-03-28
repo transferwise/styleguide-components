@@ -591,13 +591,13 @@ describe('Date', function() {
         $scope.ngRequired = true;
         element = getCompiledDirectiveElement($scope);
         $dayInput = element.find(DAY_SELECTOR);
-        $monthInput = element.find(MONTH_SELECTOR);
+        $monthInput = element.find('tw-select[name=month]');
         $yearInput = element.find(YEAR_SELECTOR);
       });
       it('should require controls', function() {
-        expect($dayInput.is('required')).toBe(true);
-        //expect($monthInput.is('required')).toBe(true);
-        expect($yearInput.is('required')).toBe(true);
+        expect($dayInput.attr('required')).toBe('required');
+        expect($monthInput.attr('required')).toBe('required');
+        expect($yearInput.attr('required')).toBe('required');
       });
 
       it('should not require controls on change', function() {
@@ -605,7 +605,7 @@ describe('Date', function() {
         $scope.$digest();
 
         expect($dayInput.is('required')).toBe(false);
-        //expect($monthInput.is('required')).toBe(false);
+        expect($monthInput.is('required')).toBe(false);
         expect($yearInput.is('required')).toBe(false);
       });
     });
