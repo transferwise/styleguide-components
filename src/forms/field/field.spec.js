@@ -23,9 +23,9 @@ describe('Field', function() {
 
     $scope = $rootScope.$new();
     $scope.model;
-    $scope.onChange = jasmine.createSpy();
-    $scope.onFocus = jasmine.createSpy();
-    $scope.onBlur = jasmine.createSpy();
+    $scope.onChange = jest.fn();
+    $scope.onFocus = jest.fn();
+    $scope.onBlur = jest.fn();
   });
 
   describe('when given a title for the field', function() {
@@ -35,7 +35,7 @@ describe('Field', function() {
     });
 
     it('should render a control label', function() {
-      expect(element.querySelector('label').innerText.trim()).toBe('Control label')
+      expect(element.querySelector('label').textContent.trim()).toBe('Control label')
     });
   });
 
@@ -263,7 +263,7 @@ describe('Field', function() {
     });
 
     it('should render the message', function() {
-      expect(element.querySelector('.error-provided').innerText.trim()).toBe('Custom error');
+      expect(element.querySelector('.error-provided').textContent.trim()).toBe('Custom error');
     });
 
     describe('and the value is changed', function() {

@@ -22,8 +22,8 @@ describe('DateFormat filter, ', function() {
   describe('Given the locale is en-GB', function() {
     beforeEach(function() {
       $scope.locale = 'en-GB';
-      spyOn(DateService, 'getUTCDateString').and.callThrough();
-      spyOn(DateService, 'getLocaleDateString').and.callThrough();
+      jest.spyOn(DateService, 'getUTCDateString');
+      jest.spyOn(DateService, 'getLocaleDateString');
       $element = getCompiledDirectiveElement($scope);
     });
 

@@ -436,28 +436,28 @@ describe('Select', function() {
       button = component.find('.btn');
     });
     it('should trigger ngChange when internal model changes', function() {
-      spyOn($scope, 'onChange');
+      jest.spyOn($scope, 'onChange').mockImplementation(() => {});
       component.controller('ngModel').$setViewValue('2');
       expect($scope.ngModel).toBe('2');
       expect($scope.onChange).toHaveBeenCalled();
     });
     // TODO Fix this
     xit('should trigger ngChange with new and old values', function() {
-      spyOn($scope, 'onChange');
+      jest.spyOn($scope, 'onChange').mockImplementation(() => {});
       component.controller('ngModel').$setViewValue('2');
       expect($scope.onChange).toHaveBeenCalledWith('2', '1');
     });
     it('should not trigger ngChange on first open', function() {
-      spyOn($scope, 'onChange');
+      jest.spyOn($scope, 'onChange').mockImplementation(() => {});
       button.trigger('click');
       expect($scope.onChange).not.toHaveBeenCalled();
     });
     // TODO does not work because code must wait 150ms for dropdown.js
     xit('should trigger ngBlur once when control loses focus', function() {
-      spyOn($scope, 'onBlur');
+      jest.spyOn($scope, 'onBlur').mockImplementation(() => {});
       button.trigger('focusout');
       expect($scope.onBlur).toHaveBeenCalled();
-      expect($scope.onBlur.calls.count()).toEqual(1);
+      expect($scope.onBlur.mock.calls.length).toEqual(1);
     });
   });
 

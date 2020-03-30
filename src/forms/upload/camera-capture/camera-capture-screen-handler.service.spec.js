@@ -10,9 +10,9 @@ describe('CameraCaptureScreenHandler', function() {
     videoWidthInPercentage;
 
   beforeEach(function() {
-    module('tw.styleguide.forms.upload');
+    angular.mock.module('tw.styleguide.forms.upload');
 
-    inject(function($injector) {
+    angular.mock.inject(function($injector) {
       CameraCaptureScreenHandler = $injector.get('CameraCaptureScreenHandler');
     });
   });
@@ -23,8 +23,7 @@ describe('CameraCaptureScreenHandler', function() {
     const mockedOverlayYOffset = 10;
     const mockedOverlayXOffset = 20;
     beforeEach(function() {
-      spyOn(CameraCaptureScreenHandler.CameraOverlayHandler, 'getOverlaySpecificationsWrtContainer')
-        .and.returnValue({
+      jest.spyOn(CameraCaptureScreenHandler.CameraOverlayHandler, 'getOverlaySpecificationsWrtContainer').mockReturnValue({
           height: mockedOverlayHeight,
           width: mockedOverlayWidth,
           yOffset: mockedOverlayYOffset,

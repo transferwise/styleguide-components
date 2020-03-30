@@ -18,9 +18,9 @@ describe('Given a submit button component', function() {
     });
 
     $scope.label = 'Submit';
-    $scope.onSubmit = jasmine.createSpy('onSubmit');
-    $scope.onSuccess = jasmine.createSpy('onSuccess');
-    $scope.onFailure = jasmine.createSpy('onFailure');
+    $scope.onSubmit = jest.fn();
+    $scope.onSuccess = jest.fn();
+    $scope.onFailure = jest.fn();
 
     $scope.onFormSubmit = function() {
       console.log("form was submitted"); // eslint-disable-line
@@ -36,7 +36,7 @@ describe('Given a submit button component', function() {
       expect(process).toBeFalsy();
     });
     it('should render the supplied label', function() {
-      expect(button.innerText.trim()).toEqual($scope.label);
+      expect(button.textContent.trim()).toEqual($scope.label);
     });
     it('should render a primary submit button', function() {
       expect(button.classList).toContain('btn-primary');

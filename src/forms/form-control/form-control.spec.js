@@ -24,9 +24,9 @@ describe('FormControl', function() {
       $timeout = $injector.get('$timeout');
     });
 
-    $scope.onFocus = jasmine.createSpy('onFocus');
-    $scope.onBlur = jasmine.createSpy('onBlur');
-    $scope.onChange = jasmine.createSpy('onChange');
+    $scope.onFocus = jest.fn();
+    $scope.onBlur = jest.fn();
+    $scope.onChange = jest.fn();
   });
 
   testSimpleControl('text', 'input[type=text]', 'example');
@@ -190,13 +190,13 @@ describe('FormControl', function() {
     });
     it('should use the options correctly for the label', function() {
       var label = element.querySelector('label');
-      expect(label.innerText.trim()).toContain('One');
+      expect(label.textContent.trim()).toContain('One');
     });
     it('should use secondary label correctly', function() {
       var radios = element.querySelectorAll('.radio');
       expect(radios[1].classList).toContain('radio-lg');
       var smallLabel = radios[1].querySelector('small');
-      expect(smallLabel.innerText.trim()).toContain('Secondary label');
+      expect(smallLabel.textContent.trim()).toContain('Secondary label');
     });
 
     testFocusHandler(function() {
@@ -219,8 +219,8 @@ describe('FormControl', function() {
   describe('type: file', function() {
     beforeEach(function() {
       $scope.model = null;
-      $scope.onAsyncSuccess = jasmine.createSpy('onAsyncSuccess');
-      $scope.onAsyncFailure = jasmine.createSpy('onAsyncFailure');
+      $scope.onAsyncSuccess = jest.fn();
+      $scope.onAsyncFailure = jest.fn();
       // $scope.uploadOptions = {};
 
       formGroup = compileTemplate(
@@ -443,9 +443,9 @@ describe('FormControl', function() {
       }));
 
       beforeEach(function() {
-        $scope.onFocus = jasmine.createSpy('onFocus');
-        $scope.onBlur = jasmine.createSpy('onBlur');
-        $scope.onChange = jasmine.createSpy('onChange');
+        $scope.onFocus = jest.fn();
+        $scope.onBlur = jest.fn();
+        $scope.onChange = jest.fn();
 
         $scope.model = null;
         element = compileTemplate(

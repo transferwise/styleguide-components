@@ -27,7 +27,7 @@ describe('Given a component for arrays of schemas', function() {
         on-change="onChange(model, schema)" \
       ></array-schema>';
 
-    $scope.onChange = jasmine.createSpy('onChange');
+    $scope.onChange = jest.fn();
 
     component = getComponent($compile, $scope, template);
   });
@@ -66,10 +66,10 @@ describe('Given a component for arrays of schemas', function() {
       expect(genericSchema.bindings.translations).toEqual($scope.translations);
     });
     it('should render the title', function() {
-      expect(component.querySelector('.page-header').innerText.trim()).toEqual($scope.schema.title);
+      expect(component.querySelector('.page-header').textContent.trim()).toEqual($scope.schema.title);
     });
     it('should render the description', function() {
-      expect(component.querySelector('p').innerText.trim()).toEqual($scope.schema.description);
+      expect(component.querySelector('p').textContent.trim()).toEqual($scope.schema.description);
     });
 
     describe('when the child component triggers onChange', function() {
@@ -80,7 +80,7 @@ describe('Given a component for arrays of schemas', function() {
         });
       });
       it('should trigger the components onChange with the new value under the correct key', function() {
-        expect($scope.onChange.calls.count()).toBe(1);
+        expect($scope.onChange.mock.calls.length).toBe(1);
         expect($scope.onChange).toHaveBeenCalledWith(
           [{ foo: "bar" }],
           $scope.schema.items

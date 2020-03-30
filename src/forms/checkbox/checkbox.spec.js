@@ -149,7 +149,7 @@ describe('Checkbox', function() {
 
   describe('ng-focus', function() {
     xit('should be triggered when button focussed', function() {
-      spyOn($scope, 'ngFocus');
+      jest.spyOn($scope, 'ngFocus').mockImplementation(() => {});
       templateElement = getCompiledTemplateElement($scope);
       button = templateElement.find(BUTTON_SELECTOR);
       button.triggerHandler('focus');
@@ -158,7 +158,7 @@ describe('Checkbox', function() {
   });
   describe('ng-blur', function() {
     xit('should be triggered when button blurred', function() {
-      spyOn($scope, 'ngBlur');
+      jest.spyOn($scope, 'ngBlur').mockImplementation(() => {});
       templateElement = getCompiledTemplateElement($scope);
       button = templateElement.find(BUTTON_SELECTOR);
       button.triggerHandler('blur');

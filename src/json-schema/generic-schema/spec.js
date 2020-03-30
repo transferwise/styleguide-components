@@ -41,7 +41,7 @@ describe('Given a component for rendering any generic schema', function() {
         on-change="onChange(model, schema)" \
       ></generic-schema>';
 
-    $scope.onChange = jasmine.createSpy('onChange');
+    $scope.onChange = jest.fn();
 
     component = getComponent($compile, $scope, template);
   });
@@ -71,7 +71,7 @@ describe('Given a component for rendering any generic schema', function() {
         });
       });
       it('should trigger the components onChange with the model', function() {
-        expect($scope.onChange.calls.count()).toBe(1);
+        expect($scope.onChange.mock.calls.length).toBe(1);
         expect($scope.onChange).toHaveBeenCalledWith(
           { b: 2 },
           $scope.schema.oneOf[0]
@@ -105,7 +105,7 @@ describe('Given a component for rendering any generic schema', function() {
         });
       });
       it('should trigger the components onChange with the model', function() {
-        expect($scope.onChange.calls.count()).toBe(1);
+        expect($scope.onChange.mock.calls.length).toBe(1);
         expect($scope.onChange).toHaveBeenCalledWith(
           { b: 2 },
           $scope.schema.allOf[0]
@@ -142,7 +142,7 @@ describe('Given a component for rendering any generic schema', function() {
         });
       });
       it('should trigger the components onChange with the model', function() {
-        expect($scope.onChange.calls.count()).toBe(1);
+        expect($scope.onChange.mock.calls.length).toBe(1);
         expect($scope.onChange).toHaveBeenCalledWith(
           { b: 2 },
           $scope.schema.properties.foo
@@ -177,7 +177,7 @@ describe('Given a component for rendering any generic schema', function() {
         });
       });
       it('should trigger the components onChange with the model', function() {
-        expect($scope.onChange.calls.count()).toBe(1);
+        expect($scope.onChange.mock.calls.length).toBe(1);
         expect($scope.onChange).toHaveBeenCalledWith(
           { b: 2 },
           $scope.schema.items
@@ -210,7 +210,7 @@ describe('Given a component for rendering any generic schema', function() {
         });
       });
       it('should trigger the components onChange with the model', function() {
-        expect($scope.onChange.calls.count()).toBe(1);
+        expect($scope.onChange.mock.calls.length).toBe(1);
         expect($scope.onChange).toHaveBeenCalledWith(
           { b: 2 },
           $scope.schema
@@ -249,7 +249,7 @@ describe('Given a component for rendering any generic schema', function() {
         });
       });
       it('should trigger the components onChange with the model', function() {
-        expect($scope.onChange.calls.count()).toBe(1);
+        expect($scope.onChange.mock.calls.length).toBe(1);
         expect($scope.onChange).toHaveBeenCalledWith({ b: 2 , schema: schema});
       });
     });

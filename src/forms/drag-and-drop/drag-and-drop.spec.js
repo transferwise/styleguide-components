@@ -14,9 +14,9 @@ describe('given drag and drop directives', () => {
       $scope = $rootScope.$new();
     });
 
-    $scope.onDragEnter = jasmine.createSpy('onDragEnter');
-    $scope.onDragLeave = jasmine.createSpy('onDragLeave');
-    $scope.onDrop = jasmine.createSpy('onDrop');
+    $scope.onDragEnter = jest.fn();
+    $scope.onDragLeave = jest.fn();
+    $scope.onDrop = jest.fn();
 
     element = getCompiledTemplate($scope);
   });

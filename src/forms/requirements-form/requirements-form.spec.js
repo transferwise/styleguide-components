@@ -28,7 +28,7 @@ describe('RequirementsForm', function() {
 
     $scope = $rootScope.$new();
 
-    spyOn(RequirementsService, 'prepRequirements').and.callFake(function(requirements) {
+    jest.spyOn(RequirementsService, 'prepRequirements').mockImplementation(function(requirements) {
       return requirements;
     });
 
@@ -38,8 +38,8 @@ describe('RequirementsForm', function() {
     $scope.validationMessages = { sortCode: 'validation' };
     $scope.errorMessages = { accountNumber: 'error' };
 
-    $scope.onRefreshRequirements = jasmine.createSpy('onRefreshRequirements');
-    $scope.onModelChange = jasmine.createSpy('onModelChange');
+    $scope.onRefreshRequirements = jest.fn();
+    $scope.onModelChange = jest.fn();
 
     component = getComponent($scope);
   });
@@ -50,7 +50,7 @@ describe('RequirementsForm', function() {
       requirements = getSingleRequirement();
     });
     it('should render the description', function() {
-      expect(component.querySelector('p').innerText).toContain(requirements[0].description);
+      expect(component.querySelector('p').textContent).toContain(requirements[0].description);
     });
     it('should render a single fieldset', function() {
       var fieldsets = component.querySelectorAll('tw-fieldset');
@@ -91,7 +91,7 @@ describe('RequirementsForm', function() {
     });
 
     it('should render the description of the first set', function() {
-      expect(component.querySelector('p').innerText).toContain(requirements[0].description);
+      expect(component.querySelector('p').textContent).toContain(requirements[0].description);
     });
     it('should render a single fieldset', function() {
       var fieldsets = component.querySelectorAll('tw-fieldset');

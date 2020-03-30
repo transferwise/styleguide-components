@@ -38,7 +38,7 @@ describe('Given a component for rendering basic type schemas', function() {
     $scope.locale = "en-GB";
     $scope.translations = {};
 
-    $scope.onChange = jasmine.createSpy('onChange');
+    $scope.onChange = jest.fn();
 
     component = getComponent($compile, $scope, template);
   });
@@ -78,12 +78,12 @@ describe('Given a component for rendering basic type schemas', function() {
 
     describe('when twField triggers onChange', function() {
       beforeEach(function() {
-        $scope.onChange = jasmine.createSpy('onChange');
+        $scope.onChange = jest.fn();
         $scope.$apply();
         twField.bindings.changeHandler({ value: "foo" });
       });
       it('should trigger the components onChange with the new value', function() {
-        expect($scope.onChange.calls.count()).toBe(1);
+        expect($scope.onChange.mock.calls.length).toBe(1);
         expect($scope.onChange).toHaveBeenCalledWith("foo", $scope.schema);
       });
     });

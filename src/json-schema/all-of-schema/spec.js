@@ -27,7 +27,7 @@ describe('Given a component from rendering allOf schemas', function() {
         on-change="onChange(model, schema)" \
       ></all-of-schema>';
 
-    $scope.onChange = jasmine.createSpy('onChange');
+    $scope.onChange = jest.fn();
 
     component = getComponent($compile, $scope, template);
   });
@@ -55,10 +55,10 @@ describe('Given a component from rendering allOf schemas', function() {
     });
 
     it('should render the title', function() {
-      expect(component.querySelector('.page-header').innerText.trim()).toEqual($scope.schema.title);
+      expect(component.querySelector('.page-header').textContent.trim()).toEqual($scope.schema.title);
     });
     it('should render the description', function() {
-      expect(component.querySelector('p').innerText.trim()).toEqual($scope.schema.description);
+      expect(component.querySelector('p').textContent.trim()).toEqual($scope.schema.description);
     });
 
     describe('with a width', function() {
@@ -165,7 +165,7 @@ describe('Given a component from rendering allOf schemas', function() {
         });
       });
       it('should trigger the components onChange once', function() {
-        expect($scope.onChange.calls.count()).toBe(1);
+        expect($scope.onChange.mock.calls.length).toBe(1);
       });
       it('should combine the changed model with the other parts of the model', function() {
         expect($scope.onChange).toHaveBeenCalledWith(

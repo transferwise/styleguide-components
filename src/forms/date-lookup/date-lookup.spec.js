@@ -125,8 +125,8 @@ describe('DateLookup, ', function() {
 
     describe('in a timezone on a different day to UTC', function() {
       beforeEach(function () {
-        spyOn(TwDateService, 'getLocaleToday').and.returnValue(getUTCDate(2000,1,1));
-        spyOn(TwDateService, 'getUTCToday').and.returnValue(getUTCDate(2000,0,31));
+        jest.spyOn(TwDateService, 'getLocaleToday').mockReturnValue(getUTCDate(2000,1,1));
+        jest.spyOn(TwDateService, 'getUTCToday').mockReturnValue(getUTCDate(2000,0,31));
       });
       describe('and no date is supplied', function () {
         beforeEach(function() {

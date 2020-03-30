@@ -24,7 +24,6 @@ describe('given an upload component', () => {
       $q = $injector.get('$q');
       AsyncFileReader = $injector.get('AsyncFileReader');
       AsyncFileSaver = $injector.get('AsyncFileSaver');
-      AsyncTasksConfig = $injector.get('AsyncTasksConfig');
     });
   });
 
@@ -67,13 +66,13 @@ describe('given an upload component', () => {
         </tw-upload>";
 
       // Create spies for callbacks
-      $scope.onStart = jasmine.createSpy('onStart');
-      $scope.onSuccess = jasmine.createSpy('onSuccess');
-      $scope.onFailure = jasmine.createSpy('onFailure');
-      $scope.onCancel = jasmine.createSpy('onCancel');
+      $scope.onStart = jest.fn();
+      $scope.onSuccess = jest.fn();
+      $scope.onFailure = jest.fn();
+      $scope.onCancel = jest.fn();
 
       deferred = $q.defer();
-      spyOn(AsyncFileReader, 'read').and.returnValue(deferred.promise);
+      jest.spyOn(AsyncFileReader, 'read').mockReturnValue(deferred.promise);
 
       directiveElement = getCompiledDirectiveElement($scope, template);
 
@@ -101,7 +100,7 @@ describe('given an upload component', () => {
     it('should show the processing message', () => {
       const processingMessage = directiveElement.querySelector('.upload-processing-message');
       expect(processingMessage).toBeTruthy();
-      expect(processingMessage.innerText.trim()).toBe('processing');
+      expect(processingMessage.textContent.trim()).toBe('processing');
     });
 
     it('should not show an error message', () => {
@@ -138,7 +137,7 @@ describe('given an upload component', () => {
         it('should use the supplied success message', () => {
           const successMessage = directiveElement.querySelector('.upload-success-message');
           expect(successMessage).toBeTruthy();
-          expect(successMessage.innerText.trim()).toBe('success');
+          expect(successMessage.textContent.trim()).toBe('success');
         });
 
         it('should trigger the onSuccess handler', () => {
@@ -179,12 +178,12 @@ describe('given an upload component', () => {
       };
 
       $scope.ngModel = null;
-      $scope.onSuccess = jasmine.createSpy('onSuccess');
-      $scope.onFailure = jasmine.createSpy('onFailure');
+      $scope.onSuccess = jest.fn();
+      $scope.onFailure = jest.fn();
 
       deferred = $q.defer();
-      spyOn(AsyncFileSaver, 'save').and.returnValue(deferred.promise);
-      spyOn(AsyncFileReader, 'read').and.returnValue($q.when(base64url));
+      jest.spyOn(AsyncFileSaver, 'save').mockReturnValue(deferred.promise);
+      jest.spyOn(AsyncFileReader, 'read').mockReturnValue($q.when(base64url));
 
       directiveElement = getCompiledDirectiveElement($scope, template);
       droppable = directiveElement.querySelector('.droppable');
@@ -289,7 +288,7 @@ describe('given an upload component', () => {
           max-size='1'> \
         </tw-upload>";
 
-      $scope.onFailure = jasmine.createSpy('onFailure');
+      $scope.onFailure = jest.fn();
 
       directiveElement = getCompiledDirectiveElement($scope, template);
       const droppable = directiveElement.querySelector('.droppable');
@@ -304,7 +303,7 @@ describe('given an upload component', () => {
 
     it('should show an error message', () => {
       const errorCard = directiveElement.querySelector('.droppable-processing-card');
-      expect(errorCard.innerText.trim()).toBe('File is too large');
+      expect(errorCard.textContent.trim()).toBe('File is too large');
     });
 
     it('should trigger the onFailure handler', () => {
