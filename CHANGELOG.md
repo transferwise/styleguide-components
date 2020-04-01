@@ -1,3 +1,7 @@
+# v5.3.2
+## Use JPEG compression for camera upload image
+We were using png before for camera uploads and the image was too big. This update reduces image size from camera upload component by up to 10x.
+
 # v5.3.1
 ## twSelect calls ngChange when the ngModel and ngRequired are set
 Fixes a bug when ngRequired is set to true and a valid ngModel is passed to the component, but parent component was not notified via ngChange callback.
