@@ -87,6 +87,7 @@ module.config(['$compileProvider', ($compileProvider) => {
       <li><a href="index.html#date-format">Date format</a></li>
       <li><a href="index.html#number-format">Number format</a></li>
       <li><a href="index.html#text-format">Text format</a></li>
+      <li><a href="index.html#markdown">Markdown</a></li>
     </ul>
 
     <h5>Layout</h5>
