@@ -1,3 +1,7 @@
+# v5.4.0
+## Markdown component
+Introduce markdown component
+
 # v5.3.2
 ## Use JPEG compression for camera upload image
 We were using png before for camera uploads and the image was too big. This update reduces image size from camera upload component by up to 10x.
