@@ -1,0 +1,29 @@
+<h4 id="markdown">Markdown</h4>
+<p>
+  <code>twMarkdown</code> is a component for rendering markdown. It takes the supplied markdown and renders it as HTML using the Commonmark library.
+  Any raw HTML provided within the markdown and unsafe URL strings are automatically removed by the Commonmark library.
+</p>
+<div class="row m-b-3">
+  <div class="col-md-6">
+    <tw-markdown markdown="$ctrl.markdown"></tw-markdown>
+    <pre>
+    &lt;tw-markdown
+      markdown='{{ $ctrl.markdown }}'&gt;
+    &lt;/tw-markdown&gt;
+    </pre>
+  </div>
+  <div class="col-md-6">
+    <div class="well">
+      <h5 class="page-header">Edit configuration</h5>
+        <div class="form-group">
+          <label class="control-label">Markdown</label>
+          <textarea
+            class="form-control"
+            ng-model="$ctrl.markdown"
+            ng-model-options="{ debounce: 300 }"
+            ng-style="{ 'height': '400px' }">
+          </textarea>
+        </div>
+    </div>
+  </div>
+</div>
