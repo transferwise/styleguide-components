@@ -57,14 +57,14 @@ class FieldController {
       this.uploadOptions = {};
     }
 
-    if (response.data) {
-      // When we do id pre eval, we get error messages and validations back in
-      // the response, extract them and pass back to be shown in the upload.
-      this.extractErrors(response.data);
-    } else if (response.originalData) {
+    if (response.originalData) {
       // frontend-common has an interceptor that sometimes changes the response
       // format, moving the response data under a new key 'originalData'
       this.extractErrors(response.originalData);
+    } else if (response.data) {
+      // When we do id pre eval, we get error messages and validations back in
+      // the response, extract them and pass back to be shown in the upload.
+      this.extractErrors(response.data);
     }
   }
 
@@ -75,7 +75,8 @@ class FieldController {
     }
 
     if (Array.isArray(data.errors)) {
-      this.uploadOptions.validationMessages = data.errors.map(error => error.message);
+      // Only show the first two validation messages
+      this.uploadOptions.validationMessages = data.errors.map(error => error.message).slice(0, 2);
     }
   }
 

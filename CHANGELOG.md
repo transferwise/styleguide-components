@@ -1,3 +1,8 @@
+# v5.4.2
+## Fixes bug where validationMessages were not showing correctly in upload
+Error was not correctly passed to onPersistAsyncFailure method and read correctly if been via http interceptor.
+This PR corrects how error is sent and checked.
+
 # v5.4.1
 ## Readme update only, for advice on running tests on Ubuntu 16.04
 
