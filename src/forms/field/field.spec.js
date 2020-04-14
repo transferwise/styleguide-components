@@ -367,7 +367,7 @@ describe('Field', function() {
       expect(FormControl.bindings.uploadOptions.validationMessages).toEqual(['Too blurry']);
     });
 
-    describe('and when error has been handed by http interceptor', function() {
+    describe('and when error has been handled by http interceptor', function() {
       beforeEach(function() {
         FormControl.bindings.onAsyncFailure({
           response: {
