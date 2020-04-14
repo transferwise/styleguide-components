@@ -35,6 +35,23 @@ To run the local server with live reload you can run the following:
 npm run dev
 ```
 
+### Testing
+
+To test, run `npm test`.
+
+If you get errors while testing along the lines of:
+
+```
+libpng16.so.16: cannot open shared object file: No such file or directory
+
+    at Object.<anonymous> (node_modules/canvas/lib/bindings.js:3:18)
+```
+
+Then be sure to install the necessary dependencies for your OS by following https://www.npmjs.com/package/canvas#compiling.
+
+If you still can't able to find `libpcre.so.1`, and you're (still) on Ubuntu 16.04, well there's no `libpcre.so.1` in the apt packages. Take guidance from [this StackOverflow comment](https://stackoverflow.com/questions/43301339/pcre-issue-when-setting-up-wsgi-application#comment73670596_43301339). You will need to download and extract the latest pcre-8.XX package from https://www.pcre.org/, `./configure`, `make`, (sudo-)move the resulting `.lib/libpcre.so.1.X.X` to maybe `/usr/lib`, update its permissions, and `ln -s` `libpcre.so.1` to it.
+
+
 ## Releasing
 
 In order to release a new version, here are the steps necessary:
