@@ -43,9 +43,7 @@ class CameraCaptureController {
 
     // TODO haoyuan : add change event listener to screenful,
     //  existing full screen should quit capture instead of showing non full screen camera
-    if (!this.testMode || this.testMode.toLowerCase() !== 'true') {
-      this.startLiveCamFlow();
-    }
+    this.startLiveCamFlow();
   }
 
   $onDestroy() {
@@ -92,7 +90,7 @@ class CameraCaptureController {
         this.mediaStream = stream;
 
         return this.tryAcquireFullScreen()
-          .catch(this.$q.resolve)
+          .catch(this.$log.warn)
           .finally(() => {
             // regardless of whether fullscreen works, continue to link the stream and video.
             this.assignStreamToVideo();
@@ -105,39 +103,13 @@ class CameraCaptureController {
   }
 
   tryAcquireFullScreen() {
-    if (screenfull.enabled) {
+    if (screenfull.isEnabled) {
       if (!screenfull.isFullscreen) {
-        const self = this;
-
-        // screenfull is a bit weird, because...
-        const deferred = this.$q.defer();
-
-        // ...its success flow works via promise resolution...
-        screenfull.request(this.container).then(() => {
-          screenfull.off('error', errorHandler); // cleanup.
-          deferred.resolve();
-        });
-
-        // ...but its failure flow works via error events instead of promise catches.  ¯\_(ツ)_/¯.
-        // Let's help to promisify this.
-        // (failure usually happens because user needed to grant camera permissions,
-        // and took too long).
-        screenfull.on('error', errorHandler);
-
-        // eslint-disable-next-line no-inner-declarations
-        function errorHandler(event) {
-          self.$log.warn('Failed to acquire full screen', event);
-          screenfull.off('error', errorHandler); // cleanup.
-          deferred.reject();
-        }
-
-        return deferred.promise;
+        return screenfull.request(this.container);
       }
-
       return this.$q.resolve();
     }
-
-    return this.$q.reject();
+    return this.$q.reject('switching to full screen is not enabled.');
   }
 
   assignStreamToVideo() {
@@ -181,7 +153,7 @@ class CameraCaptureController {
   }
 
   closeVideoStream() {
-    if (screenfull.enabled) {
+    if (screenfull.isEnabled) {
       screenfull.exit();
     }
     this.findViewfinder().srcObject = null;
@@ -231,8 +203,7 @@ class CameraCaptureController {
   }
 
   hasGetUserMedia() {
-    return !!(this.$window.navigator.mediaDevices
-      && this.$window.navigator.mediaDevices.getUserMedia);
+    return !!((this.$window.navigator.mediaDevices || {}).getUserMedia);
   }
 
   findContainer() { return this.$element[0].querySelector('#camera'); }
@@ -244,7 +215,7 @@ class CameraCaptureController {
 
 function createUploadCallback($ctrl) {
   return function uploadCallback(blob) {
-    if (screenfull.enabled) {
+    if (screenfull.isEnabled) {
       screenfull.exit();
     }
     $ctrl.showVideoPreview = false;

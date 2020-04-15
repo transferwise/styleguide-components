@@ -44,7 +44,7 @@
     "angular": "~1.5.10",
     "commonmark": "^0.29.1",
     "jquery": "^3.4.1",
-    "screenfull": "^4.2.0"
+    "screenfull": "^5.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
