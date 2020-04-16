@@ -366,6 +366,24 @@ describe('Field', function() {
       expect(FormControl.bindings.uploadOptions.failureText).toBe('My error');
       expect(FormControl.bindings.uploadOptions.validationMessages).toEqual(['Too blurry']);
     });
+
+    describe('and when error has been handled by http interceptor', function() {
+      beforeEach(function() {
+        FormControl.bindings.onAsyncFailure({
+          response: {
+            data: {},
+            originalData: {
+              message: 'My error',
+              errors: [{message: 'Too blurry'}]
+            }
+          }
+        });
+      });
+      it('should extract the error message and pass it back to the form control', function() {
+        expect(FormControl.bindings.uploadOptions.failureText).toBe('My error');
+        expect(FormControl.bindings.uploadOptions.validationMessages).toEqual(['Too blurry']);
+      });
+    })
   });
 
   describe('when the FormControl triggers onAsyncSuccess', function() {

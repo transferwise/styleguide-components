@@ -104,7 +104,7 @@ class UploadController {
 
   onProcessFailure(error) {
     if (this.onFailure) {
-      this.onFailure({ error });
+      this.onFailure(error);
     }
   }
 }
