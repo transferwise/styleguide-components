@@ -103,6 +103,16 @@ describe('Given a camera capture component', () => {
         expect(findVideoElement().classList).not.toContain('ng-hide');
         expect(findCanvasElement().classList).toContain('ng-hide');
       });
+
+      it('should appear mirrored if a user-facing (selfie) cam was requested', () => {
+        $scope.direction = 'eNVironmENT';
+        compileComponent();
+        expect(findVideoElement().classList).not.toContain('mirrored');
+
+        $scope.direction = 'uSeR';
+        compileComponent();
+        expect(findVideoElement().classList).toContain('mirrored');
+      });
     });
 
     describe('the overlay guidelines for the viewfinder', () => {

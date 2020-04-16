@@ -1,5 +1,5 @@
 <div id="camera" ng-class="{translucent: $ctrl.mode === 'loading'}">
-  <video id="cameraViewfinder" class="fixed w-100 h-100" ng-show="$ctrl.mode === 'capture'" ng-class="{mirrored: $ctrl.direction === 'user'}" playsinline></video>
+  <video id="cameraViewfinder" class="fixed w-100 h-100" ng-show="$ctrl.mode === 'capture'" ng-class="{mirrored: ($ctrl.direction || '').toLowerCase() === 'user'}" playsinline></video>
   <div id="cameraViewfinderOverlay" ng-if="$ctrl.overlay && $ctrl.mode === 'capture'" ng-style="{'background-image': 'url(' + $ctrl.overlay + ')', width: $ctrl.overlaySquareLength, height: $ctrl.overlaySquareLength}"></div>
   <canvas id="cameraSensor" ng-show="$ctrl.mode === 'confirm'" ng-style="{width: $ctrl.sensorWidth}"></canvas>
 
