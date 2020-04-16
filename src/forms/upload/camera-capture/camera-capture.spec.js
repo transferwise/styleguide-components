@@ -7,6 +7,7 @@ describe('Given a camera capture component', () => {
     $compile,
     $scope,
     $window,
+    $timeout,
     $component,
     controller,
     component,
@@ -26,6 +27,7 @@ describe('Given a camera capture component', () => {
     angular.mock.inject(function($injector) {
       $compile = $injector.get('$compile');
       $window = $injector.get('$window');
+      $timeout = $injector.get('$timeout');
       $scope = $injector.get('$rootScope').$new();
       $q = $injector.get('$q');
     });
@@ -130,6 +132,33 @@ describe('Given a camera capture component', () => {
 
         expect(findOverlayElement()).toBeFalsy();
       });
+
+      describe('should be sized into the largest square possible that fits into the active viewfinder area while maintaining a 5% margin on each side', () => {
+        it.each([
+          ['landscape video with aspect ratio matching screen', 16, 9, 1600, 900, 810],
+          ['landscape video with top-bottom letterboxing', 16, 9, 1600, 1000, 810],
+          ['landscape video with left-right letterboxing', 16, 9, 1700, 900, 810],
+          ['portrait video with aspect ratio matching screen', 9, 16, 90, 160, 81],
+          ['portrait video with top-bottom letterboxing', 9, 16, 90, 170, 81],
+          ['portrait video with left-right letterboxing', 9, 16, 100, 160, 81],
+        ])('%s', (description, videoWidth, videoHeight, clientWidth, clientHeight, expectedOverlayLength) => {
+          $scope.overlay = 'some-pic.png';
+          compileComponent();
+
+          controller.findContainer = () => ({clientWidth, clientHeight});
+          controller.findViewfinder = () => ({videoWidth, videoHeight});
+
+          controller.calculateWidths();
+          $timeout.flush();
+
+          expect(parseNumberOfPixels(findOverlayElement().style.width)).toBeCloseTo(expectedOverlayLength);
+          expect(parseNumberOfPixels(findOverlayElement().style.height)).toBeCloseTo(expectedOverlayLength);
+
+          function parseNumberOfPixels(pxString) {
+            return parseFloat(pxString.match(/[\d\.]+/));
+          }
+        })
+      });
     });
 
     describe('the controls', () => {
@@ -187,6 +216,37 @@ describe('Given a camera capture component', () => {
       expect(findCanvasElement().classList).not.toContain('ng-hide');
     });
 
+    describe('the displayed canvas', () => {
+      describe('should be sized as largely as possible without breaking its aspect ratio or exceeding the screen', () => {
+        it.each([
+          ['landscape canvas with aspect ratio matching screen', 16, 9, 1600, 900, 1600],
+          ['landscape canvas with top-bottom letterboxing', 16, 9, 1600, 1000, 1600],
+          ['landscape canvas with left-right letterboxing', 16, 9, 1700, 900, 1600],
+          ['portrait canvas with aspect ratio matching screen', 9, 16, 90, 160, 90],
+          ['portrait canvas with top-bottom letterboxing', 9, 16, 90, 170, 90],
+          ['portrait canvas with left-right letterboxing', 9, 16, 100, 160, 90],
+        ])('%s', (description, videoWidth, videoHeight, clientWidth, clientHeight, expectedCanvasDisplayWidth) => {
+          controller.findContainer = () => ({clientWidth, clientHeight});
+          controller.findViewfinder = () => ({videoWidth, videoHeight});
+  
+          controller.calculateWidths();
+          $timeout.flush();
+  
+          // canvas intrinsic resolution. Must match source video intrinsic resolution.
+          // expect(findCanvasElement().width).toBe(videoWidth);
+          // expect(findCanvasElement().height).toBe(videoHeight);
+
+          // canvas display resolution.
+          expect(parseNumberOfPixels(findCanvasElement().style.width)).toBeCloseTo(expectedCanvasDisplayWidth);
+  
+          function parseNumberOfPixels(pxString) {
+            return parseFloat(pxString.match(/[\d\.]+/));
+          }
+        })
+      });
+    });
+
+
     it('should pause and hide the video', () => {
       expect(findVideoElement().pause).toHaveBeenCalledTimes(1);
       expect(findVideoElement().classList).toContain('ng-hide');
@@ -235,6 +295,10 @@ describe('Given a camera capture component', () => {
     $scope.$digest();
     controller = $component.controller('twCameraCapture');
     component = $component[0];
+  }
+
+  function findContainerElement() {
+    return controller.findContainer();
   }
 
   function findVideoElement() {
