@@ -56,10 +56,13 @@ class CameraCaptureController {
   // Programatically update overlay/sensor widths, as it's not achievable through CSS.
   calculateWidths() {
     this.$timeout(() => { // helps ensure it's always in a digest cycle.
-      const screenWidth = this.findContainer().clientWidth;
-      const screenHeight = this.findContainer().clientHeight;
-      const cameraWidth = this.findViewfinder().videoWidth;
-      const cameraHeight = this.findViewfinder().videoHeight;
+      const container = this.findContainer();
+      const screenWidth = container.clientWidth;
+      const screenHeight = container.clientHeight;
+
+      const viewfinder = this.findViewfinder();
+      const cameraWidth = viewfinder.videoWidth;
+      const cameraHeight = viewfinder.videoHeight;
 
       if (!cameraWidth || !cameraHeight) {
         this.$timeout(this.calculateWidths.bind(this), 100); // Keep trying until video's ready.
