@@ -1,12 +1,12 @@
 {
   "name": "@transferwise/styleguide-components",
-  "version": "5.4.2",
+  "version": "5.5.0",
   "description": "TransfeWise AngularJS 1.x Styleguide Components",
   "license": "MIT",
   "scripts": {
     "test": "node --icu-data-dir=node_modules/full-icu node_modules/.bin/jest",
     "prestart": "npm install",
-    "start": "npm run less && webpack --watch;",
+    "start": "npm run less && webpack --watch --mode=development;",
     "dev": "npm run copy:demo && live-server --port=1666 --open=demo/index.html",
     "devhttps": "npm run copy:demo && live-server --port=1666 --open=demo/index.html --https=node_modules/live-server-https",
     "build": "npm run less && webpack -p && npm run copy:demo",
@@ -44,7 +44,7 @@
     "angular": "~1.5.10",
     "commonmark": "^0.29.1",
     "jquery": "^3.4.1",
-    "screenfull": "^4.2.0"
+    "screenfull": "^5.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

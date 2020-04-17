@@ -1,3 +1,7 @@
+# v5.5.0
+## Refactors and fixes assorted bugs with the camera upload component
+Most importantly, the camera component will now save images based on the camera resolution, not screen resolution.
+
 # v5.4.2
 ## Fixes bug where validationMessages were not showing correctly in upload
 Error was not correctly passed to onPersistAsyncFailure method and read correctly if been via http interceptor.
