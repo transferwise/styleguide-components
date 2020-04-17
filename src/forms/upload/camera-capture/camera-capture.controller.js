@@ -97,7 +97,10 @@ class CameraCaptureController {
         this.mediaStream = stream;
 
         return this.tryAcquireFullScreen()
-          .catch(this.$log.warn)
+          .catch((e) => {
+            console.log('4a4a4a');
+            this.$log.warn(e);
+          })
           .finally(() => {
             console.log(555);
             // regardless of whether fullscreen works, continue to link the stream and video.
@@ -117,7 +120,16 @@ class CameraCaptureController {
       console.log(333);
       if (!screenfull.isFullscreen) {
         console.log(444);
-        return screenfull.request(this.container);
+        const deferred = this.$q.defer();
+        this.$timeout(() => {
+          deferred.reject('TIMES UP TIMES UP TIMES UP');
+        }, 1500);
+        screenfull.on('error', (e) => {
+          deferred.reject(e);
+        });
+        screenfull.request(this.container).then(deferred.resolve, deferred.reject);
+
+        return deferred.promise;
       }
       return this.$q.resolve();
     }
