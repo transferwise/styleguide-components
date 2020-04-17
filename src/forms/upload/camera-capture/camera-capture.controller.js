@@ -55,6 +55,7 @@ class CameraCaptureController {
 
   // Programatically update overlay/sensor widths, as it's not achievable through CSS.
   calculateWidths() {
+    console.log(999);
     this.$timeout(() => { // helps ensure it's always in a digest cycle.
       const container = this.findContainer();
       const screenWidth = container.clientWidth;
@@ -80,6 +81,7 @@ class CameraCaptureController {
       // 90% because we leave a 5% margin on each side,
       // in order for overlay image to never touch screen edge.
       this.overlaySquareLength = Math.min(sensorWidth, sensorHeight) * 0.9;
+      console.log(101010);
     });
   }
 
@@ -90,24 +92,30 @@ class CameraCaptureController {
     // acquire media 1st, switch to fullscreen 2nd, so that permissions get asked before fullscreen.
     this.tryAcquireMediaStream()
       .then((stream) => {
+        console.log(111);
         this.mediaStream = stream;
 
         return this.tryAcquireFullScreen()
           .catch(this.$log.warn)
           .finally(() => {
+            console.log(555);
             // regardless of whether fullscreen works, continue to link the stream and video.
             this.assignStreamToVideo();
           });
       }).catch((err) => {
         // TODO haoyuan : Should somehow ask user to refresh page to reaquire permission
+        console.log('aaa');
         this.$log.error(err);
         this.onCancelBtnClick();
       });
   }
 
   tryAcquireFullScreen() {
+    console.log(222);
     if (screenfull.isEnabled) {
+      console.log(333);
       if (!screenfull.isFullscreen) {
+        console.log(444);
         return screenfull.request(this.container);
       }
       return this.$q.resolve();
@@ -116,6 +124,7 @@ class CameraCaptureController {
   }
 
   assignStreamToVideo() {
+    console.log(666);
     const video = this.findViewfinder();
 
     // This is done instead of just reassigning video stream everytime
@@ -124,9 +133,12 @@ class CameraCaptureController {
       video.srcObject = this.mediaStream;
     }
 
+    console.log(777);
+
     video.play().then(this.calculateWidths.bind(this));
 
     this.mode = 'capture';
+    console.log(888);
   }
 
   tryAcquireMediaStream() {
