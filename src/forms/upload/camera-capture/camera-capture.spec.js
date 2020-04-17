@@ -1,336 +1,327 @@
 'use strict';
 
-describe('Given a camera capture component', function() {
-  var $q,
+import screenfull from 'screenfull';
+
+describe('Given a camera capture component', () => {
+  let $q,
     $compile,
-    $rootScope,
     $scope,
     $window,
+    $timeout,
+    $component,
     controller,
-    component;
+    component,
+    mockCanvasContext;
 
-  // Promises
-  var acquireFullScreenRequest,
-    acquireMediaStreamRequest;
-
-  // Spies
-  var tryAcquireMediaStreamSpy;
+  const template = " \
+  <tw-camera-capture \
+    direction='{{direction}}' \
+    overlay='{{overlay}}'\
+    on-cancel='onCancel()' \
+    on-capture='onCapture(file)' \
+  </tw-camera-capture>";
 
   beforeEach(function() {
     angular.mock.module('tw.styleguide.forms.upload');
 
     angular.mock.inject(function($injector) {
-      $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
       $window = $injector.get('$window');
-      $scope = $rootScope.$new();
+      $timeout = $injector.get('$timeout');
+      $scope = $injector.get('$rootScope').$new();
       $q = $injector.get('$q');
     });
 
-    HTMLMediaElement.prototype.play = jest.fn();
-    HTMLMediaElement.prototype.pause = jest.fn();
-    HTMLCanvasElement.prototype.getContext = jest
-      .fn()
-      .mockImplementation(() => ({
-        resetTransform: jest.fn(),
-        drawImage: jest.fn()
-      }));
-
-    global.navigator.mediaDevices = {
-      enumerateDevices: jest.fn(),
-      getUserMedia: jest.fn(),
+    $window.navigator.mediaDevices = {
+      getUserMedia: jest.fn(() => $q.resolve({
+        getTracks: jest.fn(() => [])
+      })),
     }
 
-    const template = " \
-      <tw-camera-capture \
-        direction='ENVIRONMENT' \
-        on-cancel='onCancel()' \
-        on-capture='onCapture(file)' \
-        test-mode='true'> \
-      </tw-camera-capture>";
+    screenfull.request.mockImplementation(() => $q.resolve());
 
-    // Create spies for callbacks
+    HTMLMediaElement.prototype.play = jest.fn(() => $q.resolve());
+    HTMLMediaElement.prototype.pause = jest.fn();
+
+    mockCanvasContext = {
+      drawImage: jest.fn()
+    };
+    HTMLCanvasElement.prototype.getContext = jest.fn(() => mockCanvasContext);
+
     $scope.onCancel = jest.fn();
     $scope.onCapture = jest.fn();
+  });
 
-    const $component = getComponent($scope, template);
+  describe('when initialising', () => {
+    it.each([
+      ['uSeR', 'user'],
+      ['EnVirONMent', 'environment'],
+      [null, 'environment'],
+    ])('should request for a media device with the right preferred direction', (inputDirection, expected) => {
+      $scope.direction = inputDirection;
+      compileComponent();
+
+      expect($window.navigator.mediaDevices.getUserMedia).toHaveBeenCalledTimes(1);
+      expect($window.navigator.mediaDevices.getUserMedia.mock.calls[0][0]).toMatchObject({
+        video: {
+          facingMode: {ideal: expected}
+        }
+      });
+      expect(controller.mediaStream).toBeTruthy();
+    });
+
+    it('should trigger a switch to fullscreen', () => {
+      screenfull.request.mockClear();
+      compileComponent();
+
+      expect(screenfull.request).toHaveBeenCalledTimes(1);
+    });
+
+    describe('if fullscreen switching succeeds', () => {
+      it('should progress to the capture screen', () => {
+        compileComponent();
+
+        expect(controller.mode).toBe('capture');
+      });
+    })
+
+    describe('if fullscreen switching fails', () => {
+      it('should still progress to the capture screen', () => {
+        screenfull.request.mockImplementation(() =>$q.reject());
+
+        compileComponent();
+
+        expect(controller.mode).toBe('capture');
+      });
+    })
+  });
+
+  describe('when capturing', () => {
+    describe('the viewfinder window', () => {
+      it('should show a playing video as the camera\'s viewfinder', () => {
+        compileComponent();
+
+        expect(findVideoElement().play).toHaveBeenCalled();
+        expect(findVideoElement().classList).not.toContain('ng-hide');
+        expect(findCanvasElement().classList).toContain('ng-hide');
+      });
+
+      it('should appear mirrored if a user-facing (selfie) cam was requested', () => {
+        $scope.direction = 'eNVironmENT';
+        compileComponent();
+        expect(findVideoElement().classList).not.toContain('mirrored');
+
+        $scope.direction = 'uSeR';
+        compileComponent();
+        expect(findVideoElement().classList).toContain('mirrored');
+      });
+    });
+
+    describe('the overlay guidelines for the viewfinder', () => {
+      it('should display if an overlay was specified', () => {
+        $scope.overlay = 'some-pic.png';
+        compileComponent();
+
+        expect(findOverlayElement()).toBeTruthy();
+        expect(findOverlayElement().classList).not.toContain('ng-hide');
+      });
+
+      it('should not display if an overlay was unspecified', () => {
+        $scope.overlay = null;
+        compileComponent();
+
+        expect(findOverlayElement()).toBeFalsy();
+      });
+
+      describe('should be sized into the largest square possible that fits into the active viewfinder area while maintaining a 5% margin on each side', () => {
+        it.each([
+          ['landscape video with aspect ratio matching screen', 16, 9, 1600, 900, 810],
+          ['landscape video with top-bottom letterboxing', 16, 9, 1600, 1000, 810],
+          ['landscape video with left-right letterboxing', 16, 9, 1700, 900, 810],
+          ['portrait video with aspect ratio matching screen', 9, 16, 90, 160, 81],
+          ['portrait video with top-bottom letterboxing', 9, 16, 90, 170, 81],
+          ['portrait video with left-right letterboxing', 9, 16, 100, 160, 81],
+        ])('%s', (description, videoWidth, videoHeight, clientWidth, clientHeight, expectedOverlayLength) => {
+          $scope.overlay = 'some-pic.png';
+          compileComponent();
+
+          controller.findContainer = () => ({clientWidth, clientHeight});
+          controller.findViewfinder = () => ({videoWidth, videoHeight});
+
+          controller.calculateWidths();
+          $timeout.flush();
+
+          expect(parseNumberOfPixels(findOverlayElement().style.width)).toBeCloseTo(expectedOverlayLength);
+          expect(parseNumberOfPixels(findOverlayElement().style.height)).toBeCloseTo(expectedOverlayLength);
+
+          function parseNumberOfPixels(pxString) {
+            return parseFloat(pxString.match(/[\d\.]+/));
+          }
+        })
+      });
+    });
+
+    describe('the controls', () => {
+      it('should display a capture button', () => {
+        expect(findCaptureButton()).toBeTruthy();
+        expect(findCaptureButton().classList).not.toContain('ng-hide');
+      });
+
+      describe('when capture is pressed', () => {
+        beforeEach(() => {
+          screenfull.exit.mockClear();
+
+          compileComponent();
+          findCaptureButton().click();
+        });
+
+        it('should switch to the confirmation screen', () => {
+          expect(controller.mode).toBe('confirm');
+        });
+      });
+
+      it('should display a cancel button', () => {
+        expect(findCancelButton()).toBeTruthy();
+        expect(findCancelButton().classList).not.toContain('ng-hide');
+      });
+
+      describe('when cancel is pressed', () => {
+        beforeEach(() => {
+          screenfull.exit.mockClear();
+
+          compileComponent();
+          findCancelButton().click();
+        });
+
+        it('should exit fullscreen', () => {
+          expect(screenfull.exit).toHaveBeenCalledTimes(1);
+        });
+
+        it('should trigger the bound onCancel callback', () => {
+          expect($scope.onCancel).toHaveBeenCalledTimes(1);
+        });
+      });
+    });
+  });
+
+  describe('when confirming', () => {
+    beforeEach(() => {
+      compileComponent();
+      findCaptureButton().click();
+    });
+
+    it('should draw an image to the canvas and show it', () => {
+      expect(mockCanvasContext.drawImage).toHaveBeenCalledTimes(1);
+      expect(findCanvasElement()).toBeTruthy();
+      expect(findCanvasElement().classList).not.toContain('ng-hide');
+    });
+
+    describe('the displayed canvas', () => {
+      describe('should be sized as largely as possible without breaking its aspect ratio or exceeding the screen', () => {
+        it.each([
+          ['landscape canvas with aspect ratio matching screen', 16, 9, 1600, 900, 1600],
+          ['landscape canvas with top-bottom letterboxing', 16, 9, 1600, 1000, 1600],
+          ['landscape canvas with left-right letterboxing', 16, 9, 1700, 900, 1600],
+          ['portrait canvas with aspect ratio matching screen', 9, 16, 90, 160, 90],
+          ['portrait canvas with top-bottom letterboxing', 9, 16, 90, 170, 90],
+          ['portrait canvas with left-right letterboxing', 9, 16, 100, 160, 90],
+        ])('%s', (description, videoWidth, videoHeight, clientWidth, clientHeight, expectedCanvasDisplayWidth) => {
+          controller.findContainer = () => ({clientWidth, clientHeight});
+          controller.findViewfinder = () => ({videoWidth, videoHeight});
+  
+          controller.calculateWidths();
+          $timeout.flush();
+  
+          // canvas intrinsic resolution. Must match source video intrinsic resolution.
+          // expect(findCanvasElement().width).toBe(videoWidth);
+          // expect(findCanvasElement().height).toBe(videoHeight);
+
+          // canvas display resolution.
+          expect(parseNumberOfPixels(findCanvasElement().style.width)).toBeCloseTo(expectedCanvasDisplayWidth);
+  
+          function parseNumberOfPixels(pxString) {
+            return parseFloat(pxString.match(/[\d\.]+/));
+          }
+        })
+      });
+    });
+
+
+    it('should pause and hide the video', () => {
+      expect(findVideoElement().pause).toHaveBeenCalledTimes(1);
+      expect(findVideoElement().classList).toContain('ng-hide');
+    });
+
+    describe('the controls', () => {
+      it('should display a confirm button', () => {
+        expect(findConfirmButton()).toBeTruthy();
+        expect(findConfirmButton().classList).not.toContain('ng-hide');
+      });
+
+      describe('when confirm is pressed', () => {
+        beforeEach(() => {
+          jest.spyOn(findCanvasElement(),'toBlob').mockImplementation(callback => {
+            callback();
+          });
+          findConfirmButton().click();
+        });
+
+        it('should trigger the bound onCapture callback', () => {
+          expect($scope.onCapture).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      it('should display a cancel button', () => {
+        expect(findCancelButton()).toBeTruthy();
+        expect(findCancelButton().classList).not.toContain('ng-hide');
+      });
+
+      describe('when cancel is pressed', () => {
+        beforeEach(() => {
+          compileComponent();
+          findCancelButton().click();
+        });
+
+        it('should switch back to the capture screen', () => {
+          expect(controller.mode).toBe('capture');
+        });
+      });
+    });
+  });
+
+  function compileComponent() {
+    const element = angular.element(template);
+    $component = $compile(element)($scope);
+    $scope.$digest();
     controller = $component.controller('twCameraCapture');
     component = $component[0];
-
-    acquireFullScreenRequest = $q.defer();
-    acquireMediaStreamRequest = $q.defer();
-
-    tryAcquireMediaStreamSpy = jest.spyOn(controller, 'tryAcquireMediaStream');
-    tryAcquireMediaStreamSpy.mockReturnValue(acquireMediaStreamRequest.promise);
-
-    jest.spyOn(controller, 'tryAcquireFullScreen').mockReturnValue(acquireFullScreenRequest.promise);
-  });
-
-  describe('after startLiveCamFlow is triggered', function() {
-    beforeEach(function() {
-      jest.spyOn(controller, 'onVideoStreamAcquisition');
-    });
-
-    it('should try to acquire full screen', function() {
-      startLiveCameraFlow(controller);
-      expect(controller.tryAcquireFullScreen).toHaveBeenCalled();
-    });
-
-    describe('when we get full screen successfully', function() {
-      beforeEach(function () {
-        acquireFullScreenRequest.resolve();
-        acquireMediaStreamRequest.resolve();
-        startLiveCameraFlow(controller);
-      });
-
-      it('should try to acquire the media stream', function () {
-        expect(controller.tryAcquireMediaStream)
-          .toHaveBeenCalled();
-      });
-    });
-
-    describe('when we fail to get full screen', function() {
-      beforeEach(function () {
-        acquireFullScreenRequest.reject();
-        startLiveCameraFlow(controller);
-      });
-
-      it('should try to acquire media stream after not getting full screen', function () {
-        expect(controller.tryAcquireMediaStream)
-          .toHaveBeenCalled();
-      });
-    });
-
-    describe('after trying to acquire full screen regardless of success or failure', function() {
-      beforeEach(function () {
-        acquireFullScreenRequest.resolve();
-      });
-
-      describe('when we acquire media stream successfully', function() {
-        beforeEach(function () {
-          acquireMediaStreamRequest.resolve();
-          startLiveCameraFlow(controller);
-        });
-        it('should fire the stream acquisition handler', function(){
-          expect(controller.onVideoStreamAcquisition).toHaveBeenCalled();
-        });
-
-        it('should show the video element', function() {
-          expect(getVideoElement(component).classList).not.toContain('ng-hide');
-        });
-
-        it('should not show the display canvas', function() {
-          expect(getDisplayCanvasElement(component).classList).toContain('ng-hide');
-        });
-      });
-
-      describe('when we fail to acquire media stream', function() {
-        beforeEach(function () {
-          acquireMediaStreamRequest.reject();
-          startLiveCameraFlow(controller);
-        });
-
-        it('should not call the stream acquisition handler', function(){
-          expect(controller.onVideoStreamAcquisition).not.toHaveBeenCalled();
-        });
-
-        it('should shutdown thus calling the onCancel callback', function() {
-          expect($scope.onCancel).toHaveBeenCalled();
-        });
-      });
-    });
-  });
-
-  describe('when trying to acquire media stream', function() {
-    var enumerateDevicesRequest;
-
-    beforeEach(function() {
-      enumerateDevicesRequest = $q.defer();
-      jest.spyOn($window.navigator.mediaDevices, 'enumerateDevices').mockReturnValue(enumerateDevicesRequest.promise);
-      jest.spyOn($window.navigator.mediaDevices, 'getUserMedia').mockImplementation(function(){});
-      controller.mediaStream = null;
-    });
-
-    it('camera direction defaults to user if device only has one video input', function() {
-      enumerateDevicesRequest.resolve([{kind: 'videoInput'}, {kind: 'audioInput'}, {kind: 'audioInput'}]);
-      controller.tryAcquireMediaStream().then(() => {
-        expect(controller.direction).toBe('user');
-      });
-    });
-
-    it('camera direction takes input value if device has more than 1 video input', function() {
-      enumerateDevicesRequest.resolve([{kind: 'videoInput'}, {kind: 'videoInput'}, {kind: 'audioInput'}]);
-      controller.tryAcquireMediaStream().then(() => {
-        expect(controller.direction).toBe('environment');
-      });
-    });
-  });
-
-  describe('after entering live upload flow', function() {
-    beforeEach(function() {
-      acquireFullScreenRequest.resolve();
-      acquireMediaStreamRequest.resolve();
-      jest.spyOn(controller, 'onCancel');
-      jest.spyOn(controller, 'onCaptureBtnClick');
-      startLiveCameraFlow(controller);
-    });
-
-    describe('when cancel button is clicked', function() {
-      beforeEach(function() {
-        getVideoCancelButton(component).click();
-      });
-
-      it('should hide the video preview', function () {
-        expect(getVideoPreviewElement(component).classList).toContain('ng-hide');
-      });
-
-      it('should shutdown thus calling the onCancel handler', function () {
-        expect($scope.onCancel).toHaveBeenCalled();
-      });
-    });
-
-    describe('when capture button is clicked', function() {
-      let canvas;
-
-      beforeEach(function() {
-        // Setting up a portrait screen, other orientations have been tested in screen handler
-        controller.captureButtonDisabled = false;
-        controller.videoHeight = 111.0;
-        controller.videoWidth = 100.0;
-        controller.screenHeight = 90.0;
-        controller.screenWidth = 40.0;
-        controller.videoResHeight = 100.0;
-        controller.videoResWidth = 40.0;
-        getVideoConfirmButton(component).click();
-        canvas = getDisplayCanvasElement(component);
-      });
-
-      it('should hide video element', function () {
-        expect(getVideoElement(component).classList).toContain('ng-hide');
-      });
-
-      it('should not hide the canvas', function () {
-        expect(canvas.classList).not.toContain('ng-hide');
-      });
-
-      it('should show the canvas at the right size', function() {
-        expect(canvas.height).toBe(90);
-        expect(canvas.width).toBe(40);
-        expect($(canvas).offset().top).toBe(0);
-        expect($(canvas).offset().left).toBe(0);
-      });
-    });
-  });
-
-  describe('when at video capture preview screen', function() {
-    beforeEach(function() {
-      acquireFullScreenRequest.resolve();
-      acquireMediaStreamRequest.resolve();
-      startLiveCameraFlow(controller);
-      controller.onCaptureBtnClick();
-      $scope.$apply();
-    });
-
-    describe('when cancel button is clicked', function() {
-      beforeEach(function() {
-        getCaptureCancelButton(component).click();
-      });
-
-      it('should show video preview', function () {
-        expect(getVideoElement(component).classList).not.toContain('ng-hide');
-      });
-
-      it('should not show the canvas element', function () {
-        expect(getDisplayCanvasElement(component).classList).toContain('ng-hide');
-      });
-
-      it('should show the video control buttons', function () {
-        expect(getVideoCancelButton(component)).toBeTruthy();
-        expect(getVideoConfirmButton(component)).toBeTruthy();
-      });
-
-      it('should hide the canvas control buttons', function() {
-        expect(getCaptureCancelButton(component)).not.toBeTruthy();
-        expect(getCaptureConfirmButton(component)).not.toBeTruthy();
-      });
-    });
-
-    describe('when confirm button is clicked', function() {
-      let canvas;
-
-      beforeEach(function() {
-        // Setting up a portrait screen, other orientations have been tested in screen handler
-        controller.videoHeight = 111.0;
-        controller.videoWidth = 100.0;
-        controller.screenHeight = 90.0;
-        controller.screenWidth = 40.0;
-        controller.videoResHeight = 100.0;
-        controller.videoResWidth = 40.0;
-
-        jest.spyOn(controller.uploadCanvas,'toBlob').mockImplementation(function(callback) {
-          // Mock to skip async behavior
-          callback();
-        });
-
-        canvas = getUploadCanvasElement(component);
-        getCaptureConfirmButton(component).click();
-      });
-
-      it('should call the onCapture handler', function () {
-        expect($scope.onCapture).toHaveBeenCalled();
-      });
-
-      it('should not call the onCancel handler', function () {
-        expect($scope.onCancel).not.toHaveBeenCalled();
-      });
-
-      it('should hide the canvas', function () {
-        expect(canvas.classList).toContain('ng-hide');
-      });
-    });
-  });
-
-  function startLiveCameraFlow(controller) {
-    controller.startLiveCamFlow();
-    controller.$scope.$apply();
   }
 
-  function getVideoPreviewElement(element) {
-    return element.querySelector('#video-preview');
+  function findContainerElement() {
+    return controller.findContainer();
   }
 
-  function getVideoElement(element) {
-    return element.querySelector('#video');
+  function findVideoElement() {
+    return controller.findViewfinder();
   }
 
-  function getDisplayCanvasElement(element) {
-    return element.querySelector('#display-canvas');
+  function findCanvasElement() {
+    return controller.findSensor();
   }
 
-  function getUploadCanvasElement(element) {
-    return element.querySelector('#upload-canvas');
+  function findOverlayElement() {
+    return component.querySelector('#cameraViewfinderOverlay');
   }
 
-  function getVideoCancelButton(element) {
-    return element.querySelector('#video-cancel');
+  function findCaptureButton() {
+    return component.querySelector('.camera-ctrl-btn-big');
   }
 
-  function getVideoConfirmButton(element) {
-    return element.querySelector('#video-confirm');
+  function findConfirmButton() {
+    return component.querySelector('.camera-ctrl-btn-confirm');
   }
 
-  function getCaptureCancelButton(element) {
-    return element.querySelector('#capture-cancel');
-  }
-
-  function getCaptureConfirmButton(element) {
-    return element.querySelector('#capture-confirm');
-  }
-
-  function getComponent($scope, template) {
-    const element = angular.element(template);
-    const compiledElement = $compile(element)($scope);
-    $scope.$digest();
-    return compiledElement;
+  function findCancelButton() {
+    return component.querySelector('.camera-ctrl-btn-cancel');
   }
 });
