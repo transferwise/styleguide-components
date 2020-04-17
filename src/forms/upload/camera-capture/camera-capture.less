@@ -35,12 +35,18 @@
   // center in parent.
   top: 50%;
   left: 50%;
+  -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 
   // center the overlay image.
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
+
+  &.mirrored {
+    -webkit-transform: translate(-50%, -50%) scaleX(-1);
+    transform: translate(-50%, -50%) scaleX(-1);
+  }
 }
 
 #cameraSensor {
