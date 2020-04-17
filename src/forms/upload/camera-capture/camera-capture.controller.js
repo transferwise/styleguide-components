@@ -113,7 +113,7 @@ class CameraCaptureController {
       if (!screenfull.isFullscreen) {
         const deferred = this.$q.defer();
         // screenfull isn't actually 100% reliable. Give it a 1.5s timeout.
-        this.$timeout(deferred.reject, 1500);
+        this.$timeout(deferred.reject.bind(null, 'Fullscreen request timed out.'), 1500);
         screenfull.on('error', deferred.reject); // screenfull rejecting a promise isn't always guaranteed.
         screenfull.request(this.container).then(deferred.resolve, deferred.reject);
 
@@ -121,7 +121,7 @@ class CameraCaptureController {
       }
       return this.$q.resolve();
     }
-    return this.$q.reject('switching to full screen is not enabled.');
+    return this.$q.reject('Switching to full screen is not enabled.');
   }
 
   assignStreamToVideo() {
