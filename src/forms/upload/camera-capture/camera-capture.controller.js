@@ -39,7 +39,8 @@ class CameraCaptureController {
     this.previousBodyOverflowStyle = this.$document[0].body.style.overflow;
     this.$document[0].body.style.overflow = 'hidden'; // lock document scroll.
 
-    this.$window.addEventListener('resize', this.calculateWidths.bind(this));
+    this.calculateWidthsResizeListener = this.calculateWidths.bind(this);
+    this.$window.addEventListener('resize', this.calculateWidthsResizeListener);
 
     // TODO haoyuan : add change event listener to screenful,
     //  existing full screen should quit capture instead of showing non full screen camera
@@ -47,7 +48,7 @@ class CameraCaptureController {
   }
 
   $onDestroy() {
-    this.$window.removeEventListener('resize', this.calculateWidths.bind(this));
+    this.$window.removeEventListener('resize', this.calculateWidthsResizeListener);
 
     // restore document scroll.
     this.$document[0].body.style.overflow = this.previousBodyOverflowStyle;
