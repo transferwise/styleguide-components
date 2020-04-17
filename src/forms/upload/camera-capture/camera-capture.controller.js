@@ -56,7 +56,6 @@ class CameraCaptureController {
 
   // Programatically update overlay/sensor widths, as it's not achievable through CSS.
   calculateWidths() {
-    console.log(999);
     this.$timeout(() => { // helps ensure it's always in a digest cycle.
       const container = this.findContainer();
       const screenWidth = container.clientWidth;
@@ -82,7 +81,6 @@ class CameraCaptureController {
       // 90% because we leave a 5% margin on each side,
       // in order for overlay image to never touch screen edge.
       this.overlaySquareLength = Math.min(sensorWidth, sensorHeight) * 0.9;
-      console.log(101010);
     });
   }
 
@@ -93,40 +91,30 @@ class CameraCaptureController {
     // acquire media 1st, switch to fullscreen 2nd, so that permissions get asked before fullscreen.
     this.tryAcquireMediaStream()
       .then((stream) => {
-        console.log(111);
         this.mediaStream = stream;
 
         return this.tryAcquireFullScreen()
           .catch((e) => {
-            console.log('4a4a4a');
             this.$log.warn(e);
           })
           .finally(() => {
-            console.log(555);
             // regardless of whether fullscreen works, continue to link the stream and video.
             this.assignStreamToVideo();
           });
       }).catch((err) => {
         // TODO haoyuan : Should somehow ask user to refresh page to reaquire permission
-        console.log('aaa');
         this.$log.error(err);
         this.onCancelBtnClick();
       });
   }
 
   tryAcquireFullScreen() {
-    console.log(222);
     if (screenfull.isEnabled) {
-      console.log(333);
       if (!screenfull.isFullscreen) {
-        console.log(444);
         const deferred = this.$q.defer();
-        this.$timeout(() => {
-          deferred.reject('TIMES UP TIMES UP TIMES UP');
-        }, 1500);
-        screenfull.on('error', (e) => {
-          deferred.reject(e);
-        });
+        // screenfull isn't actually 100% reliable. Give it a 1.5s timeout.
+        this.$timeout(deferred.reject, 1500);
+        screenfull.on('error', deferred.reject); // screenfull rejecting a promise isn't always guaranteed.
         screenfull.request(this.container).then(deferred.resolve, deferred.reject);
 
         return deferred.promise;
@@ -137,7 +125,6 @@ class CameraCaptureController {
   }
 
   assignStreamToVideo() {
-    console.log(666);
     const video = this.findViewfinder();
 
     // This is done instead of just reassigning video stream everytime
@@ -146,12 +133,10 @@ class CameraCaptureController {
       video.srcObject = this.mediaStream;
     }
 
-    console.log(777);
 
     video.play().then(this.calculateWidths.bind(this));
 
     this.mode = 'capture';
-    console.log(888);
   }
 
   tryAcquireMediaStream() {
