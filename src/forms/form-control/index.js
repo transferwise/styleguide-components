@@ -2,6 +2,7 @@ import angular from 'angular';
 import Select from '../select';
 import Radio from '../radio';
 import Checkbox from '../checkbox';
+import CheckboxGroup from '../checkbox-group';
 import DateControl from '../date';
 import Upload from '../upload';
 
@@ -12,6 +13,7 @@ export default angular
     Select,
     Radio,
     Checkbox,
+    CheckboxGroup,
     DateControl,
     Upload
   ])

@@ -7,8 +7,15 @@ class FieldController {
     if (changes.initialField) {
       this.field = copyJSON(this.initialField);
 
-      this.control = this.field.control ? this.field.control
-        : this.RequirementsService.getControlType(changes.initialField.currentValue);
+      if (this.field.control === 'select' && this.field.selectType === 'CHECKBOX') {
+        this.control = 'checkbox-group';
+      } else if (this.field.control) {
+        this.control = this.field.control;
+      } else {
+        this.control = this.RequirementsService.getControlType(
+          changes.initialField.currentValue
+        );
+      }
 
       // TODO we should probably do this at fieldset level, so the model is available
       if (this.field.valuesAsync) {

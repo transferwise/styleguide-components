@@ -1,6 +1,7 @@
 import angular from 'angular';
 
 import Checkbox from './checkbox';
+import CheckboxGroup from './checkbox-group';
 import Radio from './radio';
 import Select from './select';
 import Upload from './upload';
@@ -22,6 +23,7 @@ import UploadDroppable from './upload-droppable';
 
 export default angular.module('tw.styleguide.forms', [
   Checkbox,
+  CheckboxGroup,
   Radio,
   Select,
   Upload,
