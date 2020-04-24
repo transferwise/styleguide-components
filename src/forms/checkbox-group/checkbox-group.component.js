@@ -10,6 +10,7 @@ const Checkbox = {
   },
   bindings: {
     name: '@',
+    ngChange: '&',
     ngModel: '=',
     ngRequired: '<',
     ngDisabled: '<',
