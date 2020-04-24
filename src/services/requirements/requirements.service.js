@@ -430,6 +430,10 @@ function getRequiredFields(fields) {
 
 function getControlType(field) {
   if (field.control) {
+    if (field.control === 'select' && field.selectType === 'CHECKBOX') {
+      return 'checkbox-group';
+    }
+
     return field.control.toLowerCase();
   }
   if (field.hidden) {
