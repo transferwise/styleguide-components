@@ -24,6 +24,7 @@ export default angular
           { value: 'select', label: 'Select' },
           { value: 'radio', label: 'Radio' },
           { value: 'checkbox', label: 'Checkbox' },
+          { value: 'checkbox-group', label: 'Checkbox Group' },
           { value: 'upload', label: 'Upload' },
           { value: 'date', label: 'Date' },
           { value: 'tel', label: 'Telephone' }

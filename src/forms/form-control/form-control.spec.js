@@ -163,6 +163,41 @@ describe('FormControl', function() {
     }, true);
   });
 
+  describe('type: checkbox-group', function() {
+    var checkbox;
+    beforeEach(function() {
+      $scope.model = null;
+      $scope.options = [{
+        'value': '1',
+        'label': 'one'
+      },{
+        'value': '2',
+        'label': 'two'
+      }];
+      element = compileTemplate(
+        "<tw-form-control type='checkbox-group' \
+          ng-model='model' \
+          ng-required='true' \
+          options='options' \
+          ng-change='onChange(value)'> \
+        </tw-form-control>"
+      );
+      checkbox = element.querySelector('tw-checkbox-group');
+    });
+
+    it('should render a checkbox-group', function() {
+      expect(checkbox).toBeTruthy();
+    });
+
+    testChangeHandler(function() {
+      checkbox.querySelector('button').click();
+    }, '["1"]');
+
+    testRequiredValidation(function() {
+      checkbox.querySelector('button').click();
+    }, '["1"]');
+  });
+
   describe('type: radio', function() {
     var radios, template;
     beforeEach(function() {

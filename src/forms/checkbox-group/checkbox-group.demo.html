@@ -1,0 +1,64 @@
+<h4 id="checkbox-group">Checkbox Group</h4>
+
+<form>
+<div class="row m-b-3">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label class="control-label">
+        TW Checkbox Group
+      </label>
+      <div class="checkbox">
+          TW Checkbox<span ng-if="$ctrl.checkbox.required">*</span>
+          <tw-checkbox-group tw-validation
+            ng-model="$ctrl.model"
+            options="$ctrl.options"
+            ng-required="$ctrl.checkbox.required"
+            ng-disabled="$ctrl.checkbox.disabled"
+            ng-change="$ctrl.log('checkboxgroup change')">
+          </tw-checkbox-group>
+          
+
+      </div>
+    </div>
+
+    <h5>Configuration</h5>
+<pre>&lt;tw-checkbox-group tw-validation
+  ng-model="$ctrl.model"
+  options="$ctrl.options"
+  ng-required="$ctrl.checkbox.required"
+  ng-disabled="$ctrl.checkbox.disabled"
+  ng-change="$ctrl.log('checkbox change')"</span>
+  tw-validation&gt;&lt;/tw-checkbox-group&gt;</pre>
+  </div>
+  <div class="col-md-6">
+    <div class="well">
+      <h5 class="page-header">
+        Edit configuration
+      </h5>
+      <div class="form-group">
+        <label class="control-label">
+          Required?
+        </label>
+        <div class="checkbox">
+          <label>
+            <tw-checkbox ng-model="$ctrl.checkbox.required"></tw-checkbox>
+            Is the control required?
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          Disabled?
+        </label>
+        <div class="checkbox">
+          <label>
+            <tw-checkbox ng-model="$ctrl.checkbox.disabled"></tw-checkbox>
+            Is the control disabled?
+          </label>
+        </div>
+      </div>
+      <!-- <input type="submit" class="btn btn-primary btn-block" value="Submit form" /> -->
+    </div>
+  </div>
+</div>
+</form>

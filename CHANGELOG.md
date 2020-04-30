@@ -1,3 +1,7 @@
+# v5.6.0
+## Add checkbox-group component
+Add checkbox-group component and support checkbox control for DF
+
 # v5.5.1
 ## Fix for v5.5.0: widths sometimes not calculating properly in ng-style for camera
 

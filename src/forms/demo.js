@@ -2,6 +2,7 @@ import angular from 'angular';
 import template from './demo.html';
 
 import Checkbox from './checkbox/checkbox.demo.js';
+import CheckboxGroup from './checkbox-group/checkbox-group.demo.js';
 import Radio from './radio/radio.demo.js';
 import Select from './select/select.demo.js';
 import Upload from './upload/upload.demo.js';
@@ -25,6 +26,7 @@ import Focusable from './focusable/focusable.demo.js';
 
 export default angular.module('tw.styleguide.demo.forms', [
   Checkbox,
+  CheckboxGroup,
   Radio,
   Select,
   Date,

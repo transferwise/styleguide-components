@@ -38,6 +38,17 @@
     </label>
   </div>
 
+  <div ng-switch-when="checkbox-group">
+    <tw-checkbox-group
+      name="{{$ctrl.name}}"
+      ng-model="$ctrl.internalModel"
+      options="$ctrl.options"
+      ng-required="$ctrl.ngRequired"
+      ng-disabled="$ctrl.ngDisabled"
+      ng-change="$ctrl.change($ctrl.internalModel)"
+    ></tw-checkbox-group>
+  </div>
+
   <div ng-switch-when="select">
     <tw-select
       name="{{$ctrl.name}}"
