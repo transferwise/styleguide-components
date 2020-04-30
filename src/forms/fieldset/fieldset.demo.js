@@ -230,20 +230,12 @@ function fieldsetDocsController() {
       checkboxGroup: {
         title: 'Checkbox Group',
         type: 'string',
-        control: 'select',
-        selectType: 'CHECKBOX',
+        control: 'checkbox-group',
         width: 'md',
-        refreshRequirementsOnChange: true,
-        values: [
-          {
-            key: '1',
-            name: 'One'
-          },
-          {
-            key: '2',
-            name: 'Two'
-          }
-        ]
+        items: {
+          enum: [1, 2],
+          values: [{ value: 1, label: 'One' }, { value: 2, label: 'Two' }]
+        }
       },
       password: {
         title: 'Password',
