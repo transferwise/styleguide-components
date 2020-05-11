@@ -1,3 +1,6 @@
+# v5.6.1
+## Change requested size of images uploaded through the camera component
+
 # v5.6.0
 ## Add checkbox-group component
 Add checkbox-group component and support checkbox control for DF
