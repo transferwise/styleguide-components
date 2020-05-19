@@ -1,6 +1,8 @@
 class FieldController {
   constructor(RequirementsService) {
     this.RequirementsService = RequirementsService;
+    this.changed = false;
+    this.touched = false;
   }
 
   $onChanges(changes) {
@@ -36,12 +38,16 @@ class FieldController {
   }
 
   onBlur() {
+    this.touched = true;
+
     if (this.blurHandler) {
       this.blurHandler();
     }
   }
 
   onChange(newValue) {
+    this.changed = true;
+
     if (this.changeHandler) {
       this.changeHandler({ value: newValue });
     }
@@ -96,19 +102,6 @@ class FieldController {
   }
 
   // eslint-disable-next-line
-  isFeedbackDetached(controlType) {
-    if (
-      controlType === 'date'
-      || controlType === 'file'
-      || controlType === 'radio'
-      || controlType === 'tel'
-    ) {
-      return true;
-    }
-    return false;
-  }
-
-  // eslint-disable-next-line
   isLabelShown(controlType) {
     if (controlType === 'file' || controlType === 'checkbox') {
       return false;
@@ -134,7 +127,10 @@ class FieldController {
   }
 
   isErrorShown() {
-    return this.sizeOf(this.field.validationMessages) > 0 || this.errorMessage;
+    return (
+      (this.touched && this.changed && this.sizeOf(this.field.validationMessages) > 0)
+      || this.errorMessage
+    );
   }
 }
 

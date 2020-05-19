@@ -47,13 +47,7 @@
     {{ $ctrl.description }}
   </small>
 
-  <div
-    class="alert alert-danger error-messages"
-    ng-if="$ctrl.isErrorShown()"
-    ng-class="{
-      'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)
-    }"
-  >
+  <div class="alert alert-danger error-messages alert-detach" ng-if="$ctrl.isErrorShown()">
     <div
       ng-repeat="(validationType, validationMessage) in $ctrl.field.validationMessages track by $index"
       class="error-{{ validationType | lowercase }}"
@@ -65,23 +59,11 @@
     </div>
   </div>
 
-  <div
-    class="alert alert-warning"
-    ng-if="$ctrl.isWarningShown()"
-    ng-class="{
-      'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)
-    }"
-  >
+  <div class="alert alert-warning alert-detach" ng-if="$ctrl.isWarningShown()">
     {{ $ctrl.warningMessage }}
   </div>
 
-  <div
-    ng-if="$ctrl.isHelpShown()"
-    class="alert alert-focus"
-    ng-class="{
-      'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)
-    }"
-  >
+  <div ng-if="$ctrl.isHelpShown()" class="alert alert-focus alert-detach">
     <span ng-if="$ctrl.field.help.message">
       {{ $ctrl.field.help.message }}
     </span>
