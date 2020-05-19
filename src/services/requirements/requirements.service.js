@@ -16,9 +16,7 @@ function RequirementsService($http) {
       alternative.properties = this.prepFields(alternative.properties || alternative.fields);
 
       // If we're still treating type as a special case, move it to a hidden value
-      if (alternative.type
-          && alternative.type !== 'object'
-          && !alternative.types) {
+      if (alternative.type && alternative.type !== 'object' && !alternative.types) {
         alternative.properties.type = {
           type: 'string',
           enum: [alternative.type],
@@ -290,15 +288,22 @@ function RequirementsService($http) {
 
     if (field.values) {
       // In some legacy arrays the first value is a placeholder, extract it.
-      if (field.values
+      if (
+        field.values
         && field.values.length
         && field.values[0]
         && !field.values[0].value
         && field.values[0].label
-        && !field.placeholder) {
+        && !field.placeholder
+      ) {
         field.placeholder = field.values[0].label;
         field.values = field.values.slice(1);
       }
+    }
+
+    if (field.helpOptions && !field.help) {
+      field.help = field.helpOptions;
+      delete field.helpOptions;
     }
   };
 
@@ -346,23 +351,21 @@ function RequirementsService($http) {
     }
 
     let postData = {};
-    if (field.valuesAsync.params
-      && field.valuesAsync.params.length) {
+    if (field.valuesAsync.params && field.valuesAsync.params.length) {
       postData = this.getParamValuesFromModel(model, field.valuesAsync.params);
     }
 
     // Retry once on failure
-    this.fetchValuesAsync(field, postData)
-      .catch(() => this.fetchValuesAsync(field, postData));
+    this.fetchValuesAsync(field, postData).catch(() => this.fetchValuesAsync(field, postData));
   };
 
   this.fetchValuesAsync = (field, postData) => $http({
     method: field.valuesAsync.method || 'GET',
     url: field.valuesAsync.url,
     data: postData || {}
-  }).then(
-    (response) => { field.values = this.prepLegacyValues(response.data); }
-  );
+  }).then((response) => {
+    field.values = this.prepLegacyValues(response.data);
+  });
 
   this.getParamValuesFromModel = (model, params) => {
     const data = {};
@@ -388,8 +391,10 @@ function RequirementsService($http) {
   };
 
   this.prepHelp = (field) => {
-    if (!field.help
-      && (field.helpText || field.helpImage || field.helpList || field.uploadPlaceholderImage)) {
+    if (
+      !field.help
+      && (field.helpText || field.helpImage || field.helpList || field.uploadPlaceholderImage)
+    ) {
       field.help = {};
     }
     if (field.helpText) {
@@ -508,12 +513,14 @@ function copyOf(obj) {
  */
 function getNameFromType(tabType) {
   if (tabType && tabType.length > 0) {
-    const tabNameWithSpaces = tabType.toLowerCase().split('_').join(' '); // String.replace method only replaces first instance
+    const tabNameWithSpaces = tabType
+      .toLowerCase()
+      .split('_')
+      .join(' '); // String.replace method only replaces first instance
     return tabNameWithSpaces.charAt(0).toUpperCase() + tabNameWithSpaces.slice(1);
   }
   return '';
 }
-
 
 RequirementsService.$inject = ['$http'];
 

@@ -436,16 +436,16 @@ describe('FormControl', function() {
       <tw-form-control \
         type='{{ controlType }}' \
         ng-model='model' \
-        help-options='helpOptions'> \
+        help-options='help'> \
       </tw-form-control>";
 
     var control;
 
-    describe('when helpText is supplied to a ' + controlType + ' control', function() {
+    describe('when help message is supplied to a ' + controlType + ' control', function() {
       beforeEach(function() {
         $scope.controlType = controlType;
         $scope.model = null;
-        $scope.helpOptions = {
+        $scope.help = {
           message: 'Help!'
         };
         control = compileTemplate(template).querySelector(controlSelector);
@@ -455,11 +455,25 @@ describe('FormControl', function() {
       });
     });
 
-    describe('when helpText is not supplied to a ' + controlType + ' control', function() {
+    describe('when help list is supplied to a ' + controlType + ' control', function() {
       beforeEach(function() {
         $scope.controlType = controlType;
         $scope.model = null;
-        $scope.helpOptions = {};
+        $scope.help = {
+          list: ['Help!']
+        };
+        control = compileTemplate(template).querySelector(controlSelector);
+      });
+      it('should disable autocomplete', function() {
+        expect(control.getAttribute('autocomplete')).toBe('disabled');
+      });
+    });
+
+    describe('when help is not supplied to a ' + controlType + ' control', function() {
+      beforeEach(function() {
+        $scope.controlType = controlType;
+        $scope.model = null;
+        $scope.help = {};
         control = compileTemplate(template).querySelector(controlSelector);
       });
       it('should enable autocomplete', function() {

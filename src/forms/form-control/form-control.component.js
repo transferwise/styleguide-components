@@ -36,7 +36,7 @@ const FormControl = {
     ngPattern: '<',
 
     uploadOptions: '<',
-    helpOptions: '<',
+    help: '<helpOptions',
     textFormat: '<',
     validationAsync: '<',
     persistAsync: '<',
