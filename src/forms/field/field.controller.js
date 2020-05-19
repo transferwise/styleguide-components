@@ -7,9 +7,7 @@ class FieldController {
     if (changes.initialField) {
       this.field = copyJSON(this.initialField);
 
-      this.control = this.RequirementsService.getControlType(
-        changes.initialField.currentValue
-      );
+      this.control = this.RequirementsService.getControlType(changes.initialField.currentValue);
 
       // TODO we should probably do this at fieldset level, so the model is available
       if (this.field.valuesAsync) {
@@ -99,13 +97,44 @@ class FieldController {
 
   // eslint-disable-next-line
   isFeedbackDetached(controlType) {
-    if (controlType === 'date'
-        || controlType === 'file'
-        || controlType === 'radio'
-        || controlType === 'tel') {
+    if (
+      controlType === 'date'
+      || controlType === 'file'
+      || controlType === 'radio'
+      || controlType === 'tel'
+    ) {
       return true;
     }
     return false;
+  }
+
+  // eslint-disable-next-line
+  isLabelShown(controlType) {
+    if (controlType === 'file' || controlType === 'checkbox') {
+      return false;
+    }
+    return true;
+  }
+
+  isHelpShown() {
+    return !!this.field.help;
+  }
+
+  isDesriptionShown() {
+    return (
+      this.description
+      && !this.isErrorShown()
+      && !this.isWarningShown()
+      && this.field.type !== 'boolean'
+    );
+  }
+
+  isWarningShown() {
+    return !!this.warningMessage;
+  }
+
+  isErrorShown() {
+    return this.sizeOf(this.field.validationMessages) > 0 || this.errorMessage;
   }
 }
 

@@ -1,8 +1,10 @@
 <div ng-switch="$ctrl.type">
-  <div ng-switch-when="radio"
+  <div
+    ng-switch-when="radio"
     class="radio"
     ng-class="{disabled: $ctrl.ngDisabled, 'radio-lg': option.secondary}"
-    ng-repeat="option in $ctrl.options">
+    ng-repeat="option in $ctrl.options"
+  >
     <label>
       <tw-radio
         name="{{$ctrl.name}}"
@@ -20,9 +22,7 @@
     </label>
   </div>
 
-  <div ng-switch-when="checkbox"
-    class="checkbox"
-    ng-class="{disabled: $ctrl.ngDisabled}">
+  <div ng-switch-when="checkbox" class="checkbox" ng-class="{disabled: $ctrl.ngDisabled}">
     <label>
       <tw-checkbox
         name="{{$ctrl.name}}"
@@ -34,7 +34,8 @@
         ng-focus="$ctrl.focus()"
         ng-blur="$ctrl.blur()"
       ></tw-checkbox>
-      {{$ctrl.placeholder}}
+      {{ $ctrl.label }}
+      <small ng-if="$ctrl.description">{{ $ctrl.description }}</small>
     </label>
   </div>
 
@@ -72,11 +73,9 @@
       help-image="{{$ctrl.helpOptions.image}}"
       placeholder="{{$ctrl.placeholder}}"
       accept="{{$ctrl.uploadAccept}}"
-
       complete-text="{{$ctrl.label}}"
       button-text="{{$ctrl.uploadOptions.buttonText}}"
       cancel-text="{{$ctrl.uploadOptions.cancelText}}"
-
       processing-text="{{ $ctrl.uploadOptions.processingText }}"
       success-text="{{ $ctrl.uploadOptions.successText }}"
       failure-text="{{ $ctrl.uploadOptions.failureText }}"
@@ -84,19 +83,16 @@
       view-image-text="{{$ctrl.uploadOptions.viewImageText}}"
       too-large-message="{{$ctrl.uploadTooLargeMessage}}"
       max-size="$ctrl.ngMax"
-
       ng-model="$ctrl.internalModel"
       ng-required="$ctrl.ngRequired"
       ng-disabled="$ctrl.ngDisabled"
       ng-change="$ctrl.change($ctrl.internalModel)"
       ng-focus="$ctrl.focus()"
       ng-blur="$ctrl.blur()"
-
       http-options="$ctrl.persistAsync"
       source="$ctrl.fileUploadSource"
       camera-overlay="{{$ctrl.cameraOptions.overlay}}"
       camera-direction="{{$ctrl.cameraOptions.direction}}"
-
       on-success="$ctrl.onAsyncUploadSuccess"
       on-failure="$ctrl.onAsyncUploadFailure"
     ></tw-upload>
@@ -137,7 +133,8 @@
     ></tw-telephone>
   </div>
 
-  <input ng-switch-when="number"
+  <input
+    ng-switch-when="number"
     name="{{$ctrl.name}}"
     type="number"
     step="{{$ctrl.step}}"
@@ -152,14 +149,13 @@
     ng-blur="$ctrl.blur()"
     ng-min="$ctrl.ngMin"
     ng-max="$ctrl.ngMax"
-    autocomplete="{{ $ctrl.getAutocompleteStatus() }}" />
+    autocomplete="{{ $ctrl.getAutocompleteStatus() }}"
+  />
 
-  <input ng-switch-when="hidden"
-    name="{{$ctrl.name}}"
-    type="hidden"
-    ng-model="$ctrl.ngModel"/>
+  <input ng-switch-when="hidden" name="{{$ctrl.name}}" type="hidden" ng-model="$ctrl.ngModel" />
 
-  <input ng-switch-when="password"
+  <input
+    ng-switch-when="password"
     name="{{$ctrl.name}}"
     type="password"
     class="form-control"
@@ -173,9 +169,11 @@
     ng-blur="$ctrl.blur()"
     ng-minlength="$ctrl.ngMinlength"
     ng-maxlength="$ctrl.ngMaxlength"
-    autocomplete="{{ $ctrl.getAutocompleteStatus() }}" />
+    autocomplete="{{ $ctrl.getAutocompleteStatus() }}"
+  />
 
-  <textarea ng-switch-when="textarea"
+  <textarea
+    ng-switch-when="textarea"
     name="{{$ctrl.name}}"
     class="form-control"
     placeholder="{{$ctrl.placeholder}}"
@@ -192,7 +190,8 @@
     autocomplete="{{ $ctrl.getAutocompleteStatus() }}"
   ></textarea>
 
-  <input ng-switch-default
+  <input
+    ng-switch-default
     name="{{$ctrl.name}}"
     type="text"
     class="form-control"
@@ -208,6 +207,6 @@
     ng-blur="$ctrl.blur()"
     ng-disabled="$ctrl.ngDisabled"
     tw-text-format="{{ $ctrl.textFormat }}"
-    autocomplete="{{ $ctrl.getAutocompleteStatus() }}" />
-
+    autocomplete="{{ $ctrl.getAutocompleteStatus() }}"
+  />
 </div>

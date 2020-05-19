@@ -1,16 +1,18 @@
-<div class="form-group tw-field-{{ $ctrl.name }}"
+<div
+  class="form-group tw-field-{{ $ctrl.name }}"
   ng-class="{
-    'has-error': $ctrl.field.errorMessage || $ctrl.errorMessage,
-    'has-warning': $ctrl.field.warningMessage || $ctrl.warningMessage,
+    'has-error': $ctrl.isErrorShown(),
+    'has-warning': $ctrl.isWarningShown(),
     'hidden': $ctrl.field.hidden
-  }">
-  <label class="control-label"
-    ng-if="$ctrl.control !== 'file'">
+  }"
+>
+  <label class="control-label" ng-if="$ctrl.isLabelShown($ctrl.control)">
     {{$ctrl.field.title}}
   </label>
   <tw-form-control
     name="{{ $ctrl.name }}"
     label="{{ $ctrl.field.title }}"
+    description="{{ $ctrl.field.description }}"
     type="{{ $ctrl.control | lowercase }}"
     placeholder="{{ $ctrl.field.placeholder }}"
     help-options="$ctrl.field.help"
@@ -41,13 +43,21 @@
     tw-validation
   ></tw-form-control>
 
-  <div class="alert alert-danger error-messages"
-    ng-if="$ctrl.sizeOf($ctrl.field.validationMessages) > 0 || $ctrl.errorMessage"
+  <small ng-if="$ctrl.isDesriptionShown()">
+    {{ $ctrl.description }}
+  </small>
+
+  <div
+    class="alert alert-danger error-messages"
+    ng-if="$ctrl.isErrorShown()"
     ng-class="{
       'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)
-    }">
-    <div ng-repeat="(validationType, validationMessage) in $ctrl.field.validationMessages track by $index"
-      class="error-{{ validationType | lowercase }}">
+    }"
+  >
+    <div
+      ng-repeat="(validationType, validationMessage) in $ctrl.field.validationMessages track by $index"
+      class="error-{{ validationType | lowercase }}"
+    >
       {{validationMessage}}
     </div>
     <div class="error-provided" ng-if="$ctrl.errorMessage">
@@ -55,19 +65,23 @@
     </div>
   </div>
 
-  <div class="alert alert-warning"
-    ng-if="$ctrl.warningMessage"
+  <div
+    class="alert alert-warning"
+    ng-if="$ctrl.isWarningShown()"
     ng-class="{
       'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)
-    }">
+    }"
+  >
     {{ $ctrl.warningMessage }}
   </div>
 
-  <div ng-if="$ctrl.field.help"
+  <div
+    ng-if="$ctrl.isHelpShown()"
     class="alert alert-focus"
     ng-class="{
       'alert-detach': $ctrl.isFeedbackDetached($ctrl.control)
-    }">
+    }"
+  >
     <span ng-if="$ctrl.field.help.message">
       {{ $ctrl.field.help.message }}
     </span>
@@ -78,6 +92,7 @@
       ng-if="$ctrl.field.help.image && $ctrl.control !== 'file'"
       ng-src="{{$ctrl.field.help.image}}"
       alt="{{ $ctrl.field.title }}"
-      class="thumbnail m-y-2" />
+      class="thumbnail m-y-2"
+    />
   </div>
 </div>

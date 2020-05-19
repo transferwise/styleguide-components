@@ -12,6 +12,7 @@ const FormControl = {
     name: '@',
     id: '@',
     label: '@',
+    description: '@',
     placeholder: '@',
     step: '@',
     locale: '@',
