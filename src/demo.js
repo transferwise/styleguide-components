@@ -6,7 +6,6 @@ import Layout from './layout/demo.js';
 import Help from './help/demo.js';
 import JsonSchema from './json-schema/demo.js';
 
-
 const module = angular.module('tw.styleguide.demo', [
   Forms,
   Formatting,
@@ -37,14 +36,19 @@ class PageController {
     ];
   }
 
-  log(message) { // eslint-disable-line
+  log(message) {
+    // eslint-disable-line
     console.log(message); // eslint-disable-line
   }
 }
 
-module.config(['$compileProvider', ($compileProvider) => {
-  $compileProvider.debugInfoEnabled(false);
-}])
+module
+  .config([
+    '$compileProvider',
+    ($compileProvider) => {
+      $compileProvider.debugInfoEnabled(false);
+    }
+  ])
   .controller('PageController', PageController)
   .component('docsNavigation', {
     template: `
@@ -73,12 +77,13 @@ module.config(['$compileProvider', ($compileProvider) => {
       <li><a href="index.html#validation">Validation</a></li>
     </ul>
 
-    <h5>Requirements</h5>
+    <h5>Dynamic Forms</h5>
     <ul class="list-unstyled">
       <li><a href="requirements.html#field">Field</a></li>
       <li><a href="requirements.html#fieldset">Fieldset</a></li>
       <li><a href="index.html#requirements-form">Form</a></li>
       <li><a href="requirements.html#definition-list">Definition list</a></li>
+      <li><a href="json-schema.html">JSON schema forms</a></li>
     </ul>
 
     <h5>Formatting</h5>
@@ -122,6 +127,5 @@ module.config(['$compileProvider', ($compileProvider) => {
       <div class='dirty'>Dirty</div>
     </div>`
   }));
-
 
 export default module.name;

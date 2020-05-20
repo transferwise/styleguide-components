@@ -274,7 +274,7 @@ function fieldDocsController() {
     type: 'string',
     format: 'date',
     title: 'Date control',
-    minmum: '2000-01-01',
+    minimum: '2000-01-01',
     maximum: '2020-01-01',
     validationMessages: {
       required: 'Date is required',

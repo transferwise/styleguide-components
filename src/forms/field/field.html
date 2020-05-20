@@ -37,10 +37,6 @@
     on-async-failure="$ctrl.onPersistAsyncFailure(response)"
   ></tw-form-control>
 
-  <small ng-if="$ctrl.isDesriptionShown()">
-    {{ $ctrl.description }}
-  </small>
-
   <div class="alert alert-danger error-messages alert-detach">
     <div
       ng-repeat="failureType in $ctrl.failures"

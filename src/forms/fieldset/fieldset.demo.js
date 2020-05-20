@@ -108,7 +108,7 @@ function fieldsetDocsController() {
         type: 'number',
         title: 'Number label',
         placeholder: 'Please enter number',
-        min: 322,
+        minimum: 322,
         default: 123
       }
     },

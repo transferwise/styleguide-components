@@ -28,6 +28,11 @@
             page to see the translations we can use.
           </li>
           <li>
+            <code>submitted</code> - a boolean, has the form been submitted? Once submitted
+            validation will be triggered regardless of whether the user has interacted with the
+            controls
+          </li>
+          <li>
             <code>on-change(model, isValid, schema)</code> - a callback handler that returns the new
             value of the model, whether the model 'isValid' and the schema of the property that
             caused the change. This final parameter can be used to implement features like 'refresh
@@ -43,6 +48,7 @@
   errors="{ ... }"
   locale="{{ $ctrl.locale }}"
   translations="{ ... }"
+  submitted="{{ $ctrl.submitted }}"
   on-change="$ctrl.onChange(model, isValid, schema)"
 &gt;&lt;/json-schema-form&gt;</pre
         >
@@ -57,6 +63,14 @@
             ng-required="true"
           ></tw-select>
         </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label class="control-label">
+              <tw-checkbox ng-model="$ctrl.submitted"></tw-checkbox>
+              Form submitted?
+            </label>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -70,6 +84,7 @@
       errors="$ctrl.errors"
       locale="'en-GB'"
       translations="$ctrl.translations"
+      submitted="$ctrl.submitted"
       on-change="$ctrl.onModelChange(model, isValid, schema)"
     >
     </json-schema-form>
