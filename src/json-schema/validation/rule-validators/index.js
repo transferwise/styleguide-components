@@ -28,11 +28,6 @@ function isValidMaximum(value, maximum) {
     (!isNumber(maximum) && !isString(maximum))
     || ((isNumber(value) || isString(value)) && value <= maximum)
   );
-
-  // return (
-  //   (!(isNumber(maximum) && isNumber(value)) || !(isString(maximum) && isString(value)))
-  //   && value <= maximum
-  // );
 }
 
 function isValidMinimum(value, minimum) {
@@ -40,11 +35,6 @@ function isValidMinimum(value, minimum) {
     (!isNumber(minimum) && !isString(minimum))
     || ((isNumber(value) || isString(value)) && value >= minimum)
   );
-
-  // return (
-  //   (!(isNumber(minimum) && isNumber(value)) || !(isString(minimum) && isString(value)))
-  //   && value >= minimum
-  // );
 }
 
 function isValidMinItems(value, minItems) {
