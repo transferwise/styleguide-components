@@ -34,7 +34,7 @@
 </pre>
   </div>
 </div>
-<!--
+
 <h4 id="fieldset-basic" class="page-header">
   Basic example
   <a href="#fieldset-basic" class="pull-xs-right">
@@ -136,17 +136,6 @@
   on-refresh-requirements="$ctrl.refresh()"
 >
 </fieldset-example>
--->
-<form>
-  <tw-fieldset
-    fields="$ctrl.fieldsetBasic.properties"
-    required-fields="$ctrl.fieldsetBasic.required"
-    model="$ctrl.fieldsetBasicModel"
-    on-model-change="$ctrl.log(model)"
-  >
-  </tw-fieldset>
-  <input type="submit" class="btn btn-primary" />
-</form>
 
 <tw-definition-list-docs model="$ctrl.fieldsetFullModel" fields="$ctrl.fieldsetFull.properties">
 </tw-definition-list-docs>

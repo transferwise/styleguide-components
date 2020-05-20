@@ -1,16 +1,18 @@
-<!--
 <h2 class="page-header">Fields</h2>
 <div class="row">
   <div class="col-md-6">
-    <p>The field is the basic building block of our forms, it accepts
-      a set of options to configure it's presentation, and a model
-      to which it will bind a value.</p>
-    <p>The field controls labelling, validation and help text, alongside
-      the rendering of the form control itself.</p>
+    <p>
+      The field is the basic building block of our forms, it accepts a set of options to configure
+      it's presentation, and a model to which it will bind a value.
+    </p>
+    <p>
+      The field controls labelling, validation and help text, alongside the rendering of the form
+      control itself.
+    </p>
   </div>
   <div class="col-md-6">
     <h5>Component API</h5>
-<pre>
+    <pre>
 &lt;tw-field
 name="inputName"
 field="{...}"&gt;
@@ -20,7 +22,8 @@ on-focus="focusHandler()"
 on-blur="blurHandler()"
 on-change="changeHandler(value)"&gt;
 &lt;/tw-field&gt;
-</pre>
+</pre
+    >
   </div>
 </div>
 
@@ -33,17 +36,20 @@ on-change="changeHandler(value)"&gt;
 <field-example
   name="stringProperty"
   field="$ctrl.stringBasic"
-  model="$ctrl.basicTypesModel.stringProperty">
+  model="$ctrl.basicTypesModel.stringProperty"
+>
 </field-example>
 <field-example
   name="numberProperty"
   field="$ctrl.numberBasic"
-  model="$ctrl.basicTypesModel.numberProperty">
+  model="$ctrl.basicTypesModel.numberProperty"
+>
 </field-example>
 <field-example
   name="booleanProperty"
   field="$ctrl.booleanBasic"
-  model="$ctrl.basicTypesModel.booleanProperty">
+  model="$ctrl.basicTypesModel.booleanProperty"
+>
 </field-example>
 
 <h4 id="formats" class="page-header">
@@ -55,31 +61,32 @@ on-change="changeHandler(value)"&gt;
 <div class="row">
   <div class="col-md-6">
     <p>
-      Beyond the basic types, formats can be used to indicate other types
-      of controls are required.  Or to give hints about what type of input
-      is expected.
+      Beyond the basic types, formats can be used to indicate other types of controls are required.
+      Or to give hints about what type of input is expected.
     </p>
     <p>
-      String formats may be used to choose which keyboard type to render
-      on mobile devices e.g. <code>format: number</code> or
-      <code>format: katakana</code>.
+      String formats may be used to choose which keyboard type to render on mobile devices e.g.
+      <code>format: number</code> or <code>format: katakana</code>.
     </p>
   </div>
 </div>
 <field-example
   name="dateProperty"
   field="$ctrl.dateBasic"
-  model="$ctrl.basicFormatsModel.dateProperty">
+  model="$ctrl.basicFormatsModel.dateProperty"
+>
 </field-example>
 <field-example
   name="phoneProperty"
   field="$ctrl.phoneBasic"
-  model="$ctrl.basicFormatsModel.phoneProperty">
+  model="$ctrl.basicFormatsModel.phoneProperty"
+>
 </field-example>
 <field-example
   name="base64urlProperty"
   field="$ctrl.uploadBasic"
-  model="$ctrl.basicFormatsModel.base64urlProperty">
+  model="$ctrl.basicFormatsModel.base64urlProperty"
+>
 </field-example>
 
 <h4 id="selections" class="page-header">
@@ -91,26 +98,27 @@ on-change="changeHandler(value)"&gt;
 <div class="row">
   <div class="col-md-6">
     <p>
-      Often we want the user to choose from a set of values.  By passing an
-      array of <code>values</code> the field will render as a radio selection
-      (3 or less options), or a select box (4 or more options).  To force
-      the display of one or the other, pass <code>control: "radio"</code> or
-      <code>control: "select"</code>.
+      Often we want the user to choose from a set of values. By passing an array of
+      <code>values</code> the field will render as a radio selection (3 or less options), or a
+      select box (4 or more options). To force the display of one or the other, pass
+      <code>control: "radio"</code> or <code>control: "select"</code>.
     </p>
   </div>
 </div>
 <field-example
   name="selectProperty"
   field="$ctrl.selectBasic"
-  model="$ctrl.selectionsModel.selectProperty">
+  model="$ctrl.selectionsModel.selectProperty"
+>
 </field-example>
 <field-example
   name="radioProperty"
   field="$ctrl.radioBasic"
-  model="$ctrl.selectionsModel.radioProperty">
+  model="$ctrl.selectionsModel.radioProperty"
+>
 </field-example>
 
-<h4 id="control-type"  class="page-header">
+<h4 id="control-type" class="page-header">
   Forcing control type
   <a href="#control-type" class="pull-xs-right">
     <span class="glyphicon glyphicon-link"></span>
@@ -119,37 +127,37 @@ on-change="changeHandler(value)"&gt;
 <div class="row">
   <div class="col-md-6">
     <p>
-      To force display of an alternative control, we can supply a 'control'
-      type. For example, a enumerated value with only two options would
-      normally display as radio buttons, but we can force it to show as
-      a select, using <code>control: "select"</code>.
+      To force display of an alternative control, we can supply a 'control' type. For example, a
+      enumerated value with only two options would normally display as radio buttons, but we can
+      force it to show as a select, using <code>control: "select"</code>.
     </p>
   </div>
   <div class="col-md-6">
-    <p>A password is of string type, with no specific format, we can
-      render a password control using <code>control: "password"</code>.
+    <p>
+      A password is of string type, with no specific format, we can render a password control using
+      <code>control: "password"</code>.
     </p>
   </div>
 </div>
-<field-example
-  name="selectProperty"
-  field="$ctrl.selectOverride"
-  model="$ctrl.override.select">
+<field-example name="selectProperty" field="$ctrl.selectOverride" model="$ctrl.override.select">
 </field-example>
 <field-example
   name="passwordProperty"
   field="$ctrl.passwordOverride"
-  model="$ctrl.override.password">
+  model="$ctrl.override.password"
+>
 </field-example>
 <field-example
   name="textareaProperty"
   field="$ctrl.textareaOverride"
-  model="$ctrl.override.textarea">
+  model="$ctrl.override.textarea"
+>
 </field-example>
 <field-example
   name="telephoneProperty"
   field="$ctrl.telephoneOverride"
-  model="$ctrl.override.telephone">
+  model="$ctrl.override.telephone"
+>
 </field-example>
 
 <h4 id="defaults" class="page-header">
@@ -169,10 +177,7 @@ on-change="changeHandler(value)"&gt;
     <p>If the model already has it value, it will not be overriden</p>
   </div>
 </div>
-<field-example
-  name="defaultValue"
-  field="$ctrl.defaultValue"
-  model="$ctrl.defualtValueModel">
+<field-example name="defaultValue" field="$ctrl.defaultValue" model="$ctrl.defualtValueModel">
 </field-example>
 
 <h4 id="async" class="page-header">
@@ -185,16 +190,12 @@ on-change="changeHandler(value)"&gt;
   <div class="col-md-6">
     <h5>Async values</h5>
     <p>
-      Sometimes the list of values is excessively long, or dependent on
-      some other data in the model.  In these cases you can load these
-      values asynchronously.
+      Sometimes the list of values is excessively long, or dependent on some other data in the
+      model. In these cases you can load these values asynchronously.
     </p>
   </div>
 </div>
-<field-example
-  name="valuesAsyncModel"
-  field="$ctrl.valuesAsync"
-  model="$ctrl.valuesAsyncModel">
+<field-example name="valuesAsyncModel" field="$ctrl.valuesAsync" model="$ctrl.valuesAsyncModel">
 </field-example>
 
 <div class="row">
@@ -205,10 +206,7 @@ on-change="changeHandler(value)"&gt;
     </p>
   </div>
 </div>
-<field-example
-  name="persistAsyncModel"
-  field="$ctrl.persistAsync"
-  model="$ctrl.persistAsyncModel">
+<field-example name="persistAsyncModel" field="$ctrl.persistAsync" model="$ctrl.persistAsyncModel">
 </field-example>
 
 <h4 id="validation" class="page-header">
@@ -217,28 +215,47 @@ on-change="changeHandler(value)"&gt;
     <span class="glyphicon glyphicon-link"></span>
   </a>
 </h4>
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <div class="checkbox checkbox-lg">
+        <label>
+          <tw-checkbox ng-model="$ctrl.submitted"></tw-checkbox>
+          Form is submitted?
+          <small>Submitting the form trigger client side validation</small>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
 <field-example
   name="stringProperty"
   field="$ctrl.stringValidation"
   model="$ctrl.validationModel.stringProperty"
   required="true"
-  on-change="$ctrl.log(value)">
+  submitted="$ctrl.submitted"
+  on-change="$ctrl.log(value)"
+>
 </field-example>
 <field-example
   name="numberProperty"
   field="$ctrl.numberValidation"
   model="$ctrl.validationModel.numberProperty"
   required="true"
-  on-change="$ctrl.log(value)">
+  submitted="$ctrl.submitted"
+  on-change="$ctrl.log(value)"
+>
 </field-example>
 <field-example
   name="dateProperty"
   field="$ctrl.dateValidation"
   model="$ctrl.validationModel.dateProperty"
   required="true"
-  on-change="$ctrl.log(value)">
+  submitted="$ctrl.submitted"
+  on-change="$ctrl.log(value)"
+>
 </field-example>
-
 <h4 id="custom-errors" class="page-header">
   Custom errors
   <a href="#custom-errors" class="pull-xs-right">
@@ -248,17 +265,16 @@ on-change="changeHandler(value)"&gt;
 <div class="row">
   <div class="col-md-6">
     <p>
-      When we want to render a custom error, or render an error on page load,
-      we can pass in an additional error message that will be immediately
-      displayed.  When the value of the field changes the error messages
-      (and state) will be removed as we fall back to regular validation.
+      When we want to render a custom error, or render an error on page load, we can pass in an
+      additional error message that will be immediately displayed. When the value of the field
+      changes the error messages (and state) will be removed as we fall back to regular validation.
     </p>
   </div>
   <div class="col-md-6">
     <p>
-      We can also supply warning messages, it is up to the consumer to
-      show/hide these messages as the value evolves.  Warning messages will
-      be superceded by errors if they both exist at the same time.
+      We can also supply warning messages, it is up to the consumer to show/hide these messages as
+      the value evolves. Warning messages will be superceded by errors if they both exist at the
+      same time.
     </p>
   </div>
 </div>
@@ -266,13 +282,15 @@ on-change="changeHandler(value)"&gt;
   name="customErrorsMessage"
   field="$ctrl.customErrors"
   model="$ctrl.customErrorsModel"
-  error-message="$ctrl.customErrorsMessage">
+  error-message="$ctrl.customErrorsMessage"
+>
 </field-example>
 <field-example
   name="customWarningMessage"
   field="$ctrl.customWarning"
   model="$ctrl.customErrorsModel"
-  warning-message="$ctrl.customWarningMessage">
+  warning-message="$ctrl.customWarningMessage"
+>
 </field-example>
 
 <h4 id="help-information" class="page-header">
@@ -284,26 +302,14 @@ on-change="changeHandler(value)"&gt;
 <div class="row">
   <div class="col-md-6">
     <p>
-      We have a number of ways to show helpful information, this information
-      appears when the control is focused to draw attention.
+      We have a number of ways to show helpful information, this information appears when the
+      control is focused to draw attention.
     </p>
   </div>
 </div>
-<field-example
-  name="text"
-  field="$ctrl.helpText"
-  model="$ctrl.helpModel.text">
-</field-example>
-<field-example
-  name="list"
-  field="$ctrl.helpList"
-  model="$ctrl.helpModel.list">
-</field-example>
-<field-example
-  name="image"
-  field="$ctrl.helpImage"
-  model="$ctrl.helpModel.image">
-</field-example>
+<field-example name="text" field="$ctrl.helpText" model="$ctrl.helpModel.text"></field-example>
+<field-example name="list" field="$ctrl.helpList" model="$ctrl.helpModel.list"></field-example>
+<field-example name="image" field="$ctrl.helpImage" model="$ctrl.helpModel.image"></field-example>
 
 <h4 id="presentation-options" class="page-header">
   Presentation options
@@ -321,12 +327,20 @@ on-change="changeHandler(value)"&gt;
 <field-example
   name="displayFormat"
   field="$ctrl.displayFormat"
-  model="$ctrl.presentationModel.displayFormat">
+  model="$ctrl.presentationModel.displayFormat"
+>
+</field-example>
+<field-example
+  name="checkoxDescription"
+  field="$ctrl.checkoxDescription"
+  model="$ctrl.presentationModel.checkoxDescription"
+>
 </field-example>
 <field-example
   name="uploadOptions"
   field="$ctrl.uploadComponent"
-  model="$ctrl.presentationModel.uploadOptions">
+  model="$ctrl.presentationModel.uploadOptions"
+>
 </field-example>
 
 <h4 id="field-states" class="page-header">
@@ -345,12 +359,15 @@ on-change="changeHandler(value)"&gt;
 <field-example
   name="disabledControl"
   field="$ctrl.disabledControl"
-  model="$ctrl.presentationModel.disabledControl">
+  model="$ctrl.presentationModel.disabledControl"
+>
 </field-example>
+
 <field-example
   name="hiddenControl"
   field="$ctrl.hiddenControl"
-  model="$ctrl.presentationModel.hiddenControl">
+  model="$ctrl.presentationModel.hiddenControl"
+>
 </field-example>
 
 <h4 id="field-events" class="page-header">
@@ -365,6 +382,6 @@ on-change="changeHandler(value)"&gt;
   model="$ctrl.eventsModel"
   on-focus="$ctrl.log('focus')"
   on-blur="$ctrl.log('blur')"
-  on-change="$ctrl.log(value)">
+  on-change="$ctrl.log(value)"
+>
 </field-example>
--->

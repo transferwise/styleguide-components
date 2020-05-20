@@ -13,6 +13,7 @@ export default angular
       model: '=',
       field: '<',
       required: '<',
+      submitted: '<',
       errorMessage: '<',
       warningMessage: '<',
       onFocusHandler: '&?onFocus',
@@ -44,6 +45,7 @@ export default angular
           model="$ctrl.model"
           field="$ctrl.field"
           required="$ctrl.required"
+          submitted="$ctrl.submitted"
           error-message="$ctrl.errorMessage"
           warning-message="$ctrl.warningMessage"
           on-focus="$ctrl.onFocus()"
@@ -55,7 +57,8 @@ export default angular
 <pre>&lt;tw-field
   name="{{ $ctrl.name }}"
   model="{{ $ctrl.model }}"<span ng-if="$ctrl.required">
-  required="{{ $ctrl.required }}"</span><span ng-if="$ctrl.errorMessage">
+  required="{{ $ctrl.required }}"</span><span ng-if="$ctrl.submitted">
+  submitted="{{ $ctrl.submitted }}"</span><span ng-if="$ctrl.errorMessage">
   error-message="'{{ $ctrl.errorMessage }}'"</span><span ng-if="$ctrl.warningMessage">
   warning-message="'{{ $ctrl.warningMessage }}'"</span><span ng-if="$ctrl.onFocusHandler">
   on-focus="console.log('focus')"</span><span ng-if="$ctrl.onBlurHandler">
@@ -259,24 +262,24 @@ function fieldDocsController() {
     type: 'number',
     title: 'Number control',
     placeholder: 'Please enter number',
-    min: 10,
-    max: 99,
+    minimum: 10,
+    maximum: 99,
     validationMessages: {
       required: 'Number is required',
-      min: 'Must be 10 or greater',
-      max: 'Must be 99 or less'
+      minimum: 'Must be 10 or greater',
+      maximum: 'Must be 99 or less'
     }
   };
   this.dateValidation = {
     type: 'string',
     format: 'date',
     title: 'Date control',
-    min: '2000-01-01',
-    max: '2020-01-01',
+    minmum: '2000-01-01',
+    maximum: '2020-01-01',
     validationMessages: {
       required: 'Date is required',
-      min: 'Must be after Jan 1st, 2000',
-      max: 'Must be before Jan 1st, 2020'
+      minimum: 'Must be after Jan 1st, 2000',
+      maximum: 'Must be before Jan 1st, 2020'
     }
   };
   this.validationModel = {
@@ -333,6 +336,13 @@ function fieldDocsController() {
     title: 'String display format',
     placeholder: 'Please enter...',
     displayFormat: '** - ** - **'
+  };
+
+  this.checkoxDescription = {
+    type: 'boolean',
+    title: 'Boolean',
+    description: 'With additional information',
+    placeholder: 'Your choice...'
   };
 
   this.presentationModel = {

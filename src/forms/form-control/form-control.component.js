@@ -25,15 +25,7 @@ const FormControl = {
     ngChange: '&',
     ngFocus: '&',
     ngBlur: '&',
-    ngRequired: '<',
     ngDisabled: '<',
-
-    // ngMinlength/ngMaxlength have default behaviour that cannot be overridden
-    ngMinlength: '<twMinlength',
-    ngMaxlength: '<twMaxlength',
-    ngMin: '<',
-    ngMax: '<',
-    ngPattern: '<',
 
     uploadOptions: '<',
     help: '<helpOptions',

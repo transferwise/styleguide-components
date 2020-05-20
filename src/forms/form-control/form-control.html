@@ -22,7 +22,11 @@
     </label>
   </div>
 
-  <div ng-switch-when="checkbox" class="checkbox" ng-class="{disabled: $ctrl.ngDisabled}">
+  <div
+    ng-switch-when="checkbox"
+    class="checkbox"
+    ng-class="{ disabled: $ctrl.ngDisabled, 'checkbox-lg': $ctrl.description }"
+  >
     <label>
       <tw-checkbox
         name="{{$ctrl.name}}"
@@ -142,13 +146,10 @@
     placeholder="{{$ctrl.placeholder}}"
     ng-model="$ctrl.internalModel"
     ng-model-options="{ allowInvalid: true, debounce: 300 }"
-    ng-required="$ctrl.ngRequired"
     ng-disabled="$ctrl.ngDisabled"
     ng-change="$ctrl.change($ctrl.internalModel)"
     ng-focus="$ctrl.focus()"
     ng-blur="$ctrl.blur()"
-    ng-min="$ctrl.ngMin"
-    ng-max="$ctrl.ngMax"
     autocomplete="{{ $ctrl.getAutocompleteStatus() }}"
   />
 
@@ -162,13 +163,10 @@
     placeholder="{{$ctrl.placeholder}}"
     ng-model="$ctrl.internalModel"
     ng-model-options="{ allowInvalid: true, debounce: 300 }"
-    ng-required="$ctrl.ngRequired"
     ng-disabled="$ctrl.ngDisabled"
     ng-change="$ctrl.change($ctrl.internalModel)"
     ng-focus="$ctrl.focus()"
     ng-blur="$ctrl.blur()"
-    ng-minlength="$ctrl.ngMinlength"
-    ng-maxlength="$ctrl.ngMaxlength"
     autocomplete="{{ $ctrl.getAutocompleteStatus() }}"
   />
 
@@ -179,10 +177,6 @@
     placeholder="{{$ctrl.placeholder}}"
     ng-model="$ctrl.internalModel"
     ng-model-options="{ allowInvalid: true, debounce: 300 }"
-    ng-required="$ctrl.ngRequired"
-    ng-pattern="$ctrl.ngPattern"
-    ng-minlength="$ctrl.ngMinlength"
-    ng-maxlength="$ctrl.ngMaxlength"
     ng-change="$ctrl.change($ctrl.internalModel)"
     ng-focus="$ctrl.focus()"
     ng-blur="$ctrl.blur()"
@@ -198,10 +192,6 @@
     placeholder="{{$ctrl.placeholder}}"
     ng-model="$ctrl.internalModel"
     ng-model-options="{ allowInvalid: true, debounce: 300 }"
-    ng-required="$ctrl.ngRequired"
-    ng-pattern="$ctrl.ngPattern"
-    ng-minlength="$ctrl.ngMinlength"
-    ng-maxlength="$ctrl.ngMaxlength"
     ng-change="$ctrl.change($ctrl.internalModel)"
     ng-focus="$ctrl.focus()"
     ng-blur="$ctrl.blur()"

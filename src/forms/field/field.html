@@ -28,11 +28,6 @@
     ng-change="$ctrl.onChange($ctrl.model)"
     ng-required="$ctrl.required"
     ng-disabled="$ctrl.field.disabled"
-    tw-minlength="$ctrl.field.minlength || $ctrl.field.minLength"
-    tw-maxlength="$ctrl.field.maxlength || $ctrl.field.maxLength"
-    ng-min="$ctrl.field.min"
-    ng-max="$ctrl.field.max"
-    ng-pattern="$ctrl.field.pattern"
     text-format="$ctrl.field.displayFormat"
     validation-async="$ctrl.field.validationAsync"
     persist-async="$ctrl.field.persistAsync"
@@ -40,7 +35,6 @@
     camera-options="$ctrl.field.camera"
     on-async-success="$ctrl.onPersistAsyncSuccess(response)"
     on-async-failure="$ctrl.onPersistAsyncFailure(response)"
-    tw-validation
   ></tw-form-control>
 
   <small ng-if="$ctrl.isDesriptionShown()">
@@ -51,7 +45,6 @@
     <div
       ng-repeat="failureType in $ctrl.failures"
       ng-if="$ctrl.field.validationMessages[failureType]"
-      class="error-{{ failureType | lowercase }}"
     >
       {{ $ctrl.field.validationMessages[failureType] }}
     </div>

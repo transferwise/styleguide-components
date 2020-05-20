@@ -10,7 +10,7 @@ class FieldController {
 
   $onChanges(changes) {
     if (changes.initialField) {
-      this.field = copyJSON(this.initialField);
+      this.field = this.RequirementsService.prepField(this.initialField);
 
       this.control = this.RequirementsService.getControlType(changes.initialField.currentValue);
 
@@ -51,6 +51,7 @@ class FieldController {
   }
 
   onChange(newValue) {
+    console.log('changed', newValue);
     this.changed = true;
     this.validate(newValue);
 
