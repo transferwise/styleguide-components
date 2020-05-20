@@ -1,4 +1,13 @@
-import { isObject, isUndefined, isNull } from '../type-validators';
+import {
+  isString,
+  isNumber,
+  isInteger,
+  isBoolean,
+  isObject,
+  isArray,
+  isUndefined,
+  isNull
+} from '../type-validators';
 
 function getValidModelParts(model, schema) {
   if (schema.allOf) {
@@ -43,9 +52,9 @@ function cleanModelWithObjectSchema(model, schema) {
   const cleanedModel = {};
   Object.keys(schema.properties).forEach((property) => {
     // If the property exists in the model, clean it, and add it
-    if (model && typeof model[property] !== 'undefined') {
+    if (model && !isUndefined(model[property])) {
       const newValue = getValidModelParts(model[property], schema.properties[property]);
-      if (newValue !== null) {
+      if (!isNull(newValue)) {
         cleanedModel[property] = newValue;
       }
     }
@@ -54,29 +63,35 @@ function cleanModelWithObjectSchema(model, schema) {
 }
 
 function cleanModelWithArraySchema(model, schema) {
-  if (Array.isArray(model)) {
+  if (isArray(model)) {
     return model.map(childModel => getValidModelParts(childModel, schema));
   }
   return null;
 }
 
 function cleanModelWithStringSchema(model) {
-  if (typeof model === 'string') {
+  if (isString(model)) {
     return model;
   }
   return null;
 }
 
 function cleanModelWithNumberSchema(model) {
-  // eslint-disable-next-line
-  if (typeof model === 'number' && !isNaN(model)) {
+  if (isNumber(model)) {
+    return model;
+  }
+  return null;
+}
+
+function cleanModelWithIntegerSchema(model) {
+  if (isInteger(model)) {
     return model;
   }
   return null;
 }
 
 function cleanModelWithBooleanSchema(model) {
-  if (typeof model === 'boolean') {
+  if (isBoolean(model)) {
     return model;
   }
   return null;
