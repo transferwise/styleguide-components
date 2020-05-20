@@ -1,3 +1,6 @@
+import { getValidationFailures } from '../../json-schema/validation/validation-failures';
+import { isNull, isUndefined } from '../../json-schema/validation/type-validators';
+
 class FieldController {
   constructor(RequirementsService) {
     this.RequirementsService = RequirementsService;
@@ -28,6 +31,8 @@ class FieldController {
       if (this.validationMessages && !this.field.validationMessages) {
         this.field.validationMessages = this.validationMessages;
       }
+
+      this.validate(this.model);
     }
   }
 
@@ -47,6 +52,7 @@ class FieldController {
 
   onChange(newValue) {
     this.changed = true;
+    this.validate(newValue);
 
     if (this.changeHandler) {
       this.changeHandler({ value: newValue });
@@ -54,6 +60,18 @@ class FieldController {
     if (this.errorMessage) {
       delete this.errorMessage;
     }
+  }
+
+  validate(value) {
+    // Our controls return null for invalid values
+    if (isNull(value) || isUndefined(value) || value === '') {
+      if (this.required) {
+        this.failures = ['required'];
+        return;
+      }
+    }
+
+    this.failures = getValidationFailures(value, this.field, this.required);
   }
 
   onPersistAsyncFailure(response) {
@@ -97,11 +115,6 @@ class FieldController {
   }
 
   // eslint-disable-next-line
-  sizeOf(obj) {
-    return obj ? Object.keys(obj).length : 0;
-  }
-
-  // eslint-disable-next-line
   isLabelShown(controlType) {
     if (controlType === 'file' || controlType === 'checkbox') {
       return false;
@@ -128,7 +141,7 @@ class FieldController {
 
   isErrorShown() {
     return (
-      (this.touched && this.changed && this.sizeOf(this.field.validationMessages) > 0)
+      ((this.submitted || (this.touched && this.changed)) && this.failures.length > 0)
       || this.errorMessage
     );
   }

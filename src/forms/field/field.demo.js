@@ -67,7 +67,6 @@ export default angular
     </div>`
   }).name;
 
-
 function fieldDocsController() {
   this.log = (message) => {
     console.log(message); // eslint-disable-line
@@ -123,24 +122,38 @@ function fieldDocsController() {
     type: 'number',
     title: 'Select control',
     placeholder: 'Please choose',
-    values: [{
-      value: 1, label: 'One'
-    }, {
-      value: 2, label: 'Two'
-    }, {
-      value: 3, label: 'Three'
-    }, {
-      value: 4, label: 'Four'
-    }]
+    values: [
+      {
+        value: 1,
+        label: 'One'
+      },
+      {
+        value: 2,
+        label: 'Two'
+      },
+      {
+        value: 3,
+        label: 'Three'
+      },
+      {
+        value: 4,
+        label: 'Four'
+      }
+    ]
   };
   this.radioBasic = {
     type: 'string',
     title: 'Radio control',
-    values: [{
-      value: '1', label: 'One'
-    }, {
-      value: '2', label: 'Two'
-    }]
+    values: [
+      {
+        value: '1',
+        label: 'One'
+      },
+      {
+        value: '2',
+        label: 'Two'
+      }
+    ]
   };
   this.selectionsModel = {
     selectProperty: 1,
@@ -168,11 +181,16 @@ function fieldDocsController() {
     type: 'string',
     title: 'Select override',
     control: 'select',
-    values: [{
-      value: '1', label: 'One'
-    }, {
-      value: '2', label: 'Two'
-    }]
+    values: [
+      {
+        value: '1',
+        label: 'One'
+      },
+      {
+        value: '2',
+        label: 'Two'
+      }
+    ]
   };
 
   this.override = {
@@ -241,24 +259,24 @@ function fieldDocsController() {
     type: 'number',
     title: 'Number control',
     placeholder: 'Please enter number',
-    minimum: 10,
-    maximum: 99,
+    min: 10,
+    max: 99,
     validationMessages: {
       required: 'Number is required',
-      minimum: 'Must be 10 or greater',
-      maximum: 'Must be 99 or less'
+      min: 'Must be 10 or greater',
+      max: 'Must be 99 or less'
     }
   };
   this.dateValidation = {
     type: 'string',
     format: 'date',
     title: 'Date control',
-    minimum: '2000-01-01',
-    maximum: '2020-01-01',
+    min: '2000-01-01',
+    max: '2020-01-01',
     validationMessages: {
       required: 'Date is required',
-      minimum: 'Must be after Jan 1st, 2000',
-      maximum: 'Must be before Jan 1st, 2020'
+      min: 'Must be after Jan 1st, 2000',
+      max: 'Must be before Jan 1st, 2020'
     }
   };
   this.validationModel = {
@@ -297,11 +315,7 @@ function fieldDocsController() {
     title: 'Help list',
     placeholder: 'Please enter number',
     help: {
-      list: [
-        'Make sure of this',
-        'And this',
-        'And avoid this'
-      ]
+      list: ['Make sure of this', 'And this', 'And avoid this']
     }
   };
   this.helpImage = {

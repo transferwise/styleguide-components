@@ -5,20 +5,33 @@ import {
   getNumberValidationFailures,
   getIntegerValidationFailures,
   getBooleanValidationFailures,
+  getEnumValidationFailures,
+  getConstValidationFailures,
   getArrayValidationFailures
 } from '../validation-failures';
 
 function isValidStringSchema(value, schema) {
   return !getStringValidationFailures(value, schema).length;
 }
+
 function isValidNumberSchema(value, schema) {
   return !getNumberValidationFailures(value, schema).length;
 }
+
 function isValidIntegerSchema(value, schema) {
   return !getIntegerValidationFailures(value, schema).length;
 }
+
 function isValidBooleanSchema(value, schema) {
   return !getBooleanValidationFailures(value, schema).length;
+}
+
+function isValidEnumSchema(value, schema) {
+  return !getEnumValidationFailures(value, schema).length;
+}
+
+function isValidConstSchema(value, schema) {
+  return !getConstValidationFailures(value, schema).length;
 }
 
 function isValidObjectSchema(value, schema) {
@@ -32,7 +45,7 @@ function isValidObjectSchema(value, schema) {
       schema.properties[propertyName],
       schema.required && schema.required.indexOf(propertyName) >= 0
     ))
-    .reduce((validSoFar, validProperty) => validSoFar && validProperty, true);
+    .every(property => property);
 }
 
 function isObjectPropertyValid(propertyValue, propertySchema, isRequired) {
@@ -42,7 +55,7 @@ function isObjectPropertyValid(propertyValue, propertySchema, isRequired) {
   return isValidSchema(propertyValue, propertySchema);
 }
 
-function isValidArraySchema(value, schema) { // eslint-disable-line
+function isValidArraySchema(value, schema) {
   if (schema.type !== 'array' || !isObject(schema.items)) {
     return false;
   }
@@ -50,34 +63,41 @@ function isValidArraySchema(value, schema) { // eslint-disable-line
   if (getArrayValidationFailures(value, schema).length) {
     return false;
   }
-
-  return value.reduce((validSoFar, iter) => isValidSchema(iter, schema.items), true);
+  return value.map(item => isValidSchema(item, schema.items)).every(valid => valid);
 }
 
-function isValidOneOfSchema(value, schema) { // eslint-disable-line
+function isValidOneOfSchema(value, schema) {
   if (!isArray(schema.oneOf)) {
     return false;
   }
-  return schema.oneOf.reduce((validSoFar, iter) => validSoFar || isValidSchema(value, iter), false);
+  return schema.oneOf.some(childSchema => isValidSchema(value, childSchema));
 }
 
-function isValidAllOfSchema(value, schema) { // eslint-disable-line
+function isValidAllOfSchema(value, schema) {
   if (!isArray(schema.allOf)) {
     return false;
   }
-  return schema.allOf.reduce((validSoFar, iter) => validSoFar && isValidSchema(value, iter), true);
+  return schema.allOf.map(childSchema => isValidSchema(value, childSchema)).every(valid => valid);
 }
 
 /**
  * Validate any value against a given schema
  */
-function isValidSchema(value, schema) {
+export function isValidSchema(value, schema) {
   if (schema.oneOf) {
     return isValidOneOfSchema(value, schema);
   }
 
   if (schema.allOf) {
     return isValidAllOfSchema(value, schema);
+  }
+
+  if (schema.enum) {
+    return isValidEnumSchema(value, schema);
+  }
+
+  if (schema.const) {
+    return isValidConstSchema(value, schema);
   }
 
   switch (schema.type) {
@@ -97,5 +117,3 @@ function isValidSchema(value, schema) {
       return false;
   }
 }
-
-export { isValidSchema }; // eslint-disable-line

@@ -63,62 +63,62 @@ class FormControlController {
   addValidators() {
     const $ngModel = this.$ngModel;
 
-    $ngModel.$validators.required = (modelValue, viewValue) => {
-      const value = modelValue || viewValue;
-      return !value || !this.ngRequired;
-    };
-
-    $ngModel.$validators.minlength = (modelValue, viewValue) => {
-      const value = modelValue || viewValue;
-      if (this.type !== 'text' || !this.ngMinlength) {
-        return true;
-      }
-      return !value || value.length >= this.ngMinlength;
-    };
-
-    $ngModel.$validators.maxlength = (modelValue, viewValue) => {
-      const value = modelValue || viewValue;
-      if (this.type !== 'text' || !this.ngMaxlength) {
-        return true;
-      }
-      return !value || value.length <= this.ngMaxlength;
-    };
-
-    // Min and max do not work on custom elements, add manual validators
-    $ngModel.$validators.min = (modelValue, viewValue) => {
-      const value = modelValue || viewValue;
-      if (typeof this.ngMin === 'undefined') {
-        return true;
-      }
-      if (typeof value === 'number' && typeof this.ngMin === 'number') {
-        return value >= this.ngMin;
-      }
-      if (this.type === 'date' && typeof value === 'string' && typeof this.ngMin === 'string') {
-        return value >= this.ngMin;
-      }
-      if (this.type === 'date' && value instanceof Date && this.ngMin instanceof Date) {
-        return value >= this.ngMin;
-      }
-      return true;
-    };
-
-    $ngModel.$validators.max = (modelValue, viewValue) => {
-      const value = modelValue || viewValue;
-      if (typeof this.ngMax === 'undefined') {
-        return true;
-      }
-      if (typeof value === 'number' && typeof this.ngMax === 'number') {
-        return value <= this.ngMax;
-      }
-      if (this.type === 'date' && typeof value === 'string' && typeof this.ngMax === 'string') {
-        return value <= this.ngMax;
-      }
-      if (this.type === 'date' && value instanceof Date && this.ngMax instanceof Date) {
-        return value <= this.ngMax;
-      }
-      return true;
-    };
-
+    // $ngModel.$validators.required = (modelValue, viewValue) => {
+    //   const value = modelValue || viewValue;
+    //   return !value || !this.ngRequired;
+    // };
+    //
+    // $ngModel.$validators.minlength = (modelValue, viewValue) => {
+    //   const value = modelValue || viewValue;
+    //   if (this.type !== 'text' || !this.ngMinlength) {
+    //     return true;
+    //   }
+    //   return !value || value.length >= this.ngMinlength;
+    // };
+    //
+    // $ngModel.$validators.maxlength = (modelValue, viewValue) => {
+    //   const value = modelValue || viewValue;
+    //   if (this.type !== 'text' || !this.ngMaxlength) {
+    //     return true;
+    //   }
+    //   return !value || value.length <= this.ngMaxlength;
+    // };
+    //
+    // // Min and max do not work on custom elements, add manual validators
+    // $ngModel.$validators.min = (modelValue, viewValue) => {
+    //   const value = modelValue || viewValue;
+    //   if (typeof this.ngMin === 'undefined') {
+    //     return true;
+    //   }
+    //   if (typeof value === 'number' && typeof this.ngMin === 'number') {
+    //     return value >= this.ngMin;
+    //   }
+    //   if (this.type === 'date' && typeof value === 'string' && typeof this.ngMin === 'string') {
+    //     return value >= this.ngMin;
+    //   }
+    //   if (this.type === 'date' && value instanceof Date && this.ngMin instanceof Date) {
+    //     return value >= this.ngMin;
+    //   }
+    //   return true;
+    // };
+    //
+    // $ngModel.$validators.max = (modelValue, viewValue) => {
+    //   const value = modelValue || viewValue;
+    //   if (typeof this.ngMax === 'undefined') {
+    //     return true;
+    //   }
+    //   if (typeof value === 'number' && typeof this.ngMax === 'number') {
+    //     return value <= this.ngMax;
+    //   }
+    //   if (this.type === 'date' && typeof value === 'string' && typeof this.ngMax === 'string') {
+    //     return value <= this.ngMax;
+    //   }
+    //   if (this.type === 'date' && value instanceof Date && this.ngMax instanceof Date) {
+    //     return value <= this.ngMax;
+    //   }
+    //   return true;
+    // };
+    //
     $ngModel.$formatters.push((modelValue) => {
       this.internalModel = modelValue;
       return modelValue;

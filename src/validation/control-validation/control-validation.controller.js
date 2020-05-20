@@ -1,4 +1,3 @@
-
 class ValidationController {
   constructor($scope, $element, TwDomService) {
     const element = $element[0];
@@ -31,6 +30,11 @@ class ValidationController {
 }
 
 function checkModelAndUpdate(ngModel, formGroup, element) {
+  // Option to switch off default validators
+  if (formGroup.classList.contains('custom-validation')) {
+    return;
+  }
+
   if (ngModel.$valid) {
     if (formGroup) {
       formGroup.classList.remove('has-error');

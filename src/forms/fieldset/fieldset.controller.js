@@ -19,16 +19,18 @@ class FieldsetController {
       this.validationMessages = {
         required: 'Required',
         pattern: 'Incorrect format',
-        min: 'The value is too low',
-        max: 'The value is too high',
-        minlength: 'The value is too short',
-        maxlength: 'The value is too long'
+        minimum: 'The value is too low',
+        maximum: 'The value is too high',
+        minLength: 'The value is too short',
+        maxLength: 'The value is too long'
       };
     }
 
     this.$scope.$watch('twFieldset.$valid', (validity) => {
       this.isValid = validity;
     });
+
+    this.submitted = false;
 
     // TODO can we add asyncvalidator here? - prob not
   }
@@ -96,12 +98,12 @@ class FieldsetController {
   isRequired(key) {
     return Array.isArray(this.requiredFields) && this.requiredFields.indexOf(key) >= 0;
   }
+
+  setSubmitted() {
+    this.submitted = true;
+  }
 }
 
-FieldsetController.$inject = [
-  'TwRequirementsService',
-  '$scope',
-  '$timeout'
-];
+FieldsetController.$inject = ['TwRequirementsService', '$scope', '$timeout'];
 
 export default FieldsetController;

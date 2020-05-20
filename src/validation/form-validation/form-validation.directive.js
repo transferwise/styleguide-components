@@ -1,4 +1,3 @@
-
 function FormValidation(TwDomService) {
   return {
     restrict: 'E',
@@ -11,9 +10,11 @@ function FormValidation(TwDomService) {
         let checkboxContainer;
         let radioContainer;
 
-        const controls = form.querySelectorAll('[tw-validation].ng-invalid, '
-          + 'tw-telephone.ng-invalid-required, '
-          + 'tw-telephone.ng-invalid-pattern');
+        const controls = form.querySelectorAll(
+          '[tw-validation].ng-invalid, '
+            + 'tw-telephone.ng-invalid-required, '
+            + 'tw-telephone.ng-invalid-pattern'
+        );
 
         // Shouldn't be necessary, but PhantomJS was complaining
         if (!controls.forEach) {
@@ -35,6 +36,16 @@ function FormValidation(TwDomService) {
             checkboxContainer.classList.add('has-error');
           }
         });
+
+        // Tell any fieldsets they are submitted, which instructs fields to validate
+        form.querySelectorAll('tw-fieldset').forEach((twFieldset) => {
+          angular
+            .element(twFieldset)
+            .controller('twFieldset')
+            .setSubmitted();
+        });
+
+        scope.$apply();
 
         return true;
       });

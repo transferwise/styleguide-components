@@ -5,7 +5,9 @@
   errors="$ctrl.errors"
   locale="$ctrl.locale"
   translations="$ctrl.translations"
-  on-change="$ctrl.onModelChange(model, schema)">
+  submitted="$ctrl.submitted"
+  on-change="$ctrl.onModelChange(model, schema)"
+>
 </one-of-schema>
 
 <all-of-schema
@@ -15,7 +17,9 @@
   errors="$ctrl.errors"
   locale="$ctrl.locale"
   translations="$ctrl.translations"
-  on-change="$ctrl.onModelChange(model, schema)">
+  submitted="$ctrl.submitted"
+  on-change="$ctrl.onModelChange(model, schema)"
+>
 </all-of-schema>
 
 <basic-type-schema
@@ -26,7 +30,9 @@
   locale="$ctrl.locale"
   translations="$ctrl.translations"
   required="$ctrl.required"
-  on-change="$ctrl.onModelChange(model, schema)">
+  submitted="$ctrl.submitted"
+  on-change="$ctrl.onModelChange(model, schema)"
+>
 </basic-type-schema>
 
 <object-schema
@@ -36,8 +42,10 @@
   errors="$ctrl.errors"
   locale="$ctrl.locale"
   translations="$ctrl.translations"
+  submitted="$ctrl.submitted"
   on-change="$ctrl.onModelChange(model, schema)"
-  hide-title="$ctrl.hideTitle">
+  hide-title="$ctrl.hideTitle"
+>
 </object-schema>
 
 <array-schema
@@ -47,5 +55,7 @@
   errors="$ctrl.errors"
   locale="$ctrl.locale"
   translations="$ctrl.translations"
-  on-change="$ctrl.onModelChange(model, schema)">
+  submitted="$ctrl.submitted"
+  on-change="$ctrl.onModelChange(model, schema)"
+>
 </array-schema>

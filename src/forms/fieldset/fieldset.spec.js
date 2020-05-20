@@ -96,17 +96,19 @@ describe('Fieldset', function() {
       $scope.validationMessages = {
         required: 'default required'
       };
+      $scope.requiredFields = ['sortCode', 'iban'];
       element = getCompiledDirectiveElement();
+      angular.element(element).controller('twFieldset').setSubmitted();
     });
 
     it('should use them instead of the default messages', function() {
       var requiredErrorSortCode =
-        element.querySelector('.tw-field-sortCode .error-messages .error-required');
+        element.querySelector('.tw-field-sortCode .error-messages');
       var requiredErrorIBAN =
-        element.querySelector('.tw-field-iban .error-messages .error-required');
+        element.querySelector('.tw-field-iban .error-messages');
 
-      expect(requiredErrorSortCode.textContent).toContain('sortCode required');
-      expect(requiredErrorIBAN.textContent).toContain('default required');
+      expect(requiredErrorSortCode.textContent.trim()).toContain('sortCode required');
+      expect(requiredErrorIBAN.textContent.trim()).toContain('default required');
     });
   });
 

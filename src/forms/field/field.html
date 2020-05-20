@@ -1,5 +1,5 @@
 <div
-  class="form-group tw-field-{{ $ctrl.name }}"
+  class="form-group tw-field-{{ $ctrl.name }} custom-validation"
   ng-class="{
     'has-error': $ctrl.isErrorShown(),
     'has-warning': $ctrl.isWarningShown(),
@@ -30,8 +30,8 @@
     ng-disabled="$ctrl.field.disabled"
     tw-minlength="$ctrl.field.minlength || $ctrl.field.minLength"
     tw-maxlength="$ctrl.field.maxlength || $ctrl.field.maxLength"
-    ng-min="$ctrl.field.minimum"
-    ng-max="$ctrl.field.maximum"
+    ng-min="$ctrl.field.min"
+    ng-max="$ctrl.field.max"
     ng-pattern="$ctrl.field.pattern"
     text-format="$ctrl.field.displayFormat"
     validation-async="$ctrl.field.validationAsync"
@@ -47,12 +47,13 @@
     {{ $ctrl.description }}
   </small>
 
-  <div class="alert alert-danger error-messages alert-detach" ng-if="$ctrl.isErrorShown()">
+  <div class="alert alert-danger error-messages alert-detach">
     <div
-      ng-repeat="(validationType, validationMessage) in $ctrl.field.validationMessages track by $index"
-      class="error-{{ validationType | lowercase }}"
+      ng-repeat="failureType in $ctrl.failures"
+      ng-if="$ctrl.field.validationMessages[failureType]"
+      class="error-{{ failureType | lowercase }}"
     >
-      {{validationMessage}}
+      {{ $ctrl.field.validationMessages[failureType] }}
     </div>
     <div class="error-provided" ng-if="$ctrl.errorMessage">
       {{ $ctrl.errorMessage }}

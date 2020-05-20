@@ -19,21 +19,27 @@
           errors="$ctrl.errors[index]"
           locale="$ctrl.locale"
           translations="$ctrl.translations"
-          on-change="$ctrl.onModelChange(index, model, schema)">
+          submitted="$ctrl.submitted"
+          on-change="$ctrl.onModelChange(index, model, schema)"
+        >
         </generic-schema>
       </div>
       <div class="col-sm-3">
-        <button class="btn btn-danger btn-block m-t-3"
+        <button
+          class="btn btn-danger btn-block m-t-3"
           ng-click="$ctrl.remove(index)"
-          ng-disabled="index < $ctrl.schema.minItems">
+          ng-disabled="index < $ctrl.schema.minItems"
+        >
           {{ $ctrl.translations.array.remove }}
         </button>
       </div>
     </div>
   </div>
-  <button class="btn btn-default"
+  <button
+    class="btn btn-default"
     ng-disabled="$ctrl.schema.maxItems && $ctrl.model.length >= $ctrl.schema.maxItems"
-    ng-click="$ctrl.add()">
+    ng-click="$ctrl.add()"
+  >
     {{ $ctrl.translations.array.add }}
   </button>
 </div>

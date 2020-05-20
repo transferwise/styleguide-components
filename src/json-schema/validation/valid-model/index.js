@@ -1,3 +1,4 @@
+import { isObject, isUndefined, isNull } from '../type-validators';
 
 function getValidModelParts(model, schema) {
   if (schema.allOf) {
@@ -6,6 +7,14 @@ function getValidModelParts(model, schema) {
 
   if (schema.oneOf) {
     return cleanModelWithOneOfSchema(model, schema);
+  }
+
+  if (schema.enum && schema.enum.indexOf(model) >= 0) {
+    return model;
+  }
+
+  if (!isUndefined(schema.const) && model === schema.const) {
+    return model;
   }
 
   if (schema.type) {
@@ -26,9 +35,6 @@ function getValidModelParts(model, schema) {
     }
   }
 
-  if (schema.enum && schema.enum.indexOf(model) >= 0) {
-    return model;
-  }
   // Unrecognised schema
   return null;
 }
@@ -62,7 +68,8 @@ function cleanModelWithStringSchema(model) {
 }
 
 function cleanModelWithNumberSchema(model) {
-  if (typeof model === 'number') {
+  // eslint-disable-next-line
+  if (typeof model === 'number' && !isNaN(model)) {
     return model;
   }
   return null;
@@ -76,21 +83,41 @@ function cleanModelWithBooleanSchema(model) {
 }
 
 function cleanModelWithAllOfSchema(model, schema) {
-  const cleanedModel = {};
+  let cleanedModel = {};
   let validSubsetOfModel;
 
   schema.allOf.forEach((nestedSchema) => {
     validSubsetOfModel = getValidModelParts(model, nestedSchema);
 
     if (typeof validSubsetOfModel === 'object') {
-      angular.extend(cleanedModel, validSubsetOfModel);
+      // Extend model with valid subset
+      cleanedModel = { ...cleanedModel, ...validSubsetOfModel };
     }
   });
   return cleanedModel;
 }
 
-function cleanModelWithOneOfSchema(model, schema) { // eslint-disable-line
-  return model;
+function cleanModelWithOneOfSchema(model, schema) {
+  return schema.oneOf
+    .map(nestedSchema => getValidModelParts(model, nestedSchema))
+    .reduce((combined, current) => {
+      // If we didn't find anything valid yet, and current is good, return it
+      if (isNull(combined)) {
+        return current;
+      }
+
+      // If we're dealing with two objects, combine them into one
+      if (isObject(combined) && isObject(current)) {
+        return { ...combined, ...current };
+      }
+
+      // If the current one is null, return what we already had
+      if (isNull(current)) {
+        return combined;
+      }
+
+      return current;
+    }, null);
 }
 
 export { getValidModelParts }; // eslint-disable-line

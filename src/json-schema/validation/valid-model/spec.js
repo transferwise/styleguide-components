@@ -1,205 +1,341 @@
-'use strict';
+import { getValidModelParts } from '.';
 
-describe('Given a library for returning the valid parts of a model based on a schema', function() {
-  var result, schema, getValidModelParts;
+describe('Given a library for returning the valid parts of a model based on a schema', () => {
+  let result;
+  let schema;
 
-  beforeEach(function() {
-    angular.mock.module('tw.json-schema.validation');
-
-    angular.mock.inject(function($injector) {
-      var SchemaValidation = $injector.get('SchemaValidation');
-      getValidModelParts = SchemaValidation.getValidModelParts;
-    });
-  });
-
-  describe('when cleaning a string schema', function() {
-    beforeEach(function() {
-      schema = { type: "string" };
+  describe('when cleaning a string schema', () => {
+    beforeEach(() => {
+      schema = { type: 'string' };
     });
 
-    describe('with a string model', function() {
-      beforeEach(function() {
-        result = getValidModelParts("string", schema);
+    describe('with a string model', () => {
+      beforeEach(() => {
+        result = getValidModelParts('string', schema);
       });
-      it('should return the original string', function() {
-        expect(result).toBe("string");
+      it('should return the original string', () => {
+        expect(result).toBe('string');
       });
     });
 
-    describe('with any non string model', function() {
-      beforeEach(function() {
-        result = getValidModelParts({a:1}, schema);
+    describe('with any non string model', () => {
+      beforeEach(() => {
+        result = getValidModelParts({ a: 1 }, schema);
       });
-      it('should return undefined', function() {
+      it('should return null', () => {
         expect(result).toBeNull();
       });
     });
   });
 
-  describe('when cleaning a number schema', function() {
-    beforeEach(function() {
-      schema = { type: "number" };
+  describe('when cleaning a number schema', () => {
+    beforeEach(() => {
+      schema = { type: 'number' };
     });
 
-    describe('with a number model', function() {
-      beforeEach(function() {
+    describe('with a number model', () => {
+      beforeEach(() => {
         result = getValidModelParts(12345, schema);
       });
-      it('should return the original number', function() {
+      it('should return the original number', () => {
         expect(result).toBe(12345);
       });
     });
 
-    describe('with any non number model', function() {
-      beforeEach(function() {
-        result = getValidModelParts("string", schema);
+    describe('with any non number model', () => {
+      beforeEach(() => {
+        result = getValidModelParts('string', schema);
       });
-      it('should return undefined', function() {
+      it('should return undefined', () => {
         expect(result).toBeNull();
       });
     });
   });
 
-  describe('when cleaning a boolean schema', function() {
-    beforeEach(function() {
-      schema = { type: "boolean" };
+  describe('when cleaning a boolean schema', () => {
+    beforeEach(() => {
+      schema = { type: 'boolean' };
     });
 
-    describe('with a boolean model', function() {
-      beforeEach(function() {
+    describe('with a boolean model', () => {
+      beforeEach(() => {
         result = getValidModelParts(false, schema);
       });
-      it('should return the original boolean', function() {
+      it('should return the original boolean', () => {
         expect(result).toBe(false);
       });
     });
 
-    describe('with any non number model', function() {
-      beforeEach(function() {
-        result = getValidModelParts("string", schema);
+    describe('with any non number model', () => {
+      beforeEach(() => {
+        result = getValidModelParts('string', schema);
       });
-      it('should return undefined', function() {
+      it('should return undefined', () => {
         expect(result).toBeNull();
       });
     });
   });
 
-  describe('when cleaning a simple object schema', function() {
-    var schema
-    beforeEach(function() {
+  describe('when cleaning a enum schema', () => {
+    beforeEach(() => {
+      schema = { enum: [1, 2] };
+    });
+
+    describe('if the model is part of the enum', () => {
+      beforeEach(() => {
+        result = getValidModelParts(1, schema);
+      });
+      it('should return the original model', () => {
+        expect(result).toBe(1);
+      });
+    });
+
+    describe('if the model is not part of the enum', () => {
+      beforeEach(() => {
+        result = getValidModelParts(3, schema);
+      });
+      it('should return null', () => {
+        expect(result).toBeNull();
+      });
+    });
+  });
+
+  describe('when cleaning a const schema', () => {
+    beforeEach(() => {
+      schema = { const: 1 };
+    });
+
+    describe('if the model matches the const', () => {
+      beforeEach(() => {
+        result = getValidModelParts(1, schema);
+      });
+      it('should return the original model', () => {
+        expect(result).toBe(1);
+      });
+    });
+
+    describe('if the model does not match the const', () => {
+      beforeEach(() => {
+        result = getValidModelParts(2, schema);
+      });
+      it('should return null', () => {
+        expect(result).toBeNull();
+      });
+    });
+
+    describe('if the const evaluates to false', () => {
+      beforeEach(() => {
+        result = getValidModelParts(0, { const: 0 });
+      });
+      it('should still return matches', () => {
+        expect(result).toBe(0);
+      });
+    });
+  });
+
+  describe('when cleaning a simple object schema', () => {
+    beforeEach(() => {
       schema = {
-        type: "object",
+        type: 'object',
         properties: {
           a: {
-            type: "number"
-          }
-        }
+            type: 'number',
+          },
+        },
       };
     });
 
-    describe('if the model has a property with the correct name and the correct type', function() {
-      beforeEach(function() {
+    describe('if the model has a property with the correct name and the correct type', () => {
+      beforeEach(() => {
         result = getValidModelParts({ a: 1 }, schema);
       });
-      it('should return the property', function() {
+      it('should return the property', () => {
         expect(result).toEqual({ a: 1 });
       });
     });
 
-    describe('if the model has a property with the correct name and an incorrect typs', function() {
-      beforeEach(function() {
-        result = getValidModelParts({ a: "1" }, schema);
+    describe('if the model has a property with the correct name and an incorrect typs', () => {
+      beforeEach(() => {
+        result = getValidModelParts({ a: '1' }, schema);
       });
-      it('should return an empty object', function() {
-        expect(result).toEqual({ });
+      it('should return an empty object', () => {
+        expect(result).toEqual({});
       });
     });
 
-    describe('if the model contains properties not in the schema', function() {
-      beforeEach(function() {
+    describe('if the model contains properties not in the schema', () => {
+      beforeEach(() => {
         result = getValidModelParts({ a: 1, b: 2 }, schema);
       });
-      it('should return the object without those properties', function() {
+      it('should return the object without those properties', () => {
         expect(result).toEqual({ a: 1 });
       });
     });
   });
 
-  describe('when cleaning an object schema with nested objects', function() {
-    beforeEach(function() {
+  describe('when cleaning an object schema with nested objects', () => {
+    beforeEach(() => {
       schema = {
-        type: "object",
+        type: 'object',
         properties: {
           a: {
-            type: "number"
+            type: 'number',
           },
           b: {
-            type: "object",
+            type: 'object',
             properties: {
               c: {
-                type: "number"
-              }
-            }
-          }
-        }
-      }
+                type: 'number',
+              },
+            },
+          },
+        },
+      };
     });
 
-    describe('if the nested model is valid', function() {
-      beforeEach(function() {
+    describe('if the nested model is valid', () => {
+      beforeEach(() => {
         result = getValidModelParts({ a: 1, b: { c: 2 } }, schema);
       });
-      it('should be returned', function() {
+      it('should be returned', () => {
         expect(result).toEqual({ a: 1, b: { c: 2 } });
       });
     });
 
-    describe('if the nested model contains invalid properties', function() {
-      beforeEach(function() {
+    describe('if the nested model contains invalid properties', () => {
+      beforeEach(() => {
         result = getValidModelParts({ a: 1, b: { c: 2, d: 3 }, e: 4 }, schema);
       });
-      it('should remove them', function() {
+      it('should remove them', () => {
         expect(result).toEqual({ a: 1, b: { c: 2 } });
       });
     });
   });
 
-  describe('when cleaning an allOf schema', function() {
-    beforeEach(function() {
+  describe('when cleaning a oneOf schema', () => {
+    beforeEach(() => {
       schema = {
-        allOf: [{
-          type: "object",
-          properties: {
-            a: {
-              type: "number"
-            }
-          }
-        },{
-          type: "object",
-          properties: {
-            b: {
-              type: "number"
-            }
-          }
-        }]
-      }
+        oneOf: [
+          {
+            type: 'object',
+            properties: {
+              a: {
+                type: 'number',
+              },
+            },
+          },
+          {
+            type: 'object',
+            properties: {
+              b: {
+                type: 'number',
+              },
+            },
+          },
+        ],
+      };
     });
 
-    describe('if all of the properties are valid', function() {
-      beforeEach(function() {
+    describe('if all of the properties are valid', () => {
+      beforeEach(() => {
         result = getValidModelParts({ a: 1, b: 2 }, schema);
       });
-      it('should return them', function() {
+      it('should return them', () => {
         expect(result).toEqual({ a: 1, b: 2 });
       });
     });
 
-    describe('if the nested model contains invalid properties', function() {
-      beforeEach(function() {
-        result = getValidModelParts({ a: 1, b: "2" }, schema);
+    describe('if the nested model contains invalid properties', () => {
+      beforeEach(() => {
+        result = getValidModelParts({ a: 1, b: '2' }, schema);
       });
-      it('should remove them', function() {
+      it('should remove them', () => {
         expect(result).toEqual({ a: 1 });
+      });
+    });
+
+    describe('if the model contains undocumented properties', () => {
+      beforeEach(() => {
+        result = getValidModelParts({ a: 1, b: 2, c: 3 }, schema);
+      });
+      it('should remove them', () => {
+        expect(result).toEqual({ a: 1, b: 2 });
+      });
+    });
+  });
+
+  describe('when cleaning a oneOf schema of const', () => {
+    beforeEach(() => {
+      schema = {
+        oneOf: [{ const: 0 }, { const: 1 }, { const: 2 }],
+      };
+    });
+
+    describe('when the value is in the const collection', () => {
+      it('should return the value', () => {
+        expect(getValidModelParts(0, schema)).toEqual(0);
+        expect(getValidModelParts(1, schema)).toEqual(1);
+        expect(getValidModelParts(2, schema)).toEqual(2);
+      });
+    });
+
+    describe('when the value is not in the const collection', () => {
+      it('should return null', () => {
+        expect(getValidModelParts(3, schema)).toEqual(null);
+        expect(getValidModelParts({}, schema)).toEqual(null);
+        expect(getValidModelParts(null, schema)).toEqual(null);
+      });
+    });
+  });
+
+  describe('when cleaning an allOf schema', () => {
+    beforeEach(() => {
+      schema = {
+        allOf: [
+          {
+            type: 'object',
+            properties: {
+              a: {
+                type: 'number',
+              },
+            },
+          },
+          {
+            type: 'object',
+            properties: {
+              b: {
+                type: 'number',
+              },
+            },
+          },
+        ],
+      };
+    });
+
+    describe('if all of the properties are valid', () => {
+      beforeEach(() => {
+        result = getValidModelParts({ a: 1, b: 2 }, schema);
+      });
+      it('should return them', () => {
+        expect(result).toEqual({ a: 1, b: 2 });
+      });
+    });
+
+    describe('if the model contains invalid properties', () => {
+      beforeEach(() => {
+        result = getValidModelParts({ a: 1, b: '2' }, schema);
+      });
+      it('should remove them', () => {
+        expect(result).toEqual({ a: 1 });
+      });
+    });
+
+    describe('if the model contains undocumented properties', () => {
+      beforeEach(() => {
+        result = getValidModelParts({ a: 1, b: 2, c: 3 }, schema);
+      });
+      it('should remove them', () => {
+        expect(result).toEqual({ a: 1, b: 2 });
       });
     });
   });

@@ -11,6 +11,7 @@ const Component = {
     locale: '<',
     translations: '<',
     hideTitle: '<',
+    submitted: '<',
     onChange: '&'
   }
 };

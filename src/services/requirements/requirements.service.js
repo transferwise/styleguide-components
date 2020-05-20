@@ -252,12 +252,12 @@ function RequirementsService($http) {
       delete field.validationRegexp;
     }
 
-    if (field.min) {
+    if (field.min && !field.minimum) {
       field.minimum = field.min;
       delete field.min;
     }
 
-    if (field.max) {
+    if (field.max && !field.maximum) {
       field.maximum = field.max;
       delete field.max;
     }
@@ -380,13 +380,21 @@ function RequirementsService($http) {
   };
 
   this.prepValidationMessages = (field) => {
-    if (field.validationMessages && field.validationMessages.minimum) {
-      field.validationMessages.min = field.validationMessages.minimum;
-      delete field.validationMessages.minimum;
+    if (field.validationMessages && field.validationMessages.min) {
+      field.validationMessages.minimum = field.validationMessages.min;
+      delete field.validationMessages.min;
     }
-    if (field.validationMessages && field.validationMessages.maximum) {
-      field.validationMessages.max = field.validationMessages.maximum;
-      delete field.validationMessages.maximum;
+    if (field.validationMessages && field.validationMessages.max) {
+      field.validationMessages.maximum = field.validationMessages.max;
+      delete field.validationMessages.max;
+    }
+    if (field.validationMessages && field.validationMessages.minlength) {
+      field.validationMessages.minLength = field.validationMessages.minlength;
+      delete field.validationMessages.minlength;
+    }
+    if (field.validationMessages && field.validationMessages.maxlength) {
+      field.validationMessages.maxLength = field.validationMessages.maxlength;
+      delete field.validationMessages.maxlength;
     }
   };
 

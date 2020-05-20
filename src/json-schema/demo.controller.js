@@ -8,11 +8,14 @@ class Controller {
 
     this.errors = {
       industry: 'We were hoping you would pick the other one',
-      shareholders: [{
-        firstName: 'Choose a better one'
-      }, {
-        lastName: 'And here as well'
-      }],
+      shareholders: [
+        {
+          firstName: 'Choose a better one'
+        },
+        {
+          lastName: 'And here as well'
+        }
+      ],
       streetAddress: 'And this one could be better'
     };
 
@@ -44,19 +47,24 @@ class Controller {
 
     this.schemaType = '';
 
-    this.schemaOptions = [{
-      value: 'json-schema/gbp-recipient.json',
-      label: 'GBP recipient'
-    }, {
-      value: 'json-schema/usd-recipient.json',
-      label: 'USD recipient'
-    }, {
-      value: 'json-schema/demo.json',
-      label: 'Complex example'
-    }, {
-      value: 'json-schema/simple.json',
-      label: 'Simple example'
-    }];
+    this.schemaOptions = [
+      {
+        value: 'json-schema/gbp-recipient.json',
+        label: 'GBP recipient'
+      },
+      {
+        value: 'json-schema/usd-recipient.json',
+        label: 'USD recipient'
+      },
+      {
+        value: 'json-schema/demo.json',
+        label: 'Complex example'
+      },
+      {
+        value: 'json-schema/simple.json',
+        label: 'Simple example'
+      }
+    ];
 
     this.onSchemaChange(this.schemaOptions[0].value);
   }
