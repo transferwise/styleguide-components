@@ -8,8 +8,10 @@ class Controller {
   }
 
   $onChanges(changes) {
-    if (changes.schema || changes.model) {
+    if (changes.schema) {
       this.activeIndex = getActiveSchemaIndex(this.schema, this.model);
+    }
+    if (changes.model) {
       this.prefillModels();
     }
   }

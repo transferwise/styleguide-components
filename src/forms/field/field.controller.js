@@ -51,7 +51,6 @@ class FieldController {
   }
 
   onChange(newValue) {
-    console.log('changed', newValue);
     this.changed = true;
     this.validate(newValue);
 

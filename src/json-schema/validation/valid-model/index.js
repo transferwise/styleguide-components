@@ -121,9 +121,9 @@ function cleanModelWithOneOfSchema(model, schema) {
         return current;
       }
 
-      // If we're dealing with two objects, combine them into one
+      // If we're dealing with two objects, deep merge them into one
       if (isObject(combined) && isObject(current)) {
-        return { ...combined, ...current };
+        return deepMergeObject(combined, current);
       }
 
       // If the current one is null, return what we already had
@@ -133,6 +133,18 @@ function cleanModelWithOneOfSchema(model, schema) {
 
       return current;
     }, null);
+}
+
+function deepMergeObject(object1, object2) {
+  const combined = { ...object1 };
+  Object.keys(object2).forEach((property) => {
+    if (isObject(object1[property]) && isObject(object2[property])) {
+      combined[property] = deepMergeObject(object1[property], object2[property]);
+    } else {
+      combined[property] = object2[property];
+    }
+  });
+  return combined;
 }
 
 export { getValidModelParts }; // eslint-disable-line

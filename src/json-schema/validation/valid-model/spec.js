@@ -339,4 +339,43 @@ describe('Given a library for returning the valid parts of a model based on a sc
       });
     });
   });
+
+  describe('when schemas both contain the same nested object', () => {
+    let model;
+    beforeEach(() => {
+      model = {
+        nested: { a: "1", b: "2" }
+      };
+
+      schema = {
+        oneOf: [{
+          type: "object",
+          properties: {
+            nested: {
+              type: "object",
+              properties: {
+                a: { type: "string" }
+              }
+            }
+          }
+        },{
+          type: "object",
+          properties: {
+            nested: {
+              type: "object",
+              properties: {
+                b: { type: "string" }
+              }
+            }
+          }
+        }]
+      }
+
+      result = getValidModelParts(model, schema);
+    });
+
+    it('should deep merge the content of the nested objects', () => {
+      expect(result).toEqual(model);
+    });
+  });
 });
