@@ -35,8 +35,9 @@ function getValidModelParts(model, schema) {
       case 'string':
         return cleanModelWithStringSchema(model);
       case 'number':
-      case 'integer':
         return cleanModelWithNumberSchema(model);
+      case 'integer':
+        return cleanModelWithIntegerSchema(model);
       case 'boolean':
         return cleanModelWithBooleanSchema(model);
       default:

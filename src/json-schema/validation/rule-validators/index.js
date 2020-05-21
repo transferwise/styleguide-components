@@ -1,5 +1,5 @@
 import {
-  isString, isNumber, isArray, isUndefined, isNull
+  isString, isNumber, isArray, isUndefined
 } from '../type-validators';
 
 function isValidRequired(value, isRequired) {

@@ -35,9 +35,8 @@ class PageController {
       { value: 'xx-XX', label: 'Unknown locale' }
     ];
   }
-
+  // eslint-disable-next-line
   log(message) {
-    // eslint-disable-line
     console.log(message); // eslint-disable-line
   }
 }

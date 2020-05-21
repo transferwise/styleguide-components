@@ -2,7 +2,7 @@ function isString(value) {
   return typeof value === 'string';
 }
 function isNumber(value) {
-  return typeof value === 'number' && !isNaN(value);
+  return typeof value === 'number' && !isNaN(value); // eslint-disable-line
 }
 function isInteger(value) {
   return isNumber(value) && Math.floor(value) === value;

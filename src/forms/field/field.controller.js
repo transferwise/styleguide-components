@@ -147,10 +147,6 @@ class FieldController {
   }
 }
 
-function copyJSON(obj) {
-  return JSON.parse(JSON.stringify(obj));
-}
-
 FieldController.$inject = ['TwRequirementsService'];
 
 export default FieldController;

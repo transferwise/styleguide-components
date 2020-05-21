@@ -52,6 +52,30 @@ describe('Given a library for returning the valid parts of a model based on a sc
     });
   });
 
+  describe('when cleaning an integer schema', () => {
+    beforeEach(() => {
+      schema = { type: 'integer' };
+    });
+
+    describe('with an integer model', () => {
+      beforeEach(() => {
+        result = getValidModelParts(12345, schema);
+      });
+      it('should return the original integer', () => {
+        expect(result).toBe(12345);
+      });
+    });
+
+    describe('with any non integer model', () => {
+      beforeEach(() => {
+        result = getValidModelParts(12.34, schema);
+      });
+      it('should return undefined', () => {
+        expect(result).toBeNull();
+      });
+    });
+  });
+
   describe('when cleaning a boolean schema', () => {
     beforeEach(() => {
       schema = { type: 'boolean' };
