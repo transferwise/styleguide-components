@@ -1,3 +1,4 @@
+import { isUndefined } from '../validation/type-validators';
 import { getValidationFailures } from '../validation/validation-failures';
 import { getValidModelParts } from '../validation/valid-model';
 
@@ -5,7 +6,7 @@ class Controller {
   $onInit() {
     this.key = Math.floor(100000000 * Math.random());
 
-    this.lastModel = this.model;
+    this.lastModel = isUndefined(this.model) ? null : this.model;
 
     if (!this.model && this.schema.default) {
       this.onModelChange(this.schema.default);
@@ -17,7 +18,7 @@ class Controller {
 
     this.validationKeys = getValidationFailures(validModel, this.schema, this.required);
 
-    const broadcastModel = this.validationKeys.length ? undefined : validModel;
+    const broadcastModel = this.validationKeys.length ? null : validModel;
 
     if (this.onChange && broadcastModel !== this.lastModel) {
       this.onChange({ model: broadcastModel, schema: this.schema });
