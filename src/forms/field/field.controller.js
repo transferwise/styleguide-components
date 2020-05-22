@@ -28,9 +28,10 @@ class FieldController {
         this.model = this.field.default;
       }
 
-      if (this.validationMessages && !this.field.validationMessages) {
-        this.field.validationMessages = this.validationMessages;
-      }
+      const globalValidationMessages = this.validationMessages || {};
+      const fieldValidationMessages = this.field.validationMessages || {};
+
+      this.validationStrings = { ...globalValidationMessages, ...fieldValidationMessages };
 
       this.validate(this.model);
     }
@@ -64,10 +65,14 @@ class FieldController {
 
   validate(value) {
     // Our controls return null for invalid values
-    if (isNull(value) || isUndefined(value) || value === '') {
+    if (isNull(value) || isUndefined(value)) {
       if (this.required) {
         this.failures = ['required'];
         return;
+      }
+
+      if (this.field.type === 'string') {
+        value = '';
       }
     }
 
@@ -144,6 +149,10 @@ class FieldController {
       ((this.submitted || (this.touched && this.changed)) && this.failures.length > 0)
       || this.errorMessage
     );
+  }
+
+  isAlertShown() {
+    return this.isErrorShown();
   }
 }
 

@@ -26,6 +26,12 @@ describe('Field', function() {
     $scope.onChange = jest.fn();
     $scope.onFocus = jest.fn();
     $scope.onBlur = jest.fn();
+
+    $scope.validationMessages = {
+      minLength: 'Too short',
+      maxLength: 'Too Long',
+      required: "Required",
+    };
   });
 
   describe('when given a title for the field', function() {
@@ -128,10 +134,6 @@ describe('Field', function() {
       $scope.field = { type: "number" };
       element = getCompiledDirectiveElement();
     });
-
-    // it('should render a number input', function() {
-    //   expect(element.querySelector('input[type=number]')).toBeTruthy();
-    // });
 
     it('should ask the form control to render a number input', function() {
       expect(FormControl.bindings.type).toBe('number');
@@ -268,7 +270,7 @@ describe('Field', function() {
 
     describe('and the value is changed', function() {
       beforeEach(function() {
-        FormControl.bindings.ngChange({ model: 'something' });
+        FormControl.bindings.ngChange({ value: 'something' });
         $timeout.flush();
         $scope.$apply();
       });
@@ -304,13 +306,13 @@ describe('Field', function() {
     });
   });
 
-  describe('when the control value changes', function() {
+  describe('when the control value changes to a valid value', function() {
     beforeEach(function() {
-      $scope.field = { type: "string" };
+      $scope.field = { type: "string", minLength: 4 };
       $scope.errorMessage = 'Custom error';
       element = getCompiledDirectiveElement();
 
-      FormControl.bindings.ngChange({ model: 'changed' });
+      FormControl.bindings.ngChange({ value: 'changed' });
       formGroup = element.querySelector('.form-group');
       $timeout.flush();
       $scope.$apply();
@@ -326,6 +328,87 @@ describe('Field', function() {
 
     it('should trigger the onChange handler', function() {
       expect($scope.onChange).toHaveBeenCalled();
+    });
+  });
+
+  describe('when the control value changes to an invalid value', () => {
+    beforeEach(() => {
+      $scope.field = {
+        type: "string",
+        minLength: 4
+      };
+
+      $scope.errorMessage = 'Custom error';
+      element = getCompiledDirectiveElement();
+
+      FormControl.bindings.ngChange({ value: 'bad' });
+      formGroup = element.querySelector('.form-group');
+      $timeout.flush();
+      $scope.$apply();
+    });
+
+    it('should hide custom error message', function() {
+      expect(element.querySelector('.error-provided')).toBeFalsy();
+    });
+
+    it('should not initially show the validation message', function() {
+      expect(element.querySelector('.alert-danger')).toBeFalsy();
+    });
+
+    it('should remove the error state', function() {
+      expect(formGroup.classList).not.toContain('has-error');
+    });
+
+    it('should trigger the onChange handler without a value', function() {
+      expect($scope.onChange).toHaveBeenCalledWith();
+    });
+
+    describe('and the control is blurred', function() {
+      beforeEach(function() {
+        FormControl.bindings.ngBlur();
+        $scope.$apply();
+      });
+
+      it('should show the validation message', function() {
+        expect(element.querySelector('.alert-danger').textContent.trim()).toBe($scope.validationMessages.minLength);
+      });
+
+      it('should show the error state', function() {
+        expect(formGroup.classList).toContain('has-error');
+      });
+    });
+
+    describe('and the control is submitted', function() {
+      beforeEach(function() {
+        $scope.submitted = true;
+        $scope.$apply();
+      });
+
+      it('should show the validation message', function() {
+        expect(element.querySelector('.alert-danger').textContent.trim()).toBe($scope.validationMessages.minLength);
+      });
+
+      it('should show the error state', function() {
+        expect(formGroup.classList).toContain('has-error');
+      });
+    });
+  });
+
+  describe('when the field has custom validation messages', function() {
+    beforeEach(function() {
+      $scope.field = {
+        type: "string",
+        minLength: 4,
+        validationMessages: {
+          minLength: 'BAD!'
+        }
+      };
+      $scope.submitted = true;
+      element = getCompiledDirectiveElement();
+    });
+
+    it('should use the custom message', function() {
+      expect(element.querySelector('.alert-danger').textContent.trim()).toContain('BAD!');
     });
   });
 
@@ -405,7 +488,6 @@ describe('Field', function() {
     });
   });
 
-  // TODO validation
   // TODO help information
 
   function getCompiledDirectiveElement() {
@@ -417,6 +499,7 @@ describe('Field', function() {
         required='required' \
         validation-messages='validationMessages' \
         error-message='errorMessage' \
+        submitted='submitted' \
         on-change='onChange()' \
         on-focus='onFocus()' \
         on-blur='onBlur()' \

@@ -37,12 +37,9 @@
     on-async-failure="$ctrl.onPersistAsyncFailure(response)"
   ></tw-form-control>
 
-  <div class="alert alert-danger error-messages alert-detach">
-    <div
-      ng-repeat="failureType in $ctrl.failures"
-      ng-if="$ctrl.field.validationMessages[failureType]"
-    >
-      {{ $ctrl.field.validationMessages[failureType] }}
+  <div class="alert alert-danger alert-detach" ng-if="$ctrl.isAlertShown()">
+    <div ng-repeat="failureType in $ctrl.failures" ng-if="$ctrl.validationStrings[failureType]">
+      {{ $ctrl.validationStrings[failureType] }}
     </div>
     <div class="error-provided" ng-if="$ctrl.errorMessage">
       {{ $ctrl.errorMessage }}

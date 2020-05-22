@@ -10,8 +10,6 @@ class Controller {
   $onChanges(changes) {
     if (changes.schema) {
       this.activeIndex = getActiveSchemaIndex(this.schema, this.model);
-    }
-    if (changes.model) {
       this.prefillModels();
     }
   }
@@ -25,7 +23,7 @@ class Controller {
 
   onSchemaChange(newSchema, index) {
     this.models[index] = getValidModelParts(this.models[index], newSchema);
-    this.onModelChange(this.models[index], newSchema);
+    this.onModelChange(this.models[index], newSchema, index);
   }
 
   onModelChange(model, schema, index) {

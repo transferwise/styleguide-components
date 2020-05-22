@@ -89,7 +89,7 @@
     >
     </json-schema-form>
 
-    <button class="btn btn-primary m-b-5" ng-disabled="!$ctrl.isValid">Save</button>
+    <button class="btn btn-primary m-b-5" ng-click="$ctrl.submitted = true">Save</button>
     <pre>
 Model:
 {{ $ctrl.model | json }}
