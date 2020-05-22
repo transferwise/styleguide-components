@@ -93,7 +93,7 @@ describe('Field', function() {
         });
 
         it('should pass the upload options to the FormControl', function() {
-          expect(FormControl.bindings.cameraOptions).toEqual($scope.field.camera);
+          expect(FormControl.bindings.cameraGuidelines).toEqual($scope.field.camera);
           expect(FormControl.bindings.helpOptions).toEqual($scope.field.help);
           expect(FormControl.bindings.fileUploadSource).toEqual($scope.field.sourceType);
         });

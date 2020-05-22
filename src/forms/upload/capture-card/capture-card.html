@@ -41,8 +41,7 @@
 
   <tw-camera-capture
     ng-if="$ctrl.isLiveCameraUpload && $ctrl.showLiveCaptureScreen"
-    overlay="{{$ctrl.cameraOverlay}}"
-    direction="{{$ctrl.cameraDirection}}"
+    camera-guidelines="$ctrl.cameraGuidelines"
     on-cancel="$ctrl.onCameraCancel()"
     on-capture="$ctrl.onCameraCapture(file)">
   </tw-camera-capture>

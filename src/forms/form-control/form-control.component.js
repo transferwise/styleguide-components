@@ -43,7 +43,7 @@ const FormControl = {
     onAsyncSuccess: '&',
     // Live capture parameters for upload component
     fileUploadSource: '<',
-    cameraOptions: '<'
+    cameraGuidelines: '<'
   }
 };
 
