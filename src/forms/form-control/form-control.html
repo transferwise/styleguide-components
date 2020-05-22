@@ -94,7 +94,7 @@
 
       http-options="$ctrl.persistAsync"
       source="$ctrl.fileUploadSource"
-      camera-guidelines="{{$ctrl.cameraGuidelines}}"
+      camera-guidelines="$ctrl.cameraGuidelines"
 
       on-success="$ctrl.onAsyncUploadSuccess"
       on-failure="$ctrl.onAsyncUploadFailure"

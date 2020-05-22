@@ -22,6 +22,21 @@ class CameraCaptureController {
   }
 
   $onInit() {
+    this.guidelines = this.guidelines || {};
+
+    // Backward compatibility: older producers (e.g. Japan live photo IDs from Mitigator)
+    // return only an outline image url under 'overlay'. But in the final camera guidelines spec,
+    // 'overlay' is meant for the solid mask, not the outline.
+    // Remove this block once producers have been corrected.
+    if (
+      this.guidelines.overlay
+      // if outline already specified (i.e. according to spec), don't touch anything.
+      && !this.guidelines.outline
+    ) {
+      this.guidelines.outline = this.guidelines.overlay;
+      this.guidelines.overlay = null;
+    }
+
     this.mode = 'loading'; // 3 states: 'loading' -> 'capture' <-> 'confirm'.
 
     this.mediaStream = null;
@@ -141,12 +156,12 @@ class CameraCaptureController {
 
   tryAcquireMediaStream() {
     if (!this.mediaStream) {
-      if (!this.direction || ['environment', 'user'].indexOf(this.direction.toLowerCase()) === -1) {
+      if (!this.guidelines.direction || ['environment', 'user'].indexOf(this.guidelines.direction.toLowerCase()) === -1) {
         // Assume environment cam by default, if unspecified.
         // TODO: This favours single-camera smartphones, but disfavours desktop webcams.
         // we can import @transferwise/ng-browser-info to infer if we're mobile,
         // and default to user/environment accordingly.
-        this.direction = 'environment';
+        this.guidelines.direction = 'environment';
       }
 
       this.cameraConstraints = {
@@ -154,7 +169,7 @@ class CameraCaptureController {
           width: { ideal: 1600 },
           height: { ideal: 1600 },
           facingMode: {
-            ideal: this.direction.toLowerCase()
+            ideal: this.guidelines.direction.toLowerCase()
           }
         },
         audio: false

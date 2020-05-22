@@ -103,7 +103,7 @@
   on-success="$ctrl.onSuccess"
   on-failure="$ctrl.onFailure"
   on-cancel="$ctrl.onCancel"</span><span ng-if="$ctrl.cameraGuidelines">
-  camera-guidelines="{{$ctrl.cameraGuidelines}}"</span><span ng-if="$ctrl.source">
+  camera-guidelines="$ctrl.cameraGuidelines"</span><span ng-if="$ctrl.source">
   source="{{$ctrl.source}}"</span><span ng-if="$ctrl.ngDisabled">
   ng-disabled="{{$ctrl.ngDisabled}}"</span>&gt;
 &lt;/tw-upload&gt;
@@ -139,19 +139,18 @@
       </div>
 
       <div class="form-group" ng-if="$ctrl.source == 'CAMERA_ONLY'"
-        ng-init="$ctrl.cameraGuidelines.outline = 'images/overlay.png'">
+        ng-init="$ctrl.cameraGuidelines.outline = 'images/sample-camera-outline.png'">
         <label class="control-label">
           Camera Outline Image URL
         </label>
         <input type="text" class="form-control" ng-model="$ctrl.cameraGuidelines.outline" />
       </div>
 
-      <div class="form-group" ng-if="$ctrl.source == 'CAMERA_ONLY'"
-        ng-init="$ctrl.cameraGuidelines.overlay = 'images/overlay.png'">
+      <div class="form-group" ng-if="$ctrl.source == 'CAMERA_ONLY'">
         <label class="control-label">
           Camera Overlay (mask) Image URL
         </label>
-        <input type="text" class="form-control" ng-model="$ctrl.cameraGuidelines.overlay" />
+        <input type="text" class="form-control" ng-model="$ctrl.cameraGuidelines.overlay" placeholder="Not yet supported" />
       </div>
 
       <div class="form-group" ng-init="$ctrl.name = 'file'">
