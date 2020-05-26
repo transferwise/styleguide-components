@@ -24,19 +24,6 @@ class CameraCaptureController {
   $onInit() {
     this.guidelines = this.guidelines || {};
 
-    // Backward compatibility: older producers (e.g. Japan live photo IDs from Mitigator)
-    // return only an outline image url under 'overlay'. But in the final camera guidelines spec,
-    // 'overlay' is meant for the solid mask, not the outline.
-    // Remove this block once producers have been corrected.
-    if (
-      this.guidelines.overlay
-      // if outline already specified (i.e. according to spec), don't touch anything.
-      && !this.guidelines.outline
-    ) {
-      this.guidelines.outline = this.guidelines.overlay;
-      this.guidelines.overlay = null;
-    }
-
     this.mode = 'loading'; // 3 states: 'loading' -> 'capture' <-> 'confirm'.
 
     this.mediaStream = null;

@@ -241,25 +241,43 @@ describe('Requirements Service', function() {
     });
 
     describe('when preparing camera fields', function() {
-      it('should leave fields untouched', function() {
+      it('should rename \'overlay\' to \'outline\' on old guidelines', function() {
         var input = {
-          type: "text",
+          type: "string",
           camera: {
-            overlay: "overlay",
+            overlay: "outline.png",
             direction: "direction"
-          }
+          },
+          control: "text"
         };
 
         var expectedOutput = {
           type: "string",
           camera : {
-            overlay: "overlay",
+            outline: "outline.png", // renamed.
             direction: "direction"
           },
           control: "text"
         };
 
         expect(service.prepField(input)).toEqual(expectedOutput);
+      });
+
+      it.each([
+        ['empty guidelines', null],
+        ['empty guidelines', {}],
+        ['new guidelines', {outline: 'outline.png'}],
+        ['new guidelines', {outline: 'outline.png', overlay: 'overlay.svg'}],
+      ])('should should leave %s untouched', function(description, camera) {
+        var input = {
+          type: "string",
+          control: "text",
+          camera: camera
+        };
+
+        var original = JSON.parse(JSON.stringify(input));
+
+        expect(service.prepField(input)).toEqual(original);
       });
     });
   });

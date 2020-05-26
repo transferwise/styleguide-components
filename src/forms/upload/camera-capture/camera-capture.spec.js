@@ -125,24 +125,6 @@ describe('Given a camera capture component', () => {
         expect(findOverlayElement().classList).not.toContain('ng-hide');
       });
 
-      it('should display an overlay outline if the outline was incorrectly specified as \'overlay\'', () => {
-        $scope.guidelines = {overlay: 'some-pic.png'};
-        compileComponent();
-
-        expect(findOverlayElement()).toBeTruthy();
-        expect(findOverlayElement().classList).not.toContain('ng-hide');
-      });
-
-      it('should display the correct overlay outline when given full camera guidelines', () => {
-        $scope.guidelines = {outline: 'correct.png', overlay: 'WRONG.png'};
-        compileComponent();
-
-        expect(findOverlayElement()).toBeTruthy();
-        expect(findOverlayElement().classList).not.toContain('ng-hide');
-        expect(findOverlayElement().style['background-image']).toContain('correct');
-        expect(findOverlayElement().style['background-image']).not.toContain('WRONG');
-      });
-
       it('should not display if an overlay outline was unspecified', () => {
         $scope.guidelines = null;
         compileComponent();
