@@ -14,7 +14,12 @@ class Controller {
   }
 
   handleNewModelFromParent(model) {
-    if (isUndefined(model)) {
+    if (isUndefined(model) || isNull(model)) {
+      // Don't overwrite internal model when receiving invalid
+      if (!isUndefined(this.internalModel) && !isNull(this.internalModel)) {
+        return;
+      }
+
       if (this.schema.default) {
         this.onModelChange(this.schema.default);
       } else {
