@@ -48,8 +48,7 @@ const Upload = {
      * ANY (we dont care)
      */
     source: '<',
-    cameraOverlay: '@', // Optional
-    cameraDirection: '@', // environment/user
+    cameraGuidelines: '<',
 
     description: '@', // DEPRECATED for label
     instructions: '@', // DEPRECATED for placeholder

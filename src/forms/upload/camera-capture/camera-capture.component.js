@@ -6,8 +6,7 @@ const CameraCapture = {
   controller,
   template,
   bindings: {
-    overlay: '@', // Optional
-    direction: '@', // environment/user
+    guidelines: '<',
 
     onCancel: '&',
     onCapture: '&',

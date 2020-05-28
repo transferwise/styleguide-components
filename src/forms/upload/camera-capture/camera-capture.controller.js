@@ -22,6 +22,8 @@ class CameraCaptureController {
   }
 
   $onInit() {
+    this.guidelines = this.guidelines || {};
+
     this.mode = 'loading'; // 3 states: 'loading' -> 'capture' <-> 'confirm'.
 
     this.mediaStream = null;
@@ -141,12 +143,12 @@ class CameraCaptureController {
 
   tryAcquireMediaStream() {
     if (!this.mediaStream) {
-      if (!this.direction || ['environment', 'user'].indexOf(this.direction.toLowerCase()) === -1) {
+      if (!this.guidelines.direction || ['environment', 'user'].indexOf(this.guidelines.direction.toLowerCase()) === -1) {
         // Assume environment cam by default, if unspecified.
         // TODO: This favours single-camera smartphones, but disfavours desktop webcams.
         // we can import @transferwise/ng-browser-info to infer if we're mobile,
         // and default to user/environment accordingly.
-        this.direction = 'environment';
+        this.guidelines.direction = 'environment';
       }
 
       this.cameraConstraints = {
@@ -154,7 +156,7 @@ class CameraCaptureController {
           width: { ideal: 1600 },
           height: { ideal: 1600 },
           facingMode: {
-            ideal: this.direction.toLowerCase()
+            ideal: this.guidelines.direction.toLowerCase()
           }
         },
         audio: false

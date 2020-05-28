@@ -15,8 +15,7 @@ const CaptureCard = {
     helpImage: '<',
 
     isLiveCameraUpload: '<',
-    cameraOverlay: '<',
-    cameraDirection: '<',
+    cameraGuidelines: '<',
 
     onFileCapture: '&'
   }

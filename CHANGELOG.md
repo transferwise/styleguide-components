@@ -1,3 +1,6 @@
+# v5.6.2
+## Fix camera component to accept an overlay outline according to the updated camera guidelines specification
+
 # v5.6.1
 ## Change requested size of images uploaded through the camera component
 
