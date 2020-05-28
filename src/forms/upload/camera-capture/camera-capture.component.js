@@ -10,6 +10,7 @@ const CameraCapture = {
 
     onCancel: '&',
     onCapture: '&',
+    onError: '&',
 
     /**
      * Need this parameter to skip user interaction

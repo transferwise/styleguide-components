@@ -2,6 +2,7 @@ class Controller {
   constructor($element) {
     this.$element = $element;
     this.showLiveCaptureScreen = false;
+    this.cameraFailed = false;
   }
 
   $onChanges(changes) {
@@ -14,6 +15,11 @@ class Controller {
     this.showLiveCaptureScreen = false;
   }
 
+  onCameraError() {
+    this.showLiveCaptureScreen = false;
+    this.cameraFailed = true;
+  }
+
   onCameraCapture(file) {
     this.showLiveCaptureScreen = false;
     this.onFileCapture({ file });
@@ -21,6 +27,7 @@ class Controller {
 
   onCameraButtonClick() {
     this.showLiveCaptureScreen = true;
+    this.cameraFailed = false;
   }
 
   onButtonCapture(files) {

@@ -70,6 +70,8 @@ function controller($scope) {
   $ctrl.droppingText = 'Drop file to begin...';
   $ctrl.successText = 'Upload complete!';
   $ctrl.failureText = 'Upload failed!';
+  $ctrl.noCameraText = 'Couldn\'t detect your camera';
+  $ctrl.noCameraMessage = 'Please enable camera permissions, try a different browser, or use a different device.';
 
   this.makeFancy = () => {};
 

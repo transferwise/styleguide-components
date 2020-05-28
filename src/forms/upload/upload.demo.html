@@ -66,6 +66,8 @@
         processing-text="{{$ctrl.processingText}}"
         success-text="{{$ctrl.successText}}"
         failure-text="{{$ctrl.failureText}}"
+        no-camera-text="{{$ctrl.noCameraText}}"
+        no-camera-message="{{$ctrl.noCameraMessage}}"
 
         on-start="$ctrl.onStart"
         on-success="$ctrl.onSuccess"
@@ -96,7 +98,9 @@
   dropping-text="{{$ctrl.droppingText}}"</span><span ng-if="$ctrl.processingText">
   processing-text="{{$ctrl.processingText}}"</span><span ng-if="$ctrl.successText">
   success-text="{{$ctrl.successText}}"</span><span ng-if="$ctrl.failureText">
-  failure-text="{{$ctrl.failureText}}"</span><span ng-if="$ctrl.httpOptions">
+  failure-text="{{$ctrl.failureText}}"</span><span ng-if="$ctrl.noCameraText">
+  no-camera-text="{{$ctrl.noCameraText}}"</span><span ng-if="$ctrl.noCameraMessage">
+  no-camera-message="{{$ctrl.noCameraMessage}}"</span><span ng-if="$ctrl.httpOptions">
   http-options="{{$ctrl.httpOptions}}"</span><span ng-if="$ctrl.errorMessage">
   error-message="{{$ctrl.errorMessage}}"</span>
   on-start="$ctrl.onStart"
@@ -221,6 +225,18 @@
           Failure text
         </label>
         <input type="text" class="form-control" ng-model="$ctrl.failureText" />
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          No-camera text
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.noCameraText" />
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          No-camera message
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.noCameraMessage" />
       </div>
 
       <div class="form-group">

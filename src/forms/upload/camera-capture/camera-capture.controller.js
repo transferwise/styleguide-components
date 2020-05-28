@@ -33,8 +33,9 @@ class CameraCaptureController {
     this.sensorWidth = 0;
 
     if (!this.hasGetUserMedia()) {
-      // TODO: haoyuan how to handle get user media not being available?
       this.$log.warn('getUserMedia() is not supported by your browser');
+      this.onError();
+      return;
     }
 
     // lock document scroll.
@@ -106,7 +107,8 @@ class CameraCaptureController {
       }).catch((err) => {
         // TODO haoyuan : Should somehow ask user to refresh page to reaquire permission
         this.$log.error(err);
-        this.onCancelBtnClick();
+        this.closeVideoStream();
+        this.onError();
       });
   }
 

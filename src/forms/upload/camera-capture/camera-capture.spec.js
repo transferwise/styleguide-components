@@ -324,3 +324,5 @@ describe('Given a camera capture component', () => {
     return component.querySelector('.camera-ctrl-btn-cancel');
   }
 });
+
+// should call onError callback on an error.
