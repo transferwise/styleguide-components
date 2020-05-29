@@ -32,8 +32,14 @@ class CameraCaptureController {
     this.overlaySquareLength = 0;
     this.sensorWidth = 0;
 
-    if (!this.hasGetUserMedia()) {
-      this.$log.warn('getUserMedia() is not supported by your browser');
+    if (this.$window.navigator.mediaDevices === undefined) {
+      this.$log.error('navigator.mediaDevices not accessible on this browser');
+      this.onError();
+      return;
+    }
+
+    if (this.$window.navigator.mediaDevices.getUserMedia === undefined) {
+      this.$log.error('mediaDevices.getUserMedia is not implemented on this browser');
       this.onError();
       return;
     }
@@ -217,10 +223,6 @@ class CameraCaptureController {
       }
       $ngModel.$setViewValue(value);
     }
-  }
-
-  hasGetUserMedia() {
-    return !!((this.$window.navigator.mediaDevices || {}).getUserMedia);
   }
 
   findContainer() { return this.$element[0].querySelector('#camera'); }
