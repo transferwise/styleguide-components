@@ -1,3 +1,6 @@
+# v5.6.4
+## Tweak camera component image and button to default to camera icons instead of upload icons
+
 # v5.6.3
 ## Fix camera component to show an optional error message if camera permissions were rejected
 
