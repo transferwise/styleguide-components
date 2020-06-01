@@ -6,8 +6,12 @@ class Controller {
   }
 
   $onChanges(changes) {
-    if (changes.icon) {
-      this.viewIcon = changes.icon.currentValue ? changes.icon.currentValue : 'upload';
+    if (changes.icon || changes.isLiveCameraUpload) {
+      if ((changes.icon || {}).currentValue) {
+        this.viewIcon = changes.icon.currentValue;
+      } else {
+        this.viewIcon = (changes.isLiveCameraUpload || {}).currentValue ? 'camera' : 'upload';
+      }
     }
   }
 
