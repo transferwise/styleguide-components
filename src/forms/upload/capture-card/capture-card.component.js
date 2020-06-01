@@ -13,6 +13,8 @@ const CaptureCard = {
     placeholder: '<',
     inputFile: '<',
     helpImage: '<',
+    noCameraText: '<',
+    noCameraMessage: '<',
 
     isLiveCameraUpload: '<',
     cameraGuidelines: '<',

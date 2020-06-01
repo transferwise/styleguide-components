@@ -32,9 +32,16 @@ class CameraCaptureController {
     this.overlaySquareLength = 0;
     this.sensorWidth = 0;
 
-    if (!this.hasGetUserMedia()) {
-      // TODO: haoyuan how to handle get user media not being available?
-      this.$log.warn('getUserMedia() is not supported by your browser');
+    if (this.$window.navigator.mediaDevices === undefined) {
+      this.$log.error('navigator.mediaDevices not accessible on this browser');
+      this.onError();
+      return;
+    }
+
+    if (this.$window.navigator.mediaDevices.getUserMedia === undefined) {
+      this.$log.error('mediaDevices.getUserMedia is not implemented on this browser');
+      this.onError();
+      return;
     }
 
     // lock document scroll.
@@ -106,7 +113,8 @@ class CameraCaptureController {
       }).catch((err) => {
         // TODO haoyuan : Should somehow ask user to refresh page to reaquire permission
         this.$log.error(err);
-        this.onCancelBtnClick();
+        this.closeVideoStream();
+        this.onError();
       });
   }
 
@@ -215,10 +223,6 @@ class CameraCaptureController {
       }
       $ngModel.$setViewValue(value);
     }
-  }
-
-  hasGetUserMedia() {
-    return !!((this.$window.navigator.mediaDevices || {}).getUserMedia);
   }
 
   findContainer() { return this.$element[0].querySelector('#camera'); }

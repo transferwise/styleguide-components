@@ -22,6 +22,8 @@ const Upload = {
     processingText: '@', // Text shown while processing/uploading
     successText: '@', // Text after upload is successful, shown quite briefly before preview
     failureText: '@',
+    noCameraText: '@',
+    noCameraMessage: '@',
 
     tooLargeMessage: '@',
     // wrongTypeMessage: '@',

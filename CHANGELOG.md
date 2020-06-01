@@ -1,3 +1,6 @@
+# v5.6.3
+## Fix camera component to show an optional error message if camera permissions were rejected
+
 # v5.6.2
 ## Fix camera component to accept an overlay outline according to the updated camera guidelines specification
 

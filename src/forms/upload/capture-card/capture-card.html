@@ -1,24 +1,38 @@
 <div class="droppable-card-content">
-  <!-- Display illustration as image or icon -->
-  <div class="m-b-2">
-    <img
-      ng-show="$ctrl.helpImage"
-      ng-src="{{$ctrl.helpImage}}"
-      alt="{{$ctrl.label}}"
-      class="thumbnail text-xs-center" />
-    <span ng-show="!$ctrl.helpImage"
-      class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></span>
+  <div ng-if="!$ctrl.cameraFailed">
+    <!-- Display illustration as image or icon -->
+    <div class="m-b-2">
+      <img
+        ng-show="$ctrl.helpImage"
+        ng-src="{{$ctrl.helpImage}}"
+        alt="{{$ctrl.label}}"
+        class="thumbnail text-xs-center" />
+      <span ng-show="!$ctrl.helpImage"
+        class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></span>
+    </div>
+
+    <!-- control label -->
+    <h4 class="m-b-1" ng-if="$ctrl.label || $ctrl.description">
+      {{$ctrl.label || $ctrl.description}}
+    </h4>
+
+    <!-- placeholder instructions -->
+    <p class="m-b-2" ng-if="$ctrl.placeholder || $ctrl.instructions">
+      {{$ctrl.placeholder || $ctrl.instructions}}
+    </p>
   </div>
 
-  <!-- control label -->
-  <h4 class="m-b-1" ng-if="$ctrl.label || $ctrl.description">
-    {{$ctrl.label || $ctrl.description}}
-  </h4>
+  <div ng-if="$ctrl.cameraFailed">
+    <div class="m-b-2">
+      <tw-process
+        state='-1'
+        size='sm'
+      ></tw-process>
+    </div>
 
-  <!-- placeholder instructions -->
-  <p class="m-b-2" ng-if="$ctrl.placeholder || $ctrl.instructions">
-    {{$ctrl.placeholder || $ctrl.instructions}}
-  </p>
+    <h4 class="m-b-1" ng-if="$ctrl.noCameraText">{{$ctrl.noCameraText}}</h4>
+    <p class="m-b-2" ng-if="$ctrl.noCameraMessage">{{$ctrl.noCameraMessage}}</p>
+  </div>
 
   <!-- file upload -->
   <tw-upload-button
@@ -43,6 +57,7 @@
     ng-if="$ctrl.isLiveCameraUpload && $ctrl.showLiveCaptureScreen"
     guidelines="$ctrl.cameraGuidelines"
     on-cancel="$ctrl.onCameraCancel()"
-    on-capture="$ctrl.onCameraCapture(file)">
+    on-capture="$ctrl.onCameraCapture(file)"
+    on-error="$ctrl.onCameraError()">
   </tw-camera-capture>
 </div>
