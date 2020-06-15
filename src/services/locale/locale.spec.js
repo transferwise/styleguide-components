@@ -37,10 +37,10 @@ describe('TwDateService test', function() {
 
   describe('when setting the locale with uncapitalised country', function() {
     beforeEach(function() {
-      LocaleService.setCurrent('fr-fr');
+      LocaleService.setCurrent('en-au');
     });
     it('should change the case', function () {
-      expect(LocaleService.getCurrent()).toBe('fr-FR');
+      expect(LocaleService.getCurrent()).toBe('en-AU');
     });
   });
 
