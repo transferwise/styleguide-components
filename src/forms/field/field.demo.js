@@ -345,6 +345,23 @@ function fieldDocsController() {
     placeholder: 'Your choice...'
   };
 
+  this.radioDescriptions = {
+    type: 'string',
+    title: 'Radio control',
+    values: [
+      {
+        value: '1',
+        label: 'One',
+        secondary: 'The first option'
+      },
+      {
+        value: '2',
+        label: 'Two',
+        secondary: 'The second option'
+      }
+    ]
+  };
+
   this.presentationModel = {
     displayFormat: '123456',
     disabledControl: "I'm disabled",
