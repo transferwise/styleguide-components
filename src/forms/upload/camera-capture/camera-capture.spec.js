@@ -15,10 +15,10 @@ describe('Given a camera capture component', () => {
 
   const template = " \
   <tw-camera-capture \
-    direction='{{direction}}' \
-    overlay='{{overlay}}'\
+    guidelines='guidelines' \
     on-cancel='onCancel()' \
     on-capture='onCapture(file)' \
+    on-error='onError()' \
   </tw-camera-capture>";
 
   beforeEach(function() {
@@ -50,6 +50,7 @@ describe('Given a camera capture component', () => {
 
     $scope.onCancel = jest.fn();
     $scope.onCapture = jest.fn();
+    $scope.onError = jest.fn();
   });
 
   describe('when initialising', () => {
@@ -58,7 +59,7 @@ describe('Given a camera capture component', () => {
       ['EnVirONMent', 'environment'],
       [null, 'environment'],
     ])('should request for a media device with the right preferred direction', (inputDirection, expected) => {
-      $scope.direction = inputDirection;
+      $scope.guidelines = {direction: inputDirection};
       compileComponent();
 
       expect($window.navigator.mediaDevices.getUserMedia).toHaveBeenCalledTimes(1);
@@ -75,6 +76,33 @@ describe('Given a camera capture component', () => {
       compileComponent();
 
       expect(screenfull.request).toHaveBeenCalledTimes(1);
+    });
+
+    describe('if camera is not available', () => {
+      describe('because navigator.mediaDevices is undefined (e.g. insecure browser context)', () => {
+        beforeEach(() => {
+          delete $window.navigator.mediaDevices;
+          compileComponent();
+        });
+
+        it('should trigger the bound onError callback', () => {
+          expect($scope.onError).toHaveBeenCalledTimes(1);
+        });
+      })
+
+      describe('because mediaDevices.getUserMedia() rejects (e.g. user refused permission)', () => {
+        beforeEach(() => {
+          $window.navigator.mediaDevices = {
+            getUserMedia: jest.fn($q.reject),
+          };
+          compileComponent();
+        });
+
+        it('should trigger the bound onError callback', () => {
+          expect($scope.onError).toHaveBeenCalledTimes(1);
+        });
+      });
+
     });
 
     describe('if fullscreen switching succeeds', () => {
@@ -107,27 +135,27 @@ describe('Given a camera capture component', () => {
       });
 
       it('should appear mirrored if a user-facing (selfie) cam was requested', () => {
-        $scope.direction = 'eNVironmENT';
+        $scope.guidelines = {direction: 'eNVironmENT'};
         compileComponent();
         expect(findVideoElement().classList).not.toContain('mirrored');
 
-        $scope.direction = 'uSeR';
+        $scope.guidelines = {direction: 'uSeR'};
         compileComponent();
         expect(findVideoElement().classList).toContain('mirrored');
       });
     });
 
     describe('the overlay guidelines for the viewfinder', () => {
-      it('should display if an overlay was specified', () => {
-        $scope.overlay = 'some-pic.png';
+      it('should display an overlay outline if it was specified', () => {
+        $scope.guidelines = {outline: 'some-pic.png'};
         compileComponent();
 
         expect(findOverlayElement()).toBeTruthy();
         expect(findOverlayElement().classList).not.toContain('ng-hide');
       });
 
-      it('should not display if an overlay was unspecified', () => {
-        $scope.overlay = null;
+      it('should not display if an overlay outline was unspecified', () => {
+        $scope.guidelines = null;
         compileComponent();
 
         expect(findOverlayElement()).toBeFalsy();
@@ -142,7 +170,7 @@ describe('Given a camera capture component', () => {
           ['portrait video with top-bottom letterboxing', 9, 16, 90, 170, 81],
           ['portrait video with left-right letterboxing', 9, 16, 100, 160, 81],
         ])('%s', (description, videoWidth, videoHeight, clientWidth, clientHeight, expectedOverlayLength) => {
-          $scope.overlay = 'some-pic.png';
+          $scope.guidelines = {outline: 'some-pic.png'};
           compileComponent();
 
           controller.findContainer = () => ({clientWidth, clientHeight});
@@ -325,3 +353,5 @@ describe('Given a camera capture component', () => {
     return component.querySelector('.camera-ctrl-btn-cancel');
   }
 });
+
+// should call onError callback on an error.

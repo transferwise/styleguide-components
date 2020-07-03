@@ -2,16 +2,26 @@ class Controller {
   constructor($element) {
     this.$element = $element;
     this.showLiveCaptureScreen = false;
+    this.cameraFailed = false;
   }
 
   $onChanges(changes) {
-    if (changes.icon) {
-      this.viewIcon = changes.icon.currentValue ? changes.icon.currentValue : 'upload';
+    if (changes.icon || changes.isLiveCameraUpload) {
+      if ((changes.icon || {}).currentValue) {
+        this.viewIcon = changes.icon.currentValue;
+      } else {
+        this.viewIcon = (changes.isLiveCameraUpload || {}).currentValue ? 'camera' : 'upload';
+      }
     }
   }
 
   onCameraCancel() {
     this.showLiveCaptureScreen = false;
+  }
+
+  onCameraError() {
+    this.showLiveCaptureScreen = false;
+    this.cameraFailed = true;
   }
 
   onCameraCapture(file) {
@@ -21,6 +31,7 @@ class Controller {
 
   onCameraButtonClick() {
     this.showLiveCaptureScreen = true;
+    this.cameraFailed = false;
   }
 
   onButtonCapture(files) {

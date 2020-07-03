@@ -22,6 +22,8 @@ class CameraCaptureController {
   }
 
   $onInit() {
+    this.guidelines = this.guidelines || {};
+
     this.mode = 'loading'; // 3 states: 'loading' -> 'capture' <-> 'confirm'.
 
     this.mediaStream = null;
@@ -30,9 +32,16 @@ class CameraCaptureController {
     this.overlaySquareLength = 0;
     this.sensorWidth = 0;
 
-    if (!this.hasGetUserMedia()) {
-      // TODO: haoyuan how to handle get user media not being available?
-      this.$log.warn('getUserMedia() is not supported by your browser');
+    if (this.$window.navigator.mediaDevices === undefined) {
+      this.$log.error('navigator.mediaDevices not accessible on this browser');
+      this.onError();
+      return;
+    }
+
+    if (this.$window.navigator.mediaDevices.getUserMedia === undefined) {
+      this.$log.error('mediaDevices.getUserMedia is not implemented on this browser');
+      this.onError();
+      return;
     }
 
     // lock document scroll.
@@ -104,7 +113,8 @@ class CameraCaptureController {
       }).catch((err) => {
         // TODO haoyuan : Should somehow ask user to refresh page to reaquire permission
         this.$log.error(err);
-        this.onCancelBtnClick();
+        this.closeVideoStream();
+        this.onError();
       });
   }
 
@@ -141,12 +151,12 @@ class CameraCaptureController {
 
   tryAcquireMediaStream() {
     if (!this.mediaStream) {
-      if (!this.direction || ['environment', 'user'].indexOf(this.direction.toLowerCase()) === -1) {
+      if (!this.guidelines.direction || ['environment', 'user'].indexOf(this.guidelines.direction.toLowerCase()) === -1) {
         // Assume environment cam by default, if unspecified.
         // TODO: This favours single-camera smartphones, but disfavours desktop webcams.
         // we can import @transferwise/ng-browser-info to infer if we're mobile,
         // and default to user/environment accordingly.
-        this.direction = 'environment';
+        this.guidelines.direction = 'environment';
       }
 
       this.cameraConstraints = {
@@ -154,7 +164,7 @@ class CameraCaptureController {
           width: { ideal: 1600 },
           height: { ideal: 1600 },
           facingMode: {
-            ideal: this.direction.toLowerCase()
+            ideal: this.guidelines.direction.toLowerCase()
           }
         },
         audio: false
@@ -213,10 +223,6 @@ class CameraCaptureController {
       }
       $ngModel.$setViewValue(value);
     }
-  }
-
-  hasGetUserMedia() {
-    return !!((this.$window.navigator.mediaDevices || {}).getUserMedia);
   }
 
   findContainer() { return this.$element[0].querySelector('#camera'); }

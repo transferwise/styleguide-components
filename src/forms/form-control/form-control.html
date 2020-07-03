@@ -83,6 +83,8 @@
       processing-text="{{ $ctrl.uploadOptions.processingText }}"
       success-text="{{ $ctrl.uploadOptions.successText }}"
       failure-text="{{ $ctrl.uploadOptions.failureText }}"
+      no-camera-text="{{ $ctrl.uploadOptions.noCameraText }}"
+      no-camera-message="{{ $ctrl.uploadOptions.noCameraMessage }}"
       validation-messages="$ctrl.uploadOptions.validationMessages"
       view-image-text="{{$ctrl.uploadOptions.viewImageText}}"
       too-large-message="{{$ctrl.uploadTooLargeMessage}}"
@@ -95,8 +97,7 @@
       ng-blur="$ctrl.blur()"
       http-options="$ctrl.persistAsync"
       source="$ctrl.fileUploadSource"
-      camera-overlay="{{$ctrl.cameraOptions.overlay}}"
-      camera-direction="{{$ctrl.cameraOptions.direction}}"
+      camera-guidelines="$ctrl.cameraOptions"
       on-success="$ctrl.onAsyncUploadSuccess"
       on-failure="$ctrl.onAsyncUploadFailure"
     ></tw-upload>

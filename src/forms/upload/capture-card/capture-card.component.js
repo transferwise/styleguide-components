@@ -13,10 +13,11 @@ const CaptureCard = {
     placeholder: '<',
     inputFile: '<',
     helpImage: '<',
+    noCameraText: '<',
+    noCameraMessage: '<',
 
     isLiveCameraUpload: '<',
-    cameraOverlay: '<',
-    cameraDirection: '<',
+    cameraGuidelines: '<',
 
     onFileCapture: '&'
   }

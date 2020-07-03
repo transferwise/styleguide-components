@@ -22,6 +22,8 @@ const Upload = {
     processingText: '@', // Text shown while processing/uploading
     successText: '@', // Text after upload is successful, shown quite briefly before preview
     failureText: '@',
+    noCameraText: '@',
+    noCameraMessage: '@',
 
     tooLargeMessage: '@',
     // wrongTypeMessage: '@',
@@ -48,8 +50,7 @@ const Upload = {
      * ANY (we dont care)
      */
     source: '<',
-    cameraOverlay: '@', // Optional
-    cameraDirection: '@', // environment/user
+    cameraGuidelines: '<',
 
     description: '@', // DEPRECATED for label
     instructions: '@', // DEPRECATED for placeholder

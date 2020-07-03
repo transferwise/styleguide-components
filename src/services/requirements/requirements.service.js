@@ -60,6 +60,7 @@ function RequirementsService($http) {
     this.prepValuesAsync(preparedField, model);
     this.prepValidationMessages(preparedField, validationMessages);
     this.prepHelp(preparedField);
+    this.prepCameraGuidelines(preparedField);
 
     return preparedField;
   };
@@ -422,6 +423,21 @@ function RequirementsService($http) {
     if (field.list) {
       field.help.list = field.helpList;
       delete field.helpList;
+    }
+  };
+
+  // In an older format we expected a camera outline guide under the 'camera.overlay' prop.
+  // But in the final camera guidelines spec, 'camera.overlay' is meant for the solid mask,
+  // not the outline.
+  // Remove when legacy producers have been upgraded (Japan eKYC live uploads).
+  this.prepCameraGuidelines = (field) => {
+    if (
+      field.camera
+      && field.camera.overlay
+      && !field.camera.outline
+    ) {
+      field.camera.outline = field.camera.overlay;
+      delete field.camera.overlay;
     }
   };
 

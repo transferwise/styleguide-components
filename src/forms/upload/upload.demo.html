@@ -66,6 +66,8 @@
         processing-text="{{$ctrl.processingText}}"
         success-text="{{$ctrl.successText}}"
         failure-text="{{$ctrl.failureText}}"
+        no-camera-text="{{$ctrl.noCameraText}}"
+        no-camera-message="{{$ctrl.noCameraMessage}}"
 
         on-start="$ctrl.onStart"
         on-success="$ctrl.onSuccess"
@@ -76,8 +78,7 @@
         ng-disabled="$ctrl.ngDisabled"
 
         source="$ctrl.source"
-        camera-overlay="{{$ctrl.cameraOverlay}}"
-        camera-direction="{{$ctrl.cameraDirection}}"
+        camera-guidelines="$ctrl.cameraGuidelines"
       ></tw-upload>
     </div>
     <h5>Configuration</h5>
@@ -97,14 +98,16 @@
   dropping-text="{{$ctrl.droppingText}}"</span><span ng-if="$ctrl.processingText">
   processing-text="{{$ctrl.processingText}}"</span><span ng-if="$ctrl.successText">
   success-text="{{$ctrl.successText}}"</span><span ng-if="$ctrl.failureText">
-  failure-text="{{$ctrl.failureText}}"</span><span ng-if="$ctrl.httpOptions">
+  failure-text="{{$ctrl.failureText}}"</span><span ng-if="$ctrl.noCameraText">
+  no-camera-text="{{$ctrl.noCameraText}}"</span><span ng-if="$ctrl.noCameraMessage">
+  no-camera-message="{{$ctrl.noCameraMessage}}"</span><span ng-if="$ctrl.httpOptions">
   http-options="{{$ctrl.httpOptions}}"</span><span ng-if="$ctrl.errorMessage">
   error-message="{{$ctrl.errorMessage}}"</span>
   on-start="$ctrl.onStart"
   on-success="$ctrl.onSuccess"
   on-failure="$ctrl.onFailure"
-  on-cancel="$ctrl.onCancel"</span><span ng-if="$ctrl.cameraOverlay">
-  overlay="{{$ctrl.cameraOverlay}}"</span><span ng-if="$ctrl.source">
+  on-cancel="$ctrl.onCancel"</span><span ng-if="$ctrl.cameraGuidelines">
+  camera-guidelines="$ctrl.cameraGuidelines"</span><span ng-if="$ctrl.source">
   source="{{$ctrl.source}}"</span><span ng-if="$ctrl.ngDisabled">
   ng-disabled="{{$ctrl.ngDisabled}}"</span>&gt;
 &lt;/tw-upload&gt;
@@ -135,16 +138,23 @@
         </label>
         <tw-select
           placeholder="Camera Direction"
-          ng-model="$ctrl.cameraDirection"
+          ng-model="$ctrl.cameraGuidelines.direction"
           options="$ctrl.cameraDirections"></tw-select>
       </div>
 
       <div class="form-group" ng-if="$ctrl.source == 'CAMERA_ONLY'"
-        ng-init="$ctrl.cameraOverlay = 'images/overlay.png'">
+        ng-init="$ctrl.cameraGuidelines.outline = 'images/sample-camera-outline.png'">
         <label class="control-label">
-          Camera Overlay Image URL
+          Camera Outline Image URL
         </label>
-        <input type="text" class="form-control" ng-model="$ctrl.cameraOverlay" />
+        <input type="text" class="form-control" ng-model="$ctrl.cameraGuidelines.outline" />
+      </div>
+
+      <div class="form-group" ng-if="$ctrl.source == 'CAMERA_ONLY'">
+        <label class="control-label">
+          Camera Overlay (mask) Image URL
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.cameraGuidelines.overlay" placeholder="Not yet supported" />
       </div>
 
       <div class="form-group" ng-init="$ctrl.name = 'file'">
@@ -215,6 +225,18 @@
           Failure text
         </label>
         <input type="text" class="form-control" ng-model="$ctrl.failureText" />
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          No-camera text
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.noCameraText" />
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          No-camera message
+        </label>
+        <input type="text" class="form-control" ng-model="$ctrl.noCameraMessage" />
       </div>
 
       <div class="form-group">
