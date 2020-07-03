@@ -90,7 +90,7 @@ describe('Field', function() {
               image: "helpImage"
             },
             camera: {
-              overlay: "overlay",
+              outline: "overlay",
               direction: "direction"
             }
           };
