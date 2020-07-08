@@ -146,7 +146,7 @@ function fieldsetDocsController() {
   };
 
   this.fieldsetErrors = {
-    stringProperty: 'Something is wrong with this',
+    stringProperty: 'Something is wrong with this'
   };
   this.fieldsetWarnings = {
     nestedObject: {
@@ -194,7 +194,6 @@ function fieldsetDocsController() {
   };
   this.fieldsetLayoutModel = {};
 
-
   this.fieldsetFull = {
     properties: {
       text: {
@@ -229,12 +228,15 @@ function fieldsetDocsController() {
       },
       checkboxGroup: {
         title: 'Checkbox Group',
-        type: 'string',
+        type: 'array',
         control: 'checkbox-group',
         width: 'md',
         items: {
           enum: [1, 2],
-          values: [{ value: 1, label: 'One' }, { value: 2, label: 'Two' }]
+          values: [
+            { value: 1, label: 'One' },
+            { value: 2, label: 'Two' }
+          ]
         }
       },
       password: {

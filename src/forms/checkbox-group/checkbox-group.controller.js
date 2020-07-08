@@ -1,4 +1,3 @@
-
 class CheckboxGroupController {
   constructor($scope, $element, TwDomService, $timeout) {
     const $ngModel = $element.controller('ngModel');
@@ -14,21 +13,15 @@ class CheckboxGroupController {
   }
 
   onInternalModelChange() {
-    const transformedModel = Object.keys(this.internalModel)
-      .filter(key => this.internalModel[key])
-      .map(key => key);
-    const stringifiedModel = transformedModel.length === 0
-      ? undefined
-      : JSON.stringify(transformedModel);
-    this.$ngModel.$setViewValue(stringifiedModel);
+    const transformedModel = Object.keys(this.internalModel).filter(key => this.internalModel[key]);
+
+    this.$ngModel.$setViewValue(transformedModel);
     this.$ngModel.$setTouched();
   }
 
   updateInternalValue($ngModel) {
     if ($ngModel.$modelValue) {
-      const newTruthyValues = JSON.parse($ngModel.$modelValue);
-
-      this.internalModel = newTruthyValues.reduce((acc, currentValue) => {
+      this.internalModel = $ngModel.$modelValue.reduce((acc, currentValue) => {
         acc[currentValue] = true;
         return acc;
       }, {});
@@ -40,25 +33,13 @@ class CheckboxGroupController {
     $scope.$watch('$ctrl.ngModel', (newValue, oldValue) => {
       if (newValue !== oldValue) {
         this.updateInternalValue($ngModel);
-        this.$timeout(() => validateCheckbox(
-          $element,
-          $ngModel,
-          this.ngRequired,
-          this.dom,
-          this.internalModel
-        ));
+        this.$timeout(() => validateCheckbox($element, $ngModel, this.ngRequired, this.dom, this.internalModel));
       }
     });
 
     $scope.$watch('$ctrl.ngRequired', (newValue, oldValue) => {
       if (newValue !== oldValue) {
-        this.$timeout(() => validateCheckbox(
-          $element,
-          $ngModel,
-          this.ngRequired,
-          this.dom,
-          this.internalModel
-        ));
+        this.$timeout(() => validateCheckbox($element, $ngModel, this.ngRequired, this.dom, this.internalModel));
       }
     });
   }
@@ -70,8 +51,8 @@ function validateCheckbox($element, $ngModel, isRequired, dom, internalModel) {
   }
   const element = $element[0];
   const formGroup = dom.getClosestParentByClassName(element, 'form-group');
-  const isChecked = Object.keys(internalModel)
-    .filter(key => internalModel[key]).length > 0;
+  const isChecked = Object.keys(internalModel).filter(key => internalModel[key]).length > 0;
+
   if (!isChecked && isRequired) {
     $ngModel.$setValidity('required', false);
     if (formGroup) {

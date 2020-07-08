@@ -18,13 +18,13 @@ describe('Checkbox Group', function() {
   var DIRECTIVE_SELECTOR = 'tw-checkbox-group';
   var BUTTON_SELECTOR = 'button';
   var CHECKBOX_SELECTOR = "tw-checkbox";
-  
+
   beforeEach(function() {
     Checkbox = getMockComponent('twCheckbox');
 
     angular.mock.module('tw.styleguide.forms.checkbox');
     angular.mock.module('tw.styleguide.forms.checkbox-group');
-    
+
     angular.mock.inject(function($injector) {
       $rootScope = $injector.get('$rootScope');
       $compile = $injector.get('$compile');
@@ -39,7 +39,7 @@ describe('Checkbox Group', function() {
     $scope.ngRequired = true;
     $scope.options = [{value: "1", label: "test 1"}, {value: "2", label: "test 2"}];
 
-    
+
     templateElement = getCompiledTemplateElement($scope);
     directiveElement = () => templateElement.find(DIRECTIVE_SELECTOR);
     $ngModel = () => directiveElement().controller('ngModel');
@@ -54,17 +54,17 @@ describe('Checkbox Group', function() {
     });
 
     it('should render correct initial value', function() {
-      $scope.ngModel = '["1"]';
+      $scope.ngModel = ["1"];
       $scope.$apply()
-      
+
       expect(getCheckBoxValue(checkbox()[0])).toBe(true);
       expect(getCheckBoxValue(checkbox()[1])).toBeFalsy();
-      
-      $scope.ngModel = '["1", "2"]';
+
+      $scope.ngModel = ["1", "2"];
       $scope.$apply()
       expect(getCheckBoxValue(checkbox()[0])).toBe(true);
       expect(getCheckBoxValue(checkbox()[1])).toBe(true);
-      
+
     });
   });
 
@@ -73,7 +73,7 @@ describe('Checkbox Group', function() {
       expect(getCheckBoxValue(checkbox()[0])).toBeFalsy();
       button()[0].click();
       expect(getCheckBoxValue(checkbox()[0])).toBe(true);
-      expect($ngModel().$viewValue).toEqual('["1"]');
+      expect($ngModel().$viewValue).toEqual(["1"]);
     });
 
     it('should pass "disabled" prop to checkboxes', function() {
@@ -103,7 +103,6 @@ describe('Checkbox Group', function() {
   function getCompiledTemplateElement($scope, template) {
     if (!template) {
       template = " \
-        <div> \
         <div class='form-group'> \
           <tw-checkbox-group name='{{name}}' \
             options=\"options\" \
@@ -112,7 +111,7 @@ describe('Checkbox Group', function() {
             ng-click='ngClick' \
             ng-disabled='ngDisabled' \
             ng-blur='ngBlur' /> \
-        </div></div>";
+        </div>";
     }
     var element = angular.element(template);
     var compiledElement = $compile(element)($scope);
