@@ -75,7 +75,7 @@ describe('Fieldset', function() {
       $scope.fields = {
         checkboxGroup: {
           title: 'Checkbox Group',
-          type: 'array',
+          type: "SELECT",
           control: 'checkbox-group',
           width: 'md',
           selectType: "CHECKBOX",

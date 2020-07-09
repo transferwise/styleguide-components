@@ -196,10 +196,15 @@ function RequirementsService($http) {
         field.type = 'boolean';
         break;
       case 'select':
-        if (!field.control) {
-          field.control = 'select';
+        if (field.selectType === 'CHECKBOX') {
+          field.type = 'array';
+        } else {
+          if (!field.control) {
+            field.control = 'select';
+          }
+          delete field.type;
         }
-        delete field.type;
+
         break;
       case 'radio':
         field.control = 'radio';

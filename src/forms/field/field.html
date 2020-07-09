@@ -18,7 +18,7 @@
     upload-accept="{{ $ctrl.field.accept }}"
     upload-icon="{{ $ctrl.field.icon }}"
     upload-too-large-message="{{ $ctrl.field.tooLargeMessage }}"
-    options="$ctrl.field.values ||$ctrl.field.items.values"
+    options="$ctrl.getOptions()"
     upload-options="$ctrl.uploadOptions"
     ng-model="$ctrl.model"
     ng-focus="$ctrl.onFocus()"

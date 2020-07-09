@@ -97,6 +97,14 @@ class FieldController {
     return obj ? Object.keys(obj).length : 0;
   }
 
+  getOptions() {
+    if (this.field.type === 'array' && this.field.items) {
+      return this.field.items.values;
+    }
+
+    return this.field.values;
+  }
+
   // eslint-disable-next-line
   isFeedbackDetached(controlType) {
     if (controlType === 'date'
