@@ -135,7 +135,7 @@ function getConstValidationFailures(value, schema, isRequired) {
   }
 
   if (!isNull(value) && value !== schema.const) {
-    return ['enum'];
+    return ['const'];
   }
   return [];
 }

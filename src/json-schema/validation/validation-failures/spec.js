@@ -136,7 +136,7 @@ describe('Given a library for identifying validation failures', () => {
       expect(getValidationFailures('abcd', schema)).toEqual([]);
     });
     it('should return [enum] when not const', () => {
-      expect(getValidationFailures('1234', schema)).toEqual(['enum']);
+      expect(getValidationFailures('1234', schema)).toEqual(['const']);
     });
   });
 
