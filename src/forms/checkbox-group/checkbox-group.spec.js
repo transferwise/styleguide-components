@@ -54,13 +54,13 @@ describe('Checkbox Group', function() {
     });
 
     it('should render correct initial value', function() {
-      $scope.ngModel = '["1"]';
+      $scope.ngModel = ["1"];
       $scope.$apply()
       
       expect(getCheckBoxValue(checkbox()[0])).toBe(true);
       expect(getCheckBoxValue(checkbox()[1])).toBeFalsy();
       
-      $scope.ngModel = '["1", "2"]';
+      $scope.ngModel = ["1", "2"];
       $scope.$apply()
       expect(getCheckBoxValue(checkbox()[0])).toBe(true);
       expect(getCheckBoxValue(checkbox()[1])).toBe(true);
@@ -73,7 +73,7 @@ describe('Checkbox Group', function() {
       expect(getCheckBoxValue(checkbox()[0])).toBeFalsy();
       button()[0].click();
       expect(getCheckBoxValue(checkbox()[0])).toBe(true);
-      expect($ngModel().$viewValue).toEqual('["1"]');
+      expect($ngModel().$viewValue).toEqual(["1"]);
     });
 
     it('should pass "disabled" prop to checkboxes', function() {

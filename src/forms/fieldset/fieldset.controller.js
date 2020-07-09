@@ -11,6 +11,7 @@ class FieldsetController {
     if (!this.model) {
       this.model = {};
     }
+    this.internalModel = this.parseModel();
     if (!this.requiredFields) {
       this.requiredFields = [];
     }
@@ -42,12 +43,34 @@ class FieldsetController {
           this.model,
           this.validationMessages
         );
+        this.internalModel = this.parseModel();
 
         if (!this.requiredFields || !this.requiredFields.length) {
           this.requiredFields = this.RequirementsService.getRequiredFields(this.fields);
         }
       }
     }
+  }
+
+  parseModel() {
+    const parsedValues = {};
+    Object.keys(this.fields).forEach((key) => {
+      if (this.fields[key].control === 'checkbox-group' && this.model && typeof this.model[key] === 'string') {
+        parsedValues[key] = JSON.parse(this.model[key]);
+      }
+    });
+    return { ...this.model, ...parsedValues };
+  }
+
+  stringifyObjectsInModel() {
+    const stringifiedValues = {};
+    Object.keys(this.fields).forEach((key) => {
+      if (this.fields[key].control === 'checkbox-group' && this.internalModel && this.internalModel[key]) {
+        stringifiedValues[key] = JSON.stringify(this.internalModel[key]);
+      }
+    });
+
+    return { ...this.internalModel, ...stringifiedValues };
   }
 
   fieldFocus(key, field) {
@@ -64,10 +87,7 @@ class FieldsetController {
 
   fieldChange(value, key, field) {
     if (typeof value === 'undefined') {
-      delete this.model[key];
-    }
-    if (this.onFieldChange) {
-      this.onFieldChange({ value, key, field });
+      delete this.internalModel[key];
     }
 
     // We remove custom error messages on change, as they're no longer relevant
@@ -77,6 +97,15 @@ class FieldsetController {
 
     // Delay so model can update
     this.$timeout(() => {
+      this.model = this.stringifyObjectsInModel();
+      if (this.onFieldChange) {
+        if (field && field.control === 'checkbox-group') {
+          this.onFieldChange({ value: JSON.stringify(value), key, field });
+        } else {
+          this.onFieldChange({ value, key, field });
+        }
+      }
+
       if (this.onModelChange) {
         this.onModelChange({ model: this.model });
       }

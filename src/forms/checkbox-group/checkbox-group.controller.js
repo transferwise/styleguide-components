@@ -17,18 +17,13 @@ class CheckboxGroupController {
     const transformedModel = Object.keys(this.internalModel)
       .filter(key => this.internalModel[key])
       .map(key => key);
-    const stringifiedModel = transformedModel.length === 0
-      ? undefined
-      : JSON.stringify(transformedModel);
-    this.$ngModel.$setViewValue(stringifiedModel);
+    this.$ngModel.$setViewValue(transformedModel);
     this.$ngModel.$setTouched();
   }
 
   updateInternalValue($ngModel) {
-    if ($ngModel.$modelValue) {
-      const newTruthyValues = JSON.parse($ngModel.$modelValue);
-
-      this.internalModel = newTruthyValues.reduce((acc, currentValue) => {
+    if ($ngModel.$modelValue && $ngModel.$modelValue.reduce) {
+      this.internalModel = $ngModel.$modelValue.reduce((acc, currentValue) => {
         acc[currentValue] = true;
         return acc;
       }, {});

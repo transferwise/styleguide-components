@@ -15,7 +15,7 @@
       <tw-field
         ng-if="field.type !== 'object'"
         name="{{ key }}"
-        model="$ctrl.model[key]"
+        model="$ctrl.internalModel[key]"
         field="field"
         required="$ctrl.isRequired(key)"
         locale="{{ $ctrl.locale }}"
@@ -35,7 +35,7 @@
       <!-- When we encouter an object property, use fieldset recusively -->
       <tw-fieldset
         ng-if="field.type === 'object'"
-        model="$ctrl.model[key]"
+        model="$ctrl.internalModel[key]"
         fields="field.properties"
         locale="{{ $ctrl.locale }}"
         title="{{ field.title }}"
