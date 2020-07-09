@@ -1,3 +1,6 @@
+# v6.0.0
+## Change checkbox-group model type to array
+
 # v5.6.5
 ## Update Australian External Territories country code
 
