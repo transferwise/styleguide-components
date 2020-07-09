@@ -31,6 +31,68 @@ describe('Fieldset', function() {
     });
   });
 
+  describe('when rendering checkbox group', () => {
+    beforeEach(() => {
+      const checkboxGroup = {
+        title: 'Checkbox Group',
+        type: 'array',
+        control: 'checkbox-group',
+        width: 'md',
+        items: {
+          enum: [1, 2],
+          values: [{ value: 1, label: 'One' }, { value: 2, label: 'Two' }]
+        }        
+      };
+      $scope.fields = { checkboxGroup };
+    });
+    
+    it('should render preselected value', () => {
+      $scope.model = {
+        checkboxGroup: '["2"]'
+      };
+      element = getCompiledDirectiveElement();
+      const [option1, option2] = element.querySelectorAll('tw-form-control label');
+      expect(option1.textContent.trim()).toBe('One');
+      expect(option2.textContent.trim()).toBe('Two');
+      expect(option1.querySelector('button').classList.contains('checked')).toBe(false)
+      expect(option2.querySelector('button').classList.contains('checked')).toBe(true)
+    });
+    
+    it('should return string as a model', () => {
+      $scope.model = {
+        checkboxGroup: '["2"]'
+      };
+      element = getCompiledDirectiveElement();
+      const button = element.querySelector('tw-form-control label button');
+      button.dispatchEvent(new Event('click'));
+      $timeout.flush();
+      expect($scope.model).toEqual({
+        checkboxGroup: '["1","2"]'
+      });
+    });
+
+    it('should render legacy data structure properly', () => {
+      $scope.fields = {
+        checkboxGroup: {
+          title: 'Checkbox Group',
+          type: 'array',
+          control: 'checkbox-group',
+          width: 'md',
+          selectType: "CHECKBOX",
+          valuesAllowed: [{ value: 1, label: 'One' }, { value: 2, label: 'Two' }]
+        }};
+      $scope.model = {
+        checkboxGroup: '["2"]'
+      };
+      element = getCompiledDirectiveElement();
+      const [option1, option2] = element.querySelectorAll('tw-form-control label');
+      expect(option1.textContent.trim()).toBe('One');
+      expect(option2.textContent.trim()).toBe('Two');
+      expect(option1.querySelector('button').classList.contains('checked')).toBe(false)
+      expect(option2.querySelector('button').classList.contains('checked')).toBe(true)
+    });
+  });
+
   describe('when some fields are required', function() {
     var fields;
     beforeEach(function() {

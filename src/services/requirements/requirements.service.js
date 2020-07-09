@@ -275,8 +275,15 @@ function RequirementsService($http) {
       delete field.tooltip;
     }
 
-    if (field.valuesAllowed && !field.values) {
+    if (field.valuesAllowed && !field.values && field.selectType !== 'CHECKBOX') {
       field.values = field.valuesAllowed;
+      delete field.valuesAllowed;
+    }
+
+    if (field.valuesAllowed && !field.items && field.selectType === 'CHECKBOX') {
+      field.items = {
+        values: field.valuesAllowed
+      };
       delete field.valuesAllowed;
     }
 
