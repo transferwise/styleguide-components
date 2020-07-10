@@ -154,6 +154,14 @@ class FieldController {
   isAlertShown() {
     return this.isErrorShown();
   }
+
+  getOptions() {
+    if (this.field.type === 'array' && this.field.items) {
+      return this.field.items.values;
+    }
+
+    return this.field.values;
+  }
 }
 
 FieldController.$inject = ['TwRequirementsService'];

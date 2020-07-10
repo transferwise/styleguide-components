@@ -194,10 +194,15 @@ function RequirementsService($http) {
         field.type = 'boolean';
         break;
       case 'select':
-        if (!field.control) {
-          field.control = 'select';
+        if (field.selectType === 'CHECKBOX') {
+          field.type = 'array';
+        } else {
+          if (!field.control) {
+            field.control = 'select';
+          }
+          delete field.type;
         }
-        delete field.type;
+
         break;
       case 'radio':
         field.control = 'radio';
@@ -273,8 +278,15 @@ function RequirementsService($http) {
       delete field.tooltip;
     }
 
-    if (field.valuesAllowed && !field.values) {
+    if (field.valuesAllowed && !field.values && field.selectType !== 'CHECKBOX') {
       field.values = field.valuesAllowed;
+      delete field.valuesAllowed;
+    }
+
+    if (field.valuesAllowed && !field.items && field.selectType === 'CHECKBOX') {
+      field.items = {
+        values: field.valuesAllowed
+      };
       delete field.valuesAllowed;
     }
 

@@ -160,7 +160,7 @@ describe('FormControl', function() {
 
     testChangeHandler(function() {
       checkbox.querySelector('button').click();
-    }, '["1"]');
+    }, ["1"]);
   });
 
   describe('type: radio', function() {
@@ -476,7 +476,7 @@ describe('FormControl', function() {
       beforeEach(performChange);
 
       it('should set the correct value', function() {
-        expect($scope.model).toBe(expectedValue);
+        expect($scope.model).toEqual(expectedValue);
       });
       it('should set the control to $dirty', function() {
         expect(element.classList).toContain("ng-dirty");

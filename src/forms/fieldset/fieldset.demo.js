@@ -230,7 +230,7 @@ function fieldsetDocsController() {
       },
       checkboxGroup: {
         title: 'Checkbox Group',
-        type: 'string',
+        type: 'array',
         control: 'checkbox-group',
         width: 'md',
         items: {
@@ -313,6 +313,6 @@ function fieldsetDocsController() {
     radio: '2',
     password: 'qwerty',
     telephone: '+441234567890',
-    checkboxGroup: '["1", "2"]'
+    checkboxGroup: '["1"]'
   };
 }
