@@ -152,26 +152,6 @@ describe('Fieldset', function() {
     });
   });
 
-  describe('when given validation messages', function() {
-    beforeEach(function() {
-      $scope.fields = getFields();
-      $scope.validationMessages = {
-        required: 'default required'
-      };
-      element = getCompiledDirectiveElement();
-    });
-
-    it('should use them instead of the default messages', function() {
-      var requiredErrorSortCode =
-        element.querySelector('.tw-field-sortCode .error-messages .error-required');
-      var requiredErrorIBAN =
-        element.querySelector('.tw-field-iban .error-messages .error-required');
-
-      expect(requiredErrorSortCode.textContent).toContain('sortCode required');
-      expect(requiredErrorIBAN.textContent).toContain('default required');
-    });
-  });
-
   describe('when given a field with hidden: true', function() {
     beforeEach(function() {
       $scope.fields = getRequirementWithHiddenAndMdSmFields();
@@ -223,7 +203,7 @@ describe('Fieldset', function() {
     });
     it('should render nested error messages', function() {
       var formGroup = element.querySelector('.tw-field-textInput');
-      var errorMessages = formGroup.querySelector('.error-messages');
+      var errorMessages = formGroup.querySelector('.alert-danger');
       expect(formGroup.classList).toContain('has-error');
       expect(errorMessages.textContent).toContain('Nested error');
     });
@@ -302,7 +282,6 @@ describe('Fieldset', function() {
         "title": "IBAN",
         "type": "string",
         "refreshRequirementsOnChange": true,
-        "displayFormat": "**-**-**",
         "minLength": 6,
         "maxLength": 8,
       }

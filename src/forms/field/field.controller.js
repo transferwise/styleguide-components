@@ -1,15 +1,18 @@
+import { getValidationFailures } from '../../json-schema/validation/validation-failures';
+import { isNull, isUndefined } from '../../json-schema/validation/type-validators';
+
 class FieldController {
   constructor(RequirementsService) {
     this.RequirementsService = RequirementsService;
+    this.changed = false;
+    this.touched = false;
   }
 
   $onChanges(changes) {
     if (changes.initialField) {
-      this.field = copyJSON(this.initialField);
+      this.field = this.RequirementsService.prepField(this.initialField);
 
-      this.control = this.RequirementsService.getControlType(
-        changes.initialField.currentValue
-      );
+      this.control = this.RequirementsService.getControlType(changes.initialField.currentValue);
 
       // TODO we should probably do this at fieldset level, so the model is available
       if (this.field.valuesAsync) {
@@ -25,9 +28,12 @@ class FieldController {
         this.model = this.field.default;
       }
 
-      if (this.validationMessages && !this.field.validationMessages) {
-        this.field.validationMessages = this.validationMessages;
-      }
+      const globalValidationMessages = this.validationMessages || {};
+      const fieldValidationMessages = this.field.validationMessages || {};
+
+      this.validationStrings = { ...globalValidationMessages, ...fieldValidationMessages };
+
+      this.validate(this.model);
     }
   }
 
@@ -38,18 +44,39 @@ class FieldController {
   }
 
   onBlur() {
+    this.touched = true;
+
     if (this.blurHandler) {
       this.blurHandler();
     }
   }
 
   onChange(newValue) {
+    this.changed = true;
+    this.validate(newValue);
+
     if (this.changeHandler) {
       this.changeHandler({ value: newValue });
     }
     if (this.errorMessage) {
       delete this.errorMessage;
     }
+  }
+
+  validate(value) {
+    // Our controls return null for invalid values
+    if (isNull(value) || isUndefined(value)) {
+      if (this.required) {
+        this.failures = ['required'];
+        return;
+      }
+
+      if (this.field.type === 'string') {
+        value = '';
+      }
+    }
+
+    this.failures = getValidationFailures(value, this.field, this.required);
   }
 
   onPersistAsyncFailure(response) {
@@ -93,8 +120,39 @@ class FieldController {
   }
 
   // eslint-disable-next-line
-  sizeOf(obj) {
-    return obj ? Object.keys(obj).length : 0;
+  isLabelShown(controlType) {
+    if (controlType === 'file' || controlType === 'checkbox') {
+      return false;
+    }
+    return true;
+  }
+
+  isHelpShown() {
+    return !!this.field.help;
+  }
+
+  isDesriptionShown() {
+    return (
+      this.description
+      && !this.isErrorShown()
+      && !this.isWarningShown()
+      && this.field.type !== 'boolean'
+    );
+  }
+
+  isWarningShown() {
+    return !!this.warningMessage;
+  }
+
+  isErrorShown() {
+    return (
+      ((this.submitted || (this.touched && this.changed)) && this.failures.length > 0)
+      || this.errorMessage
+    );
+  }
+
+  isAlertShown() {
+    return this.isErrorShown();
   }
 
   getOptions() {
@@ -104,21 +162,6 @@ class FieldController {
 
     return this.field.values;
   }
-
-  // eslint-disable-next-line
-  isFeedbackDetached(controlType) {
-    if (controlType === 'date'
-        || controlType === 'file'
-        || controlType === 'radio'
-        || controlType === 'tel') {
-      return true;
-    }
-    return false;
-  }
-}
-
-function copyJSON(obj) {
-  return JSON.parse(JSON.stringify(obj));
 }
 
 FieldController.$inject = ['TwRequirementsService'];

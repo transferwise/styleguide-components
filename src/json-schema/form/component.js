@@ -10,6 +10,7 @@ const Component = {
     errors: '<',
     locale: '<',
     translations: '<',
+    submitted: '<',
     onChange: '&'
   }
 };

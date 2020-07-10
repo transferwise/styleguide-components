@@ -9,46 +9,49 @@
       <div class="col-md-6">
         <ul>
           <li>
-            <code>model</code> - a data model to prefill the form.  This is
-            not two-way bound, you should use the on-change handler to update
-            model state.
+            <code>model</code> - a data model to prefill the form. This is not two-way bound, you
+            should use the on-change handler to update model state.
           </li>
           <li>
-            <code>schema</code> - the JSON schema for the form. This root
-            schema can be of any supported type.
+            <code>schema</code> - the JSON schema for the form. This root schema can be of any
+            supported type.
           </li>
           <li>
-            <code>errors</code> - a collection of errors.  The format of which
-            should match the model strcuture.  For example, if a profile model
-            contained an invalid postcode in nested structure
-            'profile.address.postcode' the error message should be supplied
-            as the value in an identical structure.
+            <code>errors</code> - a collection of errors. The format of which should match the model
+            strcuture. For example, if a profile model contained an invalid postcode in nested
+            structure 'profile.address.postcode' the error message should be supplied as the value
+            in an identical structure.
+          </li>
+          <li><code>locale</code> - the locale. Used to customise formatting.</li>
+          <li>
+            <code>translations</code> - an object containing translations. Check further down the
+            page to see the translations we can use.
           </li>
           <li>
-            <code>locale</code> - the locale. Used to customise formatting.
+            <code>submitted</code> - a boolean, has the form been submitted? Once submitted
+            validation will be triggered regardless of whether the user has interacted with the
+            controls
           </li>
           <li>
-            <code>translations</code> - an object containing translations.
-            Check further down the page to see the translations we can use.
-          </li>
-          <li>
-            <code>on-change(model, isValid, schema)</code> - a callback handler
-            that returns the new value of the model, whether the model 'isValid'
-            and the schema of the property that caused the change.  This final
-            parameter can be used to implement features like 'refresh
+            <code>on-change(model, isValid, schema)</code> - a callback handler that returns the new
+            value of the model, whether the model 'isValid' and the schema of the property that
+            caused the change. This final parameter can be used to implement features like 'refresh
             requirements on change'.
           </li>
         </ul>
       </div>
       <div class="col-md-6">
-<pre>&lt;json-schema-form
+        <pre>
+&lt;json-schema-form
   model="{ ... }"
   schema="{ ... }"
   errors="{ ... }"
   locale="{{ $ctrl.locale }}"
   translations="{ ... }"
+  submitted="{{ $ctrl.submitted }}"
   on-change="$ctrl.onChange(model, isValid, schema)"
-&gt;&lt;/json-schema-form&gt;</pre>
+&gt;&lt;/json-schema-form&gt;</pre
+        >
         <div class="form-group">
           <label class="control-label">
             Choose schema
@@ -59,7 +62,14 @@
             ng-change="$ctrl.onSchemaChange($ctrl.schemaType)"
             ng-required="true"
           ></tw-select>
-
+        </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label class="control-label">
+              <tw-checkbox ng-model="$ctrl.submitted"></tw-checkbox>
+              Form submitted?
+            </label>
+          </div>
         </div>
       </div>
     </div>
@@ -74,10 +84,12 @@
       errors="$ctrl.errors"
       locale="'en-GB'"
       translations="$ctrl.translations"
-      on-change="$ctrl.onModelChange(model, isValid, schema)">
+      submitted="$ctrl.submitted"
+      on-change="$ctrl.onModelChange(model, isValid, schema)"
+    >
     </json-schema-form>
 
-    <button class="btn btn-primary m-b-5" ng-disabled="!$ctrl.isValid"> Save </button>
+    <button class="btn btn-primary m-b-5" ng-click="$ctrl.submitted = true">Save</button>
     <pre>
 Model:
 {{ $ctrl.model | json }}
@@ -89,9 +101,11 @@ Errors:
     </pre>
 
     <h4>Translations</h4>
-    <p>We need a number of translations to take advantage of all of the JSON
-      schema form functionality.  The following are example translations.</p>
-<pre>
+    <p>
+      We need a number of translations to take advantage of all of the JSON schema form
+      functionality. The following are example translations.
+    </p>
+    <pre>
 {
   array: {
     add: 'Add',
@@ -113,7 +127,7 @@ Errors:
     cancel: 'Choose another file'
   }
 }
-</pre>
-
+</pre
+    >
   </div>
 </div>

@@ -10,6 +10,7 @@ const Field = {
     initialField: '<field',
     locale: '@',
     required: '<',
+    submitted: '<',
     uploadOptions: '<',
     changeHandler: '&?onChange',
     focusHandler: '&?onFocus',

@@ -101,16 +101,18 @@ function fieldsetDocsController() {
       stringProperty: {
         type: 'string',
         title: 'String label',
-        placeholder: 'Please enter text'
+        placeholder: 'Please enter text',
+        minLength: 12
       },
       numberProperty: {
         type: 'number',
         title: 'Number label',
         placeholder: 'Please enter number',
-        min: 5,
+        minimum: 322,
         default: 123
       }
-    }
+    },
+    required: ['stringProperty', 'numberProperty']
   };
   this.fieldsetBasicModel = {
     stringProperty: 'Example',
@@ -146,7 +148,7 @@ function fieldsetDocsController() {
   };
 
   this.fieldsetErrors = {
-    stringProperty: 'Something is wrong with this',
+    stringProperty: 'Something is wrong with this'
   };
   this.fieldsetWarnings = {
     nestedObject: {
@@ -194,7 +196,6 @@ function fieldsetDocsController() {
   };
   this.fieldsetLayoutModel = {};
 
-
   this.fieldsetFull = {
     properties: {
       text: {
@@ -234,7 +235,10 @@ function fieldsetDocsController() {
         width: 'md',
         items: {
           enum: [1, 2],
-          values: [{ value: 1, label: 'One' }, { value: 2, label: 'Two' }]
+          values: [
+            { value: 1, label: 'One' },
+            { value: 2, label: 'Two' }
+          ]
         }
       },
       password: {

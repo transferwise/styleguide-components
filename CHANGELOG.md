@@ -1,3 +1,11 @@
+# v6.1.0
+## Support descriptions for radio/checkbox controls, change JSON schema validation approach
+Within the JSON schema dynamic forms we adopt an approach to validation that is more explicitly checking the broadcast values, rather than use the ngModel validation pipeline.  This brings us into line with the React implementation.
+
+Radios and checkboxes can now display a second line of information within their labels.
+
+Select boxes now show the placeholder within the dropdown, even when the control is required.
+
 # v6.0.0
 ## Change checkbox-group model type to array
 

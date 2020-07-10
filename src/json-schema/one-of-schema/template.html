@@ -2,14 +2,17 @@
   {{ $ctrl.schema.title }}
 </label>
 <div class="form-group m-b-5">
-  <div class="radio"
+  <div
+    class="radio"
     ng-repeat="(index, schema) in $ctrl.schema.oneOf"
-    ng-class="{'radio-lg': schema.description}">
+    ng-class="{'radio-lg': schema.description}"
+  >
     <label>
       <tw-radio
         ng-model="$ctrl.activeIndex"
         ng-value="(index + 1)"
-        ng-change="$ctrl.onSchemaChange(schema, index)"></tw-radio>
+        ng-change="$ctrl.onSchemaChange(schema, index)"
+      ></tw-radio>
       {{ schema.title }}
       <p ng-if="schema.description" class="secondary m-b-0">
         {{ schema.description }}
@@ -26,7 +29,9 @@
     errors="$ctrl.errors"
     locale="$ctrl.locale"
     translations="$ctrl.translations"
+    submitted="$ctrl.submitted"
     on-change="$ctrl.onModelChange(model, schema, index)"
-    hide-title="true">
+    hide-title="true"
+  >
   </generic-schema>
 </div>

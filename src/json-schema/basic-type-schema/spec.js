@@ -6,6 +6,17 @@ describe('Given a component for rendering basic type schemas', function() {
     $compile,
     twField;
 
+  const template = ' \
+    <basic-type-schema \
+      schema="schema" \
+      model="model" \
+      required="required" \
+      errors="errors" \
+      locale="locale" \
+      translations="translations" \
+      on-change="onChange(model, schema)" \
+    ></basic-type-schema>';
+
   beforeEach(function() {
     angular.mock.module('tw.json-schema.basic-type');
 
@@ -17,20 +28,10 @@ describe('Given a component for rendering basic type schemas', function() {
       $scope = $injector.get('$rootScope').$new();
     });
 
-    var template = ' \
-      <basic-type-schema \
-        schema="schema" \
-        model="model" \
-        required="required" \
-        errors="errors" \
-        locale="locale" \
-        translations="translations" \
-        on-change="onChange(model, schema)" \
-      ></basic-type-schema>';
-
     $scope.schema = {
       type: "string",
-      default: "initial"
+      default: "initial",
+      minLength: 2,
     };
 
     $scope.required = true;
@@ -76,7 +77,7 @@ describe('Given a component for rendering basic type schemas', function() {
       });
     });
 
-    describe('when twField triggers onChange', function() {
+    describe('when twField triggers onChange with a valid value', function() {
       beforeEach(function() {
         $scope.onChange = jest.fn();
         $scope.$apply();
@@ -86,6 +87,40 @@ describe('Given a component for rendering basic type schemas', function() {
         expect($scope.onChange.mock.calls.length).toBe(1);
         expect($scope.onChange).toHaveBeenCalledWith("foo", $scope.schema);
       });
+    });
+
+    describe('when twField triggers onChange with an invalid value', function() {
+      beforeEach(function() {
+        $scope.onChange = jest.fn();
+        $scope.$apply();
+        twField.bindings.changeHandler({ value: "f" });
+      });
+      it('should trigger the components onChange with the new value', function() {
+        expect($scope.onChange.mock.calls.length).toBe(1);
+        expect($scope.onChange).toHaveBeenCalledWith(null, $scope.schema);
+      });
+
+      describe('when twField changes to another invalid value', function() {
+        beforeEach(function() {
+          twField.bindings.changeHandler({ value: "o" });
+        });
+        it('should not trigger onChange again', function() {
+          expect($scope.onChange.mock.calls.length).toBe(1);
+        });
+      });
+    });
+  });
+
+  describe('when initialised with an undefined model and changed to an invalid model', function() {
+    beforeEach(function() {
+      $scope.schema.default = null;
+      $scope.onChange = jest.fn();
+
+      component = getComponent($compile, $scope, template);
+      twField.bindings.changeHandler({ value: "f" });
+    });
+    it('should not trigger onChange', function() {
+      expect($scope.onChange).not.toHaveBeenCalled();
     });
   });
 });

@@ -12,6 +12,7 @@ const FormControl = {
     name: '@',
     id: '@',
     label: '@',
+    description: '@',
     placeholder: '@',
     step: '@',
     locale: '@',
@@ -24,18 +25,10 @@ const FormControl = {
     ngChange: '&',
     ngFocus: '&',
     ngBlur: '&',
-    ngRequired: '<',
     ngDisabled: '<',
 
-    // ngMinlength/ngMaxlength have default behaviour that cannot be overridden
-    ngMinlength: '<twMinlength',
-    ngMaxlength: '<twMaxlength',
-    ngMin: '<',
-    ngMax: '<',
-    ngPattern: '<',
-
     uploadOptions: '<',
-    helpOptions: '<',
+    help: '<helpOptions',
     textFormat: '<',
     validationAsync: '<',
     persistAsync: '<',

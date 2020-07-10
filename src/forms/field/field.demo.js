@@ -13,6 +13,7 @@ export default angular
       model: '=',
       field: '<',
       required: '<',
+      submitted: '<',
       errorMessage: '<',
       warningMessage: '<',
       onFocusHandler: '&?onFocus',
@@ -44,6 +45,7 @@ export default angular
           model="$ctrl.model"
           field="$ctrl.field"
           required="$ctrl.required"
+          submitted="$ctrl.submitted"
           error-message="$ctrl.errorMessage"
           warning-message="$ctrl.warningMessage"
           on-focus="$ctrl.onFocus()"
@@ -55,7 +57,8 @@ export default angular
 <pre>&lt;tw-field
   name="{{ $ctrl.name }}"
   model="{{ $ctrl.model }}"<span ng-if="$ctrl.required">
-  required="{{ $ctrl.required }}"</span><span ng-if="$ctrl.errorMessage">
+  required="{{ $ctrl.required }}"</span><span ng-if="$ctrl.submitted">
+  submitted="{{ $ctrl.submitted }}"</span><span ng-if="$ctrl.errorMessage">
   error-message="'{{ $ctrl.errorMessage }}'"</span><span ng-if="$ctrl.warningMessage">
   warning-message="'{{ $ctrl.warningMessage }}'"</span><span ng-if="$ctrl.onFocusHandler">
   on-focus="console.log('focus')"</span><span ng-if="$ctrl.onBlurHandler">
@@ -66,7 +69,6 @@ export default angular
       </div>
     </div>`
   }).name;
-
 
 function fieldDocsController() {
   this.log = (message) => {
@@ -123,24 +125,38 @@ function fieldDocsController() {
     type: 'number',
     title: 'Select control',
     placeholder: 'Please choose',
-    values: [{
-      value: 1, label: 'One'
-    }, {
-      value: 2, label: 'Two'
-    }, {
-      value: 3, label: 'Three'
-    }, {
-      value: 4, label: 'Four'
-    }]
+    values: [
+      {
+        value: 1,
+        label: 'One'
+      },
+      {
+        value: 2,
+        label: 'Two'
+      },
+      {
+        value: 3,
+        label: 'Three'
+      },
+      {
+        value: 4,
+        label: 'Four'
+      }
+    ]
   };
   this.radioBasic = {
     type: 'string',
     title: 'Radio control',
-    values: [{
-      value: '1', label: 'One'
-    }, {
-      value: '2', label: 'Two'
-    }]
+    values: [
+      {
+        value: '1',
+        label: 'One'
+      },
+      {
+        value: '2',
+        label: 'Two'
+      }
+    ]
   };
   this.selectionsModel = {
     selectProperty: 1,
@@ -168,11 +184,16 @@ function fieldDocsController() {
     type: 'string',
     title: 'Select override',
     control: 'select',
-    values: [{
-      value: '1', label: 'One'
-    }, {
-      value: '2', label: 'Two'
-    }]
+    values: [
+      {
+        value: '1',
+        label: 'One'
+      },
+      {
+        value: '2',
+        label: 'Two'
+      }
+    ]
   };
 
   this.override = {
@@ -297,11 +318,7 @@ function fieldDocsController() {
     title: 'Help list',
     placeholder: 'Please enter number',
     help: {
-      list: [
-        'Make sure of this',
-        'And this',
-        'And avoid this'
-      ]
+      list: ['Make sure of this', 'And this', 'And avoid this']
     }
   };
   this.helpImage = {
@@ -319,6 +336,30 @@ function fieldDocsController() {
     title: 'String display format',
     placeholder: 'Please enter...',
     displayFormat: '** - ** - **'
+  };
+
+  this.checkoxDescription = {
+    type: 'boolean',
+    title: 'Boolean',
+    description: 'With additional information',
+    placeholder: 'Your choice...'
+  };
+
+  this.radioDescriptions = {
+    type: 'string',
+    title: 'Radio control',
+    values: [
+      {
+        value: '1',
+        label: 'One',
+        secondary: 'The first option'
+      },
+      {
+        value: '2',
+        label: 'Two',
+        secondary: 'The second option'
+      }
+    ]
   };
 
   this.presentationModel = {

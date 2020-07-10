@@ -1,144 +1,144 @@
-'use strict';
+import { isValidSchema } from '.';
 
-describe('Given a library for validating json schema models', function() {
-  var schema, isValidSchema;
+describe('Given a library for validating json schema models', () => {
+  let schema;
 
-  beforeEach(function() {
-    angular.mock.module('tw.json-schema.validation');
-
-    angular.mock.inject(function($injector) {
-      var SchemaValidation = $injector.get('SchemaValidation');
-      isValidSchema = SchemaValidation.isValidSchema;
-    });
-  });
-
-  describe('when validating an object schema', function() {
-    beforeEach(function() {
+  describe('when validating an object schema', () => {
+    beforeEach(() => {
       schema = {
         type: 'object',
         properties: {
           a: {
             type: 'number',
-            min: 2
+            minimum: 2,
           },
           b: {
             type: 'string',
-            minLength: 3
-          }
+            minLength: 3,
+          },
+          c: {
+            const: true,
+          },
         },
-        required: ['a']
+        required: ['a', 'c'],
       };
     });
 
-    it('should return false if the value is of an incorrect type', function() {
+    it('should return false if the value is of an incorrect type', () => {
       expect(isValidSchema([1], schema)).toBe(false);
     });
-    it('should return false if a required property is missing', function() {
+    it('should return false if a required property is missing', () => {
       expect(isValidSchema({}, schema)).toBe(false);
     });
-    it('should return false is a required property does not validate', function() {
-      expect(isValidSchema({ a: 1 }, schema)).toBe(false);
+    it('should return false is a required property does not validate', () => {
+      expect(isValidSchema({ a: 1, c: true }, schema)).toBe(false);
     });
-    it('should return false if an optional property is invalid', function() {
-      expect(isValidSchema({ a: 2, b: 'c' }, schema)).toBe(false);
+    it('should return false if an optional property is invalid', () => {
+      expect(isValidSchema({ a: 2, b: 'c', c: true }, schema)).toBe(false);
     });
 
-    it('should return true if required properties validate and non-required fields are missing', function() {
-      expect(isValidSchema({ a: 2 }, schema)).toBe(true);
+    it('should return true if required properties validate and non-required fields are missing', () => {
+      expect(isValidSchema({ a: 2, c: true }, schema)).toBe(true);
     });
-    it('should return true if all properties validate', function() {
-      expect(isValidSchema({ a: 2, b: 'cde' }, schema)).toBe(true);
+    it('should return true if all properties validate', () => {
+      expect(isValidSchema({ a: 2, b: 'cde', c: true }, schema)).toBe(true);
     });
   });
 
-  describe('when validating an array schema', function() {
-    beforeEach(function() {
+  describe('when validating an array schema', () => {
+    beforeEach(() => {
       schema = {
         type: 'array',
         items: {
           type: 'string',
-          minLength: 2
+          minLength: 2,
         },
         minItems: 2,
-        maxItems: 2
+        maxItems: 2,
       };
     });
 
-    it('should return false if not an array', function() {
-      expect(isValidSchema({a:1}, schema)).toBe(false);
+    it('should return false if not an array', () => {
+      expect(isValidSchema({ a: 1 }, schema)).toBe(false);
     });
-    it('should return false if the array is too small', function() {
+    it('should return false if the array is too small', () => {
       expect(isValidSchema(['ab'], schema)).toBe(false);
     });
-    it('should return false if the array is too long', function() {
+    it('should return false if the array is too long', () => {
       expect(isValidSchema(['ab', 'cd', 'ef'], schema)).toBe(false);
     });
-    it('should return false if any of the items do not validate', function() {
+    it('should return false if any of the items do not validate', () => {
       expect(isValidSchema(['ab', 'c'], schema)).toBe(false);
     });
-    it('should return true is the array is correct size and items are valid', function() {
+    it('should return true is the array is correct size and items are valid', () => {
       expect(isValidSchema(['ab', 'cd'], schema)).toBe(true);
     });
   });
 
-  describe('when validating a oneOf schema', function() {
-    beforeEach(function() {
+  describe('when validating a oneOf schema', () => {
+    beforeEach(() => {
       schema = {
-        oneOf: [{
-          type: 'string',
-          minLength: 2
-        },{
-          type: 'number',
-          min: 2
-        }]
+        oneOf: [
+          {
+            type: 'string',
+            minLength: 2,
+          },
+          {
+            type: 'number',
+            minimum: 2,
+          },
+        ],
       };
     });
 
-    it('should return false if neither schema validates', function() {
+    it('should return false if neither schema validates', () => {
       expect(isValidSchema(true, schema)).toBe(false);
       expect(isValidSchema('a', schema)).toBe(false);
       expect(isValidSchema(1, schema)).toBe(false);
     });
-    it('should return true if either schema validates', function() {
+    it('should return true if either schema validates', () => {
       expect(isValidSchema('ab', schema)).toBe(true);
       expect(isValidSchema(2, schema)).toBe(true);
     });
   });
 
-  describe('when validating an allOf schema', function() {
-    beforeEach(function() {
+  describe('when validating an allOf schema', () => {
+    beforeEach(() => {
       schema = {
-        allOf: [{
-          type: 'object',
-          properties: {
-            a: {
-              type: 'string',
-              minLength: 2
-            }
+        allOf: [
+          {
+            type: 'object',
+            properties: {
+              a: {
+                type: 'string',
+                minLength: 2,
+              },
+            },
+            required: ['a'],
           },
-          required: ['a']
-        },{
-          type: 'object',
-          properties: {
-            b: {
-              type: 'number',
-              min: 2
-            }
+          {
+            type: 'object',
+            properties: {
+              b: {
+                type: 'number',
+                minimum: 2,
+              },
+            },
+            required: ['b'],
           },
-          required: ['b']
-        }]
+        ],
       };
     });
 
-    it('should return false if only one schema is present', function() {
-      expect(isValidSchema({a: 'bc'}, schema)).toBe(false);
-      expect(isValidSchema({b: 2}, schema)).toBe(false);
+    it('should return false if only one schema is present', () => {
+      expect(isValidSchema({ a: 'bc' }, schema)).toBe(false);
+      expect(isValidSchema({ b: 2 }, schema)).toBe(false);
     });
-    it('should return false if any schemas are invalid', function() {
-      expect(isValidSchema({a: 'bc', b: 1}, schema)).toBe(false);
+    it('should return false if any schemas are invalid', () => {
+      expect(isValidSchema({ a: 'bc', b: 1 }, schema)).toBe(false);
     });
-    it('should return true if both schemas validate', function() {
-      expect(isValidSchema({a: 'bc', b: 2}, schema)).toBe(true);
+    it('should return true if both schemas validate', () => {
+      expect(isValidSchema({ a: 'bc', b: 2 }, schema)).toBe(true);
     });
   });
 });

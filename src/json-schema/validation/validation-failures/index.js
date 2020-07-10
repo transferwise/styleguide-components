@@ -4,7 +4,8 @@ import {
   isString,
   isNumber,
   isInteger,
-  isBoolean
+  isBoolean,
+  isNull
 } from '../type-validators';
 
 import {
@@ -12,13 +13,25 @@ import {
   isValidMinLength,
   isValidMaxLength,
   isValidPattern,
-  isValidMax,
-  isValidMin,
+  isValidMaximum,
+  isValidMinimum,
   isValidMinItems,
   isValidMaxItems
 } from '../rule-validators';
 
 function getValidationFailures(value, schema, isRequired) {
+  if (isNull(value)) {
+    return isRequired ? ['required'] : [];
+  }
+
+  if (schema.enum) {
+    return getEnumValidationFailures(value, schema, isRequired);
+  }
+
+  if (schema.const) {
+    return getConstValidationFailures(value, schema, isRequired);
+  }
+
   switch (schema.type) {
     case 'string':
       return getStringValidationFailures(value, schema, isRequired);
@@ -38,8 +51,12 @@ function getValidationFailures(value, schema, isRequired) {
 }
 
 function getStringValidationFailures(value, schema, isRequired) {
-  if (!isString(value)) {
+  if (!isString(value) && !isNull(value)) {
     return ['type'];
+  }
+
+  if (value === '' && isRequired) {
+    return ['required'];
   }
 
   const failures = [];
@@ -55,17 +72,17 @@ function getStringValidationFailures(value, schema, isRequired) {
   if (!isValidPattern(value, schema.pattern)) {
     failures.push('pattern');
   }
-  if (!isValidMin(value, schema.min)) {
-    failures.push('min');
+  if (!isValidMinimum(value, schema.minimum)) {
+    failures.push('minimum');
   }
-  if (!isValidMax(value, schema.max)) {
-    failures.push('max');
+  if (!isValidMaximum(value, schema.maximum)) {
+    failures.push('maximum');
   }
   return failures;
 }
 
 function getNumberValidationFailures(value, schema, isRequired) {
-  if (!isNumber(value)) {
+  if (!isNumber(value) && !isNull(value)) {
     return ['type'];
   }
 
@@ -73,11 +90,11 @@ function getNumberValidationFailures(value, schema, isRequired) {
   if (!isValidRequired(value, isRequired)) {
     failures.push('required');
   }
-  if (!isValidMin(value, schema.min)) {
-    failures.push('min');
+  if (!isValidMinimum(value, schema.minimum)) {
+    failures.push('minimum');
   }
-  if (!isValidMax(value, schema.max)) {
-    failures.push('max');
+  if (!isValidMaximum(value, schema.maximum)) {
+    failures.push('maximum');
   }
   return failures;
 }
@@ -90,7 +107,7 @@ function getIntegerValidationFailures(value, schema, isRequired) {
 }
 
 function getBooleanValidationFailures(value, schema, isRequired) {
-  if (!isBoolean(value)) {
+  if (!isBoolean(value) && !isNull(value)) {
     return ['type'];
   }
 
@@ -101,8 +118,30 @@ function getBooleanValidationFailures(value, schema, isRequired) {
   return failures;
 }
 
+function getEnumValidationFailures(value, schema, isRequired) {
+  if (!isValidRequired(value, isRequired)) {
+    return ['required'];
+  }
+
+  if (!isNull(value) && schema.enum.indexOf(value) === -1) {
+    return ['enum'];
+  }
+  return [];
+}
+
+function getConstValidationFailures(value, schema, isRequired) {
+  if (!isValidRequired(value, isRequired)) {
+    return ['required'];
+  }
+
+  if (!isNull(value) && value !== schema.const) {
+    return ['const'];
+  }
+  return [];
+}
+
 function getArrayValidationFailures(value, schema) {
-  if (!isArray(value)) {
+  if (!isArray(value) && !isNull(value)) {
     return ['type'];
   }
 
@@ -121,7 +160,7 @@ function getArrayValidationFailures(value, schema) {
  * has the required properties, we do not check if the properties are valid.
  */
 function getObjectValidationFailures(value, schema) {
-  if (!isObject(value)) {
+  if (!isObject(value) && !isNull(value)) {
     return ['type'];
   }
 
@@ -142,6 +181,8 @@ export {
   getNumberValidationFailures,
   getIntegerValidationFailures,
   getBooleanValidationFailures,
+  getEnumValidationFailures,
+  getConstValidationFailures,
   getArrayValidationFailures,
   getObjectValidationFailures
 };

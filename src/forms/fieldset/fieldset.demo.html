@@ -6,15 +6,18 @@
 </h2>
 <div class="row">
   <div class="col-md-6">
-    <p>Fieldsets represent a collection of fields.  A fieldset can
-      optionally include a title and/or a description.</p>
-    <p>Fieldsets provide a 2-way bound model that is updated as the user
-      interacts.  There is also a 2-way bound 'is-valid' property, that
-      can be useful for enabling/disabling submit buttons.</p>
+    <p>
+      Fieldsets represent a collection of fields. A fieldset can optionally include a title and/or a
+      description.
+    </p>
+    <p>
+      Fieldsets provide a 2-way bound model that is updated as the user interacts. There is also a
+      2-way bound 'is-valid' property, that can be useful for enabling/disabling submit buttons.
+    </p>
   </div>
   <div class="col-md-6">
     <h5>Component API</h5>
-<pre>
+    <pre>
 &lt;tw-fieldset
   title="<span ng-non-bindable>{{ fieldset.title }}</span>"
   description="<span ng-non-bindable>{{ fieldset.description }}</span>"
@@ -38,9 +41,7 @@
     <span class="glyphicon glyphicon-link"></span>
   </a>
 </h4>
-<fieldset-example
-  requirements="$ctrl.fieldsetBasic"
-  model="$ctrl.fieldsetBasicModel">
+<fieldset-example requirements="$ctrl.fieldsetBasic" model="$ctrl.fieldsetBasicModel">
 </fieldset-example>
 
 <h4 id="fieldset-title" class="page-header">
@@ -49,9 +50,7 @@
     <span class="glyphicon glyphicon-link"></span>
   </a>
 </h4>
-<fieldset-example
-  requirements="$ctrl.fieldsetOptions"
-  model="$ctrl.fieldsetOptionsModel">
+<fieldset-example requirements="$ctrl.fieldsetOptions" model="$ctrl.fieldsetOptionsModel">
 </fieldset-example>
 
 <h4 id="fieldset-events" class="page-header">
@@ -66,7 +65,8 @@
   on-model-change="$ctrl.log(model)"
   on-field-focus="$ctrl.log('focus: ' + key)"
   on-field-blur="$ctrl.log('blur: ' + key)"
-  on-field-change="$ctrl.onFieldChange(value, key, field)">
+  on-field-change="$ctrl.onFieldChange(value, key, field)"
+>
 </fieldset-example>
 
 <h4 id="fieldset-nested" class="page-header">
@@ -75,8 +75,10 @@
     <span class="glyphicon glyphicon-link"></span>
   </a>
 </h4>
-<p>We can create models with nested objects by supplying type:object and a
-  nested JSON schema, with it's own set of properties.</p>
+<p>
+  We can create models with nested objects by supplying type:object and a nested JSON schema, with
+  it's own set of properties.
+</p>
 <fieldset-example
   requirements="$ctrl.fieldsetNested"
   model="$ctrl.fieldsetNestedModel"
@@ -84,7 +86,8 @@
   on-field-focus="$ctrl.log('focus: ' + key)"
   on-field-blur="$ctrl.log('blur: ' + key)"
   on-field-change="$ctrl.onFieldChange(value, key, field)"
-  on-refresh-requirements="$ctrl.refresh()">
+  on-refresh-requirements="$ctrl.refresh()"
+>
 </fieldset-example>
 
 <h4 id="fieldset-layout" class="page-header">
@@ -93,9 +96,7 @@
     <span class="glyphicon glyphicon-link"></span>
   </a>
 </h4>
-<fieldset-example
-  requirements="$ctrl.fieldsetLayout"
-  model="$ctrl.fieldsetLayoutModel">
+<fieldset-example requirements="$ctrl.fieldsetLayout" model="$ctrl.fieldsetLayoutModel">
 </fieldset-example>
 
 <h4 id="fieldset-errors" class="page-header">
@@ -105,14 +106,17 @@
   </a>
 </h4>
 <p>We can trigger error messages or warnings by passing in messages for specific fields.</p>
-<p>For flat models this is a simple object map from the key to the message.
-  If using <a href="fieldset-nested">nested objects</a> the messages should be
-  supplied in a nested format matching the model.</p>
+<p>
+  For flat models this is a simple object map from the key to the message. If using
+  <a href="fieldset-nested">nested objects</a> the messages should be supplied in a nested format
+  matching the model.
+</p>
 <fieldset-example
   requirements="$ctrl.fieldsetNested"
   model="$ctrl.fieldsetNestedModel"
   error-messages="$ctrl.fieldsetErrors"
-  warning-messages="$ctrl.fieldsetWarnings">
+  warning-messages="$ctrl.fieldsetWarnings"
+>
 </fieldset-example>
 
 <h4 id="fieldset-full" class="page-header">
@@ -129,10 +133,9 @@
   on-field-focus="$ctrl.log('focus: ' + key)"
   on-field-blur="$ctrl.log('blur: ' + key)"
   on-field-change="$ctrl.onFieldChange(value, key, field)"
-  on-refresh-requirements="$ctrl.refresh()">
+  on-refresh-requirements="$ctrl.refresh()"
+>
 </fieldset-example>
 
-<tw-definition-list-docs
-  model="$ctrl.fieldsetFullModel"
-  fields="$ctrl.fieldsetFull.properties">
+<tw-definition-list-docs model="$ctrl.fieldsetFullModel" fields="$ctrl.fieldsetFull.properties">
 </tw-definition-list-docs>
