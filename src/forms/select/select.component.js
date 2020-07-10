@@ -20,13 +20,14 @@ const Select = {
     dropdownUp: '@',
     dropdownWidth: '@',
     inverse: '<',
+    dropdownShowNative: '<',
     hideNote: '@',
     hideSecondary: '@',
     hideIcon: '@',
     hideCurrency: '@',
     hideCircle: '@',
-    hideLabel: '@'
-  }
+    hideLabel: '@',
+  },
 };
 
 /*
