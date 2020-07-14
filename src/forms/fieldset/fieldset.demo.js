@@ -174,16 +174,16 @@ function fieldsetDocsController() {
 
   this.fieldsetLayout = {
     properties: {
-      stringProperty: {
-        type: 'string',
-        title: 'String label',
-        placeholder: 'Please enter text',
-        width: 'md'
-      },
       booleanProperty: {
         type: 'boolean',
         title: 'Boolean label',
         placeholder: 'Check it',
+        width: 'lg'
+      },
+      stringProperty: {
+        type: 'string',
+        title: 'String label',
+        placeholder: 'Please enter text',
         width: 'md'
       },
       numberProperty: {
@@ -228,19 +228,6 @@ function fieldsetDocsController() {
           }
         ]
       },
-      checkboxGroup: {
-        title: 'Checkbox Group',
-        type: 'array',
-        control: 'checkbox-group',
-        width: 'md',
-        items: {
-          enum: [1, 2],
-          values: [
-            { value: 1, label: 'One' },
-            { value: 2, label: 'Two' }
-          ]
-        }
-      },
       password: {
         title: 'Password',
         type: 'string',
@@ -276,6 +263,19 @@ function fieldsetDocsController() {
             name: 'Two'
           }
         ]
+      },
+      checkboxGroup: {
+        title: 'Checkbox Group',
+        type: 'array',
+        control: 'checkbox-group',
+        width: 'md',
+        items: {
+          enum: [1, 2],
+          values: [
+            { value: 1, label: 'One' },
+            { value: 2, label: 'Two' }
+          ]
+        }
       },
       checkbox: {
         title: 'Checkbox',
@@ -313,6 +313,6 @@ function fieldsetDocsController() {
     radio: '2',
     password: 'qwerty',
     telephone: '+441234567890',
-    checkboxGroup: '["1"]'
+    checkboxGroup: '[1]'
   };
 }

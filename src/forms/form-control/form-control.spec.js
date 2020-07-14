@@ -160,7 +160,7 @@ describe('FormControl', function() {
 
     testChangeHandler(function() {
       checkbox.querySelector('button').click();
-    }, ["1"]);
+    }, ['1']);
   });
 
   describe('type: radio', function() {
