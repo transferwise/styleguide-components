@@ -1,0 +1,679 @@
+[
+    {
+        "type": "vietname_earthport",
+        "title": "VIETNAME_EARTHPORT",
+        "fields": [
+            {
+                "name": "Recipient type",
+                "group": [
+                    {
+                        "key": "legalType",
+                        "name": "Recipient type",
+                        "type": "select",
+                        "refreshRequirementsOnChange": false,
+                        "required": true,
+                        "displayFormat": null,
+                        "example": "",
+                        "minLength": null,
+                        "maxLength": null,
+                        "validationRegexp": null,
+                        "validationAsync": null,
+                        "valuesAllowed": [
+                            {
+                                "key": "PRIVATE",
+                                "name": "Person"
+                            },
+                            {
+                                "key": "BUSINESS",
+                                "name": "Business"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Beneficiary's bank name",
+                "group": [
+                    {
+                        "key": "swiftCode",
+                        "name": "Beneficiary's bank name",
+                        "type": "select",
+                        "refreshRequirementsOnChange": true,
+                        "required": true,
+                        "displayFormat": null,
+                        "example": "Please enter bank name...",
+                        "minLength": null,
+                        "maxLength": null,
+                        "validationRegexp": null,
+                        "validationAsync": null,
+                        "valuesAllowed": [
+                            {
+                                "key": "ABBKVNVX",
+                                "name": "AN BINH COMMERCIAL JOINT STOCK BANK"
+                            },
+                            {
+                                "key": "ANZBVNVX",
+                                "name": "ANZ BANK(VIETNAM) LIMITED"
+                            },
+                            {
+                                "key": "ASCBVNVX",
+                                "name": "ASIA COMMERCIAL BANK"
+                            },
+                            {
+                                "key": "BKKBVNVX",
+                                "name": "BANGKOK BANK PCL"
+                            },
+                            {
+                                "key": "BKCHVNVX",
+                                "name": "BANK OF CHINA"
+                            },
+                            {
+                                "key": "COMMVNVX",
+                                "name": "BANK OF COMMUNICATIONS CO.,LTDH"
+                            },
+                            {
+                                "key": "BOTKVNVX",
+                                "name": "BANK OF TOKYO-MITSUBISHI UFJ, LTD., THE"
+                            },
+                            {
+                                "key": "BVBVVNVX",
+                                "name": "BAOVIET JOINT STOCK COMMERCIAL BANK"
+                            },
+                            {
+                                "key": "BNPAVNVN",
+                                "name": "BNP PARIBAS VIETNAM"
+                            },
+                            {
+                                "key": "PCBCVNVX",
+                                "name": "CHINA CONSTRUCTION BANK CORPORATION"
+                            },
+                            {
+                                "key": "CITIVNVX",
+                                "name": "CITIBANK N.A."
+                            },
+                            {
+                                "key": "CTBAVNVX",
+                                "name": "COMMONWEALTH BANK OF AUSTRALIA HO CHI MINH CITY"
+                            },
+                            {
+                                "key": "CTCBVNVX",
+                                "name": "CTBC BANK CO., LTD"
+                            },
+                            {
+                                "key": "DBSSVNVX",
+                                "name": "DBS BANK LTD"
+                            },
+                            {
+                                "key": "DEUTVNVX",
+                                "name": "DEUTSCHE BANK"
+                            },
+                            {
+                                "key": "EACBVNVX",
+                                "name": "DONGA BANK"
+                            },
+                            {
+                                "key": "FENBVNVX",
+                                "name": "FAR EAST NATIONAL BANK"
+                            },
+                            {
+                                "key": "FCBKVNVX",
+                                "name": "FIRST COMMERCIAL BANK"
+                            },
+                            {
+                                "key": "GBNKVNVX",
+                                "name": "GLOBAL PETRO COMMERCIAL JOINT STOCK BANK"
+                            },
+                            {
+                                "key": "HNBNVNVX",
+                                "name": "HANA BANK HO CHI MINH CITY BRANCH"
+                            },
+                            {
+                                "key": "HDBCVNVX",
+                                "name": "HOCHIMINH CITY DEVELOPMENT JOINT STOCK COMMERCIAL BANK"
+                            },
+                            {
+                                "key": "HLBBVNVX",
+                                "name": "HONG LEONG BANK VIETNAM LIMITED"
+                            },
+                            {
+                                "key": "HSBCVNVX",
+                                "name": "HSBC BANK (VIETNAM) LTD."
+                            },
+                            {
+                                "key": "HNBKVNVX",
+                                "name": "HUA NAN COMMERCIAL BANK, LTD"
+                            },
+                            {
+                                "key": "ICBKVNVN",
+                                "name": "ICBC HANOI BRANCH"
+                            },
+                            {
+                                "key": "IABBVNVX",
+                                "name": "INDOVINA BANK LTD."
+                            },
+                            {
+                                "key": "IBKOVNVX",
+                                "name": "INDUSTRIAL BANK OF KOREA, VIETNAM"
+                            },
+                            {
+                                "key": "BFTVVNVX",
+                                "name": "JOINT STOCK COMMERCIAL BANK FOR FOREIGN TRADE OF VIETNAM"
+                            },
+                            {
+                                "key": "BIDVVNVX",
+                                "name": "JOINT STOCK COMMERCIAL BANK FOR INVESTMENT AND DEVELOPMENT"
+                            },
+                            {
+                                "key": "CHASVNVX",
+                                "name": "JPMORGAN CHASE BANK, N.A."
+                            },
+                            {
+                                "key": "KLBKVNVX",
+                                "name": "KIEN LONG COMMERCIAL JOINT STOCK BANK"
+                            },
+                            {
+                                "key": "CZNBVNVX",
+                                "name": "KOOKMIN BANK"
+                            },
+                            {
+                                "key": "KOEXVNVX",
+                                "name": "KOREA EXCHANGE BANKBRANCH"
+                            },
+                            {
+                                "key": "LVBKVNVX",
+                                "name": "LIEN VIET POST JOINT STOCK COMMERCIAL BANK"
+                            },
+                            {
+                                "key": "MBBEVNVX",
+                                "name": "MALAYAN BANKING BERHAD"
+                            },
+                            {
+                                "key": "ICBCVNVX",
+                                "name": "MEGA INTERNATIONAL COMMERCIAL BANK CO., LTD."
+                            },
+                            {
+                                "key": "DABEVNVX",
+                                "name": "MERCEDES-BENZ VIETNAM LTD."
+                            },
+                            {
+                                "key": "MSCBVNVX",
+                                "name": "MILITARY COMMERCIAL JOINT STOCK BANK"
+                            },
+                            {
+                                "key": "MHCBVNVX",
+                                "name": "MIZUHO BANK, LTD."
+                            },
+                            {
+                                "key": "NAMAVNVX",
+                                "name": "NAM A COMMERCIAL JOINT STOCK BANK"
+                            },
+                            {
+                                "key": "NVBAVNVX",
+                                "name": "NATIONAL CITIZEN COMMERCIAL JOINT STOCK BANK"
+                            },
+                            {
+                                "key": "BFCEVNVX",
+                                "name": "NATIXIS BRANCH IN HOCHIMINH CITY"
+                            },
+                            {
+                                "key": "NASCVNVX",
+                                "name": "NORTH ASIA COMMERCIAL JOINT - STOCK BANK"
+                            },
+                            {
+                                "key": "OJBAVNVX",
+                                "name": "OCEAN COMMERCIAL JOINT STOCK BANK"
+                            },
+                            {
+                                "key": "ORCOVNVX",
+                                "name": "ORIENT COMMERCIAL JOINT STOCK BANK"
+                            },
+                            {
+                                "key": "OCBCVNVX",
+                                "name": "OVERSEA-CHINESE BANKING CORPORATION LIMITED"
+                            },
+                            {
+                                "key": "PGBLVNVX",
+                                "name": "PETROLIMEX GROUP COMMERCIAL JOINT STOCK BANK"
+                            },
+                            {
+                                "key": "SHBAVNVX",
+                                "name": "SAI GON-HA NOI COMMERCIAL JOINT STOCK BANK"
+                            },
+                            {
+                                "key": "SBITVNVX",
+                                "name": "SAIGON BANK FOR INDUSTRY AND TRADE, THE"
+                            },
+                            {
+                                "key": "SACLVNVX",
+                                "name": "SAIGON COMMERCIAL BANK"
+                            },
+                            {
+                                "key": "SHBKVNVX",
+                                "name": "SHINHAN BANK VIETNAM"
+                            },
+                            {
+                                "key": "SEAVVNVX",
+                                "name": "SOUTHEAST ASIA COMMERCIAL JOINT STOCK BANK"
+                            },
+                            {
+                                "key": "PNBKVNVX",
+                                "name": "SOUTHERN COMMERCIAL JOINT STOCK BANK"
+                            },
+                            {
+                                "key": "SCBLVNVH",
+                                "name": "STANDARD CHARTERED BANK"
+                            },
+                            {
+                                "key": "SCBLVNVX",
+                                "name": "STANDARD CHARTERED BANK (VIETNAM) LIMITED"
+                            },
+                            {
+                                "key": "SMBCVNVX",
+                                "name": "SUMITOMO MITSUI BANKING CORPORATION"
+                            },
+                            {
+                                "key": "SGTTVNVX",
+                                "name": "Sacombank"
+                            },
+                            {
+                                "key": "TPBKVNVX",
+                                "name": "TAIPEI FUBON COMMERCIAL BANK"
+                            },
+                            {
+                                "key": "BOTKVNV5",
+                                "name": "THE BANK OF TOKYO-MITSUBISHI UFJ, LTD."
+                            },
+                            {
+                                "key": "SCSBVNVX",
+                                "name": "THE SHANGHAI COMMERCIAL AND SAVINGS BANK, LTD"
+                            },
+                            {
+                                "key": "TPBVVNVX",
+                                "name": "TIENPHONG COMMERCIAL JOINT STOCK BANK"
+                            },
+                            {
+                                "key": "UOVBVNVX",
+                                "name": "UNITED OVERSEAS BANK LTD."
+                            },
+                            {
+                                "key": "VIDPVNV5",
+                                "name": "VID PUBLIC BANK"
+                            },
+                            {
+                                "key": "VCBCVNVX",
+                                "name": "VIET CAPITAL COMMERCIAL JOINT STOCK BANK"
+                            },
+                            {
+                                "key": "VNTTVNVX",
+                                "name": "VIET NAM THUONG TIN COMMERCIAL JOINT STOCK BANK"
+                            },
+                            {
+                                "key": "VNACVNVX",
+                                "name": "VIETNAM ASIA COMMERCIAL JOINT-STOCK BANK"
+                            },
+                            {
+                                "key": "VBAAVNVXXXX",
+                                "name": "VIETNAM BANK FOR AGRIC. AND RURAL DEV."
+                            },
+                            {
+                                "key": "GTBAVNVX",
+                                "name": "VIETNAM CONSTRUCTION JOINT STOCK COMMERCIAL BANK"
+                            },
+                            {
+                                "key": "EBVIVNVX",
+                                "name": "VIETNAM EXPORT IMPORT COMMERCIAL JOINT-STOCK BANK"
+                            },
+                            {
+                                "key": "VNIBVNVX",
+                                "name": "VIETNAM INTERNATIONAL COMMERCIAL JOINT STOCK BANK"
+                            },
+                            {
+                                "key": "ICBVVNVX",
+                                "name": "VIETNAM JOINT STOCK COMMERCIAL BANK FOR INDUSTRY AND TRADE"
+                            },
+                            {
+                                "key": "MCOBVNVX",
+                                "name": "VIETNAM MARITIME COMMERCIAL STOCK BANK"
+                            },
+                            {
+                                "key": "VPBKVNVX",
+                                "name": "VIETNAM PROSPERITY JOINT STOCK COMMERCIAL BANK"
+                            },
+                            {
+                                "key": "WBVNVNVX",
+                                "name": "VIETNAM PUBLIC JOINT STOCK COMMERCIAL BANK (PVCOMBANK)"
+                            },
+                            {
+                                "key": "VRBAVNVX",
+                                "name": "VIETNAM RUSSIA JOINT VENTURE BANK"
+                            },
+                            {
+                                "key": "VTCBVNVX",
+                                "name": "VIETNAM TECHNOLOGICAL AND COMMERCIAL JOINT STOCK BANK"
+                            },
+                            {
+                                "key": "VNBKVNVX",
+                                "name": "VINASIAM BANK HOCHIMINH CITY"
+                            },
+                            {
+                                "key": "HVBKVNVX",
+                                "name": "WOORI BANK, HANOI"
+                            },
+                            {
+                                "key": "HVBKVN2X",
+                                "name": "WOORIBANK HOCHIMINH"
+                            },
+                            {
+                                "key": "ABBKVNVX",
+                                "name": "NHTMCP An Binh"
+                            },
+                            {
+                                "key": "ABBKVNVX",
+                                "name": "ABBank"
+                            },
+                            {
+                                "key": "ANZBVNVX",
+                                "name": "Australia and New Zealand Banking Group"
+                            },
+                            {
+                                "key": "ANZBVNVX",
+                                "name": "ANZ Vietnam"
+                            },
+                            {
+                                "key": "ASCBVNVX",
+                                "name": "NHTMCP A Chau"
+                            },
+                            {
+                                "key": "ASCBVNVX",
+                                "name": "ACB"
+                            },
+                            {
+                                "key": "BFTVVNVX",
+                                "name": "NHTMCP Ngoai Thuong Vietnam"
+                            },
+                            {
+                                "key": "BFTVVNVX",
+                                "name": "VCB"
+                            },
+                            {
+                                "key": "BIDVVNVX",
+                                "name": "NHTMCP Dau Tu va Phat Trien Vietnam"
+                            },
+                            {
+                                "key": "BIDVVNVX",
+                                "name": "BIDV Bank"
+                            },
+                            {
+                                "key": "BVBVVNVX",
+                                "name": "NHTMCP Bao Viet"
+                            },
+                            {
+                                "key": "BVBVVNVX",
+                                "name": "BVB"
+                            },
+                            {
+                                "key": "EACBVNVX",
+                                "name": "NHTMCP Dong A"
+                            },
+                            {
+                                "key": "EACBVNVX",
+                                "name": "Dong A Bank"
+                            },
+                            {
+                                "key": "EBVIVNVX",
+                                "name": "NHTMCP Xuat Nhap Khau Vietnam"
+                            },
+                            {
+                                "key": "EBVIVNVX",
+                                "name": "Eximbank"
+                            },
+                            {
+                                "key": "GBNKVNVX",
+                                "name": "NHTMCP Dau Khi Toan Cau"
+                            },
+                            {
+                                "key": "GBNKVNVX",
+                                "name": "GP Bank"
+                            },
+                            {
+                                "key": "HDBCVNVX",
+                                "name": "NHTMCP Phat Trien Thanh Pho HCM"
+                            },
+                            {
+                                "key": "HDBCVNVX",
+                                "name": "HDBank"
+                            },
+                            {
+                                "key": "HLBBVNVX",
+                                "name": "NHTNHH MTV Hongleong Vietnam"
+                            },
+                            {
+                                "key": "HLBBVNVX",
+                                "name": "HLBVN"
+                            },
+                            {
+                                "key": "KLBKVNVX",
+                                "name": "NHTMCP Kien Long"
+                            },
+                            {
+                                "key": "KLBKVNVX",
+                                "name": "KienLongBank"
+                            },
+                            {
+                                "key": "LVBKVNVX",
+                                "name": "NHTMCP Buu Dien Lien Viet"
+                            },
+                            {
+                                "key": "LVBKVNVX",
+                                "name": "LienVietPostBank"
+                            },
+                            {
+                                "key": "MSCBVNVX",
+                                "name": "NHTMCP Quan Doi"
+                            },
+                            {
+                                "key": "MSCBVNVX",
+                                "name": "MBBank"
+                            },
+                            {
+                                "key": "NVBAVNVX",
+                                "name": "NHTMCP Quoc Dan"
+                            },
+                            {
+                                "key": "NVBAVNVX",
+                                "name": "NCB"
+                            },
+                            {
+                                "key": "OJBAVNVX",
+                                "name": "NHTMCP Dai Duong"
+                            },
+                            {
+                                "key": "OJBAVNVX",
+                                "name": "OceanBank"
+                            },
+                            {
+                                "key": "ORCOVNVX",
+                                "name": "NHTMCP Phuong Dong"
+                            },
+                            {
+                                "key": "ORCOVNVX",
+                                "name": "OCB"
+                            },
+                            {
+                                "key": "PGBLVNVX",
+                                "name": "NHTMCP Xang Dau Petrolimex"
+                            },
+                            {
+                                "key": "PGBLVNVX",
+                                "name": "PG Bank"
+                            },
+                            {
+                                "key": "SACLVNVX",
+                                "name": "NHTMCP Saigon"
+                            },
+                            {
+                                "key": "SACLVNVX",
+                                "name": "SCB"
+                            },
+                            {
+                                "key": "SBITVNVX",
+                                "name": "NHTMCP Saigon Cong Thuong"
+                            },
+                            {
+                                "key": "SBITVNVX",
+                                "name": "Saigonbank"
+                            },
+                            {
+                                "key": "SEAVVNVX",
+                                "name": "NHTMCP Dong Nam A"
+                            },
+                            {
+                                "key": "SEAVVNVX",
+                                "name": "SeABank"
+                            },
+                            {
+                                "key": "SGTTVNVX",
+                                "name": "NHTMCP Saigon Thuong Tin"
+                            },
+                            {
+                                "key": "SGTTVNVX",
+                                "name": "Sacombank"
+                            },
+                            {
+                                "key": "SHBAVNVX",
+                                "name": "NHTMCP Sai Gon Ha Noi"
+                            },
+                            {
+                                "key": "SHBAVNVX",
+                                "name": "SHB"
+                            },
+                            {
+                                "key": "SHBKVNVX",
+                                "name": "NHTNHH MTV Shinhan Vietnam"
+                            },
+                            {
+                                "key": "SHBKVNVX",
+                                "name": "ShinhanVN"
+                            },
+                            {
+                                "key": "TPBVVNVX",
+                                "name": "NHTMCP Tien Phong"
+                            },
+                            {
+                                "key": "TPBVVNVX",
+                                "name": "TPBank"
+                            },
+                            {
+                                "key": "VCBCVNVX",
+                                "name": "NHTMCP Ban Viet"
+                            },
+                            {
+                                "key": "VCBCVNVX",
+                                "name": "Vietcapital Bank"
+                            },
+                            {
+                                "key": "VIDPVNV5",
+                                "name": "NHTNHH MTV Public Vietnam"
+                            },
+                            {
+                                "key": "VIDPVNV5",
+                                "name": "Public Bank VN"
+                            },
+                            {
+                                "key": "VNIBVNVX",
+                                "name": "NHTMCP Quoc Te Vietnam"
+                            },
+                            {
+                                "key": "VNIBVNVX",
+                                "name": "VIB"
+                            },
+                            {
+                                "key": "VNTTVNVX",
+                                "name": "NH Vietnam Thuong Tin"
+                            },
+                            {
+                                "key": "VNTTVNVX",
+                                "name": "VietBank"
+                            },
+                            {
+                                "key": "VPBKVNVX",
+                                "name": "NHTMCP Vietnam Thinh Vuong"
+                            },
+                            {
+                                "key": "VPBKVNVX",
+                                "name": "VPBank"
+                            },
+                            {
+                                "key": "VRBAVNVX",
+                                "name": "NH Lien Doanh Viet Nga"
+                            },
+                            {
+                                "key": "VRBAVNVX",
+                                "name": "VRBank"
+                            },
+                            {
+                                "key": "VTCBVNVX",
+                                "name": "NHTMCP Ky Thuong Vietnam"
+                            },
+                            {
+                                "key": "VTCBVNVX",
+                                "name": "Techcombank"
+                            },
+                            {
+                                "key": "WBVNVNVX",
+                                "name": "NHTMCP Dai Chung Vietnam"
+                            },
+                            {
+                                "key": "WBVNVNVX",
+                                "name": "PVcomBank"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Branch name",
+                "group": [
+                    {
+                        "key": "branchCode",
+                        "name": "Branch name",
+                        "type": "select",
+                        "refreshRequirementsOnChange": false,
+                        "required": false,
+                        "displayFormat": null,
+                        "example": "Please enter branch name...",
+                        "minLength": null,
+                        "maxLength": null,
+                        "validationRegexp": null,
+                        "validationAsync": null,
+                        "valuesAllowed": null
+                    }
+                ]
+            },
+            {
+                "name": "Account number",
+                "group": [
+                    {
+                        "key": "accountNumber",
+                        "name": "Account number",
+                        "type": "text",
+                        "refreshRequirementsOnChange": false,
+                        "required": true,
+                        "displayFormat": null,
+                        "example": "1234567890",
+                        "minLength": 1,
+                        "maxLength": 34,
+                        "validationRegexp": "[0-9a-zA-Z]{1,35}",
+                        "validationAsync": null,
+                        "valuesAllowed": null
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "type": "email",
+        "title": "E-mail",
+        "fields": []
+    }
+]
