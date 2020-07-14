@@ -1,85 +1,98 @@
 
 class CheckboxGroupController {
-  constructor($scope, $element, TwDomService, $timeout) {
-    const $ngModel = $element.controller('ngModel');
+  constructor($element, TwDomService) {
+    this.$ngModel = $element.controller('ngModel');
 
     this.dom = TwDomService;
     this.$element = $element;
-    this.element = $element[0];
-    this.internalModel = {};
-    this.$timeout = $timeout;
 
-    this.addWatchers($scope, $element, $ngModel);
-    $ngModel.$render = () => this.updateInternalValue($ngModel);
+    this.internalModel = [];
+    this.internalOptions = [];
+  }
+
+  $onChanges(changes) {
+    if (changes.options) {
+      this.onExternalOptionsChange(changes.options.currentValue);
+    }
+
+    if (changes.ngModel) {
+      this.onExternalModelChange(changes.ngModel.currentValue);
+    }
+
+    if (changes.ngRequired) {
+      this.validate();
+    }
+  }
+
+  onExternalOptionsChange(newOptions) {
+    this.internalOptions = convertModelToOptions(this.ngModel, newOptions);
+    this.internalModel = convertOptionsToModel(this.internalOptions);
+  }
+
+  onExternalModelChange(newModel) {
+    this.internalOptions = convertModelToOptions(
+      newModel,
+      this.internalOptions
+    );
+    this.internalModel = convertOptionsToModel(this.internalOptions);
+    this.validate();
   }
 
   onInternalModelChange() {
-    const transformedModel = Object.keys(this.internalModel)
-      .filter(key => this.internalModel[key])
-      .map(key => key);
-    this.$ngModel.$setViewValue(transformedModel);
+    this.internalModel = convertOptionsToModel(this.internalOptions);
+    this.$ngModel.$setViewValue(this.internalModel);
     this.$ngModel.$setTouched();
+    this.$ngModel.$setDirty();
   }
 
-  updateInternalValue($ngModel) {
-    if ($ngModel.$modelValue && $ngModel.$modelValue.reduce) {
-      this.internalModel = $ngModel.$modelValue.reduce((acc, currentValue) => {
-        acc[currentValue] = true;
-        return acc;
-      }, {});
-      $ngModel.$setDirty();
+  isCheckboxRequired() {
+    return this.internalModel.length === 0 && this.ngRequired;
+  }
+
+  validate() {
+    if (!this.$ngModel.$touched) {
+      return;
     }
-  }
 
-  addWatchers($scope, $element, $ngModel) {
-    $scope.$watch('$ctrl.ngModel', (newValue, oldValue) => {
-      if (newValue !== oldValue) {
-        this.updateInternalValue($ngModel);
-        this.$timeout(() => validateCheckbox(
-          $element,
-          $ngModel,
-          this.ngRequired,
-          this.dom,
-          this.internalModel
-        ));
+    const element = this.$element[0];
+    const formGroup = this.dom.getClosestParentByClassName(element, 'form-group');
+
+    const isChecked = this.internalModel && this.internalModel.length > 0;
+    const isRequired = this.ngRequired;
+
+    if (!isChecked && isRequired) {
+      this.$ngModel.$setValidity('required', false);
+      if (formGroup) {
+        formGroup.classList.add('has-error');
       }
-    });
-
-    $scope.$watch('$ctrl.ngRequired', (newValue, oldValue) => {
-      if (newValue !== oldValue) {
-        this.$timeout(() => validateCheckbox(
-          $element,
-          $ngModel,
-          this.ngRequired,
-          this.dom,
-          this.internalModel
-        ));
+    } else {
+      this.$ngModel.$setValidity('required', true);
+      if (formGroup) {
+        formGroup.classList.remove('has-error');
       }
-    });
-  }
-}
-
-function validateCheckbox($element, $ngModel, isRequired, dom, internalModel) {
-  if (!$ngModel.$touched) {
-    return;
-  }
-  const element = $element[0];
-  const formGroup = dom.getClosestParentByClassName(element, 'form-group');
-  const isChecked = Object.keys(internalModel)
-    .filter(key => internalModel[key]).length > 0;
-  if (!isChecked && isRequired) {
-    $ngModel.$setValidity('required', false);
-    if (formGroup) {
-      formGroup.classList.add('has-error');
-    }
-  } else {
-    $ngModel.$setValidity('required', true);
-    if (formGroup) {
-      formGroup.classList.remove('has-error');
     }
   }
 }
 
-CheckboxGroupController.$inject = ['$scope', '$element', 'TwDomService', '$timeout'];
+function convertModelToOptions(model, options) {
+  return options.map(option => addSelectedToOption(option, model));
+}
+
+function addSelectedToOption(option, model) {
+  const selected = isSelected(model, option);
+  return { ...option, selected };
+}
+
+function convertOptionsToModel(options) {
+  return options
+    .filter(option => option.selected)
+    .map(option => option.value);
+}
+
+function isSelected(model, option) {
+  return !!(model && model.indexOf && model.indexOf(option.value) >= 0);
+}
+
+CheckboxGroupController.$inject = ['$element', 'TwDomService'];
 
 export default CheckboxGroupController;
