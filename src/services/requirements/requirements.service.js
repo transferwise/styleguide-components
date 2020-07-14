@@ -220,12 +220,25 @@ function RequirementsService($http) {
         field.type = 'string';
         field.control = 'textarea';
         break;
+      case 'array':
+        field.control = this.getControlForArray(field);
+        break;
       default:
     }
 
     if (!field.control && field.type !== 'object') {
       field.control = this.getControlType(field);
     }
+  };
+
+  this.getControlForArray = (field) => {
+    if (field.items.enum) {
+      return 'checkbox-group';
+    }
+    if (field.items.format === 'base64url') {
+      return 'multi-upload';
+    }
+    return null;
   };
 
   this.prepLegacyAlternatives = (alternative) => {

@@ -163,6 +163,31 @@ describe('Definition list', function() {
     });
   });
 
+  describe('when given a checkbox group field', function() {
+    beforeEach(function() {
+      $scope.model = {
+        key: [1,2]
+      };
+      $scope.fields = {
+        key: {
+          title: 'Checkbox group label',
+          type: 'array',
+          items: {
+            enum: [1,2],
+            values: [
+              { value: 1, label: 'One' },
+              { value: 2, label: 'Two' }
+            ]
+          }
+        }
+      };
+      setupVars();
+    });
+    it('should display the labes from the matching values', function() {
+      expect(definition.textContent.trim()).toBe('One, Two');
+    });
+  });
+
   describe('when given a password field', function() {
     beforeEach(function() {
       $scope.model = {

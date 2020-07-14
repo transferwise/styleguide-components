@@ -1,4 +1,5 @@
 import angular from 'angular';
+import { isArray } from '../../json-schema/validation/type-validators';
 
 class DefinitionListController {
   constructor(TwRequirementsService) {
@@ -27,6 +28,16 @@ class DefinitionListController {
       }
     }
     return value;
+  }
+
+  getCheckboxGroupLabel(options, valuesString) {
+    try {
+      const values = isArray(valuesString) ? valuesString : JSON.parse(valuesString);
+      const labels = values.map(value => this.getValueLabel(options, value));
+      return labels.join(', ');
+    } catch (error) {
+      return valuesString;
+    }
   }
 
   // eslint-disable-next-line
