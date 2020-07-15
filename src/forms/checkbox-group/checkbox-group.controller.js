@@ -1,7 +1,7 @@
 
 class CheckboxGroupController {
   constructor($element, TwDomService) {
-    this.$ngModel = $element.controller('ngModel');
+    this.$ngModelController = $element.controller('ngModel');
 
     this.dom = TwDomService;
     this.$element = $element;
@@ -40,9 +40,9 @@ class CheckboxGroupController {
 
   onInternalModelChange() {
     this.internalModel = convertOptionsToModel(this.internalOptions);
-    this.$ngModel.$setViewValue(this.internalModel);
-    this.$ngModel.$setTouched();
-    this.$ngModel.$setDirty();
+    this.$ngModelController.$setViewValue(this.internalModel);
+    this.$ngModelController.$setTouched();
+    this.$ngModelController.$setDirty();
   }
 
   isCheckboxRequired() {
@@ -50,7 +50,7 @@ class CheckboxGroupController {
   }
 
   validate() {
-    if (!this.$ngModel.$touched) {
+    if (!this.$ngModelController.$touched) {
       return;
     }
 
@@ -61,12 +61,12 @@ class CheckboxGroupController {
     const isRequired = this.ngRequired;
 
     if (!isChecked && isRequired) {
-      this.$ngModel.$setValidity('required', false);
+      this.$ngModelController.$setValidity('required', false);
       if (formGroup) {
         formGroup.classList.add('has-error');
       }
     } else {
-      this.$ngModel.$setValidity('required', true);
+      this.$ngModelController.$setValidity('required', true);
       if (formGroup) {
         formGroup.classList.remove('has-error');
       }

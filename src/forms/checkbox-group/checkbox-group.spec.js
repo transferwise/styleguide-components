@@ -32,7 +32,7 @@ describe('Checkbox Group', () => {
     $scope.name = 'myCheckboxGroup';
     $scope.ngDisabled = false;
     $scope.ngRequired = true;
-    $scope.options = [{value: 1, label: "test 1"}, {value: 2, label: "test 2"}];
+    $scope.options = [{value: 1, label: 'One'}, {value: 2, label: 'Two'}];
 
     template = getCompiledTemplateElement($scope);
     $element = template.find(COMPONENT_SELECTOR);
@@ -50,6 +50,12 @@ describe('Checkbox Group', () => {
       expect(getCheckBoxValue(checkbox1)).toBe(true);
       expect(getCheckBoxValue(checkbox2)).toBe(false);
     });
+
+    it('should render the correct labels', () => {
+      const [ label1, label2 ] = $element.find('label');
+      expect(label1.innerText.trim()).toBe('One');
+      expect(label2.innerText.trim()).toBe('Two');
+    });
   });
 
   describe('when the model that is passed in changes', () => {
@@ -60,6 +66,52 @@ describe('Checkbox Group', () => {
     it('should update the checkboxes to reflect the model', () => {
       expect(getCheckBoxValue(checkbox1)).toBe(false);
       expect(getCheckBoxValue(checkbox2)).toBe(true);
+    });
+  });
+
+  describe('when the options that are passed in change and the model is still valid', () => {
+    beforeEach(() => {
+      $scope.options = [{value: 1, label: 'One'}, {value: 3, label: 'Three'}];
+      $scope.$apply();
+      [ checkbox1, checkbox2 ] = $element.find(CHECKBOX_SELECTOR);
+    });
+
+    it('should update the labels', () => {
+      const [ label1, label2 ] = $element.find('label');
+      expect(label1.innerText.trim()).toBe('One');
+      expect(label2.innerText.trim()).toBe('Three');
+    });
+
+    it('should update the checkboxes to reflect the model', () => {
+      expect(getCheckBoxValue(checkbox1)).toBe(true);
+      expect(getCheckBoxValue(checkbox2)).toBe(false);
+    });
+
+    it('should maintain the model value', () => {
+      expect($scope.model).toEqual([1]);
+    });
+  });
+
+  describe('when the options that are passed in change and the model is no longer valid', () => {
+    beforeEach(() => {
+      $scope.options = [{value: 2, label: 'Two'}, {value: 3, label: 'Three'}];
+      $scope.$apply();
+      [ checkbox1, checkbox2 ] = $element.find(CHECKBOX_SELECTOR);
+    });
+
+    it('should update the labels', () => {
+      const [ label1, label2 ] = $element.find('label');
+      expect(label1.innerText.trim()).toBe('Two');
+      expect(label2.innerText.trim()).toBe('Three');
+    });
+
+    it('should update the checkboxes to reflect the model', () => {
+      expect(getCheckBoxValue(checkbox1)).toBe(false);
+      expect(getCheckBoxValue(checkbox2)).toBe(false);
+    });
+
+    it('should update the model value', () => {
+      expect($scope.model).toEqual([]);
     });
   });
 
@@ -81,8 +133,8 @@ describe('Checkbox Group', () => {
       $scope.$apply();
     });
     it('should pass "disabled" prop to checkboxes', () => {
-      expect(checkbox1.getAttribute('disabled')).toBe("disabled");
-      expect(checkbox2.getAttribute('disabled')).toBe("disabled");
+      expect(checkbox1.getAttribute('disabled')).toBe('disabled');
+      expect(checkbox2.getAttribute('disabled')).toBe('disabled');
     });
   });
 
