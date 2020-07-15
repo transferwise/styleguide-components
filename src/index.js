@@ -1,4 +1,5 @@
 import angular from 'angular';
+import { TwIconsModule } from '@transferwise/icons/lib/angular';
 
 import './polyfill';
 
@@ -27,5 +28,6 @@ export default angular.module('tw.styleguide-components', [
   Loading,
   Navigation,
   OldFormComponentModule,
-  OldFormValidationModule
+  OldFormValidationModule,
+  TwIconsModule
 ]).name;

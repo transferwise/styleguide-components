@@ -26,6 +26,27 @@ jobs:
           root: .
           paths:
             - '*'
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/styleguide-components
+      - run:
+          name: Setup npm token
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN_PUBLISH" >> ~/.npmrc
+      - run:
+          name: Config github
+          command: |
+            mkdir ~/.ssh
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+            git config --global user.email "circleci@transferwise.com"
+            git config --global user.name "tw-circleci"
+      - run:
+          name: Deploy changes
+          command: |
+            npm run copy-files-to-dist
+            npm run build
+            npm run deploy-for-branch
   release:
     <<: *defaults
     steps:
@@ -62,6 +83,15 @@ workflows:
               ignore:
                 - gh-pages
                 - releases
+      - deploy:
+          context: frontend-deploy-app
+          requires:
+            - test
+          filters:
+            branches:
+              ignore:
+                - gh-pages
+                - master
       - release:
           context: frontend-deploy-library
           requires:

@@ -23,7 +23,7 @@
     ><span ng-if="$ctrl.ngModel" class="tw-date-lookup-selected">
       {{$ctrl.selectedDateFormatted}}
     </span>
-    <span class="caret"></span>
+    <tw-chevron-down-icon></tw-chevron-down-icon>
 
   </button>
 
@@ -35,13 +35,13 @@
         <div class="pull-xs-left p-b-2">
           <a href="" ng-click="$ctrl.setYearOffset($event, -20)"
             class="text-no-decoration tw-date-lookup-previous-years">
-            <span class="icon icon-left icon-lg"></span>
+            <tw-chevron-left-icon size="24"></tw-chevron-left-icon>
           </a>
         </div>
         <div class="pull-xs-right p-b-2">
           <a href="" ng-click="$ctrl.setYearOffset($event, 20)"
             class="text-no-decoration tw-date-lookup-next-years">
-            <span class="icon icon-right icon-lg"></span>
+            <tw-chevron-right-icon size="24"></tw-chevron-right-icon>
           </a>
         </div>
       </div>
@@ -74,7 +74,7 @@
       <div class="text-xs-center p-t-1 p-b-2">
         <div class="pull-xs-left">
           <a href="" ng-click="$ctrl.yearBefore($event)" class="text-no-decoration">
-            <span class="icon icon-left icon-lg"></span>
+            <tw-chevron-left-icon size="24"></tw-chevron-left-icon>
           </a>
         </div>
         <a href="" ng-click="$ctrl.switchToYears($event)"
@@ -83,7 +83,7 @@
         </a>
         <div class="pull-xs-right">
           <a href="" ng-click="$ctrl.yearAfter($event)" class="text-no-decoration">
-            <span class="icon icon-right icon-lg"></span>
+            <tw-chevron-right-icon size="24"></tw-chevron-right-icon>
           </a>
         </div>
       </div>
@@ -117,7 +117,7 @@
         <div class="pull-xs-left">
           <a href="" ng-click="$ctrl.monthBefore($event)"
             class="text-no-decoration tw-date-lookup-previous-month">
-            <span class="icon icon-left icon-lg"></span>
+            <tw-chevron-left-icon size="24"></tw-chevron-left-icon>
           </a>
         </div>
         <a href="" ng-click="$ctrl.switchToYears($event)"
@@ -127,7 +127,7 @@
         <div class="pull-xs-right">
           <a href="" ng-click="$ctrl.monthAfter($event)"
             class="text-no-decoration tw-date-lookup-next-month">
-            <span class="icon icon-right icon-lg"></span>
+            <tw-chevron-right-icon size="24"></tw-chevron-right-icon>
           </a>
         </div>
       </div>

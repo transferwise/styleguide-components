@@ -20,9 +20,7 @@
           alt="{{$ctrl.label}}"
           class="thumbnail text-xs-center"
         />
-        <span ng-if="!$ctrl.helpImage"
-          class="icon icon-{{$ctrl.viewIcon}} icon-xxl"
-        ></span>
+        <tw-icon ng-if="!$ctrl.helpImage" name="$ctrl.viewIcon" size="24"></tw-icon>
       </div>
 
       <h4 ng-if="$ctrl.label" class="m-b-1">{{$ctrl.label}}</h4>
