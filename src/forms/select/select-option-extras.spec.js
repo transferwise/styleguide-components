@@ -12,16 +12,16 @@ describe('Select', function() {
   var SELECTED_NOTE_SELECTOR = '.tw-select-selected .tw-select-note';
   var SELECTED_SECONDARY_SELECTOR = '.tw-select-selected .tw-select-secondary';
   var SELECTED_CURRENCY_FLAG_SELECTOR = '.tw-select-selected .currency-flag';
-  var SELECTED_ICON_SELECTOR = '.tw-select-selected tw-icon';
+  var SELECTED_ICON_SELECTOR = '.tw-select-selected .tw-icon';
   var SELECTED_CIRCLE_SELECTOR = '.tw-select-selected .circle';
 
   var OPTION_NOTE_SELECTOR = '.dropdown-menu .tw-select-note';
   var OPTION_SECONDARY_SELECTOR = '.dropdown-menu .tw-select-secondary';
   var OPTION_CURRENCY_FLAG_SELECTOR = '.dropdown-menu .currency-flag';
-  var OPTION_ICON_SELECTOR = '.dropdown-menu a > tw-icon';
+  var OPTION_ICON_SELECTOR = '.dropdown-menu a > .tw-icon';
   var OPTION_CIRCLE_IMAGE_SELECTOR = '.dropdown-menu .circle img';
   var OPTION_CIRCLE_TEXT_SELECTOR = '.dropdown-menu .tw-select-circle-text';
-  var OPTION_CIRCLE_ICON_SELECTOR = '.dropdown-menu .circle tw-icon';
+  var OPTION_CIRCLE_ICON_SELECTOR = '.dropdown-menu .circle .tw-icon';
   var OPTION_DISABLED_SELECTOR = '.dropdown-menu .disabled';
 
   beforeEach(function() {
