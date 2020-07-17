@@ -15,7 +15,7 @@
       <label class="control-label" for="mySelect">
         Example select
       </label>
-      <tw-select tw-validation
+      <tw-select
         ng-if="!$ctrl.select.extraLink"
         name="mySelect"
         placeholder="{{$ctrl.select.empty}}"
@@ -39,7 +39,7 @@
         hide-circle="{{$ctrl.select.hideCircle}}"
         hide-label="{{$ctrl.select.hideLabel}}">
       </tw-select>
-      <tw-select tw-validation
+      <tw-select
         ng-if="$ctrl.select.extraLink"
         name="mySelect"
         placeholder="{{$ctrl.select.empty}}"
@@ -75,7 +75,7 @@
 
     <div class="form-inline m-b-3 visible-xs-inline-block visible-sm-inline-block
       visible-md-inline-block visible-lg-inline-block visible-xl-inline-block">
-      <tw-select tw-validation
+      <tw-select
         ng-if="!$ctrl.select.extraLink"
         name="mySelect"
         placeholder="{{$ctrl.select.empty}}"
@@ -99,7 +99,7 @@
         hide-circle="{{$ctrl.select.hideCircle}}"
         hide-label="{{$ctrl.select.hideLabel}}">
       </tw-select>
-      <tw-select tw-validation
+      <tw-select
         ng-if="$ctrl.select.extraLink"
         name="mySelect"
         placeholder="{{$ctrl.select.empty}}"
@@ -147,8 +147,7 @@
   hide-currency="{{$ctrl.select.hideCurrency}}"</span><span ng-if="$ctrl.select.hideCircle">
   hide-circle="{{$ctrl.select.hideCircle}}"</span><span ng-show="$ctrl.select.hideLabel">
   hide-label="{{$ctrl.select.hideLabel}}"</span>
-  options="{{$ctrl.select.options[$ctrl.select.type] | json}}"
-  tw-validation<span ng-if="!$ctrl.select.extraLink"> /&gt;</span><span ng-if="$ctrl.select.extraLink">&gt;
+  options="{{$ctrl.select.options[$ctrl.select.type] | json}}"<span ng-if="!$ctrl.select.extraLink"> /&gt;</span><span ng-if="$ctrl.select.extraLink">&gt;
     &lt;a href='' ng-click='...'&gt;
       Custom action
     &lt;/a&gt;

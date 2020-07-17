@@ -4,16 +4,19 @@ import template from './checkbox-group.demo.html';
 class CheckboxGroupController {
   constructor() {
     this.options = [{
-      value: '1',
+      value: 1,
       label: 'One'
     },
     {
-      value: '2',
+      value: 2,
       label: 'Two'
     }];
+
+    this.model = [];
   }
-  log(message) { // eslint-disable-line
-    console.log(message); // eslint-disable-line
+
+  log() { // eslint-disable-line
+    console.log('checkbox-group changed', this.model); // eslint-disable-line
   }
 }
 

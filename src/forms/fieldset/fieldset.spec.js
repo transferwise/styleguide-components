@@ -17,8 +17,11 @@ describe('Fieldset', function() {
     });
 
     $scope = $rootScope.$new();
-    $scope.onRefreshRequirements = function() {}
+    $scope.onRefreshRequirements = function() {};
     jest.spyOn($scope, 'onRefreshRequirements').mockImplementation(() => {});
+
+    $scope.onModelChange = function() {};
+    jest.spyOn($scope, 'onModelChange').mockImplementation(() => {});
   });
 
   describe('when given an array of fields', function() {
@@ -41,33 +44,33 @@ describe('Fieldset', function() {
         items: {
           enum: [1, 2],
           values: [{ value: 1, label: 'One' }, { value: 2, label: 'Two' }]
-        }        
+        }
       };
       $scope.fields = { checkboxGroup };
     });
-    
+
     it('should render preselected value', () => {
       $scope.model = {
-        checkboxGroup: '["2"]'
+        checkboxGroup: '[2]'
       };
       element = getCompiledDirectiveElement();
-      const [option1, option2] = element.querySelectorAll('tw-form-control label');
+      const [option1, option2] = element.querySelectorAll('.checkbox label');
       expect(option1.textContent.trim()).toBe('One');
       expect(option2.textContent.trim()).toBe('Two');
       expect(option1.querySelector('button').classList.contains('checked')).toBe(false)
       expect(option2.querySelector('button').classList.contains('checked')).toBe(true)
     });
-    
+
     it('should return string as a model', () => {
       $scope.model = {
-        checkboxGroup: '["2"]'
+        checkboxGroup: '[2]'
       };
       element = getCompiledDirectiveElement();
-      const button = element.querySelector('tw-form-control label button');
+      const button = element.querySelector('.checkbox label button');
       button.dispatchEvent(new Event('click'));
       $timeout.flush();
       expect($scope.model).toEqual({
-        checkboxGroup: '["1","2"]'
+        checkboxGroup: '[1,2]'
       });
     });
 
@@ -80,12 +83,13 @@ describe('Fieldset', function() {
           width: 'md',
           selectType: "CHECKBOX",
           valuesAllowed: [{ value: 1, label: 'One' }, { value: 2, label: 'Two' }]
-        }};
+        }
+      };
       $scope.model = {
-        checkboxGroup: '["2"]'
+        checkboxGroup: '[2]'
       };
       element = getCompiledDirectiveElement();
-      const [option1, option2] = element.querySelectorAll('tw-form-control label');
+      const [option1, option2] = element.querySelectorAll('.checkbox label');
       expect(option1.textContent.trim()).toBe('One');
       expect(option2.textContent.trim()).toBe('Two');
       expect(option1.querySelector('button').classList.contains('checked')).toBe(false)
@@ -247,6 +251,29 @@ describe('Fieldset', function() {
     });
   });
 
+  describe('when the fields change after initialisation', function() {
+    beforeEach(function() {
+      $scope.model = {
+        sortCode: '123456',
+        iban: 'ABCD1234EFGH'
+      };
+
+      const fields = getFields();
+
+      $scope.fields = fields;
+      element = getCompiledDirectiveElement();
+
+      $scope.fields = { sortCode: fields.sortCode };
+      $scope.$apply();
+    })
+    it('should alter the model to remove invalid values', function() {
+      expect($scope.model).toEqual({ sortCode: '123456' });
+    });
+    it('should broadcast a new version of the model with invalid values removed', function() {
+      expect($scope.onModelChange).toHaveBeenCalledWith({ sortCode: '123456' });
+    });
+  });
+
   function getCompiledDirectiveElement() {
     var template = " \
       <tw-fieldset \
@@ -257,6 +284,7 @@ describe('Fieldset', function() {
         error-messages='errorMessages' \
         warning-messages='warningMessages' \
         on-refresh-requirements='onRefreshRequirements()' \
+        on-model-change='onModelChange(model)' \
         is-valid='isValid'> \
       </tw-fieldset>";
     var compiledElement = $compile(template)($scope);
