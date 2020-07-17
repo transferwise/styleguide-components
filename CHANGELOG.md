@@ -1,3 +1,9 @@
+# v7.0.0
+## Fieldsets now remove invalid properties from the model when receiving new fields
+BREAKING: If the set of fields is updated, any properties of the model that are not reflected in the new set of fields will be removed.  This could be a breaking change if a consumer relies on the fieldset leaving other properties of a model untouched.
+
+Alongside those changes we also improve the checkbox-group implementation to work with numeric enums as well as strings. The requirements service now better identifies checkbox-groups based on their data type, and we have improved the definition list to show the labels for the enums rather than the raw values.
+
 # v6.1.0
 ## Support descriptions for radio/checkbox controls, change JSON schema validation approach
 Within the JSON schema dynamic forms we adopt an approach to validation that is more explicitly checking the broadcast values, rather than use the ngModel validation pipeline.  This brings us into line with the React implementation.
