@@ -349,7 +349,6 @@ describe('Select', function() {
       expect(el.length).toBe(1);
     });
     it('should show circle icon', function() {
-      console.log('component.html', component.html());
       var el = component.find(OPTION_CIRCLE_ICON_SELECTOR);
       expect(el.length).toBe(1);
     });
