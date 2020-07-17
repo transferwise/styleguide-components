@@ -1,6 +1,6 @@
 # v7.0.0
 ## Fieldsets now remove invalid properties from the model when receiving new fields
-If the set of fields is updated, any properties of the model that are not reflected in the new set of fields will be removed.
+BREAKING: If the set of fields is updated, any properties of the model that are not reflected in the new set of fields will be removed.  This could be a breaking change if a consumer relies on the fieldset leaving other properties of a model untouched.
 
 Alongside those changes we also improve the checkbox-group implementation to work with numeric enums as well as strings. The requirements service now better identifies checkbox-groups based on their data type, and we have improved the definition list to show the labels for the enums rather than the raw values.
 
