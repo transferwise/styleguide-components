@@ -1,5 +1,6 @@
 import template from './capture-card.html';
 import controller from './capture-card.controller';
+import './capture-card.less';
 
 const CaptureCard = {
   template,

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "node --icu-data-dir=node_modules/full-icu node_modules/.bin/jest",
     "prestart": "npm install",
-    "start": "npm run less && webpack --watch --mode=development;",
+    "start": "npm run copy:demo && npm run less && webpack --watch --mode=development;",
     "dev": "live-server --port=1666 --open=demo/index.html",
     "devhttps": "npm run copy:demo && live-server --port=1666 --open=demo/index.html --https=node_modules/live-server-https",
     "build": "npm run less && webpack -p && npm run copy:demo",
@@ -18,7 +18,7 @@
     "copy:ui-router": "cp node_modules/@uirouter/angularjs/release/angular-ui-router.js demo/lib/",
     "copy:angular": "cp node_modules/angular/angular.min.js demo/lib/",
     "copy:bootstrap-js": "cp node_modules/bootstrap/dist/js/bootstrap.min.js demo/lib/",
-    "copy:neptune-styles": "cp node_modules/@transferwise/neptune-css/dist/css/neptune.css demo/lib/",
+    "copy:neptune-styles": "cp node_modules/@transferwise/neptune-css/dist/css/neptune.css demo/lib/; cp node_modules/@transferwise/icons/lib/styles/main.min.css demo/lib/",
     "copy:neptune-fonts": "mkdir demo/fonts; cp node_modules/@transferwise/neptune-css/dist/fonts/*.* demo/fonts",
     "copy:flags": "cp node_modules/currency-flags/dist/currency-flags.css demo/lib/",
     "copy:demo": "mkdir demo/lib; npm run copy:jquery; npm run copy:angular; npm run copy:bootstrap-js; npm run copy:neptune-styles; npm run copy:neptune-fonts; npm run copy:flags; npm run copy:ui-router;",
