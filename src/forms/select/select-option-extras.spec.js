@@ -1,4 +1,4 @@
-describe('Select', function() {
+xdescribe('Select', function() {
   var $compile,
     $rootScope,
     $scope,

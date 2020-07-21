@@ -26,9 +26,7 @@
         class="circle circle-inverse pull-xs-left circle-sm"
         ng-if="$ctrl.selected && $ctrl.selected.icon && $ctrl.selected.secondary"
       >
-        <span class="tw-icon">
-          <tw-icon name="$ctrl.selected.icon"></tw-icon>
-        </span>
+        <tw-icon name="$ctrl.selected.icon"></tw-icon>
       </span>
 
       <span
@@ -44,9 +42,7 @@
             iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
           ng-src="{{$ctrl.selected.circleImage}}"
         />
-        <span class="tw-icon" ng-if="$ctrl.selected.circleIcon">
-          <tw-icon name="$ctrl.selected.circleIcon"></tw-icon>
-        </span>
+        <tw-icon name="$ctrl.selected.circleIcon" ng-if="$ctrl.selected.circleIcon"></tw-icon>
       </span>
 
       <span class="text-ellipsis">
@@ -55,11 +51,9 @@
           ng-if="$ctrl.selected && $ctrl.selected.currency"
           ng-class="$ctrl.responsiveClasses($ctrl.hideCurrency)"
         ></span>
-        <span class="tw-icon"
-              ng-if="$ctrl.selected && $ctrl.selected.icon && !$ctrl.selected.secondary"
-              ng-class="$ctrl.responsiveClasses($ctrl.hideIcon)">
-          <tw-icon name="$ctrl.selected.icon"></tw-icon>
-        </span>
+          <tw-icon name="$ctrl.selected.icon"
+                   ng-if="$ctrl.selected && $ctrl.selected.icon && !$ctrl.selected.secondary"
+                   ng-class="$ctrl.responsiveClasses($ctrl.hideIcon)"></tw-icon>
         <span class="tw-select-label" ng-class="$ctrl.responsiveClasses($ctrl.hideLabel)">
           {{$ctrl.selected.label}}
         </span>
@@ -171,13 +165,9 @@
           ng-if="option.icon && option.secondary"
           class="circle circle-inverse pull-xs-left circle-sm"
         >
-          <span class="tw-icon">
-            <tw-icon name="option.icon"></tw-icon>
-          </span>
-        </div>
-        <span class="tw-icon pull-xs-left" ng-if="option.icon && !option.secondary">
           <tw-icon name="option.icon"></tw-icon>
-        </span>
+        </div>
+        <tw-icon name="option.icon" class="pull-xs-left" ng-if="option.icon && !option.secondary"></tw-icon>
         </span>
         <span
           ng-if="option.currency"
@@ -200,9 +190,7 @@
               iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
             ng-src="{{option.circleImage}}"
           />
-          <span class="tw-icon" ng-if="option.circleIcon">
-            <tw-icon name="option.circleIcon"></tw-icon>
-          </span>
+          <tw-icon name="option.circleIcon" ng-if="option.circleIcon"></tw-icon>
           </span
         >{{option.label}}<span ng-if="option.note" class="tw-select-note small m-l-1"
           >{{option.note}}</span
