@@ -1,3 +1,7 @@
+# v7.1.0
+## Change upload from live capture to be File instead of blob
+PersistAsync uploads from web were failing because the blob was being send up without an extension. Now we turn the blob in to a file and send that up to be processed. 
+
 # v7.0.0
 ## Fieldsets now remove invalid properties from the model when receiving new fields
 BREAKING: If the set of fields is updated, any properties of the model that are not reflected in the new set of fields will be removed.  This could be a breaking change if a consumer relies on the fieldset leaving other properties of a model untouched.
