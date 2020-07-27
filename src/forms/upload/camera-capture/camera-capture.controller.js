@@ -240,7 +240,7 @@ function createUploadCallback($ctrl) {
     $ctrl.showVideoPreview = false;
     $ctrl.closeVideoStream();
     $ctrl.$scope.$applyAsync(() => {
-      const file = new File([blob], 'image.jpeg', { type: 'image/jpeg' })
+      const file = new File([blob], 'image.jpeg', { type: 'image/jpeg' });
       $ctrl.onCapture({ file });
     });
   };
