@@ -52,6 +52,7 @@
           ng-class="$ctrl.responsiveClasses($ctrl.hideCurrency)"
         ></span>
           <tw-icon name="$ctrl.selected.icon"
+                   size="24"
                    ng-if="$ctrl.selected && $ctrl.selected.icon && !$ctrl.selected.secondary"
                    ng-class="$ctrl.responsiveClasses($ctrl.hideIcon)"></tw-icon>
         <span class="tw-select-label" ng-class="$ctrl.responsiveClasses($ctrl.hideLabel)">
@@ -167,7 +168,7 @@
         >
           <tw-icon name="option.icon"></tw-icon>
         </div>
-        <tw-icon name="option.icon" class="pull-xs-left" ng-if="option.icon && !option.secondary"></tw-icon>
+        <tw-icon name="option.icon" size="24" class="pull-xs-left" ng-if="option.icon && !option.secondary"></tw-icon>
         </span>
         <span
           ng-if="option.currency"
