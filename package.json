@@ -7,7 +7,7 @@
     "test": "node --icu-data-dir=node_modules/full-icu node_modules/.bin/jest",
     "prestart": "npm install",
     "start": "npm run less && webpack --watch --mode=development;",
-    "dev": "live-server --port=1666 --open=demo/index.html",
+    "dev": "npm run copy:demo && live-server --port=1666 --open=demo/index.html",
     "devhttps": "npm run copy:demo && live-server --port=1666 --open=demo/index.html --https=node_modules/live-server-https",
     "build": "npm run less && webpack -p && npm run copy:demo",
     "htmllint": "htmllint src/**/*.html && htmllint src/**/**/*.html && htmllint demo/**/*.html",
@@ -43,13 +43,13 @@
   },
   "homepage": "https://github.com/transferwise/styleguide-components",
   "dependencies": {
-    "@transferwise/icons": "^2.3.0",
     "angular": "~1.5.10",
     "commonmark": "^0.29.1",
     "jquery": "^3.4.1",
     "screenfull": "^5.0.2"
   },
   "peerDependencies": {
+    "@transferwise/icons": "^2.3.0",
     "@transferwise/neptune-css": "1.0.1-beta.61"
   },
   "devDependencies": {
@@ -83,6 +83,7 @@
     "release-to-github-with-changelog": "^1.2.2",
     "deploy-directory-on-branch-to-gh-pages": "^0.2.8",
     "style-loader": "^0.23.1",
+    "@transferwise/icons": "^2.3.0",
     "@transferwise/neptune-css": "1.0.1-beta.61",
     "uglify-js": "^3.6.0",
     "uglifyjs-webpack-plugin": "^2.2.0",
