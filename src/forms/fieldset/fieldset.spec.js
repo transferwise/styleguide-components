@@ -142,23 +142,6 @@ describe('Fieldset', function() {
     });
   });
 
-  describe('when field changes', function() {
-    beforeEach(function() {
-      $scope.fields = getFields();
-      element = getCompiledDirectiveElement();
-      var formControl = element.querySelector('.form-control');
-      formControl.value = 'new';
-      formControl.dispatchEvent(new Event('input'));
-      $timeout.flush();
-    });
-    it('should trigger the onChange handler', function() {
-      expect($scope.onModelChange).toHaveBeenCalled();
-    });
-    it('should pass the handler the latest model', function() {
-      expect($scope.onModelChange).toHaveBeenCalledWith({ sortCode: 'new' });
-    });
-  });
-
   describe('when a field has refreshRequirementsOnChange: true', function() {
     beforeEach(function() {
       $scope.fields = getFields();
