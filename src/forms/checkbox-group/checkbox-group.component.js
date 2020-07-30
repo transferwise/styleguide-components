@@ -11,7 +11,7 @@ const Checkbox = {
   bindings: {
     name: '@',
     ngChange: '&',
-    ngModel: '=',
+    ngModel: '<',
     ngRequired: '<',
     ngDisabled: '<',
     options: '<',

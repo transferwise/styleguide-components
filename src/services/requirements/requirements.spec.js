@@ -240,6 +240,58 @@ describe('Requirements Service', function() {
       });
     });
 
+    describe('when preparing an array of enums', () => {
+      it('should identify as a checkbox group', () => {
+        var input = {
+          type: 'array',
+          items: {
+            enum: [1, 2],
+            values: [
+              { value: 1, label: 'One' },
+              { value: 2, label: 'Two' }
+            ]
+          }
+        };
+
+        var expectedOutput = {
+          type: 'array',
+          items: {
+            enum: [1, 2],
+            values: [
+              { value: 1, label: 'One' },
+              { value: 2, label: 'Two' }
+            ]
+          },
+          control: 'checkbox-group'
+        };
+
+        expect(service.prepField(input)).toEqual(expectedOutput);
+      })
+    });
+
+    describe('when preparing an array of base64Url', () => {
+      it('should identify as a checkbox group', () => {
+        var input = {
+          type: 'array',
+          items: {
+            type: 'string',
+            format: 'base64url'
+          }
+        };
+
+        var expectedOutput = {
+          type: 'array',
+          items: {
+            type: 'string',
+            format: 'base64url'
+          },
+          control: 'multi-upload'
+        };
+
+        expect(service.prepField(input)).toEqual(expectedOutput);
+      })
+    });
+
     describe('when preparing camera fields', function() {
       it('should rename \'overlay\' to \'outline\' on old guidelines', function() {
         var input = {

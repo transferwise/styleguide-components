@@ -1,10 +1,11 @@
-<div ng-repeat="option in $ctrl.options" class="checkbox">
+<div ng-repeat="option in $ctrl.internalOptions" class="checkbox">
   <label>
-    <tw-checkbox 
+    <tw-checkbox
       name="{{$ctrl.name}}"
-      ng-model="$ctrl.internalModel[option.value]"
+      ng-model="option.selected"
       ng-disabled="$ctrl.ngDisabled"
-      ng-change="$ctrl.onInternalModelChange(option.value)"
+      ng-required="$ctrl.isCheckboxRequired()"
+      ng-change="$ctrl.onInternalModelChange(option)"
     ></tw-checkbox>
     {{option.label}}
   </label>

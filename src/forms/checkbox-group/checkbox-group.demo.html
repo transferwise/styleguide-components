@@ -5,19 +5,16 @@
   <div class="col-md-6">
     <div class="form-group">
       <label class="control-label">
-        TW Checkbox Group
+        TW Checkbox Group<span ng-if="$ctrl.checkbox.required">*</span>
       </label>
       <div class="checkbox">
-          TW Checkbox<span ng-if="$ctrl.checkbox.required">*</span>
-          <tw-checkbox-group tw-validation
-            ng-model="$ctrl.model"
-            options="$ctrl.options"
-            ng-required="$ctrl.checkbox.required"
-            ng-disabled="$ctrl.checkbox.disabled"
-            ng-change="$ctrl.log('checkboxgroup change')">
-          </tw-checkbox-group>
-          
-
+        <tw-checkbox-group
+          ng-model="$ctrl.model"
+          options="$ctrl.options"
+          ng-required="$ctrl.checkbox.required"
+          ng-disabled="$ctrl.checkbox.disabled"
+          ng-change="$ctrl.log()">
+        </tw-checkbox-group>
       </div>
     </div>
 
@@ -27,8 +24,8 @@
   options="$ctrl.options"
   ng-required="$ctrl.checkbox.required"
   ng-disabled="$ctrl.checkbox.disabled"
-  ng-change="$ctrl.log('checkbox change')"</span>
-  tw-validation&gt;&lt;/tw-checkbox-group&gt;</pre>
+  ng-change="$ctrl.log('checkbox change')"
+&gt;&lt;/tw-checkbox-group&gt;</pre>
   </div>
   <div class="col-md-6">
     <div class="well">

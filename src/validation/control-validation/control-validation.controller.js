@@ -30,6 +30,11 @@ class ValidationController {
 }
 
 function checkModelAndUpdate(ngModel, formGroup, element) {
+  if (!formGroup) {
+    // If there's no parent formGroup, nothin to update
+    return;
+  }
+
   // Option to switch off default validators
   if (formGroup.classList.contains('custom-validation')) {
     return;

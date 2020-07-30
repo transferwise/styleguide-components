@@ -1,4 +1,6 @@
 import angular from 'angular';
+import { getValidModelParts } from '../../json-schema/validation/valid-model';
+import { isUndefined } from '../../json-schema/validation/type-validators';
 
 class FieldsetController {
   constructor(TwRequirementsService, $scope, $timeout) {
@@ -11,7 +13,10 @@ class FieldsetController {
     if (!this.model) {
       this.model = {};
     }
-    this.internalModel = this.parseModel();
+
+    this.internalModel = this.parseArrayStringsInModel(this.model);
+
+
     if (!this.requiredFields) {
       this.requiredFields = [];
     }
@@ -37,24 +42,55 @@ class FieldsetController {
   }
 
   $onChanges(changes) {
-    const fieldsChanged = changes.initialFields;
-    if (fieldsChanged) {
-      if (!angular.equals(fieldsChanged.currentValue, fieldsChanged.previousValue)) {
-        this.fields = this.RequirementsService.prepFields(
-          fieldsChanged.currentValue,
-          this.model,
-          this.validationMessages
-        );
-        this.internalModel = this.parseModel();
+    if (changes.initialFields) {
+      this.onPropsFieldChange(changes.initialFields);
+    }
 
-        if (!this.requiredFields || !this.requiredFields.length) {
-          this.requiredFields = this.RequirementsService.getRequiredFields(this.fields);
-        }
-      }
+    if (changes.model) {
+      this.onPropsModelChange(changes.model);
     }
   }
 
-  parseModel() {
+  onPropsFieldChange(fieldChanges) {
+    // Deep compare, do nothing if no changes
+    if (angular.equals(fieldChanges.currentValue, fieldChanges.previousValue)) {
+      return;
+    }
+
+    this.fields = this.RequirementsService.prepFields(
+      fieldChanges.currentValue,
+      this.model,
+      this.validationMessages
+    );
+
+    // Remove any model values that are now invalid
+    const oldModel = this.internalModel;
+    const newModel = getValidModelParts(oldModel, convertFieldsToObject(this.fields));
+
+    // Valid model returns null, not undefined so we must check oldModel
+    if (!isUndefined(oldModel) && !angular.equals(newModel, oldModel)) {
+      this.internalModel = newModel;
+      this.model = newModel;
+      if (this.onModelChange) {
+        this.onModelChange({ model: newModel });
+      }
+    }
+
+    if (!this.requiredFields || !this.requiredFields.length) {
+      this.requiredFields = this.RequirementsService.getRequiredFields(this.fields);
+    }
+  }
+
+  onPropsModelChange(modelChanges) {
+    // When the model changes convert array strings to real arrays (for checkbox-group)
+    this.internalModel = this.parseArrayStringsInModel(modelChanges.currentValue);
+  }
+
+  /**
+   * We have a limitation in V2 dynamic forms where the server needs a string
+   * { a: "[1]"} => { a: [1] }
+   */
+  parseArrayStringsInModel(model) {
     const parsedValues = {};
     Object.keys(this.fields).forEach((key) => {
       if (
@@ -65,10 +101,14 @@ class FieldsetController {
         parsedValues[key] = JSON.parse(this.model[key]);
       }
     });
-    return { ...this.model, ...parsedValues };
+    return { ...model, ...parsedValues };
   }
 
-  stringifyObjectsInModel() {
+  /**
+   * We have a limitation in V2 dynamic forms where the server needs a string
+   * { a: [1]} => { a: "[1]"" }
+   */
+  stringifyArraysInModel(model) {
     const stringifiedValues = {};
     Object.keys(this.fields).forEach((key) => {
       if (
@@ -80,7 +120,7 @@ class FieldsetController {
       }
     });
 
-    return { ...this.internalModel, ...stringifiedValues };
+    return { ...model, ...stringifiedValues };
   }
 
   fieldFocus(key, field) {
@@ -107,7 +147,7 @@ class FieldsetController {
 
     // Delay so model can update
     this.$timeout(() => {
-      this.model = this.stringifyObjectsInModel();
+      this.model = this.stringifyArraysInModel(this.internalModel);
       if (this.onFieldChange) {
         if (field && field.control === 'checkbox-group') {
           this.onFieldChange({ value: JSON.stringify(value), key, field });
@@ -139,6 +179,13 @@ class FieldsetController {
   setSubmitted() {
     this.submitted = true;
   }
+}
+
+function convertFieldsToObject(fields) {
+  return {
+    type: 'object',
+    properties: fields
+  };
 }
 
 FieldsetController.$inject = ['TwRequirementsService', '$scope', '$timeout'];
