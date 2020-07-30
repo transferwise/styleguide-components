@@ -93,7 +93,11 @@ class FieldsetController {
   parseArrayStringsInModel(model) {
     const parsedValues = {};
     Object.keys(this.fields).forEach((key) => {
-      if (this.fields[key].control === 'checkbox-group' && this.model && typeof this.model[key] === 'string') {
+      if (
+        this.fields[key].control === 'checkbox-group'
+        && this.model
+        && typeof this.model[key] === 'string'
+      ) {
         parsedValues[key] = JSON.parse(this.model[key]);
       }
     });
@@ -107,7 +111,11 @@ class FieldsetController {
   stringifyArraysInModel(model) {
     const stringifiedValues = {};
     Object.keys(this.fields).forEach((key) => {
-      if (this.fields[key].control === 'checkbox-group' && this.internalModel && this.internalModel[key]) {
+      if (
+        this.fields[key].control === 'checkbox-group'
+        && this.internalModel
+        && this.internalModel[key]
+      ) {
         stringifiedValues[key] = JSON.stringify(this.internalModel[key]);
       }
     });
@@ -153,7 +161,7 @@ class FieldsetController {
       }
 
       if (field.refreshRequirementsOnChange && this.onRefreshRequirements) {
-        this.onRefreshRequirements();
+        this.onRefreshRequirements({ model: this.model });
       }
     });
   }

@@ -147,12 +147,15 @@ describe('Fieldset', function() {
       $scope.fields = getFields();
       element = getCompiledDirectiveElement();
       var formControl = element.querySelector('.form-control');
-      formControl.value = 'example';
+      formControl.value = 'new';
       formControl.dispatchEvent(new Event('input'));
       $timeout.flush();
     });
-    it('should trigger the handler on field change', function() {
+    it('should trigger the onRefresh handler', function() {
       expect($scope.onRefreshRequirements).toHaveBeenCalled();
+    });
+    it('should pass the handler the latest model', function() {
+      expect($scope.onRefreshRequirements).toHaveBeenCalledWith({ sortCode: 'new' });
     });
   });
 
@@ -283,8 +286,8 @@ describe('Fieldset', function() {
         validation-messages='validationMessages' \
         error-messages='errorMessages' \
         warning-messages='warningMessages' \
-        on-refresh-requirements='onRefreshRequirements()' \
         on-model-change='onModelChange(model)' \
+        on-refresh-requirements='onRefreshRequirements(model)' \
         is-valid='isValid'> \
       </tw-fieldset>";
     var compiledElement = $compile(template)($scope);
