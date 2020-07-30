@@ -17,7 +17,9 @@ describe('Fieldset', function() {
     });
 
     $scope = $rootScope.$new();
+    $scope.onModelChange = function() {}
     $scope.onRefreshRequirements = function() {}
+    jest.spyOn($scope, 'onModelChange').mockImplementation(() => {});
     jest.spyOn($scope, 'onRefreshRequirements').mockImplementation(() => {});
   });
 
@@ -41,11 +43,11 @@ describe('Fieldset', function() {
         items: {
           enum: [1, 2],
           values: [{ value: 1, label: 'One' }, { value: 2, label: 'Two' }]
-        }        
+        }
       };
       $scope.fields = { checkboxGroup };
     });
-    
+
     it('should render preselected value', () => {
       $scope.model = {
         checkboxGroup: '["2"]'
@@ -57,7 +59,7 @@ describe('Fieldset', function() {
       expect(option1.querySelector('button').classList.contains('checked')).toBe(false)
       expect(option2.querySelector('button').classList.contains('checked')).toBe(true)
     });
-    
+
     it('should return string as a model', () => {
       $scope.model = {
         checkboxGroup: '["2"]'
@@ -138,17 +140,37 @@ describe('Fieldset', function() {
     });
   });
 
+  describe('when field changes', function() {
+    beforeEach(function() {
+      $scope.fields = getFields();
+      element = getCompiledDirectiveElement();
+      var formControl = element.querySelector('.form-control');
+      formControl.value = 'new';
+      formControl.dispatchEvent(new Event('input'));
+      $timeout.flush();
+    });
+    it('should trigger the onChange handler', function() {
+      expect($scope.onModelChange).toHaveBeenCalled();
+    });
+    it('should pass the handler the latest model', function() {
+      expect($scope.onModelChange).toHaveBeenCalledWith({ sortCode: 'new' });
+    });
+  });
+
   describe('when a field has refreshRequirementsOnChange: true', function() {
     beforeEach(function() {
       $scope.fields = getFields();
       element = getCompiledDirectiveElement();
       var formControl = element.querySelector('.form-control');
-      formControl.value = 'example';
+      formControl.value = 'new';
       formControl.dispatchEvent(new Event('input'));
       $timeout.flush();
     });
-    it('should trigger the handler on field change', function() {
+    it('should trigger the onRefresh handler', function() {
       expect($scope.onRefreshRequirements).toHaveBeenCalled();
+    });
+    it('should pass the handler the latest model', function() {
+      expect($scope.onRefreshRequirements).toHaveBeenCalledWith({ sortCode: 'new' });
     });
   });
 
@@ -256,7 +278,8 @@ describe('Fieldset', function() {
         validation-messages='validationMessages' \
         error-messages='errorMessages' \
         warning-messages='warningMessages' \
-        on-refresh-requirements='onRefreshRequirements()' \
+        on-model-change='onModelChange(model)' \
+        on-refresh-requirements='onRefreshRequirements(model)' \
         is-valid='isValid'> \
       </tw-fieldset>";
     var compiledElement = $compile(template)($scope);
