@@ -7,7 +7,7 @@
     "test": "node --icu-data-dir=node_modules/full-icu node_modules/.bin/jest",
     "prestart": "npm install",
     "start": "npm run less && webpack --watch --mode=development;",
-    "dev": "npm run copy:demo && live-server --port=1666 --open=demo/index.html",
+    "dev": "live-server --port=1666 --open=demo/index.html",
     "devhttps": "npm run copy:demo && live-server --port=1666 --open=demo/index.html --https=node_modules/live-server-https",
     "build": "npm run less && webpack -p && npm run copy:demo",
     "htmllint": "htmllint src/**/*.html && htmllint src/**/**/*.html && htmllint demo/**/*.html",

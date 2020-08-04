@@ -1,6 +1,5 @@
 import controller from './select.controller.js';
 import template from './select.html';
-import './select.less';
 
 const Select = {
   controller,
