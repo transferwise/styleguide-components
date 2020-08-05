@@ -30,6 +30,6 @@
     ng-click="$ctrl.onRemove()"
     role="button">
     <span ng-if="$ctrl.cancelText" ng-bind="$ctrl.cancelText"></span>
-    <span ng-if="!$ctrl.cancelText" class="icon icon-upload m-r-0"></span>
+    <tw-upload-icon ng-if="!$ctrl.cancelText" class="m-r-0"></tw-upload-icon>
   </a>
 </div>

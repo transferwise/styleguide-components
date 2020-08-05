@@ -13,8 +13,8 @@
       </div>
       <div class="media-body" ng-transclude="collapsedCard"></div>
       <div class="media-right" ng-class="{'invisible': $ctrl.empty }">
-        <span class="glyphicon hidden-xs hidden-sm anchor text-no-decoration font-weight-normal  " ng-class="{'glyphicon-chevron-up': $ctrl.open, 'glyphicon-chevron-down': !$ctrl.open}"></span>
-        <span class="glyphicon visible-xs-inline visible-sm-inline anchor text-no-decoration font-weight-normal " ng-class="{'glyphicon-chevron-right': !$ctrl.open }"></span>
+        <tw-icon name="$ctrl.open ? 'chevron-up' : 'chevron-down'" class="hidden-xs hidden-sm chevron-color"></tw-icon>
+        <tw-chevron-right ng-if="!$ctrl.open" class="visible-xs-inline visible-sm-inline chevron-color"></tw-chevron-right>
       </div>
     </div>
   </div>
@@ -28,7 +28,7 @@
         <div class="media-body">
           <hr class="m-t-0 hidden-xs hidden-sm" />
           <a href="" ng-click="$ctrl.toggle($ctrl.index)" class="visible-xs-inline-block visible-sm-inline-block text-no-decoration m-t-1 tw-card-back">
-            <span class="icon icon-left-arrow icon-xxl"></span>
+            <tw-arrow-left-icon size="24"></tw-arrow-left-icon>
           </a>
           <div ng-transclude="expandedCard"></div>
         </div>

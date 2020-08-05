@@ -7,8 +7,7 @@
         ng-src="{{$ctrl.helpImage}}"
         alt="{{$ctrl.label}}"
         class="thumbnail text-xs-center" />
-      <span ng-show="!$ctrl.helpImage"
-        class="icon icon-{{$ctrl.viewIcon}} icon-xxl"></span>
+      <tw-icon ng-show="!$ctrl.helpImage" name="$ctrl.viewIcon" size="24"></tw-icon>
     </div>
 
     <!-- control label -->

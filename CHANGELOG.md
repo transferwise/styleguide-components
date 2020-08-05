@@ -1,3 +1,7 @@
+# v7.0.1-beta.1
+
+## Migration on Icons v2 and Neptune CSS
+
 # v7.0.1
 
 ## Pass latest model as parameter to Fieldset.onRefreshRequirements

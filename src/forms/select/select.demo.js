@@ -34,9 +34,9 @@ export default angular
             { value: 3, label: 'Three' }
           ],
           icons: [
-            { value: { id: '1' }, label: 'Profile', icon: 'icon-profile' },
-            { value: { id: '2' }, label: 'Globe', icon: 'icon-globe' },
-            { value: { id: '3' }, label: 'Bank', icon: 'icon-bank' }
+            { value: { id: '1' }, label: 'Profile', icon: 'profile' },
+            { value: { id: '2' }, label: 'Globe', icon: 'globe' },
+            { value: { id: '3' }, label: 'Bank', icon: 'bank' }
           ],
           currencies: [
             { value: 'eur', label: 'Euro', currency: 'EUR' },
@@ -66,7 +66,7 @@ export default angular
           ],
           circles: [
             { value: '1', label: 'Bob Smith', circleImage: 'images/mike.jpg' },
-            { value: '2', label: 'James Davies', circleIcon: 'icon-bank' },
+            { value: '2', label: 'James Davies', circleIcon: 'bank' },
             { value: '3', label: 'Helen Williams', circleText: 'AZ' }
           ],
           disabled: [
