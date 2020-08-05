@@ -1,7 +1,6 @@
 
 import controller from './checkbox.controller.js';
 import template from './checkbox.html';
-import './checkbox.less';
 
 const Checkbox = {
   controller,
