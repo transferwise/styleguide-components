@@ -1,3 +1,6 @@
+# v7.0.2-beta.1
+## Migration on Icons v2 and Neptune CSS
+
 # v7.0.2
 ## Fix release build by correcting changelog format 
 
