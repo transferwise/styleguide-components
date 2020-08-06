@@ -1,3 +1,8 @@
+# v7.0.2
+
+## Change upload from live capture to be File instead of blob
+PersistAsync uploads from web were failing because the blob was being send up without an extension. Now we add the file extension to the file name if the extension is not present.
+
 # v7.0.1
 
 ## Pass latest model as parameter to Fieldset.onRefreshRequirements
