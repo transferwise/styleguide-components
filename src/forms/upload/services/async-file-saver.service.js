@@ -10,7 +10,7 @@ class AsyncFileSaver {
     }
     const formData = new FormData();
     const key = httpOptions.param || fieldName;
-    formData.append(key, file);
+    formData.append(key, file, file[0].name === 'blob' ? 'blob.jpeg' : undefined);
 
     const $httpOptions = prepareHttpOptions(httpOptions);
 
