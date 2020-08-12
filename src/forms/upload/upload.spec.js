@@ -197,7 +197,7 @@ describe('given an upload component', () => {
 
     it('should send the file to the asyncFileSaver', function() {
       expect(AsyncFileSaver.save).toHaveBeenCalledWith(
-        'myFile', mockFile, $scope.httpOptions, base64url
+        'myFile', mockFile, $scope.httpOptions, 'file.png'
       );
     });
 
