@@ -4,13 +4,12 @@ class AsyncFileSaver {
     this.$http = $http;
   }
 
-  save(fieldName, file, httpOptions, dataUrl) {
+  save(fieldName, file, httpOptions, fileName) {
     if (!httpOptions) {
       throw new Error('You must supply httpOptions');
     }
     const formData = new FormData();
     const key = httpOptions.param || fieldName;
-    const fileName = file.name || (dataUrl && parseFileName(dataUrl));
     formData.append(key, file, fileName);
 
     const $httpOptions = prepareHttpOptions(httpOptions);
@@ -20,12 +19,6 @@ class AsyncFileSaver {
     // For testing
     return this.$http.post($httpOptions.url, formData, $httpOptions);
   }
-}
-
-function parseFileName(dataUrl) {
-  const match = dataUrl.match(/^data:[^/]+\/([^;]+);base64,/);
-
-  return match ? `file.${match[1]}` : undefined;
 }
 
 function prepareHttpOptions($inputOptions) {

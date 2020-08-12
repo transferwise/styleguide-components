@@ -51,7 +51,7 @@ class Controller {
     if (this.httpOptions) {
       // Post file now
       this.asyncFileRead(file)
-        .then(dataUrl => this.asyncFileSave(file, dataUrl)
+        .then(dataUrl => this.asyncFileSave(file, this.parseFileName(dataUrl))
           .then(response => asyncSuccess(response, dataUrl, this)))
         .catch(error => asyncFailure(error, null, this));
     } else {
@@ -60,6 +60,12 @@ class Controller {
         .then(dataUrl => asyncSuccess(null, dataUrl, this))
         .catch(error => asyncFailure(error, null, this));
     }
+  }
+
+  parseFileName(dataUrl) {
+    const match = dataUrl.match(/^data:[^/]+\/([^;]+);base64,/);
+
+    return match ? `file.${match[1]}` : undefined;
   }
 
   asyncFileSave(file, dataUrl) {
