@@ -51,7 +51,7 @@ class Controller {
     if (this.httpOptions) {
       // Post file now
       this.asyncFileRead(file)
-        .then(dataUrl => this.asyncFileSave(file)
+        .then(dataUrl => this.asyncFileSave(file, dataUrl)
           .then(response => asyncSuccess(response, dataUrl, this)))
         .catch(error => asyncFailure(error, null, this));
     } else {
@@ -62,9 +62,9 @@ class Controller {
     }
   }
 
-  asyncFileSave(file) {
+  asyncFileSave(file, dataUrl) {
     const httpOptions = this.AsyncTasksConfig.extendHttpOptions(this.httpOptions);
-    return this.AsyncFileSaver.save(httpOptions.param || this.name, file, httpOptions);
+    return this.AsyncFileSaver.save(httpOptions.param || this.name, file, httpOptions, dataUrl);
   }
 
   asyncFileRead(file) {

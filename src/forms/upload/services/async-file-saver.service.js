@@ -4,13 +4,14 @@ class AsyncFileSaver {
     this.$http = $http;
   }
 
-  save(fieldName, file, httpOptions) {
+  save(fieldName, file, httpOptions, dataUrl) {
     if (!httpOptions) {
       throw new Error('You must supply httpOptions');
     }
     const formData = new FormData();
     const key = httpOptions.param || fieldName;
-    formData.append(key, file, file[0].name === 'blob' ? 'blob.jpeg' : undefined);
+    const fileName = file.name || (dataUrl && parseFileName(dataUrl));
+    formData.append(key, file, fileName);
 
     const $httpOptions = prepareHttpOptions(httpOptions);
 
@@ -21,6 +22,11 @@ class AsyncFileSaver {
   }
 }
 
+function parseFileName(dataUrl) {
+  const match = dataUrl.match(/^data:[^/]+\/([^;]+);base64,/);
+
+  return match ? `file.${match[1]}` : undefined;
+}
 
 function prepareHttpOptions($inputOptions) {
   const $httpOptions = angular.copy($inputOptions);
