@@ -584,12 +584,14 @@ describe("multi-upload", () => {
           expect(AsyncFileSaver.save).toHaveBeenCalledWith(
             "myFile",
             fileA,
-            $scope.httpOptions
+            $scope.httpOptions,
+            base64url
           );
           expect(AsyncFileSaver.save).toHaveBeenCalledWith(
             "myFile",
             fileB,
-            $scope.httpOptions
+            $scope.httpOptions,
+            base64url
           );
         });
 
@@ -614,12 +616,14 @@ describe("multi-upload", () => {
           expect(AsyncFileSaver.save).toHaveBeenCalledWith(
             "myFile",
             fileA,
-            $scope.httpOptions
+            $scope.httpOptions,
+            base64url
           );
           expect(AsyncFileSaver.save).toHaveBeenCalledWith(
             "myFile",
             fileB,
-            $scope.httpOptions
+            $scope.httpOptions,
+            base64url
           );
         });
 
