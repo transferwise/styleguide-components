@@ -68,9 +68,9 @@ class Controller {
     return match ? `file.${match[1]}` : undefined;
   }
 
-  asyncFileSave(file, dataUrl) {
+  asyncFileSave(file, fileName) {
     const httpOptions = this.AsyncTasksConfig.extendHttpOptions(this.httpOptions);
-    return this.AsyncFileSaver.save(httpOptions.param || this.name, file, httpOptions, dataUrl);
+    return this.AsyncFileSaver.save(httpOptions.param || this.name, file, httpOptions, fileName);
   }
 
   asyncFileRead(file) {
