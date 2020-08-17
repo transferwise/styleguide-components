@@ -1,5 +1,6 @@
-# v7.0.2-beta.1
-## Migration on Icons v2 and Neptune CSS
+# v7.0.3
+## Change upload from live capture to add the file extension if its not exist
+PersistAsync uploads from web were failing because the blob was being send up without an extension. Now we add the file extension to the file name if the extension is not present.
 
 # v7.0.2
 ## Fix release build by correcting changelog format 
