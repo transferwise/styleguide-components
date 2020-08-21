@@ -241,6 +241,17 @@ describe('Fieldset', function() {
       fields = element.querySelectorAll('tw-field');
     });
 
+    it('validation messages have fallback when not supplied', function() {
+      var sortCodeField = angular.element(fields[0]);
+
+      expect(sortCodeField.controller('twField').validationStrings.required).toBe('sortCode required');
+      expect(sortCodeField.controller('twField').validationStrings.pattern).toBe('Incorrect format');
+      expect(sortCodeField.controller('twField').validationStrings.minimum).toBe('The value is too low');
+      expect(sortCodeField.controller('twField').validationStrings.maximum).toBe('The value is too high');
+      expect(sortCodeField.controller('twField').validationStrings.minLength).toBe('The value is too short');
+      expect(sortCodeField.controller('twField').validationStrings.maxLength).toBe('The value is too long');
+    });
+
     it('should show the correct number of fields', function() {
       expect(fields.length).toBe(2);
     });
