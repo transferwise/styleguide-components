@@ -21,16 +21,14 @@ class FieldsetController {
       this.requiredFields = [];
     }
 
-    if (!this.validationMessages) {
-      this.validationMessages = {
-        required: 'Required',
-        pattern: 'Incorrect format',
-        minimum: 'The value is too low',
-        maximum: 'The value is too high',
-        minLength: 'The value is too short',
-        maxLength: 'The value is too long'
-      };
-    }
+    this.validationMessages = Object.assign({
+      required: 'Required',
+      pattern: 'Incorrect format',
+      minimum: 'The value is too low',
+      maximum: 'The value is too high',
+      minLength: 'The value is too short',
+      maxLength: 'The value is too long'
+    }, this.validationMessages);
 
     this.$scope.$watch('twFieldset.$valid', (validity) => {
       this.isValid = validity;
