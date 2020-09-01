@@ -161,8 +161,8 @@ class CameraCaptureController {
 
       this.cameraConstraints = {
         video: {
-          width: { ideal: 1600 },
-          height: { ideal: 1600 },
+          width: { ideal: 1536 },
+          height: { ideal: 2048 },
           facingMode: {
             ideal: this.guidelines.direction.toLowerCase()
           }
