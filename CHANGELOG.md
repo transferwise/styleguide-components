@@ -1,3 +1,7 @@
+# v7.0.5
+## Change requested size of images uploaded through the camera component again
+This is a hopeful fix for the occasional image corruption issue of camera images getting chopped up into 4 or 8 layers
+
 # v7.0.4
 ## Fallback to default for validation message for individual fields
 Allows setting particular custom validation messages and the rest will fallback to default
