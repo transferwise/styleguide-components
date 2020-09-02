@@ -1,3 +1,11 @@
+# v7.0.6
+## Support V2 hidden fields in requirements service, add oneOfs to select fields
+The requirements service, which maps V2 dynamic form specifications to V3, was missing support for hidden field types. This became apparent when we started to remove 'undocumented' fields, as we were removing values from hidden fields.
+
+We were also removing data from select fields, because our 'model cleaning' code expects JSON schema style 'oneOf' selects, not 'values' arrays.
+
+We now correctly map hidden fields to hidden string schemas. We now add 'oneOf' arrays next to our 'values' array to enable validation to work correctly
+
 # v7.0.5
 ## Change requested size of images uploaded through the camera component again
 This is a hopeful fix for the occasional image corruption issue of camera images getting chopped up into 4 or 8 layers
@@ -11,7 +19,7 @@ Allows setting particular custom validation messages and the rest will fallback 
 PersistAsync uploads from web were failing because the blob was being send up without an extension. Now we add the file extension to the file name if the extension is not present.
 
 # v7.0.2
-## Fix release build by correcting changelog format 
+## Fix release build by correcting changelog format
 
 # v7.0.1
 ## Pass latest model as parameter to Fieldset.onRefreshRequirements
