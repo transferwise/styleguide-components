@@ -309,16 +309,16 @@ function RequirementsService($http) {
       delete field.valuesAllowed;
     }
 
-    const convertValueToConst = value => ({ const: value.value, title: value.label });
-
     if (field.items && field.items.values && field.items.values.map) {
       field.items.values = this.prepLegacyValues(field.items.values);
       field.items.enum = field.items.values.map(option => option.value);
-      field.items.oneOf = field.items.values.map(convertValueToConst);
     }
 
     if (field.values && field.values.map) {
       field.values = this.prepLegacyValues(field.values);
+
+      const convertValueToConst = value => ({ const: value.value, title: value.label });
+
       field.oneOf = field.values.map(convertValueToConst);
     }
 

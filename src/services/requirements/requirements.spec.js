@@ -82,7 +82,6 @@ describe('Requirements Service', function() {
         checkboxGroup: {
           items: {
             values: [{ value: 1, label: "One"}],
-            oneOf: [{ const: 1, title: "One"}],
             enum: [1]
           },
           control: "checkbox-group",
@@ -282,10 +281,6 @@ describe('Requirements Service', function() {
           type: 'array',
           items: {
             enum: [1, 2],
-            oneOf: [
-              { const: 1, title: 'One' },
-              { const: 2, title: 'Two' }
-            ],
             values: [
               { value: 1, label: 'One' },
               { value: 2, label: 'Two' }
