@@ -31,38 +31,43 @@ describe('Requirements Service', function() {
     it('should convert old types to JSON schema', function() {
       var legacy = {
         typeText: { type: "text" },
+        typeHidden: { type: "hidden" },
         typeDate: { type: "date" },
         typePassword: { type: "password" },
         typeCheckbox: { type: "checkbox" },
         typeUpload: { type: "upload" },
         typeUPLOAD: { type: "UPLOAD" },
-        typeSelect: { type: "select", values: [] },
+        typeSelect: { type: "select", valuesAllowed: [{key: 1, label: "One"}] },
         typeRadio: { type: "radio", values: [], control: "select" },
         typeSelectWithRadioControl: { type: "select", values: [], control: "radio" },
       };
 
       var current = {
         typeText: { type: "string", control: "text" },
+        typeHidden: { type: "string", hidden: true, control: "hidden" },
         typeDate: { type: "string", format: "date", control: "date" },
         typePassword: { type: "string", control: "password" },
         typeCheckbox: { type: "boolean", control: "checkbox" },
         typeUpload: { type: "string", format: "base64url", control: "file" },
         typeUPLOAD: { type: "string", format: "base64url", control: "file" },
-        typeSelect: { values: [], control: "select" },
-        typeRadio: { values: [], control: "radio" },
-        typeSelectWithRadioControl: { values: [], control: "radio" },
+        typeSelect: { values: [{value: 1, label: "One"}], oneOf: [{const:1, title: "One"}], control: "select" },
+        typeRadio: { values: [], oneOf: [], control: "radio" },
+        typeSelectWithRadioControl: { values: [], oneOf: [], control: "radio" },
       };
 
       expect(service.prepFields(legacy)).toEqual(current);
     });
 
-    it('should convert old valuesAllowed to new values', function() {
+    it('should convert old valuesAllowed to new values and oneOf', function() {
       var legacy = {
         typeSelect: { type: "select", valuesAllowed: [{ key: 1, name: "One"}] }
       };
 
       var current = {
-        typeSelect: { values: [{ value: 1, label: "One"}], control: "select" }
+        typeSelect: {
+          values: [{ value: 1, label: "One"}],
+          oneOf: [{ const: 1, title: "One"}],
+          control: "select" }
       };
 
       expect(service.prepFields(legacy)).toEqual(current);

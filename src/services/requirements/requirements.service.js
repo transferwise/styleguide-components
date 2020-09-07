@@ -223,6 +223,10 @@ function RequirementsService($http) {
       case 'array':
         field.control = this.getControlForArray(field);
         break;
+      case 'hidden':
+        field.type = 'string';
+        field.hidden = true;
+        break;
       default:
     }
 
@@ -305,6 +309,10 @@ function RequirementsService($http) {
 
     if (field.values && field.values.map) {
       field.values = this.prepLegacyValues(field.values);
+
+      const convertValueToConst = value => ({ const: value.value, title: value.label });
+
+      field.oneOf = field.values.map(convertValueToConst);
     }
 
     if (field.value && !field.default) {
@@ -456,11 +464,7 @@ function RequirementsService($http) {
   // not the outline.
   // Remove when legacy producers have been upgraded (Japan eKYC live uploads).
   this.prepCameraGuidelines = (field) => {
-    if (
-      field.camera
-      && field.camera.overlay
-      && !field.camera.outline
-    ) {
+    if (field.camera && field.camera.overlay && !field.camera.outline) {
       field.camera.outline = field.camera.overlay;
       delete field.camera.overlay;
     }
