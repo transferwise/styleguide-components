@@ -81,10 +81,11 @@ describe('Requirements Service', function() {
       var current = {
         checkboxGroup: {
           items: {
-            values: [{ value: 1, label: "One"}]
+            values: [{ value: 1, label: "One"}],
+            oneOf: [{ const: 1, title: "One"}],
+            enum: [1]
           },
-          control: "select",
-          selectType: "CHECKBOX",
+          control: "checkbox-group",
           type: "array",
         }
       };
@@ -281,6 +282,10 @@ describe('Requirements Service', function() {
           type: 'array',
           items: {
             enum: [1, 2],
+            oneOf: [
+              { const: 1, title: 'One' },
+              { const: 2, title: 'Two' }
+            ],
             values: [
               { value: 1, label: 'One' },
               { value: 2, label: 'Two' }
