@@ -272,8 +272,8 @@ function fieldsetDocsController() {
         items: {
           enum: [1, 2],
           values: [
-            { value: 1, label: 'One' },
-            { value: 2, label: 'Two' }
+            { key: 1, name: 'One' },
+            { key: 2, name: 'Two' }
           ]
         }
       },

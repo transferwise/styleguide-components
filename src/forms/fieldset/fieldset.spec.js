@@ -82,7 +82,7 @@ describe('Fieldset', function() {
           control: 'checkbox-group',
           width: 'md',
           selectType: "CHECKBOX",
-          valuesAllowed: [{ value: 1, label: 'One' }, { value: 2, label: 'Two' }]
+          valuesAllowed: [{ key: 1, name: 'One' }, { key: 2, name: 'Two' }]
         }
       };
       $scope.model = {

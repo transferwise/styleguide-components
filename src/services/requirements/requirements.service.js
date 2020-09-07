@@ -307,6 +307,10 @@ function RequirementsService($http) {
       delete field.valuesAllowed;
     }
 
+    if (field.items && field.items.values && field.items.values.map) {
+      field.items.values = this.prepLegacyValues(field.items.values);
+    }
+
     if (field.values && field.values.map) {
       field.values = this.prepLegacyValues(field.values);
 
