@@ -1,3 +1,6 @@
+# v7.0.7
+## Fix checkbox values fields mapping 
+
 # v7.0.6
 ## Support V2 hidden fields in requirements service, add oneOfs to select fields
 The requirements service, which maps V2 dynamic form specifications to V3, was missing support for hidden field types. This became apparent when we started to remove 'undocumented' fields, as we were removing values from hidden fields.
