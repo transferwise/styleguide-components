@@ -1,3 +1,6 @@
+# v7.0.6-beta.1
+## Update beta with master changes
+
 # v7.0.6
 ## Support V2 hidden fields in requirements service, add oneOfs to select fields
 The requirements service, which maps V2 dynamic form specifications to V3, was missing support for hidden field types. This became apparent when we started to remove 'undocumented' fields, as we were removing values from hidden fields.
@@ -22,7 +25,6 @@ PersistAsync uploads from web were failing because the blob was being send up wi
 ## Fix release build by correcting changelog format
 
 # v7.0.1-beta.1
-
 ## Migration on Icons v2 and Neptune CSS
 
 # v7.0.1
