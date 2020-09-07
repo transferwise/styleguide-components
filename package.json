@@ -17,15 +17,17 @@
     "copy:jquery": "cp node_modules/jquery/dist/jquery.min.js demo/lib/",
     "copy:ui-router": "cp node_modules/@uirouter/angularjs/release/angular-ui-router.js demo/lib/",
     "copy:angular": "cp node_modules/angular/angular.min.js demo/lib/",
-    "copy:bootstrap": "cp node_modules/bootstrap/dist/js/bootstrap.min.js demo/lib/; cp node_modules/bootstrap/dist/css/bootstrap.css demo/lib/",
+    "copy:bootstrap-js": "cp node_modules/bootstrap/dist/js/bootstrap.min.js demo/lib/",
+    "copy:neptune-styles": "cp node_modules/@transferwise/neptune-css/dist/css/neptune.css demo/lib/; cp node_modules/@transferwise/icons/lib/styles/main.min.css demo/lib/",
+    "copy:neptune-fonts": "mkdir demo/fonts; cp node_modules/@transferwise/neptune-css/dist/fonts/*.* demo/fonts",
     "copy:flags": "cp node_modules/currency-flags/dist/currency-flags.css demo/lib/",
-    "copy:fonts": "mkdir demo/fonts; cp node_modules/bootstrap/fonts/*.* demo/fonts; cp node_modules/transferwise-iconfont/fonts/*.* demo/fonts",
-    "copy:demo": "mkdir demo/lib; npm run copy:jquery; npm run copy:angular; npm run copy:bootstrap; npm run copy:fonts; npm run copy:flags; npm run copy:ui-router;",
+    "copy:demo": "mkdir demo/lib; npm run copy:jquery; npm run copy:angular; npm run copy:bootstrap-js; npm run copy:neptune-styles; npm run copy:neptune-fonts; npm run copy:flags; npm run copy:ui-router;",
     "webpack": "webpack --watch",
     "copy-files-to-dist": "mkdir -p dist && cp package.json CHANGELOG.md README.md dist/",
     "deploy": "git-directory-deploy --directory dist --branch releases --username CircleCI --email circleci@transferwise.com",
     "deploy:demo": "gh-pages -d demo",
-    "release-to-github": "release-to-github-with-changelog --branch=releases"
+    "release-to-github": "release-to-github-with-changelog --branch=releases",
+    "deploy-for-branch": "deploy-directory-on-branch-to-gh-pages -d demo"
   },
   "repository": {
     "type": "git",
@@ -34,7 +36,7 @@
   },
   "keywords": [
     "AngularJS",
-    "Bootstrap"
+    "Neptune"
   ],
   "bugs": {
     "url": "https://github.com/transferwise/styleguide-components/issues"
@@ -45,6 +47,10 @@
     "commonmark": "^0.29.1",
     "jquery": "^3.4.1",
     "screenfull": "^5.0.2"
+  },
+  "peerDependencies": {
+    "@transferwise/icons": "^2.3.0",
+    "@transferwise/neptune-css": "beta"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -75,8 +81,10 @@
     "live-server": "^1.1.0",
     "live-server-https": "0.0.2",
     "release-to-github-with-changelog": "^1.2.2",
+    "deploy-directory-on-branch-to-gh-pages": "^0.2.8",
     "style-loader": "^0.23.1",
-    "transferwise-iconfont": "git+ssh://git@github.com/transferwise/iconfont.git",
+    "@transferwise/icons": "^2.3.0",
+    "@transferwise/neptune-css": "beta",
     "uglify-js": "^3.6.0",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.39.1",
