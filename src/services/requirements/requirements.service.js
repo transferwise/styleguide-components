@@ -196,6 +196,8 @@ function RequirementsService($http) {
       case 'select':
         if (field.selectType === 'CHECKBOX') {
           field.type = 'array';
+          field.control = this.getControlForArray(field);
+          delete field.selectType;
         } else {
           if (!field.control) {
             field.control = 'select';
@@ -305,6 +307,11 @@ function RequirementsService($http) {
         values: field.valuesAllowed
       };
       delete field.valuesAllowed;
+    }
+
+    if (field.items && field.items.values && field.items.values.map) {
+      field.items.values = this.prepLegacyValues(field.items.values);
+      field.items.enum = field.items.values.map(option => option.value);
     }
 
     if (field.values && field.values.map) {

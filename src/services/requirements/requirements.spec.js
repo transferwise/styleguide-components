@@ -73,6 +73,25 @@ describe('Requirements Service', function() {
       expect(service.prepFields(legacy)).toEqual(current);
     });
 
+    it('should convert old valuesAllowed to item values for checkbox', function() {
+      var legacy = {
+        checkboxGroup: { type: "select", control: "select", selectType: "CHECKBOX",  valuesAllowed: [{ key: 1, name: "One"}] }
+      };
+
+      var current = {
+        checkboxGroup: {
+          items: {
+            values: [{ value: 1, label: "One"}],
+            enum: [1]
+          },
+          control: "checkbox-group",
+          type: "array",
+        }
+      };
+
+      expect(service.prepFields(legacy)).toEqual(current);
+    });
+
     it('should convert old props to new', function() {
       var legacy = {
         typeText: {
