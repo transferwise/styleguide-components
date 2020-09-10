@@ -1,3 +1,8 @@
+# v8.0.0
+## Icons v2 and Neptune CSS
+
+Now this package relies on `transferwise/icon` as source of icons and `@transferwise/neptune-css` instead of `bootstrap`.
+
 # v7.0.7
 ## Fix checkbox values fields mapping 
 
