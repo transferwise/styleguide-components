@@ -8,6 +8,7 @@
 
   <script src="lib/jquery.js"></script>
   <script src="lib/angular.js"></script>
+  <script src="lib/index.js"></script>
   <script src="lib/styleguide-components.js"></script>
 
   <script src="lib/bootstrap.js"></script>
@@ -18,7 +19,7 @@
   <link type="text/css" rel="stylesheet" href="styles/examples.css" />
 
   <script>
-  angular.module('my-app', ['tw.styleguide-components'])
+  angular.module('my-app', ['tw.styleguide-components', 'tw.icons'])
   .config(['$compileProvider', function ($compileProvider) {
     $compileProvider.debugInfoEnabled(false);
   }])
