@@ -41,7 +41,8 @@ const webpackModule = {
 
 const webpackExternals = [{
   angular: 'angular',
-  'angular-mocks': 'angular-mocks'
+  'angular-mocks': 'angular-mocks',
+  '@transferwise/icons/lib/angular': '"tw.icons"'
 }];
 
 const webpackPlugins = [

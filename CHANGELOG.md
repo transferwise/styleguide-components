@@ -1,3 +1,7 @@
+# v7.0.1-beta.2
+
+## Exclude angular icons from package bundle 
+
 # v7.0.1-beta.1
 
 ## Migration on Icons v2 and Neptune CSS
