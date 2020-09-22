@@ -42,7 +42,7 @@ jobs:
           name: Deploy changes
           command: |
             npm run copy-files-to-dist
-            npm run build
+            npm run build:demo
             npm run deploy-for-branch
   release:
     <<: *defaults

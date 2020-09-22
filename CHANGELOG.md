@@ -3,6 +3,9 @@
 
 Now this package relies on `transferwise/icon` as source of icons and `@transferwise/neptune-css` instead of `bootstrap`.
 
+# v7.0.7-beta.1
+## Exclude angular icons from package bundle
+
 # v7.0.7
 ## Fix checkbox values fields mapping 
 
