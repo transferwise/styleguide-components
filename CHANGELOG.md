@@ -1,3 +1,6 @@
+# v7.0.7-beta.3
+## Revert exclusion of angular icons from package bundle
+
 # v7.0.7-beta.2
 ## Exclude angular icons from package bundle
 
