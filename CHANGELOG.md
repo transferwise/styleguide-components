@@ -1,3 +1,6 @@
+# v7.0.7-beta.4
+## Change the way we add icons to demo and into main `index.js`
+
 # v7.0.7-beta.3
 ## Revert exclusion of angular icons from package bundle
 
