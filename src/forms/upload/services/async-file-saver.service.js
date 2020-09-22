@@ -4,13 +4,13 @@ class AsyncFileSaver {
     this.$http = $http;
   }
 
-  save(fieldName, file, httpOptions) {
+  save(fieldName, file, httpOptions, fileName) {
     if (!httpOptions) {
       throw new Error('You must supply httpOptions');
     }
     const formData = new FormData();
     const key = httpOptions.param || fieldName;
-    formData.append(key, file);
+    formData.append(key, file, fileName);
 
     const $httpOptions = prepareHttpOptions(httpOptions);
 
@@ -20,7 +20,6 @@ class AsyncFileSaver {
     return this.$http.post($httpOptions.url, formData, $httpOptions);
   }
 }
-
 
 function prepareHttpOptions($inputOptions) {
   const $httpOptions = angular.copy($inputOptions);

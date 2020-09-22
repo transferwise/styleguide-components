@@ -82,7 +82,7 @@ describe('Fieldset', function() {
           control: 'checkbox-group',
           width: 'md',
           selectType: "CHECKBOX",
-          valuesAllowed: [{ value: 1, label: 'One' }, { value: 2, label: 'Two' }]
+          valuesAllowed: [{ key: 1, name: 'One' }, { key: 2, name: 'Two' }]
         }
       };
       $scope.model = {
@@ -139,6 +139,24 @@ describe('Fieldset', function() {
     it('should show the supplied error message', function() {
       var errorBlock = element.querySelector('.tw-field-sortCode .error-provided');
       expect(errorBlock.textContent.trim()).toBe($scope.errorMessages.sortCode);
+    });
+  });
+
+  describe('when only some custom validation messages are supplied', function() {
+    beforeEach(function() {
+      $scope.fields = getFields();
+      element = getCompiledDirectiveElement();
+    });
+    it('should fallback to default validation messages for remaining messages', function() {
+      var fields = element.querySelectorAll('tw-field');
+      var sortCodeField = angular.element(fields[0]);
+
+      expect(sortCodeField.controller('twField').validationStrings.required).toBe('sortCode required');
+      expect(sortCodeField.controller('twField').validationStrings.pattern).toBe('Incorrect format');
+      expect(sortCodeField.controller('twField').validationStrings.minimum).toBe('The value is too low');
+      expect(sortCodeField.controller('twField').validationStrings.maximum).toBe('The value is too high');
+      expect(sortCodeField.controller('twField').validationStrings.minLength).toBe('The value is too short');
+      expect(sortCodeField.controller('twField').validationStrings.maxLength).toBe('The value is too long');
     });
   });
 
