@@ -1,3 +1,6 @@
+# v7.0.7-beta.1
+## Exclude angular icons from package bundle 
+
 # v7.0.7
 ## Fix checkbox values fields mapping 
 
@@ -23,6 +26,9 @@ PersistAsync uploads from web were failing because the blob was being send up wi
 
 # v7.0.2
 ## Fix release build by correcting changelog format
+
+# v7.0.1-beta.1
+## Migration on Icons v2 and Neptune CSS
 
 # v7.0.1
 ## Pass latest model as parameter to Fieldset.onRefreshRequirements
