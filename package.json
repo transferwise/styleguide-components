@@ -1,6 +1,6 @@
 {
   "name": "@transferwise/styleguide-components",
-  "version": "7.0.7-beta.4",
+  "version": "8.0.0",
   "description": "TransfeWise AngularJS 1.x Styleguide Components",
   "license": "MIT",
   "scripts": {
@@ -50,7 +50,7 @@
   },
   "peerDependencies": {
     "@transferwise/icons": "^2.3.0",
-    "@transferwise/neptune-css": "beta"
+    "@transferwise/neptune-css": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -84,7 +84,7 @@
     "deploy-directory-on-branch-to-gh-pages": "^0.2.8",
     "style-loader": "^0.23.1",
     "@transferwise/icons": "^2.3.0",
-    "@transferwise/neptune-css": "beta",
+    "@transferwise/neptune-css": "^4.0.0",
     "uglify-js": "^3.6.0",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.39.1",
