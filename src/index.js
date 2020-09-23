@@ -27,5 +27,6 @@ export default angular.module('tw.styleguide-components', [
   Loading,
   Navigation,
   OldFormComponentModule,
-  OldFormValidationModule
+  OldFormValidationModule,
+  'tw.icons'
 ]).name;

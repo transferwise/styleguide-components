@@ -1,3 +1,5 @@
+import { TwIconsModule } from '@transferwise/icons/lib/angular';
+
 import Forms from './forms/demo.js';
 import Formatting from './formatting/demo.js';
 import Validation from './validation/demo.js';
@@ -13,7 +15,8 @@ const module = angular.module('tw.styleguide.demo', [
   Loading,
   Layout,
   Help,
-  JsonSchema
+  JsonSchema,
+  TwIconsModule
 ]);
 
 class PageController {

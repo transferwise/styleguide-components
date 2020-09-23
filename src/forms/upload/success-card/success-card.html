@@ -12,8 +12,7 @@
     alt="OK"
     class="thumbnail m-b-3" />
 
-  <span class="icon icon-pdf icon-xxl"
-    ng-if="!$ctrl.isImage || !$ctrl.data"></span>
+  <tw-document-icon ng-if="!$ctrl.isImage || !$ctrl.data" size="24"></tw-document-icon>
 
   <p class="m-b-2 text-ellipsis">{{ $ctrl.fileName }}</p>
 
@@ -21,7 +20,7 @@
   <p class="m-t-2 m-b-0">
     <a href="" ng-click="$ctrl.onCancel()">
       <span ng-if="$ctrl.cancelText" ng-bind="$ctrl.cancelText"></span>
-      <span ng-if="!$ctrl.cancelText" class="icon icon-upload m-r-0"></span>
+      <tw-upload-icon ng-if="!$ctrl.cancelText" class="m-r-0"></tw-upload-icon>
     </a>
   </p>
 </div>
