@@ -402,4 +402,38 @@ describe('Given a library for returning the valid parts of a model based on a sc
       expect(result).toEqual(model);
     });
   });
+
+  describe('when cleaning a simple array schema', () => {
+    beforeEach(() => {
+      schema = {
+        type: 'array',
+        items: {
+          type: 'string'
+        },
+      };
+    });
+
+    it('should return an array containing the valid items', () => {
+      expect(getValidModelParts(['a', 'b'], schema)).toEqual(['a', 'b']);
+      expect(getValidModelParts(['a', 1], schema)).toEqual(['a']);
+      expect(getValidModelParts([1, true, {}], schema)).toEqual([]);
+    });
+  });
+
+  describe('when cleaning an array of enums schema', () => {
+    beforeEach(() => {
+      schema = {
+        type: 'array',
+        items: {
+          enum: ['a', 'b']
+        },
+      };
+    });
+
+    it('should return an array containing the valid items', () => {
+      expect(getValidModelParts(['a', 'b'], schema)).toEqual(['a', 'b']);
+      expect(getValidModelParts(['a', 'b', 'c'], schema)).toEqual(['a', 'b']);
+      expect(getValidModelParts([1, true, {}], schema)).toEqual([]);
+    });
+  });
 });

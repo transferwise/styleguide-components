@@ -75,7 +75,12 @@ describe('Requirements Service', function() {
 
     it('should convert old valuesAllowed to item values for checkbox', function() {
       var legacy = {
-        checkboxGroup: { type: "select", control: "select", selectType: "CHECKBOX",  valuesAllowed: [{ key: 1, name: "One"}] }
+        checkboxGroup: {
+          type: "select",
+          control: "select",
+          selectType: "CHECKBOX",
+          valuesAllowed: [{ key: 1, name: "One"}]
+        }
       };
 
       var current = {
