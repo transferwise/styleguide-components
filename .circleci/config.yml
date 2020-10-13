@@ -95,6 +95,7 @@ jobs:
             npm run release-to-github
             npm publish dist/ --access=public --tag beta
             npm run deploy:demo
+
 workflows:
   version: 2
   build_and_publish:
