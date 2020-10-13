@@ -40,7 +40,7 @@ jobs:
             mkdir ~/.ssh
             ssh-keyscan github.com >> ~/.ssh/known_hosts
             git config --global user.email "circleci@transferwise.com"
-            git config --global user.name "tw-circleci"
+            git config --global user.name "CircleCI"
       - run:
           name: Deploy changes
           command: |
@@ -61,7 +61,7 @@ jobs:
             mkdir ~/.ssh
             ssh-keyscan github.com >> ~/.ssh/known_hosts
             git config --global user.email "circleci@transferwise.com"
-            git config --global user.name "tw-circleci"
+            git config --global user.name "CircleCI"
       - run:
           name: Release latest version to production
           command: |
@@ -74,40 +74,40 @@ jobs:
   beta-release:
     <<: *defaults
     steps:
-    - attach_workspace:
-        at: ~/styleguide-components
-    - run:
-        name: Setup npm token
-        command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN_PUBLISH" >> ~/.npmrc
-    - run:
-        name: Config github
-        command: |
-          mkdir ~/.ssh
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          git config --global user.email "circleci@transferwise.com"
-          git config --global user.name "tw-circleci"
-    - run:
-        name: Release beta version
-        command: |
-          npm run copy-files-to-dist
-          npm run build
-          npm run deploy
-          npm run release-to-github
-          npm publish dist/ --access=public --tag beta
-          npm run deploy:demo
+      - attach_workspace:
+          at: ~/styleguide-components
+      - run:
+          name: Setup npm token
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN_PUBLISH" >> ~/.npmrc
+      - run:
+          name: Config github
+          command: |
+            mkdir ~/.ssh
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+            git config --global user.email "circleci@transferwise.com"
+            git config --global user.name "CircleCI"
+      - run:
+          name: Release beta version
+          command: |
+            npm run copy-files-to-dist
+            npm run build
+            npm run deploy
+            npm run release-to-github
+            npm publish dist/ --access=public --tag beta
+            npm run deploy:demo
 workflows:
   version: 2
   build_and_publish:
     jobs:
       - test:
-          context: frontend-deploy-app
+          context: frontend-build
           filters:
             branches:
               ignore:
                 - gh-pages
                 - releases
       - deploy:
-          context: frontend-deploy-app
+          context: frontend-build
           requires:
             - test
           filters:
@@ -116,7 +116,7 @@ workflows:
                 - gh-pages
                 - master
       - release:
-          context: frontend-deploy-library
+          context: frontend-publish
           requires:
             - test
           filters:
@@ -124,7 +124,7 @@ workflows:
               only:
                 - master
       - beta-release:
-          context: frontend-deploy-library
+          context: frontend-publish
           requires:
             - test
           filters:
