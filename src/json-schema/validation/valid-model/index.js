@@ -69,7 +69,7 @@ function cleanModelWithArraySchema(model, schema) {
       .map(itemModel => getValidModelParts(itemModel, schema.items))
       .filter(itemModel => !isNull(itemModel));
   }
-  return null;
+  return [];
 }
 
 function cleanModelWithStringSchema(model) {
