@@ -420,6 +420,7 @@ describe('Given a library for returning the valid parts of a model based on a sc
       expect(getValidModelParts({}, schema)).toEqual([]);
       expect(getValidModelParts('a', schema)).toEqual([]);
       expect(getValidModelParts(1, schema)).toEqual([]);
+      expect(getValidModelParts(true, schema)).toEqual([]);
     });
   });
 
@@ -440,6 +441,7 @@ describe('Given a library for returning the valid parts of a model based on a sc
       expect(getValidModelParts({}, schema)).toEqual([]);
       expect(getValidModelParts('a', schema)).toEqual([]);
       expect(getValidModelParts(1, schema)).toEqual([]);
+      expect(getValidModelParts(true, schema)).toEqual([]);
     });
   });
 });
