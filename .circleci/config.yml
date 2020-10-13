@@ -4,7 +4,6 @@ defaults: &defaults
   working_directory: ~/styleguide-components
   docker:
     - image: circleci/node:lts-browsers
-  resource_class: large
 
 jobs:
   test:
