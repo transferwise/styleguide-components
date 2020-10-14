@@ -415,8 +415,9 @@ describe('Given a library for returning the valid parts of a model based on a sc
 
     describe('and the model contains valid values', () => {
       it('should return the original array', () => {
-        expect(getValidModelParts(['a', 'b'], schema)).toEqual(['a', 'b']);  
+        expect(getValidModelParts(['a', 'b'], schema)).toEqual(['a', 'b']);
       });
+    });
 
     describe('and the model contains invalid values', () => {
       it('should remove the invalid values', () => {
@@ -447,6 +448,9 @@ describe('Given a library for returning the valid parts of a model based on a sc
 
     it('should return an array containing the valid items', () => {
       expect(getValidModelParts(['a', 'b'], schema)).toEqual(['a', 'b']);
+    });
+
+    it('should remove items not in the enum set', () => {
       expect(getValidModelParts(['a', 'b', 'c'], schema)).toEqual(['a', 'b']);
       expect(getValidModelParts([1, true, {}], schema)).toEqual([]);
     });
