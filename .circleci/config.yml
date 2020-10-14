@@ -40,7 +40,7 @@ jobs:
             mkdir ~/.ssh
             ssh-keyscan github.com >> ~/.ssh/known_hosts
             git config --global user.email "circleci@transferwise.com"
-            git config --global user.name "CircleCI"
+            git config --global user.name "tw-circleci"
       - run:
           name: Deploy changes
           command: |
@@ -61,7 +61,7 @@ jobs:
             mkdir ~/.ssh
             ssh-keyscan github.com >> ~/.ssh/known_hosts
             git config --global user.email "circleci@transferwise.com"
-            git config --global user.name "CircleCI"
+            git config --global user.name "tw-circleci"
       - run:
           name: Release latest version to production
           command: |
@@ -85,7 +85,7 @@ jobs:
             mkdir ~/.ssh
             ssh-keyscan github.com >> ~/.ssh/known_hosts
             git config --global user.email "circleci@transferwise.com"
-            git config --global user.name "CircleCI"
+            git config --global user.name "tw-circleci"
       - run:
           name: Release beta version
           command: |
