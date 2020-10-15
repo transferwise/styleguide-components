@@ -101,14 +101,14 @@ workflows:
   build_and_publish:
     jobs:
       - test:
-          context: frontend-deploy-app
+          context: frontend-build
           filters:
             branches:
               ignore:
                 - gh-pages
                 - releases
       - deploy:
-          context: frontend-deploy-app
+          context: frontend-build
           requires:
             - test
           filters:
@@ -117,7 +117,7 @@ workflows:
                 - gh-pages
                 - master
       - release:
-          context: frontend-deploy-library
+          context: frontend-build
           requires:
             - test
           filters:
@@ -125,7 +125,7 @@ workflows:
               only:
                 - master
       - beta-release:
-          context: frontend-deploy-library
+          context: frontend-build
           requires:
             - test
           filters:
