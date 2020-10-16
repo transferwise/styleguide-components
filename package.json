@@ -43,7 +43,7 @@
   },
   "homepage": "https://github.com/transferwise/styleguide-components",
   "dependencies": {
-    "angular": "~1.5.10",
+    "angular": "~1.8.0",
     "commonmark": "^0.29.1",
     "jquery": "^3.4.1",
     "screenfull": "^5.0.2"
