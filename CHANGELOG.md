@@ -1,3 +1,6 @@
+# v8.0.1
+## Fix behaviour of model validation on array schemas
+
 # v8.0.0
 ## Icons v2 and Neptune CSS
 
@@ -13,10 +16,10 @@ Now this package relies on `transferwise/icon` as source of icons and `@transfer
 ## Exclude angular icons from package bundle
 
 # v7.0.7-beta.1
-## Exclude angular icons from package bundle 
+## Exclude angular icons from package bundle
 
 # v7.0.7
-## Fix checkbox values fields mapping 
+## Fix checkbox values fields mapping
 
 # v7.0.6
 ## Support V2 hidden fields in requirements service, add oneOfs to select fields
