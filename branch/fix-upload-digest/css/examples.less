@@ -1,0 +1,56 @@
+pre {
+  border: 0;
+  background-color: transparent;
+  padding: 0;
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.status-messages {
+  display: none;
+}
+.touched, .untouched, .pristine, .dirty {
+  display: none;
+}
+.ng-touched ~ .status-messages > .touched,
+.ng-untouched ~ .status-messages > .untouched,
+.ng-pristine ~ .status-messages > .pristine,
+.ng-dirty ~ .status-messages > .dirty {
+  display: block;
+}
+
+.alert.affix {
+  position: relative !important;
+  color: #28b862;
+  background-color: #d6f5e2;
+  border-color: #2ed06e;
+}
+
+
+ng-transclude.error-messages,
+.error-messages:empty {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Delete below after Bootstrap update */
+.btn .control-label {
+  font-size: 14px;
+}
+
+.loader-flag-outline,
+.loader-flag-fill {
+  height: 52px;
+  width: 52px;
+}
+/* Delete above after Bootstrap update */
+
+@media (max-width: 991px) {
+  nav.affix {
+    position: relative !important;
+  }
+}
+pre {
+  font-size: 11px;
+  line-height: 16px;
+}
