@@ -1,3 +1,6 @@
+# v8.0.2
+## Force a digest when a file input value changes
+
 # v8.0.1
 ## Fix behaviour of model validation on array schemas
 
