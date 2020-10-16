@@ -20,8 +20,8 @@ class FileInputController {
         this.onUserInput();
         // TODO remove this log once digest bug fully resolved.
         console.log('DEBUG: file input value changed'); // eslint-disable-line
-        // Here we force a digest, because we were seeing failures to begin
-        // processing the file when used in other projects.
+        // Here, we force a digest because we were seeing failures to begin
+        // processing when used in other projects.
         if ($scope.$root.$$phase !== '$apply' && $scope.$root.$$phase !== '$digest') {
           $scope.$apply();
         }
