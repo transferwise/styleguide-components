@@ -1,3 +1,6 @@
+# v8.0.3
+## Fix cancel and confirm buttons for camera upload component
+
 # v8.0.2
 ## Force a digest when a file input value changes
 
