@@ -5,8 +5,8 @@
 
   <label class="fixed-bottom camera-ctrl-bar">
     <span class="camera-ctrl-box-small">
-      <tw-cross-icon id="video-cancel" class="camera-ctrl-btn-small camera-ctrl-btn-cancel" ng-if="$ctrl.mode === 'capture'" ng-click="$ctrl.onCancelBtnClick()"></tw-cross-icon>
-      <tw-cross-icon id="capture-cancel" class="camera-ctrl-btn-small camera-ctrl-btn-cancel" ng-if="$ctrl.mode === 'confirm'" ng-click="$ctrl.onRecaptureBtnClick()"></tw-cross-icon>
+      <tw-cross-icon id="video-cancel" size="24" class="camera-ctrl-btn-small camera-ctrl-btn-cancel" ng-if="$ctrl.mode === 'capture'" ng-click="$ctrl.onCancelBtnClick()"></tw-cross-icon>
+      <tw-cross-icon id="capture-cancel" size="24" class="camera-ctrl-btn-small camera-ctrl-btn-cancel" ng-if="$ctrl.mode === 'confirm'" ng-click="$ctrl.onRecaptureBtnClick()"></tw-cross-icon>
     </span>
     <span class="camera-ctrl-box-big">
       <span id="video-confirm" class="camera-ctrl-btn-big" ng-if="$ctrl.mode === 'capture'" ng-click="$ctrl.onCaptureBtnClick()">
@@ -14,7 +14,7 @@
       </span>
     </span>
     <span class="camera-ctrl-box-small">
-      <tw-tick-icon id="capture-confirm" class="camera-ctrl-btn-small camera-ctrl-btn-confirm" ng-if="$ctrl.mode === 'confirm'" ng-click="$ctrl.onUploadBtnClick()"></tw-tick-icon>
+      <tw-check-icon id="capture-confirm" size="24" class="camera-ctrl-btn-small camera-ctrl-btn-confirm" ng-if="$ctrl.mode === 'confirm'" ng-click="$ctrl.onUploadBtnClick()"></tw-check-icon>
     </span>
   </label>
 </div>

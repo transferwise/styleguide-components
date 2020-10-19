@@ -2,7 +2,7 @@
 AngularJS components for TransferWise Bootstrap.  The repo provides form controls,
 dynamic form components, validation, and some styling directives.
 
-Live demo and documentation: http://transferwise.github.io/styleguide-components/
+Live demo and documentation: https://transferwise.github.io/styleguide-components/
 
 For detailed documentation on how to use JSON schema dynamic forms: https://transferwise.github.io/styleguide-components/requirements.html
 
@@ -30,9 +30,14 @@ angular.module('my-app', ['tw.styleguide-components']);
 Clone the project and run `npm start`, this will build the project and set up a
 watch for changes.
 
-To run the local server with live reload you can run the following:
+To run the local server with live reload, you can run the following:
 ```
 npm run dev
+```
+
+To run the local server with live reload to view components requiring camera permissions, you can run the following:
+```
+npm run devhttps
 ```
 
 ### Testing
