@@ -122,7 +122,7 @@ describe('given a Card Capture component', () => {
           compileComponent();
         })
 
-        it('should call captureFromMedia from MediaApiService with true when camera button is clicked', () => {
+        it('should call captureFromMedia from MediaApiService with false when camera button is clicked', () => {
           findCameraButton().click();
           expect(MediaApiService.captureFromMedia).toHaveBeenCalledWith(false);
         })
