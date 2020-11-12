@@ -35,7 +35,7 @@
 
   <!-- file upload -->
   <tw-upload-button
-    ng-if="!$ctrl.isLiveCameraUpload"
+    ng-if="!($ctrl.isLiveCameraUpload || $ctrl.isMediaUpload)"
     name="$ctrl.name"
     label="$ctrl.buttonText"
     accept="$ctrl.accept"
@@ -44,9 +44,9 @@
     on-capture="$ctrl.onButtonCapture(files)">
   </tw-upload-button>
 
-  <!-- camera only upload -->
+  <!-- camera only or media only upload -->
   <tw-camera-button
-    ng-if="$ctrl.isLiveCameraUpload"
+    ng-if="$ctrl.isLiveCameraUpload || $ctrl.isMediaUpload"
     label="$ctrl.buttonText"
     disabled="$ctrl.ngDisabled"
     on-click="$ctrl.onCameraButtonClick()">
