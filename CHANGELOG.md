@@ -1,3 +1,6 @@
+# v8.1.0
+## Add Google microapp's Media Api support for file upload
+
 # v8.0.3
 ## Fix cancel and confirm buttons for camera upload component
 
