@@ -1,0 +1,141 @@
+{
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "legalEntityType": {
+          "title": "Recipient type",
+          "type": "string",
+          "values": [
+            {"value": "person", "label": "A person"},
+            {"value": "business", "label": "A business"}
+          ],
+          "default": "person"
+        },
+        "email": {
+          "title": "What's their email address?",
+          "type": "string",
+          "format": "email"
+        }
+      },
+      "required": ["legalEntityType", "email"]
+    },
+    {
+      "title": "Where is your recipient based?",
+      "oneOf": [{
+        "type": "object",
+        "title": "In the US",
+        "properties": {
+          "type": {
+            "enum": ["aba"],
+            "default": "aba"
+          },
+          "name": {
+            "type": "object",
+            "properties": {
+              "fullName": {
+                "type": "string",
+                "title": "Recipient's full name"
+              }
+            },
+            "required": ["fullName"]
+          },
+          "details": {
+            "type": "object",
+            "properties": {
+              "aba": {
+                "type": "string",
+                "title": "ABA"
+              }
+            },
+            "required": ["aba"]
+          }
+        },
+        "required": ["type", "name", "details"]
+      },{
+        "title": "Outside of the US",
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": ["globalusd"],
+            "default": "globalusd"
+          },
+          "name": {
+            "type": "object",
+            "properties": {
+              "fullName": {
+                "title": "Recipient's full name",
+                "type": "string"
+              }
+            },
+            "required": ["fullName"]
+          },
+          "details": {
+            "type": "object",
+            "properties": {
+              "bankCountry": {
+                "type": "string",
+                "title": "Which country is the bank in?",
+                "control": "select",
+                "values": [
+                  {"value": "GB", "label": "United Kingdom"},
+                  {"value": "US", "label": "United States"}
+                ],
+                "default": "GB"
+              },
+              "iban": {
+                "type": "string",
+                "title": "IBAN"
+              }
+            },
+            "required": ["bankCountry", "iban"]
+          },
+          "address": {
+            "type": "object",
+            "title": "Recipients Address",
+            "properties": {
+              "streetAddress": {
+                "type": "string",
+                "title": "Street address"
+              },
+              "city": {
+                "type": "string",
+                "title": "City",
+                "width": "md"
+              },
+              "postalCode": {
+                "type": "string",
+                "title": "Zip / Postal code",
+                "width": "md"
+              },
+              "country": {
+                "type": "string",
+                "control": "select",
+                "values": [
+                  {"value": "GB", "label": "United Kingdom"},
+                  {"value": "US", "label": "United States"}
+                ],
+                "default": "US"
+              }
+            },
+            "required": ["streetAddress", "city", "postalCode", "country"]
+          }
+        },
+        "required": ["type", "name", "details"],
+        "help": {
+          "warning": "To send USD outside the US, we need to use the SWIFT network.  It's more expensive and slower, so it costs 3.20 USD extra, and the transfer might take a day os two longer.  Please also note that the intermediary banks and your recipient's bank might charge extra fees.  Learn more."
+        }
+      },{
+        "type": "object",
+        "title": "Don't have their bank details?",
+        "description": "No problem, we can send them an email to collect the money",
+        "properties": {
+          "type": {
+            "enum": ["email"]
+          }
+        },
+        "required": "type"
+      }]
+    }
+  ]
+}
