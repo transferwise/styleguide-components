@@ -97,7 +97,7 @@ describe('Fieldset', function() {
     });
   });
 
-  describe('when some fields are required', function() {
+  describe('when some fields are required and values missing', function() {
     var fields;
     beforeEach(function() {
       $scope.fields = getFields();
@@ -113,6 +113,23 @@ describe('Fieldset', function() {
     it('should not pass required to the fields that were not required', function() {
       var ibanField = angular.element(fields[1]);
       expect(ibanField.controller('twField').required).toBe(false);
+    });
+
+    it('should set isValid to false', function() {
+      expect($scope.isValid).toBe(false);
+    });
+
+    describe('when the required field values are added', function() {
+      beforeEach(function() {
+        var sortInput = element.querySelector('input');
+        sortInput.value = "123456";
+        sortInput.dispatchEvent(new Event('input'));
+        $timeout.flush();
+      });
+
+      it('should change isValid to true', function() {
+        expect($scope.isValid).toEqual(true);
+      });
     });
   });
 
@@ -294,6 +311,8 @@ describe('Fieldset', function() {
       expect($scope.onModelChange).toHaveBeenCalledWith({ sortCode: '123456' });
     });
   });
+
+
 
   function getCompiledDirectiveElement() {
     var template = " \
