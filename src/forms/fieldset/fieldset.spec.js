@@ -312,8 +312,6 @@ describe('Fieldset', function() {
     });
   });
 
-
-
   function getCompiledDirectiveElement() {
     var template = " \
       <tw-fieldset \
