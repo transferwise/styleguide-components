@@ -1,3 +1,7 @@
+# v8.1.1
+## Changes twFieldset to use JSON schema style validation
+Previously the two-way bound isValid property was set using angular's ngForm directive. However, this stopped working when we changed the internal validation to avoid using the ngModel pipeline (which was suppressing invalid values from being broadcast).
+
 # v8.1.0
 ## Add Google microapp's Media Api support for file upload
 

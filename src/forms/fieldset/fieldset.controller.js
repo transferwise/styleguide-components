@@ -1,6 +1,7 @@
 import angular from 'angular';
 import { getValidModelParts } from '../../json-schema/validation/valid-model';
 import { isUndefined } from '../../json-schema/validation/type-validators';
+import { isValidSchema } from '../../json-schema/validation/schema-validators';
 
 class FieldsetController {
   constructor(TwRequirementsService, $scope, $timeout) {
@@ -32,12 +33,7 @@ class FieldsetController {
 
     this.validationMessages = { ...defaultMessages, ...this.validationMessages };
 
-    this.$scope.$watch('twFieldset.$valid', (validity) => {
-      this.isValid = validity;
-    });
-
     this.submitted = false;
-
     // TODO can we add asyncvalidator here? - prob not
   }
 
@@ -79,11 +75,14 @@ class FieldsetController {
     if (!this.requiredFields || !this.requiredFields.length) {
       this.requiredFields = this.RequirementsService.getRequiredFields(this.fields);
     }
+
+    this.validate();
   }
 
   onPropsModelChange(modelChanges) {
     // When the model changes convert array strings to real arrays (for checkbox-group)
     this.internalModel = this.parseArrayStringsInModel(modelChanges.currentValue);
+    this.validate();
   }
 
   /**
@@ -156,6 +155,8 @@ class FieldsetController {
         }
       }
 
+      this.validate();
+
       if (this.onModelChange) {
         this.onModelChange({ model: this.model });
       }
@@ -164,6 +165,15 @@ class FieldsetController {
         this.onRefreshRequirements({ model: this.model });
       }
     });
+  }
+
+  validate() {
+    const schema = {
+      type: 'object',
+      properties: this.fields
+    };
+
+    this.isValid = isValidSchema(this.model, schema);
   }
 
   refreshRequirements() {
