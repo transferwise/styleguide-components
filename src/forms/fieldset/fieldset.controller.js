@@ -17,7 +17,6 @@ class FieldsetController {
 
     this.internalModel = this.parseArrayStringsInModel(this.model);
 
-
     if (!this.requiredFields) {
       this.requiredFields = [];
     }
@@ -59,6 +58,12 @@ class FieldsetController {
       this.validationMessages
     );
 
+    if (!this.requiredFields || !this.requiredFields.length) {
+      this.requiredFields = this.RequirementsService.getRequiredFields(this.fields);
+    }
+
+    this.validate();
+
     // Remove any model values that are now invalid
     const oldModel = this.internalModel;
     const newModel = getValidModelParts(oldModel, convertFieldsToObject(this.fields));
@@ -67,16 +72,13 @@ class FieldsetController {
     if (!isUndefined(oldModel) && !angular.equals(newModel, oldModel)) {
       this.internalModel = newModel;
       this.model = newModel;
+
+      this.validate(); // Revalidate if the model changed
+
       if (this.onModelChange) {
-        this.onModelChange({ model: newModel });
+        this.onModelChange({ model: newModel, isValid: this.isValid });
       }
     }
-
-    if (!this.requiredFields || !this.requiredFields.length) {
-      this.requiredFields = this.RequirementsService.getRequiredFields(this.fields);
-    }
-
-    this.validate();
   }
 
   onPropsModelChange(modelChanges) {
@@ -158,7 +160,7 @@ class FieldsetController {
       this.validate();
 
       if (this.onModelChange) {
-        this.onModelChange({ model: this.model });
+        this.onModelChange({ model: this.model, isValid: this.isValid });
       }
 
       if (field.refreshRequirementsOnChange && this.onRefreshRequirements) {
@@ -173,7 +175,7 @@ class FieldsetController {
       properties: this.fields
     };
 
-    this.isValid = isValidSchema(this.model, schema);
+    this.isValid = isValidSchema(this.internalModel, schema);
   }
 
   refreshRequirements() {
