@@ -110,6 +110,7 @@ describe('Fieldset', function() {
       var sortCodeField = angular.element(fields[0]);
       expect(sortCodeField.controller('twField').required).toBe(true);
     });
+
     it('should not pass required to the fields that were not required', function() {
       var ibanField = angular.element(fields[1]);
       expect(ibanField.controller('twField').required).toBe(false);
@@ -119,16 +120,37 @@ describe('Fieldset', function() {
       expect($scope.isValid).toBe(false);
     });
 
-    describe('when the required field values are added', function() {
+    describe('when the required field values are given valid values', function() {
       beforeEach(function() {
         var sortInput = element.querySelector('input');
-        sortInput.value = "123456";
+        sortInput.value = '123456';
         sortInput.dispatchEvent(new Event('input'));
         $timeout.flush();
       });
 
       it('should change isValid to true', function() {
         expect($scope.isValid).toEqual(true);
+      });
+
+      it('should trigger the change handler with correct validity', function() {
+        expect($scope.onModelChange).toHaveBeenCalledWith({ sortCode: '123456' }, true);
+      });
+    });
+
+    describe('when the required field values are given invalid values', function() {
+      beforeEach(function() {
+        var sortInput = element.querySelector('input');
+        sortInput.value = '12';
+        sortInput.dispatchEvent(new Event('input'));
+        $timeout.flush();
+      });
+
+      it('should change isValid to true', function() {
+        expect($scope.isValid).toEqual(false);
+      });
+
+      it('should trigger the change handler with correct validity', function() {
+        expect($scope.onModelChange).toHaveBeenCalledWith({ sortCode: '12' }, false);
       });
     });
   });
@@ -308,7 +330,7 @@ describe('Fieldset', function() {
       expect($scope.model).toEqual({ sortCode: '123456' });
     });
     it('should broadcast a new version of the model with invalid values removed', function() {
-      expect($scope.onModelChange).toHaveBeenCalledWith({ sortCode: '123456' });
+      expect($scope.onModelChange).toHaveBeenCalledWith({ sortCode: '123456' }, true);
     });
   });
 
@@ -321,7 +343,7 @@ describe('Fieldset', function() {
         validation-messages='validationMessages' \
         error-messages='errorMessages' \
         warning-messages='warningMessages' \
-        on-model-change='onModelChange(model)' \
+        on-model-change='onModelChange(model, isValid)' \
         on-refresh-requirements='onRefreshRequirements(model)' \
         is-valid='isValid'> \
       </tw-fieldset>";

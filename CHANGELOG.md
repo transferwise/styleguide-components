@@ -1,3 +1,7 @@
+# v8.1.2
+## twFieldset now sends validity as a second parameter in onModelChange
+Previously validity was communicated by the two-way bound isValid component prop. This was being misused by some consumers to attempt to set internal validity.  We now additionally broadcast validity in the onModelChange callback for a clearer API.
+
 # v8.1.1
 ## Changes twFieldset to use JSON schema style validation
 Previously the two-way bound isValid property was set using angular's ngForm directive. However, this stopped working when we changed the internal validation to avoid using the ngModel pipeline (which was suppressing invalid values from being broadcast).
