@@ -1,22 +1,20 @@
 function getMockComponent(name) {
   function mockComponentFactory($provide) {
-    (mockComponentFactory.templateText = name + 'content'),
+    mockComponentFactory.templateText = `${name}Content`;
+    mockComponentFactory.name = name;
 
-    (mockComponentFactory.name = name);
-
-    $provide.decorator(name + 'Directive', function($delegate) {
+    $provide.decorator(`${name} Directive`, $delegate => {
       const directive = $delegate[0];
 
       if (directive.templateUrl) {
         delete directive.templateUrl;
       }
 
-      directive.compile = function() {};
+      directive.compile = () => {};
 
-      directive.template =
-        '<div>' + mockComponentFactory.templateText + '</div>';
+      directive.template = `<div>${mockComponentFactory.templateText}</div>`;
 
-      directive.controller = function($attrs) {
+      directive.controller = $attrs => {
         mockComponentFactory.attrs = $attrs;
         mockComponentFactory.bindings = this;
       };

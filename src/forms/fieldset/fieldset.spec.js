@@ -24,13 +24,18 @@ describe('Fieldset', function() {
     jest.spyOn($scope, 'onModelChange').mockImplementation(() => {});
   });
 
-  describe('when given an array of fields', function() {
+  describe('when initialised with an array of fields', function() {
     beforeEach(function() {
       $scope.fields = getFields();
       element = getCompiledDirectiveElement();
     });
+
     it('should show the correct number of fields', function() {
       expect(element.querySelectorAll('tw-field').length).toBe(2);
+    });
+
+    it('should trigger an onChange with initial model and validity', function() {
+      expect($scope.onModelChange).toHaveBeenCalledWith({}, true);
     });
   });
 
