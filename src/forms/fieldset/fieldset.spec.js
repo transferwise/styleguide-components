@@ -44,16 +44,17 @@ describe('Fieldset', function() {
         items: {
           enum: [1, 2],
           values: [{ value: 1, label: 'One' }, { value: 2, label: 'Two' }]
-        }
+        },
+        minItems: 2
       };
       $scope.fields = { checkboxGroup };
-    });
-
-    it('should render preselected value', () => {
       $scope.model = {
         checkboxGroup: '[2]'
       };
       element = getCompiledDirectiveElement();
+    });
+
+    it('should render preselected value', () => {
       const [option1, option2] = element.querySelectorAll('.checkbox label');
       expect(option1.textContent.trim()).toBe('One');
       expect(option2.textContent.trim()).toBe('Two');
@@ -61,20 +62,49 @@ describe('Fieldset', function() {
       expect(option2.querySelector('button').classList.contains('checked')).toBe(true)
     });
 
-    it('should return string as a model', () => {
-      $scope.model = {
-        checkboxGroup: '[2]'
-      };
-      element = getCompiledDirectiveElement();
-      const button = element.querySelector('.checkbox label button');
-      button.dispatchEvent(new Event('click'));
-      $timeout.flush();
-      expect($scope.model).toEqual({
-        checkboxGroup: '[1,2]'
+    describe('when a checkbox is clicked', () => {
+      beforeEach(() => {
+        const button = element.querySelector('.checkbox label button');
+        button.dispatchEvent(new Event('click'));
+        $timeout.flush();
+      });
+
+      it('should bind the model value as a string', () => {
+        // This is required as V2 only accepts string value submissions
+        // The string will be parsed on the server.
+        expect($scope.model).toEqual({
+          checkboxGroup: '[1,2]'
+        });
+      });
+
+      it('should trigger onModelChange ', () => {
+        expect($scope.onModelChange).toHaveBeenCalledWith({ checkboxGroup: '[1,2]' }, true);
       });
     });
 
-    it('should render legacy data structure properly', () => {
+    describe('when a checkbox is clicked and the control becomes invalid', () => {
+      beforeEach(() => {
+        const button = element.querySelectorAll('.checkbox label button')[1];
+        button.dispatchEvent(new Event('click'));
+        $timeout.flush();
+      });
+
+      it('should bind the model value as a string', () => {
+        // This is required as V2 only accepts string value submissions
+        // The string will be parsed on the server.
+        expect($scope.model).toEqual({
+          checkboxGroup: '[]'
+        });
+      });
+
+      it('should trigger onModelChange ', () => {
+        expect($scope.onModelChange).toHaveBeenCalledWith({ checkboxGroup: '[]' }, false);
+      });
+    });
+  });
+
+  describe('when redndering a legacy style checkbox group', () => {
+    beforeEach(() => {
       $scope.fields = {
         checkboxGroup: {
           title: 'Checkbox Group',
@@ -89,6 +119,9 @@ describe('Fieldset', function() {
         checkboxGroup: '[2]'
       };
       element = getCompiledDirectiveElement();
+    });
+
+    it('should render legacy data structure properly', () => {
       const [option1, option2] = element.querySelectorAll('.checkbox label');
       expect(option1.textContent.trim()).toBe('One');
       expect(option2.textContent.trim()).toBe('Two');
