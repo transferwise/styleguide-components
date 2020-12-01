@@ -1,4 +1,4 @@
-# v8.1.2
+# v8.2.0
 ## twFieldset now sends validity as a second parameter in onModelChange
 Previously validity was communicated by the two-way bound isValid component prop. This was being misused by some consumers to attempt to set internal validity.  We now additionally broadcast validity in the onModelChange callback for a clearer API.
 
