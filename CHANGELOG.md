@@ -1,3 +1,7 @@
+# v8.2.2
+## Fix string validation when given incorrect minimum/maximum data type
+When applied to strings, minimum and maximum should also be strings, allowing comparison between iso8601 dates.  A numeric minimum/maximum is invalid and should be ignored.
+
 # v8.2.1
 ## twFieldset now broadcasts an onModelChange with initial model value and validity
 Previously it did not broadcast a change on load, meaning you had to rely on the two-way bound isValid property for initial validation state.  This also fixes a bug where we were not validating required fields.
