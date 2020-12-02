@@ -68,6 +68,23 @@ describe('Given a library for identifying validation failures', () => {
     });
   });
 
+  describe('when validating a string with an incorrect minimum/maximum', () => {
+    beforeEach(() => {
+      schema = {
+        type: 'string',
+        minimum: 2000,
+        maximum: 2010,
+      };
+    });
+
+    it('should return an empty array for valid strings', () => {
+      expect(getValidationFailures('1999', schema)).toEqual([]);
+      expect(getValidationFailures('2001', schema)).toEqual([]);
+      expect(getValidationFailures('2011', schema)).toEqual([]);
+      expect(getValidationFailures('abc', schema)).toEqual([]);
+    });
+  });
+
   describe('when validating a number schema', () => {
     beforeEach(() => {
       schema = {

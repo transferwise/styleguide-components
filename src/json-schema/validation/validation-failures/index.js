@@ -72,10 +72,10 @@ function getStringValidationFailures(value, schema, isRequired) {
   if (!isValidPattern(value, schema.pattern)) {
     failures.push('pattern');
   }
-  if (!isValidMinimum(value, schema.minimum)) {
+  if (isString(schema.minimum) && !isValidMinimum(value, schema.minimum)) {
     failures.push('minimum');
   }
-  if (!isValidMaximum(value, schema.maximum)) {
+  if (isString(schema.maximum) && !isValidMaximum(value, schema.maximum)) {
     failures.push('maximum');
   }
   return failures;
