@@ -34,6 +34,9 @@ class FieldsetController {
 
     this.submitted = false;
     // TODO can we add asyncvalidator here? - prob not
+
+    this.validate();
+    this.triggerOnModelChange();
   }
 
   $onChanges(changes) {
@@ -66,7 +69,8 @@ class FieldsetController {
 
     // Remove any model values that are now invalid
     const oldModel = this.internalModel;
-    const newModel = getValidModelParts(oldModel, convertFieldsToObject(this.fields));
+    const schema = convertFieldsToObject(this.fields, this.requiredFields);
+    const newModel = getValidModelParts(oldModel, schema);
 
     // Valid model returns null, not undefined so we must check oldModel
     if (!isUndefined(oldModel) && !angular.equals(newModel, oldModel)) {
@@ -74,10 +78,7 @@ class FieldsetController {
       this.model = newModel;
 
       this.validate(); // Revalidate if the model changed
-
-      if (this.onModelChange) {
-        this.onModelChange({ model: newModel, isValid: this.isValid });
-      }
+      this.triggerOnModelChange();
     }
   }
 
@@ -158,29 +159,28 @@ class FieldsetController {
       }
 
       this.validate();
+      this.triggerOnModelChange();
 
-      if (this.onModelChange) {
-        this.onModelChange({ model: this.model, isValid: this.isValid });
-      }
-
-      if (field.refreshRequirementsOnChange && this.onRefreshRequirements) {
-        this.onRefreshRequirements({ model: this.model });
+      if (field.refreshRequirementsOnChange) {
+        this.triggerRefreshRequirements();
       }
     });
   }
 
   validate() {
-    const schema = {
-      type: 'object',
-      properties: this.fields
-    };
-
+    const schema = convertFieldsToObject(this.fields, this.requiredFields);
     this.isValid = isValidSchema(this.internalModel, schema);
   }
 
-  refreshRequirements() {
+  triggerOnModelChange() {
+    if (this.onModelChange) {
+      this.onModelChange({ model: this.model, isValid: this.isValid });
+    }
+  }
+
+  triggerRefreshRequirements() {
     if (this.onRefreshRequirements) {
-      this.onRefreshRequirements();
+      this.onRefreshRequirements({ model: this.model });
     }
   }
 
@@ -193,10 +193,11 @@ class FieldsetController {
   }
 }
 
-function convertFieldsToObject(fields) {
+function convertFieldsToObject(fields, requiredFields) {
   return {
     type: 'object',
-    properties: fields
+    properties: fields,
+    required: requiredFields
   };
 }
 
