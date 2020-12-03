@@ -11,7 +11,7 @@ class MediaApiService {
     this.$window = $window;
     this.$document = $document;
     this.$q = $q;
-    this.microappsHostnames = ['www.microapps.google.com', 'microapps-prod-tt.sandbox.google.com'];
+    this.microappsHostnames = ['microapps.google.com', 'microapps-prod-tt.sandbox.google.com'];
   }
 
   captureFromMedia(isLiveCameraUpload) {
@@ -21,6 +21,10 @@ class MediaApiService {
     };
 
     const deferred = this.$q.defer();
+
+    if (typeof this.$window.microapps === 'undefined') {
+      throw new Error('microapps must be available in window to use Spot Platform Media API');
+    }
 
     this.$window.microapps.requestMedia(request)
       .then((response) => {
@@ -39,7 +43,7 @@ class MediaApiService {
   hasMediaUploadSupport() {
     return (
       this.$window.self !== this.$window.top && (
-        this.microappsHostnames.includes(this.resolveParentHost()) && !!this.$window.microapps
+        this.microappsHostnames.includes(this.resolveParentHost())
       )
     );
   }

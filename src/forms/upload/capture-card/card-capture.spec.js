@@ -86,79 +86,81 @@ describe('given a Card Capture component', () => {
   })
 
   describe('when media upload is supported', () => {
-    let deferred;
+    describe('when microapps is in window', () => {
+      let deferred;
 
-    beforeEach(() => {
-      deferred = $q.defer();
+      beforeEach(() => {
+        deferred = $q.defer();
 
-      jest.spyOn(MediaApiService, 'hasMediaUploadSupport').mockReturnValue(true);
-      jest.spyOn(MediaApiService, 'captureFromMedia').mockReturnValue(deferred.promise);
-    })
+        jest.spyOn(MediaApiService, 'hasMediaUploadSupport').mockReturnValue(true);
+        jest.spyOn(MediaApiService, 'captureFromMedia').mockReturnValue(deferred.promise);
+      })
 
-    it('should render a camera button', () => {
-      expect(findCameraButton()).toBeTruthy();
-    })
+      it('should render a camera button', () => {
+        expect(findCameraButton()).toBeTruthy();
+      })
 
-    describe('when isLiveCameraUpload is true', () => {
-      describe('when camera button is clicked', () => {
+      describe('when isLiveCameraUpload is true and camera button is clicked', () => {
         beforeEach(() => {
           $scope.isLiveCameraUpload = true;
-
           compileComponent();
+          findCameraButton().click();
         })
 
-        it('should call captureFromMedia from MediaApiService with true when camera button is clicked', () => {
-          findCameraButton().click();
+        it('should call captureFromMedia from MediaApiService with true', () => {
           expect(MediaApiService.captureFromMedia).toHaveBeenCalledWith(true);
         })
       })
-    })
 
-    describe('when isLiveCameraUpload is false', () => {
-      describe('when camera button is clicked', () => {
+      describe('when isLiveCameraUpload is false and camera button is clicked', () => {
         beforeEach(() => {
           $scope.isLiveCameraUpload = false;
-
           compileComponent();
+          findCameraButton().click();
         })
 
-        it('should call captureFromMedia from MediaApiService with false when camera button is clicked', () => {
-          findCameraButton().click();
+        it('should call captureFromMedia from MediaApiService with false', () => {
           expect(MediaApiService.captureFromMedia).toHaveBeenCalledWith(false);
         })
       })
+
+      describe('when camera button is clicked', () => {
+        beforeEach(() => {
+          $scope.onFileCapture = jest.fn();
+
+          compileComponent();
+          findCameraButton().click();
+        })
+
+        describe('when captureFromMedia is successful', () => {
+          const file = { size: 124, type: 'image/jpeg'};
+
+          beforeEach(() => {
+            deferred.resolve(file);
+            $scope.$apply();
+          })
+
+          it('should call onFileCapture with resolved file', () => {
+            expect($scope.onFileCapture).toHaveBeenCalledWith(file);
+          })
+        })
+
+        describe('when captureFromMedia fails', () => {
+          beforeEach(() => {
+            deferred.reject({error: 'CANCELLED'});
+            $scope.$apply();
+          })
+
+          it('should not call onFileCapture', () => {
+            expect($scope.onFileCapture).not.toHaveBeenCalled();
+          })
+        })
+      })
     })
 
-    describe('when camera button is clicked', () => {
-      beforeEach(() => {
-        $scope.onFileCapture = jest.fn();
-
-        compileComponent();
-        findCameraButton().click();
-      })
-
-      describe('when captureFromMedia is successful', () => {
-        const file = { size: 124, type: 'image/jpeg'};
-
-        beforeEach(() => {
-          deferred.resolve(file);
-          $scope.$apply();
-        })
-
-        it('should call onFileCapture with ressolved file', () => {
-          expect($scope.onFileCapture).toHaveBeenCalledWith(file);
-        })
-      })
-
-      describe('when captureFromMedia fails', () => {
-        beforeEach(() => {
-          deferred.reject({error: 'CANCELLED'});
-          $scope.$apply();
-        })
-
-        it('should not call onFileCapture', () => {
-          expect($scope.onFileCapture).not.toHaveBeenCalled();
-        })
+    describe('when microapps is not in window', () => {
+      it('should throw an error when calling captureFromMedia', () => {
+        expect(() => MediaApiService.captureFromMedia(false)).toThrow('microapps must be available in window to use Spot Platform Media API');
       })
     })
   })

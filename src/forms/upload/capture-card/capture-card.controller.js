@@ -6,12 +6,7 @@ class Controller {
     this.cameraFailed = false;
     this.MediaApiService = MediaApiService;
     this.checkMediaUploadSupport = this.checkMediaUploadSupport.bind(this);
-
-    if (this.$window.document.readyState === 'complete') {
-      this.checkMediaUploadSupport();
-    } else {
-      this.$window.addEventListener('load', this.checkMediaUploadSupport);
-    }
+    this.checkMediaUploadSupport();
   }
 
   $onChanges(changes) {
