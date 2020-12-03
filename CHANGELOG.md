@@ -1,3 +1,6 @@
+# v8.2.3
+## Throw an error if we’re in the Spot environment but microapps API is not available
+
 # v8.2.2
 ## Fix string validation when given incorrect minimum/maximum data type
 When applied to strings, minimum and maximum should also be strings, allowing comparison between iso8601 dates.  A numeric minimum/maximum is invalid and should be ignored.
