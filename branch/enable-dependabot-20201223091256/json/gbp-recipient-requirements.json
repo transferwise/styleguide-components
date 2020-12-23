@@ -1,0 +1,327 @@
+  [
+    {
+      "type": "SORT_CODE",
+      "title": "UK Sort",
+      "specialCreateTreatment": false,
+      "allowedReceiverTypes": [
+        "PRIVATE",
+        "BUSINESS"
+      ],
+      "nameTooltip": "",
+      "fieldGroups": [
+        {
+          "fields": [
+            {
+              "name": "receiverType",
+              "minLength": null,
+              "validationRegexp": null,
+              "presentationPattern": null,
+              "displayFormat": null,
+              "rules": [],
+              "valuesResource": null,
+              "valuesAllowed": [
+                {
+                  "title": "PRIVATE",
+                  "code": "PRIVATE"
+                },
+                {
+                  "title": "BUSINESS",
+                  "code": "BUSINESS"
+                }
+              ],
+              "valuesTop": null,
+              "title": "Recipient type",
+              "forceShowOnMobile": false,
+              "required": false,
+              "type": "SELECT",
+              "maxLength": null,
+              "autocomplete": false,
+              "example": "",
+              "valuesTopHeader": null,
+              "keyboardType": "TEXT"
+            }
+          ],
+          "name": "receiverType",
+          "title": "Recipient type",
+          "tooltip": "",
+          "imageTooltip": "",
+          "info": null,
+          "presentationPattern": "*"
+        },
+        {
+          "fields": [
+            {
+              "name": "sortCode",
+              "minLength": 6,
+              "validationRegexp": null,
+              "presentationPattern": "**-**-**",
+              "displayFormat": "**-**-**",
+              "rules": [],
+              "valuesResource": null,
+              "valuesAllowed": null,
+              "valuesTop": null,
+              "title": "UK Sort code",
+              "forceShowOnMobile": false,
+              "required": true,
+              "type": "TEXT",
+              "maxLength": 8,
+              "autocomplete": false,
+              "example": "40-30-20",
+              "valuesTopHeader": null,
+              "keyboardType": "TEXT"
+            }
+          ],
+          "name": "sortCode",
+          "title": "UK Sort code",
+          "tooltip": "",
+          "imageTooltip": "",
+          "info": null,
+          "presentationPattern": "*"
+        },
+        {
+          "fields": [
+            {
+              "name": "accountNumber",
+              "minLength": 8,
+              "validationRegexp": "[0-9]{8}",
+              "presentationPattern": null,
+              "displayFormat": null,
+              "rules": [],
+              "valuesResource": null,
+              "valuesAllowed": null,
+              "valuesTop": null,
+              "title": "Account number",
+              "forceShowOnMobile": false,
+              "required": true,
+              "type": "TEXT",
+              "maxLength": 8,
+              "autocomplete": false,
+              "example": "12345678",
+              "valuesTopHeader": null,
+              "keyboardType": "NUMBER"
+            }
+          ],
+          "name": "accountNumber",
+          "title": "Account number",
+          "tooltip": "",
+          "imageTooltip": "",
+          "info": null,
+          "presentationPattern": "*"
+        }
+      ]
+    },
+    {
+      "type": "IBAN",
+      "title": "IBAN",
+      "specialCreateTreatment": false,
+      "allowedReceiverTypes": [
+        "PRIVATE",
+        "BUSINESS"
+      ],
+      "nameTooltip": "",
+      "fieldGroups": [
+        {
+          "fields": [
+            {
+              "name": "receiverType",
+              "minLength": null,
+              "validationRegexp": null,
+              "presentationPattern": null,
+              "displayFormat": null,
+              "rules": [],
+              "valuesResource": null,
+              "valuesAllowed": [
+                {
+                  "title": "PRIVATE",
+                  "code": "PRIVATE"
+                },
+                {
+                  "title": "BUSINESS",
+                  "code": "BUSINESS"
+                }
+              ],
+              "valuesTop": null,
+              "title": "Recipient type",
+              "forceShowOnMobile": false,
+              "required": false,
+              "type": "SELECT",
+              "maxLength": null,
+              "autocomplete": false,
+              "example": "",
+              "valuesTopHeader": null,
+              "keyboardType": "TEXT"
+            }
+          ],
+          "name": "receiverType",
+          "title": "Recipient type",
+          "tooltip": "",
+          "imageTooltip": "",
+          "info": null,
+          "presentationPattern": "*"
+        },
+        {
+          "fields": [
+            {
+              "name": "IBAN",
+              "minLength": 2,
+              "validationRegexp": null,
+              "presentationPattern": null,
+              "displayFormat": "**** **** **** **** **** **** **** ****",
+              "rules": [],
+              "valuesResource": null,
+              "valuesAllowed": null,
+              "valuesTop": null,
+              "title": "IBAN",
+              "forceShowOnMobile": false,
+              "required": true,
+              "type": "TEXT",
+              "maxLength": null,
+              "autocomplete": false,
+              "example": "GB89370400440532013000",
+              "valuesTopHeader": null,
+              "keyboardType": "TEXT"
+            }
+          ],
+          "name": "IBAN",
+          "title": "IBAN",
+          "tooltip": "IBANs are long account numbers used by banks for cross-border transfers. Each country structures this number differently, but it always starts with a 2 digit country code (e.g. DE for Germany).",
+          "imageTooltip": "",
+          "info": null,
+          "presentationPattern": "*"
+        },
+        {
+          "fields": [
+            {
+              "name": "BIC",
+              "minLength": null,
+              "validationRegexp": "(?i)[A-Z]{6}[A-Z\\d]{2}([A-Z\\d]{3})?",
+              "presentationPattern": null,
+              "displayFormat": null,
+              "rules": [],
+              "valuesResource": null,
+              "valuesAllowed": null,
+              "valuesTop": null,
+              "title": "Bank code (BIC/SWIFT)",
+              "forceShowOnMobile": false,
+              "required": false,
+              "type": "TEXT",
+              "maxLength": null,
+              "autocomplete": false,
+              "example": "ABCDDE22 (Optional)",
+              "valuesTopHeader": null,
+              "keyboardType": "TEXT"
+            }
+          ],
+          "name": "BIC",
+          "title": "Bank code (BIC/SWIFT)",
+          "tooltip": "The BIC (SWIFT code) is used to identify a bank when making cross-border money transfers. It’s 8-11 characters long and often includes part of the bank’s name.",
+          "imageTooltip": "",
+          "info": null,
+          "presentationPattern": "*"
+        }
+      ]
+    },
+    {
+      "type": "EMAIL",
+      "title": "E-mail",
+      "specialCreateTreatment": true,
+      "allowedReceiverTypes": [
+        "PRIVATE",
+        "BUSINESS"
+      ],
+      "nameTooltip": "",
+      "fieldGroups": []
+    },
+    {
+      "type": "BALANCE",
+      "title": "Balance",
+      "specialCreateTreatment": true,
+      "allowedReceiverTypes": [
+        "PRIVATE",
+        "BUSINESS"
+      ],
+      "nameTooltip": "",
+      "fieldGroups": [
+        {
+          "fields": [
+            {
+              "name": "receiverType",
+              "minLength": null,
+              "validationRegexp": null,
+              "presentationPattern": null,
+              "displayFormat": null,
+              "rules": [],
+              "valuesResource": null,
+              "valuesAllowed": [
+                {
+                  "title": "PRIVATE",
+                  "code": "PRIVATE"
+                },
+                {
+                  "title": "BUSINESS",
+                  "code": "BUSINESS"
+                }
+              ],
+              "valuesTop": null,
+              "title": "Recipient type",
+              "forceShowOnMobile": false,
+              "required": false,
+              "type": "SELECT",
+              "maxLength": null,
+              "autocomplete": false,
+              "example": "",
+              "valuesTopHeader": null,
+              "keyboardType": "TEXT"
+            }
+          ],
+          "name": "receiverType",
+          "title": "Recipient type",
+          "tooltip": "",
+          "imageTooltip": "",
+          "info": null,
+          "presentationPattern": "*"
+        },
+        {
+          "fields": [
+            {
+              "name": "targetProfile",
+              "minLength": 1,
+              "validationRegexp": "^\\d{1,20}$",
+              "presentationPattern": null,
+              "displayFormat": null,
+              "rules": [],
+              "valuesResource": null,
+              "valuesAllowed": null,
+              "valuesTop": null,
+              "title": "Profile ID",
+              "forceShowOnMobile": false,
+              "required": true,
+              "type": "TEXT",
+              "maxLength": 20,
+              "autocomplete": false,
+              "example": "1505",
+              "valuesTopHeader": null,
+              "keyboardType": "TEXT"
+            }
+          ],
+          "name": "targetProfile",
+          "title": "Profile ID",
+          "tooltip": "",
+          "imageTooltip": "",
+          "info": null,
+          "presentationPattern": "*"
+        }
+      ]
+    },
+    {
+      "type": "UNIQUEID",
+      "title": "UNIQUEID",
+      "specialCreateTreatment": true,
+      "allowedReceiverTypes": [
+        "PRIVATE",
+        "BUSINESS"
+      ],
+      "nameTooltip": "",
+      "fieldGroups": []
+    }
+  ]
