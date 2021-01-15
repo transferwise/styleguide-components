@@ -14,6 +14,7 @@ const Fieldset = {
     title: '@',
     description: '@',
     onModelChange: '&?',
+    onValidityChange: '&?',
     onRefreshRequirements: '&?',
     onFieldFocus: '&?',
     onFieldBlur: '&?',

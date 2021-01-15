@@ -22,6 +22,9 @@ describe('Fieldset', function() {
 
     $scope.onModelChange = function() {};
     jest.spyOn($scope, 'onModelChange').mockImplementation(() => {});
+
+    $scope.onValidityChange = function() {};
+    jest.spyOn($scope, 'onValidityChange').mockImplementation(() => {});
   });
 
   describe('when initialised with an array of fields', function() {
@@ -102,6 +105,10 @@ describe('Fieldset', function() {
         });
       });
 
+      it('should trigger onValidityChange ', () => {
+        expect($scope.onValidityChange).toHaveBeenCalledWith(false);
+      });
+
       it('should trigger onModelChange ', () => {
         expect($scope.onModelChange).toHaveBeenCalledWith({ checkboxGroup: '[]' }, false);
       });
@@ -158,6 +165,10 @@ describe('Fieldset', function() {
       expect($scope.isValid).toBe(false);
     });
 
+    it('should trigger onValidityChange ', () => {
+      expect($scope.onValidityChange).toHaveBeenCalledWith(false);
+    });
+
     describe('when the required field values are given valid values', function() {
       beforeEach(function() {
         var sortInput = element.querySelector('input');
@@ -168,6 +179,10 @@ describe('Fieldset', function() {
 
       it('should change isValid to true', function() {
         expect($scope.isValid).toEqual(true);
+      });
+
+      it('should trigger onValidityChange ', () => {
+        expect($scope.onValidityChange).toHaveBeenCalledWith(true);
       });
 
       it('should trigger the change handler with correct validity', function() {
@@ -185,6 +200,10 @@ describe('Fieldset', function() {
 
       it('should change isValid to true', function() {
         expect($scope.isValid).toEqual(false);
+      });
+
+      it('should trigger onValidityChange ', () => {
+        expect($scope.onValidityChange).toHaveBeenCalledWith(false);
       });
 
       it('should trigger the change handler with correct validity', function() {
@@ -224,6 +243,7 @@ describe('Fieldset', function() {
       $scope.fields = getFields();
       element = getCompiledDirectiveElement();
     });
+
     it('should fallback to default validation messages for remaining messages', function() {
       var fields = element.querySelectorAll('tw-field');
       var sortCodeField = angular.element(fields[0]);
@@ -246,9 +266,11 @@ describe('Fieldset', function() {
       formControl.dispatchEvent(new Event('input'));
       $timeout.flush();
     });
+
     it('should trigger the onRefresh handler', function() {
       expect($scope.onRefreshRequirements).toHaveBeenCalled();
     });
+
     it('should pass the handler the latest model', function() {
       expect($scope.onRefreshRequirements).toHaveBeenCalledWith({ sortCode: 'new' });
     });
@@ -364,9 +386,11 @@ describe('Fieldset', function() {
       $scope.fields = { sortCode: fields.sortCode };
       $scope.$apply();
     })
+
     it('should alter the model to remove invalid values', function() {
       expect($scope.model).toEqual({ sortCode: '123456' });
     });
+    
     it('should broadcast a new version of the model with invalid values removed', function() {
       expect($scope.onModelChange).toHaveBeenCalledWith({ sortCode: '123456' }, true);
     });
@@ -382,6 +406,7 @@ describe('Fieldset', function() {
         error-messages='errorMessages' \
         warning-messages='warningMessages' \
         on-model-change='onModelChange(model, isValid)' \
+        on-validity-change='onValidityChange(isValid)' \
         on-refresh-requirements='onRefreshRequirements(model)' \
         is-valid='isValid'> \
       </tw-fieldset>";
