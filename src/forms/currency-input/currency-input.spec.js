@@ -164,14 +164,14 @@ describe('CurrencyInput', function() {
       var needle = '';
       templateElement = getCompiledTransclusionTemplateElement($scope, needle);
 
-      expect(templateElement.html()).toContain('<addon></addon>');
+      expect(templateElement.find('addon').text()).toEqual('');
     });
 
     it('should show text, when text provided', function() {
       var needle = 'Addon here?';
       templateElement = getCompiledTransclusionTemplateElement($scope, needle);
 
-      expect(templateElement.html()).toContain('<addon>' + needle + '</addon>');
+      expect(templateElement.find('addon').text()).toEqual(needle);
     });
 
     it('should show compiled component, when component provided', function() {
