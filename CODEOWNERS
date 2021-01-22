@@ -1,1 +1,10 @@
 * @transferwise/design-system
+
+/src/json-schema/ @transferwise/dynamicflows
+/src/forms/field/ @transferwise/dynamicflows
+/src/forms/fieldset/ @transferwise/dynamicflows
+/src/forms/form-control/ @transferwise/dynamicflows
+
+CHANGELOG.md @transferwise/dynamicflows
+package.json @transferwise/dynamicflows
+package-lock.json @transferwise/dynamicflows
