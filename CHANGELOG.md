@@ -1,3 +1,7 @@
+# v8.3.0
+## Fieldset now publishes on onValidityChange callback
+This was necessary because changing the fields can change the validity state without changing the model.  Previously we would update validity at the same time as the model changed.
+
 # v8.2.3
 ## Throw an error if we’re in the Spot environment but microapps API is not available
 
