@@ -169,7 +169,13 @@ class FieldsetController {
 
   validate() {
     const schema = convertFieldsToObject(this.fields, this.requiredFields);
+
+    const oldIsValid = this.isValid;
     this.isValid = isValidSchema(this.internalModel, schema);
+
+    if (oldIsValid !== this.isValid && this.onValidityChange) {
+      this.onValidityChange({ isValid: this.isValid });
+    }
   }
 
   triggerOnModelChange() {
