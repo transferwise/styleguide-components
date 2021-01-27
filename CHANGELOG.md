@@ -1,3 +1,7 @@
+# v8.3.1
+## Disable drag and drop on upload component if it is not eligible
+This change was necessary to block customers to use the drag and drop when they are not supposed to.
+
 # v8.3.0
 ## Fieldset now publishes an onValidityChange callback
 This was necessary because changing the fields can change the validity state without changing the model.  Previously we would update validity at the same time as the model changed.
