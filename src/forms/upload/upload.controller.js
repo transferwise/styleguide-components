@@ -74,6 +74,9 @@ class UploadController {
   }
 
   onDrop(files) {
+    if (!this.isDropEligible()) {
+      return;
+    }
     this.isDroppable = false;
     this.onFileCapture(files[0]);
   }
