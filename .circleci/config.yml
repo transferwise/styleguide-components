@@ -6,7 +6,7 @@ defaults: &defaults
     - image: circleci/node:lts-browsers
 
 jobs:
-  test:
+  install:
     <<: *defaults
     steps:
       - checkout
@@ -16,16 +16,32 @@ jobs:
       - run:
           name: Install dependencies
           command: npm ci
-      - run:
-          name: Lint checks
-          command: npm run lint
-      - run:
-          name: Run tests
-          command: npm test
       - persist_to_workspace:
           root: .
           paths:
-            - '*'
+            - "*"
+
+  lint:
+    <<: *defaults
+    steps:
+      - run:
+          name: Setup npm token
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN_READ" >> ~/.npmrc
+      - run:
+          name: Lint checks
+          command: npm run lint
+
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Setup npm token
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN_READ" >> ~/.npmrc
+      - run:
+          name: Run tests
+          command: npm test
+
   deploy:
     <<: *defaults
     steps:
@@ -100,8 +116,26 @@ workflows:
   version: 2
   build_and_publish:
     jobs:
+      - install:
+          context: frontend-build
+          filters:
+            branches:
+              ignore:
+                - gh-pages
+                - releases
+      - lint:
+          context: frontend-build
+          requires:
+            - install
+          filters:
+            branches:
+              ignore:
+                - gh-pages
+                - releases
       - test:
           context: frontend-build
+          requires:
+            - install
           filters:
             branches:
               ignore:
@@ -110,6 +144,7 @@ workflows:
       - deploy:
           context: frontend-build
           requires:
+            - lint
             - test
           filters:
             branches:
