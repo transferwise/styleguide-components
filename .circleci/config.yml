@@ -24,6 +24,8 @@ jobs:
   lint:
     <<: *defaults
     steps:
+      - attach_workspace:
+          at: ~/styleguide-components
       - run:
           name: Setup npm token
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN_READ" >> ~/.npmrc
@@ -34,7 +36,8 @@ jobs:
   test:
     <<: *defaults
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/styleguide-components
       - run:
           name: Setup npm token
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN_READ" >> ~/.npmrc
