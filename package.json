@@ -4,7 +4,7 @@
   "description": "TransfeWise AngularJS 1.x Styleguide Components",
   "license": "MIT",
   "scripts": {
-    "test": "node --icu-data-dir=node_modules/full-icu node_modules/.bin/jest --maxWorkers=4",
+    "test": "node --icu-data-dir=node_modules/full-icu node_modules/.bin/jest",
     "prestart": "npm install",
     "start": "npm run less && webpack --watch --mode=development;",
     "dev": "npm run copy:demo && live-server --port=1666 --open=demo/index.html",
