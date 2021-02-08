@@ -157,6 +157,7 @@ workflows:
       - release:
           context: frontend-publish
           requires:
+            - lint
             - test
           filters:
             branches:
@@ -165,6 +166,7 @@ workflows:
       - beta-release:
           context: frontend-publish
           requires:
+            - lint
             - test
           filters:
             branches:
