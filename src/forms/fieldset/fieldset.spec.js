@@ -146,7 +146,7 @@ describe('Fieldset', function() {
     var fields;
     beforeEach(function() {
       $scope.fields = getFields();
-      $scope.requiredFields = ['sortCode'];
+      $scope.fields.sortCode.required = true;
       element = getCompiledDirectiveElement();
       fields = element.querySelectorAll('tw-field');
     });
@@ -390,7 +390,7 @@ describe('Fieldset', function() {
     it('should alter the model to remove invalid values', function() {
       expect($scope.model).toEqual({ sortCode: '123456' });
     });
-    
+
     it('should broadcast a new version of the model with invalid values removed', function() {
       expect($scope.onModelChange).toHaveBeenCalledWith({ sortCode: '123456' }, true);
     });
@@ -401,7 +401,6 @@ describe('Fieldset', function() {
       <tw-fieldset \
         model='model' \
         fields='fields' \
-        required-fields='requiredFields' \
         validation-messages='validationMessages' \
         error-messages='errorMessages' \
         warning-messages='warningMessages' \
