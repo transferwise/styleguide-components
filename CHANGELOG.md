@@ -1,3 +1,7 @@
+# v9.0.0
+## Removes requiredFields prop from Fieldset
+Required status should come from the fields themselves, not the separate prop. There are no cases in our code base where we depend on this prop, so this should not a breaking change in practice.
+
 # v8.3.1
 ## Disable drag and drop on upload component if it is not eligible
 This change was necessary to block customers to use the drag and drop when they are not supposed to.

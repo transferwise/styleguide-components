@@ -17,10 +17,6 @@ class FieldsetController {
 
     this.internalModel = this.parseArrayStringsInModel(this.model);
 
-    if (!this.requiredFields) {
-      this.requiredFields = [];
-    }
-
     const defaultMessages = {
       required: 'Required',
       pattern: 'Incorrect format',
@@ -61,9 +57,7 @@ class FieldsetController {
       this.validationMessages
     );
 
-    if (!this.requiredFields || !this.requiredFields.length) {
-      this.requiredFields = this.RequirementsService.getRequiredFields(this.fields);
-    }
+    this.requiredFields = this.RequirementsService.getRequiredFields(this.fields);
 
     this.validate();
 
