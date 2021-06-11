@@ -129,25 +129,19 @@ describe('Field', function() {
     });
   });
 
-  describe('when given type:number', function() {
-    beforeEach(function() {
-      $scope.field = { type: "number" };
+  describe.each([
+    ["number", "number"],
+    ["NUMBER", "number"],
+    ["boolean", "checkbox"],
+    ["BOOLEAN", "checkbox"],
+  ])("when given type:%s", (type, control) => {
+    beforeEach(function () {
+      $scope.field = { type };
       element = getCompiledDirectiveElement();
     });
 
-    it('should ask the form control to render a number input', function() {
-      expect(FormControl.bindings.type).toBe('number');
-    });
-  });
-
-  describe('when given type:boolean', function() {
-    beforeEach(function() {
-      $scope.field = { type: "boolean" };
-      element = getCompiledDirectiveElement();
-    });
-
-    it('should ask the form control to render a telephone input', function() {
-      expect(FormControl.bindings.type).toBe('checkbox');
+    it("should ask the form control to render a number input", function () {
+      expect(FormControl.bindings.type).toBe(control);
     });
   });
 

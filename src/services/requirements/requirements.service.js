@@ -176,7 +176,7 @@ function RequirementsService($http) {
   }
 
   this.prepType = (field) => {
-    const type = field.type && field.type.toLowerCase && field.type.toLowerCase();
+    const type = getFieldType(field);
 
     switch (type) {
       case 'text':
@@ -493,6 +493,13 @@ function getRequiredFields(fields) {
   return Object.keys(fields).filter(property => fields[property].required);
 }
 
+function getFieldType(field) {
+  if (typeof field.type === 'string') {
+    return field.type.toLowerCase();
+  }
+  return field.type;
+}
+
 function getControlType(field) {
   if (field.control) {
     if (field.control === 'select' && field.selectType === 'CHECKBOX') {
@@ -511,7 +518,9 @@ function getControlType(field) {
     return getSelectionType(field);
   }
 
-  switch (field.type) {
+  const fieldType = getFieldType(field);
+
+  switch (fieldType) {
     case 'string':
       return getControlForStringFormat(field.format);
     case 'number':
