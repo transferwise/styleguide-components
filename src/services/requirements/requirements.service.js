@@ -176,7 +176,7 @@ function RequirementsService($http) {
   }
 
   this.prepType = (field) => {
-    const type = getFieldType(field);
+    const type = safeToLowerCase(field.type);
 
     switch (type) {
       case 'text':
@@ -493,11 +493,8 @@ function getRequiredFields(fields) {
   return Object.keys(fields).filter(property => fields[property].required);
 }
 
-function getFieldType(field) {
-  if (typeof field.type === 'string') {
-    return field.type.toLowerCase();
-  }
-  return field.type;
+function safeToLowerCase(value) {
+  return typeof value === 'string' ? value.toLowerCase() : value;
 }
 
 function getControlType(field) {
@@ -518,9 +515,9 @@ function getControlType(field) {
     return getSelectionType(field);
   }
 
-  const fieldType = getFieldType(field);
+  const type = safeToLowerCase(field.type);
 
-  switch (fieldType) {
+  switch (type) {
     case 'string':
       return getControlForStringFormat(field.format);
     case 'number':
@@ -534,7 +531,7 @@ function getControlType(field) {
 }
 
 function getControlForStringFormat(format) {
-  switch (format) {
+  switch (safeToLowerCase(format)) {
     case 'date':
       return 'date';
     case 'base64url':
