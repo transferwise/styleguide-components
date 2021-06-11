@@ -142,7 +142,7 @@ describe('Field', function() {
       element = getCompiledDirectiveElement();
     });
 
-    it('should ask the form control to render a number input', function () {
+    it(`should ask the form control to render a ${control} input`, function () {
       expect(FormControl.bindings.type).toBe(control);
     });
   });
