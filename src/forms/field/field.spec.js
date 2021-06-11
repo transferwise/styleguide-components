@@ -130,17 +130,19 @@ describe('Field', function() {
   });
 
   describe.each([
-    ["number", "number"],
-    ["NUMBER", "number"],
-    ["boolean", "checkbox"],
-    ["BOOLEAN", "checkbox"],
+    ['number', 'number'],
+    ['NUMBER', 'number'],
+    ['integer', 'number'],
+    ['INTEGER', 'number']
+    ['boolean', 'checkbox'],
+    ['BOOLEAN', 'checkbox'],
   ])("when given type:%s", (type, control) => {
     beforeEach(function () {
       $scope.field = { type };
       element = getCompiledDirectiveElement();
     });
 
-    it("should ask the form control to render a number input", function () {
+    it('should ask the form control to render a number input', function () {
       expect(FormControl.bindings.type).toBe(control);
     });
   });
