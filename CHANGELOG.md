@@ -1,3 +1,8 @@
+# v9.0.1
+## Fix twField control mapping logic
+Handle uppercase-lowercase gracefully when determining `twFormControl` component's `type` binding
+Check description in https://github.com/transferwise/styleguide-components/pull/363
+
 # v9.0.0
 ## Removes requiredFields prop from Fieldset
 Required status should come from the fields themselves, not the separate prop. There are no cases in our code base where we depend on this prop, so this should not a breaking change in practice.
