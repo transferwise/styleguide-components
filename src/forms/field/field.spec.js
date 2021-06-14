@@ -133,7 +133,7 @@ describe('Field', function() {
     ['number', 'number'],
     ['NUMBER', 'number'],
     ['integer', 'number'],
-    ['INTEGER', 'number']
+    ['INTEGER', 'number'],
     ['boolean', 'checkbox'],
     ['BOOLEAN', 'checkbox'],
   ])("when given type:%s", (type, control) => {
