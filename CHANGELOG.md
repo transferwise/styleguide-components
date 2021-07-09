@@ -1,3 +1,8 @@
+# v9.0.2
+## Fix schema type case sensitivity bug
+Bug fixed where validation failed if schema type is uppercase instead of the expected lowercase (e.g.: `NUMBER` instead of `number`)
+
+
 # v9.0.1
 ## Fix twField control mapping logic
 Handle uppercase-lowercase gracefully when determining `twFormControl` component's `type` binding

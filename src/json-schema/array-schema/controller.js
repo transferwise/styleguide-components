@@ -1,3 +1,5 @@
+import { safeToLowerCase } from '../../utils';
+
 const simpleTypes = ['string', 'number', 'integer', 'boolean'];
 
 class Controller {
@@ -36,7 +38,7 @@ class Controller {
   }
 
   isSimpleType(type) { // eslint-disable-line
-    return simpleTypes.indexOf(type) >= 0;
+    return simpleTypes.indexOf(safeToLowerCase(type)) >= 0;
   }
 }
 

@@ -1,3 +1,4 @@
+import { safeToLowerCase } from '../../../utils';
 import {
   isString,
   isNumber,
@@ -26,8 +27,10 @@ function getValidModelParts(model, schema) {
     return model;
   }
 
-  if (schema.type) {
-    switch (schema.type) {
+  const type = safeToLowerCase(schema.type);
+
+  if (type) {
+    switch (type) {
       case 'object':
         return cleanModelWithObjectSchema(model, schema);
       case 'array':
