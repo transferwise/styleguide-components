@@ -1,3 +1,5 @@
+import { safeToLowerCase } from '../../utils';
+
 function RequirementsService($http) {
   this.prepRequirements = (alternatives) => {
     if (!alternatives || !alternatives.length) {
@@ -491,10 +493,6 @@ function getRequiredFields(fields) {
   }
   // Return array of keys that have required set
   return Object.keys(fields).filter(property => fields[property].required);
-}
-
-function safeToLowerCase(value) {
-  return typeof value === 'string' ? value.toLowerCase() : value;
 }
 
 function getControlType(field) {

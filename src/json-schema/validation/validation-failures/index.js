@@ -18,6 +18,7 @@ import {
   isValidMinItems,
   isValidMaxItems
 } from '../rule-validators';
+import { safeToLowerCase } from '../../../utils';
 
 function getValidationFailures(value, schema, isRequired) {
   if (isNull(value)) {
@@ -32,7 +33,9 @@ function getValidationFailures(value, schema, isRequired) {
     return getConstValidationFailures(value, schema, isRequired);
   }
 
-  switch (schema.type) {
+  const type = safeToLowerCase(schema.type);
+
+  switch (type) {
     case 'string':
       return getStringValidationFailures(value, schema, isRequired);
     case 'number':

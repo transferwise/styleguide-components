@@ -141,4 +141,21 @@ describe('Given a library for validating json schema models', () => {
       expect(isValidSchema({ a: 'bc', b: 2 }, schema)).toBe(true);
     });
   });
+
+  describe.each([
+    ['string', 'example string'],
+    ['number', 123456.987654],
+    ['integer', 123456],
+    ['boolean', true],
+    ['array', []],
+    ['object', {}],
+  ])('when validating a %s schema with correct value', (type, value) => {
+    it.each([[type], [type.toUpperCase()]])(
+      'should return true for %s',
+      (exactType) => {
+        const schema = { type: exactType };
+        expect(isValidSchema(value, schema));
+      }
+    );
+  });
 });

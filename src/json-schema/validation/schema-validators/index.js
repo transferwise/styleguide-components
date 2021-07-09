@@ -1,3 +1,4 @@
+import { safeToLowerCase } from '../../../utils';
 import { isObject, isArray } from '../type-validators';
 
 import {
@@ -100,7 +101,9 @@ function isValidSchema(value, schema) {
     return isValidConstSchema(value, schema);
   }
 
-  switch (schema.type) {
+  const type = safeToLowerCase(schema.type);
+
+  switch (type) {
     case 'string':
       return isValidStringSchema(value, schema);
     case 'number':
