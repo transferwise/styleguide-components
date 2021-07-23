@@ -50,13 +50,13 @@
   },
   "peerDependencies": {
     "@transferwise/icons": "^2.3.0",
-    "@transferwise/neptune-css": "^9.0.3-beta.66"
+    "@transferwise/neptune-css": "9.0.3-beta.67"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.0",
     "@transferwise/icons": "^2.3.0",
-    "@transferwise/neptune-css": "^9.0.3-beta.66",
+    "@transferwise/neptune-css": "9.0.3-beta.67",
     "@types/jest": "^25.1.4",
     "@uirouter/angularjs": "^1.0.22",
     "angular-mocks": "~1.5.10",
