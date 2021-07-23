@@ -1,6 +1,6 @@
 {
   "name": "@transferwise/styleguide-components",
-  "version": "9.0.2",
+  "version": "9.1.0",
   "description": "TransfeWise AngularJS 1.x Styleguide Components",
   "license": "MIT",
   "scripts": {
@@ -50,11 +50,13 @@
   },
   "peerDependencies": {
     "@transferwise/icons": "^2.3.0",
-    "@transferwise/neptune-css": "^4.0.0"
+    "@transferwise/neptune-css": "9.0.3-beta.67"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.0",
+    "@transferwise/icons": "^2.3.0",
+    "@transferwise/neptune-css": "9.0.3-beta.67",
     "@types/jest": "^25.1.4",
     "@uirouter/angularjs": "^1.0.22",
     "angular-mocks": "~1.5.10",
@@ -64,6 +66,7 @@
     "canvas": "^2.6.1",
     "css-loader": "^0.28.11",
     "currency-flags": "git+https://github.com/transferwise/currency-flags.git",
+    "deploy-directory-on-branch-to-gh-pages": "^0.2.8",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.2.0",
     "eslint-loader": "^2.2.1",
@@ -81,10 +84,7 @@
     "live-server": "^1.1.0",
     "live-server-https": "0.0.2",
     "release-to-github-with-changelog": "^1.2.2",
-    "deploy-directory-on-branch-to-gh-pages": "^0.2.8",
     "style-loader": "^0.23.1",
-    "@transferwise/icons": "^2.3.0",
-    "@transferwise/neptune-css": "^4.0.0",
     "uglify-js": "^3.6.0",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.39.1",

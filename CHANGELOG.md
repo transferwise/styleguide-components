@@ -1,3 +1,7 @@
+# v9.2.0
+## Update Neptune CSS with new typography
+
+
 # v9.0.2
 ## Fix schema type case sensitivity bug
 Bug fixed where validation failed if schema type is uppercase instead of the expected lowercase (e.g.: `NUMBER` instead of `number`)
